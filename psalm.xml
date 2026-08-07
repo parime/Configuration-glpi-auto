@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psalm
+    initComposerAutoloaders="true"
+    cacheDirectory=".psalm"
+    progressBar="true"
+    memoryLimit="1G"
+    threads="4"
+    
+    useDocblockTypes="true"
+    inferDocblockTypes="true"
+    respectDocblockTypes="true"
+    
+    findUnusedCode="true"
+    findUnusedBaseline="true"
+    
+    reportMissingClassConstantType="true"
+    
+    totallyTyped="false"
+    
+    checkExceptionCode="true"
+    checkExceptionType="true"
+>
+    
+    <!-- Project files to analyze -->
+    <projectFiles>
+        <directory name="src" />
+        <file name="setup.php" />
+        <file name="hook.php" />
+    </projectFiles>
+    
+    <!-- Exclude files and directories -->
+    <excludeFiles>
+        <directory name="vendor" />
+        <directory name="tests" />
+        <directory name="public" />
+        <directory name="misc" />
+        <directory name="front" />
+        <directory name=".github" />
+        <suffix>.min.js</suffix>
+        <suffix>.min.css</suffix>
+    </excludeFiles>
+    
+    <!-- Ignore specific errors -->
+    <issueHandlers>
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <!-- GLPI core classes -->
+                <fileNamePattern>.*GLPI.*</fileNamePattern>
+                <fileNamePattern>.*CommonGLPI.*</fileNamePattern>
+                <fileNamePattern>.*Glpi.*</fileNamePattern>
+                <!-- Plugin specific -->
+                <fileNamePattern>.*Plugin.*</fileNamePattern>
+            </errorLevel>
+        </UndefinedClass>
+        
+        <UndefinedGlobalVariable>
+            <errorLevel type="suppress">
+                <variableNamePattern>.*DB.*</variableNamePattern>
+                <variableNamePattern>.*CFG_GLPI.*</variableNamePattern>
+                <variableNamePattern>.*_SERVER.*</variableNamePattern>
+                <variableNamePattern>.*_POST.*</variableNamePattern>
+                <variableNamePattern>.*_GET.*</variableNamePattern>
+            </errorLevel>
+        </UndefinedGlobalVariable>
+        
+        <UndefinedPropertyFetch>
+            <errorLevel type="suppress" />
+        </UndefinedPropertyFetch>
+        
+        <UndefinedMethod>
+            <errorLevel type="suppress">
+                <fileNamePattern>.*GLPI.*</fileNamePattern>
+            </errorLevel>
+        </UndefinedMethod>
+        
+        <PossiblyUndefinedProperty>
+            <errorLevel type="suppress" />
+        </PossiblyUndefinedProperty>
+        
+        <MixedAssignment>
+            <errorLevel type="suppress" />
+        </MixedAssignment>
+    </issueHandlers>
+    
+    <!-- Custom stub files for GLPI classes -->
+    <stubFiles>
+        <file name="stubs/GLPI.stub" />
+    </stubFiles>
+    
+    <!-- Auto-loading for custom stubs -->
+    <plugins>
+        <pluginClass class="Psalm\\Plugin\\Hooks\\LocationPlugin" />
+    </plugins>
+    
+    <!-- Allow dynamic properties for GLPI compatibility -->
+    <set
+        name="allowDynamicProperties"
+        value="true"
+    />
+    
+    <!-- Allow dynamic function calls -->
+    <set
+        name="allowDynamicFunctionCalls"
+        value="true"
+    />
+    
+    <!-- Allow unreachable code -->
+    <set
+        name="allowUnreachableCode"
+        value="true"
+    />
+    
+    <!-- Allow unused variables -->
+    <set
+        name="allowUnusedVariables"
+        value="false"
+    />
+    
+    <!-- Allow unused classes -->
+    <set
+        name="allowUnusedClasses"
+        value="false"
+    />
+    
+    <!-- Allow unused methods -->
+    <set
+        name="allowUnusedMethods"
+        value="false"
+    />
+    
+    <!-- Check for missing return types -->
+    <set
+        name="findMissingReturnType"
+        value="true"
+    />
+    
+    <!-- Check for undefined docblock types -->
+    <set
+        name="findUndefinedDocblockType"
+        value="true"
+    />
+</psalm>

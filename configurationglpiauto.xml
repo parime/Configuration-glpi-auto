@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <name>Configuration GLPI Auto</name>
+    <key>configurationglpiauto</key>
+    <state>stable</state>
+    <logo>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/logos/logo.png</logo>
+    <description>
+        <short>
+            <fr>Plugin GLPI pour la configuration automatique d'instances GLPI selon les bonnes pratiques</fr>
+            <en>GLPI plugin for automatic configuration of GLPI instances according to best practices</en>
+        </short>
+        <long>
+            <fr>
+                Configuration GLPI Auto est un plugin révolutionnaire qui transforme une installation vierge de GLPI 
+                en une plateforme opérationnelle en quelques clics. Grâce à un assistant graphique intuitif, 
+                l'administrateur peut configurer automatiquement les entités, SLA, calendriers, catalogues de services, 
+                actifs personnalisés, personnalisation graphique, étiquettes et bien plus.
+                
+                Le plugin propose plusieurs profils prédéfinis (PME, ETI, Grande entreprise, MSP, ISO 27001, ITIL) 
+                et permet une configuration personnalisée selon les besoins spécifiques.
+            </fr>
+            <en>
+                Configuration GLPI Auto is a revolutionary plugin that transforms a fresh GLPI installation 
+                into an operational platform in just a few clicks. Through an intuitive graphical wizard, 
+                the administrator can automatically configure entities, SLAs, calendars, service catalogs, 
+                custom assets, graphic customization, labels, and much more.
+                
+                The plugin offers several predefined profiles (SME, ETI, Large enterprise, MSP, ISO 27001, ITIL) 
+                and allows customized configuration according to specific needs.
+            </en>
+        </long>
+    </description>
+    <homepage>https://github.com/parime/Configuration-glpi-auto</homepage>
+    <download>https://github.com/parime/Configuration-glpi-auto/releases</download>
+    <issues>https://github.com/parime/Configuration-glpi-auto/issues</issues>
+    <readme>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/README.md</readme>
+    <authors>
+        <author>Parime</author>
+    </authors>
+    <versions>
+        <version>
+            <num>1.0.0</num>
+            <compatibility>=11.0.0</compatibility>
+            <php-version>=8.2</php-version>
+        </version>
+    </versions>
+    <langs>
+        <lang>fr_FR</lang>
+        <lang>en_GB</lang>
+    </langs>
+    <license>GPL v3+</license>
+    <tags>
+        <fr>
+            <tag>configuration</tag>
+            <tag>automatisation</tag>
+            <tag>wizard</tag>
+            <tag>GLPI</tag>
+            <tag>ITIL</tag>
+            <tag>ISO27001</tag>
+        </fr>
+        <en>
+            <tag>configuration</tag>
+            <tag>automation</tag>
+            <tag>wizard</tag>
+            <tag>GLPI</tag>
+            <tag>ITIL</tag>
+            <tag>ISO27001</tag>
+        </en>
+    </tags>
+    <screenshots>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/screenshots/wizard-step1.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/screenshots/wizard-step2.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/screenshots/dashboard.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/screenshots/report.png</screenshot>
+    </screenshots>
+    <requirements>
+        <requirement>glpi >= 11.0.0</requirement>
+        <requirement>php >= 8.2</requirement>
+    </requirements>
+</root>

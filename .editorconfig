@@ -1,0 +1,92 @@
+root = true
+
+# Editor configuration for Configuration GLPI Auto plugin
+# https://editorconfig.org
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+tab_width = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# PHP files
+[*.php]
+indent_size = 4
+tab_width = 4
+
+# JSON files
+[*.json]
+indent_size = 2
+tab_width = 2
+
+# YAML files
+[*.{yml,yaml}]
+indent_size = 2
+tab_width = 2
+
+# XML files
+[*.xml]
+indent_size = 2
+tab_width = 2
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+indent_size = 2
+tab_width = 2
+
+# HTML files
+[*.html]
+indent_size = 2
+tab_width = 2
+
+# CSS files
+[*.css]
+indent_size = 2
+tab_width = 2
+
+# JavaScript files
+[*.js]
+indent_size = 2
+tab_width = 2
+
+# Shell scripts
+[*.sh]
+indent_size = 2
+tab_width = 2
+
+# SQL files
+[*.sql]
+indent_size = 2
+tab_width = 2
+
+# Makefile
+[Makefile]
+indent_style = tab
+
+# Configuration files
+[*.{ini,conf,cfg}]
+indent_size = 2
+tab_width = 2
+
+# Composer files
+[composer.json]
+indent_size = 2
+tab_width = 2
+
+# Git attributes
+[.gitattributes]
+indent_size = 2
+tab_width = 2
+
+# Docker files
+[Dockerfile]
+indent_size = 2
+tab_width = 2
+
+[*.dockerignore]
+indent_size = 2
+tab_width = 2

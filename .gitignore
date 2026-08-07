@@ -1,0 +1,140 @@
+# Dependencies
+/vendor/
+composer.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+/logs/
+
+# Cache
+/cache/
+*.cache
+
+# Build
+/build/
+/dist/
+
+# Coverage
+/coverage/
+.phpunit.result.cache
+phpunit.xml
+
+# Static analysis
+.php-cs-fixer.cache
+.phpstan.cache/
+.psalm/
+rector.php
+
+# Testing
+.phpunit.cache/
+
+# Composer
+composer.phar
+
+# Packagist
+*.zip
+*.tar.gz
+
+# Local configuration
+config/local.php
+config/local_config.php
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+
+# Database dumps
+*.sql
+*.sql.gz
+
+# Local overrides
+.env.dist
+.env.example
+
+# Node.js (if used for frontend)
+node_modules/
+package-lock.json
+npm-debug.log
+
+# Yarn
+.yarn/
+yarn-error.log
+
+# PHP built-in server
+phpBuiltinServer-*
+
+# IDE specific
+.netbeans/
+*__.mdl
+*__.bak
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Atom
+*.atom/
+
+# Windows
+Desktop.ini
+
+# macOS
+.___*_*
+
+# Linux
+*~
+
+# Editorial temporary files
+*.un~
+
+# Merge driver files
+*.orig
+*.rej
+
+# Patches
+*.patch
+*.diff
+
+# Cache files
+*.cache
+.cache/
+
+# Testing artifacts
+.coverage
+.clover
+.phpunit.cache
+
+# Static analysis reports
+/analysis/
+/reports/
+
+# Documentation build
+/docs/_build/
+
+# Local development files
+*.local
+local/
+
+# Plugin specific temp files
+/tmp/
+/temp/
