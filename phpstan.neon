@@ -1,0 +1,52 @@
+includes:
+    - vendor/glpi-project/tools/phpstan/glpi.php
+
+parameters:
+    level: 8
+    paths:
+        - src/
+        - setup.php
+        - hook.php
+    
+    # Exclude files that should not be analysed
+    excludePaths:
+        analyse:
+            - tests/*
+            - vendor/*
+            - public/*
+            - misc/*
+            - front/*
+    
+    # PHPStan specific configuration
+    checkMissingIterableValueType: false
+    
+    # Allow dynamic properties for GLPI compatibility
+    allowDynamicProperties: true
+
+    # GLPI specific ignores
+    ignoreErrors:
+        - '#Access to an undefined property#':
+            - '*.php'
+        - '#Property.*never read, only written#':
+            - '*.php'
+        - '#Method.*never called#':
+            - '*.php'
+        - '#Access to undefined constant#':
+            - '*.php'
+
+    # Custom stubs for GLPI classes
+    stubFiles:
+        - stubs/GLPI.stub
+
+    # Temporary directory for caching
+    temporaryDirectory: .phpstan.cache
+
+    # Generate baseline file
+    generateBaseline: false
+    baselineFile: phpstan-baseline.neon
+
+    # Progress bar
+    progressBar: true
+
+    # Memory limit
+    memoryLimit: 1G

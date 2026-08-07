@@ -1,0 +1,275 @@
+name: "Continuous Integration"
+
+on:
+  push:
+    branches:
+      - "main"
+      - "develop"
+      - "release/**"
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - "main"
+      - "develop"
+      - "release/**"
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  generate-ci-matrix:
+    name: "Generate CI matrix"
+    uses: "glpi-project/plugin-ci-workflows/.github/workflows/generate-ci-matrix.yml@v1"
+    with:
+      glpi-version: "11.0.x"
+
+  ci:
+    name: "GLPI ${{ matrix.glpi-version }} - php:${{ matrix.php-version }} - ${{ matrix.db-image }}"
+    needs: "generate-ci-matrix"
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-ci-matrix.outputs.matrix) }}
+    uses: "glpi-project/plugin-ci-workflows/.github/workflows/continuous-integration.yml@v1"
+    with:
+      plugin-key: "configurationglpiauto"
+      glpi-version: "${{ matrix.glpi-version }}"
+      php-version: "${{ matrix.php-version }}"
+      db-image: "${{ matrix.db-image }}"
+
+  phpstan:
+    name: "PHPStan Analysis"
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+          tools: composer
+
+      - name: "Install dependencies"
+        run: |
+          composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader
+
+      - name: "Run PHPStan"
+        run: |
+          vendor/bin/phpstan analyse src/ setup.php hook.php --level=8 --memory-limit=1G
+
+  php-cs-fixer:
+    name: "PHP-CS-Fixer"
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+          tools: composer
+
+      - name: "Install dependencies"
+        run: |
+          composer install --prefer-dist --no-progress --no-interaction
+
+      - name: "Check code style"
+        run: |
+          vendor/bin/php-cs-fixer fix --dry-run --diff --allow-risky=yes
+
+  psalm:
+    name: "Psalm Analysis"
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+          tools: composer
+
+      - name: "Install dependencies"
+        run: |
+          composer install --prefer-dist --no-progress --no-interaction
+
+      - name: "Run Psalm"
+        run: |
+          vendor/bin/psalm --memory-limit=1G --threads=4
+
+  rector:
+    name: "Rector"
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+          tools: composer
+
+      - name: "Install dependencies"
+        run: |
+          composer install --prefer-dist --no-progress --no-interaction
+
+      - name: "Check with Rector"
+        run: |
+          vendor/bin/rector process src/ setup.php hook.php --dry-run
+
+  phpunit:
+    name: "PHPUnit Tests"
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: xdebug
+          tools: composer
+
+      - name: "Install dependencies"
+        run: |
+          composer install --prefer-dist --no-progress --no-interaction
+
+      - name: "Run tests with coverage"
+        run: |
+          vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+
+      - name: "Upload coverage to Codecov"
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  codeql:
+    name: "CodeQL Analysis"
+    runs-on: ubuntu-latest
+    needs: ci
+    
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: "Initialize CodeQL"
+        uses: github/codeql-action/init@v2
+        with:
+          languages: php
+
+      - name: "Autobuild"
+        uses: github/codeql-action/autobuild@v2
+
+      - name: "Perform CodeQL Analysis"
+        uses: github/codeql-action/analyze@v2
+
+  trivy:
+    name: "Trivy Security Scan"
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: "Run Trivy vulnerability scanner"
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+  dependabot:
+    name: "Dependabot Security"
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: "Check for security vulnerabilities"
+        run: |
+          composer audit --no-dev
+
+  validation:
+    name: "File Validation"
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: "Validate JSON files"
+        run: |
+          find . -type f -name "*.json" -not -path "./vendor/*" -not -path "./.git/*" | xargs -I {} sh -c 'echo "Validating {}" && jq empty {} || exit 1'
+
+      - name: "Validate YAML files"
+        run: |
+          find . -type f \( -name "*.yml" -o -name "*.yaml" \) -not -path "./vendor/*" -not -path "./.git/*" | xargs -I {} sh -c 'echo "Validating {}" && yamllint {} || exit 1'
+
+      - name: "Validate XML files"
+        run: |
+          find . -type f -name "*.xml" -not -path "./vendor/*" -not -path "./.git/*" | xargs -I {} sh -c 'echo "Validating {}" && xmllint --noout {} || exit 1'
+
+      - name: "Validate Composer JSON"
+        run: |
+          composer validate --strict
+
+      - name: "Check for duplicates"
+        run: |
+          composer dups
+
+  quality-gate:
+    name: "Quality Gate"
+    runs-on: ubuntu-latest
+    needs: [phpstan, php-cs-fixer, psalm, rector, phpunit, codeql, trivy, dependabot, validation]
+
+    steps:
+      - name: "All checks passed"
+        run: |
+          echo "All quality checks have passed successfully!"
+          echo "PHPStan: ✓"
+          echo "PHP-CS-Fixer: ✓"
+          echo "Psalm: ✓"
+          echo "Rector: ✓"
+          echo "PHPUnit: ✓"
+          echo "CodeQL: ✓"
+          echo "Trivy: ✓"
+          echo "Dependabot: ✓"
+          echo "Validation: ✓"
