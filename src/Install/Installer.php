@@ -86,6 +86,8 @@ final class Installer
                 `sla_enabled` tinyint NOT NULL DEFAULT 0,
                 `sla_tiers` text,
                 `sla_astreinte` tinyint NOT NULL DEFAULT 0,
+                `ola_enabled` tinyint NOT NULL DEFAULT 0,
+                `ola_tiers` text,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -137,6 +139,8 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'branding_primary_color', 'string', ['value' => '#206bc4']);
             $migration->addField(self::CONFIGS_TABLE, 'sla_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'sla_astreinte', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'ola_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'ola_tiers', 'text');
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes

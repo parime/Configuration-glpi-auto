@@ -151,6 +151,7 @@ class ConfigurationProfile extends CommonDBTM
         $goodPracticeBaseline = [
             'calendar_enabled' => true, 'calendar_days' => [1, 2, 3, 4, 5], 'calendar_begin' => '08:00', 'calendar_end' => '18:00',
             'sla_enabled' => true, 'sla_tiers' => Config::getDefaultSlaTiers(), 'sla_astreinte' => false,
+            'ola_enabled' => true, 'ola_tiers' => Config::getDefaultOlaTiers(),
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual
@@ -165,6 +166,16 @@ class ConfigurationProfile extends CommonDBTM
             '1' => ['tto_hours' => 24, 'ttr_hours' => 72],
         ];
 
+        // Internal OLA has to land before the (already tighter) MSP SLA deadline above.
+        $mspOlaTiers = [
+            '6' => ['tto_hours' => 1, 'ttr_hours' => 1],
+            '5' => ['tto_hours' => 1, 'ttr_hours' => 2],
+            '4' => ['tto_hours' => 1, 'ttr_hours' => 4],
+            '3' => ['tto_hours' => 2, 'ttr_hours' => 8],
+            '2' => ['tto_hours' => 4, 'ttr_hours' => 24],
+            '1' => ['tto_hours' => 8, 'ttr_hours' => 48],
+        ];
+
         return match ($type) {
             'minimal' => [
                 'entity_mode' => Config::MODE_MONO,
@@ -175,7 +186,7 @@ class ConfigurationProfile extends CommonDBTM
             'msp' => array_merge(
                 ['entity_mode' => Config::MODE_MULTI_MSP],
                 $goodPracticeBaseline,
-                ['sla_tiers' => $mspSlaTiers, 'sla_astreinte' => true]
+                ['sla_tiers' => $mspSlaTiers, 'sla_astreinte' => true, 'ola_tiers' => $mspOlaTiers]
             ),
             default => [],
         };
