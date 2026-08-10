@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use CommonITILObject;
 use Rule;
 use RuleAction;
 use RuleCriteria;
@@ -25,25 +26,27 @@ use SLA;
 use SLM;
 
 /**
- * Turns a Config's SLA settings (enabled/time-to-own/time-to-resolve) into a real GLPI SLM
- * ("Niveau de service" — the named container) with two real SLA entries under it (time to own,
- * time to resolve), then assigns them to new tickets in the given entities. Deliberately simple:
- * two flat delays, not the full escalation-level engine (SlaLevel) — that's a distinct,
- * considerably heavier feature to build later if actually needed. Idempotent: reuses an SLM/SLA/
- * rule of the same name instead of duplicating.
+ * Turns a Config's SLA settings into a real GLPI SLM ("Niveau de service" — the named container)
+ * with one TTO/TTR pair of SLA entries *per GLPI priority level* (see Config::PRIORITY_LEVELS —
+ * confirmed by research this sprint that real ITSM practice defines SLAs per priority, not one
+ * flat delay for every ticket), then assigns them to new tickets in the given entities.
+ * Deliberately simple: flat delays per level, not the full escalation-level engine (SlaLevel) —
+ * that's a distinct, considerably heavier feature to build later if actually needed. Idempotent:
+ * reuses an SLM/SLA/rule of the same name instead of duplicating.
  *
  * Unlike Calendar (a direct Entity::calendars_id field), GLPI has no per-entity "default SLA"
  * field at all — confirmed by reading Entity.php: the `slas_id_tto`/`slas_id_ttr` fields live on
  * glpi_tickets, only ever set by the business-rules engine (RuleTicket). So assignment here means
- * creating a real RuleTicket ("entity is X" → "assign this SLA"), not an Entity update.
+ * creating a real RuleTicket ("entity is X and priority is Y" → "assign this level's SLA"), not
+ * an Entity update — `priority` is a documented RuleTicket criterion (RuleCommonITILObject.php),
+ * the same mechanism GLPI's own docs describe for priority-based SLA assignment.
  */
 class SlaBuilder
 {
     private const SLM_NAME = 'SLA standard';
 
     /**
-     * @param int[] $entityIds
-     * @return array{tto: int, ttr: int}|null
+     * @return array<int, array{tto: int, ttr: int}>|null Keyed by priority level (Config::PRIORITY_LEVELS).
      */
     public function build(Config $config, ?int $calendarId = null): ?array
     {
@@ -51,22 +54,16 @@ class SlaBuilder
             return null;
         }
 
-        return $this->buildSlm(
-            self::SLM_NAME,
-            (int) $config->fields['sla_tto_hours'],
-            (int) $config->fields['sla_ttr_hours'],
-            !empty($config->fields['sla_astreinte']),
-            $calendarId
-        );
+        return $this->buildSlm(self::SLM_NAME, $config->getSlaTiers(), !empty($config->fields['sla_astreinte']), $calendarId);
     }
 
     /**
-     * Same as build(), but for one MSP client's own SLA override (see Config::sanitizeTree()'s
+     * Same as build(), but for one client's own SLA override (see Config::sanitizeTree()'s
      * per-client `settings.sla`) instead of the plugin-wide shared settings — named after the
      * client so it doesn't collide with the shared SLM or another client's.
      *
-     * @param array{enabled: bool, tto_hours: int, ttr_hours: int, astreinte: bool} $sla
-     * @return array{tto: int, ttr: int}|null
+     * @param array{enabled: bool, astreinte: bool, tiers: array<string, array{tto_hours: int, ttr_hours: int}>} $sla
+     * @return array<int, array{tto: int, ttr: int}>|null
      */
     public function buildFromOverride(string $clientName, array $sla, ?int $calendarId = null): ?array
     {
@@ -76,82 +73,100 @@ class SlaBuilder
 
         return $this->buildSlm(
             sprintf(__('SLA — %s', 'configurationglpiauto'), $clientName),
-            $sla['tto_hours'],
-            $sla['ttr_hours'],
+            $sla['tiers'],
             !empty($sla['astreinte']),
             $calendarId
         );
     }
 
     /**
-     * Creates one RuleTicket per entity ("this entity" → "assign these SLAs on ticket
-     * creation"), idempotent by rule name.
-     *
+     * @param array<int, array{tto: int, ttr: int}> $slaIdsByPriority
      * @param int[] $entityIds
      */
-    public function assignToEntities(array $slaIds, array $entityIds): void
+    public function assignToEntities(array $slaIdsByPriority, array $entityIds): void
     {
         foreach ($entityIds as $entityId) {
-            $this->assignOne($entityId, $slaIds);
+            $this->assignOne($entityId, $slaIdsByPriority);
         }
     }
 
     /**
      * Per-client variant of assignToEntities(): different SLAs per entity instead of the same
-     * pair for all of them.
+     * set for all of them.
      *
-     * @param array<int, array{tto: int, ttr: int}> $entityIdToSlaIds
+     * @param array<int, array<int, array{tto: int, ttr: int}>> $entityIdToSlaIds
      */
     public function assignMap(array $entityIdToSlaIds): void
     {
-        foreach ($entityIdToSlaIds as $entityId => $slaIds) {
-            $this->assignOne($entityId, $slaIds);
+        foreach ($entityIdToSlaIds as $entityId => $slaIdsByPriority) {
+            $this->assignOne($entityId, $slaIdsByPriority);
         }
-    }
-
-    private function assignOne(int $entityId, array $slaIds): void
-    {
-        $ruleName = sprintf('SLA standard — entité #%d', $entityId);
-
-        $rule = new RuleTicket();
-        if ($rule->getFromDBByCrit(['name' => $ruleName])) {
-            return;
-        }
-
-        $rulesId = $rule->add([
-            'name' => $ruleName,
-            'sub_type' => RuleTicket::class,
-            'match' => Rule::AND_MATCHING,
-            'condition' => RuleTicket::ONADD,
-            'is_active' => 1,
-        ]);
-
-        (new RuleCriteria())->add([
-            'rules_id' => $rulesId,
-            'criteria' => 'entities_id',
-            'condition' => Rule::PATTERN_IS,
-            'pattern' => $entityId,
-        ]);
-
-        (new RuleAction())->add([
-            'rules_id' => $rulesId,
-            'action_type' => 'assign',
-            'field' => 'slas_id_tto',
-            'value' => $slaIds['tto'],
-        ]);
-
-        (new RuleAction())->add([
-            'rules_id' => $rulesId,
-            'action_type' => 'assign',
-            'field' => 'slas_id_ttr',
-            'value' => $slaIds['ttr'],
-        ]);
     }
 
     /**
-     * @return array{tto: int, ttr: int}
+     * Creates one RuleTicket per (entity × priority level) — "this entity AND this priority" →
+     * "assign this level's SLA on ticket creation" — idempotent by rule name.
+     *
+     * @param array<int, array{tto: int, ttr: int}> $slaIdsByPriority
      */
-    private function buildSlm(string $name, int $ttoHours, int $ttrHours, bool $astreinte, ?int $calendarId): array
+    private function assignOne(int $entityId, array $slaIdsByPriority): void
+    {
+        foreach ($slaIdsByPriority as $priority => $slaIds) {
+            $ruleName = sprintf('SLA standard — entité #%d — %s', $entityId, CommonITILObject::getPriorityName($priority));
+
+            $rule = new RuleTicket();
+            if ($rule->getFromDBByCrit(['name' => $ruleName])) {
+                continue;
+            }
+
+            $rulesId = $rule->add([
+                'name' => $ruleName,
+                'sub_type' => RuleTicket::class,
+                'match' => Rule::AND_MATCHING,
+                'condition' => RuleTicket::ONADD,
+                'is_active' => 1,
+                // Without this, GLPI's RuleCollection only evaluates the rule for its own
+                // entities_id (root, 0) — never for a ticket created in any sub-entity like the
+                // ones this plugin creates. Confirmed by creating a real ticket in a sub-entity
+                // and finding slas_id_tto/slas_id_ttr stayed 0 without this flag.
+                'is_recursive' => 1,
+            ]);
+
+            (new RuleCriteria())->add([
+                'rules_id' => $rulesId,
+                'criteria' => 'entities_id',
+                'condition' => Rule::PATTERN_IS,
+                'pattern' => $entityId,
+            ]);
+
+            (new RuleCriteria())->add([
+                'rules_id' => $rulesId,
+                'criteria' => 'priority',
+                'condition' => Rule::PATTERN_IS,
+                'pattern' => $priority,
+            ]);
+
+            (new RuleAction())->add([
+                'rules_id' => $rulesId,
+                'action_type' => 'assign',
+                'field' => 'slas_id_tto',
+                'value' => $slaIds['tto'],
+            ]);
+
+            (new RuleAction())->add([
+                'rules_id' => $rulesId,
+                'action_type' => 'assign',
+                'field' => 'slas_id_ttr',
+                'value' => $slaIds['ttr'],
+            ]);
+        }
+    }
+
+    /**
+     * @param array<string, array{tto_hours: int, ttr_hours: int}> $tiers
+     * @return array<int, array{tto: int, ttr: int}>
+     */
+    private function buildSlm(string $name, array $tiers, bool $astreinte, ?int $calendarId): array
     {
         // Astreinte = couverture 24h/24, 7j/7 : GLPI interprete calendars_id=0 comme "pas de
         // calendrier", donc le SLA continue de courir en dehors des horaires ouvres — c'est le
@@ -170,16 +185,24 @@ class SlaBuilder
         }
         $slmId = (int) $slm->getID();
 
-        $ttoId = $this->getOrCreateSla($slmId, SLM::TTO, __('Prise en charge standard', 'configurationglpiauto'), $ttoHours);
-        $ttrId = $this->getOrCreateSla($slmId, SLM::TTR, __('Résolution standard', 'configurationglpiauto'), $ttrHours);
+        $result = [];
+        foreach (Config::PRIORITY_LEVELS as $priority) {
+            $tier = $tiers[(string) $priority] ?? ['tto_hours' => 4, 'ttr_hours' => 48];
+            $label = CommonITILObject::getPriorityName($priority);
 
-        return ['tto' => $ttoId, 'ttr' => $ttrId];
+            $ttoId = $this->getOrCreateSla($slmId, SLM::TTO, sprintf(__('Prise en charge — %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours']);
+            $ttrId = $this->getOrCreateSla($slmId, SLM::TTR, sprintf(__('Résolution — %s', 'configurationglpiauto'), $label), (int) $tier['ttr_hours']);
+
+            $result[$priority] = ['tto' => $ttoId, 'ttr' => $ttrId];
+        }
+
+        return $result;
     }
 
     private function getOrCreateSla(int $slmId, int $type, string $name, int $hours): int
     {
         $sla = new SLA();
-        if ($sla->getFromDBByCrit(['slms_id' => $slmId, 'type' => $type])) {
+        if ($sla->getFromDBByCrit(['slms_id' => $slmId, 'type' => $type, 'name' => $name])) {
             return (int) $sla->getID();
         }
 

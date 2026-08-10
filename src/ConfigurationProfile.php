@@ -130,11 +130,12 @@ class ConfigurationProfile extends CommonDBTM
      * ITIL and ISO 27001 are not org sizes, they're practice frameworks any organization can
      * follow regardless of size — a small company can be ISO 27001 certified, a large one might
      * follow no formal framework at all. So they're not a separate profile choice here: a
-     * calendar-scoped SLA *is* the ITIL/ISO27001 baseline, and every non-minimal profile gets one
-     * by default rather than only the "advanced" ones. What actually varies per profile is the
-     * organization's calendar and whether it has astreinte (on-call coverage outside opening
-     * hours, see sla_astreinte) — MSP defaults to astreinte on because round-the-clock
-     * contractual coverage is characteristic of that business model, not of being "bigger".
+     * calendar-scoped, priority-tiered SLA *is* the ITIL/ISO27001 baseline, and every non-minimal
+     * profile gets one by default rather than only the "advanced" ones. What actually varies per
+     * profile is the organization's calendar and whether it has astreinte (on-call coverage
+     * outside opening hours, see sla_astreinte) — MSP defaults to astreinte on and a tighter
+     * sla_tiers table because round-the-clock contractual coverage is characteristic of that
+     * business model, not of being "bigger".
      *
      * Also deliberately only 4 profiles, not the finer PME/ETI/Grande entreprise split this used
      * to have: those three produced byte-for-byte identical suggestions (same entity mode, same
@@ -149,7 +150,19 @@ class ConfigurationProfile extends CommonDBTM
     {
         $goodPracticeBaseline = [
             'calendar_enabled' => true, 'calendar_days' => [1, 2, 3, 4, 5], 'calendar_begin' => '08:00', 'calendar_end' => '18:00',
-            'sla_enabled' => true, 'sla_tto_hours' => 4, 'sla_ttr_hours' => 48, 'sla_astreinte' => false,
+            'sla_enabled' => true, 'sla_tiers' => Config::getDefaultSlaTiers(), 'sla_astreinte' => false,
+        ];
+
+        // Tighter than the standard baseline at every level — round-the-clock contractual
+        // coverage is characteristic of the MSP business model, not of being "bigger" (same
+        // reasoning as sla_astreinte defaulting to true below).
+        $mspSlaTiers = [
+            '6' => ['tto_hours' => 1, 'ttr_hours' => 2],
+            '5' => ['tto_hours' => 1, 'ttr_hours' => 4],
+            '4' => ['tto_hours' => 2, 'ttr_hours' => 8],
+            '3' => ['tto_hours' => 4, 'ttr_hours' => 24],
+            '2' => ['tto_hours' => 8, 'ttr_hours' => 48],
+            '1' => ['tto_hours' => 24, 'ttr_hours' => 72],
         ];
 
         return match ($type) {
@@ -162,7 +175,7 @@ class ConfigurationProfile extends CommonDBTM
             'msp' => array_merge(
                 ['entity_mode' => Config::MODE_MULTI_MSP],
                 $goodPracticeBaseline,
-                ['sla_tto_hours' => 1, 'sla_ttr_hours' => 8, 'sla_astreinte' => true]
+                ['sla_tiers' => $mspSlaTiers, 'sla_astreinte' => true]
             ),
             default => [],
         };
