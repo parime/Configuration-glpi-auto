@@ -8,10 +8,11 @@
 
 Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une installation vierge en une plateforme operationnelle en quelques clics.
 
-> **Etat du projet (2026-08-10)** : en developpement actif, pas encore publie. La liste de
-> fonctionnalites ci-dessous decrit la vision du plugin ; seul le catalogue de profils de
-> configuration (CRUD) est reellement implemente a ce stade (Sprint 1). Voir
-> [CHANGELOG.md](CHANGELOG.md) et [ROADMAP.md](ROADMAP.md) pour l'etat sprint par sprint.
+> **Etat du projet (2026-08-10)** : en developpement actif — premiere release reelle `v0.1.0`. La
+> liste de fonctionnalites ci-dessous decrit la vision du plugin ; a ce stade sont reellement
+> implementes le catalogue de profils de configuration (CRUD, Sprint 1) et les reglages de
+> structure d'entites avec apercu en temps reel (Sprint 2). Voir [CHANGELOG.md](CHANGELOG.md) et
+> [ROADMAP.md](ROADMAP.md) pour l'etat sprint par sprint.
 
 ## Table des matieres
 
@@ -41,8 +42,15 @@ Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une insta
 
 ## Installation
 
-Aucune release publiee pour l'instant (voir "Etat du projet" ci-dessus) — pas de package Composer,
-pas de release GitHub. Pour tester en local :
+Pas de package Composer (GLPI n'est pas distribue via Packagist, voir CHANGELOG.md). Deux options :
+
+### Depuis une release
+
+1. Telechargez l'archive depuis [GitHub Releases](https://github.com/parime/Configuration-glpi-auto/releases)
+2. Extrayez-la dans le dossier `plugins/` de GLPI (elle contient deja `vendor/`, pret a l'emploi)
+3. Installez et activez via l'interface GLPI ou `bin/console plugin:install|activate configurationglpiauto`
+
+### Depuis le code source
 
 ```bash
 git clone https://github.com/parime/Configuration-glpi-auto.git
@@ -51,8 +59,8 @@ composer install --no-dev   # vendor/autoload.php est requis au runtime, voir se
 ```
 
 Puis copiez/liez le dossier dans `plugins/configurationglpiauto` d'une instance GLPI 11, et
-installez/activez via `bin/console plugin:install|activate configurationglpiauto` ou l'interface
-GLPI. Un stack Docker de test (GLPI + MariaDB) est fourni dans `docker-compose.test.yml`.
+installez/activez comme ci-dessus. Un stack Docker de test (GLPI + MariaDB) est fourni dans
+`docker-compose.test.yml`.
 
 ## Documentation
 
