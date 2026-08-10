@@ -166,6 +166,39 @@
               >
               <label class="form-check-label" for="cga-sla-astreinte">{{ __('Astreinte (couverture 24h/24, 7j/7 — le délai continue de courir en dehors des horaires ouvrés)', 'configurationglpiauto') }}</label>
             </div>
+
+            <div class="form-check form-switch mb-2">
+              <input type="hidden" name="ola_enabled" value="0">
+              <input
+                type="checkbox"
+                name="ola_enabled"
+                value="1"
+                class="form-check-input"
+                id="cga-ola-enabled"
+                {{ config.ola_enabled|default(0) ? 'checked' : '' }}
+              >
+              <label class="form-check-label" for="cga-ola-enabled">{{ __('Ajouter des engagements internes (OLA)', 'configurationglpiauto') }}</label>
+            </div>
+            <p class="text-muted small">{{ __('L\'OLA est un engagement interne entre le support et les équipes techniques, plus court que le SLA externe — il doit être tenu pour que le SLA le soit aussi.', 'configurationglpiauto') }}</p>
+
+            <table class="table table-sm mb-3" id="cga-ola-fields" style="max-width: 480px; display: none;">
+              <thead>
+                <tr>
+                  <th>{{ __('Priorité', 'configurationglpiauto') }}</th>
+                  <th>{{ __('Prise en charge (h)', 'configurationglpiauto') }}</th>
+                  <th>{{ __('Résolution (h)', 'configurationglpiauto') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for level in priority_levels %}
+                  <tr>
+                    <td>{{ priority_labels[level] }}</td>
+                    <td><input type="number" min="1" class="form-control form-control-sm" name="ola_tiers[{{ level }}][tto_hours]" value="{{ ola_tiers[level]['tto_hours'] }}"></td>
+                    <td><input type="number" min="1" class="form-control form-control-sm" name="ola_tiers[{{ level }}][ttr_hours]" value="{{ ola_tiers[level]['ttr_hours'] }}"></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -316,6 +349,14 @@
   slaEnabledInput.addEventListener('change', toggleSlaFields);
   toggleSlaFields();
 
+  var olaEnabledInput = document.getElementById('cga-ola-enabled');
+  var olaFields = document.getElementById('cga-ola-fields');
+  function toggleOlaFields() {
+    olaFields.style.display = olaEnabledInput.checked ? '' : 'none';
+  }
+  olaEnabledInput.addEventListener('change', toggleOlaFields);
+  toggleOlaFields();
+
   var brandingEnabledInput = document.getElementById('cga-branding-enabled');
   var brandingFields = document.getElementById('cga-branding-fields');
   var brandingColorInput = document.getElementById('cga-branding-color');
@@ -397,11 +438,11 @@
     });
   }
 
-  function readSharedSlaTiers() {
+  function readSharedTiers(fieldPrefix) {
     var tiers = {};
     PRIORITY_LEVELS.forEach(function (level) {
-      var ttoInput = document.querySelector('input[name="sla_tiers[' + level + '][tto_hours]"]');
-      var ttrInput = document.querySelector('input[name="sla_tiers[' + level + '][ttr_hours]"]');
+      var ttoInput = document.querySelector('input[name="' + fieldPrefix + '[' + level + '][tto_hours]"]');
+      var ttrInput = document.querySelector('input[name="' + fieldPrefix + '[' + level + '][ttr_hours]"]');
       tiers[level] = {
         tto_hours: ttoInput ? (parseInt(ttoInput.value, 10) || 1) : 4,
         ttr_hours: ttrInput ? (parseInt(ttrInput.value, 10) || 1) : 48,
@@ -409,6 +450,8 @@
     });
     return tiers;
   }
+  function readSharedSlaTiers() { return readSharedTiers('sla_tiers'); }
+  function readSharedOlaTiers() { return readSharedTiers('ola_tiers'); }
 
   function buildTierTable(container, tiers, idPrefix, onChange) {
     container.innerHTML = '';
@@ -586,7 +629,7 @@
     slaPerClientPanels.innerHTML = '';
     (window.cgaTree || []).forEach(function (node, i) {
       var hasOverride = !!(node.settings && node.settings.sla);
-      var settings = (node.settings && node.settings.sla) || { enabled: false, astreinte: false, tiers: {} };
+      var settings = (node.settings && node.settings.sla) || { enabled: false, astreinte: false, tiers: {}, ola_enabled: false, ola_tiers: {} };
 
       var card = document.createElement('div');
       card.className = 'card mb-2';
@@ -668,6 +711,35 @@
       astreinteWrap.appendChild(astreinteLabel);
       fieldsWrap.appendChild(astreinteWrap);
 
+      var olaWrap = document.createElement('div');
+      olaWrap.className = 'form-check form-switch mb-2';
+      var olaInput = document.createElement('input');
+      olaInput.type = 'checkbox';
+      olaInput.className = 'form-check-input';
+      olaInput.id = 'cga-sla-pc-' + i + '-ola-enabled';
+      olaInput.checked = !!settings.ola_enabled;
+      var olaLabel = document.createElement('label');
+      olaLabel.className = 'form-check-label';
+      olaLabel.setAttribute('for', olaInput.id);
+      olaLabel.textContent = "{{ __('Ajouter des engagements internes (OLA)', 'configurationglpiauto')|e('js') }}";
+      olaWrap.appendChild(olaInput);
+      olaWrap.appendChild(olaLabel);
+      fieldsWrap.appendChild(olaWrap);
+
+      var olaTiersContainer = document.createElement('div');
+      olaTiersContainer.style.display = settings.ola_enabled ? '' : 'none';
+      fieldsWrap.appendChild(olaTiersContainer);
+      buildTierTable(olaTiersContainer, settings.ola_tiers, 'cga-sla-pc-' + i + '-ola', function () {
+        settings.ola_enabled = olaInput.checked;
+        writeBack();
+      });
+
+      olaInput.addEventListener('change', function () {
+        settings.ola_enabled = olaInput.checked;
+        olaTiersContainer.style.display = olaInput.checked ? '' : 'none';
+        writeBack();
+      });
+
       customWrap.appendChild(fieldsWrap);
       body.appendChild(customWrap);
 
@@ -688,7 +760,13 @@
           customWrap.style.display = 'none';
         } else {
           node.settings = node.settings || {};
-          node.settings.sla = { enabled: false, astreinte: false, tiers: readSharedSlaTiers() };
+          node.settings.sla = {
+            enabled: false,
+            astreinte: false,
+            tiers: readSharedSlaTiers(),
+            ola_enabled: false,
+            ola_tiers: readSharedOlaTiers(),
+          };
           syncTreeJson();
           renderSlaPerClientPanels();
         }
@@ -783,6 +861,9 @@
       if (slaAstreinteInput.checked) {
         slaSummary += " — {{ __('astreinte 24h/24, 7j/7', 'configurationglpiauto')|e('js') }}";
       }
+      if (olaEnabledInput.checked) {
+        slaSummary += " — {{ __('+ OLA (engagements internes)', 'configurationglpiauto')|e('js') }}";
+      }
       document.getElementById('cga-summary-sla').textContent = slaSummary;
     }
 
@@ -853,25 +934,36 @@
       slaEnabledInput.checked = !!defaults.sla_enabled;
       toggleSlaFields();
     }
-    if (defaults.sla_tiers) {
-      PRIORITY_LEVELS.forEach(function (level) {
-        var tier = defaults.sla_tiers[level];
-        if (!tier) {
-          return;
-        }
-        var ttoInput = document.querySelector('input[name="sla_tiers[' + level + '][tto_hours]"]');
-        var ttrInput = document.querySelector('input[name="sla_tiers[' + level + '][ttr_hours]"]');
-        if (ttoInput) {
-          ttoInput.value = tier.tto_hours;
-        }
-        if (ttrInput) {
-          ttrInput.value = tier.ttr_hours;
-        }
-      });
-    }
+    applyTierDefaults('sla_tiers', defaults.sla_tiers);
     if (typeof defaults.sla_astreinte !== 'undefined') {
       slaAstreinteInput.checked = !!defaults.sla_astreinte;
     }
+
+    if (typeof defaults.ola_enabled !== 'undefined') {
+      olaEnabledInput.checked = !!defaults.ola_enabled;
+      toggleOlaFields();
+    }
+    applyTierDefaults('ola_tiers', defaults.ola_tiers);
+  }
+
+  function applyTierDefaults(fieldPrefix, tiersDefaults) {
+    if (!tiersDefaults) {
+      return;
+    }
+    PRIORITY_LEVELS.forEach(function (level) {
+      var tier = tiersDefaults[level];
+      if (!tier) {
+        return;
+      }
+      var ttoInput = document.querySelector('input[name="' + fieldPrefix + '[' + level + '][tto_hours]"]');
+      var ttrInput = document.querySelector('input[name="' + fieldPrefix + '[' + level + '][ttr_hours]"]');
+      if (ttoInput) {
+        ttoInput.value = tier.tto_hours;
+      }
+      if (ttrInput) {
+        ttrInput.value = tier.ttr_hours;
+      }
+    });
   }
 
   document.querySelectorAll('input[name="configurationprofiles_id"]').forEach(function (radio) {
