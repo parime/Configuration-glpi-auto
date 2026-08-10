@@ -6,7 +6,13 @@
 [![Build Status](https://github.com/parime/Configuration-glpi-auto/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/parime/Configuration-glpi-auto/actions)
 [![Latest Release](https://img.shields.io/github/v/release/parime/Configuration-glpi-auto)](https://github.com/parime/Configuration-glpi-auto/releases)
 
-Configuration GLPI Auto est un plugin revolutionnaire pour GLPI qui transforme une installation vierge en une plateforme operationnelle en quelques clics.
+Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une installation vierge en une plateforme operationnelle en quelques clics.
+
+> **Etat du projet (2026-08-10)** : en developpement actif — premiere release reelle `v0.1.0`. La
+> liste de fonctionnalites ci-dessous decrit la vision du plugin ; a ce stade sont reellement
+> implementes le catalogue de profils de configuration (CRUD, Sprint 1) et les reglages de
+> structure d'entites avec apercu en temps reel (Sprint 2). Voir [CHANGELOG.md](CHANGELOG.md) et
+> [ROADMAP.md](ROADMAP.md) pour l'etat sprint par sprint.
 
 ## Table des matieres
 
@@ -36,23 +42,30 @@ Configuration GLPI Auto est un plugin revolutionnaire pour GLPI qui transforme u
 
 ## Installation
 
-### Via Composer
+Pas de package Composer (GLPI n'est pas distribue via Packagist, voir CHANGELOG.md). Deux options :
+
+### Depuis une release
+
+1. Telechargez l'archive depuis [GitHub Releases](https://github.com/parime/Configuration-glpi-auto/releases)
+2. Extrayez-la dans le dossier `plugins/` de GLPI (elle contient deja `vendor/`, pret a l'emploi)
+3. Installez et activez via l'interface GLPI ou `bin/console plugin:install|activate configurationglpiauto`
+
+### Depuis le code source
+
 ```bash
-cd /chemin/vers/glpi/plugins
-composer require parime/configuration-glpi-auto
+git clone https://github.com/parime/Configuration-glpi-auto.git
+cd Configuration-glpi-auto
+composer install --no-dev   # vendor/autoload.php est requis au runtime, voir setup.php
 ```
 
-### Installation manuelle
-1. Telechargez le plugin depuis [GitHub Releases](https://github.com/parime/Configuration-glpi-auto/releases)
-2. Extrayez dans le dossier plugins/ de GLPI
-3. Renommez le dossier en 'configurationglpiauto'
-4. Installez et activez via l'interface GLPI
+Puis copiez/liez le dossier dans `plugins/configurationglpiauto` d'une instance GLPI 11, et
+installez/activez comme ci-dessus. Un stack Docker de test (GLPI + MariaDB) est fourni dans
+`docker-compose.test.yml`.
 
 ## Documentation
 
-- [Guide complet](docs/user-guide.md)
-- [Documentation developpeur](docs/development/architecture.md)
-- [API Reference](docs/api/index.md)
+Pas encore de documentation utilisateur/API dediee — a venir au fur et a mesure des sprints (voir
+[ROADMAP.md](ROADMAP.md)).
 
 ## Contribution
 

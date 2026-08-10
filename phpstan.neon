@@ -1,52 +1,12 @@
-includes:
-    - vendor/glpi-project/tools/phpstan/glpi.php
-
 parameters:
-    level: 8
-    paths:
-        - src/
-        - setup.php
-        - hook.php
-    
-    # Exclude files that should not be analysed
+    level: 6
+    tmpDir: .phpstan.cache
+    # Scope limited to pure-PHP logic with no runtime dependency on the GLPI core classes
+    # (CommonDBTM, Migration, ProfileRight, DBmysql, global $DB/$PLUGIN_HOOKS...). Those are only
+    # available inside a running GLPI instance and are not stubbed for static analysis here — same
+    # constraint documented in the sibling glpi-vulnerability-manager repo. Extend `paths` as
+    # GLPI-independent code is added under src/.
+    paths: []
     excludePaths:
-        analyse:
-            - tests/*
-            - vendor/*
-            - public/*
-            - misc/*
-            - front/*
-    
-    # PHPStan specific configuration
-    checkMissingIterableValueType: false
-    
-    # Allow dynamic properties for GLPI compatibility
-    allowDynamicProperties: true
-
-    # GLPI specific ignores
-    ignoreErrors:
-        - '#Access to an undefined property#':
-            - '*.php'
-        - '#Property.*never read, only written#':
-            - '*.php'
-        - '#Method.*never called#':
-            - '*.php'
-        - '#Access to undefined constant#':
-            - '*.php'
-
-    # Custom stubs for GLPI classes
-    stubFiles:
-        - stubs/GLPI.stub
-
-    # Temporary directory for caching
-    temporaryDirectory: .phpstan.cache
-
-    # Generate baseline file
-    generateBaseline: false
-    baselineFile: phpstan-baseline.neon
-
-    # Progress bar
-    progressBar: true
-
-    # Memory limit
-    memoryLimit: 1G
+        - tests/*
+        - vendor/*

@@ -1,0 +1,32 @@
+# Force LF for source/text files regardless of the contributor's platform or core.autocrlf
+# setting — PSR-12 (enforced by php-cs-fixer) requires LF, and GLPI itself expects LF in PHP.
+* text=auto eol=lf
+
+*.php text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.xml text eol=lf
+*.twig text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+
+# Useful for development/CI but not for running the plugin — excluded from `git archive`
+# (used by .github/workflows/release.yml to build the release archive), same pattern already
+# used on the sibling glpi-vulnerability-manager plugin.
+/.github export-ignore
+/tests export-ignore
+/docker-compose.test.yml export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/phpstan.neon export-ignore
+/.php-cs-fixer.php export-ignore
+/psalm.xml export-ignore
+/phpmd.xml export-ignore
+/tools export-ignore
+/ROADMAP_original.md export-ignore
