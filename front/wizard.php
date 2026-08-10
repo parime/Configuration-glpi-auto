@@ -66,7 +66,7 @@ if (isset($_POST['finish'])) {
         }
 
         $calendarId = $calendarOverride !== null
-            ? $calendarBuilder->buildFromOverride($result['name'], $calendarOverride)
+            ? $calendarBuilder->buildFromOverride($result['name'], $calendarOverride, !empty($config->fields['calendar_holidays_enabled']))
             : $sharedCalendarId;
         if ($calendarId !== null) {
             $calendarMap[$result['entities_id']] = $calendarId;
@@ -110,7 +110,9 @@ if (isset($_POST['finish'])) {
         ? __('Aucune entité à créer (mode mono-entité, ou arborescence vide).', 'configurationglpiauto')
         : sprintf(__('Structure créée : %s.', 'configurationglpiauto'), EntityBuilder::describe($created));
     if ($calendarMap !== []) {
-        $messages[] = __('Calendrier créé et assigné.', 'configurationglpiauto');
+        $messages[] = !empty($config->fields['calendar_holidays_enabled'])
+            ? __('Calendrier créé et assigné, avec les jours fériés français.', 'configurationglpiauto')
+            : __('Calendrier créé et assigné.', 'configurationglpiauto');
     }
     if ($slaMap !== []) {
         $messages[] = __('SLA créés et assignés.', 'configurationglpiauto');

@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 22 — French public holidays on the calendar (2026-08-11)
+
+First item out of the real-GLPI-export audit: `glpi_holidays` ships empty on a fresh install
+(confirmed), so SLA/OLA due dates keep counting through a public holiday until an admin adds them
+by hand. Seeds the 8 fixed-date French public holidays.
+
+#### Changed
+- `CalendarBuilder` now optionally attaches 8 `Holiday` rows (Jour de l'An, Fête du Travail,
+  Victoire 1945, Fête nationale, Assomption, Toussaint, Armistice 1918, Noël) to whichever calendar
+  it builds — the shared one and any per-client MSP override — via the native `Calendar_Holiday`
+  relation. `Holiday.is_perpetual = 1` makes `Calendar::isHoliday()` compare month/day only, so the
+  reference year in `begin_date`/`end_date` is arbitrary.
+- Deliberately excludes the 3 movable holidays tied to Easter (Lundi de Pâques, Ascension, Lundi de
+  Pentecôte) — GLPI's `Holiday` model has no "recompute from Easter" mechanism, only fixed
+  month/day recurrence, so a movable date seeded once would silently go stale every year. Documented
+  in the wizard rather than seeded and forgotten.
+- New `calendar_holidays_enabled` toggle, a sub-option under the existing Calendar step (step 3),
+  not a new step. Suggested `true` for every non-minimal profile.
+
+Validated against the real GLPI 11.0.8 test instance: ran the wizard with the toggle on, confirmed
+in DB all 8 holidays created with correct `begin_date`/`end_date`/`is_perpetual = 1`, and linked via
+`glpi_calendars_holidays` to all 3 calendars present (the shared one plus 2 per-client MSP
+overrides) — confirming the per-client path also received holidays. Local suite green (phpunit
+5/5, phpstan clean, php-cs-fixer clean).
+
 ### Fixed — plugin-list logo (2026-08-11)
 
 The Marketplace plugin-list badge ("CG" initials) isn't driven by `configurationglpiauto.xml`'s
