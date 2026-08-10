@@ -87,6 +87,8 @@ class Config extends CommonDBTM
             'calendar_days' => json_encode([1, 2, 3, 4, 5]),
             'calendar_begin' => '08:00',
             'calendar_end' => '18:00',
+            'branding_enabled' => 0,
+            'branding_primary_color' => '#206bc4',
         ];
     }
 
@@ -170,6 +172,14 @@ class Config extends CommonDBTM
         if (isset($input['calendar_day'])) {
             $input['calendar_days'] = json_encode(array_values(array_map('intval', (array) $input['calendar_day'])));
             unset($input['calendar_day']);
+        }
+
+        if (isset($input['branding_enabled'])) {
+            $input['branding_enabled'] = !empty($input['branding_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['branding_primary_color']) && !preg_match('/^#[0-9a-fA-F]{6}$/', $input['branding_primary_color'])) {
+            $input['branding_primary_color'] = '#206bc4';
         }
 
         return $input;
