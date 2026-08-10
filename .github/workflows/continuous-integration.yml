@@ -63,7 +63,7 @@ jobs:
 
       - name: "Run PHPStan"
         run: |
-          vendor/bin/phpstan analyse src/ setup.php hook.php --level=8 --memory-limit=1G
+          vendor/bin/phpstan analyse --no-progress --memory-limit=1G
 
   php-cs-fixer:
     name: "PHP-CS-Fixer"

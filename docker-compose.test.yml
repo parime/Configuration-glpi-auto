@@ -1,0 +1,58 @@
+# Local/test-only stack: GLPI + MariaDB with this plugin mounted in.
+#
+# Usage:
+#   composer install --no-dev   # vendor/autoload.php is a hard runtime requirement, see setup.php
+#   docker compose -f docker-compose.test.yml up -d
+#   # first boot downloads GLPI itself into the glpi_data volume — wait for it to be reachable:
+#   #   curl -o /dev/null -sw '%{http_code}\n' http://localhost:8081/
+#   docker compose -f docker-compose.test.yml exec glpi \
+#     php bin/console database:configure --allow-superuser -n --db-host=db --db-name=glpi --db-user=glpi --db-password=glpi
+#   docker compose -f docker-compose.test.yml exec glpi \
+#     php bin/console database:install --allow-superuser -n --default-language=fr_FR
+#   docker compose -f docker-compose.test.yml exec glpi \
+#     php bin/console plugin:install configurationglpiauto --allow-superuser -n
+#   docker compose -f docker-compose.test.yml exec glpi \
+#     php bin/console plugin:activate configurationglpiauto --allow-superuser -n
+#   # then open http://localhost:8081
+#
+# `bin/console` runs as root by default in this image (a WARNING is printed each time). Apache
+# runs as www-data — root-run commands create cache/log files under files/ owned by root that
+# www-data can't write to afterwards, which surfaces as a generic 500 on every page with an empty
+# Apache error log (the real error only shows up in a CLI run with display_errors=1). If that
+# happens, run: docker compose -f docker-compose.test.yml exec glpi chown -R www-data:www-data
+# /var/www/html/glpi/files
+
+services:
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: glpi
+      MARIADB_DATABASE: glpi
+      MARIADB_USER: glpi
+      MARIADB_PASSWORD: glpi
+    volumes:
+      - glpi_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  glpi:
+    image: diouxx/glpi:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8081:80"
+    environment:
+      TIMEZONE: Europe/Paris
+    volumes:
+      - glpi_data:/var/www/html/glpi
+      - ./:/var/www/html/glpi/plugins/configurationglpiauto:ro
+
+volumes:
+  glpi_db_data:
+  glpi_data:

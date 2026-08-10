@@ -15,19 +15,32 @@ Devenir **la référence Open Source** pour l'initialisation, la standardisation
 
 ## 📅 Versions et Calendrier
 
-### ✅ Version 1.0 - **Disponible**
+### 🚧 Version 1.0 - **En développement**
 
-**Date de sortie** : 7 Août 2026
+> Le contenu ci-dessous décrivait initialement la v1.0 comme "disponible" avec l'ensemble de ces
+> fonctionnalités cochées. En réalité, jusqu'au Sprint 1 (2026-08-10), le dépôt ne contenait qu'un
+> squelette de documentation : aucune des fonctionnalités listées n'était implémentée, et le
+> plugin n'était pas installable (classes manquantes, `composer.json` invalide). Le Sprint 1 a
+> remis les fondations d'aplomb (installation/désinstallation réelles, catalogue de profils de
+> configuration avec CRUD complet, droits dédiés) et validé le tout contre une vraie instance GLPI
+> 11.0.8. Les cases ci-dessous ne seront cochées qu'au fur et à mesure de leur implémentation
+> réelle — voir CHANGELOG.md pour le détail sprint par sprint.
 
-**Fonctionnalités incluses** :
-- ✅ Assistant graphique complet (Wizard)
-- ✅ Configuration de base automatique
-- ✅ Calendriers intelligents
-- ✅ SLA et OLA prédéfinis
-- ✅ Branding et personnalisation graphique
-- ✅ Templates pour tickets, problèmes, changements
-- ✅ Catalogue de services complet
-- ✅ Gestion des profils utilisateurs
+**Premières releases réelles** : `v0.1.0` (2026-08-10, Sprints 1-2) — voir
+[Releases GitHub](https://github.com/parime/Configuration-glpi-auto/releases) et
+[CHANGELOG.md](CHANGELOG.md).
+
+**Fonctionnalités prévues** :
+- ✅ Catalogue de profils de configuration (CRUD, Sprint 1)
+- ✅ Réglages de structure d'entités — mono/multi/MSP, aperçu en temps réel (Sprint 2)
+- ⬜ Assistant graphique (Wizard)
+- ⬜ Moteur de déploiement (application effective d'un profil sur une instance)
+- ⬜ Calendriers intelligents
+- ⬜ SLA et OLA prédéfinis
+- ⬜ Branding et personnalisation graphique
+- ⬜ Templates pour tickets, problèmes, changements
+- ⬜ Catalogue de services complet
+- ⬜ Gestion des profils utilisateurs
 
 ---
 
