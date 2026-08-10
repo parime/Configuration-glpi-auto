@@ -97,6 +97,11 @@
   var maxLevels = {{ max_levels }};
 
   var treeState = {{ entity_tree|default([])|json_encode|raw }};
+  // Exposed so steps 3/4 (calendar/SLA) can render a panel per top-level node (MSP client) when
+  // per-client settings are turned on there — same array reference, not a copy, so edits either
+  // side makes (add/remove a client, or set node.settings from the per-client panels) stay in
+  // sync without a second data channel to keep in step with the tree by index.
+  window.cgaTree = treeState;
 
   var texts = {
     msp: {
@@ -205,6 +210,7 @@
 
   function syncAndRenderPreview() {
     treeJsonInput.value = JSON.stringify(treeState);
+    document.dispatchEvent(new CustomEvent('cga:tree-changed'));
 
     var mode = currentMode();
     treeSection.style.display = mode === 'mono' ? 'none' : '';

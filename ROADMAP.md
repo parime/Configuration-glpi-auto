@@ -57,13 +57,36 @@ encore implémentées :
   `EntityBuilder`, `CalendarBuilder`, `SlaBuilder` ou `BrandingBuilder` (vérifié par recherche
   dans `src/`) — seul le bouton radio pré-coché à l'étape 1 du wizard change. Pour que la
   distinction ait un sens réel, le mode MSP doit entraîner un traitement différent :
-  - calendrier et SLA propres à chaque client (pas un calendrier/SLA unique partagé sur toute
-    l'arborescence, comme c'est le cas aujourd'hui) ;
+  - calendrier et SLA propres à chaque client/site — **en cours (Sprint 13)**, étendu à tout mode
+    multi-entité (pas seulement MSP) suite au retour utilisateur ;
   - logo/couleur de personnalisation différents par client (`BrandingBuilder` applique
-    aujourd'hui une seule couleur à toutes les entités créées) ;
+    aujourd'hui une seule couleur à toutes les entités créées) — toujours pas fait ;
   - cloisonnement des droits entre entités clientes (un client MSP ne doit pas voir les tickets
     d'un autre) — alors qu'une même entreprise multi-site partage plus naturellement
-    calendrier/SLA/branding et peut vouloir une visibilité croisée entre sites.
+    calendrier/SLA/branding et peut vouloir une visibilité croisée entre sites — toujours pas fait.
+
+- **SLA plat (un seul TTO/TTR) au lieu de SLA par priorité — confirmé par recherche
+  (2026-08-10).** Vérifié par recherche web (voir sources dans l'historique de conversation,
+  ITIL 4 priority matrix, GLPI Service Levels documentation officielle) : en pratique ITSM
+  réelle, les SLA sont quasi-systématiquement définis **par niveau de priorité** (P1 Critique →
+  P4 Faible), pas un seul couple prise-en-charge/résolution pour tous les tickets — un P1 peut
+  avoir 15 min de prise en charge quand un P4 en a 1 jour ouvré. GLPI calcule déjà nativement une
+  Priorité par ticket (matrice Urgence × Impact configurable, Setup > Général > Assistance), et
+  sa façon documentée d'assigner un SLA est justement une règle métier qui matche sur `priority`
+  — exactement le mécanisme `RuleTicket`/`RuleCriteria`/`RuleAction` que `SlaBuilder.php` utilise
+  déjà pour matcher sur `entities_id`, il "suffit" d'ajouter un critère `priority` en plus.
+  Sprint dédié à prévoir (après Sprint 13, pour ne pas changer de modèle de données SLA en cours
+  de route) : UI de saisie d'un SLA par palier de priorité (probablement 4 paliers), au lieu d'un
+  couple TTO/TTR unique par client/site.
+
+  Piste de conception proposée par l'utilisateur (2026-08-10, à affiner à l'ouverture du sprint) :
+  un jeu de valeurs par défaut par priorité (P1-P4), basé sur les pratiques les plus courantes
+  trouvées en recherche. En mode multi-site/multi-client par-client (Sprint 13), chaque
+  site/client a une case "SLA par défaut" : cochée → applique le jeu de valeurs par défaut à ce
+  client ; décochée → l'admin définit ses propres délais par priorité pour ce client spécifique
+  (UI d'aide à la saisie, pas juste 4 champs vides). Réutilise le même schéma toggle-par-entité
+  déjà en place pour le calendrier/SLA par client (Sprint 13), en remplaçant le couple TTO/TTR
+  plat par un tableau à 4 lignes.
 
 **Priorités court terme (retour utilisateur, 2026-08-10)** : le CSS/branding (étape 5) reste de la
 décoration, ce n'est pas prioritaire — quand on y reviendra, prévoir un aperçu en direct plutôt
