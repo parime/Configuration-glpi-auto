@@ -46,7 +46,17 @@
             </div>
           </div>
 
-          <button type="submit" name="update" class="btn btn-primary mt-2">{{ __('Enregistrer') }}</button>
+          <button type="submit" name="update" class="btn btn-outline-primary mt-2">{{ __('Enregistrer') }}</button>
+          <button
+            type="submit"
+            name="apply"
+            class="btn btn-primary mt-2"
+            id="cga-apply-btn"
+            onclick="return confirm('{{ __('Ceci va créer de vraies entités dans GLPI selon la structure choisie. Continuer ?', 'configurationglpiauto')|e('js') }}');"
+          >
+            {{ __('Enregistrer et créer les entités', 'configurationglpiauto') }}
+          </button>
+          <div class="form-text mt-2">{{ __('Crée une branche modèle (une entité par niveau, dupliquez/renommez-la ensuite depuis Administration > Entités). Sans effet en mode mono-entité.', 'configurationglpiauto') }}</div>
         </form>
       </div>
     </div>
