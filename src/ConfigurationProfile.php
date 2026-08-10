@@ -67,11 +67,9 @@ class ConfigurationProfile extends CommonDBTM
     public static function getTypes(): array
     {
         return [
-            'minimal'    => __('Installation minimale', 'configurationglpiauto'),
-            'sme'        => __('PME', 'configurationglpiauto'),
-            'eti'        => __('ETI', 'configurationglpiauto'),
-            'enterprise' => __('Grande entreprise', 'configurationglpiauto'),
-            'msp'        => __('MSP', 'configurationglpiauto'),
+            'minimal'    => __('Installation simple', 'configurationglpiauto'),
+            'multi_site' => __('Plusieurs sites ou services (une seule entreprise)', 'configurationglpiauto'),
+            'msp'        => __('Plusieurs entreprises clientes (infogérance)', 'configurationglpiauto'),
             'custom'     => __('Personnalisé', 'configurationglpiauto'),
         ];
     }
@@ -138,6 +136,13 @@ class ConfigurationProfile extends CommonDBTM
      * hours, see sla_astreinte) — MSP defaults to astreinte on because round-the-clock
      * contractual coverage is characteristic of that business model, not of being "bigger".
      *
+     * Also deliberately only 4 profiles, not the finer PME/ETI/Grande entreprise split this used
+     * to have: those three produced byte-for-byte identical suggestions (same entity mode, same
+     * calendar, same SLA) once framework-vs-size was untangled, so keeping 3 jargon-labeled
+     * options that all did the same thing was actively misleading, not just needless clutter —
+     * merged into one plain-language 'multi_site'. The goal is a wizard a novice can use without
+     * knowing what PME/ETI/MSP stand for, as much as a professional.
+     *
      * @return array<string, mixed>
      */
     public static function getSuggestedDefaults(string $type): array
@@ -151,12 +156,14 @@ class ConfigurationProfile extends CommonDBTM
             'minimal' => [
                 'entity_mode' => Config::MODE_MONO,
             ],
-            'sme' => ['entity_mode' => Config::MODE_MULTI_SAME_COMPANY] + $goodPracticeBaseline,
-            'eti' => ['entity_mode' => Config::MODE_MULTI_SAME_COMPANY] + $goodPracticeBaseline,
-            'enterprise' => ['entity_mode' => Config::MODE_MULTI_SAME_COMPANY] + $goodPracticeBaseline,
-            'msp' => ['entity_mode' => Config::MODE_MULTI_MSP] + $goodPracticeBaseline + [
-                'sla_tto_hours' => 1, 'sla_ttr_hours' => 8, 'sla_astreinte' => true,
-            ],
+            'multi_site' => ['entity_mode' => Config::MODE_MULTI_SAME_COMPANY] + $goodPracticeBaseline,
+            // array_merge(), not +: PHP's + operator keeps the left-hand array's value on a key
+            // collision, so a trailing override array would silently be ignored by +.
+            'msp' => array_merge(
+                ['entity_mode' => Config::MODE_MULTI_MSP],
+                $goodPracticeBaseline,
+                ['sla_tto_hours' => 1, 'sla_ttr_hours' => 8, 'sla_astreinte' => true]
+            ),
             default => [],
         };
     }

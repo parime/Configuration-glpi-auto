@@ -130,6 +130,23 @@ final class Installer
         // visible est immediat sans perte de donnees.
         $DB->update(self::PROFILES_TABLE, ['is_active' => 0], ['type' => ['iso27001', 'itil']]);
 
+        // PME/ETI/Grande entreprise renvoyaient des suggestions identiques une fois taille et
+        // cadre de bonnes pratiques distingues (Sprint 11) — trois options avec des sigles
+        // differents qui font la meme chose, c'est trompeur. Fusionnees en une seule option en
+        // francais clair (Sprint 12), meme logique de desactivation que ci-dessus.
+        $DB->update(self::PROFILES_TABLE, ['is_active' => 0], ['type' => ['sme', 'eti', 'enterprise']]);
+        $DB->update(self::PROFILES_TABLE, ['name' => 'Installation simple', 'description' => 'Un seul site, pas de sous-structure'], ['type' => 'minimal']);
+        $DB->update(self::PROFILES_TABLE, ['name' => 'Plusieurs entreprises clientes', 'description' => 'Vous gérez GLPI pour le compte d\'autres entreprises'], ['type' => 'msp']);
+        if (!(new ConfigurationProfile())->getFromDBByCrit(['type' => 'multi_site'])) {
+            (new ConfigurationProfile())->add([
+                'name' => 'Plusieurs sites ou services',
+                'type' => 'multi_site',
+                'description' => 'Une seule entreprise, plusieurs équipes ou sites',
+                'sort_order' => 2,
+                'is_active' => 1,
+            ]);
+        }
+
         Profile::install($migration);
 
         $migration->executeMigration();
@@ -152,12 +169,10 @@ final class Installer
     private function insertDefaultProfiles(): void
     {
         $defaultProfiles = [
-            ['name' => 'Installation minimale', 'type' => 'minimal', 'sort_order' => 1],
-            ['name' => 'PME', 'type' => 'sme', 'sort_order' => 2],
-            ['name' => 'ETI', 'type' => 'eti', 'sort_order' => 3],
-            ['name' => 'Grande entreprise', 'type' => 'enterprise', 'sort_order' => 4],
-            ['name' => 'MSP', 'type' => 'msp', 'sort_order' => 5],
-            ['name' => 'Personnalisé', 'type' => 'custom', 'sort_order' => 6],
+            ['name' => 'Installation simple', 'type' => 'minimal', 'sort_order' => 1, 'description' => 'Un seul site, pas de sous-structure'],
+            ['name' => 'Plusieurs sites ou services', 'type' => 'multi_site', 'sort_order' => 2, 'description' => 'Une seule entreprise, plusieurs équipes ou sites'],
+            ['name' => 'Plusieurs entreprises clientes', 'type' => 'msp', 'sort_order' => 3, 'description' => 'Vous gérez GLPI pour le compte d\'autres entreprises'],
+            ['name' => 'Personnalisé', 'type' => 'custom', 'sort_order' => 4, 'description' => 'Je configure tout moi-même'],
         ];
 
         foreach ($defaultProfiles as $profileData) {

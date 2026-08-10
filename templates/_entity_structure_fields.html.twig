@@ -13,10 +13,9 @@
  # -------------------------------------------------------------------------
  #}
 
-{# Shared by templates/config_form.html.twig (Configuration > Plugins settings screen) and
-   templates/wizard.html.twig (setup wizard, step "Entités") — same fields, same live preview,
-   included wherever the entity structure needs to be chosen so there's only one copy of this
-   logic to maintain. Caller provides an enclosing <form>; this partial only renders fields.
+{# Used by templates/wizard.html.twig (setup wizard, step "Entités") — kept as its own partial
+   (rather than inlined in wizard.html.twig) in case a future screen needs the same entity
+   structure fields again. Caller provides an enclosing <form>; this partial only renders fields.
 
    The tree is a genuinely arbitrary structure: any node can have any number of children, at any
    depth, independent of its siblings (e.g. "Client A" has 6 children and one of those has 3

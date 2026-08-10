@@ -48,10 +48,12 @@ function plugin_init_configurationglpiauto(): void
         'admin' => [ConfigurationProfile::class],
     ];
 
-    // Icone "Configurer" sur la ligne du plugin dans Configuration > Plugins — meme mecanisme
-    // que remise-glpi et glpi-vulnerability-manager (pas d'entree MENU_TOADD dediee pour un
-    // reglage global unique).
-    $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['configurationglpiauto'] = 'front/config.php';
+    // Icone "Configurer" sur la ligne du plugin dans Configuration > Plugins. Pointe vers
+    // l'assistant complet (meme page que le menu principal, cf. ConfigurationProfile::
+    // getSearchURL()) — l'ancien formulaire a une seule page (front/config.php, entity_mode +
+    // entity_tree seulement, sans calendrier/SLA/personnalisation) a ete retire pour ne pas
+    // laisser deux points d'entree incoherents (Sprint 11).
+    $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['configurationglpiauto'] = 'front/wizard.php';
 
     Plugin::registerClass(ConfigurationProfile::class);
     Plugin::registerClass(Config::class);
