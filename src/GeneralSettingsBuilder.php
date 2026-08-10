@@ -17,6 +17,8 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use ProjectState;
+
 /**
  * Applies a set of instance-wide GLPI core general settings (`glpi_configs`, context `core`) that
  * ship with unhelpful defaults out of the box. Not a per-entity/per-client concept — writes
@@ -26,6 +28,12 @@ namespace GlpiPlugin\Configurationglpiauto;
  * Referenced explicitly with a leading `\` throughout: this plugin has its own
  * `GlpiPlugin\Configurationglpiauto\Config` class in the current namespace, so a bare `Config::`
  * call here would resolve to the wrong class.
+ *
+ * Also covers the "Statuts des tâches" project bucket mapping (`projecttask_unstarted_states_id`/
+ * `_inprogress_states_id`/`_completed_states_id`) — GLPI ships exactly 3 native `ProjectState` rows
+ * out of the box ("New", "Processing", "Closed", confirmed on a fresh 11.0.8 install) but leaves
+ * this mapping unset, so project task progress tracking silently does nothing until an admin wires
+ * it up by hand.
  */
 class GeneralSettingsBuilder
 {
@@ -51,8 +59,31 @@ class GeneralSettingsBuilder
             'search_pagination_on_top' => 1,
             'show_jobs_at_login'       => 1,
             'auto_create_infocoms'     => 1,
-        ]);
+        ] + $this->projectTaskStateMapping());
 
         return true;
+    }
+
+    /**
+     * Maps GLPI's 3 native `ProjectState` rows to the "unstarted/in progress/completed" buckets
+     * used for project task progress tracking. Matched by exact name, not hardcoded IDs — an
+     * admin could have reordered/recreated them before running the wizard; if any of the 3 native
+     * names isn't found (non-fresh instance, renamed rows), the mapping is skipped rather than
+     * writing a wrong/guessed ID.
+     *
+     * @return array<string, int>
+     */
+    private function projectTaskStateMapping(): array
+    {
+        $ids = [];
+        $state = new ProjectState();
+        foreach (['New' => 'unstarted', 'Processing' => 'inprogress', 'Closed' => 'completed'] as $name => $bucket) {
+            if (!$state->getFromDBByCrit(['name' => $name])) {
+                return [];
+            }
+            $ids["projecttask_{$bucket}_states_id"] = (int) $state->getID();
+        }
+
+        return $ids;
     }
 }
