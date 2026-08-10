@@ -21,6 +21,11 @@
 # Apache error log (the real error only shows up in a CLI run with display_errors=1). If that
 # happens, run: docker compose -f docker-compose.test.yml exec glpi chown -R www-data:www-data
 # /var/www/html/glpi/files
+#
+# GLPI caches compiled Twig templates under files/_cache — edits to any .html.twig file are NOT
+# picked up automatically against this image (confirmed while iterating on templates/*.html.twig).
+# After changing a template, clear it: docker compose -f docker-compose.test.yml exec glpi \
+#   find /var/www/html/glpi/files/_cache -mindepth 1 -delete
 
 services:
   db:

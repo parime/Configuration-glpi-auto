@@ -7,13 +7,17 @@ Session::checkRight(ConfigurationProfile::$rightname, READ);
 Html::header(ConfigurationProfile::getTypeName(2), $_SERVER['PHP_SELF'], 'admin', ConfigurationProfile::class);
 
 // Search::show() alone generates no create link (same pitfall documented on remise-glpi).
+global $CFG_GLPI;
+echo "<div class='mb-3 d-flex gap-2'>";
+echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/wizard.php') . "'>";
+echo "<i class='ti ti-wand'></i> " . __('Lancer l\'assistant de configuration', 'configurationglpiauto');
+echo "</a>";
 if (ConfigurationProfile::canCreate()) {
-    echo "<div class='mb-3'>";
     echo "<a class='btn btn-primary' href='" . htmlspecialchars(ConfigurationProfile::getFormURL()) . "'>";
     echo "<i class='ti ti-plus'></i> " . __('Ajouter');
     echo "</a>";
-    echo "</div>";
 }
+echo "</div>";
 
 Search::show(ConfigurationProfile::class);
 
