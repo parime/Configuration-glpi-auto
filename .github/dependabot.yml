@@ -18,30 +18,9 @@ updates:
     labels:
       - "dependencies"
       - "security"
-    milestone: 0
     commit-message:
       prefix: "chore"
       prefix-development: "chore"
-      include: "scope"
-    pr-priority: 10
-
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-    reviewers:
-      - "parime"
-    assignees:
-      - "parime"
-    labels:
-      - "dependencies"
-      - "frontend"
-    commit-message:
-      prefix: "chore"
       include: "scope"
 
   - package-ecosystem: "github-actions"

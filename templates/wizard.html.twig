@@ -82,9 +82,39 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 4 : Branding #}
+      {# ---------------------------------------------------------------- Étape 4 : SLA #}
       <div class="cga-wizard-step" data-step="4" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 4 : Personnalisation graphique', 'configurationglpiauto') }}</h3>
+        <h3 class="mb-1">{{ __('Étape 4 : Niveaux de service (SLA)', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : délais standards de prise en charge et de résolution des tickets, appliqués aux entités créées.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="sla_enabled" value="0">
+          <input
+            type="checkbox"
+            name="sla_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-sla-enabled"
+            {{ config.sla_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-sla-enabled">{{ __('Créer des SLA standards', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-sla-fields" style="display: none;" class="row" style="max-width: 480px;">
+          <div class="col mb-3">
+            <label class="form-label">{{ __('Prise en charge sous (heures)', 'configurationglpiauto') }}</label>
+            <input type="number" name="sla_tto_hours" min="1" class="form-control" value="{{ config.sla_tto_hours|default(4) }}">
+          </div>
+          <div class="col mb-3">
+            <label class="form-label">{{ __('Résolution sous (heures)', 'configurationglpiauto') }}</label>
+            <input type="number" name="sla_ttr_hours" min="1" class="form-control" value="{{ config.sla_ttr_hours|default(48) }}">
+          </div>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 5 : Branding #}
+      <div class="cga-wizard-step" data-step="5" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 5 : Personnalisation graphique', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : une couleur principale appliquée à l\'interface des entités créées.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -109,10 +139,10 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 5 : Récapitulatif #}
-      <div class="cga-wizard-step" data-step="5" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 5 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier et la personnalisation graphique.', 'configurationglpiauto') }}</p>
+      {# ---------------------------------------------------------------- Étape 6 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="6" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 6 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA et la personnalisation graphique.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -126,6 +156,9 @@
           </li>
           <li class="list-group-item">
             <strong>{{ __('Calendrier', 'configurationglpiauto') }} :</strong> <span id="cga-summary-calendar"></span>
+          </li>
+          <li class="list-group-item">
+            <strong>{{ __('SLA', 'configurationglpiauto') }} :</strong> <span id="cga-summary-sla"></span>
           </li>
           <li class="list-group-item">
             <strong>{{ __('Personnalisation', 'configurationglpiauto') }} :</strong> <span id="cga-summary-branding"></span>
@@ -154,7 +187,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 5;
+  var STEP_COUNT = 6;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -166,6 +199,7 @@
     "{{ __('Profil', 'configurationglpiauto')|e('js') }}",
     "{{ __('Entités', 'configurationglpiauto')|e('js') }}",
     "{{ __('Calendrier', 'configurationglpiauto')|e('js') }}",
+    "{{ __('SLA', 'configurationglpiauto')|e('js') }}",
     "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
@@ -209,6 +243,14 @@
   }
   calendarEnabledInput.addEventListener('change', toggleCalendarFields);
   toggleCalendarFields();
+
+  var slaEnabledInput = document.getElementById('cga-sla-enabled');
+  var slaFields = document.getElementById('cga-sla-fields');
+  function toggleSlaFields() {
+    slaFields.style.display = slaEnabledInput.checked ? '' : 'none';
+  }
+  slaEnabledInput.addEventListener('change', toggleSlaFields);
+  toggleSlaFields();
 
   var brandingEnabledInput = document.getElementById('cga-branding-enabled');
   var brandingFields = document.getElementById('cga-branding-fields');
@@ -257,6 +299,16 @@
       calendarSummary = name + ' — ' + checkedDays.join(', ') + ' — ' + begin + '-' + end;
     }
     document.getElementById('cga-summary-calendar').textContent = calendarSummary;
+
+    if (!slaEnabledInput.checked) {
+      document.getElementById('cga-summary-sla').textContent = "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+    } else {
+      var tto = document.querySelector('input[name="sla_tto_hours"]').value;
+      var ttr = document.querySelector('input[name="sla_ttr_hours"]').value;
+      document.getElementById('cga-summary-sla').textContent =
+        "{{ __('Prise en charge', 'configurationglpiauto')|e('js') }} " + tto + "h — "
+        + "{{ __('Résolution', 'configurationglpiauto')|e('js') }} " + ttr + "h";
+    }
 
     document.getElementById('cga-summary-branding').textContent = brandingEnabledInput.checked
       ? "{{ __('Couleur principale', 'configurationglpiauto')|e('js') }} " + brandingColorInput.value

@@ -38,10 +38,10 @@ jobs:
         run: |
           # Extract all translation strings from PHP files
           find src/ setup.php hook.php -type f -name "*.php" | xargs grep -hoP '__(?:"[^"]*"|\'[^\']*\')' | sort | uniq > /tmp/strings.txt
-          
+
           # Extract from other files
           find front/ -type f -name "*.php" | xargs grep -hoP '__(?:"[^"]*"|\'[^\']*\')' >> /tmp/strings.txt
-          
+
           echo "Found $(wc -l < /tmp/strings.txt) unique translation strings"
 
       - name: "Update POT files"
@@ -61,17 +61,17 @@ jobs:
         run: |
           # Check for missing translations in English
           echo "Checking for missing English translations..."
-          
+
           # Extract strings from code
           code_strings=$(find src/ setup.php hook.php front/ -type f -name "*.php" | xargs grep -hoP '__(?:"[^"]*"|\'[^\']*\')' | sort | uniq)
-          
+
           # Extract strings from English PO file
           if [ -f "locales/en_GB.po" ]; then
             po_strings=$(grep -hoP 'msgid "[^"]*"' locales/en_GB.po | sed 's/msgid "//;s/"$//' | sort | uniq)
-            
+
             # Find missing translations
             missing=$(comm -23 <(echo "$code_strings" | sort) <(echo "$po_strings" | sort))
-            
+
             if [ -n "$missing" ]; then
               echo "::warning:: Missing English translations:"
               echo "$missing"
@@ -130,7 +130,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          
+
           if git diff --quiet locales/; then
             echo "No translation changes"
           else

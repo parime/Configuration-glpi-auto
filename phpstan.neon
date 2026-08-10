@@ -2,11 +2,15 @@ parameters:
     level: 6
     tmpDir: .phpstan.cache
     # Scope limited to pure-PHP logic with no runtime dependency on the GLPI core classes
-    # (CommonDBTM, Migration, ProfileRight, DBmysql, global $DB/$PLUGIN_HOOKS...). Those are only
-    # available inside a running GLPI instance and are not stubbed for static analysis here — same
-    # constraint documented in the sibling glpi-vulnerability-manager repo. Extend `paths` as
-    # GLPI-independent code is added under src/.
-    paths: []
+    # (CommonDBTM, Migration, ProfileRight, Entity, Calendar, DBmysql, global $DB/
+    # $PLUGIN_HOOKS...). Those are only available inside a running GLPI instance and are not
+    # stubbed for static analysis here — same constraint documented in the sibling
+    # glpi-vulnerability-manager repo. Every class under src/ currently extends or instantiates
+    # a GLPI core class somewhere in the file, so none of it can be analysed this way yet — only
+    # tests/Unit (which covers pure static helpers, see EntityBuilderTest) qualifies so far.
+    # `paths: []` makes PHPStan itself error ("At least one path must be specified") rather than
+    # silently analysing nothing, so point it at tests/ instead of excluding everything.
+    paths:
+        - tests/Unit
     excludePaths:
-        - tests/*
         - vendor/*
