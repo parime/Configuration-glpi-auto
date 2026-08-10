@@ -2,7 +2,7 @@
   <div class="card-body">
 
     <div class="progress mb-2" style="height: 6px;">
-      <div class="progress-bar" id="cga-wizard-progress" role="progressbar" style="width: 33%;"></div>
+      <div class="progress-bar" id="cga-wizard-progress" role="progressbar" style="width: 25%;"></div>
     </div>
     <p class="text-muted small mb-4" id="cga-wizard-stepindicator"></p>
 
@@ -40,10 +40,52 @@
         {% include '@configurationglpiauto/_entity_structure_fields.html.twig' %}
       </div>
 
-      {# ---------------------------------------------------------------- Étape 3 : Récapitulatif #}
+      {# ---------------------------------------------------------------- Étape 3 : Calendrier #}
       <div class="cga-wizard-step" data-step="3" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 3 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités.', 'configurationglpiauto') }}</p>
+        <h3 class="mb-1">{{ __('Étape 3 : Calendrier', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Configurez, si besoin, les horaires d\'ouverture appliqués aux entités créées.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="calendar_enabled" value="0">
+          <input
+            type="checkbox"
+            name="calendar_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-calendar-enabled"
+            {{ config.calendar_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-calendar-enabled">{{ __('Créer un calendrier d\'horaires d\'ouverture', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-calendar-fields" style="display: none;">
+          <div class="mb-3" style="max-width: 320px;">
+            <label class="form-label">{{ __('Nom du calendrier', 'configurationglpiauto') }}</label>
+            <input type="text" name="calendar_name" class="form-control" value="{{ config.calendar_name|default('Horaires standard') }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">{{ __('Jours ouvrés', 'configurationglpiauto') }}</label>
+            <div id="cga-calendar-days"></div>
+          </div>
+
+          <div class="row" style="max-width: 320px;">
+            <div class="col mb-3">
+              <label class="form-label">{{ __('Ouverture', 'configurationglpiauto') }}</label>
+              <input type="time" name="calendar_begin" class="form-control" value="{{ config.calendar_begin|default('08:00') }}">
+            </div>
+            <div class="col mb-3">
+              <label class="form-label">{{ __('Fermeture', 'configurationglpiauto') }}</label>
+              <input type="time" name="calendar_end" class="form-control" value="{{ config.calendar_end|default('18:00') }}">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 4 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="4" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 4 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités et le calendrier.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -54,6 +96,9 @@
           </li>
           <li class="list-group-item">
             <strong>{{ __('Arborescence', 'configurationglpiauto') }} :</strong> <span id="cga-summary-tree"></span>
+          </li>
+          <li class="list-group-item">
+            <strong>{{ __('Calendrier', 'configurationglpiauto') }} :</strong> <span id="cga-summary-calendar"></span>
           </li>
         </ul>
       </div>
@@ -67,7 +112,7 @@
           class="btn btn-primary"
           id="cga-wizard-finish"
           style="display: none;"
-          onclick="return confirm('{{ __('Ceci va créer de vraies entités dans GLPI selon la structure choisie. Continuer ?', 'configurationglpiauto')|e('js') }}');"
+          onclick="return confirm('{{ __('Ceci va créer de vraies entités (et, si activé, un calendrier) dans GLPI selon les choix faits. Continuer ?', 'configurationglpiauto')|e('js') }}');"
         >
           {{ __('Terminer', 'configurationglpiauto') }}
         </button>
@@ -79,7 +124,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 3;
+  var STEP_COUNT = 4;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -90,8 +135,49 @@
   var stepLabels = [
     "{{ __('Profil', 'configurationglpiauto')|e('js') }}",
     "{{ __('Entités', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Calendrier', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
+
+  var DAYS = [
+    { value: 1, label: "{{ __('Lundi')|e('js') }}" },
+    { value: 2, label: "{{ __('Mardi')|e('js') }}" },
+    { value: 3, label: "{{ __('Mercredi')|e('js') }}" },
+    { value: 4, label: "{{ __('Jeudi')|e('js') }}" },
+    { value: 5, label: "{{ __('Vendredi')|e('js') }}" },
+    { value: 6, label: "{{ __('Samedi')|e('js') }}" },
+    { value: 0, label: "{{ __('Dimanche')|e('js') }}" }
+  ];
+  var initialCalendarDays = {{ config.calendar_days|default('[1,2,3,4,5]')|raw }};
+
+  var calendarEnabledInput = document.getElementById('cga-calendar-enabled');
+  var calendarFields = document.getElementById('cga-calendar-fields');
+  var calendarDaysContainer = document.getElementById('cga-calendar-days');
+
+  DAYS.forEach(function (day) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'form-check form-check-inline';
+    var input = document.createElement('input');
+    input.type = 'checkbox';
+    input.name = 'calendar_day[]';
+    input.value = day.value;
+    input.className = 'form-check-input';
+    input.id = 'cga-calendar-day-' + day.value;
+    input.checked = initialCalendarDays.indexOf(day.value) !== -1;
+    var label = document.createElement('label');
+    label.className = 'form-check-label';
+    label.setAttribute('for', input.id);
+    label.textContent = day.label;
+    wrapper.appendChild(input);
+    wrapper.appendChild(label);
+    calendarDaysContainer.appendChild(wrapper);
+  });
+
+  function toggleCalendarFields() {
+    calendarFields.style.display = calendarEnabledInput.checked ? '' : 'none';
+  }
+  calendarEnabledInput.addEventListener('change', toggleCalendarFields);
+  toggleCalendarFields();
 
   function fillSummary() {
     var profileInput = document.querySelector('input[name="configurationprofiles_id"]:checked');
@@ -108,6 +194,20 @@
 
     var preview = document.getElementById('cga-tree-preview');
     document.getElementById('cga-summary-tree').innerHTML = preview ? preview.innerHTML : '';
+
+    var calendarSummary;
+    if (!calendarEnabledInput.checked) {
+      calendarSummary = "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+    } else {
+      var checkedDays = DAYS.filter(function (d) {
+        return document.getElementById('cga-calendar-day-' + d.value).checked;
+      }).map(function (d) { return d.label; });
+      var name = document.querySelector('input[name="calendar_name"]').value || "{{ __('Horaires standard', 'configurationglpiauto')|e('js') }}";
+      var begin = document.querySelector('input[name="calendar_begin"]').value;
+      var end = document.querySelector('input[name="calendar_end"]').value;
+      calendarSummary = name + ' — ' + checkedDays.join(', ') + ' — ' + begin + '-' + end;
+    }
+    document.getElementById('cga-summary-calendar').textContent = calendarSummary;
   }
 
   function showStep(n) {
