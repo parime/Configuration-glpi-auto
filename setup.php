@@ -16,6 +16,7 @@
  */
 
 use Glpi\Plugin\Hooks;
+use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
 // Hard runtime requirement: GLPI does not autoload plugin src/ classes on its own.
@@ -47,7 +48,13 @@ function plugin_init_configurationglpiauto(): void
         'admin' => [ConfigurationProfile::class],
     ];
 
+    // Icone "Configurer" sur la ligne du plugin dans Configuration > Plugins — meme mecanisme
+    // que remise-glpi et glpi-vulnerability-manager (pas d'entree MENU_TOADD dediee pour un
+    // reglage global unique).
+    $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['configurationglpiauto'] = 'front/config.php';
+
     Plugin::registerClass(ConfigurationProfile::class);
+    Plugin::registerClass(Config::class);
 }
 
 /**

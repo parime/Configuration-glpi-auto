@@ -28,7 +28,9 @@ class Profile
 {
     public const RIGHT_PROFILE = 'plugin_configurationglpiauto_profile';
 
-    private const ALL_RIGHTS = [self::RIGHT_PROFILE];
+    public const RIGHT_CONFIG = 'plugin_configurationglpiauto_config';
+
+    private const ALL_RIGHTS = [self::RIGHT_PROFILE, self::RIGHT_CONFIG];
 
     public static function install(\Migration $migration): void
     {
