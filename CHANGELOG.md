@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — plugin-list logo (2026-08-11)
+
+The Marketplace plugin-list badge ("CG" initials) isn't driven by `configurationglpiauto.xml`'s
+`<logo>` at all — confirmed in `Glpi\Marketplace\View::getPluginIcon()`: GLPI looks for a literal
+`logo.png` at the plugin's own root directory and serves it via `/Plugin/{key}/Logo`, regardless of
+the manifest. Restored `logo.png` at the plugin root (`misc/logos/logo.png`, added in Sprint 21,
+only satisfies the manifest's marketing URL) — both now present. Verified visually on the real test
+instance: the real logo now replaces the "CG" badge.
+
 ### Sprint 21 — hide Urgency/Observers/Location on GLPI's native self-service forms (2026-08-11)
 
 Real-world testing (a genuine `post-only` Self-Service login, not the Super-Admin preview tab)
