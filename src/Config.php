@@ -132,6 +132,7 @@ class Config extends CommonDBTM
             'category_icons_enabled' => 0,
             'state_enabled' => 0,
             'state_icons_enabled' => 0,
+            'general_settings_enabled' => 0,
         ];
     }
 
@@ -304,6 +305,10 @@ class Config extends CommonDBTM
 
         if (isset($input['state_icons_enabled'])) {
             $input['state_icons_enabled'] = !empty($input['state_icons_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['general_settings_enabled'])) {
+            $input['general_settings_enabled'] = !empty($input['general_settings_enabled']) ? 1 : 0;
         }
 
         return $input;
