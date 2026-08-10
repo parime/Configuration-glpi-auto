@@ -205,9 +205,86 @@
         <div id="cga-sla-per-client-panels" style="display: none;"></div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 5 : Branding #}
+      {# ---------------------------------------------------------------- Étape 5 : Catégories #}
       <div class="cga-wizard-step" data-step="5" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 5 : Personnalisation graphique', 'configurationglpiauto') }}</h3>
+        <h3 class="mb-1">{{ __('Étape 5 : Catégories de tickets', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : une catégorie de départ par type de ticket ITIL (Incident, Demande, Problème, Changement) — renommables et complétables ensuite dans GLPI.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="category_enabled" value="0">
+          <input
+            type="checkbox"
+            name="category_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-category-enabled"
+            {{ config.category_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-category-enabled">{{ __('Créer les catégories de tickets standards', 'configurationglpiauto') }}</label>
+        </div>
+
+        <ul class="list-group" id="cga-category-preview" style="max-width: 480px; display: none;">
+          {% for category in categories_preview %}
+            <li class="list-group-item">
+              <strong>{{ category.name }}</strong>
+              <span class="text-muted">
+                —
+                {%- if category.is_incident %} {{ __('Incident', 'configurationglpiauto') }}{% endif -%}
+                {%- if category.is_request %} {{ __('Demande', 'configurationglpiauto') }}{% endif -%}
+                {%- if category.is_problem %} {{ __('Problème', 'configurationglpiauto') }}{% endif -%}
+                {%- if category.is_change %} {{ __('Changement', 'configurationglpiauto') }}{% endif -%}
+              </span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 6 : Statuts des éléments #}
+      <div class="cga-wizard-step" data-step="6" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 6 : Statuts des éléments', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : un jeu de statuts standards pour le parc (ordinateurs, moniteurs, téléphones...) — aucun n\'existe par défaut dans GLPI.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="state_enabled" value="0">
+          <input
+            type="checkbox"
+            name="state_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-state-enabled"
+            {{ config.state_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-state-enabled">{{ __('Créer les statuts d\'éléments standards', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-state-fields" style="display: none;">
+          <div class="form-check form-switch mb-3">
+            <input type="hidden" name="state_icons_enabled" value="0">
+            <input
+              type="checkbox"
+              name="state_icons_enabled"
+              value="1"
+              class="form-check-input"
+              id="cga-state-icons-enabled"
+              {{ config.state_icons_enabled|default(0) ? 'checked' : '' }}
+            >
+            <label class="form-check-label" for="cga-state-icons-enabled">{{ __('Ajouter des icônes (visibles dans la liste, le nom lui-même reste sans icône)', 'configurationglpiauto') }}</label>
+          </div>
+
+          <ul class="list-group" id="cga-state-preview" style="max-width: 480px;">
+            {% for state in states_preview %}
+              <li class="list-group-item d-flex align-items-center gap-2">
+                <span class="cga-state-preview-icon" style="display: none;">{{ state.icon }}</span>
+                <span>{{ state.name }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 7 : Branding #}
+      <div class="cga-wizard-step" data-step="7" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 7 : Personnalisation graphique', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : une couleur principale appliquée à l\'interface des entités créées.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -232,10 +309,10 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 6 : Récapitulatif #}
-      <div class="cga-wizard-step" data-step="6" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 6 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA et la personnalisation graphique.', 'configurationglpiauto') }}</p>
+      {# ---------------------------------------------------------------- Étape 8 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="8" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 8 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, les statuts et la personnalisation graphique.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -252,6 +329,12 @@
           </li>
           <li class="list-group-item">
             <strong>{{ __('SLA', 'configurationglpiauto') }} :</strong> <span id="cga-summary-sla"></span>
+          </li>
+          <li class="list-group-item">
+            <strong>{{ __('Catégories', 'configurationglpiauto') }} :</strong> <span id="cga-summary-categories"></span>
+          </li>
+          <li class="list-group-item">
+            <strong>{{ __('Statuts des éléments', 'configurationglpiauto') }} :</strong> <span id="cga-summary-states"></span>
           </li>
           <li class="list-group-item">
             <strong>{{ __('Personnalisation', 'configurationglpiauto') }} :</strong> <span id="cga-summary-branding"></span>
@@ -280,7 +363,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 6;
+  var STEP_COUNT = 8;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -293,6 +376,8 @@
     "{{ __('Entités', 'configurationglpiauto')|e('js') }}",
     "{{ __('Calendrier', 'configurationglpiauto')|e('js') }}",
     "{{ __('SLA', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Catégories', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Statuts', 'configurationglpiauto')|e('js') }}",
     "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
@@ -356,6 +441,31 @@
   }
   olaEnabledInput.addEventListener('change', toggleOlaFields);
   toggleOlaFields();
+
+  var categoryEnabledInput = document.getElementById('cga-category-enabled');
+  var categoryPreview = document.getElementById('cga-category-preview');
+  function toggleCategoryPreview() {
+    categoryPreview.style.display = categoryEnabledInput.checked ? '' : 'none';
+  }
+  categoryEnabledInput.addEventListener('change', toggleCategoryPreview);
+  toggleCategoryPreview();
+
+  var stateEnabledInput = document.getElementById('cga-state-enabled');
+  var stateFields = document.getElementById('cga-state-fields');
+  var stateIconsEnabledInput = document.getElementById('cga-state-icons-enabled');
+  var statePreviewIcons = document.querySelectorAll('.cga-state-preview-icon');
+  function toggleStateFields() {
+    stateFields.style.display = stateEnabledInput.checked ? '' : 'none';
+  }
+  function toggleStateIcons() {
+    statePreviewIcons.forEach(function (icon) {
+      icon.style.display = stateIconsEnabledInput.checked ? '' : 'none';
+    });
+  }
+  stateEnabledInput.addEventListener('change', toggleStateFields);
+  stateIconsEnabledInput.addEventListener('change', toggleStateIcons);
+  toggleStateFields();
+  toggleStateIcons();
 
   var brandingEnabledInput = document.getElementById('cga-branding-enabled');
   var brandingFields = document.getElementById('cga-branding-fields');
@@ -867,6 +977,14 @@
       document.getElementById('cga-summary-sla').textContent = slaSummary;
     }
 
+    document.getElementById('cga-summary-categories').textContent = categoryEnabledInput.checked
+      ? "{{ __('Incidents, Demandes, Problèmes, Changements', 'configurationglpiauto')|e('js') }}"
+      : "{{ __('Aucune', 'configurationglpiauto')|e('js') }}";
+
+    document.getElementById('cga-summary-states').textContent = !stateEnabledInput.checked
+      ? "{{ __('Aucun', 'configurationglpiauto')|e('js') }}"
+      : ({{ states_preview|length }} + ' ' + "{{ __('statuts', 'configurationglpiauto')|e('js') }}" + (stateIconsEnabledInput.checked ? " {{ __('(avec icônes)', 'configurationglpiauto')|e('js') }}" : ''));
+
     document.getElementById('cga-summary-branding').textContent = brandingEnabledInput.checked
       ? "{{ __('Couleur principale', 'configurationglpiauto')|e('js') }} " + brandingColorInput.value
       : "{{ __('Aucune', 'configurationglpiauto')|e('js') }}";
@@ -944,6 +1062,19 @@
       toggleOlaFields();
     }
     applyTierDefaults('ola_tiers', defaults.ola_tiers);
+
+    if (typeof defaults.category_enabled !== 'undefined') {
+      categoryEnabledInput.checked = !!defaults.category_enabled;
+      toggleCategoryPreview();
+    }
+    if (typeof defaults.state_enabled !== 'undefined') {
+      stateEnabledInput.checked = !!defaults.state_enabled;
+      toggleStateFields();
+    }
+    if (typeof defaults.state_icons_enabled !== 'undefined') {
+      stateIconsEnabledInput.checked = !!defaults.state_icons_enabled;
+      toggleStateIcons();
+    }
   }
 
   function applyTierDefaults(fieldPrefix, tiersDefaults) {
