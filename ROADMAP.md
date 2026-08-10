@@ -120,9 +120,12 @@ basique, profils de démarrage.
    champ `type` sur les tickets, mais rien n'est pré-structuré par ce plugin. Sans catégories,
    impossible de router/prioriser correctement, et le catalogue de services (point 4) en dépend.
 
-3. **Templates de tickets** (déjà dans la feuille de route initiale, jamais fait). Champs
-   obligatoires/pré-remplis par catégorie — évite les tickets incomplets, accélère le traitement.
-   Dépend des catégories (point 2) pour avoir du sens.
+3. **Templates de tickets — fait (Sprint 19, 2026-08-10).** Pas un template par catégorie au
+   final (`TicketTemplateBuilder`) : la pratique ITSM courante réserve ça au catalogue de services
+   (point 5, pas encore fait) ; à la place, deux templates par audience — un simplifié
+   (titre+description) pour les profils sans droits élevés (Self-Service, Read-Only), un complet
+   (catégorie+urgence obligatoires, rien de masqué) pour le reste — câblés via
+   `glpi_profiles.tickettemplates_id`, un mécanisme natif GLPI par profil.
 
 4. **Niveaux d'escalade SLA/OLA (`SlaLevel`/`OlaLevel`).** Le docblock de `SlaBuilder.php` dit
    depuis le début "not the full escalation-level engine — a distinct, considerably heavier

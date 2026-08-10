@@ -9,6 +9,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 19 — ticket templates split by profile, project task state mapping (2026-08-10)
+
+Two follow-up items requested right after Sprint 18. First: GLPI ships exactly 3 native
+`ProjectState` rows ("New"/"Processing"/"Closed") but leaves the "Statuts des tâches"
+unstarted/in-progress/completed bucket mapping unset, so project task progress tracking silently
+does nothing — folded into `GeneralSettingsBuilder` as requested ("à ajouter avec les réglages
+automatique déjà existant"), not a new step. Second: the ROADMAP's "Templates de tickets" gap,
+now unblocked by Sprint 17's categories — user's explicit split: base users (Self-Service,
+Read-Only) enter the least possible (title + description), every other profile gets the full
+qualification interface (category, urgency, impact, priority, status...).
+
+#### Changed
+- `GeneralSettingsBuilder::projectTaskStateMapping()`: matches GLPI's 3 native `ProjectState` rows
+  by exact name (not hardcoded IDs — an admin could have reordered/recreated them) and sets
+  `projecttask_unstarted_states_id`/`_inprogress_states_id`/`_completed_states_id`. Skipped
+  entirely if any of the 3 native names isn't found, rather than writing a guessed ID.
+- New `TicketTemplateBuilder`: creates two `TicketTemplate` rows and wires them to GLPI's native
+  per-profile override (`glpi_profiles.tickettemplates_id`, confirmed in `Profile.php`) — a
+  mechanism independent from, and requested instead of, per-category templates (industry practice
+  research: per-category templates are usually a service-catalog concern, not a raw-category one;
+  recommended sticking to one template per audience instead, which the user confirmed).
+  - "Ticket simplifié (libre-service)": only `content` (Description) mandatory; `itilcategories_id`,
+    `urgency`, `impact`, `priority`, `status`, `locations_id`, the 3 date/duration fields, and all
+    assignment/observer actor fields are hidden. Assigned to `Self-Service` and `Read-Only`.
+  - "Ticket complet (support)": `content`, `itilcategories_id`, `urgency` mandatory; nothing
+    hidden. Assigned to every other existing profile (Observer, Admin, Super-Admin, Hotliner,
+    Technician, Supervisor by default, but driven by "every profile not in the simplified list",
+    not a hardcoded whitelist — a custom/renamed profile still gets the complete template).
+  - Field `num`s are GLPI SearchOption IDs, resolved via `getSearchOptionIDByField()` (the same
+    method `ITILTemplate::getAllowedFields()` itself uses) rather than hardcoded, except for the
+    handful of actor pseudo-fields GLPI's own core hardcodes the same way (`_users_id_assign` etc.).
+- New `ticket_template_enabled` toggle, step 9 of the wizard (`STEP_COUNT` 9→10).
+
+Also resolved in passing: a user report of missing icons on a real "État" dropdown turned out not
+to be a bug — `$_SESSION['glpi_dropdowntranslations']` is cached at login, so a session started
+before the wizard created the translations doesn't see them until the next login. Confirmed via a
+fresh Playwright session against the real Computer creation form (`states_id` select2 dropdown):
+icons render correctly once the session is fresh.
+
+Validated against the real GLPI 11.0.8 test instance via Playwright: reset the 3
+`projecttask_*_states_id` keys to 0, reran the wizard, confirmed they resolve to the correct
+native `ProjectState` IDs. Ticket templates: confirmed in DB the exact expected SearchOption `num`s
+on both templates (14 hidden fields on the simplified one, 3 mandatory on each), profile
+assignment (`Self-Service`→2, `Read-Only`→2, all others→3), and — on the real central ticket
+creation form as Super-Admin — Description/Catégorie/Urgence show as mandatory (red asterisk) with
+nothing hidden, matching the "complete" template. Local suite green (phpunit 5/5, phpstan clean,
+php-cs-fixer clean).
+
 ### Sprint 18 — GLPI core general settings (2026-08-10)
 
 User feedback with screenshots on GLPI's own general-settings pages: several core defaults are

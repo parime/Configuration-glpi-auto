@@ -133,6 +133,7 @@ class Config extends CommonDBTM
             'state_enabled' => 0,
             'state_icons_enabled' => 0,
             'general_settings_enabled' => 0,
+            'ticket_template_enabled' => 0,
         ];
     }
 
@@ -309,6 +310,10 @@ class Config extends CommonDBTM
 
         if (isset($input['general_settings_enabled'])) {
             $input['general_settings_enabled'] = !empty($input['general_settings_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['ticket_template_enabled'])) {
+            $input['ticket_template_enabled'] = !empty($input['ticket_template_enabled']) ? 1 : 0;
         }
 
         return $input;
