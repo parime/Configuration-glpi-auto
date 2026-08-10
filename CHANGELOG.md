@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 2 (in progress) — Entity structure settings (2026-08-10)
+
+#### Added
+- `Config` (`src/Config.php`): plugin-wide settings screen (Configuration > Plugins > wrench
+  icon), a single settings row. First setting: the entity structure the future entity-creation
+  wizard will build — mono-entité, multi-entité (same company), or multi-entité (MSP managing
+  several client companies) — with a configurable number of sub-entity levels (up to 5) and a
+  label per level. Does not create any `Entity` yet; only records the shape for the wizard.
+- `front/config.php` + `templates/config_form.html.twig`: settings form (Bootstrap
+  card/form-check style, same visual language as remise-glpi/glpi-vulnerability-manager) with a
+  live, client-side tree preview that re-renders on every change (mode switch, level count,
+  level labels) with no page reload or server round-trip — validated interactively with
+  Playwright against a real GLPI 11.0.8 instance.
+- `Profile::RIGHT_CONFIG` (`plugin_configurationglpiauto_config`): dedicated right for this
+  settings screen, granted to Super-Admin by default, same registration pattern as
+  `RIGHT_PROFILE`.
+
 ### Note on the [1.0.0] entry below
 
 The `[1.0.0] - 2026-08-07` entry that used to be here described a fully-featured release. It did

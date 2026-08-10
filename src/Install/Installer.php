@@ -18,6 +18,7 @@
 namespace GlpiPlugin\Configurationglpiauto\Install;
 
 use DBConnection;
+use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\Profile;
 use Migration;
@@ -29,6 +30,8 @@ use Migration;
 final class Installer
 {
     private const PROFILES_TABLE = 'glpi_plugin_configurationglpiauto_profiles';
+
+    private const CONFIGS_TABLE = 'glpi_plugin_configurationglpiauto_configs';
 
     public function install(Migration $migration): bool
     {
@@ -61,6 +64,25 @@ final class Installer
             $this->insertDefaultProfiles();
         }
 
+        if (!$DB->tableExists(self::CONFIGS_TABLE)) {
+            $charset   = DBConnection::getDefaultCharset();
+            $collation = DBConnection::getDefaultCollation();
+            $keySign   = DBConnection::getDefaultPrimaryKeySignOption();
+
+            $query = "CREATE TABLE `" . self::CONFIGS_TABLE . "` (
+                `id` int {$keySign} NOT NULL AUTO_INCREMENT,
+                `entity_mode` varchar(32) NOT NULL DEFAULT 'mono',
+                `entity_levels` int NOT NULL DEFAULT 1,
+                `level_labels` text,
+                `date_mod` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
+
+            $DB->doQuery($query) or die($DB->error());
+
+            (new Config())->add(Config::getDefaults() + ['id' => 1]);
+        }
+
         Profile::install($migration);
 
         $migration->executeMigration();
@@ -73,6 +95,7 @@ final class Installer
         global $DB;
 
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::PROFILES_TABLE . "`");
+        $DB->doQuery("DROP TABLE IF EXISTS `" . self::CONFIGS_TABLE . "`");
 
         Profile::uninstall();
 
