@@ -37,7 +37,23 @@ class Config extends CommonDBTM
 
     public const MAX_LEVELS = 5;
 
+    // GLPI's own priority scale (CommonITILObject::getPriorityName()) — 6=Majeure down to
+    // 1=Très basse, computed per ticket from the instance-wide urgency×impact matrix. Highest
+    // first since that's also natural display order.
+    public const PRIORITY_LEVELS = [6, 5, 4, 3, 2, 1];
+
     private const SINGLETON_ID = 1;
+
+    // Starting point for a fresh sla_tiers table, editable by the admin afterward — same
+    // philosophy as the plugin's other defaults (e.g. the old flat 4h/48h).
+    private const DEFAULT_SLA_TIERS = [
+        '6' => ['tto_hours' => 1, 'ttr_hours' => 4],
+        '5' => ['tto_hours' => 2, 'ttr_hours' => 8],
+        '4' => ['tto_hours' => 4, 'ttr_hours' => 24],
+        '3' => ['tto_hours' => 8, 'ttr_hours' => 48],
+        '2' => ['tto_hours' => 24, 'ttr_hours' => 72],
+        '1' => ['tto_hours' => 48, 'ttr_hours' => 120],
+    ];
 
     public static function getTable($classname = null)
     {
@@ -88,8 +104,7 @@ class Config extends CommonDBTM
             'branding_enabled' => 0,
             'branding_primary_color' => '#206bc4',
             'sla_enabled' => 0,
-            'sla_tto_hours' => 4,
-            'sla_ttr_hours' => 48,
+            'sla_tiers' => json_encode(self::DEFAULT_SLA_TIERS),
             'sla_astreinte' => 0,
         ];
     }
@@ -103,6 +118,32 @@ class Config extends CommonDBTM
         $days = json_decode((string) ($this->fields['calendar_days'] ?? '[]'), true);
 
         return is_array($days) ? array_map('intval', $days) : [];
+    }
+
+    /**
+     * The shared/default SLA table: one `['tto_hours' => int, 'ttr_hours' => int]` pair per
+     * priority level (string keys matching PRIORITY_LEVELS) — a site/client with no override of
+     * its own (see sanitizeClientSettings()) uses this. Missing/invalid levels fall back to
+     * DEFAULT_SLA_TIERS rather than leaving a gap.
+     *
+     * @return array<string, array{tto_hours: int, ttr_hours: int}>
+     */
+    public function getSlaTiers(): array
+    {
+        $tiers = json_decode((string) ($this->fields['sla_tiers'] ?? '[]'), true);
+
+        return $this->sanitizeSlaTiers(is_array($tiers) ? $tiers : []);
+    }
+
+    /**
+     * The built-in starting-point tier table — exposed so ConfigurationProfile::getSuggestedDefaults()
+     * can reuse it instead of duplicating the same 6 numbers a second time.
+     *
+     * @return array<string, array{tto_hours: int, ttr_hours: int}>
+     */
+    public static function getDefaultSlaTiers(): array
+    {
+        return self::DEFAULT_SLA_TIERS;
     }
 
     /**
@@ -165,12 +206,8 @@ class Config extends CommonDBTM
             $input['sla_enabled'] = !empty($input['sla_enabled']) ? 1 : 0;
         }
 
-        if (isset($input['sla_tto_hours'])) {
-            $input['sla_tto_hours'] = max(1, (int) $input['sla_tto_hours']);
-        }
-
-        if (isset($input['sla_ttr_hours'])) {
-            $input['sla_ttr_hours'] = max(1, (int) $input['sla_ttr_hours']);
+        if (isset($input['sla_tiers']) && is_array($input['sla_tiers'])) {
+            $input['sla_tiers'] = json_encode($this->sanitizeSlaTiers($input['sla_tiers']));
         }
 
         if (isset($input['sla_astreinte'])) {
@@ -257,14 +294,38 @@ class Config extends CommonDBTM
         ];
     }
 
+    /**
+     * @return array{enabled: bool, astreinte: bool, tiers: array<string, array{tto_hours: int, ttr_hours: int}>}
+     */
     private function sanitizeSlaSettings(array $sla): array
     {
         return [
             'enabled' => !empty($sla['enabled']),
-            'tto_hours' => max(1, (int) ($sla['tto_hours'] ?? 4)),
-            'ttr_hours' => max(1, (int) ($sla['ttr_hours'] ?? 48)),
             'astreinte' => !empty($sla['astreinte']),
+            'tiers' => $this->sanitizeSlaTiers(is_array($sla['tiers'] ?? null) ? $sla['tiers'] : []),
         ];
+    }
+
+    /**
+     * Fills in every level from PRIORITY_LEVELS, falling back to DEFAULT_SLA_TIERS for any level
+     * missing or malformed in $tiers rather than leaving a gap a ticket could fall through.
+     *
+     * @return array<string, array{tto_hours: int, ttr_hours: int}>
+     */
+    private function sanitizeSlaTiers(array $tiers): array
+    {
+        $clean = [];
+        foreach (self::PRIORITY_LEVELS as $level) {
+            $key = (string) $level;
+            $tier = is_array($tiers[$key] ?? null) ? $tiers[$key] : [];
+
+            $clean[$key] = [
+                'tto_hours' => max(1, (int) ($tier['tto_hours'] ?? self::DEFAULT_SLA_TIERS[$key]['tto_hours'])),
+                'ttr_hours' => max(1, (int) ($tier['ttr_hours'] ?? self::DEFAULT_SLA_TIERS[$key]['ttr_hours'])),
+            ];
+        }
+
+        return $clean;
     }
 
     private function sanitizeTimeString(string $time): string

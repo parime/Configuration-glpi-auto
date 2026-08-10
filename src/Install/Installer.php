@@ -39,6 +39,8 @@ final class Installer
 
         $migration->setVersion(PLUGIN_CONFIGURATIONGLPIAUTO_VERSION);
 
+        $slaTiersSeed = null;
+
         if (!$DB->tableExists(self::PROFILES_TABLE)) {
             $charset   = DBConnection::getDefaultCharset();
             $collation = DBConnection::getDefaultCollation();
@@ -82,8 +84,7 @@ final class Installer
                 `branding_enabled` tinyint NOT NULL DEFAULT 0,
                 `branding_primary_color` varchar(7) NOT NULL DEFAULT '#206bc4',
                 `sla_enabled` tinyint NOT NULL DEFAULT 0,
-                `sla_tto_hours` int NOT NULL DEFAULT 4,
-                `sla_ttr_hours` int NOT NULL DEFAULT 48,
+                `sla_tiers` text,
                 `sla_astreinte` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
@@ -93,6 +94,24 @@ final class Installer
 
             (new Config())->add(Config::getDefaults() + ['id' => 1]);
         } else {
+            // sla_tto_hours/sla_ttr_hours (flat) replaced by sla_tiers (JSON, one row per
+            // priority level, Sprint 14) — read the old singleton's flat value first (while the
+            // columns still exist) so upgrading doesn't silently lose the existing setting; the
+            // actual UPDATE happens after executeMigration() below, once sla_tiers physically
+            // exists to write into.
+            if ($DB->fieldExists(self::CONFIGS_TABLE, 'sla_tto_hours') && $DB->fieldExists(self::CONFIGS_TABLE, 'sla_ttr_hours')) {
+                $row = $DB->request(self::CONFIGS_TABLE, ['id' => 1])->current();
+                if ($row !== null) {
+                    $slaTiersSeed = array_fill_keys(
+                        array_map('strval', Config::PRIORITY_LEVELS),
+                        ['tto_hours' => max(1, (int) $row['sla_tto_hours']), 'ttr_hours' => max(1, (int) $row['sla_ttr_hours'])]
+                    );
+                }
+            }
+            $migration->dropField(self::CONFIGS_TABLE, 'sla_tto_hours');
+            $migration->dropField(self::CONFIGS_TABLE, 'sla_ttr_hours');
+            $migration->addField(self::CONFIGS_TABLE, 'sla_tiers', 'text');
+
             // Upgrade path for instances installed before these columns existed — addField() is
             // idempotent, unlike the raw CREATE TABLE above, same pattern already used on the
             // sibling glpi-vulnerability-manager plugin.
@@ -117,8 +136,6 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'branding_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'branding_primary_color', 'string', ['value' => '#206bc4']);
             $migration->addField(self::CONFIGS_TABLE, 'sla_enabled', 'bool', ['value' => 0]);
-            $migration->addField(self::CONFIGS_TABLE, 'sla_tto_hours', 'integer', ['value' => 4]);
-            $migration->addField(self::CONFIGS_TABLE, 'sla_ttr_hours', 'integer', ['value' => 48]);
             $migration->addField(self::CONFIGS_TABLE, 'sla_astreinte', 'bool', ['value' => 0]);
         }
 
@@ -147,9 +164,21 @@ final class Installer
             ]);
         }
 
+        // Sprint 14 bug fix: SlaBuilder-created rules were missing is_recursive=1, so GLPI's
+        // RuleCollection only ever evaluated them for the rule's own entities_id (root, 0) — never
+        // for a ticket created in any sub-entity, which is the only kind of entity this plugin
+        // ever actually assigns an SLA to. Confirmed by creating a real ticket in a sub-entity and
+        // finding slas_id_tto/slas_id_ttr stayed 0. Fixes rules created by earlier sprints too;
+        // new ones are already created correctly (see SlaBuilder::assignOne()).
+        $DB->update('glpi_rules', ['is_recursive' => 1], ['sub_type' => 'RuleTicket', 'name' => ['LIKE', 'SLA standard%']]);
+
         Profile::install($migration);
 
         $migration->executeMigration();
+
+        if ($slaTiersSeed !== null) {
+            $DB->update(self::CONFIGS_TABLE, ['sla_tiers' => json_encode($slaTiersSeed)], ['id' => 1]);
+        }
 
         return true;
     }

@@ -9,6 +9,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 14 — SLA per priority level, not one flat delay for everything (2026-08-10)
+
+Confirmed by research and the user (Sprint 13): real ITSM practice defines SLAs per ticket
+priority, not one flat "prise en charge/résolution" pair for every ticket regardless of severity.
+GLPI itself has 6 native priority levels (`CommonITILObject::getPriorityName()`, Très basse=1
+through Majeure=6, computed from an instance-wide urgency×impact matrix) and documents assigning
+SLAs via a `RuleTicket` matching on `priority` — the same mechanism `SlaBuilder` already used to
+match on `entities_id`.
+
+#### Changed
+- `sla_tto_hours`/`sla_ttr_hours` (flat ints) replaced by `sla_tiers` (JSON, one
+  `{tto_hours, ttr_hours}` pair per GLPI priority level 1-6). Migration reads the old singleton's
+  flat value first and seeds all 6 levels with it, so upgrading doesn't silently lose the existing
+  setting.
+- Step 4's shared section is now a 6-row table (one per priority, labelled via GLPI's own
+  `getPriorityName()` so it respects the instance's language) instead of two number fields.
+- Per-client SLA panel (Sprint 13) gains a "Utiliser le SLA par défaut" checkbox, checked by
+  default: checked → this client follows the shared table, nothing stored for it (same
+  no-override-means-shared principle as Sprint 13). Unchecked → its own 6-row table, pre-filled
+  from the shared table's current values as a starting point rather than blank fields.
+- `SlaBuilder` now builds 12 `glpi_slas` rows per SLM (6 levels × TTO/TTR) and one `RuleTicket`
+  per (entity × priority level) instead of one flat pair and one rule per entity —
+  `getOrCreateSla()`'s uniqueness key gained `name` since 6 TTO rows now share the same
+  `slms_id`+`type`.
+
+#### Fixed
+- **SLA assignment rules never actually fired on a real ticket, since this plugin started
+  creating them (Sprint 6/7) — not something introduced this sprint.** `SlaBuilder::assignOne()`
+  created each `RuleTicket` without `is_recursive => 1`; GLPI's `RuleCollection` only evaluates a
+  rule for its own `entities_id` (root, 0 by default) unless it's marked recursive, so it was
+  silently skipped for every ticket created in any sub-entity — the only kind of entity this
+  plugin ever assigns an SLA to. Every previous sprint's validation checked that the
+  `RuleTicket`/`RuleCriteria`/`RuleAction` rows existed in the database with the right values, but
+  never actually created a real ticket to confirm GLPI's rule engine assigned anything — this
+  sprint's end-to-end Playwright check (create a ticket with a known priority, read back
+  `slas_id_tto`/`slas_id_ttr`) is what caught it. Existing rule rows from earlier sprints are
+  fixed by a migration (`$DB->update` on `is_recursive`), new ones are created correctly.
+
+Validated against the real GLPI 11.0.8 test instance via Playwright: shared table renders 6 rows
+with correct priority labels; a client with "Utiliser le SLA par défaut" unchecked correctly
+pre-fills from the shared table and its own override for one level (Majeure, set to 99h/199h)
+lands in the database exactly as entered (12 distinct `glpi_slas` rows, 6 `RuleTicket` rows with
+`entities_id` + `priority` criteria); a ticket created directly via the entity's helpdesk form
+with priority=Majeure correctly received `slas_id_tto`/`slas_id_ttr` matching that override — the
+first time this plugin's SLA assignment has been verified against a real ticket rather than just
+the database rows the wizard produces. Local suite green (phpunit 5/5, phpstan clean, php-cs-fixer
+clean).
+
 ### Sprint 13 — calendar and SLA can differ per site/client (2026-08-10)
 
 Documented as a known gap in ROADMAP.md since Sprint 11: multi-entity mode built exactly one
