@@ -114,7 +114,7 @@ jobs:
           vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
 
       - name: "Upload coverage to Codecov"
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v7
         with:
           file: ./coverage.xml
           flags: unittests
