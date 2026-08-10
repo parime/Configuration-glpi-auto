@@ -9,6 +9,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 17 — real topical category tree, replacing the ITIL-type one (2026-08-10)
+
+Sprint 16's "one category per ITIL type" (Incidents/Demandes/Problèmes/Changements) turned out to
+be pointless: `Ticket` already has a native `type` field for Incident/Demande, and Problem/Change
+are already their own GLPI object types, not ticket sub-types — a category per type duplicated a
+distinction GLPI already makes elsewhere. Replaced with what the user actually needed: a real
+topical category tree (IT & SI, Bâtiment & Moyens Généraux, Flotte Automobile, RH, Achats,
+Sécurité, Services Généraux, Administratif, Communication, Qualité, Maintenance Industrielle), up
+to 3 levels deep, ~92-115 categories depending on which of the 11 top-level branches are selected.
+
+#### Changed
+- `CategoryBuilder` rewritten: recursive tree builder (`itilcategories_id` already supports
+  arbitrary parent/child nesting, same mechanism as `Entity` — reused `EntityBuilder`'s recursion
+  pattern) instead of 4 flat rows. Every category gets all 4 `is_incident`/`is_request`/
+  `is_problem`/`is_change` flags — the category doesn't decide which ticket type it's usable for,
+  that's the orthogonal, native concern the old version wrongly conflated with categorization.
+- `category_branches` (JSON, new `Config` field): each of the 11 top-level branches is
+  independently selectable — an organization without a vehicle fleet or industrial maintenance
+  doesn't have to end up with those branches. All 11 selected by default on a fresh install/
+  profile suggestion (trim what doesn't apply, easier than re-checking from nothing).
+- Icons (`category_icons_enabled`, same mechanism as `State` from Sprint 16 — a
+  `DropdownTranslation` on `fr_FR`/`name`, since GLPI renders that value as escaped plain text,
+  never HTML) only on the two levels the user actually gave an emoji for; leaf bullet items never
+  had one in the original list.
+- Confirmed with the user: parenthetical text in the original list (e.g. "Accessoires (Dock USB-C,
+  Webcam, Casque, Clavier, Souris, Batterie)") is example/guidance text for the admin, not a 4th
+  tree level — becomes each node's `comment` field instead, keeping the tree at the stated 3
+  levels (N1/N2/N3).
+- Step 5 (Catégories) gets one checkbox per top-level branch plus an icon toggle, both feeding a
+  read-only recursive preview (new Twig macro, `_self.category_tree()`) — same "point of entry,
+  not final" philosophy as every other step in this wizard.
+- Migration hides (`is_helpdeskvisible = 0`, not deleted — `ITILCategory` has no soft-disable
+  flag, and these are real objects that could already have tickets attached) the 4 old root
+  categories from Sprint 16 on upgrade, restricted to exact-name matches at the root so nothing an
+  admin created themselves gets touched.
+
+Validated against the real GLPI 11.0.8 test instance via Playwright: 11 branch checkboxes render,
+unchecking a branch hides its preview subtree live, icon toggle shows/hides preview icons; on
+submit with 2 of 11 branches unchecked, exactly 92 categories were created (none from the excluded
+branches) with the correct 3-level `itilcategories_id` hierarchy — "Accessoires" confirmed at
+level 3 with its parenthetical content correctly landing in `comment`, not a level-4 category.
+Screenshot of Configuration > Intitulés > Catégories ITIL compared directly against the requested
+structure. Local suite green (phpunit 5/5, phpstan clean, php-cs-fixer clean).
+
 ### Sprint 16 — ticket categories (ITIL types) and element states (2026-08-10)
 
 Two more items from the completeness audit, requested explicitly with a precise reference list for

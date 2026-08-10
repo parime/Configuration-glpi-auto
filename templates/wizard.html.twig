@@ -13,6 +13,21 @@
  # -------------------------------------------------------------------------
  #}
 
+{% macro category_tree(nodes) %}
+  <ul class="cga-tree">
+    {% for node in nodes %}
+      <li>
+        {% if node.icon is defined %}<span class="cga-category-tree-icon" style="display: none;">{{ node.icon }}</span>{% endif %}
+        {{ node.name }}
+        {% if node.comment is defined %}<span class="text-muted small"> — {{ node.comment }}</span>{% endif %}
+        {% if node.children is defined and node.children|length %}
+          {{ _self.category_tree(node.children) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
+
 <div class="card">
   <div class="card-body">
 
@@ -208,7 +223,7 @@
       {# ---------------------------------------------------------------- Étape 5 : Catégories #}
       <div class="cga-wizard-step" data-step="5" style="display: none;">
         <h3 class="mb-1">{{ __('Étape 5 : Catégories de tickets', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : une catégorie de départ par type de ticket ITIL (Incident, Demande, Problème, Changement) — renommables et complétables ensuite dans GLPI.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : une arborescence de catégories thématiques (IT, Bâtiment, Flotte, RH...), pas une par type ITIL — le type (Incident/Demande) est déjà géré nativement par GLPI. Décochez les branches qui ne s\'appliquent pas à votre organisation.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
           <input type="hidden" name="category_enabled" value="0">
@@ -220,23 +235,51 @@
             id="cga-category-enabled"
             {{ config.category_enabled|default(0) ? 'checked' : '' }}
           >
-          <label class="form-check-label" for="cga-category-enabled">{{ __('Créer les catégories de tickets standards', 'configurationglpiauto') }}</label>
+          <label class="form-check-label" for="cga-category-enabled">{{ __('Créer les catégories de tickets', 'configurationglpiauto') }}</label>
         </div>
 
-        <ul class="list-group" id="cga-category-preview" style="max-width: 480px; display: none;">
-          {% for category in categories_preview %}
-            <li class="list-group-item">
-              <strong>{{ category.name }}</strong>
-              <span class="text-muted">
-                —
-                {%- if category.is_incident %} {{ __('Incident', 'configurationglpiauto') }}{% endif -%}
-                {%- if category.is_request %} {{ __('Demande', 'configurationglpiauto') }}{% endif -%}
-                {%- if category.is_problem %} {{ __('Problème', 'configurationglpiauto') }}{% endif -%}
-                {%- if category.is_change %} {{ __('Changement', 'configurationglpiauto') }}{% endif -%}
-              </span>
-            </li>
-          {% endfor %}
-        </ul>
+        <div id="cga-category-fields" style="display: none;">
+          <div class="form-check form-switch mb-3">
+            <input type="hidden" name="category_icons_enabled" value="0">
+            <input
+              type="checkbox"
+              name="category_icons_enabled"
+              value="1"
+              class="form-check-input"
+              id="cga-category-icons-enabled"
+              {{ config.category_icons_enabled|default(0) ? 'checked' : '' }}
+            >
+            <label class="form-check-label" for="cga-category-icons-enabled">{{ __('Ajouter des icônes (visibles dans la liste, le nom lui-même reste sans icône)', 'configurationglpiauto') }}</label>
+          </div>
+
+          <div class="row mb-3">
+            {% for branch in categories_preview %}
+              <div class="col-6">
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    name="category_branches[]"
+                    value="{{ branch.key }}"
+                    class="form-check-input cga-category-branch-toggle"
+                    id="cga-category-branch-{{ branch.key }}"
+                    data-branch="{{ branch.key }}"
+                    {{ branch.key in category_branches ? 'checked' : '' }}
+                  >
+                  <label class="form-check-label" for="cga-category-branch-{{ branch.key }}">{{ branch.icon }} {{ branch.name }}</label>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div id="cga-category-preview">
+            {% for branch in categories_preview %}
+              <div class="cga-category-branch-preview mb-2" data-branch="{{ branch.key }}">
+                <strong>{{ branch.icon }} {{ branch.name }}</strong>
+                {{ _self.category_tree(branch.children) }}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
       </div>
 
       {# ---------------------------------------------------------------- Étape 6 : Statuts des éléments #}
@@ -443,12 +486,32 @@
   toggleOlaFields();
 
   var categoryEnabledInput = document.getElementById('cga-category-enabled');
-  var categoryPreview = document.getElementById('cga-category-preview');
-  function toggleCategoryPreview() {
-    categoryPreview.style.display = categoryEnabledInput.checked ? '' : 'none';
+  var categoryFields = document.getElementById('cga-category-fields');
+  var categoryIconsEnabledInput = document.getElementById('cga-category-icons-enabled');
+  var categoryPreviewIcons = document.querySelectorAll('.cga-category-tree-icon');
+  var categoryBranchToggles = document.querySelectorAll('.cga-category-branch-toggle');
+  function toggleCategoryFields() {
+    categoryFields.style.display = categoryEnabledInput.checked ? '' : 'none';
   }
-  categoryEnabledInput.addEventListener('change', toggleCategoryPreview);
-  toggleCategoryPreview();
+  function toggleCategoryIcons() {
+    categoryPreviewIcons.forEach(function (icon) {
+      icon.style.display = categoryIconsEnabledInput.checked ? '' : 'none';
+    });
+  }
+  function toggleCategoryBranchPreview(toggle) {
+    var preview = document.querySelector('.cga-category-branch-preview[data-branch="' + toggle.dataset.branch + '"]');
+    if (preview) {
+      preview.style.display = toggle.checked ? '' : 'none';
+    }
+  }
+  categoryEnabledInput.addEventListener('change', toggleCategoryFields);
+  categoryIconsEnabledInput.addEventListener('change', toggleCategoryIcons);
+  categoryBranchToggles.forEach(function (toggle) {
+    toggle.addEventListener('change', function () { toggleCategoryBranchPreview(toggle); });
+    toggleCategoryBranchPreview(toggle);
+  });
+  toggleCategoryFields();
+  toggleCategoryIcons();
 
   var stateEnabledInput = document.getElementById('cga-state-enabled');
   var stateFields = document.getElementById('cga-state-fields');
@@ -977,9 +1040,11 @@
       document.getElementById('cga-summary-sla').textContent = slaSummary;
     }
 
-    document.getElementById('cga-summary-categories').textContent = categoryEnabledInput.checked
-      ? "{{ __('Incidents, Demandes, Problèmes, Changements', 'configurationglpiauto')|e('js') }}"
-      : "{{ __('Aucune', 'configurationglpiauto')|e('js') }}";
+    document.getElementById('cga-summary-categories').textContent = !categoryEnabledInput.checked
+      ? "{{ __('Aucune', 'configurationglpiauto')|e('js') }}"
+      : Array.prototype.filter.call(categoryBranchToggles, function (t) { return t.checked; }).length
+        + ' / ' + categoryBranchToggles.length + ' ' + "{{ __('branches', 'configurationglpiauto')|e('js') }}"
+        + (categoryIconsEnabledInput.checked ? " {{ __('(avec icônes)', 'configurationglpiauto')|e('js') }}" : '');
 
     document.getElementById('cga-summary-states').textContent = !stateEnabledInput.checked
       ? "{{ __('Aucun', 'configurationglpiauto')|e('js') }}"
@@ -1065,8 +1130,19 @@
 
     if (typeof defaults.category_enabled !== 'undefined') {
       categoryEnabledInput.checked = !!defaults.category_enabled;
-      toggleCategoryPreview();
+      toggleCategoryFields();
     }
+    if (defaults.category_branches) {
+      categoryBranchToggles.forEach(function (toggle) {
+        toggle.checked = defaults.category_branches.indexOf(toggle.dataset.branch) !== -1;
+        toggleCategoryBranchPreview(toggle);
+      });
+    }
+    if (typeof defaults.category_icons_enabled !== 'undefined') {
+      categoryIconsEnabledInput.checked = !!defaults.category_icons_enabled;
+      toggleCategoryIcons();
+    }
+
     if (typeof defaults.state_enabled !== 'undefined') {
       stateEnabledInput.checked = !!defaults.state_enabled;
       toggleStateFields();
