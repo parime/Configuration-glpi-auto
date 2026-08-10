@@ -9,6 +9,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 16 — ticket categories (ITIL types) and element states (2026-08-10)
+
+Two more items from the completeness audit, requested explicitly with a precise reference list for
+the second one: ITIL-typed ticket categories, and the 14 asset/element states GLPI ships with
+*none* of by default (confirmed: `glpi_states` is empty on a fresh 11.0.8 install — a genuine gap,
+not a cosmetic one). Neither is a per-entity/per-client concept like calendar/SLA — a category
+tree or a status list means the same thing across the whole instance, so both are instance-wide
+(`entities_id => 0`, `is_recursive => 1`), with no per-client wizard panel needed.
+
+#### Added
+- `CategoryBuilder`: 4 starting `ITILCategory` rows (Incidents/Demandes/Problèmes/Changements),
+  one per GLPI's native `is_incident`/`is_request`/`is_problem`/`is_change` flags — a defensible
+  universal starting point (unlike the entity tree, ITIL's 4 base types aren't business-specific),
+  admin renames/extends natively in GLPI afterward.
+- `StateBuilder`: the 14 states, each with the exact name/comment provided, plus:
+  - **Visibility** (`DropdownVisibility` rows) — confirmed by reading `State::post_getFromDB()`
+    that a visibility field defaults to *not visible* unless an explicit row says otherwise (the
+    all-visible default only applies to GLPI's own blank "add new state" form), so only the ~9
+    itemtypes that should show "Oui" (Computer, Phone, SoftwareLicense, Line, Contract, Unmanaged,
+    Monitor, Peripheral, Printer) need a row — not the full ~30-itemtype list with "Non".
+  - **Icons**, gated behind a "state_icons_enabled" checkbox, stored as a `DropdownTranslation`
+    (fr_FR, field `name`) — never on the `name` field itself, per instruction. Caught during
+    validation: the translation `value` renders as *escaped plain text* in GLPI's UI, not HTML —
+    an `<i class="ti ...">` tag showed up literally instead of rendering, so the icon had to
+    become a plain Unicode emoji prepended to the name instead, not markup. Fixed before this
+    reached the user.
+- Wizard grows two steps (5 "Catégories", 6 "Statuts des éléments"; Personnalisation/Récapitulatif
+  shift to 7/8), each with a read-only preview (categories: name + ITIL type; states: name, with
+  the icon shown/hidden live as the icon checkbox is toggled) before anything is created.
+- `ConfigurationProfile::getSuggestedDefaults()`: both features suggested on for every non-minimal
+  profile — unlike calendar/SLA they don't vary by org size or business model.
+
+Validated against the real GLPI 11.0.8 test instance via Playwright: both preview lists render
+correctly (4/14 rows), finish flash message confirms creation, and in the database: 4
+`glpi_itilcategories` with the right flags, 14 `glpi_states` with the exact names/comments, 126
+`glpi_dropdownvisibilities` rows (9 × 14, matching the intended "Oui" grid) and 28
+`glpi_dropdowntranslations` rows (GLPI auto-mirrors `name` into `completename`). Screenshot of
+Configuration > Intitulés > Statuts des éléments compared directly against the reference — emoji
+icons render correctly next to plain-text names, matching what was asked. Local suite green
+(phpunit 5/5, phpstan clean, php-cs-fixer clean).
+
 ### Sprint 15 — OLA, the internal commitment behind the SLA (2026-08-10)
 
 Following a completeness audit against ITIL/ISO27001/GLPI best practices (requested by the user —

@@ -152,6 +152,10 @@ class ConfigurationProfile extends CommonDBTM
             'calendar_enabled' => true, 'calendar_days' => [1, 2, 3, 4, 5], 'calendar_begin' => '08:00', 'calendar_end' => '18:00',
             'sla_enabled' => true, 'sla_tiers' => Config::getDefaultSlaTiers(), 'sla_astreinte' => false,
             'ola_enabled' => true, 'ola_tiers' => Config::getDefaultOlaTiers(),
+            // Categories/states are universal ITIL/asset-management scaffolding, useful
+            // regardless of org size or business model — unlike calendar/SLA they don't vary
+            // per profile, so every non-minimal profile suggests the same values here.
+            'category_enabled' => true, 'state_enabled' => true, 'state_icons_enabled' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual
