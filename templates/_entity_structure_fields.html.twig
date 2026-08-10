@@ -20,6 +20,15 @@
 
     <div id="cga-levels-section" class="mt-4 ps-1 border-start border-2">
       <div class="mb-3 ps-2">
+        <label class="form-label" id="cga-toplevel-label">{{ __('Noms réels (optionnel)', 'configurationglpiauto') }}</label>
+        <div id="cga-toplevel-names"></div>
+        <button type="button" class="btn btn-outline-secondary btn-sm mt-1" id="cga-toplevel-add">
+          <i class="ti ti-plus"></i> {{ __('Ajouter', 'configurationglpiauto') }}
+        </button>
+        <div class="form-text" id="cga-toplevel-hint"></div>
+      </div>
+
+      <div class="mb-3 ps-2">
         <label class="form-label">{{ __('Combien de niveaux de sous-entités ?', 'configurationglpiauto') }}</label>
         <input
           type="number"
@@ -35,7 +44,7 @@
       </div>
 
       <div class="mb-3 ps-2">
-        <label class="form-label">{{ __('Nom de chaque niveau', 'configurationglpiauto') }}</label>
+        <label class="form-label" id="cga-levellabels-label">{{ __('Nom de chaque niveau', 'configurationglpiauto') }}</label>
         <div id="cga-level-labels"></div>
       </div>
     </div>
@@ -63,6 +72,7 @@
     background: var(--tblr-border-color, #ccc);
   }
   .cga-tree .ti { margin-right: .35rem; color: var(--tblr-primary, #206bc4); }
+  .cga-toplevel-row { display: flex; gap: .4rem; margin-bottom: .4rem; }
 </style>
 
 <script>
@@ -70,10 +80,30 @@
   var levelsSection = document.getElementById('cga-levels-section');
   var levelsInput = document.getElementById('cga-levels-input');
   var labelsContainer = document.getElementById('cga-level-labels');
+  var levelLabelsLabel = document.getElementById('cga-levellabels-label');
+  var toplevelContainer = document.getElementById('cga-toplevel-names');
+  var toplevelAddBtn = document.getElementById('cga-toplevel-add');
+  var toplevelLabel = document.getElementById('cga-toplevel-label');
+  var toplevelHint = document.getElementById('cga-toplevel-hint');
   var previewEl = document.getElementById('cga-tree-preview');
   var captionEl = document.getElementById('cga-tree-caption');
   var initialLabels = {{ level_labels|json_encode|raw }};
+  var initialTopNames = {{ top_level_names|default([])|json_encode|raw }};
   var maxLevels = {{ max_levels }};
+  var texts = {
+    msp: {
+      toplevel: "{{ __('Noms de vos clients (optionnel)', 'configurationglpiauto')|e('js') }}",
+      hint: "{{ __('Laissez vide pour une seule branche modèle nommée \"Client\" — sinon, une branche complète sera créée pour chaque nom.', 'configurationglpiauto')|e('js') }}",
+      placeholder: "{{ __('Ex : Entreprise Dupont', 'configurationglpiauto')|e('js') }}",
+      levelLabels: "{{ __('Nom de chaque niveau sous un client', 'configurationglpiauto')|e('js') }}"
+    },
+    same: {
+      toplevel: "{{ __('Noms réels du premier niveau (optionnel)', 'configurationglpiauto')|e('js') }}",
+      hint: "{{ __('Laissez vide pour une seule branche modèle — sinon, une branche complète sera créée pour chaque nom.', 'configurationglpiauto')|e('js') }}",
+      placeholder: "{{ __('Ex : Paris, Lyon...', 'configurationglpiauto')|e('js') }}",
+      levelLabels: "{{ __('Nom des niveaux suivants', 'configurationglpiauto')|e('js') }}"
+    }
+  };
 
   function escapeHtml(str) {
     var div = document.createElement('div');
@@ -116,6 +146,45 @@
     });
   }
 
+  function toplevelRows() {
+    return Array.prototype.slice.call(toplevelContainer.querySelectorAll('.cga-toplevel-input'));
+  }
+
+  function addToplevelRow(value) {
+    var row = document.createElement('div');
+    row.className = 'cga-toplevel-row';
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'top_level_name[]';
+    input.className = 'form-control form-control-sm cga-toplevel-input';
+    input.value = value || '';
+    input.addEventListener('input', renderPreview);
+    var removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'btn btn-outline-danger btn-sm';
+    removeBtn.innerHTML = '<i class="ti ti-x"></i>';
+    removeBtn.addEventListener('click', function () {
+      row.remove();
+      renderPreview();
+    });
+    row.appendChild(input);
+    row.appendChild(removeBtn);
+    toplevelContainer.appendChild(row);
+  }
+
+  function rebuildToplevelInputs() {
+    toplevelContainer.innerHTML = '';
+    if (initialTopNames.length) {
+      initialTopNames.forEach(function (name) { addToplevelRow(name); });
+    } else {
+      addToplevelRow('');
+    }
+  }
+
+  function topLevelNames() {
+    return toplevelRows().map(function (input) { return input.value.trim(); }).filter(function (v) { return v !== ''; });
+  }
+
   // Only ever expands the "A" branch one level deeper — the "B" branch stays a leaf. Showing
   // the full 2^n tree for 5 levels would be unreadable; this still conveys "each node can have
   // several children of the next level" without it, backed up by the caption text below.
@@ -131,6 +200,19 @@
       + '</ul>';
   }
 
+  // Real top-level names are known exactly, so build the real tree instead of the "A"/"B"
+  // illustrative approximation used when nothing's been named yet. `names` is a flat chain,
+  // root-relative (e.g. ["Client A", "Site", "Service"]) — one <li> per call, nested <ul> for
+  // the rest of the chain, same shape buildBranchHtml() below produces.
+  function buildChainLi(names) {
+    if (!names.length) {
+      return '';
+    }
+    var restHtml = buildChainLi(names.slice(1));
+    return '<li><i class="ti ti-corner-down-right"></i>' + escapeHtml(names[0])
+      + (restHtml ? '<ul class="cga-tree">' + restHtml + '</ul>' : '') + '</li>';
+  }
+
   function renderPreview() {
     var mode = currentMode();
     levelsSection.style.display = mode === 'mono' ? 'none' : '';
@@ -141,21 +223,39 @@
       return;
     }
 
-    var labels = levelLabels();
     var isMsp = mode === 'multi_msp';
+    var t = isMsp ? texts.msp : texts.same;
+    toplevelLabel.textContent = t.toplevel;
+    toplevelHint.textContent = t.hint;
+    levelLabelsLabel.textContent = t.levelLabels;
+    toplevelRows().forEach(function (input) { input.placeholder = t.placeholder; });
+
+    var labels = levelLabels();
+    var names = topLevelNames();
     var rootLabel = isMsp ? 'Votre société (MSP)' : 'Entité racine';
-    var branchLabels = isMsp ? ['Client'].concat(labels) : labels;
-    var html = '<ul class="cga-tree"><li><i class="ti ti-building"></i>' + escapeHtml(rootLabel)
-      + buildBranchHtml(branchLabels, 0) + '</li></ul>';
-    previewEl.innerHTML = html;
-    captionEl.textContent = "{{ __('Chaque nœud peut avoir plusieurs enfants du niveau suivant — seule une branche est développée ici pour rester lisible.', 'configurationglpiauto')|e('js') }}";
+    var restLabels = isMsp ? labels : labels.slice(1);
+
+    var branchesUl;
+    if (names.length) {
+      var items = names.map(function (name) { return buildChainLi([name].concat(restLabels)); }).join('');
+      branchesUl = '<ul class="cga-tree">' + items + '</ul>';
+      captionEl.textContent = '';
+    } else {
+      var branchLabels = isMsp ? ['Client'].concat(labels) : labels;
+      branchesUl = buildBranchHtml(branchLabels, 0);
+      captionEl.textContent = "{{ __('Aucun nom réel saisi : aperçu d\'une branche modèle avec deux exemples.', 'configurationglpiauto')|e('js') }}";
+    }
+
+    previewEl.innerHTML = '<ul class="cga-tree"><li><i class="ti ti-building"></i>' + escapeHtml(rootLabel) + branchesUl + '</li></ul>';
   }
 
+  toplevelAddBtn.addEventListener('click', function () { addToplevelRow(''); renderPreview(); });
   document.querySelectorAll('.cga-mode-radio').forEach(function (radio) {
     radio.addEventListener('change', renderPreview);
   });
   levelsInput.addEventListener('input', rebuildLevelInputs);
 
+  rebuildToplevelInputs();
   rebuildLevelInputs();
 })();
 </script>

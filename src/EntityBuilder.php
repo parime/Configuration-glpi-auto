@@ -20,20 +20,23 @@ namespace GlpiPlugin\Configurationglpiauto;
 use Entity;
 
 /**
- * Turns a Config (entity_mode/entity_levels/level_labels) into real GLPI Entities, matching
- * exactly the shape shown in the live preview on the settings screen. Deliberately simple: one
- * template branch, not a bulk multi-client generator — mono-entité creates nothing (the GLPI
- * root entity already is the single entity), multi-entité (same company) creates one chain of
- * entities (one per configured level), and multi-entité (MSP) creates one "Client" placeholder
- * entity with that same chain nested under it. The admin renames/duplicates the result via
- * GLPI's own Entity screens afterward — this only has to get the *shape* right.
+ * Turns a Config (entity_mode/entity_levels/level_labels/top_level_names) into real GLPI
+ * Entities, matching exactly the shape shown in the live preview. mono-entité creates nothing
+ * (the GLPI root entity already is the single entity). For the two multi-entité modes, the
+ * *first* branching level — the MSP's client, or the same-company mode's first configured
+ * level — is repeated once per name in top_level_names (e.g. real client names, or real site
+ * names); the remaining configured levels are appended beneath each one as a template chain. If
+ * top_level_names is empty (nothing decided yet), falls back to a single generic-named branch,
+ * same behaviour as before this existed. The admin renames/duplicates the template chain's
+ * entities afterward via GLPI's own Entity screens — this only has to get the *shape* right.
  */
 class EntityBuilder
 {
     private const DEFAULT_ROOT_ENTITY_ID = 0;
 
     /**
-     * @return string[] Names of the entities that now exist along the built branch, root first.
+     * @return string[][] One array per created branch (root-relative, top name first), e.g.
+     *                     [['Client A', 'Site', 'Service'], ['Client B', 'Site', 'Service']].
      */
     public function build(Config $config, int $rootEntityId = self::DEFAULT_ROOT_ENTITY_ID): array
     {
@@ -44,25 +47,54 @@ class EntityBuilder
         }
 
         $labels = $config->getLevelLabels();
-        $parentId = $rootEntityId;
-        $created = [];
+        $isMsp = $mode === Config::MODE_MULTI_MSP;
 
-        if ($mode === Config::MODE_MULTI_MSP) {
-            $parentId = $this->getOrCreateChild($parentId, __('Client', 'configurationglpiauto'));
-            $created[] = __('Client', 'configurationglpiauto');
+        // MSP: the client name is a level of its own, ABOVE the configured levels (all of
+        // `$labels` still applies beneath each client). Same-company: the first configured
+        // level IS the named entity, so only `$labels[1..]` remains to chain beneath it.
+        $restLabels = $isMsp ? $labels : array_slice($labels, 1);
+        $defaultTopName = $isMsp ? __('Client', 'configurationglpiauto') : ($labels[0] ?? __('Niveau 1', 'configurationglpiauto'));
+
+        $topNames = $config->getTopLevelNames();
+        if (empty($topNames)) {
+            $topNames = [$defaultTopName];
         }
 
-        foreach ($labels as $label) {
-            $parentId = $this->getOrCreateChild($parentId, $label);
-            $created[] = $label;
+        $branches = [];
+        foreach ($topNames as $topName) {
+            $parentId = $rootEntityId;
+            $branch = [];
+
+            $parentId = $this->getOrCreateChild($parentId, $topName);
+            $branch[] = $topName;
+
+            foreach ($restLabels as $label) {
+                $parentId = $this->getOrCreateChild($parentId, $label);
+                $branch[] = $label;
+            }
+
+            $branches[] = $branch;
         }
 
-        return $created;
+        return $branches;
     }
 
     /**
-     * Idempotent: re-running build() (e.g. after tweaking a level's label) never creates a
-     * duplicate sibling, it reuses the existing entity of that name under that parent.
+     * Human-readable summary of what build() created/reused, e.g. "Client A > Site > Service ;
+     * Client B > Site > Service" — for the "structure applied" confirmation message.
+     */
+    public static function describe(array $branches): string
+    {
+        return implode(' ; ', array_map(
+            static fn (array $branch): string => implode(' > ', $branch),
+            $branches
+        ));
+    }
+
+    /**
+     * Idempotent: re-running build() (e.g. after tweaking a label or adding a new client name)
+     * never creates a duplicate sibling, it reuses the existing entity of that name under that
+     * parent.
      */
     private function getOrCreateChild(int $parentId, string $name): int
     {

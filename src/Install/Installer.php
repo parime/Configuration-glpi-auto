@@ -74,6 +74,7 @@ final class Installer
                 `entity_mode` varchar(32) NOT NULL DEFAULT 'mono',
                 `entity_levels` int NOT NULL DEFAULT 1,
                 `level_labels` text,
+                `top_level_names` text,
                 `configurationprofiles_id` int {$keySign} NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
@@ -83,16 +84,16 @@ final class Installer
 
             (new Config())->add(Config::getDefaults() + ['id' => 1]);
         } else {
-            // Upgrade path for instances installed before the wizard's profile-selection step
-            // (Sprint 4) added this column — addField() is idempotent, unlike the raw CREATE
-            // TABLE above, same pattern already used on the sibling glpi-vulnerability-manager
-            // plugin.
+            // Upgrade path for instances installed before these columns existed — addField() is
+            // idempotent, unlike the raw CREATE TABLE above, same pattern already used on the
+            // sibling glpi-vulnerability-manager plugin.
             $migration->addField(
                 self::CONFIGS_TABLE,
                 'configurationprofiles_id',
                 'integer',
                 ['value' => 0]
             );
+            $migration->addField(self::CONFIGS_TABLE, 'top_level_names', 'text');
         }
 
         Profile::install($migration);

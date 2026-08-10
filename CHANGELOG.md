@@ -9,7 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Sprint 4 (in progress) — Setup wizard (2026-08-10)
+### Sprint 5 (in progress) — Real, named entity branches (2026-08-10)
+
+#### Added
+- Optional "real names" field on the entity-structure step (wizard and standalone settings
+  screen): a dynamic add/remove list — client names in MSP mode, first-level entity names in
+  same-company mode (e.g. real site names). `EntityBuilder` now creates one full branch per
+  name instead of a single generic-labelled template branch; still idempotent (re-applying
+  after adding a name only creates what's missing). Leaving the list empty keeps the previous
+  behaviour (one generic template branch) unchanged.
+- The live preview now renders the *exact* real tree (one line per real name) once names are
+  given, instead of the illustrative "A"/"B" two-example approximation — which is now only
+  shown while no real names have been entered yet.
+- `Config.top_level_names`, migrated in for existing installs.
+
+Validated against a real GLPI 11.0.8 instance: entering three client names in the wizard
+(Entreprise Dupont/Martin/Petit) produced exactly three full branches in `glpi_entities`; leaving
+the field empty still produces the single generic-template branch as before.
+
+### Sprint 4 — Setup wizard (2026-08-10)
 
 #### Added
 - `front/wizard.php` + `templates/wizard.html.twig`: the actual "assistant graphique" from the
