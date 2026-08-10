@@ -17,10 +17,12 @@
 
 use GlpiPlugin\Configurationglpiauto\BrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\CalendarBuilder;
+use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
+use GlpiPlugin\Configurationglpiauto\StateBuilder;
 
 Session::checkRight(Config::$rightname, READ);
 
@@ -92,6 +94,9 @@ if (isset($_POST['finish'])) {
         }
     }
 
+    $categoriesCreated = (new CategoryBuilder())->build($config);
+    $statesCreated = (new StateBuilder())->build($config);
+
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
 
     $messages = [];
@@ -109,6 +114,12 @@ if (isset($_POST['finish'])) {
     }
     if ($perClientCount > 0) {
         $messages[] = sprintf(__('%d client(s) avec des réglages personnalisés.', 'configurationglpiauto'), $perClientCount);
+    }
+    if ($categoriesCreated !== []) {
+        $messages[] = sprintf(__('%d catégories de tickets créées.', 'configurationglpiauto'), count($categoriesCreated));
+    }
+    if ($statesCreated !== []) {
+        $messages[] = sprintf(__('%d statuts d\'éléments créés.', 'configurationglpiauto'), count($statesCreated));
     }
     if ($brandingApplied) {
         $messages[] = __('Personnalisation graphique appliquée.', 'configurationglpiauto');
@@ -144,6 +155,8 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'ola_tiers'        => $config->getOlaTiers(),
     'priority_levels'  => Config::PRIORITY_LEVELS,
     'priority_labels'  => $priorityLabels,
+    'categories_preview' => CategoryBuilder::getCategoriesPreview(),
+    'states_preview'   => StateBuilder::getStatesPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 

@@ -120,6 +120,9 @@ class Config extends CommonDBTM
             'sla_astreinte' => 0,
             'ola_enabled' => 0,
             'ola_tiers' => json_encode(self::DEFAULT_OLA_TIERS),
+            'category_enabled' => 0,
+            'state_enabled' => 0,
+            'state_icons_enabled' => 0,
         ];
     }
 
@@ -255,6 +258,18 @@ class Config extends CommonDBTM
 
         if (isset($input['ola_tiers']) && is_array($input['ola_tiers'])) {
             $input['ola_tiers'] = json_encode($this->sanitizeSlaTiers($input['ola_tiers'], self::DEFAULT_OLA_TIERS));
+        }
+
+        if (isset($input['category_enabled'])) {
+            $input['category_enabled'] = !empty($input['category_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['state_enabled'])) {
+            $input['state_enabled'] = !empty($input['state_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['state_icons_enabled'])) {
+            $input['state_icons_enabled'] = !empty($input['state_icons_enabled']) ? 1 : 0;
         }
 
         return $input;
