@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 3 (in progress) — Apply the entity structure for real (2026-08-10)
+
+#### Added
+- `EntityBuilder` (`src/EntityBuilder.php`): turns a saved `Config` into real GLPI `Entity`
+  records, matching the settings screen's live preview shape exactly — mono-entité creates
+  nothing (the GLPI root entity already is the single entity), multi-entité (same company)
+  creates one template chain (one entity per configured level), multi-entité (MSP) nests that
+  same chain under a "Client" placeholder entity. Idempotent: re-applying after tweaking a
+  level's label reuses existing entities instead of duplicating them.
+- "Enregistrer et créer les entités" button on the settings screen (`front/config.php`), next
+  to the existing "Enregistrer" (save-only), with a confirmation prompt since it creates real
+  data. Validated against a real GLPI 11.0.8 instance: applying `multi_same_company` with
+  levels `Site`/`Service` created exactly `Entité racine > Site > Service` in
+  `glpi_entities`, confirmed a second identical apply created zero duplicates.
+
 ## [0.1.0] - 2026-08-10
 
 First real release. Nothing before this tag ever installed — see the historical note below.

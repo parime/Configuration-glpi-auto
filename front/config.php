@@ -1,6 +1,7 @@
 <?php
 
 use GlpiPlugin\Configurationglpiauto\Config;
+use GlpiPlugin\Configurationglpiauto\EntityBuilder;
 
 Session::checkRight(Config::$rightname, READ);
 
@@ -10,6 +11,24 @@ if (isset($_POST['update'])) {
     $config = Config::getConfig();
     $config->update($_POST + ['id' => $config->getID()]);
     Session::addMessageAfterRedirect(__('Configuration enregistrée.', 'configurationglpiauto'));
+    Html::back();
+}
+
+if (isset($_POST['apply'])) {
+    Session::checkRight(Config::$rightname, UPDATE);
+
+    $config = Config::getConfig();
+    $config->update($_POST + ['id' => $config->getID()]);
+    $created = (new EntityBuilder())->build($config);
+
+    if (empty($created)) {
+        Session::addMessageAfterRedirect(__('Mode mono-entité : aucune entité à créer.', 'configurationglpiauto'));
+    } else {
+        Session::addMessageAfterRedirect(sprintf(
+            __('Structure appliquée : %s. Renommez/dupliquez-la depuis Administration > Entités.', 'configurationglpiauto'),
+            implode(' > ', $created)
+        ));
+    }
     Html::back();
 }
 
