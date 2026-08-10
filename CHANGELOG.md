@@ -9,7 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Sprint 8 (in progress) — SLA step, and CI was never actually green (2026-08-10)
+### Sprint 9 (in progress) — Arbitrary entity tree, not just uniform levels (2026-08-10)
+
+The entity-structure step's data model changed from "N levels, same shape repeated under every
+top-level name" to a genuinely arbitrary tree: any node can have any number of children, at any
+depth, independent of its siblings — e.g. "Client A" has 6 children and one of those has 3
+children of its own while another has 2, and "Client B" has none.
+
+#### Added
+- `Config::getEntityTree()`/`entity_tree` column (JSON, replaces `entity_levels`/`level_labels`/
+  `top_level_names`): an array of `{name, children}` nodes, recursively. `prepareInput()`
+  sanitizes the whole tree server-side (trims names, drops empty-named nodes, caps depth at
+  `MAX_LEVELS`) regardless of what the client sends.
+- `_entity_structure_fields.html.twig` rewritten as a real recursive tree editor: each node is a
+  row (name input, "+" add-child button, "×" remove button) with its own children indented
+  beneath; a top-level "+" adds another root node. The whole tree is serialized to one hidden
+  `entity_tree_json` field on every change (rather than kept in sync via indexed input names,
+  which would need renumbering siblings on every add/remove at an arbitrary depth). The live
+  preview now renders the *exact* tree directly — no more "A"/"B" illustrative approximation,
+  since the real shape is always fully known now.
+- `EntityBuilder::build()` rewritten to walk the tree recursively; `describe()`/`topEntityIds()`
+  updated to the new per-top-level-node result shape (`{name, entities_id, count}`).
+
+Validated by building the exact asymmetric structure from the feature request — one client with
+two sub-entities, only one of which has further sub-sub-entities — confirmed correct in
+`glpi_entities` (`Entité racine > client 1 > sous test 1-1 > {sous sous test 1-1-1, sous sous
+test 1-1-2}`, sibling `sous teste 1-2` with none, siblings `client 2`/`client 3` with none).
+
+### Sprint 8 — SLA step, and CI was never actually green (2026-08-10)
 
 #### Added
 - New wizard step "Niveaux de service (SLA)" (now 6 steps, between Calendrier and
