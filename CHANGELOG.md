@@ -9,6 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 10 (in progress) — Profile choice actually does something (2026-08-10)
+
+Step 1 of the wizard ("Quel profil correspond le mieux à votre organisation ?") has always said
+picking a profile would "pré-remplir les prochaines étapes" — until now that was aspirational
+text, the choice was only stored, nothing downstream read it.
+
+#### Added
+- `ConfigurationProfile::getSuggestedDefaults(string $type): array` — per profile type, a
+  starting point for entity mode + calendar + SLA (e.g. "Installation minimale" suggests
+  mono-entité and nothing else; "MSP" suggests multi-entité MSP with a tight 1h/8h SLA;
+  "ISO 27001" suggests the same org shape as ETI/Enterprise but a much tighter 1h/4h SLA, since
+  fast incident acknowledgement is the point of that profile). Deliberately never touches
+  `entity_tree` itself — no realistic way to guess real client/site names — only the mode, so
+  the admin still builds their own tree in step 2. "Personnalisé" returns no suggestions.
+- Picking a profile radio in the wizard now live-applies its suggestions to steps 2-5's fields
+  (entity mode, calendar toggle/days/hours, SLA toggle/hours) — a starting point, not a lock-in;
+  every field stays a normal input the admin can still change in later steps.
+
+Validated with Playwright against a real GLPI 11.0.8 instance: picking "MSP" set entity_mode to
+multi_msp, enabled the calendar, and set SLA to 1h/8h as expected; switching to "Installation
+minimale" afterward correctly switched entity_mode back to mono.
+
 ## [0.4.0] - 2026-08-10
 
 The arbitrary entity tree editor, plus repo hygiene: branch protection on `main`, and the CI
