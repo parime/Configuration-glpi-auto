@@ -9,7 +9,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Sprint 3 (in progress) — Apply the entity structure for real (2026-08-10)
+### Sprint 4 (in progress) — Setup wizard (2026-08-10)
+
+#### Added
+- `front/wizard.php` + `templates/wizard.html.twig`: the actual "assistant graphique" from the
+  plugin's vision, a 3-step JS-driven wizard (progress bar, Précédent/Suivant, no page reload
+  between steps) — Profil (pick a `ConfigurationProfile`) → Entités (the mode/levels/labels
+  live-preview screen, reused as-is) → Récapitulatif (summary of both, "Terminer" creates the
+  entities for real). Reachable from a new "Lancer l'assistant" button on the profiles list.
+- `templates/_entity_structure_fields.html.twig`: the entity-structure fields + live preview
+  extracted out of `config_form.html.twig` into a shared partial so the wizard and the
+  standalone settings screen (kept for quick later adjustments, per explicit request — the
+  wizard isn't the only way in) render and behave identically with one copy of the logic.
+- `Config.configurationprofiles_id`: records which profile the wizard's step 1 selected,
+  migrated in for existing installs via `Migration::addField()`.
+- Validated end-to-end with Playwright against a real GLPI 11.0.8 instance: full 3-step
+  navigation, profile pick, MSP mode with 2 custom level labels, summary correctly reflecting
+  every choice, and "Terminer" producing exactly `Client > Site > Departement` in
+  `glpi_entities` with `configurationprofiles_id` saved.
+
+#### Fixed
+- `ConfigurationProfile::find()` in `front/wizard.php` was called with `['sort_order' => 'ASC']`
+  as the order argument — `CommonDBTM::find()` passes `$order` straight through as GLPI query
+  builder `ORDERBY` criteria, which expects a list of `"field ASC"` strings, not an associative
+  array. The associative form silently ordered by the literal column name `ASC` (which doesn't
+  exist), 500ing with `Unknown column 'ASC' in 'ORDER BY'`. Fixed to `['sort_order ASC']`.
+- GLPI caches compiled Twig templates under `files/_cache` — edits to `.html.twig` files are not
+  picked up automatically on the test image, which briefly made it look like the extracted
+  `_entity_structure_fields.html.twig` partial wasn't being included. Documented in
+  `docker-compose.test.yml`: clear `files/_cache` after any template change.
+
+### Sprint 3 — Apply the entity structure for real (2026-08-10)
 
 #### Added
 - `EntityBuilder` (`src/EntityBuilder.php`): turns a saved `Config` into real GLPI `Entity`

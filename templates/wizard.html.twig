@@ -1,0 +1,134 @@
+<div class="card">
+  <div class="card-body">
+
+    <div class="progress mb-2" style="height: 6px;">
+      <div class="progress-bar" id="cga-wizard-progress" role="progressbar" style="width: 33%;"></div>
+    </div>
+    <p class="text-muted small mb-4" id="cga-wizard-stepindicator"></p>
+
+    <form method="post" action="{{ config('root_doc') }}/plugins/configurationglpiauto/front/wizard.php" id="cga-wizard-form">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+
+      {# ---------------------------------------------------------------- Étape 1 : Profil #}
+      <div class="cga-wizard-step" data-step="1">
+        <h3 class="mb-1">{{ __('Étape 1 : Profil', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Quel profil correspond le mieux à votre organisation ? Ce choix servira à pré-remplir les prochaines étapes de l\'assistant, au fur et à mesure qu\'elles seront ajoutées.', 'configurationglpiauto') }}</p>
+
+        {% for id, profile in profiles %}
+          <div class="form-check mb-2">
+            <input
+              type="radio"
+              name="configurationprofiles_id"
+              value="{{ profile.id }}"
+              class="form-check-input"
+              id="cga-profile-{{ profile.id }}"
+              {{ config.configurationprofiles_id|default(0) == profile.id ? 'checked' : '' }}
+            >
+            <label class="form-check-label" for="cga-profile-{{ profile.id }}">
+              <strong>{{ profile.name }}</strong>
+              {% if profile.description %}<span class="text-muted"> — {{ profile.description }}</span>{% endif %}
+            </label>
+          </div>
+        {% endfor %}
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 2 : Entités #}
+      <div class="cga-wizard-step" data-step="2" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 2 : Structure des entités', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Choisissez la structure d\'entités à mettre en place — l\'aperçu à droite se met à jour en direct.', 'configurationglpiauto') }}</p>
+
+        {% include '@configurationglpiauto/_entity_structure_fields.html.twig' %}
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 3 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="3" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 3 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités.', 'configurationglpiauto') }}</p>
+
+        <ul class="list-group mb-3">
+          <li class="list-group-item">
+            <strong>{{ __('Profil', 'configurationglpiauto') }} :</strong> <span id="cga-summary-profile"></span>
+          </li>
+          <li class="list-group-item">
+            <strong>{{ __('Structure', 'configurationglpiauto') }} :</strong> <span id="cga-summary-mode"></span>
+          </li>
+          <li class="list-group-item">
+            <strong>{{ __('Arborescence', 'configurationglpiauto') }} :</strong> <span id="cga-summary-tree"></span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-4 d-flex gap-2">
+        <button type="button" class="btn btn-outline-secondary" id="cga-wizard-prev">{{ __('Précédent', 'configurationglpiauto') }}</button>
+        <button type="button" class="btn btn-primary" id="cga-wizard-next">{{ __('Suivant', 'configurationglpiauto') }}</button>
+        <button
+          type="submit"
+          name="finish"
+          class="btn btn-primary"
+          id="cga-wizard-finish"
+          style="display: none;"
+          onclick="return confirm('{{ __('Ceci va créer de vraies entités dans GLPI selon la structure choisie. Continuer ?', 'configurationglpiauto')|e('js') }}');"
+        >
+          {{ __('Terminer', 'configurationglpiauto') }}
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  var STEP_COUNT = 3;
+  var currentStep = 1;
+  var steps = document.querySelectorAll('.cga-wizard-step');
+  var progressBar = document.getElementById('cga-wizard-progress');
+  var stepIndicator = document.getElementById('cga-wizard-stepindicator');
+  var prevBtn = document.getElementById('cga-wizard-prev');
+  var nextBtn = document.getElementById('cga-wizard-next');
+  var finishBtn = document.getElementById('cga-wizard-finish');
+  var stepLabels = [
+    "{{ __('Profil', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Entités', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
+  ];
+
+  function fillSummary() {
+    var profileInput = document.querySelector('input[name="configurationprofiles_id"]:checked');
+    var profileLabel = profileInput
+      ? profileInput.closest('.form-check').querySelector('label').textContent.trim()
+      : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+    document.getElementById('cga-summary-profile').textContent = profileLabel;
+
+    var modeInput = document.querySelector('input[name="entity_mode"]:checked');
+    var modeLabel = modeInput
+      ? modeInput.closest('.form-check').querySelector('label').textContent.trim()
+      : '';
+    document.getElementById('cga-summary-mode').textContent = modeLabel;
+
+    var preview = document.getElementById('cga-tree-preview');
+    document.getElementById('cga-summary-tree').innerHTML = preview ? preview.innerHTML : '';
+  }
+
+  function showStep(n) {
+    currentStep = Math.max(1, Math.min(STEP_COUNT, n));
+    steps.forEach(function (stepEl) {
+      stepEl.style.display = (parseInt(stepEl.dataset.step, 10) === currentStep) ? '' : 'none';
+    });
+    progressBar.style.width = Math.round((currentStep / STEP_COUNT) * 100) + '%';
+    stepIndicator.textContent = "{{ __('Étape', 'configurationglpiauto')|e('js') }} " + currentStep + "/" + STEP_COUNT + " — " + stepLabels[currentStep - 1];
+    prevBtn.style.display = currentStep === 1 ? 'none' : '';
+    nextBtn.style.display = currentStep === STEP_COUNT ? 'none' : '';
+    finishBtn.style.display = currentStep === STEP_COUNT ? '' : 'none';
+
+    if (currentStep === STEP_COUNT) {
+      fillSummary();
+    }
+  }
+
+  prevBtn.addEventListener('click', function () { showStep(currentStep - 1); });
+  nextBtn.addEventListener('click', function () { showStep(currentStep + 1); });
+
+  showStep(1);
+})();
+</script>

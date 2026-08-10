@@ -80,6 +80,7 @@ class Config extends CommonDBTM
             'entity_mode' => self::MODE_MONO,
             'entity_levels' => 1,
             'level_labels' => json_encode(['Site']),
+            'configurationprofiles_id' => 0,
         ];
     }
 
@@ -108,6 +109,10 @@ class Config extends CommonDBTM
 
         if (isset($input['entity_levels'])) {
             $input['entity_levels'] = max(1, min(self::MAX_LEVELS, (int) $input['entity_levels']));
+        }
+
+        if (isset($input['configurationprofiles_id'])) {
+            $input['configurationprofiles_id'] = (int) $input['configurationprofiles_id'];
         }
 
         if (isset($input['level_label'])) {
