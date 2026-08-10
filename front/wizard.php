@@ -115,6 +115,11 @@ foreach ($profiles as $profile) {
     $profileDefaults[$profile['id']] = ConfigurationProfile::getSuggestedDefaults($profile['type']);
 }
 
+$priorityLabels = [];
+foreach (Config::PRIORITY_LEVELS as $priority) {
+    $priorityLabels[$priority] = CommonITILObject::getPriorityName($priority);
+}
+
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/wizard.html.twig', [
     'config'           => $config->fields,
     'profiles'         => $profiles,
@@ -122,6 +127,9 @@ foreach ($profiles as $profile) {
     'modes'            => Config::getModes(),
     'max_levels'       => Config::MAX_LEVELS,
     'entity_tree'      => $config->getEntityTree(),
+    'sla_tiers'        => $config->getSlaTiers(),
+    'priority_levels'  => Config::PRIORITY_LEVELS,
+    'priority_labels'  => $priorityLabels,
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 
