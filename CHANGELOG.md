@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-08-10
+
+Sprints 5 through 20: arbitrary per-node entity tree, calendar, SLA/OLA (flat and per-priority),
+per-client/site overrides, graphic branding, a real topical ticket-category tree (11 selectable
+top-level branches, up to 3 levels), element states, GLPI core general settings, and ticket
+templates split by profile (minimal for base users, full qualification for staff). No breaking
+changes — every addition is an opt-in toggle in the wizard, defaulting off except where a
+configuration profile suggests it on.
+
 ### Sprint 20 — simplified template refinements: parent-only categories, real SLA/OLA hiding (2026-08-10)
 
 Direct follow-up to Sprint 19, based on user testing of the real hidden-fields admin tab: the
@@ -819,7 +828,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.5.0
 [0.4.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.4.0
 [0.3.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.3.0
 [0.2.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.2.0
