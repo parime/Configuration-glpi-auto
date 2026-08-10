@@ -29,35 +29,42 @@ use PHPUnit\Framework\TestCase;
  */
 final class EntityBuilderTest extends TestCase
 {
-    public function testDescribeJoinsBranchNamesAndSeparatesBranches(): void
+    public function testDescribeSeparatesTopLevelNodesAndCountsDescendants(): void
     {
-        $branches = [
-            ['names' => ['Client A', 'Site', 'Service'], 'entities_id' => 12],
-            ['names' => ['Client B', 'Site', 'Service'], 'entities_id' => 34],
+        $results = [
+            ['name' => 'Client A', 'entities_id' => 12, 'count' => 3],
+            ['name' => 'Client B', 'entities_id' => 34, 'count' => 0],
         ];
 
         $this->assertSame(
-            'Client A > Site > Service ; Client B > Site > Service',
-            EntityBuilder::describe($branches)
+            'Client A (3 sous-entités) ; Client B',
+            EntityBuilder::describe($results)
         );
     }
 
-    public function testDescribeOnEmptyBranchesIsEmptyString(): void
+    public function testDescribeSingularWhenExactlyOneDescendant(): void
+    {
+        $results = [['name' => 'Client A', 'entities_id' => 12, 'count' => 1]];
+
+        $this->assertSame('Client A (1 sous-entité)', EntityBuilder::describe($results));
+    }
+
+    public function testDescribeOnEmptyResultsIsEmptyString(): void
     {
         $this->assertSame('', EntityBuilder::describe([]));
     }
 
-    public function testTopEntityIdsExtractsEachBranchsTopId(): void
+    public function testTopEntityIdsExtractsEachNodesOwnId(): void
     {
-        $branches = [
-            ['names' => ['Client A'], 'entities_id' => 12],
-            ['names' => ['Client B'], 'entities_id' => 34],
+        $results = [
+            ['name' => 'Client A', 'entities_id' => 12, 'count' => 3],
+            ['name' => 'Client B', 'entities_id' => 34, 'count' => 0],
         ];
 
-        $this->assertSame([12, 34], EntityBuilder::topEntityIds($branches));
+        $this->assertSame([12, 34], EntityBuilder::topEntityIds($results));
     }
 
-    public function testTopEntityIdsOnEmptyBranchesIsEmptyArray(): void
+    public function testTopEntityIdsOnEmptyResultsIsEmptyArray(): void
     {
         $this->assertSame([], EntityBuilder::topEntityIds([]));
     }

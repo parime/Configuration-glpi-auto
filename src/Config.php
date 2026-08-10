@@ -78,9 +78,7 @@ class Config extends CommonDBTM
     {
         return [
             'entity_mode' => self::MODE_MONO,
-            'entity_levels' => 1,
-            'level_labels' => json_encode(['Site']),
-            'top_level_names' => json_encode([]),
+            'entity_tree' => json_encode([]),
             'configurationprofiles_id' => 0,
             'calendar_enabled' => 0,
             'calendar_name' => __('Horaires standard', 'configurationglpiauto'),
@@ -106,23 +104,17 @@ class Config extends CommonDBTM
         return is_array($days) ? array_map('intval', $days) : [];
     }
 
-    public function getLevelLabels(): array
-    {
-        $labels = json_decode((string) ($this->fields['level_labels'] ?? '[]'), true);
-
-        return is_array($labels) ? $labels : [];
-    }
-
     /**
-     * Real names for the top-level branch (client names in MSP mode, first-level entity names
-     * in same-company mode) — optional. Empty means "no real names decided yet", EntityBuilder
-     * then falls back to a single generic template branch, same as before this existed.
+     * The entity tree the admin has built, root-relative: an array of nodes, each
+     * `['name' => string, 'children' => Node[]]` — arbitrary shape, every node can have a
+     * different number of children at a different depth (e.g. "test1" has 2 children, one of
+     * which has 3 children of its own, while "test2" has none). Empty means "nothing built yet".
      */
-    public function getTopLevelNames(): array
+    public function getEntityTree(): array
     {
-        $names = json_decode((string) ($this->fields['top_level_names'] ?? '[]'), true);
+        $tree = json_decode((string) ($this->fields['entity_tree'] ?? '[]'), true);
 
-        return is_array($names) ? $names : [];
+        return is_array($tree) ? $tree : [];
     }
 
     public function prepareInputForUpdate($input)
@@ -141,31 +133,14 @@ class Config extends CommonDBTM
             $input['entity_mode'] = self::MODE_MONO;
         }
 
-        if (isset($input['entity_levels'])) {
-            $input['entity_levels'] = max(1, min(self::MAX_LEVELS, (int) $input['entity_levels']));
-        }
-
         if (isset($input['configurationprofiles_id'])) {
             $input['configurationprofiles_id'] = (int) $input['configurationprofiles_id'];
         }
 
-        if (isset($input['level_label'])) {
-            $levels = isset($input['entity_levels']) ? (int) $input['entity_levels'] : count((array) $input['level_label']);
-            $labels = [];
-            for ($i = 0; $i < $levels; $i++) {
-                $labels[] = trim((string) ($input['level_label'][$i] ?? '')) ?: sprintf(__('Niveau %d', 'configurationglpiauto'), $i + 1);
-            }
-            $input['level_labels'] = json_encode($labels);
-            unset($input['level_label']);
-        }
-
-        if (isset($input['top_level_name'])) {
-            $names = array_values(array_filter(array_map(
-                static fn ($name) => trim((string) $name),
-                (array) $input['top_level_name']
-            ), static fn ($name) => $name !== ''));
-            $input['top_level_names'] = json_encode($names);
-            unset($input['top_level_name']);
+        if (isset($input['entity_tree_json'])) {
+            $tree = json_decode((string) $input['entity_tree_json'], true);
+            $input['entity_tree'] = json_encode(is_array($tree) ? $this->sanitizeTree($tree) : []);
+            unset($input['entity_tree_json']);
         }
 
         if (isset($input['calendar_enabled'])) {
@@ -198,5 +173,38 @@ class Config extends CommonDBTM
         }
 
         return $input;
+    }
+
+    /**
+     * Recursively trims node names, drops nodes left with an empty name, and caps depth at
+     * MAX_LEVELS (guards against a malicious/malformed deeply-nested payload, not a realistic
+     * admin use case).
+     */
+    private function sanitizeTree(array $nodes, int $depth = 1): array
+    {
+        if ($depth > self::MAX_LEVELS) {
+            return [];
+        }
+
+        $clean = [];
+        foreach ($nodes as $node) {
+            if (!is_array($node)) {
+                continue;
+            }
+
+            $name = trim((string) ($node['name'] ?? ''));
+            if ($name === '') {
+                continue;
+            }
+
+            $children = is_array($node['children'] ?? null) ? $node['children'] : [];
+
+            $clean[] = [
+                'name' => $name,
+                'children' => $this->sanitizeTree($children, $depth + 1),
+            ];
+        }
+
+        return $clean;
     }
 }

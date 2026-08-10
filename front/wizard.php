@@ -47,7 +47,7 @@ if (isset($_POST['finish'])) {
 
     $messages = [];
     $messages[] = empty($created)
-        ? __('Mode mono-entité : aucune entité à créer.', 'configurationglpiauto')
+        ? __('Aucune entité à créer (mode mono-entité, ou arborescence vide).', 'configurationglpiauto')
         : sprintf(__('Structure créée : %s.', 'configurationglpiauto'), EntityBuilder::describe($created));
     if ($calendarId !== null) {
         $messages[] = __('Calendrier créé et assigné.', 'configurationglpiauto');
@@ -69,13 +69,12 @@ $config = Config::getConfig();
 $profiles = (new ConfigurationProfile())->find(['is_active' => 1], ['sort_order ASC']);
 
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/wizard.html.twig', [
-    'config'          => $config->fields,
-    'profiles'        => $profiles,
-    'modes'           => Config::getModes(),
-    'max_levels'      => Config::MAX_LEVELS,
-    'level_labels'    => $config->getLevelLabels(),
-    'top_level_names' => $config->getTopLevelNames(),
-    'csrf_token'      => Session::getNewCSRFToken(),
+    'config'      => $config->fields,
+    'profiles'    => $profiles,
+    'modes'       => Config::getModes(),
+    'max_levels'  => Config::MAX_LEVELS,
+    'entity_tree' => $config->getEntityTree(),
+    'csrf_token'  => Session::getNewCSRFToken(),
 ]);
 
 Html::footer();

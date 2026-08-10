@@ -20,96 +20,93 @@ namespace GlpiPlugin\Configurationglpiauto;
 use Entity;
 
 /**
- * Turns a Config (entity_mode/entity_levels/level_labels/top_level_names) into real GLPI
- * Entities, matching exactly the shape shown in the live preview. mono-entité creates nothing
- * (the GLPI root entity already is the single entity). For the two multi-entité modes, the
- * *first* branching level — the MSP's client, or the same-company mode's first configured
- * level — is repeated once per name in top_level_names (e.g. real client names, or real site
- * names); the remaining configured levels are appended beneath each one as a template chain. If
- * top_level_names is empty (nothing decided yet), falls back to a single generic-named branch,
- * same behaviour as before this existed. The admin renames/duplicates the template chain's
- * entities afterward via GLPI's own Entity screens — this only has to get the *shape* right.
+ * Turns a Config's entity_tree (an arbitrary tree of named nodes — see
+ * Config::getEntityTree()) into real GLPI Entities, exactly matching whatever shape the admin
+ * built in the live preview: any node can have any number of children, at any depth, unrelated
+ * to its siblings (e.g. "Client A" has 6 children, one of which has 3 children of its own, while
+ * "Client B" has none). An empty tree (mono-entité, or nothing built yet) creates nothing.
+ * Idempotent: reuses an existing entity of the same name under the same parent instead of
+ * duplicating, so re-running after editing the tree only creates what's actually new.
  */
 class EntityBuilder
 {
     private const DEFAULT_ROOT_ENTITY_ID = 0;
 
     /**
-     * @return array<int, array{names: string[], entities_id: int}> One entry per created branch
-     *         (root-relative, top name first), `entities_id` is the branch's topmost entity —
-     *         e.g. [['names' => ['Client A', 'Site', 'Service'], 'entities_id' => 12], ...].
+     * @return array<int, array{name: string, entities_id: int, count: int}> One entry per
+     *         top-level node, `entities_id` is that node's own entity, `count` is how many
+     *         descendant entities were created/reused beneath it.
      */
     public function build(Config $config, int $rootEntityId = self::DEFAULT_ROOT_ENTITY_ID): array
     {
-        $mode = $config->fields['entity_mode'] ?? Config::MODE_MONO;
+        $results = [];
 
-        if ($mode === Config::MODE_MONO) {
-            return [];
-        }
-
-        $labels = $config->getLevelLabels();
-        $isMsp = $mode === Config::MODE_MULTI_MSP;
-
-        // MSP: the client name is a level of its own, ABOVE the configured levels (all of
-        // `$labels` still applies beneath each client). Same-company: the first configured
-        // level IS the named entity, so only `$labels[1..]` remains to chain beneath it.
-        $restLabels = $isMsp ? $labels : array_slice($labels, 1);
-        $defaultTopName = $isMsp ? __('Client', 'configurationglpiauto') : ($labels[0] ?? __('Niveau 1', 'configurationglpiauto'));
-
-        $topNames = $config->getTopLevelNames();
-        if (empty($topNames)) {
-            $topNames = [$defaultTopName];
-        }
-
-        $branches = [];
-        foreach ($topNames as $topName) {
-            $parentId = $rootEntityId;
-            $names = [];
-
-            $parentId = $this->getOrCreateChild($parentId, $topName);
-            $topEntityId = $parentId;
-            $names[] = $topName;
-
-            foreach ($restLabels as $label) {
-                $parentId = $this->getOrCreateChild($parentId, $label);
-                $names[] = $label;
+        foreach ($config->getEntityTree() as $node) {
+            $name = (string) ($node['name'] ?? '');
+            if ($name === '') {
+                continue;
             }
 
-            $branches[] = ['names' => $names, 'entities_id' => $topEntityId];
+            $topEntityId = $this->getOrCreateChild($rootEntityId, $name);
+            $count = $this->createChildren($topEntityId, is_array($node['children'] ?? null) ? $node['children'] : []);
+
+            $results[] = ['name' => $name, 'entities_id' => $topEntityId, 'count' => $count];
         }
 
-        return $branches;
+        return $results;
     }
 
     /**
-     * Human-readable summary of what build() created/reused, e.g. "Client A > Site > Service ;
-     * Client B > Site > Service" — for the "structure applied" confirmation message.
+     * Human-readable summary of what build() created/reused, e.g. "Client A (9 sous-entités) ;
+     * Client B" — for the "structure applied" confirmation message. Deliberately not translated
+     * (plain string, no __()/_n()) so it stays a pure function testable without a GLPI bootstrap
+     * — see EntityBuilderTest.
+     *
+     * @param array<int, array{name: string, entities_id: int, count: int}> $results
      */
-    public static function describe(array $branches): string
+    public static function describe(array $results): string
     {
         return implode(' ; ', array_map(
-            static fn (array $branch): string => implode(' > ', $branch['names']),
-            $branches
+            static fn (array $r): string => $r['count'] > 0
+                ? sprintf('%s (%d sous-entité%s)', $r['name'], $r['count'], $r['count'] > 1 ? 's' : '')
+                : $r['name'],
+            $results
         ));
     }
 
     /**
-     * Topmost entity ID of every branch build() created/reused — the ID to hang a calendar (or
-     * any other future per-branch setting) off, since sub-entities inherit from it by default.
+     * Top-level entity IDs — the ones to hang a calendar/SLA/branding setting off, since
+     * sub-entities inherit from their parent by default.
      *
-     * @param array<int, array{names: string[], entities_id: int}> $branches
+     * @param array<int, array{name: string, entities_id: int, count: int}> $results
      * @return int[]
      */
-    public static function topEntityIds(array $branches): array
+    public static function topEntityIds(array $results): array
     {
-        return array_map(static fn (array $branch): int => $branch['entities_id'], $branches);
+        return array_map(static fn (array $r): int => $r['entities_id'], $results);
     }
 
     /**
-     * Idempotent: re-running build() (e.g. after tweaking a label or adding a new client name)
-     * never creates a duplicate sibling, it reuses the existing entity of that name under that
-     * parent.
+     * @return int Number of descendant entities created/reused under $parentId.
      */
+    private function createChildren(int $parentId, array $nodes): int
+    {
+        $count = 0;
+
+        foreach ($nodes as $node) {
+            $name = (string) ($node['name'] ?? '');
+            if ($name === '') {
+                continue;
+            }
+
+            $childId = $this->getOrCreateChild($parentId, $name);
+            $count++;
+            $count += $this->createChildren($childId, is_array($node['children'] ?? null) ? $node['children'] : []);
+        }
+
+        return $count;
+    }
+
     private function getOrCreateChild(int $parentId, string $name): int
     {
         $entity = new Entity();
