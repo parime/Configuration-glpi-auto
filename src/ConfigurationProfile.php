@@ -165,6 +165,10 @@ class ConfigurationProfile extends CommonDBTM
             // Same reasoning again: a minimal self-service form vs. a fully qualified support form
             // is an ITIL good practice independent of org size.
             'ticket_template_enabled' => true,
+            // Urgency (self-reported by a requester with no visibility into real business impact)
+            // and Observers/Location on GLPI's native self-service forms — same ITIL good-practice
+            // reasoning, independent of org size.
+            'helpdesk_form_hide_fields' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual
