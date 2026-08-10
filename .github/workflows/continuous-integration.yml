@@ -4,14 +4,14 @@ on:
   push:
     branches:
       - "main"
-      - "develop"
+      - "dev"
       - "release/**"
     tags:
       - "*"
   pull_request:
     branches:
       - "main"
-      - "develop"
+      - "dev"
       - "release/**"
   schedule:
     - cron: "0 0 * * *"

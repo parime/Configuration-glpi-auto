@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - "main"
-      - "develop"
+      - "dev"
     paths:
       - "locales/**"
   pull_request:
     branches:
       - "main"
-      - "develop"
+      - "dev"
     paths:
       - "locales/**"
   workflow_dispatch:
@@ -102,7 +102,7 @@ jobs:
     name: "Push to Transifex"
     runs-on: ubuntu-latest
     needs: sync-translations
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
 
     steps:
       - name: "Checkout code"
