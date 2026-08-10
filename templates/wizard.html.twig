@@ -117,6 +117,20 @@
                 <input type="time" name="calendar_end" class="form-control" value="{{ config.calendar_end|default('18:00') }}">
               </div>
             </div>
+
+            <div class="form-check form-switch mb-3">
+              <input type="hidden" name="calendar_holidays_enabled" value="0">
+              <input
+                type="checkbox"
+                name="calendar_holidays_enabled"
+                value="1"
+                class="form-check-input"
+                id="cga-calendar-holidays-enabled"
+                {{ config.calendar_holidays_enabled|default(0) ? 'checked' : '' }}
+              >
+              <label class="form-check-label" for="cga-calendar-holidays-enabled">{{ __('Ajouter les jours fériés français (8 jours fixes)', 'configurationglpiauto') }}</label>
+            </div>
+            <p class="text-muted small">{{ __('Jour de l\'An, Fête du Travail, Victoire 1945, Fête nationale, Assomption, Toussaint, Armistice, Noël. Sans ça, les échéances SLA/OLA continuent de courir un jour férié. Les jours mobiles (Pâques, Ascension, Pentecôte) ne sont pas inclus — ils changent de date chaque année, à ajouter à la main.', 'configurationglpiauto') }}</p>
           </div>
         </div>
 
@@ -1124,7 +1138,8 @@
       var name = document.querySelector('input[name="calendar_name"]').value || "{{ __('Horaires standard', 'configurationglpiauto')|e('js') }}";
       var begin = document.querySelector('input[name="calendar_begin"]').value;
       var end = document.querySelector('input[name="calendar_end"]').value;
-      calendarSummary = name + ' — ' + checkedDays.join(', ') + ' — ' + begin + '-' + end;
+      calendarSummary = name + ' — ' + checkedDays.join(', ') + ' — ' + begin + '-' + end
+        + (document.getElementById('cga-calendar-holidays-enabled').checked ? ' + ' + "{{ __('jours fériés', 'configurationglpiauto')|e('js') }}" : '');
     }
     document.getElementById('cga-summary-calendar').textContent = calendarSummary;
 
@@ -1226,6 +1241,9 @@
     }
     if (defaults.calendar_end) {
       document.querySelector('input[name="calendar_end"]').value = defaults.calendar_end;
+    }
+    if (typeof defaults.calendar_holidays_enabled !== 'undefined') {
+      document.getElementById('cga-calendar-holidays-enabled').checked = !!defaults.calendar_holidays_enabled;
     }
 
     if (typeof defaults.sla_enabled !== 'undefined') {
