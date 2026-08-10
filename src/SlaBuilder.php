@@ -51,11 +51,17 @@ class SlaBuilder
             return null;
         }
 
+        // Astreinte = couverture 24h/24, 7j/7 : GLPI interprete calendars_id=0 comme "pas de
+        // calendrier", donc le SLA continue de courir en dehors des horaires ouvres — c'est le
+        // meme mecanisme que le cas "aucun calendrier construit" ci-dessous, juste voulu cette
+        // fois plutot que par defaut.
+        $slmCalendarId = !empty($config->fields['sla_astreinte']) ? 0 : ($calendarId ?? 0);
+
         $slm = new SLM();
         if (!$slm->getFromDBByCrit(['name' => self::SLM_NAME])) {
             $id = $slm->add([
                 'name' => self::SLM_NAME,
-                'calendars_id' => $calendarId ?? 0,
+                'calendars_id' => $slmCalendarId,
                 'use_ticket_calendar' => 0,
             ]);
             $slm->getFromDB($id);

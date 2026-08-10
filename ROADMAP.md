@@ -42,6 +42,29 @@ Devenir **la référence Open Source** pour l'initialisation, la standardisation
 - ⬜ Catalogue de services complet
 - ⬜ Gestion des profils utilisateurs
 
+**Limites identifiées à corriger (Sprint 11, 2026-08-10)** — remontées en testant le wizard, pas
+encore implémentées :
+
+- **Calendrier — horaires par jour + coupure déjeuner.** `CalendarBuilder` ne construit
+  aujourd'hui qu'une seule plage horaire (`calendar_begin`/`calendar_end`), appliquée
+  uniformément à tous les jours cochés. Impossible d'avoir des horaires différents par jour
+  (ex : vendredi 9h-12h seulement) ou une coupure déjeuner (9h-12h puis 13h-18h) — chaque
+  entreprise a des horaires différents et doit pouvoir les saisir librement. Nécessite de
+  remplacer le couple begin/end unique par un ou plusieurs segments par jour.
+
+- **Multi-entité "même entreprise" vs "MSP" — purement cosmétique aujourd'hui.**
+  `Config::MODE_MULTI_SAME_COMPANY` et `Config::MODE_MULTI_MSP` ne sont lus nulle part dans
+  `EntityBuilder`, `CalendarBuilder`, `SlaBuilder` ou `BrandingBuilder` (vérifié par recherche
+  dans `src/`) — seul le bouton radio pré-coché à l'étape 1 du wizard change. Pour que la
+  distinction ait un sens réel, le mode MSP doit entraîner un traitement différent :
+  - calendrier et SLA propres à chaque client (pas un calendrier/SLA unique partagé sur toute
+    l'arborescence, comme c'est le cas aujourd'hui) ;
+  - logo/couleur de personnalisation différents par client (`BrandingBuilder` applique
+    aujourd'hui une seule couleur à toutes les entités créées) ;
+  - cloisonnement des droits entre entités clientes (un client MSP ne doit pas voir les tickets
+    d'un autre) — alors qu'une même entreprise multi-site partage plus naturellement
+    calendrier/SLA/branding et peut vouloir une visibilité croisée entre sites.
+
 ---
 
 ### 🚀 Version 1.1 - **En Développement**

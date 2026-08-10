@@ -9,7 +9,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Sprint 10 (in progress) — Profile choice actually does something (2026-08-10)
+### Sprint 11 — profiles are a size choice, not a framework choice (2026-08-10)
+
+Sprint 10 (below) made profile choice pre-fill later steps, but conflated two different
+questions: `getSuggestedDefaults()` treated ITIL and ISO 27001 as if they were org sizes on the
+same footing as PME/ETI/Grande entreprise/MSP. Proof it never made sense: `'itil'` and
+`'enterprise'` returned *exactly* the same values (same entity mode, same calendar, same SLA
+2h/24h) — a coincidence that only happens when a distinction was never really implemented. ITIL
+and ISO 27001 are practice frameworks any organization can follow regardless of size, not a size
+category — a small company can be ISO 27001 certified, a large one might follow no formal
+framework at all.
+
+#### Changed
+- `ConfigurationProfile::getTypes()` drops `'iso27001'`/`'itil'` — back to 6 profiles (minimal,
+  sme, eti, enterprise, msp, custom). A calendar-scoped SLA *is* the ITIL/ISO27001 baseline, so
+  every non-minimal profile now suggests one by default instead of only the "advanced" ones.
+- Install/upgrade migration deactivates (`is_active = 0`, not deleted) any existing `iso27001`/
+  `itil` profile rows so they stop appearing in the wizard without losing data.
+- `ConfigurationProfile::getSearchURL()` now points the plugin's main admin menu entry straight
+  at the wizard instead of the generic profile CRUD list (`front/profile.php`) — that list wasn't
+  useful as a landing page, the wizard is the actual point of entry.
+
+#### Added
+- New `sla_astreinte` setting (wizard step 4): on-call/standby coverage outside opening hours.
+  GLPI treats `SLM.calendars_id = 0` as "no calendar" = 24/7 countdown (confirmed in core
+  `SLM.php`) — the same mechanism the codebase already used by accident when no calendar existed;
+  `SlaBuilder` now uses it deliberately when astreinte is enabled, instead of the built business
+  calendar. MSP profile suggests astreinte on by default (round-the-clock contractual coverage is
+  characteristic of that business model, not of being "bigger") — every other profile suggests it
+  off.
+- `ROADMAP.md`: documented two follow-up gaps found while testing this — calendar hours are a
+  single begin/end pair applied to every checked day (no per-day hours, no lunch-break split), and
+  "multi-entité même entreprise" vs "MSP" have zero behavioral difference today (verified nothing
+  in `EntityBuilder`/`CalendarBuilder`/`SlaBuilder`/`BrandingBuilder` reads `entity_mode` besides
+  which wizard radio pre-checks) — a real MSP distinction needs per-client calendar/SLA/branding
+  and entity rights isolation.
+
+Validated: local suite green (phpunit 5/5, phpstan clean, php-cs-fixer 0 files, `php -l` clean).
+Migration verified against the real GLPI 11.0.8 test instance — `iso27001`/`itil` rows correctly
+deactivated, `sla_astreinte` column present, plugin reactivates with no errors in
+`files/_log/php-errors.log`. Full click-through (menu → wizard, MSP profile → astreinte checked)
+pending manual/browser confirmation — no browser automation tool was available this session.
+
+### Sprint 10 — Profile choice actually does something (2026-08-10)
 
 Step 1 of the wizard ("Quel profil correspond le mieux à votre organisation ?") has always said
 picking a profile would "pré-remplir les prochaines étapes" — until now that was aspirational
