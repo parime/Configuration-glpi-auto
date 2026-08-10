@@ -67,12 +67,6 @@
             <tag>ISO27001</tag>
         </en>
     </tags>
-    <screenshots>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/screenshots/wizard-step1.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/screenshots/wizard-step2.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/screenshots/dashboard.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/screenshots/report.png</screenshot>
-    </screenshots>
     <requirements>
         <requirement>glpi >= 11.0.0</requirement>
         <requirement>php >= 8.2</requirement>
