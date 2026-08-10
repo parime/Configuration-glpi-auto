@@ -9,6 +9,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 13 — calendar and SLA can differ per site/client (2026-08-10)
+
+Documented as a known gap in ROADMAP.md since Sprint 11: multi-entity mode built exactly one
+shared calendar and one shared SLA for the whole tree, whether the admin picked "plusieurs sites
+d'une même entreprise" or "plusieurs entreprises clientes" — in reality every client/site tends to
+have its own opening hours and its own service commitment.
+
+#### Added
+- Steps 3 (Calendrier) and 4 (SLA) each get a "différent par site ou client" toggle, shown for
+  any multi-entity mode (not just MSP — widened from the original plan after user feedback: a
+  same-company multi-site org can just as reasonably want per-site hours). OFF (default): exactly
+  today's shared behavior, untouched. ON: one panel per top-level tree node (client/site), each
+  with its own enabled/days/hours (calendar) or enabled/TTO/TTR/astreinte (SLA) — a site with no
+  override falls back to the shared calendar/SLA, unchanged from before this sprint.
+- No new database column: the override lives inside the existing `entity_tree` JSON column, as an
+  optional `settings.calendar`/`settings.sla` object on top-level nodes only (see
+  `Config::sanitizeTree()`) — reuses the tree's existing single-hidden-field sync mechanism
+  instead of a second data channel that would need to stay aligned with the tree by index.
+  `_entity_structure_fields.html.twig` exposes `window.cgaTree` (live reference) and a
+  `cga:tree-changed` DOM event so steps 3/4 can react when a client is added/renamed/removed in
+  step 2 without a tighter coupling between the two scripts.
+- `CalendarBuilder`/`SlaBuilder` gain `buildFromOverride()` (same logic as `build()`, from a
+  per-client settings array instead of `$config->fields`, named after the client) and `assignMap()`
+  (a different calendar/SLA per entity instead of one for all of them) — the existing `build()`/
+  `assignToEntities()` are untouched, still the shared-path default.
+- `front/wizard.php`'s finish handler now pairs each `EntityBuilder::build()` result with its
+  matching top-level tree node (same index) to pick override vs. shared per client — the shared
+  calendar/SLA is still built eagerly up front (not lazily), so which pairing every non-overridden
+  client falls back to no longer depends on iteration order.
+
+Validated against the real GLPI 11.0.8 test instance via Playwright (ephemeral
+`mcr.microsoft.com/playwright` container on the `docker-compose.test.yml` network, no browser
+installed on the host): built a 2-client MSP tree, gave each client its own calendar hours and SLA
+hours, left a third client on the shared settings, submitted, and confirmed in the database that
+each overridden client got its own `glpi_calendars`/`glpi_slms` row with the right hours and the
+right entity → calendar linkage, while the non-overridden client correctly pointed at the shared
+"Horaires standard" calendar.
+
+Also researched (web search, sources in ROADMAP.md) and confirmed with the user: real ITSM
+practice defines SLAs per ticket priority (P1-P4), not one flat delay for everything, and GLPI's
+own documented mechanism for this — a `RuleTicket` matching on `priority` — is the same primitive
+`SlaBuilder` already uses to match on `entities_id`. Deliberately not built in this sprint (would
+mean redesigning the SLA data model mid-sprint); captured as the next one in ROADMAP.md instead,
+along with a "SLA par défaut vs personnalisé par client" design sketch from the user.
+
 ### Sprint 12 — plain-language profiles, no acronyms (2026-08-10)
 
 Testing Sprint 11 surfaced two more issues, both fixed here:

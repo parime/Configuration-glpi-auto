@@ -38,7 +38,72 @@ class CalendarBuilder
         }
 
         $name = trim((string) ($config->fields['calendar_name'] ?? '')) ?: __('Horaires standard', 'configurationglpiauto');
+        $days = $config->getCalendarDays();
+        $begin = (string) ($config->fields['calendar_begin'] ?? '08:00');
+        $end = (string) ($config->fields['calendar_end'] ?? '18:00');
 
+        return $this->buildCalendar($name, $days, $begin, $end);
+    }
+
+    /**
+     * Same as build(), but for one MSP client's own calendar override (see
+     * Config::sanitizeTree()'s per-client `settings.calendar`) instead of the plugin-wide shared
+     * settings — named after the client so it doesn't collide with the shared calendar or another
+     * client's.
+     *
+     * @param array{enabled: bool, days: int[], begin: string, end: string} $calendar
+     */
+    public function buildFromOverride(string $clientName, array $calendar): ?int
+    {
+        if (empty($calendar['enabled'])) {
+            return null;
+        }
+
+        $name = sprintf(__('Horaires — %s', 'configurationglpiauto'), $clientName);
+
+        return $this->buildCalendar($name, $calendar['days'], $calendar['begin'], $calendar['end']);
+    }
+
+    /**
+     * Assigns the same calendar to each given entity — sub-entities inherit it automatically
+     * (GLPI's default Entity::CONFIG_PARENT strategy), so only the top of each branch needs this.
+     *
+     * @param int[] $entityIds
+     */
+    public function assignToEntities(int $calendarId, array $entityIds): void
+    {
+        foreach ($entityIds as $entityId) {
+            $this->assignOne($entityId, $calendarId);
+        }
+    }
+
+    /**
+     * Per-client variant of assignToEntities(): a different calendar per entity instead of one
+     * calendar for all of them.
+     *
+     * @param array<int, int> $entityIdToCalendarId
+     */
+    public function assignMap(array $entityIdToCalendarId): void
+    {
+        foreach ($entityIdToCalendarId as $entityId => $calendarId) {
+            $this->assignOne($entityId, $calendarId);
+        }
+    }
+
+    private function assignOne(int $entityId, int $calendarId): void
+    {
+        (new Entity())->update([
+            'id' => $entityId,
+            'calendars_strategy' => $calendarId,
+            'calendars_id' => $calendarId,
+        ]);
+    }
+
+    /**
+     * @param int[] $days
+     */
+    private function buildCalendar(string $name, array $days, string $begin, string $end): int
+    {
         $calendar = new Calendar();
         if (!$calendar->getFromDBByCrit(['name' => $name])) {
             $id = $calendar->add(['name' => $name]);
@@ -46,10 +111,10 @@ class CalendarBuilder
         }
         $calendarId = (int) $calendar->getID();
 
-        $begin = $this->normalizeTime((string) ($config->fields['calendar_begin'] ?? '08:00'));
-        $end = $this->normalizeTime((string) ($config->fields['calendar_end'] ?? '18:00'));
+        $begin = $this->normalizeTime($begin);
+        $end = $this->normalizeTime($end);
 
-        foreach ($config->getCalendarDays() as $day) {
+        foreach ($days as $day) {
             $segment = new CalendarSegment();
             if (!$segment->getFromDBByCrit(['calendars_id' => $calendarId, 'day' => $day, 'begin' => $begin, 'end' => $end])) {
                 $segment->add([
@@ -62,23 +127,6 @@ class CalendarBuilder
         }
 
         return $calendarId;
-    }
-
-    /**
-     * Assigns the calendar to each given entity — sub-entities inherit it automatically (GLPI's
-     * default Entity::CONFIG_PARENT strategy), so only the top of each branch needs this.
-     *
-     * @param int[] $entityIds
-     */
-    public function assignToEntities(int $calendarId, array $entityIds): void
-    {
-        foreach ($entityIds as $entityId) {
-            (new Entity())->update([
-                'id' => $entityId,
-                'calendars_strategy' => $calendarId,
-                'calendars_id' => $calendarId,
-            ]);
-        }
     }
 
     private function normalizeTime(string $time): string
