@@ -1,5 +1,6 @@
 <?php
 
+use GlpiPlugin\Configurationglpiauto\CalendarBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
@@ -11,16 +12,23 @@ if (isset($_POST['finish'])) {
 
     $config = Config::getConfig();
     $config->update($_POST + ['id' => $config->getID()]);
-    $created = (new EntityBuilder())->build($config);
 
-    if (empty($created)) {
-        Session::addMessageAfterRedirect(__('Configuration enregistrée (mode mono-entité : aucune entité à créer).', 'configurationglpiauto'));
-    } else {
-        Session::addMessageAfterRedirect(sprintf(
-            __('Configuration enregistrée et structure créée : %s.', 'configurationglpiauto'),
-            EntityBuilder::describe($created)
-        ));
+    $created = (new EntityBuilder())->build($config);
+    $entityIds = EntityBuilder::topEntityIds($created) ?: [0];
+
+    $calendarId = (new CalendarBuilder())->build($config);
+    if ($calendarId !== null) {
+        (new CalendarBuilder())->assignToEntities($calendarId, $entityIds);
     }
+
+    $messages = [];
+    $messages[] = empty($created)
+        ? __('Mode mono-entité : aucune entité à créer.', 'configurationglpiauto')
+        : sprintf(__('Structure créée : %s.', 'configurationglpiauto'), EntityBuilder::describe($created));
+    if ($calendarId !== null) {
+        $messages[] = __('Calendrier créé et assigné.', 'configurationglpiauto');
+    }
+    Session::addMessageAfterRedirect(implode(' ', $messages));
 
     Html::redirect(ConfigurationProfile::getSearchURL());
 }

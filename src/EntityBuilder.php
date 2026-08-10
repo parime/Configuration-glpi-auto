@@ -35,8 +35,9 @@ class EntityBuilder
     private const DEFAULT_ROOT_ENTITY_ID = 0;
 
     /**
-     * @return string[][] One array per created branch (root-relative, top name first), e.g.
-     *                     [['Client A', 'Site', 'Service'], ['Client B', 'Site', 'Service']].
+     * @return array<int, array{names: string[], entities_id: int}> One entry per created branch
+     *         (root-relative, top name first), `entities_id` is the branch's topmost entity —
+     *         e.g. [['names' => ['Client A', 'Site', 'Service'], 'entities_id' => 12], ...].
      */
     public function build(Config $config, int $rootEntityId = self::DEFAULT_ROOT_ENTITY_ID): array
     {
@@ -63,17 +64,18 @@ class EntityBuilder
         $branches = [];
         foreach ($topNames as $topName) {
             $parentId = $rootEntityId;
-            $branch = [];
+            $names = [];
 
             $parentId = $this->getOrCreateChild($parentId, $topName);
-            $branch[] = $topName;
+            $topEntityId = $parentId;
+            $names[] = $topName;
 
             foreach ($restLabels as $label) {
                 $parentId = $this->getOrCreateChild($parentId, $label);
-                $branch[] = $label;
+                $names[] = $label;
             }
 
-            $branches[] = $branch;
+            $branches[] = ['names' => $names, 'entities_id' => $topEntityId];
         }
 
         return $branches;
@@ -86,9 +88,21 @@ class EntityBuilder
     public static function describe(array $branches): string
     {
         return implode(' ; ', array_map(
-            static fn (array $branch): string => implode(' > ', $branch),
+            static fn (array $branch): string => implode(' > ', $branch['names']),
             $branches
         ));
+    }
+
+    /**
+     * Topmost entity ID of every branch build() created/reused — the ID to hang a calendar (or
+     * any other future per-branch setting) off, since sub-entities inherit from it by default.
+     *
+     * @param array<int, array{names: string[], entities_id: int}> $branches
+     * @return int[]
+     */
+    public static function topEntityIds(array $branches): array
+    {
+        return array_map(static fn (array $branch): int => $branch['entities_id'], $branches);
     }
 
     /**

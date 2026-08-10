@@ -9,7 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Sprint 5 (in progress) — Real, named entity branches (2026-08-10)
+### Sprint 6 (in progress) — Calendar step (2026-08-10)
+
+#### Added
+- New wizard step "Calendrier" (now 4 steps: Profil → Entités → Calendrier → Récapitulatif):
+  optional toggle to create a real GLPI `Calendar` with one `CalendarSegment` per selected
+  weekday (Lun-Ven 08:00-18:00 by default), assigned to every top-level entity the wizard
+  created (or to the root entity in mono-entité mode).
+- `CalendarBuilder` (`src/CalendarBuilder.php`): idempotent (reuses a calendar of the same
+  name, skips a segment that already exists at that day/time).
+- `EntityBuilder::build()` return shape changed from a flat name list per branch to
+  `['names' => [...], 'entities_id' => int]` so the wizard can hang the calendar off the right
+  entity; `EntityBuilder::topEntityIds()` added for that lookup, `describe()` updated to match.
+- `Config` gained `calendar_enabled`/`calendar_name`/`calendar_days`/`calendar_begin`/
+  `calendar_end`, migrated in for existing installs.
+
+Validated against a real GLPI 11.0.8 instance: enabling the calendar step with Lun/Mar/Mer
+09:00-17:00 produced a real `Calendar` row named "Horaires Bureau" with exactly those three
+`CalendarSegment` rows, and the mono-entité root entity's `calendars_id` pointing at it (GLPI
+normalizes `calendars_strategy` to `0` — "see calendars_id" — for any non-inherited, non-24/7
+value; confirmed by reading `Entity::getSpecificValueToDisplay()`'s own resolution logic).
+
+### Sprint 5 — Real, named entity branches (2026-08-10)
 
 #### Added
 - Optional "real names" field on the entity-structure step (wizard and standalone settings
