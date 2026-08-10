@@ -80,7 +80,25 @@ class Config extends CommonDBTM
             'entity_mode' => self::MODE_MONO,
             'entity_levels' => 1,
             'level_labels' => json_encode(['Site']),
+            'top_level_names' => json_encode([]),
+            'configurationprofiles_id' => 0,
+            'calendar_enabled' => 0,
+            'calendar_name' => __('Horaires standard', 'configurationglpiauto'),
+            'calendar_days' => json_encode([1, 2, 3, 4, 5]),
+            'calendar_begin' => '08:00',
+            'calendar_end' => '18:00',
         ];
+    }
+
+    /**
+     * Weekday numbers this calendar covers, PHP date('w') convention (0=Sunday..6=Saturday) —
+     * matches GLPI core's own Toolbox::getDaysOfWeekArray()/CalendarSegment.day.
+     */
+    public function getCalendarDays(): array
+    {
+        $days = json_decode((string) ($this->fields['calendar_days'] ?? '[]'), true);
+
+        return is_array($days) ? array_map('intval', $days) : [];
     }
 
     public function getLevelLabels(): array
@@ -88,6 +106,18 @@ class Config extends CommonDBTM
         $labels = json_decode((string) ($this->fields['level_labels'] ?? '[]'), true);
 
         return is_array($labels) ? $labels : [];
+    }
+
+    /**
+     * Real names for the top-level branch (client names in MSP mode, first-level entity names
+     * in same-company mode) — optional. Empty means "no real names decided yet", EntityBuilder
+     * then falls back to a single generic template branch, same as before this existed.
+     */
+    public function getTopLevelNames(): array
+    {
+        $names = json_decode((string) ($this->fields['top_level_names'] ?? '[]'), true);
+
+        return is_array($names) ? $names : [];
     }
 
     public function prepareInputForUpdate($input)
@@ -110,6 +140,10 @@ class Config extends CommonDBTM
             $input['entity_levels'] = max(1, min(self::MAX_LEVELS, (int) $input['entity_levels']));
         }
 
+        if (isset($input['configurationprofiles_id'])) {
+            $input['configurationprofiles_id'] = (int) $input['configurationprofiles_id'];
+        }
+
         if (isset($input['level_label'])) {
             $levels = isset($input['entity_levels']) ? (int) $input['entity_levels'] : count((array) $input['level_label']);
             $labels = [];
@@ -118,6 +152,24 @@ class Config extends CommonDBTM
             }
             $input['level_labels'] = json_encode($labels);
             unset($input['level_label']);
+        }
+
+        if (isset($input['top_level_name'])) {
+            $names = array_values(array_filter(array_map(
+                static fn ($name) => trim((string) $name),
+                (array) $input['top_level_name']
+            ), static fn ($name) => $name !== ''));
+            $input['top_level_names'] = json_encode($names);
+            unset($input['top_level_name']);
+        }
+
+        if (isset($input['calendar_enabled'])) {
+            $input['calendar_enabled'] = !empty($input['calendar_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['calendar_day'])) {
+            $input['calendar_days'] = json_encode(array_values(array_map('intval', (array) $input['calendar_day'])));
+            unset($input['calendar_day']);
         }
 
         return $input;
