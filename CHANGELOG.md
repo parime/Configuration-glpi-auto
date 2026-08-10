@@ -9,6 +9,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 18 — GLPI core general settings (2026-08-10)
+
+User feedback with screenshots on GLPI's own general-settings pages: several core defaults are
+unhelpful out of the box (notifications off entirely, merged action buttons, search/pagination
+below results instead of above, no financial info by default, no new-ticket homepage widget). All
+6 screenshot-shown settings implemented (2 mentioned explicitly in text plus 4 others visible in
+the screenshots — notifications counts as 3 distinct `glpi_configs` keys, for 8 total).
+
+#### Changed
+- New `GeneralSettingsBuilder`: writes straight through GLPI core's own
+  `\Config::setConfigurationValues('core', [...])` (not raw SQL) so the write goes through GLPI's
+  normal cache/session invalidation. Referenced with a leading `\` throughout — this plugin has its
+  own `Config` class in the same namespace, so a bare `Config::` call here would resolve to the
+  wrong class.
+- 8 `glpi_configs` (context `core`) keys set: `use_notifications`, `notifications_mailing`,
+  `notifications_ajax` (the 3 notification sub-toggles), `timeline_action_btn_layout` →
+  `Config::TIMELINE_ACTION_BTN_SPLITTED` (split Répondre/Observation/Solution buttons instead of
+  merged), `show_search_form`, `search_pagination_on_top`, `show_jobs_at_login`,
+  `auto_create_infocoms`. Keys and their matching French labels confirmed by grepping GLPI's own
+  Twig setup templates (`setup_notifications.html.twig`, `preferences_setup.html.twig`,
+  `assets_setup.html.twig`), not guessed.
+- New `general_settings_enabled` toggle (`Config`), instance-wide, not per-entity/per-client —
+  unlike calendar/SLA these settings don't vary by org size, same reasoning already applied to
+  categories/states, so it's suggested `true` for every non-minimal profile.
+- Step 8 (Réglages généraux) added to the wizard: single master toggle plus a read-only list of
+  what gets changed (all-or-nothing, since `GeneralSettingsBuilder::apply()` itself is
+  all-or-nothing — no granular sub-toggles for 8 keys that all point the same direction).
+  `STEP_COUNT` 8→9, Récapitulatif renumbered 8→9 with a new "Réglages généraux" recap line.
+
+Validated against the real GLPI 11.0.8 test instance via Playwright: confirmed all 8 keys read `0`
+before running the wizard, ran the wizard with the new step's toggle checked, confirmed all 8 keys
+read `1` afterward via direct DB query — including `timeline_action_btn_layout = 1`, matching
+`Config::TIMELINE_ACTION_BTN_SPLITTED`. Flash message includes "Réglages généraux GLPI appliqués."
+Local suite green (phpunit 5/5, phpstan clean, php-cs-fixer clean).
+
 ### Sprint 17 — real topical category tree, replacing the ITIL-type one (2026-08-10)
 
 Sprint 16's "one category per ITIL type" (Incidents/Demandes/Problèmes/Changements) turned out to
