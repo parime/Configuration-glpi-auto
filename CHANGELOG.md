@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Sprint 7 (in progress) — Branding step (2026-08-10)
+## [0.3.0] - 2026-08-10
+
+The wizard's branding step (real primary-color customization).
+
+### Sprint 7 — Branding step (2026-08-10)
 
 #### Added
 - New wizard step "Personnalisation graphique" (now 5 steps, between Calendrier and
@@ -258,6 +262,7 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.3.0
 [0.2.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.2.0
 [0.1.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.1.0
