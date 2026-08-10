@@ -18,7 +18,7 @@ if (isset($_POST['finish'])) {
     } else {
         Session::addMessageAfterRedirect(sprintf(
             __('Configuration enregistrée et structure créée : %s.', 'configurationglpiauto'),
-            implode(' > ', $created)
+            EntityBuilder::describe($created)
         ));
     }
 
@@ -31,12 +31,13 @@ $config = Config::getConfig();
 $profiles = (new ConfigurationProfile())->find(['is_active' => 1], ['sort_order ASC']);
 
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/wizard.html.twig', [
-    'config'       => $config->fields,
-    'profiles'     => $profiles,
-    'modes'        => Config::getModes(),
-    'max_levels'   => Config::MAX_LEVELS,
-    'level_labels' => $config->getLevelLabels(),
-    'csrf_token'   => Session::getNewCSRFToken(),
+    'config'          => $config->fields,
+    'profiles'        => $profiles,
+    'modes'           => Config::getModes(),
+    'max_levels'      => Config::MAX_LEVELS,
+    'level_labels'    => $config->getLevelLabels(),
+    'top_level_names' => $config->getTopLevelNames(),
+    'csrf_token'      => Session::getNewCSRFToken(),
 ]);
 
 Html::footer();

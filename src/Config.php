@@ -80,6 +80,7 @@ class Config extends CommonDBTM
             'entity_mode' => self::MODE_MONO,
             'entity_levels' => 1,
             'level_labels' => json_encode(['Site']),
+            'top_level_names' => json_encode([]),
             'configurationprofiles_id' => 0,
         ];
     }
@@ -89,6 +90,18 @@ class Config extends CommonDBTM
         $labels = json_decode((string) ($this->fields['level_labels'] ?? '[]'), true);
 
         return is_array($labels) ? $labels : [];
+    }
+
+    /**
+     * Real names for the top-level branch (client names in MSP mode, first-level entity names
+     * in same-company mode) — optional. Empty means "no real names decided yet", EntityBuilder
+     * then falls back to a single generic template branch, same as before this existed.
+     */
+    public function getTopLevelNames(): array
+    {
+        $names = json_decode((string) ($this->fields['top_level_names'] ?? '[]'), true);
+
+        return is_array($names) ? $names : [];
     }
 
     public function prepareInputForUpdate($input)
@@ -123,6 +136,15 @@ class Config extends CommonDBTM
             }
             $input['level_labels'] = json_encode($labels);
             unset($input['level_label']);
+        }
+
+        if (isset($input['top_level_name'])) {
+            $names = array_values(array_filter(array_map(
+                static fn ($name) => trim((string) $name),
+                (array) $input['top_level_name']
+            ), static fn ($name) => $name !== ''));
+            $input['top_level_names'] = json_encode($names);
+            unset($input['top_level_name']);
         }
 
         return $input;

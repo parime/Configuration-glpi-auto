@@ -25,8 +25,8 @@ if (isset($_POST['apply'])) {
         Session::addMessageAfterRedirect(__('Mode mono-entité : aucune entité à créer.', 'configurationglpiauto'));
     } else {
         Session::addMessageAfterRedirect(sprintf(
-            __('Structure appliquée : %s. Renommez/dupliquez-la depuis Administration > Entités.', 'configurationglpiauto'),
-            implode(' > ', $created)
+            __('Structure appliquée : %s. Renommez/dupliquez ensuite depuis Administration > Entités.', 'configurationglpiauto'),
+            EntityBuilder::describe($created)
         ));
     }
     Html::back();
@@ -37,11 +37,12 @@ Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'admin', Config::class
 $config = Config::getConfig();
 
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/config_form.html.twig', [
-    'config'      => $config->fields,
-    'modes'       => Config::getModes(),
-    'max_levels'  => Config::MAX_LEVELS,
-    'level_labels' => $config->getLevelLabels(),
-    'csrf_token'  => Session::getNewCSRFToken(),
+    'config'          => $config->fields,
+    'modes'           => Config::getModes(),
+    'max_levels'      => Config::MAX_LEVELS,
+    'level_labels'    => $config->getLevelLabels(),
+    'top_level_names' => $config->getTopLevelNames(),
+    'csrf_token'      => Session::getNewCSRFToken(),
 ]);
 
 Html::footer();
