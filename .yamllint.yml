@@ -1,0 +1,12 @@
+extends: default
+
+rules:
+  # GitHub Actions workflow YAML routinely exceeds 80 chars (run: blocks, uses: refs with pinned
+  # SHAs...) — the default limit isn't a realistic fit for this file type.
+  line-length: disable
+  # `---` document-start markers aren't GitHub Actions convention.
+  document-start: disable
+  # `on:` (the GitHub Actions trigger key) is valid YAML 1.1 truthy syntax by design — not a
+  # mistake to flag.
+  truthy:
+    check-keys: false
