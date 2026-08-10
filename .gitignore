@@ -43,6 +43,7 @@ rector.php
 
 # Testing
 .phpunit.cache/
+.phpunit-cache/
 
 # Composer
 composer.phar

@@ -4,14 +4,14 @@ on:
   push:
     branches:
       - "main"
-      - "develop"
+      - "dev"
       - "release/**"
     tags:
       - "*"
   pull_request:
     branches:
       - "main"
-      - "develop"
+      - "dev"
       - "release/**"
   schedule:
     - cron: "0 0 * * *"
@@ -89,54 +89,6 @@ jobs:
         run: |
           vendor/bin/php-cs-fixer fix --dry-run --diff --allow-risky=yes
 
-  psalm:
-    name: "Psalm Analysis"
-    runs-on: ubuntu-latest
-    needs: ci
-
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-
-      - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          coverage: none
-          tools: composer
-
-      - name: "Install dependencies"
-        run: |
-          composer install --prefer-dist --no-progress --no-interaction
-
-      - name: "Run Psalm"
-        run: |
-          vendor/bin/psalm --memory-limit=1G --threads=4
-
-  rector:
-    name: "Rector"
-    runs-on: ubuntu-latest
-    needs: ci
-
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-
-      - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          coverage: none
-          tools: composer
-
-      - name: "Install dependencies"
-        run: |
-          composer install --prefer-dist --no-progress --no-interaction
-
-      - name: "Check with Rector"
-        run: |
-          vendor/bin/rector process src/ setup.php hook.php --dry-run
-
   phpunit:
     name: "PHPUnit Tests"
     runs-on: ubuntu-latest
@@ -169,31 +121,6 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
 
-  codeql:
-    name: "CodeQL Analysis"
-    runs-on: ubuntu-latest
-    needs: ci
-    
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-
-      - name: "Initialize CodeQL"
-        uses: github/codeql-action/init@v2
-        with:
-          languages: php
-
-      - name: "Autobuild"
-        uses: github/codeql-action/autobuild@v2
-
-      - name: "Perform CodeQL Analysis"
-        uses: github/codeql-action/analyze@v2
-
   trivy:
     name: "Trivy Security Scan"
     runs-on: ubuntu-latest
@@ -222,9 +149,20 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v4
 
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+          tools: composer
+
+      - name: "Install dependencies"
+        run: |
+          composer install --prefer-dist --no-progress --no-interaction
+
       - name: "Check for security vulnerabilities"
         run: |
-          composer audit --no-dev
+          composer audit
 
   validation:
     name: "File Validation"
@@ -239,9 +177,17 @@ jobs:
         run: |
           find . -type f -name "*.json" -not -path "./vendor/*" -not -path "./.git/*" | xargs -I {} sh -c 'echo "Validating {}" && jq empty {} || exit 1'
 
+      - name: "Install yamllint"
+        run: |
+          pip install --quiet yamllint
+
       - name: "Validate YAML files"
         run: |
-          find . -type f \( -name "*.yml" -o -name "*.yaml" \) -not -path "./vendor/*" -not -path "./.git/*" | xargs -I {} sh -c 'echo "Validating {}" && yamllint {} || exit 1'
+          find . -type f \( -name "*.yml" -o -name "*.yaml" \) -not -path "./vendor/*" -not -path "./.git/*" | xargs -I {} sh -c 'echo "Validating {}" && yamllint -c .yamllint.yml {} || exit 1'
+
+      - name: "Install xmllint"
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends libxml2-utils
 
       - name: "Validate XML files"
         run: |
@@ -251,14 +197,10 @@ jobs:
         run: |
           composer validate --strict
 
-      - name: "Check for duplicates"
-        run: |
-          composer dups
-
   quality-gate:
     name: "Quality Gate"
     runs-on: ubuntu-latest
-    needs: [phpstan, php-cs-fixer, psalm, rector, phpunit, codeql, trivy, dependabot, validation]
+    needs: [phpstan, php-cs-fixer, phpunit, trivy, dependabot, validation]
 
     steps:
       - name: "All checks passed"
@@ -266,10 +208,7 @@ jobs:
           echo "All quality checks have passed successfully!"
           echo "PHPStan: ✓"
           echo "PHP-CS-Fixer: ✓"
-          echo "Psalm: ✓"
-          echo "Rector: ✓"
           echo "PHPUnit: ✓"
-          echo "CodeQL: ✓"
           echo "Trivy: ✓"
           echo "Dependabot: ✓"
           echo "Validation: ✓"

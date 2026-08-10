@@ -83,6 +83,9 @@ final class Installer
                 `calendar_end` varchar(5) NOT NULL DEFAULT '18:00',
                 `branding_enabled` tinyint NOT NULL DEFAULT 0,
                 `branding_primary_color` varchar(7) NOT NULL DEFAULT '#206bc4',
+                `sla_enabled` tinyint NOT NULL DEFAULT 0,
+                `sla_tto_hours` int NOT NULL DEFAULT 4,
+                `sla_ttr_hours` int NOT NULL DEFAULT 48,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -108,6 +111,9 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'calendar_end', 'string', ['value' => '18:00']);
             $migration->addField(self::CONFIGS_TABLE, 'branding_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'branding_primary_color', 'string', ['value' => '#206bc4']);
+            $migration->addField(self::CONFIGS_TABLE, 'sla_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'sla_tto_hours', 'integer', ['value' => 4]);
+            $migration->addField(self::CONFIGS_TABLE, 'sla_ttr_hours', 'integer', ['value' => 48]);
         }
 
         Profile::install($migration);

@@ -9,6 +9,76 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 8 (in progress) — SLA step, and CI was never actually green (2026-08-10)
+
+#### Added
+- New wizard step "Niveaux de service (SLA)" (now 6 steps, between Calendrier and
+  Personnalisation): optional toggle + time-to-own/time-to-resolve delays (hours), creating a
+  real GLPI SLM ("SLA standard") with two SLA entries under it.
+- `SlaBuilder` (`src/SlaBuilder.php`). Unlike Calendar (a direct `Entity::calendars_id` field),
+  GLPI has no per-entity "default SLA" field — confirmed by reading `Entity.php`: the
+  `slas_id_tto`/`slas_id_ttr` fields live on `glpi_tickets`, only ever set by the business-rules
+  engine. So `assignToEntities()` creates a real `RuleTicket` per entity ("entity is X" →
+  "assign these SLAs on ticket creation") instead of an (impossible) Entity update — an initial
+  version wrongly assumed a direct Entity field, caught before shipping by actually reading the
+  core source rather than guessing from the Calendar precedent.
+- Validated as strongly as this plugin's features get: not just a DB read of the created
+  `RuleTicket`/`RuleCriteria`/`RuleAction` rows, but creating a **real `Ticket`** in the target
+  entity and confirming GLPI's own rules engine auto-populated `slas_id_tto`/`slas_id_ttr` with
+  the exact SLA IDs `SlaBuilder` created.
+
+#### Fixed — CI trigger, and the licence-header check's own reference file
+- `continuous-integration.yml`/`locales-sync.yml` watched a branch named `develop` in their
+  `push`/`pull_request` filters; this repo's actual working branch (established Sprint 1) is
+  `dev` — CI had never triggered on a single `dev` push before this, only caught by pushing and
+  finding no run at all in `gh run list`, rather than a failed one.
+- `tools/HEADER` (used by the reusable GLPI CI workflow's licence-header check, not a check of
+  my own) was a fully-formatted PHP `/** ... */` comment block — but the tool that reads it
+  (`glpi-project/tools`' `licence-headers-check`) treats the file as **plain text** and wraps it
+  itself per file type (`/** */` for PHP, `{# #}` for Twig, `#` for YAML), matching a stripped
+  line-by-line comparison against each file's actual header. A fully-formatted reference file
+  made every single file compare as "outdated" against itself, and `--fix` (before this was
+  understood) wrapped the existing header inside a *second* one, corrupting several files with
+  an unterminated comment (caught by `php -l` before it was committed, reverted, redone
+  correctly). Root cause confirmed by reading the tool's own comparison source, not guessed.
+
+#### Fixed — the CI pipeline had never actually run successfully, on any commit
+Every push (including every release tag so far) failed CI; nothing had surfaced this because
+this plugin's actual releases are validated by the separate, real `release.yml` workflow, not
+by `continuous-integration.yml`. Root causes, all inherited from the original fictional
+scaffold and never exercised before now:
+- `composer.json`'s dev-only `vimeo/psalm`/`rector/rector`/`phpmd/phpmd` were never actually
+  used by anything (only `phpstan`/`php-cs-fixer` are real, working checks) — worse,
+  `vimeo/psalm` pulls in `amphp/amp` as a transitive dependency, which **fatally conflicts**
+  with GLPI core's own `amphp/amp` copy the moment both get autoloaded in the same PHP process
+  (`Cannot redeclare Amp\delay()`), breaking the reusable `glpi-project/plugin-ci-workflows`
+  job outright — every other job in the workflow depends on it, so nothing downstream ever ran.
+  Removed all three; `.github/workflows/continuous-integration.yml`'s `psalm`/`rector` jobs
+  removed to match.
+- `phpstan.neon` had `paths: []` (from an earlier fix that scoped out all GLPI-dependent code
+  without leaving anything in) — PHPStan itself errors on an empty `paths` list rather than
+  analysing nothing. Added `tests/Unit` (see below) as a real, non-empty, analysable path.
+- `.php-cs-fixer.php`'s large hand-written rule list referenced half a dozen renamed/nonexistent
+  PHP-CS-Fixer option and rule names (e.g. `trailing_comma_in_singleline`,
+  `native_type_declaration_spacing`, `braces.position_after_functions`,
+  `cast_spaces.spacing`, `function_declaration.closure_fn_spacer`) — every one a hard error, not
+  a style violation. Also had `array_syntax`/`list_syntax` set to `'long'`, which would have
+  silently rewritten this entire codebase's `[]` arrays to `array()` the first time anyone ran
+  `--fix` instead of `--dry-run`. Replaced with a much smaller, verified-correct rule set.
+- The `validation` job's "Check for duplicates" step ran `composer dups`, not a real Composer
+  command (removed); its `dependabot` job ran `composer audit` with no prior `composer install`
+  step, which needs a lockfile/installed packages to audit against (added the missing install
+  step); its YAML validation used yamllint's strict defaults (80-char lines, mandatory `---`,
+  no `on:` truthy keys) against real GitHub Actions files that violate all three by convention
+  — added `.yamllint.yml` relaxing exactly those three, which is standard practice for
+  repos with Actions workflows, not a weakening of real checks. `.github/dependabot.yml` had a
+  fictional `npm` ecosystem entry (no `package.json`/JS anywhere in this repo) and two invalid
+  keys (`pr-priority`, `milestone: 0`) — removed.
+- `tests/Unit/EntityBuilderTest.php` + `phpunit.xml.dist`: the `phpunit` CI job had nothing to
+  run against (zero GLPI-independent code existed). Added real tests for `EntityBuilder`'s two
+  pure static helpers (`describe()`, `topEntityIds()`) — confirmed these genuinely run without
+  a GLPI bootstrap, unlike everything else in this plugin.
+
 ## [0.3.0] - 2026-08-10
 
 The wizard's branding step (real primary-color customization).

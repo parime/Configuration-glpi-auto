@@ -27,9 +27,6 @@
         "phpstan/phpstan": "^1.10",
         "squizlabs/php_codesniffer": "^3.7",
         "friendsofphp/php-cs-fixer": "^3.13",
-        "rector/rector": "^1.0",
-        "phpmd/phpmd": "^2.10",
-        "vimeo/psalm": "^5.0",
         "glpi-project/tools": "^0.8"
     },
     "autoload": {
@@ -47,27 +44,16 @@
         "platform": {
             "php": "8.2.99"
         },
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
+        "sort-packages": true
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
     "scripts": {
         "test": "phpunit",
-        "analyse": [
-            "phpstan analyse src --level=8",
-            "psalm",
-            "phpcs"
-        ],
-        "fix": [
-            "php-cs-fixer fix --allow-risky=yes",
-            "rector"
-        ],
+        "analyse": "phpstan analyse --no-progress",
+        "fix": "php-cs-fixer fix --allow-risky=yes",
         "lint": [
-            "phpstan analyse src --level=8",
-            "psalm",
+            "@analyse",
             "phpcs"
         ]
     },
