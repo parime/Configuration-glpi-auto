@@ -9,7 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Sprint 6 (in progress) — Calendar step (2026-08-10)
+## [0.2.0] - 2026-08-10
+
+Real entity creation, the setup wizard, and the calendar step — see below for the sprint-by-sprint
+detail.
+
+### Sprint 6 — Calendar step (2026-08-10)
 
 #### Added
 - New wizard step "Calendrier" (now 4 steps: Profil → Entités → Calendrier → Récapitulatif):
@@ -236,5 +241,6 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.2.0
 [0.1.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.1.0
