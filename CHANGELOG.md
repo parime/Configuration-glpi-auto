@@ -9,7 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Sprint 9 (in progress) — Arbitrary entity tree, not just uniform levels (2026-08-10)
+## [0.4.0] - 2026-08-10
+
+The arbitrary entity tree editor, plus repo hygiene: branch protection on `main`, and the CI
+pipeline actually passing green for the first time (see Sprint 8's entry below for the fixes) —
+including reconciling with three Dependabot dependency-update PRs opened once
+`.github/dependabot.yml` started working (`actions/checkout` v4→v7, `codecov/codecov-action`
+v3→v7, `phpstan/phpstan` ^1.10→^2.2, `squizlabs/php_codesniffer` ^3.7→^4.0), all verified
+locally before merging rather than accepted blind.
+
+### Sprint 9 — Arbitrary entity tree, not just uniform levels (2026-08-10)
 
 The entity-structure step's data model changed from "N levels, same shape repeated under every
 top-level name" to a genuinely arbitrary tree: any node can have any number of children, at any
@@ -359,7 +368,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.4.0
 [0.3.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.3.0
 [0.2.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.2.0
 [0.1.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.1.0
