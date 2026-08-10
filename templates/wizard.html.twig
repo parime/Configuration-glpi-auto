@@ -115,14 +115,29 @@
           <label class="form-check-label" for="cga-sla-enabled">{{ __('Créer des SLA standards', 'configurationglpiauto') }}</label>
         </div>
 
-        <div id="cga-sla-fields" style="display: none;" class="row" style="max-width: 480px;">
-          <div class="col mb-3">
-            <label class="form-label">{{ __('Prise en charge sous (heures)', 'configurationglpiauto') }}</label>
-            <input type="number" name="sla_tto_hours" min="1" class="form-control" value="{{ config.sla_tto_hours|default(4) }}">
+        <div id="cga-sla-fields" style="display: none;">
+          <div class="row" style="max-width: 480px;">
+            <div class="col mb-3">
+              <label class="form-label">{{ __('Prise en charge sous (heures)', 'configurationglpiauto') }}</label>
+              <input type="number" name="sla_tto_hours" min="1" class="form-control" value="{{ config.sla_tto_hours|default(4) }}">
+            </div>
+            <div class="col mb-3">
+              <label class="form-label">{{ __('Résolution sous (heures)', 'configurationglpiauto') }}</label>
+              <input type="number" name="sla_ttr_hours" min="1" class="form-control" value="{{ config.sla_ttr_hours|default(48) }}">
+            </div>
           </div>
-          <div class="col mb-3">
-            <label class="form-label">{{ __('Résolution sous (heures)', 'configurationglpiauto') }}</label>
-            <input type="number" name="sla_ttr_hours" min="1" class="form-control" value="{{ config.sla_ttr_hours|default(48) }}">
+
+          <div class="form-check form-switch mb-3">
+            <input type="hidden" name="sla_astreinte" value="0">
+            <input
+              type="checkbox"
+              name="sla_astreinte"
+              value="1"
+              class="form-check-input"
+              id="cga-sla-astreinte"
+              {{ config.sla_astreinte|default(0) ? 'checked' : '' }}
+            >
+            <label class="form-check-label" for="cga-sla-astreinte">{{ __('Astreinte (couverture 24h/24, 7j/7 — le délai continue de courir en dehors des horaires ouvrés)', 'configurationglpiauto') }}</label>
           </div>
         </div>
       </div>
@@ -261,6 +276,7 @@
 
   var slaEnabledInput = document.getElementById('cga-sla-enabled');
   var slaFields = document.getElementById('cga-sla-fields');
+  var slaAstreinteInput = document.getElementById('cga-sla-astreinte');
   function toggleSlaFields() {
     slaFields.style.display = slaEnabledInput.checked ? '' : 'none';
   }
@@ -320,9 +336,13 @@
     } else {
       var tto = document.querySelector('input[name="sla_tto_hours"]').value;
       var ttr = document.querySelector('input[name="sla_ttr_hours"]').value;
-      document.getElementById('cga-summary-sla').textContent =
+      var slaSummary =
         "{{ __('Prise en charge', 'configurationglpiauto')|e('js') }} " + tto + "h — "
         + "{{ __('Résolution', 'configurationglpiauto')|e('js') }} " + ttr + "h";
+      if (slaAstreinteInput.checked) {
+        slaSummary += " — {{ __('astreinte 24h/24, 7j/7', 'configurationglpiauto')|e('js') }}";
+      }
+      document.getElementById('cga-summary-sla').textContent = slaSummary;
     }
 
     document.getElementById('cga-summary-branding').textContent = brandingEnabledInput.checked
@@ -397,6 +417,9 @@
     }
     if (defaults.sla_ttr_hours) {
       document.querySelector('input[name="sla_ttr_hours"]').value = defaults.sla_ttr_hours;
+    }
+    if (typeof defaults.sla_astreinte !== 'undefined') {
+      slaAstreinteInput.checked = !!defaults.sla_astreinte;
     }
   }
 

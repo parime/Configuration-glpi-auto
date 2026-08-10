@@ -90,6 +90,7 @@ class Config extends CommonDBTM
             'sla_enabled' => 0,
             'sla_tto_hours' => 4,
             'sla_ttr_hours' => 48,
+            'sla_astreinte' => 0,
         ];
     }
 
@@ -170,6 +171,10 @@ class Config extends CommonDBTM
 
         if (isset($input['sla_ttr_hours'])) {
             $input['sla_ttr_hours'] = max(1, (int) $input['sla_ttr_hours']);
+        }
+
+        if (isset($input['sla_astreinte'])) {
+            $input['sla_astreinte'] = !empty($input['sla_astreinte']) ? 1 : 0;
         }
 
         return $input;

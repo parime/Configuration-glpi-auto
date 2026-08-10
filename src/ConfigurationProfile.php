@@ -41,6 +41,19 @@ class ConfigurationProfile extends CommonDBTM
         return 'glpi_plugin_configurationglpiauto_profiles';
     }
 
+    // Fait pointer le menu principal du plugin directement vers l'assistant plutot que vers la
+    // liste CRUD generique de front/profile.php (celle-ci reste accessible par URL directe, mais
+    // n'apporte rien comme point d'entree par defaut). getItemTypeSearchURL() du coeur construit
+    // "$dir/front/" . strtolower($itemtype) . ".php" — meme convention reprise ici a la main.
+    public static function getSearchURL($full = true)
+    {
+        global $CFG_GLPI;
+
+        $dir = $full ? $CFG_GLPI['root_doc'] : '';
+
+        return $dir . '/plugins/configurationglpiauto/front/wizard.php';
+    }
+
     public static function getTypeName($nb = 0): string
     {
         return _n('Profil de configuration', 'Profils de configuration', $nb, 'configurationglpiauto');
@@ -59,8 +72,6 @@ class ConfigurationProfile extends CommonDBTM
             'eti'        => __('ETI', 'configurationglpiauto'),
             'enterprise' => __('Grande entreprise', 'configurationglpiauto'),
             'msp'        => __('MSP', 'configurationglpiauto'),
-            'iso27001'   => __('ISO 27001', 'configurationglpiauto'),
-            'itil'       => __('ITIL', 'configurationglpiauto'),
             'custom'     => __('Personnalisé', 'configurationglpiauto'),
         ];
     }
@@ -118,34 +129,33 @@ class ConfigurationProfile extends CommonDBTM
      * later steps; picking a profile only pre-fills, it doesn't lock anything in. 'custom'
      * intentionally returns no suggestions at all.
      *
+     * ITIL and ISO 27001 are not org sizes, they're practice frameworks any organization can
+     * follow regardless of size — a small company can be ISO 27001 certified, a large one might
+     * follow no formal framework at all. So they're not a separate profile choice here: a
+     * calendar-scoped SLA *is* the ITIL/ISO27001 baseline, and every non-minimal profile gets one
+     * by default rather than only the "advanced" ones. What actually varies per profile is the
+     * organization's calendar and whether it has astreinte (on-call coverage outside opening
+     * hours, see sla_astreinte) — MSP defaults to astreinte on because round-the-clock
+     * contractual coverage is characteristic of that business model, not of being "bigger".
+     *
      * @return array<string, mixed>
      */
     public static function getSuggestedDefaults(string $type): array
     {
-        $sameCompany = ['entity_mode' => Config::MODE_MULTI_SAME_COMPANY];
-        $standardHours = ['calendar_enabled' => true, 'calendar_days' => [1, 2, 3, 4, 5], 'calendar_begin' => '08:00', 'calendar_end' => '18:00'];
+        $goodPracticeBaseline = [
+            'calendar_enabled' => true, 'calendar_days' => [1, 2, 3, 4, 5], 'calendar_begin' => '08:00', 'calendar_end' => '18:00',
+            'sla_enabled' => true, 'sla_tto_hours' => 4, 'sla_ttr_hours' => 48, 'sla_astreinte' => false,
+        ];
 
         return match ($type) {
             'minimal' => [
                 'entity_mode' => Config::MODE_MONO,
             ],
-            'sme' => $sameCompany + $standardHours,
-            'eti' => $sameCompany + $standardHours + [
-                'sla_enabled' => true, 'sla_tto_hours' => 4, 'sla_ttr_hours' => 48,
-            ],
-            'enterprise' => $sameCompany + $standardHours + [
-                'sla_enabled' => true, 'sla_tto_hours' => 2, 'sla_ttr_hours' => 24,
-            ],
-            'msp' => ['entity_mode' => Config::MODE_MULTI_MSP] + $standardHours + [
-                'sla_enabled' => true, 'sla_tto_hours' => 1, 'sla_ttr_hours' => 8,
-            ],
-            // ISO 27001: security incidents need fast acknowledgement — tighter TTO than ETI/
-            // Enterprise despite a similar org size, that's the point of the profile.
-            'iso27001' => $sameCompany + $standardHours + [
-                'sla_enabled' => true, 'sla_tto_hours' => 1, 'sla_ttr_hours' => 4,
-            ],
-            'itil' => $sameCompany + $standardHours + [
-                'sla_enabled' => true, 'sla_tto_hours' => 2, 'sla_ttr_hours' => 24,
+            'sme' => ['entity_mode' => Config::MODE_MULTI_SAME_COMPANY] + $goodPracticeBaseline,
+            'eti' => ['entity_mode' => Config::MODE_MULTI_SAME_COMPANY] + $goodPracticeBaseline,
+            'enterprise' => ['entity_mode' => Config::MODE_MULTI_SAME_COMPANY] + $goodPracticeBaseline,
+            'msp' => ['entity_mode' => Config::MODE_MULTI_MSP] + $goodPracticeBaseline + [
+                'sla_tto_hours' => 1, 'sla_ttr_hours' => 8, 'sla_astreinte' => true,
             ],
             default => [],
         };
