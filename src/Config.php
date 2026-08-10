@@ -55,6 +55,18 @@ class Config extends CommonDBTM
         '1' => ['tto_hours' => 48, 'ttr_hours' => 120],
     ];
 
+    // OLA = internal commitment that has to land *before* the matching SLA deadline for the SLA
+    // to actually be met (e.g. tier 1 support triage before the customer-facing clock runs out),
+    // so tighter than DEFAULT_SLA_TIERS at every level — starting point, admin-editable.
+    private const DEFAULT_OLA_TIERS = [
+        '6' => ['tto_hours' => 1, 'ttr_hours' => 2],
+        '5' => ['tto_hours' => 1, 'ttr_hours' => 4],
+        '4' => ['tto_hours' => 2, 'ttr_hours' => 8],
+        '3' => ['tto_hours' => 4, 'ttr_hours' => 24],
+        '2' => ['tto_hours' => 8, 'ttr_hours' => 48],
+        '1' => ['tto_hours' => 24, 'ttr_hours' => 72],
+    ];
+
     public static function getTable($classname = null)
     {
         return 'glpi_plugin_configurationglpiauto_configs';
@@ -106,6 +118,8 @@ class Config extends CommonDBTM
             'sla_enabled' => 0,
             'sla_tiers' => json_encode(self::DEFAULT_SLA_TIERS),
             'sla_astreinte' => 0,
+            'ola_enabled' => 0,
+            'ola_tiers' => json_encode(self::DEFAULT_OLA_TIERS),
         ];
     }
 
@@ -132,7 +146,7 @@ class Config extends CommonDBTM
     {
         $tiers = json_decode((string) ($this->fields['sla_tiers'] ?? '[]'), true);
 
-        return $this->sanitizeSlaTiers(is_array($tiers) ? $tiers : []);
+        return $this->sanitizeSlaTiers(is_array($tiers) ? $tiers : [], self::DEFAULT_SLA_TIERS);
     }
 
     /**
@@ -144,6 +158,27 @@ class Config extends CommonDBTM
     public static function getDefaultSlaTiers(): array
     {
         return self::DEFAULT_SLA_TIERS;
+    }
+
+    /**
+     * Same as getSlaTiers(), for the OLA (internal commitment) table — see class docs on
+     * sanitizeSlaSettings() for why OLA lives alongside SLA rather than as its own concept.
+     *
+     * @return array<string, array{tto_hours: int, ttr_hours: int}>
+     */
+    public function getOlaTiers(): array
+    {
+        $tiers = json_decode((string) ($this->fields['ola_tiers'] ?? '[]'), true);
+
+        return $this->sanitizeSlaTiers(is_array($tiers) ? $tiers : [], self::DEFAULT_OLA_TIERS);
+    }
+
+    /**
+     * @return array<string, array{tto_hours: int, ttr_hours: int}>
+     */
+    public static function getDefaultOlaTiers(): array
+    {
+        return self::DEFAULT_OLA_TIERS;
     }
 
     /**
@@ -207,11 +242,19 @@ class Config extends CommonDBTM
         }
 
         if (isset($input['sla_tiers']) && is_array($input['sla_tiers'])) {
-            $input['sla_tiers'] = json_encode($this->sanitizeSlaTiers($input['sla_tiers']));
+            $input['sla_tiers'] = json_encode($this->sanitizeSlaTiers($input['sla_tiers'], self::DEFAULT_SLA_TIERS));
         }
 
         if (isset($input['sla_astreinte'])) {
             $input['sla_astreinte'] = !empty($input['sla_astreinte']) ? 1 : 0;
+        }
+
+        if (isset($input['ola_enabled'])) {
+            $input['ola_enabled'] = !empty($input['ola_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['ola_tiers']) && is_array($input['ola_tiers'])) {
+            $input['ola_tiers'] = json_encode($this->sanitizeSlaTiers($input['ola_tiers'], self::DEFAULT_OLA_TIERS));
         }
 
         return $input;
@@ -295,24 +338,33 @@ class Config extends CommonDBTM
     }
 
     /**
-     * @return array{enabled: bool, astreinte: bool, tiers: array<string, array{tto_hours: int, ttr_hours: int}>}
+     * OLA (internal commitment) is kept as sibling keys here rather than its own top-level
+     * `settings.ola` — it only ever exists attached to the same client's SLA (same SLM
+     * container in SlaBuilder), so nesting it separately would just be two objects that always
+     * have to agree on which client they belong to.
+     *
+     * @return array{enabled: bool, astreinte: bool, tiers: array<string, array{tto_hours: int, ttr_hours: int}>, ola_enabled: bool, ola_tiers: array<string, array{tto_hours: int, ttr_hours: int}>}
      */
     private function sanitizeSlaSettings(array $sla): array
     {
         return [
             'enabled' => !empty($sla['enabled']),
             'astreinte' => !empty($sla['astreinte']),
-            'tiers' => $this->sanitizeSlaTiers(is_array($sla['tiers'] ?? null) ? $sla['tiers'] : []),
+            'tiers' => $this->sanitizeSlaTiers(is_array($sla['tiers'] ?? null) ? $sla['tiers'] : [], self::DEFAULT_SLA_TIERS),
+            'ola_enabled' => !empty($sla['ola_enabled']),
+            'ola_tiers' => $this->sanitizeSlaTiers(is_array($sla['ola_tiers'] ?? null) ? $sla['ola_tiers'] : [], self::DEFAULT_OLA_TIERS),
         ];
     }
 
     /**
-     * Fills in every level from PRIORITY_LEVELS, falling back to DEFAULT_SLA_TIERS for any level
-     * missing or malformed in $tiers rather than leaving a gap a ticket could fall through.
+     * Fills in every level from PRIORITY_LEVELS, falling back to $defaults for any level missing
+     * or malformed in $tiers rather than leaving a gap a ticket could fall through. Shared by SLA
+     * and OLA tables — same shape, different starting-point numbers ($defaults).
      *
+     * @param array<string, array{tto_hours: int, ttr_hours: int}> $defaults
      * @return array<string, array{tto_hours: int, ttr_hours: int}>
      */
-    private function sanitizeSlaTiers(array $tiers): array
+    private function sanitizeSlaTiers(array $tiers, array $defaults): array
     {
         $clean = [];
         foreach (self::PRIORITY_LEVELS as $level) {
@@ -320,8 +372,8 @@ class Config extends CommonDBTM
             $tier = is_array($tiers[$key] ?? null) ? $tiers[$key] : [];
 
             $clean[$key] = [
-                'tto_hours' => max(1, (int) ($tier['tto_hours'] ?? self::DEFAULT_SLA_TIERS[$key]['tto_hours'])),
-                'ttr_hours' => max(1, (int) ($tier['ttr_hours'] ?? self::DEFAULT_SLA_TIERS[$key]['ttr_hours'])),
+                'tto_hours' => max(1, (int) ($tier['tto_hours'] ?? $defaults[$key]['tto_hours'])),
+                'ttr_hours' => max(1, (int) ($tier['ttr_hours'] ?? $defaults[$key]['ttr_hours'])),
             ];
         }
 

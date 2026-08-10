@@ -9,6 +9,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 15 — OLA, the internal commitment behind the SLA (2026-08-10)
+
+Following a completeness audit against ITIL/ISO27001/GLPI best practices (requested by the user —
+see ROADMAP.md "Audit de complétude"): OLA (Operational Level Agreement) is the internal
+commitment between the helpdesk and support teams that has to be met *before* the external SLA
+deadline for the SLA to actually be kept (e.g. SLA "resolve within 4h" to the customer ⇒ internal
+OLA "tier 1 triage within 30min, tier 2 diagnosis within 2h"). Confirmed in GLPI core: `OLA`
+extends the same `LevelAgreement` base class as `SLA`, `glpi_olas` has the identical schema to
+`glpi_slas`, and — the key finding — OLA attaches to the *same* `SLM` container as SLA (same
+`slms_id`), so one "Niveau de service" naturally carries both. `RuleTicket` already had
+`olas_id_tto`/`olas_id_ttr` as valid actions alongside `slas_id_tto`/`slas_id_ttr`.
+
+#### Added
+- `Config` gains `ola_enabled`/`ola_tiers` (same 6-priority-level shape as `sla_tiers`), plus a
+  tighter `DEFAULT_OLA_TIERS` starting point (OLA has to land before its paired SLA). Per-client
+  override (`settings.sla`, Sprint 13/14) gains `ola_enabled`/`ola_tiers` as sibling keys rather
+  than a separate `settings.ola` object — an OLA only ever exists attached to its client's SLA/SLM,
+  so nesting it separately would just be two objects that always have to agree on which client
+  they belong to.
+- Step 4's shared section gets an "Ajouter des engagements internes (OLA)" toggle under the SLA
+  table, revealing a second 6-row table (only shown/meaningful when SLA itself is enabled — OLA
+  doesn't stand alone in this plugin's model). The per-client SLA panel gets the same, inside its
+  "custom" block.
+- `SlaBuilder::buildSlm()` now creates OLA rows in the *same* SLM as SLA when enabled — no second
+  container class needed. `getOrCreateSla()` generalized to `getOrCreateLevelAgreement(string
+  $class, ...)`, serving both `SLA::class` and `OLA::class` (identical schema, only the class
+  differs). `assignOne()` adds `olas_id_tto`/`olas_id_ttr` `RuleAction`s onto the *same* rule that
+  already assigns the SLA for that priority/entity — still 6 rules per entity, not 12.
+
+Validated end-to-end against the real GLPI 11.0.8 test instance via Playwright: enabled shared
+SLA+OLA with distinct values, confirmed the 6-row OLA table renders and the finish flash message
+mentions both; in the database, the same `slms_id` carries both SLA and OLA rows, and each of the
+6 rules for the test entity carries all 4 actions (`slas_id_tto`, `slas_id_ttr`, `olas_id_tto`,
+`olas_id_ttr`). Created a real ticket with priority=Majeure via the entity's helpdesk form and
+confirmed it received both the correct SLA ids *and* the correct OLA ids — the first sprint to
+verify SLA and OLA together against an actual ticket, not just the database rows the wizard
+produces. Local suite green (phpunit 5/5, phpstan clean, php-cs-fixer clean).
+
 ### Sprint 14 — SLA per priority level, not one flat delay for everything (2026-08-10)
 
 Confirmed by research and the user (Sprint 13): real ITSM practice defines SLAs per ticket
