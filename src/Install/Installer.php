@@ -81,6 +81,8 @@ final class Installer
                 `calendar_days` text,
                 `calendar_begin` varchar(5) NOT NULL DEFAULT '08:00',
                 `calendar_end` varchar(5) NOT NULL DEFAULT '18:00',
+                `branding_enabled` tinyint NOT NULL DEFAULT 0,
+                `branding_primary_color` varchar(7) NOT NULL DEFAULT '#206bc4',
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -104,6 +106,8 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'calendar_days', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'calendar_begin', 'string', ['value' => '08:00']);
             $migration->addField(self::CONFIGS_TABLE, 'calendar_end', 'string', ['value' => '18:00']);
+            $migration->addField(self::CONFIGS_TABLE, 'branding_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'branding_primary_color', 'string', ['value' => '#206bc4']);
         }
 
         Profile::install($migration);
