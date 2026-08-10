@@ -74,6 +74,13 @@ final class Installer
                 `entity_mode` varchar(32) NOT NULL DEFAULT 'mono',
                 `entity_levels` int NOT NULL DEFAULT 1,
                 `level_labels` text,
+                `top_level_names` text,
+                `configurationprofiles_id` int {$keySign} NOT NULL DEFAULT 0,
+                `calendar_enabled` tinyint NOT NULL DEFAULT 0,
+                `calendar_name` varchar(255) NOT NULL DEFAULT 'Horaires standard',
+                `calendar_days` text,
+                `calendar_begin` varchar(5) NOT NULL DEFAULT '08:00',
+                `calendar_end` varchar(5) NOT NULL DEFAULT '18:00',
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -81,6 +88,22 @@ final class Installer
             $DB->doQuery($query) or die($DB->error());
 
             (new Config())->add(Config::getDefaults() + ['id' => 1]);
+        } else {
+            // Upgrade path for instances installed before these columns existed — addField() is
+            // idempotent, unlike the raw CREATE TABLE above, same pattern already used on the
+            // sibling glpi-vulnerability-manager plugin.
+            $migration->addField(
+                self::CONFIGS_TABLE,
+                'configurationprofiles_id',
+                'integer',
+                ['value' => 0]
+            );
+            $migration->addField(self::CONFIGS_TABLE, 'top_level_names', 'text');
+            $migration->addField(self::CONFIGS_TABLE, 'calendar_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'calendar_name', 'string', ['value' => 'Horaires standard']);
+            $migration->addField(self::CONFIGS_TABLE, 'calendar_days', 'text');
+            $migration->addField(self::CONFIGS_TABLE, 'calendar_begin', 'string', ['value' => '08:00']);
+            $migration->addField(self::CONFIGS_TABLE, 'calendar_end', 'string', ['value' => '18:00']);
         }
 
         Profile::install($migration);
