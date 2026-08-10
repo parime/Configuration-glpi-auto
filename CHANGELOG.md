@@ -9,6 +9,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 20 — simplified template refinements: parent-only categories, real SLA/OLA hiding (2026-08-10)
+
+Direct follow-up to Sprint 19, based on user testing of the real hidden-fields admin tab: the
+simplified template should keep category access (just restricted to the 11 top-level branches, not
+the ~92 leaf categories meant for staff triage) instead of hiding it outright, and "niveaux de
+service" (SLA/OLA due dates) needed to actually be hidden — which an earlier version of
+`TicketTemplateBuilder` silently failed to do.
+
+#### Fixed
+- `TicketTemplateBuilder` previously hand-resolved SearchOption IDs via `Ticket::
+  getSearchOptionIDByField()`, and concluded SLA/OLA fields (`slas_id_tto`/`_ttr`, `olas_id_tto`/
+  `_ttr`, `time_to_own`, `internal_time_to_own`/`_resolve`) weren't hideable — wrong: they're
+  defined in `TicketTemplate::getExtraAllowedFields()` (a different method, on the template class,
+  not the ticket class), which a real screenshot of GLPI's own "Champs masqués" tab caught. Rewrote
+  to resolve every field through `TicketTemplate::getAllowedFields(true)` instead — the exact same
+  authoritative map GLPI's own admin tab is built from — rather than re-deriving lookups by hand.
+
+#### Changed
+- Simplified template no longer hides `itilcategories_id` — category stays visible, but
+  `CategoryBuilder` now sets `is_helpdeskvisible` only on the 11 top-level branches (`0` on every
+  child), which is what GLPI's own ticket-creation category search option filters on for the
+  Self-Service interface specifically (`CommonITILObject::rawSearchOptions()`, condition added only
+  when `Session::getCurrentInterface() == 'helpdesk'`). A base user now picks a broad theme, not one
+  of the ~90 leaf categories.
+  - Existing installs: an explicit `ensureNotHidden()` cleanup call removes the now-stale
+    `itilcategories_id` hidden-field row a Sprint 19 run would have already created.
+- Simplified template now genuinely hides the "Niveaux de service" panel — all 7 SLA/OLA fields —
+  in addition to the fields already hidden in Sprint 19.
+
+Also investigated and explained rather than built: restricting which entity a Self-Service user can
+select at ticket creation isn't controllable via the ticket-template mechanism — `entities_id` isn't
+part of `ITILTemplate`'s hideable-field set at all (confirmed reading `fields_panel.html.twig`: the
+entity dropdown is gated only by `is_multi_entities_mode()`, and lists every entity the user's
+account has access to). That's an account/entity-assignment concern — ROADMAP item 6
+("Droits/profils GLPI par entité"), not yet built.
+
+Validated against the real GLPI 11.0.8 test instance via Playwright: wiped the previously-created
+category tree and re-ran the wizard fresh — confirmed in DB all 11 top-level branches have
+`is_helpdeskvisible = 1` and all 92 children have `0`; confirmed the simplified template (id 2) has
+exactly 20 hidden-field rows (all previously-missing SLA/OLA/duration fields now present, resolved
+to the correct SearchOption `num`s) and no `itilcategories_id` entry; profile assignment unchanged
+(Self-Service/Read-Only → simplified, all others → complete). Local suite green (phpunit 5/5,
+phpstan clean, php-cs-fixer clean).
+
 ### Sprint 19 — ticket templates split by profile, project task state mapping (2026-08-10)
 
 Two follow-up items requested right after Sprint 18. First: GLPI ships exactly 3 native

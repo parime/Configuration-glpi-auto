@@ -18,7 +18,6 @@
 namespace GlpiPlugin\Configurationglpiauto;
 
 use Profile;
-use Ticket;
 use TicketTemplate;
 use TicketTemplateHiddenField;
 use TicketTemplateMandatoryField;
@@ -26,15 +25,20 @@ use TicketTemplateMandatoryField;
 /**
  * Creates two `TicketTemplate` rows and wires them to GLPI's default profiles via
  * `glpi_profiles.tickettemplates_id` (a native per-profile override, confirmed in `Profile.php`'s
- * `$helpdesk_rights`/`$common_fields`): a minimal one (title + description only, everything else
- * hidden) for the profiles with no elevated rights (Self-Service, Read-Only), and a complete one
- * (category + urgency mandatory, nothing hidden) for every other profile — matching the explicit
- * split requested: base users enter the least possible, staff qualify the ticket.
+ * `$helpdesk_rights`/`$common_fields`): a minimal one (title + description, and a category picker
+ * restricted to top-level branches only) for the profiles with no elevated rights (Self-Service,
+ * Read-Only), and a complete one (category + urgency mandatory, nothing hidden) for every other
+ * profile — matching the explicit split requested: base users enter the least possible, staff
+ * qualify the ticket.
  *
- * Field numbers (`num` in `glpi_tickettemplate{mandatory,hidden}fields`) are GLPI SearchOption IDs,
- * not arbitrary indexes — confirmed via `ITILTemplate::getAllowedFields()`, which resolves them the
- * same way (`getSearchOptionIDByField()`), so they're looked up here instead of hardcoded, except
- * for the handful GLPI itself hardcodes in that same method (`_users_id_assign` etc.).
+ * Field numbers (`num` in `glpi_tickettemplate{mandatory,hidden}fields`) are GLPI SearchOption IDs.
+ * Resolved via `TicketTemplate::getAllowedFields(true)` — the exact same method GLPI's own "Champs
+ * masqués" admin tab uses to build its field list (confirmed by reading `ITILTemplateField::
+ * showForITILTemplate()`) — rather than re-deriving `getSearchOptionIDByField()` calls by hand:
+ * an earlier version of this class hand-resolved a handful of fields and missed that
+ * `TicketTemplate::getExtraAllowedFields()` (not `Ticket`'s own search options) is where SLA/OLA
+ * fields (`slas_id_tto`/`_ttr`, `olas_id_tto`/`_ttr`, `time_to_own`, `internal_time_to_own`/
+ * `_resolve`) live — calling the real method instead of guessing avoids that class of mistake.
  */
 class TicketTemplateBuilder
 {
@@ -46,49 +50,46 @@ class TicketTemplateBuilder
     // custom profile isn't silently swept into the wrong bucket.
     private const SIMPLIFIED_PROFILES = ['Self-Service', 'Read-Only'];
 
+    // Fields hidden on the simplified template: everything a base user filing "title + description"
+    // doesn't need to see — qualification (urgency/impact/priority/status/location), service-level
+    // display (SLA/OLA due dates, both external and internal), staff-only durations, and
+    // assignment/observer actor fields. `itilcategories_id` is deliberately NOT here — it stays
+    // visible, but restricted to the 11 top-level branches via `is_helpdeskvisible`
+    // (`CategoryBuilder`), not via this hidden-field mechanism.
+    private const HIDDEN_FOR_SIMPLIFIED = [
+        'urgency', 'impact', 'priority', 'status', 'locations_id',
+        'date', 'actiontime', 'time_to_resolve', 'time_to_own',
+        'slas_id_tto', 'slas_id_ttr', 'olas_id_tto', 'olas_id_ttr',
+        'internal_time_to_own', 'internal_time_to_resolve',
+        '_users_id_assign', '_groups_id_assign', '_suppliers_id_assign',
+        '_users_id_observer', '_groups_id_observer',
+    ];
+
+    // Fields mandatory on the complete template: the ITIL-minimum for correct routing/prioritizing.
+    private const MANDATORY_FOR_COMPLETE = ['content', 'itilcategories_id', 'urgency'];
+
     public function apply(Config $config): bool
     {
         if (empty($config->fields['ticket_template_enabled'])) {
             return false;
         }
 
-        $ticket = new Ticket();
-        $table = $ticket->getTable();
-
-        $so = [
-            'content'             => $ticket->getSearchOptionIDByField('field', 'content', $table),
-            'itilcategories_id'   => $ticket->getSearchOptionIDByField('field', 'completename', 'glpi_itilcategories'),
-            'urgency'             => $ticket->getSearchOptionIDByField('field', 'urgency', $table),
-            'impact'              => $ticket->getSearchOptionIDByField('field', 'impact', $table),
-            'priority'            => $ticket->getSearchOptionIDByField('field', 'priority', $table),
-            'status'              => $ticket->getSearchOptionIDByField('field', 'status', $table),
-            'locations_id'        => $ticket->getSearchOptionIDByField('field', 'completename', 'glpi_locations'),
-            'date'                => $ticket->getSearchOptionIDByField('field', 'date', $table),
-            'actiontime'          => $ticket->getSearchOptionIDByField('field', 'actiontime', $table),
-            'time_to_resolve'     => $ticket->getSearchOptionIDByField('field', 'time_to_resolve', $table),
-            '_suppliers_id_assign' => $ticket->getSearchOptionIDByField('field', 'name', 'glpi_suppliers'),
-            // Hardcoded the same way GLPI's own ITILTemplate::getAllowedFields() hardcodes them —
-            // no SearchOption lookup resolves these (they're actor pseudo-fields, not real columns).
-            '_users_id_assign'    => 5,
-            '_groups_id_assign'   => 8,
-            '_users_id_observer'  => 66,
-            '_groups_id_observer' => 65,
-        ];
+        // Name => SearchOption ID, the same authoritative map GLPI's own hidden/mandatory-field
+        // admin tabs are built from (base fields + Ticket-specific ones, including SLA/OLA).
+        $so = array_flip(TicketTemplate::getAllowedFields(true));
 
         $simplifiedId = $this->getOrCreateTemplate(self::SIMPLIFIED_NAME);
-        $this->ensureMandatory($simplifiedId, $so['content']);
-        foreach ([
-            'itilcategories_id', 'urgency', 'impact', 'priority', 'status', 'locations_id',
-            'date', 'actiontime', 'time_to_resolve',
-            '_users_id_assign', '_groups_id_assign', '_suppliers_id_assign',
-            '_users_id_observer', '_groups_id_observer',
-        ] as $key) {
-            $this->ensureHidden($simplifiedId, $so[$key]);
+        $this->ensureMandatory($simplifiedId, $so['content'] ?? -1);
+        foreach (self::HIDDEN_FOR_SIMPLIFIED as $key) {
+            $this->ensureHidden($simplifiedId, $so[$key] ?? -1);
         }
+        // Un-hides `itilcategories_id` if an earlier run of this builder (Sprint 19) hid it before
+        // category access was scoped down to top-level branches instead.
+        $this->ensureNotHidden($simplifiedId, $so['itilcategories_id'] ?? -1);
 
         $completeId = $this->getOrCreateTemplate(self::COMPLETE_NAME);
-        foreach (['content', 'itilcategories_id', 'urgency'] as $key) {
-            $this->ensureMandatory($completeId, $so[$key]);
+        foreach (self::MANDATORY_FOR_COMPLETE as $key) {
+            $this->ensureMandatory($completeId, $so[$key] ?? -1);
         }
 
         $this->assignToProfiles($simplifiedId, $completeId);
@@ -129,6 +130,17 @@ class TicketTemplateBuilder
         $field = new TicketTemplateHiddenField();
         if (!$field->getFromDBByCrit(['tickettemplates_id' => $templateId, 'num' => $num])) {
             $field->add(['tickettemplates_id' => $templateId, 'num' => $num]);
+        }
+    }
+
+    private function ensureNotHidden(int $templateId, int $num): void
+    {
+        if ($num < 0) {
+            return;
+        }
+        $field = new TicketTemplateHiddenField();
+        if ($field->getFromDBByCrit(['tickettemplates_id' => $templateId, 'num' => $num])) {
+            $field->delete(['id' => $field->getID()]);
         }
     }
 
