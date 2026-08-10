@@ -68,13 +68,19 @@ Html::header(__('Assistant de configuration', 'configurationglpiauto'), $_SERVER
 $config = Config::getConfig();
 $profiles = (new ConfigurationProfile())->find(['is_active' => 1], ['sort_order ASC']);
 
+$profileDefaults = [];
+foreach ($profiles as $profile) {
+    $profileDefaults[$profile['id']] = ConfigurationProfile::getSuggestedDefaults($profile['type']);
+}
+
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/wizard.html.twig', [
-    'config'      => $config->fields,
-    'profiles'    => $profiles,
-    'modes'       => Config::getModes(),
-    'max_levels'  => Config::MAX_LEVELS,
-    'entity_tree' => $config->getEntityTree(),
-    'csrf_token'  => Session::getNewCSRFToken(),
+    'config'           => $config->fields,
+    'profiles'         => $profiles,
+    'profile_defaults' => $profileDefaults,
+    'modes'            => Config::getModes(),
+    'max_levels'       => Config::MAX_LEVELS,
+    'entity_tree'      => $config->getEntityTree(),
+    'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 
 Html::footer();

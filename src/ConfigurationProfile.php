@@ -20,9 +20,9 @@ namespace GlpiPlugin\Configurationglpiauto;
 use CommonDBTM;
 
 /**
- * A predefined configuration profile (PME, ETI, MSP, ISO 27001...) that the wizard will be able
- * to deploy onto a GLPI instance. Sprint 1 only stores and lists the catalog of profiles; the
- * actual deployment engine (Sprint 2+) is not built yet.
+ * A predefined configuration profile (PME, ETI, MSP, ISO 27001...) offered as the wizard's first
+ * step. Picking one pre-fills sensible starting defaults for the later steps — see
+ * getSuggestedDefaults() — the admin can still change anything afterward.
  *
  * Deliberately NOT namespaced under an `Entity\` sub-namespace: GLPI's automatic table-name
  * derivation reads namespace segments after the plugin prefix as part of the class name, and
@@ -107,5 +107,47 @@ class ConfigurationProfile extends CommonDBTM
     public function prepareInputForUpdate($input)
     {
         return $this->prepareInputForAdd($input);
+    }
+
+    /**
+     * Suggested starting point for the wizard's later steps once this profile is picked in
+     * step 1 — entity mode, and reasonable calendar/SLA defaults for that kind of organization.
+     * Deliberately never touches entity_tree itself (no realistic way to guess real client/site
+     * names) — only the mode, so the admin still builds their own tree in step 2, just starting
+     * from a sensible mode instead of always mono. The admin can still change any of this in the
+     * later steps; picking a profile only pre-fills, it doesn't lock anything in. 'custom'
+     * intentionally returns no suggestions at all.
+     *
+     * @return array<string, mixed>
+     */
+    public static function getSuggestedDefaults(string $type): array
+    {
+        $sameCompany = ['entity_mode' => Config::MODE_MULTI_SAME_COMPANY];
+        $standardHours = ['calendar_enabled' => true, 'calendar_days' => [1, 2, 3, 4, 5], 'calendar_begin' => '08:00', 'calendar_end' => '18:00'];
+
+        return match ($type) {
+            'minimal' => [
+                'entity_mode' => Config::MODE_MONO,
+            ],
+            'sme' => $sameCompany + $standardHours,
+            'eti' => $sameCompany + $standardHours + [
+                'sla_enabled' => true, 'sla_tto_hours' => 4, 'sla_ttr_hours' => 48,
+            ],
+            'enterprise' => $sameCompany + $standardHours + [
+                'sla_enabled' => true, 'sla_tto_hours' => 2, 'sla_ttr_hours' => 24,
+            ],
+            'msp' => ['entity_mode' => Config::MODE_MULTI_MSP] + $standardHours + [
+                'sla_enabled' => true, 'sla_tto_hours' => 1, 'sla_ttr_hours' => 8,
+            ],
+            // ISO 27001: security incidents need fast acknowledgement — tighter TTO than ETI/
+            // Enterprise despite a similar org size, that's the point of the profile.
+            'iso27001' => $sameCompany + $standardHours + [
+                'sla_enabled' => true, 'sla_tto_hours' => 1, 'sla_ttr_hours' => 4,
+            ],
+            'itil' => $sameCompany + $standardHours + [
+                'sla_enabled' => true, 'sla_tto_hours' => 2, 'sla_ttr_hours' => 24,
+            ],
+            default => [],
+        };
     }
 }

@@ -27,7 +27,7 @@
       {# ---------------------------------------------------------------- Étape 1 : Profil #}
       <div class="cga-wizard-step" data-step="1">
         <h3 class="mb-1">{{ __('Étape 1 : Profil', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Quel profil correspond le mieux à votre organisation ? Ce choix servira à pré-remplir les prochaines étapes de l\'assistant, au fur et à mesure qu\'elles seront ajoutées.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Quel profil correspond le mieux à votre organisation ? Ce choix pré-remplit la structure d\'entités, le calendrier et les SLA des étapes suivantes avec des valeurs adaptées — vous pourrez tout ajuster ensuite.', 'configurationglpiauto') }}</p>
 
         {% for id, profile in profiles %}
           <div class="form-check mb-2">
@@ -348,6 +348,61 @@
 
   prevBtn.addEventListener('click', function () { showStep(currentStep - 1); });
   nextBtn.addEventListener('click', function () { showStep(currentStep + 1); });
+
+  // Profile pre-fill: picking a profile in step 1 suggests a starting point for steps 2-5
+  // (entity mode, calendar, SLA) — never entity_tree itself (no realistic way to guess real
+  // client/site names) and never overrides anything a profile's defaults don't mention. Purely
+  // a suggestion: every field stays a normal input the admin can still change afterward.
+  var profileDefaults = {{ profile_defaults|default({})|json_encode|raw }};
+
+  function applyProfileDefaults(profileId) {
+    var defaults = profileDefaults[profileId];
+    if (!defaults) {
+      return;
+    }
+
+    if (defaults.entity_mode) {
+      var modeRadio = document.getElementById('cga-mode-' + defaults.entity_mode);
+      if (modeRadio) {
+        modeRadio.checked = true;
+        modeRadio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+
+    if (typeof defaults.calendar_enabled !== 'undefined') {
+      calendarEnabledInput.checked = !!defaults.calendar_enabled;
+      toggleCalendarFields();
+    }
+    if (defaults.calendar_days) {
+      DAYS.forEach(function (d) {
+        var cb = document.getElementById('cga-calendar-day-' + d.value);
+        if (cb) {
+          cb.checked = defaults.calendar_days.indexOf(d.value) !== -1;
+        }
+      });
+    }
+    if (defaults.calendar_begin) {
+      document.querySelector('input[name="calendar_begin"]').value = defaults.calendar_begin;
+    }
+    if (defaults.calendar_end) {
+      document.querySelector('input[name="calendar_end"]').value = defaults.calendar_end;
+    }
+
+    if (typeof defaults.sla_enabled !== 'undefined') {
+      slaEnabledInput.checked = !!defaults.sla_enabled;
+      toggleSlaFields();
+    }
+    if (defaults.sla_tto_hours) {
+      document.querySelector('input[name="sla_tto_hours"]').value = defaults.sla_tto_hours;
+    }
+    if (defaults.sla_ttr_hours) {
+      document.querySelector('input[name="sla_ttr_hours"]').value = defaults.sla_ttr_hours;
+    }
+  }
+
+  document.querySelectorAll('input[name="configurationprofiles_id"]').forEach(function (radio) {
+    radio.addEventListener('change', function () { applyProfileDefaults(radio.value); });
+  });
 
   showStep(1);
 })();
