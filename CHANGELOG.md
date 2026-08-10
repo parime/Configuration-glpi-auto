@@ -27,6 +27,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   entity and confirming GLPI's own rules engine auto-populated `slas_id_tto`/`slas_id_ttr` with
   the exact SLA IDs `SlaBuilder` created.
 
+#### Fixed — CI trigger, and the licence-header check's own reference file
+- `continuous-integration.yml`/`locales-sync.yml` watched a branch named `develop` in their
+  `push`/`pull_request` filters; this repo's actual working branch (established Sprint 1) is
+  `dev` — CI had never triggered on a single `dev` push before this, only caught by pushing and
+  finding no run at all in `gh run list`, rather than a failed one.
+- `tools/HEADER` (used by the reusable GLPI CI workflow's licence-header check, not a check of
+  my own) was a fully-formatted PHP `/** ... */` comment block — but the tool that reads it
+  (`glpi-project/tools`' `licence-headers-check`) treats the file as **plain text** and wraps it
+  itself per file type (`/** */` for PHP, `{# #}` for Twig, `#` for YAML), matching a stripped
+  line-by-line comparison against each file's actual header. A fully-formatted reference file
+  made every single file compare as "outdated" against itself, and `--fix` (before this was
+  understood) wrapped the existing header inside a *second* one, corrupting several files with
+  an unterminated comment (caught by `php -l` before it was committed, reverted, redone
+  correctly). Root cause confirmed by reading the tool's own comparison source, not guessed.
+
 #### Fixed — the CI pipeline had never actually run successfully, on any commit
 Every push (including every release tag so far) failed CI; nothing had surfaced this because
 this plugin's actual releases are validated by the separate, real `release.yml` workflow, not
