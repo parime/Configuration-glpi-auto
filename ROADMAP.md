@@ -65,6 +65,11 @@ encore implémentées :
     d'un autre) — alors qu'une même entreprise multi-site partage plus naturellement
     calendrier/SLA/branding et peut vouloir une visibilité croisée entre sites.
 
+**Priorités court terme (retour utilisateur, 2026-08-10)** : le CSS/branding (étape 5) reste de la
+décoration, ce n'est pas prioritaire — quand on y reviendra, prévoir un aperçu en direct plutôt
+qu'une simple case couleur. En attendant, prioriser : les intitulés/libellés du wizard, les
+catégories de tickets ITIL (incident/demande/problème/changement), et les templates de tickets.
+
 ---
 
 ### 🚀 Version 1.1 - **En Développement**

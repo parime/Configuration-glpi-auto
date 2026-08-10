@@ -9,6 +9,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 12 — plain-language profiles, no acronyms (2026-08-10)
+
+Testing Sprint 11 surfaced two more issues, both fixed here:
+
+1. Step 1 still listed PME/ETI/MSP as unexplained acronyms — not usable by someone who doesn't
+   already know GLPI/business jargon, and the plugin's whole point is to make GLPI configuration
+   approachable for novices, not just professionals.
+2. Once framework-vs-size was untangled in Sprint 11, PME/ETI/Grande entreprise started returning
+   *byte-for-byte identical* suggested defaults — three acronym-labeled options that silently did
+   the same thing is worse than clutter, it's actively misleading.
+
+#### Changed
+- `ConfigurationProfile::getTypes()` down to 4 plain-French options, no acronyms: "Installation
+  simple", "Plusieurs sites ou services (une seule entreprise)", "Plusieurs entreprises clientes
+  (infogérance)", "Personnalisé". Each now has a short `description` shown under its label in the
+  wizard (e.g. "Un seul site, pas de sous-structure").
+- Install/upgrade migration deactivates the old `sme`/`eti`/`enterprise` rows (same
+  deactivate-don't-delete approach as Sprint 11's `iso27001`/`itil` cleanup) and renames/inserts
+  rows for the surviving 4 types.
+- Removed `front/config.php` + `templates/config_form.html.twig`: a second, older single-page
+  settings screen (entity mode + tree only, no calendar/SLA/branding/profile) that predates the
+  wizard and was still wired to the "configure" wrench icon on Configuration > Plugins — landing
+  there instead of the wizard is what "je n'ai qu'un truc dans le paramétrage du plugin" was about.
+  `Hooks::CONFIG_PAGE` in `setup.php` now points at `front/wizard.php`, same as the main menu
+  entry — a single coherent entry point regardless of how the admin gets there.
+
+#### Fixed
+- **`ConfigurationProfile::getSuggestedDefaults('msp')` never actually applied its own SLA
+  override.** `['entity_mode' => ...] + $goodPracticeBaseline + ['sla_tto_hours' => 1, ...]` — PHP's
+  `+` operator keeps the *left* array's value on a key collision (unlike `array_merge()`), so once
+  `$goodPracticeBaseline` had already set `sla_tto_hours` to 4, the trailing `+ [...]` override was
+  silently discarded. MSP was suggesting the generic 4h/48h SLA with astreinte off instead of its
+  intended 1h/8h with astreinte on. Caught by the Playwright validation added this sprint (see
+  below) — switched to `array_merge()`.
+
+Validated with a Playwright script run via an ephemeral `mcr.microsoft.com/playwright` container
+joined to the `docker-compose.test.yml` network (no browser installed on the host) against the
+real GLPI 11.0.8 test instance: logged in, confirmed the plugin's main menu entry and the
+"configure" wrench icon on Configuration > Plugins both open the wizard directly, confirmed the 4
+profile labels/descriptions render as expected, confirmed picking "Plusieurs entreprises clientes"
+sets `entity_mode=multi_msp` + astreinte checked + SLA 1h/8h, and picking "Plusieurs sites ou
+services" sets `entity_mode=multi_same_company` + astreinte unchecked + SLA 4h/48h. Local suite
+green (phpunit 5/5, phpstan clean, php-cs-fixer 0 files).
+
 ### Sprint 11 — profiles are a size choice, not a framework choice (2026-08-10)
 
 Sprint 10 (below) made profile choice pre-fill later steps, but conflated two different
@@ -48,8 +92,8 @@ framework at all.
 Validated: local suite green (phpunit 5/5, phpstan clean, php-cs-fixer 0 files, `php -l` clean).
 Migration verified against the real GLPI 11.0.8 test instance — `iso27001`/`itil` rows correctly
 deactivated, `sla_astreinte` column present, plugin reactivates with no errors in
-`files/_log/php-errors.log`. Full click-through (menu → wizard, MSP profile → astreinte checked)
-pending manual/browser confirmation — no browser automation tool was available this session.
+`files/_log/php-errors.log`. Full click-through validated via Playwright in Sprint 12 below (which
+is also where that pass caught the MSP astreinte bug this sprint had actually shipped).
 
 ### Sprint 10 — Profile choice actually does something (2026-08-10)
 
