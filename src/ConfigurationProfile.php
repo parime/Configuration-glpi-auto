@@ -162,6 +162,9 @@ class ConfigurationProfile extends CommonDBTM
             // Same reasoning: GLPI core's own general settings (notifications, search/pagination
             // layout, split action buttons...) are unhelpful defaults regardless of org size.
             'general_settings_enabled' => true,
+            // Same reasoning again: a minimal self-service form vs. a fully qualified support form
+            // is an ITIL good practice independent of org size.
+            'ticket_template_enabled' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual
