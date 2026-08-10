@@ -27,7 +27,7 @@
       {# ---------------------------------------------------------------- Étape 1 : Profil #}
       <div class="cga-wizard-step" data-step="1">
         <h3 class="mb-1">{{ __('Étape 1 : Profil', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Quel profil correspond le mieux à votre organisation ? Ce choix servira à pré-remplir les prochaines étapes de l\'assistant, au fur et à mesure qu\'elles seront ajoutées.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Quel profil correspond le mieux à votre organisation ? Ce choix pré-remplit la structure d\'entités, le calendrier et les SLA des étapes suivantes avec des valeurs adaptées — vous pourrez tout ajuster ensuite.', 'configurationglpiauto') }}</p>
 
         {% for id, profile in profiles %}
           <div class="form-check mb-2">
@@ -60,41 +60,52 @@
         <h3 class="mb-1">{{ __('Étape 3 : Calendrier', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Configurez, si besoin, les horaires d\'ouverture appliqués aux entités créées.', 'configurationglpiauto') }}</p>
 
-        <div class="form-check form-switch mb-3">
-          <input type="hidden" name="calendar_enabled" value="0">
-          <input
-            type="checkbox"
-            name="calendar_enabled"
-            value="1"
-            class="form-check-input"
-            id="cga-calendar-enabled"
-            {{ config.calendar_enabled|default(0) ? 'checked' : '' }}
-          >
-          <label class="form-check-label" for="cga-calendar-enabled">{{ __('Créer un calendrier d\'horaires d\'ouverture', 'configurationglpiauto') }}</label>
-        </div>
-
-        <div id="cga-calendar-fields" style="display: none;">
-          <div class="mb-3" style="max-width: 320px;">
-            <label class="form-label">{{ __('Nom du calendrier', 'configurationglpiauto') }}</label>
-            <input type="text" name="calendar_name" class="form-control" value="{{ config.calendar_name|default('Horaires standard') }}">
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">{{ __('Jours ouvrés', 'configurationglpiauto') }}</label>
-            <div id="cga-calendar-days"></div>
-          </div>
-
-          <div class="row" style="max-width: 320px;">
-            <div class="col mb-3">
-              <label class="form-label">{{ __('Ouverture', 'configurationglpiauto') }}</label>
-              <input type="time" name="calendar_begin" class="form-control" value="{{ config.calendar_begin|default('08:00') }}">
-            </div>
-            <div class="col mb-3">
-              <label class="form-label">{{ __('Fermeture', 'configurationglpiauto') }}</label>
-              <input type="time" name="calendar_end" class="form-control" value="{{ config.calendar_end|default('18:00') }}">
-            </div>
+        <div id="cga-calendar-per-client-toggle-wrap" style="display: none;" class="mb-3 pb-3 border-bottom">
+          <div class="form-check form-switch">
+            <input type="checkbox" class="form-check-input" id="cga-calendar-per-client-toggle">
+            <label class="form-check-label" for="cga-calendar-per-client-toggle">{{ __('Calendrier différent par site ou client', 'configurationglpiauto') }}</label>
           </div>
         </div>
+
+        <div id="cga-calendar-shared-section">
+          <div class="form-check form-switch mb-3">
+            <input type="hidden" name="calendar_enabled" value="0">
+            <input
+              type="checkbox"
+              name="calendar_enabled"
+              value="1"
+              class="form-check-input"
+              id="cga-calendar-enabled"
+              {{ config.calendar_enabled|default(0) ? 'checked' : '' }}
+            >
+            <label class="form-check-label" for="cga-calendar-enabled">{{ __('Créer un calendrier d\'horaires d\'ouverture', 'configurationglpiauto') }}</label>
+          </div>
+
+          <div id="cga-calendar-fields" style="display: none;">
+            <div class="mb-3" style="max-width: 320px;">
+              <label class="form-label">{{ __('Nom du calendrier', 'configurationglpiauto') }}</label>
+              <input type="text" name="calendar_name" class="form-control" value="{{ config.calendar_name|default('Horaires standard') }}">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">{{ __('Jours ouvrés', 'configurationglpiauto') }}</label>
+              <div id="cga-calendar-days"></div>
+            </div>
+
+            <div class="row" style="max-width: 320px;">
+              <div class="col mb-3">
+                <label class="form-label">{{ __('Ouverture', 'configurationglpiauto') }}</label>
+                <input type="time" name="calendar_begin" class="form-control" value="{{ config.calendar_begin|default('08:00') }}">
+              </div>
+              <div class="col mb-3">
+                <label class="form-label">{{ __('Fermeture', 'configurationglpiauto') }}</label>
+                <input type="time" name="calendar_end" class="form-control" value="{{ config.calendar_end|default('18:00') }}">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="cga-calendar-per-client-panels" style="display: none;"></div>
       </div>
 
       {# ---------------------------------------------------------------- Étape 4 : SLA #}
@@ -102,29 +113,55 @@
         <h3 class="mb-1">{{ __('Étape 4 : Niveaux de service (SLA)', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : délais standards de prise en charge et de résolution des tickets, appliqués aux entités créées.', 'configurationglpiauto') }}</p>
 
-        <div class="form-check form-switch mb-3">
-          <input type="hidden" name="sla_enabled" value="0">
-          <input
-            type="checkbox"
-            name="sla_enabled"
-            value="1"
-            class="form-check-input"
-            id="cga-sla-enabled"
-            {{ config.sla_enabled|default(0) ? 'checked' : '' }}
-          >
-          <label class="form-check-label" for="cga-sla-enabled">{{ __('Créer des SLA standards', 'configurationglpiauto') }}</label>
+        <div id="cga-sla-per-client-toggle-wrap" style="display: none;" class="mb-3 pb-3 border-bottom">
+          <div class="form-check form-switch">
+            <input type="checkbox" class="form-check-input" id="cga-sla-per-client-toggle">
+            <label class="form-check-label" for="cga-sla-per-client-toggle">{{ __('SLA différent par site ou client', 'configurationglpiauto') }}</label>
+          </div>
         </div>
 
-        <div id="cga-sla-fields" style="display: none;" class="row" style="max-width: 480px;">
-          <div class="col mb-3">
-            <label class="form-label">{{ __('Prise en charge sous (heures)', 'configurationglpiauto') }}</label>
-            <input type="number" name="sla_tto_hours" min="1" class="form-control" value="{{ config.sla_tto_hours|default(4) }}">
+        <div id="cga-sla-shared-section">
+          <div class="form-check form-switch mb-3">
+            <input type="hidden" name="sla_enabled" value="0">
+            <input
+              type="checkbox"
+              name="sla_enabled"
+              value="1"
+              class="form-check-input"
+              id="cga-sla-enabled"
+              {{ config.sla_enabled|default(0) ? 'checked' : '' }}
+            >
+            <label class="form-check-label" for="cga-sla-enabled">{{ __('Créer des SLA standards', 'configurationglpiauto') }}</label>
           </div>
-          <div class="col mb-3">
-            <label class="form-label">{{ __('Résolution sous (heures)', 'configurationglpiauto') }}</label>
-            <input type="number" name="sla_ttr_hours" min="1" class="form-control" value="{{ config.sla_ttr_hours|default(48) }}">
+
+          <div id="cga-sla-fields" style="display: none;">
+            <div class="row" style="max-width: 480px;">
+              <div class="col mb-3">
+                <label class="form-label">{{ __('Prise en charge sous (heures)', 'configurationglpiauto') }}</label>
+                <input type="number" name="sla_tto_hours" min="1" class="form-control" value="{{ config.sla_tto_hours|default(4) }}">
+              </div>
+              <div class="col mb-3">
+                <label class="form-label">{{ __('Résolution sous (heures)', 'configurationglpiauto') }}</label>
+                <input type="number" name="sla_ttr_hours" min="1" class="form-control" value="{{ config.sla_ttr_hours|default(48) }}">
+              </div>
+            </div>
+
+            <div class="form-check form-switch mb-3">
+              <input type="hidden" name="sla_astreinte" value="0">
+              <input
+                type="checkbox"
+                name="sla_astreinte"
+                value="1"
+                class="form-check-input"
+                id="cga-sla-astreinte"
+                {{ config.sla_astreinte|default(0) ? 'checked' : '' }}
+              >
+              <label class="form-check-label" for="cga-sla-astreinte">{{ __('Astreinte (couverture 24h/24, 7j/7 — le délai continue de courir en dehors des horaires ouvrés)', 'configurationglpiauto') }}</label>
+            </div>
           </div>
         </div>
+
+        <div id="cga-sla-per-client-panels" style="display: none;"></div>
       </div>
 
       {# ---------------------------------------------------------------- Étape 5 : Branding #}
@@ -261,6 +298,7 @@
 
   var slaEnabledInput = document.getElementById('cga-sla-enabled');
   var slaFields = document.getElementById('cga-sla-fields');
+  var slaAstreinteInput = document.getElementById('cga-sla-astreinte');
   function toggleSlaFields() {
     slaFields.style.display = slaEnabledInput.checked ? '' : 'none';
   }
@@ -285,6 +323,326 @@
   toggleBrandingFields();
   updateSwatch();
 
+  // Per-client/site calendar & SLA (Sprint 13): only meaningful once there's more than one
+  // top-level entity to have its own settings, i.e. any multi-entité mode — not mono. Reuses
+  // window.cgaTree (same array reference the tree editor in step 2 mutates, see
+  // _entity_structure_fields.html.twig) rather than a second data channel kept in sync by index.
+  function currentEntityMode() {
+    var checked = document.querySelector('input[name="entity_mode"]:checked');
+    return checked ? checked.value : 'mono';
+  }
+
+  function syncTreeJson() {
+    var input = document.getElementById('cga-entity-tree-json');
+    if (input) {
+      input.value = JSON.stringify(window.cgaTree || []);
+    }
+  }
+
+  function ensureClientSettings(key, defaults) {
+    (window.cgaTree || []).forEach(function (node) {
+      node.settings = node.settings || {};
+      if (!node.settings[key]) {
+        node.settings[key] = Object.assign({}, defaults);
+      }
+    });
+  }
+
+  function stripClientSettings(key) {
+    (window.cgaTree || []).forEach(function (node) {
+      if (node.settings) {
+        delete node.settings[key];
+        if (Object.keys(node.settings).length === 0) {
+          delete node.settings;
+        }
+      }
+    });
+  }
+
+  function anyClientHasSettings(key) {
+    return (window.cgaTree || []).some(function (node) {
+      return node.settings && node.settings[key];
+    });
+  }
+
+  function buildDayCheckboxes(container, selectedDays, idPrefix, onChange) {
+    container.innerHTML = '';
+    DAYS.forEach(function (day) {
+      var wrapper = document.createElement('div');
+      wrapper.className = 'form-check form-check-inline';
+      var input = document.createElement('input');
+      input.type = 'checkbox';
+      input.className = 'form-check-input';
+      input.id = idPrefix + '-day-' + day.value;
+      input.checked = selectedDays.indexOf(day.value) !== -1;
+      input.addEventListener('change', onChange);
+      var label = document.createElement('label');
+      label.className = 'form-check-label';
+      label.setAttribute('for', input.id);
+      label.textContent = day.label;
+      wrapper.appendChild(input);
+      wrapper.appendChild(label);
+      container.appendChild(wrapper);
+    });
+  }
+
+  // ---- Calendrier par client/site ----
+  var calendarPerClientToggle = document.getElementById('cga-calendar-per-client-toggle');
+  var calendarPerClientToggleWrap = document.getElementById('cga-calendar-per-client-toggle-wrap');
+  var calendarSharedSection = document.getElementById('cga-calendar-shared-section');
+  var calendarPerClientPanels = document.getElementById('cga-calendar-per-client-panels');
+
+  function renderCalendarPerClientPanels() {
+    calendarPerClientPanels.innerHTML = '';
+    (window.cgaTree || []).forEach(function (node, i) {
+      var settings = (node.settings && node.settings.calendar) || { enabled: false, days: [1, 2, 3, 4, 5], begin: '08:00', end: '18:00' };
+
+      var card = document.createElement('div');
+      card.className = 'card mb-2';
+      var body = document.createElement('div');
+      body.className = 'card-body';
+
+      var title = document.createElement('h4');
+      title.className = 'mb-2';
+      title.textContent = node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}";
+      body.appendChild(title);
+
+      var switchWrap = document.createElement('div');
+      switchWrap.className = 'form-check form-switch mb-2';
+      var enabledInput = document.createElement('input');
+      enabledInput.type = 'checkbox';
+      enabledInput.className = 'form-check-input';
+      enabledInput.id = 'cga-cal-pc-' + i + '-enabled';
+      enabledInput.checked = !!settings.enabled;
+      var enabledLabel = document.createElement('label');
+      enabledLabel.className = 'form-check-label';
+      enabledLabel.setAttribute('for', enabledInput.id);
+      enabledLabel.textContent = "{{ __('Créer un calendrier pour cette entité', 'configurationglpiauto')|e('js') }}";
+      switchWrap.appendChild(enabledInput);
+      switchWrap.appendChild(enabledLabel);
+      body.appendChild(switchWrap);
+
+      var fieldsWrap = document.createElement('div');
+      fieldsWrap.style.display = settings.enabled ? '' : 'none';
+
+      function writeBack() {
+        node.settings = node.settings || {};
+        settings.enabled = enabledInput.checked;
+        node.settings.calendar = settings;
+        syncTreeJson();
+      }
+
+      var daysLabel = document.createElement('label');
+      daysLabel.className = 'form-label d-block';
+      daysLabel.textContent = "{{ __('Jours ouvrés', 'configurationglpiauto')|e('js') }}";
+      fieldsWrap.appendChild(daysLabel);
+      var daysContainer = document.createElement('div');
+      daysContainer.className = 'mb-2';
+      fieldsWrap.appendChild(daysContainer);
+      buildDayCheckboxes(daysContainer, settings.days, 'cga-cal-pc-' + i, function () {
+        settings.days = DAYS.filter(function (d) {
+          return document.getElementById('cga-cal-pc-' + i + '-day-' + d.value).checked;
+        }).map(function (d) { return d.value; });
+        writeBack();
+      });
+
+      var row = document.createElement('div');
+      row.className = 'row';
+      row.style.maxWidth = '320px';
+      [
+        ["{{ __('Ouverture', 'configurationglpiauto')|e('js') }}", 'begin'],
+        ["{{ __('Fermeture', 'configurationglpiauto')|e('js') }}", 'end'],
+      ].forEach(function (pair) {
+        var col = document.createElement('div');
+        col.className = 'col mb-2';
+        var lbl = document.createElement('label');
+        lbl.className = 'form-label';
+        lbl.textContent = pair[0];
+        var inp = document.createElement('input');
+        inp.type = 'time';
+        inp.className = 'form-control';
+        inp.value = settings[pair[1]];
+        inp.addEventListener('input', function (e) {
+          settings[pair[1]] = e.target.value;
+          writeBack();
+        });
+        col.appendChild(lbl);
+        col.appendChild(inp);
+        row.appendChild(col);
+      });
+      fieldsWrap.appendChild(row);
+      body.appendChild(fieldsWrap);
+
+      enabledInput.addEventListener('change', function () {
+        fieldsWrap.style.display = enabledInput.checked ? '' : 'none';
+        writeBack();
+      });
+
+      card.appendChild(body);
+      calendarPerClientPanels.appendChild(card);
+    });
+  }
+
+  function updateCalendarMode() {
+    var multiEntity = currentEntityMode() !== 'mono';
+    calendarPerClientToggleWrap.style.display = multiEntity ? '' : 'none';
+    if (!multiEntity && calendarPerClientToggle.checked) {
+      calendarPerClientToggle.checked = false;
+    }
+
+    var perClient = multiEntity && calendarPerClientToggle.checked;
+    calendarSharedSection.style.display = perClient ? 'none' : '';
+    calendarPerClientPanels.style.display = perClient ? '' : 'none';
+
+    if (perClient) {
+      ensureClientSettings('calendar', { enabled: false, days: [1, 2, 3, 4, 5], begin: '08:00', end: '18:00' });
+      renderCalendarPerClientPanels();
+    } else {
+      stripClientSettings('calendar');
+    }
+    syncTreeJson();
+  }
+  calendarPerClientToggle.addEventListener('change', updateCalendarMode);
+
+  // ---- SLA par client/site ----
+  var slaPerClientToggle = document.getElementById('cga-sla-per-client-toggle');
+  var slaPerClientToggleWrap = document.getElementById('cga-sla-per-client-toggle-wrap');
+  var slaSharedSection = document.getElementById('cga-sla-shared-section');
+  var slaPerClientPanels = document.getElementById('cga-sla-per-client-panels');
+
+  function renderSlaPerClientPanels() {
+    slaPerClientPanels.innerHTML = '';
+    (window.cgaTree || []).forEach(function (node, i) {
+      var settings = (node.settings && node.settings.sla) || { enabled: false, tto_hours: 4, ttr_hours: 48, astreinte: false };
+
+      var card = document.createElement('div');
+      card.className = 'card mb-2';
+      var body = document.createElement('div');
+      body.className = 'card-body';
+
+      var title = document.createElement('h4');
+      title.className = 'mb-2';
+      title.textContent = node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}";
+      body.appendChild(title);
+
+      var switchWrap = document.createElement('div');
+      switchWrap.className = 'form-check form-switch mb-2';
+      var enabledInput = document.createElement('input');
+      enabledInput.type = 'checkbox';
+      enabledInput.className = 'form-check-input';
+      enabledInput.id = 'cga-sla-pc-' + i + '-enabled';
+      enabledInput.checked = !!settings.enabled;
+      var enabledLabel = document.createElement('label');
+      enabledLabel.className = 'form-check-label';
+      enabledLabel.setAttribute('for', enabledInput.id);
+      enabledLabel.textContent = "{{ __('Créer un SLA pour cette entité', 'configurationglpiauto')|e('js') }}";
+      switchWrap.appendChild(enabledInput);
+      switchWrap.appendChild(enabledLabel);
+      body.appendChild(switchWrap);
+
+      var fieldsWrap = document.createElement('div');
+      fieldsWrap.style.display = settings.enabled ? '' : 'none';
+
+      function writeBack() {
+        node.settings = node.settings || {};
+        settings.enabled = enabledInput.checked;
+        node.settings.sla = settings;
+        syncTreeJson();
+      }
+
+      var row = document.createElement('div');
+      row.className = 'row';
+      row.style.maxWidth = '480px';
+      [
+        ["{{ __('Prise en charge sous (heures)', 'configurationglpiauto')|e('js') }}", 'tto_hours'],
+        ["{{ __('Résolution sous (heures)', 'configurationglpiauto')|e('js') }}", 'ttr_hours'],
+      ].forEach(function (pair) {
+        var col = document.createElement('div');
+        col.className = 'col mb-2';
+        var lbl = document.createElement('label');
+        lbl.className = 'form-label';
+        lbl.textContent = pair[0];
+        var inp = document.createElement('input');
+        inp.type = 'number';
+        inp.min = '1';
+        inp.className = 'form-control';
+        inp.value = settings[pair[1]];
+        inp.addEventListener('input', function (e) {
+          settings[pair[1]] = parseInt(e.target.value, 10) || 1;
+          writeBack();
+        });
+        col.appendChild(lbl);
+        col.appendChild(inp);
+        row.appendChild(col);
+      });
+      fieldsWrap.appendChild(row);
+
+      var astreinteWrap = document.createElement('div');
+      astreinteWrap.className = 'form-check form-switch mb-2';
+      var astreinteInput = document.createElement('input');
+      astreinteInput.type = 'checkbox';
+      astreinteInput.className = 'form-check-input';
+      astreinteInput.id = 'cga-sla-pc-' + i + '-astreinte';
+      astreinteInput.checked = !!settings.astreinte;
+      astreinteInput.addEventListener('change', function () {
+        settings.astreinte = astreinteInput.checked;
+        writeBack();
+      });
+      var astreinteLabel = document.createElement('label');
+      astreinteLabel.className = 'form-check-label';
+      astreinteLabel.setAttribute('for', astreinteInput.id);
+      astreinteLabel.textContent = "{{ __('Astreinte (24h/24, 7j/7)', 'configurationglpiauto')|e('js') }}";
+      astreinteWrap.appendChild(astreinteInput);
+      astreinteWrap.appendChild(astreinteLabel);
+      fieldsWrap.appendChild(astreinteWrap);
+
+      body.appendChild(fieldsWrap);
+
+      enabledInput.addEventListener('change', function () {
+        fieldsWrap.style.display = enabledInput.checked ? '' : 'none';
+        writeBack();
+      });
+
+      card.appendChild(body);
+      slaPerClientPanels.appendChild(card);
+    });
+  }
+
+  function updateSlaMode() {
+    var multiEntity = currentEntityMode() !== 'mono';
+    slaPerClientToggleWrap.style.display = multiEntity ? '' : 'none';
+    if (!multiEntity && slaPerClientToggle.checked) {
+      slaPerClientToggle.checked = false;
+    }
+
+    var perClient = multiEntity && slaPerClientToggle.checked;
+    slaSharedSection.style.display = perClient ? 'none' : '';
+    slaPerClientPanels.style.display = perClient ? '' : 'none';
+
+    if (perClient) {
+      ensureClientSettings('sla', { enabled: false, tto_hours: 4, ttr_hours: 48, astreinte: false });
+      renderSlaPerClientPanels();
+    } else {
+      stripClientSettings('sla');
+    }
+    syncTreeJson();
+  }
+  slaPerClientToggle.addEventListener('change', updateSlaMode);
+
+  // Tree changes (add/remove/rename a node, or switch entity_mode) come from step 2's script —
+  // re-derive both panels' visibility/content from the live window.cgaTree reference.
+  document.addEventListener('cga:tree-changed', function () {
+    updateCalendarMode();
+    updateSlaMode();
+  });
+
+  // Reloading a config that already has per-client settings saved: default the toggle to ON
+  // instead of stripping data the admin already entered in an earlier pass.
+  calendarPerClientToggle.checked = anyClientHasSettings('calendar');
+  slaPerClientToggle.checked = anyClientHasSettings('sla');
+  updateCalendarMode();
+  updateSlaMode();
+
   function fillSummary() {
     var profileInput = document.querySelector('input[name="configurationprofiles_id"]:checked');
     var profileLabel = profileInput
@@ -302,7 +660,10 @@
     document.getElementById('cga-summary-tree').innerHTML = preview ? preview.innerHTML : '';
 
     var calendarSummary;
-    if (!calendarEnabledInput.checked) {
+    if (calendarPerClientToggle.checked) {
+      var calPcCount = (window.cgaTree || []).filter(function (n) { return n.settings && n.settings.calendar && n.settings.calendar.enabled; }).length;
+      calendarSummary = calPcCount + ' ' + "{{ __('site(s)/client(s) avec un calendrier propre', 'configurationglpiauto')|e('js') }}";
+    } else if (!calendarEnabledInput.checked) {
       calendarSummary = "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
     } else {
       var checkedDays = DAYS.filter(function (d) {
@@ -315,14 +676,21 @@
     }
     document.getElementById('cga-summary-calendar').textContent = calendarSummary;
 
-    if (!slaEnabledInput.checked) {
+    if (slaPerClientToggle.checked) {
+      var slaPcCount = (window.cgaTree || []).filter(function (n) { return n.settings && n.settings.sla && n.settings.sla.enabled; }).length;
+      document.getElementById('cga-summary-sla').textContent = slaPcCount + ' ' + "{{ __('site(s)/client(s) avec un SLA propre', 'configurationglpiauto')|e('js') }}";
+    } else if (!slaEnabledInput.checked) {
       document.getElementById('cga-summary-sla').textContent = "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
     } else {
       var tto = document.querySelector('input[name="sla_tto_hours"]').value;
       var ttr = document.querySelector('input[name="sla_ttr_hours"]').value;
-      document.getElementById('cga-summary-sla').textContent =
+      var slaSummary =
         "{{ __('Prise en charge', 'configurationglpiauto')|e('js') }} " + tto + "h — "
         + "{{ __('Résolution', 'configurationglpiauto')|e('js') }} " + ttr + "h";
+      if (slaAstreinteInput.checked) {
+        slaSummary += " — {{ __('astreinte 24h/24, 7j/7', 'configurationglpiauto')|e('js') }}";
+      }
+      document.getElementById('cga-summary-sla').textContent = slaSummary;
     }
 
     document.getElementById('cga-summary-branding').textContent = brandingEnabledInput.checked
@@ -348,6 +716,64 @@
 
   prevBtn.addEventListener('click', function () { showStep(currentStep - 1); });
   nextBtn.addEventListener('click', function () { showStep(currentStep + 1); });
+
+  // Profile pre-fill: picking a profile in step 1 suggests a starting point for steps 2-5
+  // (entity mode, calendar, SLA) — never entity_tree itself (no realistic way to guess real
+  // client/site names) and never overrides anything a profile's defaults don't mention. Purely
+  // a suggestion: every field stays a normal input the admin can still change afterward.
+  var profileDefaults = {{ profile_defaults|default({})|json_encode|raw }};
+
+  function applyProfileDefaults(profileId) {
+    var defaults = profileDefaults[profileId];
+    if (!defaults) {
+      return;
+    }
+
+    if (defaults.entity_mode) {
+      var modeRadio = document.getElementById('cga-mode-' + defaults.entity_mode);
+      if (modeRadio) {
+        modeRadio.checked = true;
+        modeRadio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+
+    if (typeof defaults.calendar_enabled !== 'undefined') {
+      calendarEnabledInput.checked = !!defaults.calendar_enabled;
+      toggleCalendarFields();
+    }
+    if (defaults.calendar_days) {
+      DAYS.forEach(function (d) {
+        var cb = document.getElementById('cga-calendar-day-' + d.value);
+        if (cb) {
+          cb.checked = defaults.calendar_days.indexOf(d.value) !== -1;
+        }
+      });
+    }
+    if (defaults.calendar_begin) {
+      document.querySelector('input[name="calendar_begin"]').value = defaults.calendar_begin;
+    }
+    if (defaults.calendar_end) {
+      document.querySelector('input[name="calendar_end"]').value = defaults.calendar_end;
+    }
+
+    if (typeof defaults.sla_enabled !== 'undefined') {
+      slaEnabledInput.checked = !!defaults.sla_enabled;
+      toggleSlaFields();
+    }
+    if (defaults.sla_tto_hours) {
+      document.querySelector('input[name="sla_tto_hours"]').value = defaults.sla_tto_hours;
+    }
+    if (defaults.sla_ttr_hours) {
+      document.querySelector('input[name="sla_ttr_hours"]').value = defaults.sla_ttr_hours;
+    }
+    if (typeof defaults.sla_astreinte !== 'undefined') {
+      slaAstreinteInput.checked = !!defaults.sla_astreinte;
+    }
+  }
+
+  document.querySelectorAll('input[name="configurationprofiles_id"]').forEach(function (radio) {
+    radio.addEventListener('change', function () { applyProfileDefaults(radio.value); });
+  });
 
   showStep(1);
 })();

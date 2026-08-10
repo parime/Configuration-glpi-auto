@@ -13,10 +13,9 @@
  # -------------------------------------------------------------------------
  #}
 
-{# Shared by templates/config_form.html.twig (Configuration > Plugins settings screen) and
-   templates/wizard.html.twig (setup wizard, step "Entités") — same fields, same live preview,
-   included wherever the entity structure needs to be chosen so there's only one copy of this
-   logic to maintain. Caller provides an enclosing <form>; this partial only renders fields.
+{# Used by templates/wizard.html.twig (setup wizard, step "Entités") — kept as its own partial
+   (rather than inlined in wizard.html.twig) in case a future screen needs the same entity
+   structure fields again. Caller provides an enclosing <form>; this partial only renders fields.
 
    The tree is a genuinely arbitrary structure: any node can have any number of children, at any
    depth, independent of its siblings (e.g. "Client A" has 6 children and one of those has 3
@@ -98,6 +97,11 @@
   var maxLevels = {{ max_levels }};
 
   var treeState = {{ entity_tree|default([])|json_encode|raw }};
+  // Exposed so steps 3/4 (calendar/SLA) can render a panel per top-level node (MSP client) when
+  // per-client settings are turned on there — same array reference, not a copy, so edits either
+  // side makes (add/remove a client, or set node.settings from the per-client panels) stay in
+  // sync without a second data channel to keep in step with the tree by index.
+  window.cgaTree = treeState;
 
   var texts = {
     msp: {
@@ -206,6 +210,7 @@
 
   function syncAndRenderPreview() {
     treeJsonInput.value = JSON.stringify(treeState);
+    document.dispatchEvent(new CustomEvent('cga:tree-changed'));
 
     var mode = currentMode();
     treeSection.style.display = mode === 'mono' ? 'none' : '';

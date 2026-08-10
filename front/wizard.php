@@ -33,14 +33,53 @@ if (isset($_POST['finish'])) {
     $created = (new EntityBuilder())->build($config);
     $entityIds = EntityBuilder::topEntityIds($created) ?: [0];
 
-    $calendarId = (new CalendarBuilder())->build($config);
-    if ($calendarId !== null) {
-        (new CalendarBuilder())->assignToEntities($calendarId, $entityIds);
+    // One pass over the top-level nodes (= MSP clients), pairing each EntityBuilder result with
+    // its matching entity_tree node (same order/index) to check for a per-client calendar/SLA
+    // override (Config::sanitizeTree()'s `settings.calendar`/`settings.sla`). No override on a
+    // node → falls back to the plugin-wide shared calendar/SLA, built once and reused (lazy) —
+    // same net effect as before this existed. Mono-entité/empty tree ($created empty) has no tree
+    // node to pair with, so it always uses the shared path against the root entity, unchanged.
+    $tree = $config->getEntityTree();
+    $calendarBuilder = new CalendarBuilder();
+    $slaBuilder = new SlaBuilder();
+
+    // Built eagerly (not lazily on first use) so every client that falls back to the shared
+    // calendar/SLA gets the *same* pairing regardless of which order clients are processed in —
+    // build() is idempotent and a cheap no-op when calendar_enabled/sla_enabled is off.
+    $sharedCalendarId = $calendarBuilder->build($config);
+    $sharedSlaIds = $slaBuilder->build($config, $sharedCalendarId);
+
+    $calendarMap = [];
+    $slaMap = [];
+    $perClientCount = 0;
+
+    foreach (($created ?: [['name' => '', 'entities_id' => 0]]) as $i => $result) {
+        $calendarOverride = $tree[$i]['settings']['calendar'] ?? null;
+        $slaOverride = $tree[$i]['settings']['sla'] ?? null;
+        if ($calendarOverride !== null || $slaOverride !== null) {
+            $perClientCount++;
+        }
+
+        $calendarId = $calendarOverride !== null
+            ? $calendarBuilder->buildFromOverride($result['name'], $calendarOverride)
+            : $sharedCalendarId;
+        if ($calendarId !== null) {
+            $calendarMap[$result['entities_id']] = $calendarId;
+        }
+
+        $slaIds = $slaOverride !== null
+            ? $slaBuilder->buildFromOverride($result['name'], $slaOverride, $calendarId)
+            : $sharedSlaIds;
+        if ($slaIds !== null) {
+            $slaMap[$result['entities_id']] = $slaIds;
+        }
     }
 
-    $slaIds = (new SlaBuilder())->build($config, $calendarId);
-    if ($slaIds !== null) {
-        (new SlaBuilder())->assignToEntities($slaIds, $entityIds);
+    if ($calendarMap !== []) {
+        $calendarBuilder->assignMap($calendarMap);
+    }
+    if ($slaMap !== []) {
+        $slaBuilder->assignMap($slaMap);
     }
 
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
@@ -49,11 +88,14 @@ if (isset($_POST['finish'])) {
     $messages[] = empty($created)
         ? __('Aucune entité à créer (mode mono-entité, ou arborescence vide).', 'configurationglpiauto')
         : sprintf(__('Structure créée : %s.', 'configurationglpiauto'), EntityBuilder::describe($created));
-    if ($calendarId !== null) {
+    if ($calendarMap !== []) {
         $messages[] = __('Calendrier créé et assigné.', 'configurationglpiauto');
     }
-    if ($slaIds !== null) {
+    if ($slaMap !== []) {
         $messages[] = __('SLA créés et assignés.', 'configurationglpiauto');
+    }
+    if ($perClientCount > 0) {
+        $messages[] = sprintf(__('%d client(s) avec des réglages personnalisés.', 'configurationglpiauto'), $perClientCount);
     }
     if ($brandingApplied) {
         $messages[] = __('Personnalisation graphique appliquée.', 'configurationglpiauto');
@@ -68,13 +110,19 @@ Html::header(__('Assistant de configuration', 'configurationglpiauto'), $_SERVER
 $config = Config::getConfig();
 $profiles = (new ConfigurationProfile())->find(['is_active' => 1], ['sort_order ASC']);
 
+$profileDefaults = [];
+foreach ($profiles as $profile) {
+    $profileDefaults[$profile['id']] = ConfigurationProfile::getSuggestedDefaults($profile['type']);
+}
+
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/wizard.html.twig', [
-    'config'      => $config->fields,
-    'profiles'    => $profiles,
-    'modes'       => Config::getModes(),
-    'max_levels'  => Config::MAX_LEVELS,
-    'entity_tree' => $config->getEntityTree(),
-    'csrf_token'  => Session::getNewCSRFToken(),
+    'config'           => $config->fields,
+    'profiles'         => $profiles,
+    'profile_defaults' => $profileDefaults,
+    'modes'            => Config::getModes(),
+    'max_levels'       => Config::MAX_LEVELS,
+    'entity_tree'      => $config->getEntityTree(),
+    'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 
 Html::footer();
