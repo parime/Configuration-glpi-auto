@@ -1,258 +1,134 @@
-name: "Release"
+name: Release
 
+# Triggers on a version tag (vX.Y.Z): installs production dependencies, builds the plugin's
+# distribution archive, verifies it actually installs on a fresh GLPI instance, then publishes
+# the GitHub Release with that archive attached and auto-generated notes. Modeled on the release
+# workflow already validated on the sibling glpi-vulnerability-manager plugin — no Packagist
+# publish, no Discord webhook, no docs site: none of that infrastructure exists for this plugin,
+# and a previous version of this workflow assumed it did, which would have failed on first use.
 on:
   push:
     tags:
-      - "v*"
-  workflow_dispatch:
-    inputs:
-      version:
-        description: "Version to release (e.g., 1.0.0)"
-        required: true
-      dry-run:
-        description: "Dry run (test release without publishing)"
-        required: false
-        default: "false"
+      - 'v*.*.*'
+
+env:
+  GLPI_IMAGE: glpi/glpi:11.0.8
 
 jobs:
-  prepare-release:
-    name: "Prepare Release"
+  release:
     runs-on: ubuntu-latest
-
-    outputs:
-      version: ${{ steps.extract-version.outputs.version }}
-      tag: ${{ steps.extract-version.outputs.tag }}
-      changelog: ${{ steps.generate-changelog.outputs.changelog }}
-
+    permissions:
+      contents: write
     steps:
-      - name: "Checkout code"
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: "Extract version from tag"
-        id: extract-version
+      - name: Verify the tag matches PLUGIN_CONFIGURATIONGLPIAUTO_VERSION
         run: |
-          if [ -n "${{ github.ref_name }}" ]; then
-            # Extract version from tag
-            if [[ "${{ github.ref_name }}" =~ ^v([0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?)$ ]]; then
-              echo "version=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
-              echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-            else
-              echo "::error::Invalid tag format. Expected format: v1.0.0"
-              exit 1
-            fi
-          elif [ -n "${{ github.event.inputs.version }}" ]; then
-            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-            echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-          else
-            echo "::error::No version specified"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          CODE_VERSION="$(grep -oP "define\('PLUGIN_CONFIGURATIONGLPIAUTO_VERSION', '\K[^']+" setup.php)"
+          echo "Tag: $TAG_VERSION -- setup.php: $CODE_VERSION"
+          if [ "$TAG_VERSION" != "$CODE_VERSION" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match PLUGIN_CONFIGURATIONGLPIAUTO_VERSION ($CODE_VERSION) in setup.php."
             exit 1
           fi
 
-      - name: "Generate changelog"
-        id: generate-changelog
-        run: |
-          # Install git-chglog
-          curl -sL https://github.com/git-chglog/git-chglog/releases/download/v0.15.0/git-chglog_0.15.0_linux_amd64.tar.gz | tar xz
-          
-          # Generate changelog
-          ./git-chglog --next-tag ${{ steps.extract-version.outputs.tag }} --output changelog_temp.md
-          
-          # Read changelog content
-          CHANGELOG_CONTENT=$(cat changelog_temp.md)
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG_CONTENT" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          
-          # Clean up
-          rm -f git-chglog git-chglog_0.15.0_linux_amd64.tar.gz changelog_temp.md
-
-      - name: "Validate version"
-        run: |
-          # Check if version follows semantic versioning
-          if [[ "${{ steps.extract-version.outputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
-            echo "Version format is valid"
-          else
-            echo "::error::Invalid version format. Expected format: 1.0.0 or 1.0.0-beta.1"
-            exit 1
-          fi
-
-  run-tests:
-    name: "Run Tests"
-    needs: prepare-release
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-
-      - name: "Setup PHP"
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.2"
           coverage: none
-          tools: composer
 
-      - name: "Install dependencies"
+      - name: Install production dependencies
+        run: composer install --no-dev --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Build the distribution archive
+        # git archive (not a plain zip of the checkout): built exactly from what's committed at
+        # the tag, automatically excluding anything marked export-ignore in .gitattributes
+        # (tests/, .github/, CI/quality config...). vendor/ isn't versioned (see .gitignore) so
+        # git archive can't include it — copied explicitly from the production install above.
+        # configurationglpiauto/ prefix: the archive must extract directly under plugins/ on a
+        # GLPI instance.
         run: |
-          composer install --prefer-dist --no-progress --no-interaction
+          VERSION="${GITHUB_REF_NAME#v}"
+          ARCHIVE_NAME="configuration-glpi-auto-${VERSION}.zip"
+          echo "ARCHIVE_NAME=${ARCHIVE_NAME}" >> "$GITHUB_ENV"
 
-      - name: "Run PHPStan"
+          mkdir -p /tmp/staging/configurationglpiauto
+          git archive "$GITHUB_REF_NAME" | tar -x -C /tmp/staging/configurationglpiauto
+          cp -r vendor /tmp/staging/configurationglpiauto/vendor
+
+          (cd /tmp/staging && zip -qr "$GITHUB_WORKSPACE/${ARCHIVE_NAME}" configurationglpiauto)
+
+      - name: Start MariaDB
         run: |
-          vendor/bin/phpstan analyse src/ setup.php hook.php --level=8
+          docker network create cga-ci
+          docker run -d --name mariadb --network cga-ci \
+            -e MARIADB_ROOT_PASSWORD=glpi_password \
+            -e MARIADB_DATABASE=glpidb \
+            -e MARIADB_USER=glpi_user \
+            -e MARIADB_PASSWORD=glpi_password \
+            mariadb:11
 
-      - name: "Run PHP-CS-Fixer"
+          echo "Waiting for MariaDB to accept connections..."
+          for i in $(seq 1 30); do
+            docker exec mariadb mariadb-admin ping -h 127.0.0.1 -u root -pglpi_password --silent && break
+            sleep 2
+          done
+
+      - name: Start GLPI (auto-install via the official image)
         run: |
-          vendor/bin/php-cs-fixer fix --dry-run --diff
+          docker run -d --name glpi --network cga-ci \
+            -e TIMEZONE=Europe/Paris \
+            -e GLPI_DB_HOST=mariadb \
+            -e GLPI_DB_PORT=3306 \
+            -e GLPI_DB_NAME=glpidb \
+            -e GLPI_DB_USER=glpi_user \
+            -e GLPI_DB_PASSWORD=glpi_password \
+            "$GLPI_IMAGE"
 
-      - name: "Run PHPUnit"
+          echo "Waiting for GLPI auto-install to finish..."
+          ready=0
+          for i in $(seq 1 60); do
+            docker exec glpi test -f /var/glpi/config/config_db.php && { ready=1; break; }
+            sleep 5
+          done
+          if [ "$ready" != "1" ]; then
+            echo "::error::GLPI auto-install never finished (config_db.php missing)."
+            docker logs glpi --tail 200
+            exit 1
+          fi
+
+      - name: Validate the archive on a real GLPI instance
         run: |
-          vendor/bin/phpunit --no-coverage
+          mkdir -p /tmp/archive-extracted
+          unzip -q "$ARCHIVE_NAME" -d /tmp/archive-extracted
+          docker cp /tmp/archive-extracted/configurationglpiauto glpi:/var/www/glpi/plugins/configurationglpiauto
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/configurationglpiauto
 
-  create-release:
-    name: "Create Release"
-    needs: [prepare-release, run-tests]
-    runs-on: ubuntu-latest
+          ready=0
+          for i in $(seq 1 12); do
+            if docker exec glpi php bin/console database:update --force --no-interaction; then
+              ready=1
+              break
+            fi
+            sleep 5
+          done
+          if [ "$ready" != "1" ]; then
+            echo "::error::database:update failed after 12 attempts."
+            exit 1
+          fi
+          docker exec glpi php bin/console plugin:install configurationglpiauto --force --no-interaction
+          docker exec glpi php bin/console plugin:activate configurationglpiauto --no-interaction
 
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
+      - name: GLPI logs (on failure)
+        if: failure()
+        run: docker logs glpi --tail 200
 
-      - name: "Setup Node.js"
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: "Install dependencies"
-        run: |
-          composer install --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
-
-      - name: "Create plugin archive"
-        run: |
-          # Create temporary directory
-          mkdir -p temp
-          
-          # Copy plugin files (excluding dev dependencies)
-          cp -r src/ setup.php hook.php composer.json configurationglpiauto.xml LICENSE README.md CHANGELOG.md temp/
-          cp -r public/ misc/ locales/ front/ temp/
-          
-          # Create plugin directory structure
-          mkdir -p "Configuration-GLPI-Auto-${{ needs.prepare-release.outputs.version }}"
-          cp -r temp/* "Configuration-GLPI-Auto-${{ needs.prepare-release.outputs.version }}/"
-          
-          # Create zip archive
-          zip -r "Configuration-GLPI-Auto-${{ needs.prepare-release.outputs.version }}.zip" "Configuration-GLPI-Auto-${{ needs.prepare-release.outputs.version }}/"
-          
-          # Clean up
-          rm -rf temp/ "Configuration-GLPI-Auto-${{ needs.prepare-release.outputs.version }}"
-
-      - name: "Create Release"
-        id: create-release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ needs.prepare-release.outputs.tag }}
-          release_name: "Configuration GLPI Auto ${{ needs.prepare-release.outputs.version }}"
-          body: |
-            ${{ needs.prepare-release.outputs.changelog }}
-            
-            ---
-            
-            **Assets:**
-            - Plugin ZIP archive for manual installation
-            - Composer package available via Packagist
-            
-            **Installation:**
-            ```bash
-            # Via Composer
-            composer require parime/configuration-glpi-auto:${{ needs.prepare-release.outputs.version }}
-            
-            # Manual installation
-            1. Download the ZIP file
-            2. Extract to GLPI plugins directory
-            3. Rename directory to 'configurationglpiauto'
-            4. Install and activate via GLPI admin panel
-            ```
-          draft: false
-          prerelease: ${{ contains(needs.prepare-release.outputs.version, '-') }}
+      - name: Publish the GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: "Upload release asset"
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: Configuration-GLPI-Auto-${{ needs.prepare-release.outputs.version }}.zip
-          asset_name: Configuration-GLPI-Auto-${{ needs.prepare-release.outputs.version }}.zip
-          asset_content_type: application/zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: "Clean up"
         run: |
-          rm -f Configuration-GLPI-Auto-*.zip
-
-  publish-composer:
-    name: "Publish to Packagist"
-    needs: create-release
-    runs-on: ubuntu-latest
-    if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry-run != 'true'
-
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-
-      - name: "Publish to Packagist"
-        run: |
-          # Trigger Packagist to update package
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.PACKAGIST_TOKEN }}" \
-            -d '{"repository": {"url": "https://github.com/parime/Configuration-glpi-auto"}}' \
-            https://packagist.org/api/update-package
-
-  update-documentation:
-    name: "Update Documentation"
-    needs: create-release
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-
-      - name: "Setup Python"
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-
-      - name: "Install MkDocs"
-        run: |
-          pip install mkdocs mkdocs-material
-
-      - name: "Build documentation"
-        run: |
-          cd docs
-          mkdocs build --site-dir ../site
-
-      - name: "Deploy to GitHub Pages"
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
-          keep_files: false
-
-  notify:
-    name: "Notify"
-    needs: [create-release, publish-composer, update-documentation]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: "Send Discord notification"
-        if: success()
-        run: |
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            -d '{"content": "🚀 New release: Configuration GLPI Auto ${{ needs.prepare-release.outputs.version }} - ${{ needs.prepare-release.outputs.tag }}"}' \
-            ${{ secrets.DISCORD_WEBHOOK }}
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          gh release create "$GITHUB_REF_NAME" "$ARCHIVE_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes

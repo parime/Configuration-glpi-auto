@@ -26,8 +26,13 @@ Devenir **la référence Open Source** pour l'initialisation, la standardisation
 > 11.0.8. Les cases ci-dessous ne seront cochées qu'au fur et à mesure de leur implémentation
 > réelle — voir CHANGELOG.md pour le détail sprint par sprint.
 
+**Premières releases réelles** : `v0.1.0` (2026-08-10, Sprints 1-2) — voir
+[Releases GitHub](https://github.com/parime/Configuration-glpi-auto/releases) et
+[CHANGELOG.md](CHANGELOG.md).
+
 **Fonctionnalités prévues** :
 - ✅ Catalogue de profils de configuration (CRUD, Sprint 1)
+- ✅ Réglages de structure d'entités — mono/multi/MSP, aperçu en temps réel (Sprint 2)
 - ⬜ Assistant graphique (Wizard)
 - ⬜ Moteur de déploiement (application effective d'un profil sur une instance)
 - ⬜ Calendriers intelligents

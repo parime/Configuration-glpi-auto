@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Sprint 2 (in progress) — Entity structure settings (2026-08-10)
+## [0.1.0] - 2026-08-10
+
+First real release. Nothing before this tag ever installed — see the historical note below.
+
+### Sprint 2 — Entity structure settings (2026-08-10)
 
 #### Added
 - `Config` (`src/Config.php`): plugin-wide settings screen (Configuration > Plugins > wrench
@@ -148,17 +152,5 @@ for history rather than deleted outright.
 
 ---
 
-## Migration Guide
-
-### From v0.x to v1.0
-- No migration needed for first stable release
-- Simply install the plugin and follow the wizard
-
-### Future Migrations
-- Migration guides will be provided in the documentation
-- Automatic migration scripts will be included in the plugin
-
----
-
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v1.0.0
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.1.0
