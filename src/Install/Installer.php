@@ -72,9 +72,7 @@ final class Installer
             $query = "CREATE TABLE `" . self::CONFIGS_TABLE . "` (
                 `id` int {$keySign} NOT NULL AUTO_INCREMENT,
                 `entity_mode` varchar(32) NOT NULL DEFAULT 'mono',
-                `entity_levels` int NOT NULL DEFAULT 1,
-                `level_labels` text,
-                `top_level_names` text,
+                `entity_tree` text,
                 `configurationprofiles_id` int {$keySign} NOT NULL DEFAULT 0,
                 `calendar_enabled` tinyint NOT NULL DEFAULT 0,
                 `calendar_name` varchar(255) NOT NULL DEFAULT 'Horaires standard',
@@ -103,7 +101,13 @@ final class Installer
                 'integer',
                 ['value' => 0]
             );
-            $migration->addField(self::CONFIGS_TABLE, 'top_level_names', 'text');
+            // entity_levels/level_labels/top_level_names (uniform-tree model) replaced by
+            // entity_tree (arbitrary per-node tree, Sprint 9) — dropField() is idempotent
+            // (no-op if the column is already gone), same as addField().
+            $migration->dropField(self::CONFIGS_TABLE, 'entity_levels');
+            $migration->dropField(self::CONFIGS_TABLE, 'level_labels');
+            $migration->dropField(self::CONFIGS_TABLE, 'top_level_names');
+            $migration->addField(self::CONFIGS_TABLE, 'entity_tree', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'calendar_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'calendar_name', 'string', ['value' => 'Horaires standard']);
             $migration->addField(self::CONFIGS_TABLE, 'calendar_days', 'text');
