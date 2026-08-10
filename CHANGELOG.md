@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-10
+
+The wizard's branding step (real primary-color customization).
+
+### Sprint 7 — Branding step (2026-08-10)
+
+#### Added
+- New wizard step "Personnalisation graphique" (now 5 steps, between Calendrier and
+  Récapitulatif): optional toggle + color picker to apply a primary color to the created
+  entities' interface, using GLPI's own built-in `Entity::enable_custom_css`/`custom_css_code`
+  mechanism — no file writes, no touching GLPI's static assets.
+- `BrandingBuilder` (`src/BrandingBuilder.php`): generates a `:root { --tblr-primary: ...;
+  --tblr-primary-rgb: ...; }` override and sets it as the target entities' custom CSS.
+- `Config` gained `branding_enabled`/`branding_primary_color`, migrated in for existing
+  installs.
+
+Validated against a real GLPI 11.0.8 instance, including a visual check (not just a DB read):
+after applying a red (`#ff0000`) primary color via the wizard, `.btn-primary`'s actual computed
+`background-color` was confirmed `rgb(255, 0, 0)`, and a screenshot shows the "Ajouter" button,
+active-menu highlight, and user avatar all rendering in red.
+
 ## [0.2.0] - 2026-08-10
 
 Real entity creation, the setup wizard, and the calendar step — see below for the sprint-by-sprint
@@ -241,6 +262,7 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.3.0
 [0.2.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.2.0
 [0.1.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.1.0
