@@ -9,6 +9,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 21 — hide Urgency/Observers/Location on GLPI's native self-service forms (2026-08-11)
+
+Real-world testing (a genuine `post-only` Self-Service login, not the Super-Admin preview tab)
+caught a gap Sprint 19/20 missed entirely: GLPI 11's actual "Report an issue"/"Request a service"
+self-service portal pages don't go through `TicketTemplate` at all — they're built on a separate,
+newer form engine (`Glpi\Form\Form`/`Question`, `/Helpdesk`, `/Form/Render/N`). Every
+`TicketTemplateHiddenField` configured in Sprint 19/20 had zero effect there, however it was set.
+
+#### Changed
+- New `HelpdeskFormBuilder`, a distinct class from `TicketTemplateBuilder` for this distinct GLPI
+  subsystem: hides Urgency, Observers, and Location on both native forms (ids matched by name —
+  "Report an issue"/"Request a service" — not hardcoded, same defensive convention used
+  throughout). ITIL rationale for Urgency specifically: a base user has no visibility into real
+  business impact and reliably rates their own issue as urgent — a documented ITSM anti-pattern;
+  better decided by the service desk during triage (or derived from category) than self-reported.
+  Location and Observers are staff/triage concerns, not something a base user needs to pick.
+- `Glpi\Form\Question` has no "always hidden" visibility strategy, only `ALWAYS_VISIBLE`/
+  `VISIBLE_IF`/`HIDDEN_IF` (`Glpi\Form\Condition\VisibilityStrategy`). Confirmed in
+  `Engine::computeConditions()` that an empty condition list evaluates to `false`; paired with
+  `VISIBLE_IF` (which returns that result as-is), an empty condition list is therefore permanently
+  hidden — no dummy/always-false condition needed.
+- New `helpdesk_form_hide_fields` toggle, a sub-option under step 9 (Modèles de tickets) rather than
+  a new step — same screen, since it serves the same "simplify what a base user sees" goal, just
+  through a different GLPI mechanism. Suggested `true` for every non-minimal profile.
+
+Also fixed in passing: `configurationglpiauto.xml`'s `<logo>`/`<screenshots>` pointed at
+`misc/logos/`/`misc/screenshots/` files that were never added to the repo — 404 since the manifest
+was first written, caught by the official `glpi-project/plugin-ci-workflows` manifest validation
+(pull_request-only, which is why it never showed up on a plain `dev` push). Removed the broken
+screenshot entries; added a real logo (resized 1254×1254 → 512×512, 1.5MB → 297KB) at
+`misc/logos/logo.png` and restored the `<logo>` entry.
+
+Validated against the real GLPI 11.0.8 test instance: confirmed via a genuine `post-only`
+(Self-Service profile) Playwright login — not the admin preview tab, which doesn't reflect real
+self-service rendering — that Urgency/Observers/Location are gone from both
+`/Form/Render/1` and `/Form/Render/2`, leaving only Category, User devices, Title, Description,
+Attachments. DB confirmed all 6 expected question rows (3 fields × 2 forms) switched to
+`visible_if` with empty conditions. Local suite green (phpunit 5/5, phpstan clean, php-cs-fixer
+clean).
+
 ## [0.5.0] - 2026-08-10
 
 Sprints 5 through 20: arbitrary per-node entity tree, calendar, SLA/OLA (flat and per-priority),
