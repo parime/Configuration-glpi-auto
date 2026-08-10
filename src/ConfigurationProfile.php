@@ -154,8 +154,11 @@ class ConfigurationProfile extends CommonDBTM
             'ola_enabled' => true, 'ola_tiers' => Config::getDefaultOlaTiers(),
             // Categories/states are universal ITIL/asset-management scaffolding, useful
             // regardless of org size or business model — unlike calendar/SLA they don't vary
-            // per profile, so every non-minimal profile suggests the same values here.
-            'category_enabled' => true, 'state_enabled' => true, 'state_icons_enabled' => true,
+            // per profile, so every non-minimal profile suggests the same values here. All 11
+            // category branches suggested (Config::CATEGORY_BRANCH_KEYS) — the admin trims what
+            // doesn't apply (no vehicle fleet, no industrial maintenance...) in step 5.
+            'category_enabled' => true, 'category_branches' => Config::CATEGORY_BRANCH_KEYS, 'category_icons_enabled' => true,
+            'state_enabled' => true, 'state_icons_enabled' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual
