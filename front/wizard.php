@@ -1,5 +1,6 @@
 <?php
 
+use GlpiPlugin\Configurationglpiauto\BrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\CalendarBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
@@ -21,12 +22,17 @@ if (isset($_POST['finish'])) {
         (new CalendarBuilder())->assignToEntities($calendarId, $entityIds);
     }
 
+    $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
+
     $messages = [];
     $messages[] = empty($created)
         ? __('Mode mono-entité : aucune entité à créer.', 'configurationglpiauto')
         : sprintf(__('Structure créée : %s.', 'configurationglpiauto'), EntityBuilder::describe($created));
     if ($calendarId !== null) {
         $messages[] = __('Calendrier créé et assigné.', 'configurationglpiauto');
+    }
+    if ($brandingApplied) {
+        $messages[] = __('Personnalisation graphique appliquée.', 'configurationglpiauto');
     }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 

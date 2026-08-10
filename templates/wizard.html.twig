@@ -82,10 +82,37 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 4 : Récapitulatif #}
+      {# ---------------------------------------------------------------- Étape 4 : Branding #}
       <div class="cga-wizard-step" data-step="4" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 4 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités et le calendrier.', 'configurationglpiauto') }}</p>
+        <h3 class="mb-1">{{ __('Étape 4 : Personnalisation graphique', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : une couleur principale appliquée à l\'interface des entités créées.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="branding_enabled" value="0">
+          <input
+            type="checkbox"
+            name="branding_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-branding-enabled"
+            {{ config.branding_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-branding-enabled">{{ __('Personnaliser la couleur principale', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-branding-fields" style="display: none;" class="d-flex align-items-center gap-3">
+          <div class="mb-3">
+            <label class="form-label">{{ __('Couleur principale', 'configurationglpiauto') }}</label>
+            <input type="color" name="branding_primary_color" id="cga-branding-color" class="form-control form-control-color" value="{{ config.branding_primary_color|default('#206bc4') }}">
+          </div>
+          <button type="button" class="btn" id="cga-branding-swatch" style="min-width: 140px;">{{ __('Aperçu', 'configurationglpiauto') }}</button>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 5 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="5" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 5 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier et la personnalisation graphique.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -100,6 +127,9 @@
           <li class="list-group-item">
             <strong>{{ __('Calendrier', 'configurationglpiauto') }} :</strong> <span id="cga-summary-calendar"></span>
           </li>
+          <li class="list-group-item">
+            <strong>{{ __('Personnalisation', 'configurationglpiauto') }} :</strong> <span id="cga-summary-branding"></span>
+          </li>
         </ul>
       </div>
 
@@ -112,7 +142,7 @@
           class="btn btn-primary"
           id="cga-wizard-finish"
           style="display: none;"
-          onclick="return confirm('{{ __('Ceci va créer de vraies entités (et, si activé, un calendrier) dans GLPI selon les choix faits. Continuer ?', 'configurationglpiauto')|e('js') }}');"
+          onclick="return confirm('{{ __('Ceci va créer/modifier de vraies entités dans GLPI (et, si activés, un calendrier et une personnalisation graphique) selon les choix faits. Continuer ?', 'configurationglpiauto')|e('js') }}');"
         >
           {{ __('Terminer', 'configurationglpiauto') }}
         </button>
@@ -124,7 +154,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 4;
+  var STEP_COUNT = 5;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -136,6 +166,7 @@
     "{{ __('Profil', 'configurationglpiauto')|e('js') }}",
     "{{ __('Entités', 'configurationglpiauto')|e('js') }}",
     "{{ __('Calendrier', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
 
@@ -179,6 +210,24 @@
   calendarEnabledInput.addEventListener('change', toggleCalendarFields);
   toggleCalendarFields();
 
+  var brandingEnabledInput = document.getElementById('cga-branding-enabled');
+  var brandingFields = document.getElementById('cga-branding-fields');
+  var brandingColorInput = document.getElementById('cga-branding-color');
+  var brandingSwatch = document.getElementById('cga-branding-swatch');
+
+  function toggleBrandingFields() {
+    brandingFields.style.display = brandingEnabledInput.checked ? 'flex' : 'none';
+  }
+  function updateSwatch() {
+    brandingSwatch.style.backgroundColor = brandingColorInput.value;
+    brandingSwatch.style.color = '#fff';
+    brandingSwatch.style.borderColor = brandingColorInput.value;
+  }
+  brandingEnabledInput.addEventListener('change', toggleBrandingFields);
+  brandingColorInput.addEventListener('input', updateSwatch);
+  toggleBrandingFields();
+  updateSwatch();
+
   function fillSummary() {
     var profileInput = document.querySelector('input[name="configurationprofiles_id"]:checked');
     var profileLabel = profileInput
@@ -208,6 +257,10 @@
       calendarSummary = name + ' — ' + checkedDays.join(', ') + ' — ' + begin + '-' + end;
     }
     document.getElementById('cga-summary-calendar').textContent = calendarSummary;
+
+    document.getElementById('cga-summary-branding').textContent = brandingEnabledInput.checked
+      ? "{{ __('Couleur principale', 'configurationglpiauto')|e('js') }} " + brandingColorInput.value
+      : "{{ __('Aucune', 'configurationglpiauto')|e('js') }}";
   }
 
   function showStep(n) {
