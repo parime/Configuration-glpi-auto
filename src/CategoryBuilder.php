@@ -40,6 +40,12 @@ use ITILCategory;
  * Parenthetical text in the user's original list (e.g. "Accessoires (Dock USB-C, Webcam...)") is
  * explicitly *not* a further tree level — confirmed with the user it's example/guidance text for
  * the admin, so it becomes each node's `comment` instead.
+ *
+ * Only the 11 top-level branches get `is_helpdeskvisible = 1`; every child (N2/N3) is created with
+ * it off. That flag is what GLPI's own ticket-creation category picker filters on for Self-Service
+ * users specifically — so a base user sees the 11 broad themes, never the ~80 leaf categories meant
+ * for staff to pick during triage (`TicketTemplateBuilder`'s simplified template leaves category
+ * visible for exactly this reason, unlike urgency/impact/priority which stay fully hidden).
  */
 class CategoryBuilder
 {
@@ -216,6 +222,12 @@ class CategoryBuilder
                 'is_request' => 1,
                 'is_problem' => 1,
                 'is_change' => 1,
+                // Self-Service's ticket-creation category picker only lists categories with this
+                // flag on (GLPI core, CommonITILObject::rawSearchOptions() — a `condition` added
+                // to the search option only for `Session::getCurrentInterface() == 'helpdesk'`).
+                // Only the 11 top-level branches (parentId 0) are helpdesk-visible, so a base user
+                // picks a broad theme, not one of the ~80 leaf categories meant for staff triage.
+                'is_helpdeskvisible' => $parentId === 0 ? 1 : 0,
             ]);
             $item->getFromDB($id);
         }
