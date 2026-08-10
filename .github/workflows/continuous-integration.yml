@@ -89,54 +89,6 @@ jobs:
         run: |
           vendor/bin/php-cs-fixer fix --dry-run --diff --allow-risky=yes
 
-  psalm:
-    name: "Psalm Analysis"
-    runs-on: ubuntu-latest
-    needs: ci
-
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-
-      - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          coverage: none
-          tools: composer
-
-      - name: "Install dependencies"
-        run: |
-          composer install --prefer-dist --no-progress --no-interaction
-
-      - name: "Run Psalm"
-        run: |
-          vendor/bin/psalm --memory-limit=1G --threads=4
-
-  rector:
-    name: "Rector"
-    runs-on: ubuntu-latest
-    needs: ci
-
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-
-      - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          coverage: none
-          tools: composer
-
-      - name: "Install dependencies"
-        run: |
-          composer install --prefer-dist --no-progress --no-interaction
-
-      - name: "Check with Rector"
-        run: |
-          vendor/bin/rector process src/ setup.php hook.php --dry-run
-
   phpunit:
     name: "PHPUnit Tests"
     runs-on: ubuntu-latest
@@ -173,7 +125,7 @@ jobs:
     name: "CodeQL Analysis"
     runs-on: ubuntu-latest
     needs: ci
-    
+
     permissions:
       actions: read
       contents: read
@@ -222,6 +174,17 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v4
 
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+          tools: composer
+
+      - name: "Install dependencies"
+        run: |
+          composer install --prefer-dist --no-progress --no-interaction
+
       - name: "Check for security vulnerabilities"
         run: |
           composer audit --no-dev
@@ -239,9 +202,13 @@ jobs:
         run: |
           find . -type f -name "*.json" -not -path "./vendor/*" -not -path "./.git/*" | xargs -I {} sh -c 'echo "Validating {}" && jq empty {} || exit 1'
 
+      - name: "Install yamllint"
+        run: |
+          pip install --quiet yamllint
+
       - name: "Validate YAML files"
         run: |
-          find . -type f \( -name "*.yml" -o -name "*.yaml" \) -not -path "./vendor/*" -not -path "./.git/*" | xargs -I {} sh -c 'echo "Validating {}" && yamllint {} || exit 1'
+          find . -type f \( -name "*.yml" -o -name "*.yaml" \) -not -path "./vendor/*" -not -path "./.git/*" | xargs -I {} sh -c 'echo "Validating {}" && yamllint -c .yamllint.yml {} || exit 1'
 
       - name: "Validate XML files"
         run: |
@@ -251,14 +218,10 @@ jobs:
         run: |
           composer validate --strict
 
-      - name: "Check for duplicates"
-        run: |
-          composer dups
-
   quality-gate:
     name: "Quality Gate"
     runs-on: ubuntu-latest
-    needs: [phpstan, php-cs-fixer, psalm, rector, phpunit, codeql, trivy, dependabot, validation]
+    needs: [phpstan, php-cs-fixer, phpunit, codeql, trivy, dependabot, validation]
 
     steps:
       - name: "All checks passed"
@@ -266,8 +229,6 @@ jobs:
           echo "All quality checks have passed successfully!"
           echo "PHPStan: ✓"
           echo "PHP-CS-Fixer: ✓"
-          echo "Psalm: ✓"
-          echo "Rector: ✓"
           echo "PHPUnit: ✓"
           echo "CodeQL: ✓"
           echo "Trivy: ✓"

@@ -89,6 +89,9 @@ class Config extends CommonDBTM
             'calendar_end' => '18:00',
             'branding_enabled' => 0,
             'branding_primary_color' => '#206bc4',
+            'sla_enabled' => 0,
+            'sla_tto_hours' => 4,
+            'sla_ttr_hours' => 48,
         ];
     }
 
@@ -180,6 +183,18 @@ class Config extends CommonDBTM
 
         if (isset($input['branding_primary_color']) && !preg_match('/^#[0-9a-fA-F]{6}$/', $input['branding_primary_color'])) {
             $input['branding_primary_color'] = '#206bc4';
+        }
+
+        if (isset($input['sla_enabled'])) {
+            $input['sla_enabled'] = !empty($input['sla_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['sla_tto_hours'])) {
+            $input['sla_tto_hours'] = max(1, (int) $input['sla_tto_hours']);
+        }
+
+        if (isset($input['sla_ttr_hours'])) {
+            $input['sla_ttr_hours'] = max(1, (int) $input['sla_ttr_hours']);
         }
 
         return $input;
