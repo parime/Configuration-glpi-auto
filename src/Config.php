@@ -90,6 +90,7 @@ class Config extends CommonDBTM
             'sla_enabled' => 0,
             'sla_tto_hours' => 4,
             'sla_ttr_hours' => 48,
+            'sla_astreinte' => 0,
         ];
     }
 
@@ -172,13 +173,20 @@ class Config extends CommonDBTM
             $input['sla_ttr_hours'] = max(1, (int) $input['sla_ttr_hours']);
         }
 
+        if (isset($input['sla_astreinte'])) {
+            $input['sla_astreinte'] = !empty($input['sla_astreinte']) ? 1 : 0;
+        }
+
         return $input;
     }
 
     /**
      * Recursively trims node names, drops nodes left with an empty name, and caps depth at
      * MAX_LEVELS (guards against a malicious/malformed deeply-nested payload, not a realistic
-     * admin use case).
+     * admin use case). Top-level nodes only (depth 1 — the MSP "client" nodes a calendar/SLA
+     * actually gets assigned to) may also carry an optional per-client `settings` override
+     * (calendar and/or SLA); dropped silently at any deeper depth since sub-entities always
+     * inherit from their parent.
      */
     private function sanitizeTree(array $nodes, int $depth = 1): array
     {
@@ -199,12 +207,68 @@ class Config extends CommonDBTM
 
             $children = is_array($node['children'] ?? null) ? $node['children'] : [];
 
-            $clean[] = [
+            $cleanNode = [
                 'name' => $name,
                 'children' => $this->sanitizeTree($children, $depth + 1),
             ];
+
+            if ($depth === 1 && is_array($node['settings'] ?? null)) {
+                $settings = $this->sanitizeClientSettings($node['settings']);
+                if ($settings !== []) {
+                    $cleanNode['settings'] = $settings;
+                }
+            }
+
+            $clean[] = $cleanNode;
         }
 
         return $clean;
+    }
+
+    /**
+     * @return array{calendar?: array, sla?: array} Only the sub-keys that were actually present
+     *         and valid — a client with no override at all in $settings ends up with an empty
+     *         array here, which sanitizeTree() then drops entirely rather than storing `{}`.
+     */
+    private function sanitizeClientSettings(array $settings): array
+    {
+        $clean = [];
+
+        if (is_array($settings['calendar'] ?? null)) {
+            $clean['calendar'] = $this->sanitizeCalendarSettings($settings['calendar']);
+        }
+
+        if (is_array($settings['sla'] ?? null)) {
+            $clean['sla'] = $this->sanitizeSlaSettings($settings['sla']);
+        }
+
+        return $clean;
+    }
+
+    private function sanitizeCalendarSettings(array $calendar): array
+    {
+        return [
+            'enabled' => !empty($calendar['enabled']),
+            'days' => is_array($calendar['days'] ?? null)
+                ? array_values(array_map('intval', $calendar['days']))
+                : [1, 2, 3, 4, 5],
+            'begin' => $this->sanitizeTimeString((string) ($calendar['begin'] ?? '08:00')),
+            'end' => $this->sanitizeTimeString((string) ($calendar['end'] ?? '18:00')),
+        ];
+    }
+
+    private function sanitizeSlaSettings(array $sla): array
+    {
+        return [
+            'enabled' => !empty($sla['enabled']),
+            'tto_hours' => max(1, (int) ($sla['tto_hours'] ?? 4)),
+            'ttr_hours' => max(1, (int) ($sla['ttr_hours'] ?? 48)),
+            'astreinte' => !empty($sla['astreinte']),
+        ];
+    }
+
+    private function sanitizeTimeString(string $time): string
+    {
+        return preg_match('/^\d{2}:\d{2}$/', $time) ? $time : '08:00';
     }
 }

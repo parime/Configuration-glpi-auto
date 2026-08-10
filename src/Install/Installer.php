@@ -84,6 +84,7 @@ final class Installer
                 `sla_enabled` tinyint NOT NULL DEFAULT 0,
                 `sla_tto_hours` int NOT NULL DEFAULT 4,
                 `sla_ttr_hours` int NOT NULL DEFAULT 48,
+                `sla_astreinte` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -118,6 +119,32 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'sla_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'sla_tto_hours', 'integer', ['value' => 4]);
             $migration->addField(self::CONFIGS_TABLE, 'sla_ttr_hours', 'integer', ['value' => 48]);
+            $migration->addField(self::CONFIGS_TABLE, 'sla_astreinte', 'bool', ['value' => 0]);
+        }
+
+        // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
+        // pratiques que n'importe quel profil peut suivre — retires de la liste des profils
+        // proposes (Sprint 11, voir ConfigurationProfile::getSuggestedDefaults()). Desactivation,
+        // pas suppression : une Config existante pourrait encore pointer dessus via
+        // configurationprofiles_id, et l'etape 1 du wizard filtre deja is_active=1 donc l'effet
+        // visible est immediat sans perte de donnees.
+        $DB->update(self::PROFILES_TABLE, ['is_active' => 0], ['type' => ['iso27001', 'itil']]);
+
+        // PME/ETI/Grande entreprise renvoyaient des suggestions identiques une fois taille et
+        // cadre de bonnes pratiques distingues (Sprint 11) — trois options avec des sigles
+        // differents qui font la meme chose, c'est trompeur. Fusionnees en une seule option en
+        // francais clair (Sprint 12), meme logique de desactivation que ci-dessus.
+        $DB->update(self::PROFILES_TABLE, ['is_active' => 0], ['type' => ['sme', 'eti', 'enterprise']]);
+        $DB->update(self::PROFILES_TABLE, ['name' => 'Installation simple', 'description' => 'Un seul site, pas de sous-structure'], ['type' => 'minimal']);
+        $DB->update(self::PROFILES_TABLE, ['name' => 'Plusieurs entreprises clientes', 'description' => 'Vous gérez GLPI pour le compte d\'autres entreprises'], ['type' => 'msp']);
+        if (!(new ConfigurationProfile())->getFromDBByCrit(['type' => 'multi_site'])) {
+            (new ConfigurationProfile())->add([
+                'name' => 'Plusieurs sites ou services',
+                'type' => 'multi_site',
+                'description' => 'Une seule entreprise, plusieurs équipes ou sites',
+                'sort_order' => 2,
+                'is_active' => 1,
+            ]);
         }
 
         Profile::install($migration);
@@ -142,14 +169,10 @@ final class Installer
     private function insertDefaultProfiles(): void
     {
         $defaultProfiles = [
-            ['name' => 'Installation minimale', 'type' => 'minimal', 'sort_order' => 1],
-            ['name' => 'PME', 'type' => 'sme', 'sort_order' => 2],
-            ['name' => 'ETI', 'type' => 'eti', 'sort_order' => 3],
-            ['name' => 'Grande entreprise', 'type' => 'enterprise', 'sort_order' => 4],
-            ['name' => 'MSP', 'type' => 'msp', 'sort_order' => 5],
-            ['name' => 'ISO 27001', 'type' => 'iso27001', 'sort_order' => 6],
-            ['name' => 'ITIL', 'type' => 'itil', 'sort_order' => 7],
-            ['name' => 'Personnalisé', 'type' => 'custom', 'sort_order' => 8],
+            ['name' => 'Installation simple', 'type' => 'minimal', 'sort_order' => 1, 'description' => 'Un seul site, pas de sous-structure'],
+            ['name' => 'Plusieurs sites ou services', 'type' => 'multi_site', 'sort_order' => 2, 'description' => 'Une seule entreprise, plusieurs équipes ou sites'],
+            ['name' => 'Plusieurs entreprises clientes', 'type' => 'msp', 'sort_order' => 3, 'description' => 'Vous gérez GLPI pour le compte d\'autres entreprises'],
+            ['name' => 'Personnalisé', 'type' => 'custom', 'sort_order' => 4, 'description' => 'Je configure tout moi-même'],
         ];
 
         foreach ($defaultProfiles as $profileData) {
