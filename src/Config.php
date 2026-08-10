@@ -134,6 +134,7 @@ class Config extends CommonDBTM
             'state_icons_enabled' => 0,
             'general_settings_enabled' => 0,
             'ticket_template_enabled' => 0,
+            'helpdesk_form_hide_fields' => 0,
         ];
     }
 
@@ -314,6 +315,10 @@ class Config extends CommonDBTM
 
         if (isset($input['ticket_template_enabled'])) {
             $input['ticket_template_enabled'] = !empty($input['ticket_template_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['helpdesk_form_hide_fields'])) {
+            $input['helpdesk_form_hide_fields'] = !empty($input['helpdesk_form_hide_fields']) ? 1 : 0;
         }
 
         return $input;
