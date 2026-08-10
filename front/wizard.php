@@ -82,6 +82,16 @@ if (isset($_POST['finish'])) {
         $slaBuilder->assignMap($slaMap);
     }
 
+    $olaBuilt = false;
+    foreach ($slaMap as $slaIdsByPriority) {
+        foreach ($slaIdsByPriority as $ids) {
+            if ($ids['ola_tto'] !== null) {
+                $olaBuilt = true;
+                break 2;
+            }
+        }
+    }
+
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
 
     $messages = [];
@@ -93,6 +103,9 @@ if (isset($_POST['finish'])) {
     }
     if ($slaMap !== []) {
         $messages[] = __('SLA créés et assignés.', 'configurationglpiauto');
+    }
+    if ($olaBuilt) {
+        $messages[] = __('OLA (engagements internes) créés et assignés.', 'configurationglpiauto');
     }
     if ($perClientCount > 0) {
         $messages[] = sprintf(__('%d client(s) avec des réglages personnalisés.', 'configurationglpiauto'), $perClientCount);
@@ -128,6 +141,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'max_levels'       => Config::MAX_LEVELS,
     'entity_tree'      => $config->getEntityTree(),
     'sla_tiers'        => $config->getSlaTiers(),
+    'ola_tiers'        => $config->getOlaTiers(),
     'priority_levels'  => Config::PRIORITY_LEVELS,
     'priority_labels'  => $priorityLabels,
     'csrf_token'       => Session::getNewCSRFToken(),

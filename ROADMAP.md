@@ -65,8 +65,8 @@ encore implémentées :
     d'un autre) — alors qu'une même entreprise multi-site partage plus naturellement
     calendrier/SLA/branding et peut vouloir une visibilité croisée entre sites — toujours pas fait.
 
-- **SLA plat (un seul TTO/TTR) au lieu de SLA par priorité — confirmé par recherche
-  (2026-08-10).** Vérifié par recherche web (voir sources dans l'historique de conversation,
+- ✅ **SLA plat (un seul TTO/TTR) au lieu de SLA par priorité — confirmé par recherche
+  (2026-08-10), fait en Sprint 14.** Vérifié par recherche web (voir sources dans l'historique de conversation,
   ITIL 4 priority matrix, GLPI Service Levels documentation officielle) : en pratique ITSM
   réelle, les SLA sont quasi-systématiquement définis **par niveau de priorité** (P1 Critique →
   P4 Faible), pas un seul couple prise-en-charge/résolution pour tous les tickets — un P1 peut
@@ -92,6 +92,73 @@ encore implémentées :
 décoration, ce n'est pas prioritaire — quand on y reviendra, prévoir un aperçu en direct plutôt
 qu'une simple case couleur. En attendant, prioriser : les intitulés/libellés du wizard, les
 catégories de tickets ITIL (incident/demande/problème/changement), et les templates de tickets.
+
+**Audit de complétude — bonnes pratiques ITIL/ISO27001/GLPI (2026-08-10)**
+
+Suite à la demande explicite de l'utilisateur ("je veux une configuration complète de GLPI dans le
+respect des bonnes pratiques, dis-moi ce qui manque") : recherche sur les pratiques recommandées
+pour la configuration initiale d'un outil ITSM comme GLPI, ITIL 4 et ISO 27001. Ce que couvre déjà
+le wizard vs ce qui manque, avec le pourquoi de chaque manque — pas de jugement de priorité fait
+unilatéralement, à trancher avec l'utilisateur.
+
+*Déjà couvert par le wizard* : structure d'entités (mono/multi-site/MSP), calendrier (partagé ou
+par site/client), SLA par niveau de priorité (partagé ou par site/client, Sprint 14), branding
+basique, profils de démarrage.
+
+*Manques identifiés, par ordre approximatif d'impact ITIL* :
+
+1. **OLA (Operational Level Agreement) — en cours (accepté par l'utilisateur, 2026-08-10).**
+   Engagement interne entre le helpdesk et les équipes support, qui vient épauler le SLA externe
+   (ex : SLA "résolution sous 4h" au client ⇒ OLA interne "niveau 1 trie sous 30 min, niveau 2
+   diagnostique sous 2h"). GLPI le supporte nativement, quasi symétrique à SLA (`OLA` étend la
+   même classe `LevelAgreement` que `SLA`, `glpi_olas`, `olas_id_tto`/`olas_id_ttr` sur les
+   tickets, même moteur `RuleTicket`).
+
+2. **Catégories de tickets + types ITIL (Incident/Demande/Problème/Changement).** ITIL 4 distingue
+   4 types de ticket avec des pratiques de gestion différentes (Incident Management, Request
+   Management, Problem Management, Change Management) — GLPI a nativement `ITILCategory` et un
+   champ `type` sur les tickets, mais rien n'est pré-structuré par ce plugin. Sans catégories,
+   impossible de router/prioriser correctement, et le catalogue de services (point 4) en dépend.
+
+3. **Templates de tickets** (déjà dans la feuille de route initiale, jamais fait). Champs
+   obligatoires/pré-remplis par catégorie — évite les tickets incomplets, accélère le traitement.
+   Dépend des catégories (point 2) pour avoir du sens.
+
+4. **Niveaux d'escalade SLA/OLA (`SlaLevel`/`OlaLevel`).** Le docblock de `SlaBuilder.php` dit
+   depuis le début "not the full escalation-level engine — a distinct, considerably heavier
+   feature to build later if actually needed" ; la recherche confirme que c'est une vraie pratique
+   ITIL standard, pas un luxe : déclenchement automatique avant l'échéance du TTO/TTR (ex : à 75%
+   du délai écoulé, réassignation à un niveau 2, priorité relevée). Sans ça, le SLA existe mais
+   rien ne prévient personne avant qu'il soit dépassé.
+
+5. **Catalogue de services** (déjà dans la feuille de route initiale, jamais fait). Un petit
+   catalogue de demandes courantes (accès, matériel, compte...) avec SLA propre par type de
+   demande — sépare les demandes de service des incidents, pratique ITIL de base.
+
+6. **Droits/profils GLPI par entité — cloisonnement.** Le wizard configure la structure
+   d'entités mais ne touche jamais aux profils GLPI (Technicien/Admin/Self-Service/Observateur) ni
+   à qui a accès à quoi par entité. Particulièrement important en mode MSP (déjà noté plus haut :
+   "un client MSP ne doit pas voir les tickets d'un autre") mais pertinent aussi hors MSP — sans
+   ça, la structure d'entités créée n'isole rien par elle-même, l'isolation dépend entièrement des
+   droits configurés à la main après coup.
+
+7. **Modèles de notifications** (email de création/assignation/résolution de ticket). GLPI a des
+   modèles par défaut mais l'expérience utilisateur/client en dépend directement (ex : notifier le
+   bon niveau en cas d'escalade, point 4) — non touché par le wizard.
+
+8. **Workflow de validation (approbation)** — surtout pertinent pour les tickets de type
+   Changement : ITIL Change Management recommande une étape d'approbation avant application. GLPI
+   supporte les validations nativement, pas configuré par le wizard.
+
+9. **ISO 27001 — journalisation et piste d'audit.** La norme exige que les logs de sécurité
+   couvrent qui/quoi/quand/où/comment (authentification, changements de droits, changements de
+   configuration). GLPI a un module Journaux natif qui couvre une bonne partie de ça
+   automatiquement sans configuration — à vérifier si la rétention/le niveau de détail par défaut
+   suffit, plutôt qu'à reconstruire quoi que ce soit.
+
+10. **Enquêtes de satisfaction post-résolution.** Pratique ITIL d'amélioration continue, GLPI le
+    supporte nativement, pas configuré par le wizard — probablement le moins prioritaire des
+    manques listés ici.
 
 ---
 
