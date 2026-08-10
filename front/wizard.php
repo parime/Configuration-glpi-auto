@@ -115,8 +115,8 @@ if (isset($_POST['finish'])) {
     if ($perClientCount > 0) {
         $messages[] = sprintf(__('%d client(s) avec des réglages personnalisés.', 'configurationglpiauto'), $perClientCount);
     }
-    if ($categoriesCreated !== []) {
-        $messages[] = sprintf(__('%d catégories de tickets créées.', 'configurationglpiauto'), count($categoriesCreated));
+    if ($categoriesCreated > 0) {
+        $messages[] = sprintf(__('%d catégories de tickets créées.', 'configurationglpiauto'), $categoriesCreated);
     }
     if ($statesCreated !== []) {
         $messages[] = sprintf(__('%d statuts d\'éléments créés.', 'configurationglpiauto'), count($statesCreated));
@@ -155,6 +155,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'ola_tiers'        => $config->getOlaTiers(),
     'priority_levels'  => Config::PRIORITY_LEVELS,
     'priority_labels'  => $priorityLabels,
+    'category_branches' => $config->getCategoryBranches(),
     'categories_preview' => CategoryBuilder::getCategoriesPreview(),
     'states_preview'   => StateBuilder::getStatesPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),

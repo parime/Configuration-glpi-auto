@@ -44,6 +44,13 @@ class Config extends CommonDBTM
 
     private const SINGLETON_ID = 1;
 
+    // Stable keys for the 11 top-level category branches (CategoryBuilder::CATEGORIES) — used to
+    // validate category_branches against a whitelist, same role PRIORITY_LEVELS plays for tiers.
+    public const CATEGORY_BRANCH_KEYS = [
+        'it', 'batiment', 'flotte', 'rh', 'achats', 'securite',
+        'services_generaux', 'administratif', 'communication', 'qualite', 'maintenance',
+    ];
+
     // Starting point for a fresh sla_tiers table, editable by the admin afterward — same
     // philosophy as the plugin's other defaults (e.g. the old flat 4h/48h).
     private const DEFAULT_SLA_TIERS = [
@@ -121,6 +128,8 @@ class Config extends CommonDBTM
             'ola_enabled' => 0,
             'ola_tiers' => json_encode(self::DEFAULT_OLA_TIERS),
             'category_enabled' => 0,
+            'category_branches' => json_encode(self::CATEGORY_BRANCH_KEYS),
+            'category_icons_enabled' => 0,
             'state_enabled' => 0,
             'state_icons_enabled' => 0,
         ];
@@ -182,6 +191,20 @@ class Config extends CommonDBTM
     public static function getDefaultOlaTiers(): array
     {
         return self::DEFAULT_OLA_TIERS;
+    }
+
+    /**
+     * Which of CategoryBuilder's 11 top-level branches the admin wants created — a client with an
+     * empty/malformed value gets none rather than a guess, but a fresh install defaults to all of
+     * them (see getDefaults()) since that's a more useful starting point than an empty wizard step.
+     *
+     * @return string[]
+     */
+    public function getCategoryBranches(): array
+    {
+        $branches = json_decode((string) ($this->fields['category_branches'] ?? '[]'), true);
+
+        return is_array($branches) ? array_values(array_intersect(self::CATEGORY_BRANCH_KEYS, $branches)) : [];
     }
 
     /**
@@ -262,6 +285,17 @@ class Config extends CommonDBTM
 
         if (isset($input['category_enabled'])) {
             $input['category_enabled'] = !empty($input['category_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['category_branches'])) {
+            $input['category_branches'] = json_encode(array_values(array_intersect(
+                self::CATEGORY_BRANCH_KEYS,
+                (array) $input['category_branches']
+            )));
+        }
+
+        if (isset($input['category_icons_enabled'])) {
+            $input['category_icons_enabled'] = !empty($input['category_icons_enabled']) ? 1 : 0;
         }
 
         if (isset($input['state_enabled'])) {

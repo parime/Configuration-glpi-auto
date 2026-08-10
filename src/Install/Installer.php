@@ -89,6 +89,8 @@ final class Installer
                 `ola_enabled` tinyint NOT NULL DEFAULT 0,
                 `ola_tiers` text,
                 `category_enabled` tinyint NOT NULL DEFAULT 0,
+                `category_branches` text,
+                `category_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `state_enabled` tinyint NOT NULL DEFAULT 0,
                 `state_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
@@ -144,9 +146,11 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'sla_astreinte', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'ola_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'ola_tiers', 'text');
-            $migration->addField(self::CONFIGS_TABLE, 'category_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'state_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'state_icons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'category_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'category_branches', 'text');
+            $migration->addField(self::CONFIGS_TABLE, 'category_icons_enabled', 'bool', ['value' => 0]);
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
@@ -181,6 +185,20 @@ final class Installer
         // finding slas_id_tto/slas_id_ttr stayed 0. Fixes rules created by earlier sprints too;
         // new ones are already created correctly (see SlaBuilder::assignOne()).
         $DB->update('glpi_rules', ['is_recursive' => 1], ['sub_type' => 'RuleTicket', 'name' => ['LIKE', 'SLA standard%']]);
+
+        // Sprint 16's "one category per ITIL type" (Incidents/Demandes/Problèmes/Changements) was
+        // replaced in Sprint 17 by a real topical category tree — Ticket already has a native
+        // `type` field for Incident/Demande, and Problem/Change are already their own GLPI object
+        // types, so a category per type never added anything. ITILCategory has no is_active flag
+        // to soft-disable with, so this just hides the 4 old root categories from ticket creation
+        // (is_helpdeskvisible=0) instead of deleting real GLPI objects that could already have
+        // tickets attached — restricted to root-level (itilcategories_id=0) exact-name matches to
+        // avoid touching anything an admin created themselves with the same name.
+        $DB->update(
+            'glpi_itilcategories',
+            ['is_helpdeskvisible' => 0],
+            ['itilcategories_id' => 0, 'name' => ['Incidents', 'Demandes', 'Problèmes', 'Changements']]
+        );
 
         Profile::install($migration);
 
