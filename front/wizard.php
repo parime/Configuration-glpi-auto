@@ -21,6 +21,7 @@ use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
+use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 
@@ -98,6 +99,7 @@ if (isset($_POST['finish'])) {
     $statesCreated = (new StateBuilder())->build($config);
 
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
+    $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
 
     $messages = [];
     $messages[] = empty($created)
@@ -123,6 +125,9 @@ if (isset($_POST['finish'])) {
     }
     if ($brandingApplied) {
         $messages[] = __('Personnalisation graphique appliquée.', 'configurationglpiauto');
+    }
+    if ($generalSettingsApplied) {
+        $messages[] = __('Réglages généraux GLPI appliqués.', 'configurationglpiauto');
     }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 

@@ -352,10 +352,38 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 8 : Récapitulatif #}
+      {# ---------------------------------------------------------------- Étape 8 : Réglages généraux #}
       <div class="cga-wizard-step" data-step="8" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 8 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, les statuts et la personnalisation graphique.', 'configurationglpiauto') }}</p>
+        <h3 class="mb-1">{{ __('Étape 8 : Réglages généraux GLPI', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l\'usage — cette étape les corrige en une fois.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="general_settings_enabled" value="0">
+          <input
+            type="checkbox"
+            name="general_settings_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-general-settings-enabled"
+            {{ config.general_settings_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-general-settings-enabled">{{ __('Appliquer les réglages généraux recommandés', 'configurationglpiauto') }}</label>
+        </div>
+
+        <ul class="list-group" id="cga-general-settings-fields" style="max-width: 560px; display: none;">
+          <li class="list-group-item">{{ __('Activer les notifications (par e-mail et dans le navigateur)', 'configurationglpiauto') }}</li>
+          <li class="list-group-item">{{ __('Agencement des boutons d\'action divisé (Répondre / Observation / Solution séparés)', 'configurationglpiauto') }}</li>
+          <li class="list-group-item">{{ __('Afficher le moteur de recherche au-dessus des résultats', 'configurationglpiauto') }}</li>
+          <li class="list-group-item">{{ __('Afficher la pagination au-dessus des résultats', 'configurationglpiauto') }}</li>
+          <li class="list-group-item">{{ __('Montrer les nouveaux tickets sur la page d\'accueil', 'configurationglpiauto') }}</li>
+          <li class="list-group-item">{{ __('Activer les informations financières et administratives par défaut', 'configurationglpiauto') }}</li>
+        </ul>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 9 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="9" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 9 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, les statuts, la personnalisation graphique et les réglages généraux.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -382,6 +410,9 @@
           <li class="list-group-item">
             <strong>{{ __('Personnalisation', 'configurationglpiauto') }} :</strong> <span id="cga-summary-branding"></span>
           </li>
+          <li class="list-group-item">
+            <strong>{{ __('Réglages généraux', 'configurationglpiauto') }} :</strong> <span id="cga-summary-general-settings"></span>
+          </li>
         </ul>
       </div>
 
@@ -406,7 +437,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 8;
+  var STEP_COUNT = 9;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -422,6 +453,7 @@
     "{{ __('Catégories', 'configurationglpiauto')|e('js') }}",
     "{{ __('Statuts', 'configurationglpiauto')|e('js') }}",
     "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Réglages généraux', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
 
@@ -547,6 +579,14 @@
   brandingColorInput.addEventListener('input', updateSwatch);
   toggleBrandingFields();
   updateSwatch();
+
+  var generalSettingsEnabledInput = document.getElementById('cga-general-settings-enabled');
+  var generalSettingsFields = document.getElementById('cga-general-settings-fields');
+  function toggleGeneralSettingsFields() {
+    generalSettingsFields.style.display = generalSettingsEnabledInput.checked ? '' : 'none';
+  }
+  generalSettingsEnabledInput.addEventListener('change', toggleGeneralSettingsFields);
+  toggleGeneralSettingsFields();
 
   // Per-client/site calendar & SLA (Sprint 13): only meaningful once there's more than one
   // top-level entity to have its own settings, i.e. any multi-entité mode — not mono. Reuses
@@ -1053,6 +1093,10 @@
     document.getElementById('cga-summary-branding').textContent = brandingEnabledInput.checked
       ? "{{ __('Couleur principale', 'configurationglpiauto')|e('js') }} " + brandingColorInput.value
       : "{{ __('Aucune', 'configurationglpiauto')|e('js') }}";
+
+    document.getElementById('cga-summary-general-settings').textContent = generalSettingsEnabledInput.checked
+      ? "{{ __('Appliqués', 'configurationglpiauto')|e('js') }}"
+      : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
   }
 
   function showStep(n) {
@@ -1150,6 +1194,11 @@
     if (typeof defaults.state_icons_enabled !== 'undefined') {
       stateIconsEnabledInput.checked = !!defaults.state_icons_enabled;
       toggleStateIcons();
+    }
+
+    if (typeof defaults.general_settings_enabled !== 'undefined') {
+      generalSettingsEnabledInput.checked = !!defaults.general_settings_enabled;
+      toggleGeneralSettingsFields();
     }
   }
 
