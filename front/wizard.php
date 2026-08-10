@@ -22,6 +22,7 @@ use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
+use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
@@ -102,6 +103,7 @@ if (isset($_POST['finish'])) {
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
     $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
     $ticketTemplatesApplied = (new TicketTemplateBuilder())->apply($config);
+    $helpdeskFormApplied = (new HelpdeskFormBuilder())->apply($config);
 
     $messages = [];
     $messages[] = empty($created)
@@ -133,6 +135,9 @@ if (isset($_POST['finish'])) {
     }
     if ($ticketTemplatesApplied) {
         $messages[] = __('Modèles de tickets créés et assignés aux profils.', 'configurationglpiauto');
+    }
+    if ($helpdeskFormApplied) {
+        $messages[] = __('Champs masqués sur les formulaires de création en libre-service.', 'configurationglpiauto');
     }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 

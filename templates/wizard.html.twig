@@ -417,6 +417,20 @@
               </ul>
             </div>
           </div>
+
+          <div class="form-check form-switch mb-3">
+            <input type="hidden" name="helpdesk_form_hide_fields" value="0">
+            <input
+              type="checkbox"
+              name="helpdesk_form_hide_fields"
+              value="1"
+              class="form-check-input"
+              id="cga-helpdesk-form-hide-fields"
+              {{ config.helpdesk_form_hide_fields|default(0) ? 'checked' : '' }}
+            >
+            <label class="form-check-label" for="cga-helpdesk-form-hide-fields">{{ __('Masquer Urgence, Observateurs et Lieu sur les formulaires natifs « Signaler un incident » / « Faire une demande »', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small">{{ __('Ces formulaires du portail libre-service sont un système distinct des modèles de tickets ci-dessus (nouveau moteur de formulaires GLPI 11) — un utilisateur de base n\'a pas la visibilité nécessaire pour juger de l\'urgence réelle de sa demande, c\'est au support de la qualifier.', 'configurationglpiauto') }}</p>
         </div>
       </div>
 
@@ -634,6 +648,7 @@
 
   var ticketTemplateEnabledInput = document.getElementById('cga-ticket-template-enabled');
   var ticketTemplateFields = document.getElementById('cga-ticket-template-fields');
+  var helpdeskFormHideFieldsInput = document.getElementById('cga-helpdesk-form-hide-fields');
   function toggleTicketTemplateFields() {
     ticketTemplateFields.style.display = ticketTemplateEnabledInput.checked ? '' : 'none';
   }
@@ -1151,7 +1166,7 @@
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
 
     document.getElementById('cga-summary-ticket-templates').textContent = ticketTemplateEnabledInput.checked
-      ? "{{ __('Simplifié + Complet, assignés aux profils', 'configurationglpiauto')|e('js') }}"
+      ? "{{ __('Simplifié + Complet, assignés aux profils', 'configurationglpiauto')|e('js') }}" + (helpdeskFormHideFieldsInput.checked ? " {{ __('(+ formulaires libre-service allégés)', 'configurationglpiauto')|e('js') }}" : '')
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
   }
 
@@ -1260,6 +1275,10 @@
     if (typeof defaults.ticket_template_enabled !== 'undefined') {
       ticketTemplateEnabledInput.checked = !!defaults.ticket_template_enabled;
       toggleTicketTemplateFields();
+    }
+
+    if (typeof defaults.helpdesk_form_hide_fields !== 'undefined') {
+      helpdeskFormHideFieldsInput.checked = !!defaults.helpdesk_form_hide_fields;
     }
   }
 

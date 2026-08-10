@@ -3,6 +3,7 @@
     <name>Configuration GLPI Auto</name>
     <key>configurationglpiauto</key>
     <state>dev</state>
+    <logo>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/logos/logo.png</logo>
     <description>
         <short>
             <fr>Plugin GLPI pour la configuration automatique d'instances GLPI selon les bonnes pratiques</fr>

@@ -95,6 +95,7 @@ final class Installer
                 `state_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `general_settings_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_enabled` tinyint NOT NULL DEFAULT 0,
+                `helpdesk_form_hide_fields` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -155,6 +156,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'category_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'general_settings_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'ticket_template_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'helpdesk_form_hide_fields', 'bool', ['value' => 0]);
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
