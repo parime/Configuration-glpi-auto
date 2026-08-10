@@ -159,6 +159,9 @@ class ConfigurationProfile extends CommonDBTM
             // doesn't apply (no vehicle fleet, no industrial maintenance...) in step 5.
             'category_enabled' => true, 'category_branches' => Config::CATEGORY_BRANCH_KEYS, 'category_icons_enabled' => true,
             'state_enabled' => true, 'state_icons_enabled' => true,
+            // Same reasoning: GLPI core's own general settings (notifications, search/pagination
+            // layout, split action buttons...) are unhelpful defaults regardless of org size.
+            'general_settings_enabled' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual
