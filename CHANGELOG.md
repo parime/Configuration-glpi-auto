@@ -9,6 +9,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — Service Catalog: vendor-neutral naming and real icons (2026-08-11)
+
+Direct follow-up to Sprint 23, from user feedback on the real catalog screenshot: one service name
+and one category-tree branch name referenced Microsoft (Teams/SharePoint/Microsoft 365) — not every
+organization is on Microsoft 365. Separately, every rubric shared the same generic default icon.
+
+#### Changed
+- "Microsoft 365 / Workspace" (an `ITILCategory` branch, part of the tree since Sprint 17) renamed
+  to "Messagerie & Collaboration"; "Demande d'accès à un espace Teams / SharePoint" (Service
+  Catalog) renamed to "Demande d'accès à un espace collaboratif d'équipe". Both are plugin-created
+  objects matched by exact name elsewhere in the code, so an already-created row has to be renamed
+  in the DB too (`Installer.php` migration), not just in the source constants, or the next wizard
+  run would create a duplicate instead of reusing it. Also fixes up the `DropdownTranslation` rows
+  for this category — both `name` (only set once at creation) and `completename` (GLPI
+  auto-derives this second breadcrumb-path translation from `name`, so it needed its own explicit
+  `DropdownTranslation::regenerateAllCompletenameTranslationsFor()` call, not just an UPDATE).
+- Each of the 11 Service Catalog rubrics — and every service form within it — now gets a real
+  identifying icon (computer for IT & SI, car for Flotte, building for Bâtiment, shield for
+  Sécurité, people for RH...) instead of GLPI's generic default. Uses GLPI's own bundled
+  illustration catalog (`Glpi\UI\IllustrationManager`, `public/lib/glpi-project/illustrations/
+  icons.json`) — no custom SVG import needed. Backfilled via migration for rubrics/forms created
+  before this fix, guarded to skip anything already customized by hand.
+
+Validated against the real GLPI 11.0.8 test instance with the real `post-only` (Self-Service)
+account: `/ServiceCatalog` screenshot confirms distinct, recognizable icons per rubric and the
+vendor-neutral names; DB confirms the renamed `ITILCategory`'s `name` and `completename`
+translations both read correctly. Local suite green (phpunit 5/5, phpstan clean, php-cs-fixer
+clean).
+
 ### Sprint 23 — Service Catalog (ROADMAP item 5) (2026-08-11)
 
 Second item out of the real-GLPI-export audit and the biggest remaining ROADMAP gap: a self-service
