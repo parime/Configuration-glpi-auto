@@ -9,6 +9,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-08-11
+
+Sprint 29: closes most of a third, more systematic audit (every dropdown type under Configuration
+> Intitulés, not just the two prior real-export-driven audits) — the ticket/task/change/problem
+lifecycle intitulés GLPI ships with none of by default. New wizard steps, no breaking changes.
+
+### Sprint 29 — ticket/task/change/problem lifecycle intitulés (2026-08-11)
+
+Third audit pass (see ROADMAP.md's new "Troisième audit" section for the full inventory this was
+extracted from — every category on GLPI's own Configuration > Intitulés page, not guessed). User
+scope decision: tackle the whole Assistance + relevant Général/Outils block, split into sprints for
+size. This sprint covers the ticket/task/change/problem lifecycle group specifically — the two
+gaps the user pointed at directly (task categories, solution templates) plus everything else in
+that cluster.
+
+#### Added
+- `TaskCategoryBuilder`: 14 flat `TaskCategory` rows (what *kind* of technician work — diagnostic,
+  install, escalation... — independent of what the *ticket* is about). Same icon mechanism as
+  `CategoryBuilder`/`StateBuilder` (`DropdownTranslation`, never HTML in `name`).
+- `SolutionLibraryBuilder`: 5 `SolutionType` rows with per-ITIL-type visibility flags
+  (`is_incident`/`is_request`/`is_problem`/`is_change`) + 2 `SolutionTemplate` each (10 total) — a
+  standard ITSM closure-code taxonomy (resolution vs. workaround vs. informational vs. security vs.
+  access management), modeled on a real production GLPI export's own 5-type scheme, generalized and
+  cross-checked against standard ITIL/ServiceNow closure-code practice.
+- `FollowupLibraryBuilder`: 5 general-purpose `ITILFollowupTemplate` rows (deliberately different
+  names from `WaitReasonBuilder`'s own reason-specific ones, so the two libraries never collide).
+- `ValidationTemplateBuilder`: 5 `ITILValidationTemplate` rows — one linked to the "Validation
+  comité (2/3)" `ValidationStep` if it exists (Sprint 25/26), by name lookup, never guessed.
+- `TaskTemplateBuilder`: 3 reusable checklist `TaskTemplate` rows (onboarding, offboarding,
+  preventive maintenance), each resolving its `TaskCategory` by name against whatever
+  `TaskCategoryBuilder` created — same independent-resolution pattern `ServiceCatalogBuilder` uses
+  against `CategoryBuilder`.
+- `ChangeProblemTemplateBuilder`: one default `ChangeTemplate` (`content` + `impact` mandatory —
+  risk assessment before approval is Change Management's defining ITIL practice) and one default
+  `ProblemTemplate` (`content` mandatory), assigned to every profile via
+  `glpi_profiles.changetemplates_id`/`problemtemplates_id`. Unlike `TicketTemplateBuilder`'s
+  simplified/complete split, only one template each — confirmed in `glpi_profilerights` that
+  GLPI's own Self-Service profile has zero rights on Change/Problem by default, so the "base user
+  vs. staff" split doesn't apply.
+- Two new wizard steps ("Tâches & solutions", "Suivis, validations & modèles") with live previews,
+  each toggle independently controllable — no bundling into a shared switch (Sprint 26's lesson).
+
+#### Verified, not built
+- Sources des demandes (`RequestType`): GLPI ships 6 sensible defaults out of the box
+  (Helpdesk/E-Mail/Phone/Direct/Written/Other) — confirmed on a fresh install, nothing to add.
+
+#### Studied, deliberately not built
+- Règles métier tickets/changements/problèmes (`RuleTicket`/`RuleChange`/`RuleProblem`) and
+  `RuleSoftwareCategory`: routing/prioritization logic is inherently organization-specific;
+  inventing arbitrary rules would be worse than not building them (same reasoning as the "level 2"
+  reassignment left out of Sprints 27/28).
+- Dictionnaires (`RuleDictionary*`): confirmed by listing the real page that they cover exclusively
+  asset/inventory normalization (software, manufacturers, models/types, OS), nothing Assistance-
+  related. Nothing to normalize on a fresh GLPI with no inventory yet, and no real messy data to
+  calibrate starter regex rules against — would be guessing. Replacement-field syntax confirmed in
+  `RuleAction.php` (`#0`, `#1`... for capture groups) if the topic returns with real examples.
+
+Validated against the real GLPI 11.0.8 test instance: confirmed in DB the exact counts (14 task
+categories, 3 task templates correctly linked to their categories, 5 solution types with the exact
+designed visibility flags, 10+1 solution templates — the +1 being `WaitReasonBuilder`'s pre-existing
+one, no collision —, 5+2 followup templates same reasoning, 5 validation templates, 1 Change + 1
+Problem template each alongside GLPI's own native "Default" row, all 8 profiles correctly pointing
+at the new templates rather than the native one). Local suite green (phpunit 10/10, phpstan clean,
+php-cs-fixer clean).
+
 ## [0.11.0] - 2026-08-11
 
 Sprint 28: SLA/OLA escalation levels — a configurable-threshold priority escalation before a
@@ -1182,7 +1247,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.12.0
 [0.11.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.11.0
 [0.10.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.10.0
 [0.9.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.9.0

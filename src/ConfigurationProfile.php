@@ -187,6 +187,19 @@ class ConfigurationProfile extends CommonDBTM
             // Auto-followup + auto-resolve on unresponsive requesters avoids tickets languishing
             // forever — universal good practice, not size-dependent.
             'wait_reasons_enabled' => true,
+            // "Kind of technician work" (diagnostic, install, escalation...) is independent of what
+            // the ticket is about (category) — useful reporting/filtering regardless of org size.
+            'task_categories_enabled' => true,
+            'task_templates_enabled' => true,
+            // A closure taxonomy (was the user helped vs. something actually fixed vs. a security
+            // incident vs. purely informational) is a standard ITIL/ITSM closure-code practice, not
+            // something that varies by org size.
+            'solution_library_enabled' => true,
+            'followup_library_enabled' => true,
+            'validation_templates_enabled' => true,
+            // Same reasoning as ticket_template_enabled: a default Change/Problem template beats
+            // GLPI's "no template at all" out of the box, regardless of org size.
+            'change_problem_templates_enabled' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual

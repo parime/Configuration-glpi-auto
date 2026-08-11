@@ -181,6 +181,75 @@ basique, profils de démarrage.
 
 ---
 
+## 🔎 Troisième audit — inventaire complet des "Intitulés" (2026-08-11)
+
+Après les deux audits précédents (liste ci-dessus, et l'export de production Sprints 22-28), un
+troisième passage plus systématique : la page GLPI Configuration > Intitulés recense *tous* les
+types d'objets pré-paramétrables, catégorie par catégorie. Extrait directement de l'instance de
+test réelle (pas deviné), pour ne rien manquer. État par catégorie GLPI (pas de jugement de
+priorité — à trancher avec l'utilisateur comme les audits précédents) :
+
+**Assistance** (19 intitulés) — déjà fait : Gabarits de tickets (`TicketTemplateBuilder`),
+Catégories ITIL (`CategoryBuilder`), Raisons d'attente (`WaitReasonBuilder`), Catégories du
+catalogue de services (`ServiceCatalogBuilder`), Étapes de validation (`GeneralSettingsBuilder`).
+**Fait (Sprint 29, 2026-08-11)** : Gabarits de changement/problème (`ChangeProblemTemplateBuilder`
+— un modèle standard chacun, assigné à tous les profils ; pas de split base/support comme les
+tickets, Self-Service n'a par défaut aucun droit sur Change/Problem), Catégories de tâches
+(`TaskCategoryBuilder`, 14 catégories), Gabarits de tâche (`TaskTemplateBuilder`, 3 checklists
+réutilisables), Types de solutions + vraie bibliothèque de gabarits de solution
+(`SolutionLibraryBuilder`, 5 types × 2 gabarits, taxonomie de clôture ITIL générique), vraie
+bibliothèque de gabarits de suivis (`FollowupLibraryBuilder`, 5 gabarits, distincts par nom de
+ceux liés aux raisons d'attente), Gabarits de validation (`ValidationTemplateBuilder`, 5
+gabarits). Sources des demandes (`RequestType`) — **vérifié, déjà suffisant** : GLPI ships 6
+valeurs par défaut (Helpdesk/E-Mail/Phone/Direct/Written/Other), rien à construire. Reste
+partiel : Statuts de projet (`GeneralSettingsBuilder` ne fait que *mapper* les 3 `ProjectState`
+natifs, n'en crée aucun nouveau — voir Sprint 30). Pas fait : Types de projet (`ProjectType`),
+Types de tâche de projet (`ProjectTaskType`), Gabarits de tâches de projets
+(`ProjectTaskTemplate`), Gabarits d'évènements externes (`PlanningExternalEventTemplate`),
+Catégories d'évènements (`PlanningEventCategory` — priorité basse, usage assez spécifique).
+
+**Général** (5 intitulés) — fait : Statuts des éléments (`StateBuilder`). Pas fait : Lieux
+(`Location`), Fabricants (`Manufacturer`). Pas prévu (sécurité anti-spam, pas de bonne pratique
+universelle à préremplir) : Listes noires (`Blacklist`), Contenu de mail interdit
+(`BlacklistedMailContent`).
+
+**Outils** — pas fait : Catégories de la base de connaissances (`KnowbaseItemCategory`),
+pertinent pour le libre-service (l'utilisateur consulte la base avant de créer un ticket).
+
+**Gestion** — pas fait, priorité basse (gestion documentaire/actifs, pas Assistance) : Rubriques
+des documents, Types de documents, Criticités.
+
+**Règles** (`Configuration > Règles`) — fait : Règles d'affectation d'habilitations à un
+utilisateur (`RuleRight`, Sprint 27). Étudié et volontairement pas fait : règles métier
+tickets/changements/problèmes (`RuleTicket`/`RuleChange`/`RuleProblem`) — logique de routage/
+priorisation propre à chaque organisation, inventer des règles arbitraires serait pire que ne
+rien faire (même raisonnement que le "niveau 2" laissé de côté aux Sprints 27/28) ; règles
+d'affectation de catégorie aux logiciels (`RuleSoftwareCategory`) — gestion d'actifs, hors
+périmètre Assistance.
+
+**Dictionnaires** — étudié et volontairement pas fait : couvrent exclusivement la normalisation
+de données d'inventaire déjà importées (logiciels, fabricants, modèles/types de matériel,
+systèmes d'exploitation — confirmé en listant la page réelle, aucun lien avec l'Assistance).
+Sur un GLPI neuf sans inventaire, il n'y a rien à normaliser, et sans données réelles désordonnées
+à calibrer, générer des règles regex de départ reviendrait à deviner — risque de mal normaliser
+les vraies données plus tard. Format confirmé dans `RuleAction.php` (groupes de capture
+référencés `#0`, `#1`... dans le champ de remplacement) si le sujet revient avec de vrais
+exemples à traiter.
+
+**Décision utilisateur (2026-08-11)** : traiter tout le bloc Assistance + Général/Outils listés
+comme "pas fait" ci-dessus. Découpé en plusieurs sprints vu le volume — voir CHANGELOG.md pour
+l'avancement réel sprint par sprint (ce document décrit l'état au moment de l'audit, pas l'état
+courant). Sprint 29 (cycle de vie ticket/tâche/changement/problème) fait. Restent : Sprint 30
+(Projets), Sprint 31 (Général/Outils : Lieux, Fabricants, Catégories base de connaissances).
+
+**Demande complémentaire (2026-08-11)** : personnalisation graphique par entité — un logo
+uploadable par client/site (pas seulement la couleur principale plugin-wide actuelle de
+`BrandingBuilder`), visible sur l'entité correspondante. Pas encore cadré techniquement
+(mécanisme de stockage GLPI pour les logos d'entité à confirmer en source avant de coder) — à
+traiter après Sprints 30/31.
+
+---
+
 ### 🚀 Version 1.1 - **En Développement**
 
 **Prévue** : Q4 2026
