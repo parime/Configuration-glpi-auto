@@ -130,15 +130,18 @@ basique, profils de démarrage.
    (catégorie+urgence obligatoires, rien de masqué) pour le reste — câblés via
    `glpi_profiles.tickettemplates_id`, un mécanisme natif GLPI par profil.
 
-4. **Niveaux d'escalade SLA/OLA (`SlaLevel`/`OlaLevel`) — fait partiellement (Sprint 28,
-   2026-08-11).** `SlaBuilder` crée désormais un niveau d'escalade par palier de priorité (sauf le
-   plus haut, rien de plus haut vers quoi escalader) sur la résolution (SLA) et, si activé,
-   l'engagement interne (OLA) : déclenché à un pourcentage configurable du délai écoulé (75% par
-   défaut), action = priorité relevée d'un cran. Le moteur natif GLPI (`SlaLevel`/`OlaLevel`,
+4. **Niveaux d'escalade SLA/OLA (`SlaLevel`/`OlaLevel`) — fait (Sprint 28, 2026-08-11 ; complété
+   Sprint 34, 2026-08-12).** `SlaBuilder` crée un niveau d'escalade par palier de priorité (sauf le
+   plus haut) sur la résolution (SLA) et, si activé, l'engagement interne (OLA), déclenché à un
+   pourcentage configurable du délai écoulé (75% par défaut) : action = priorité relevée d'un cran
+   (Sprint 28). **Sprint 34** lève la limite documentée ici jusqu'ici (« réassignation à un niveau 2
+   hors périmètre, faute de savoir quel groupe serait le bon ») : recherche web confirmant N1/N2/N3
+   comme convention ITSM standard (pas une invention propre à une organisation), `SupportTierBuilder`
+   crée 3 groupes techniciens génériques ("Support N1/N2/N3"), `SlaBuilder` réaffecte automatiquement
+   le ticket au niveau suivant (N1→N2 avant échéance, N2→N3 à l'échéance), réglable globalement et
+   par client/site, chaque hop indépendamment activable. Le moteur natif GLPI (`SlaLevel`/`OlaLevel`,
    CronTasks `slaticket`/`olaticket`, actifs par défaut) s'en charge une fois les niveaux créés,
-   aucun câblage supplémentaire nécessaire. Reste hors périmètre, comme pour la réaffectation
-   automatique dans Sprint 27 : la réassignation à un "niveau 2" (groupe support), faute de savoir
-   quel groupe serait le bon dans une instance donnée.
+   aucun câblage supplémentaire nécessaire.
 
 5. **Catalogue de services — fait (Sprint 23, 2026-08-11).** `ServiceCatalogBuilder`, sur le
    système natif de formulaires de GLPI 11 (`Glpi\Form\Form`) : 23 services sur 7 branches, chacun

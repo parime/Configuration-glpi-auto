@@ -35,6 +35,7 @@ use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\SolutionLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
+use GlpiPlugin\Configurationglpiauto\SupportTierBuilder;
 use GlpiPlugin\Configurationglpiauto\TaskCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\TaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
@@ -97,20 +98,33 @@ if (isset($_POST['finish'])) {
     $calendarBuilder = new CalendarBuilder();
     $slaBuilder = new SlaBuilder();
 
+    // Built once, shared by every client unless overridden below — a client's own
+    // settings.escalation only ever changes whether/how escalation applies, never the group
+    // identities themselves (see SupportTierBuilder's docblock on that scope choice).
+    $tierGroupIds = (new SupportTierBuilder())->build($config) ?: null;
+
     // Built eagerly (not lazily on first use) so every client that falls back to the shared
     // calendar/SLA gets the *same* pairing regardless of which order clients are processed in —
     // build() is idempotent and a cheap no-op when calendar_enabled/sla_enabled is off.
     $sharedCalendarId = $calendarBuilder->build($config);
-    $sharedSlaIds = $slaBuilder->build($config, $sharedCalendarId);
+    $sharedSlaIds = $slaBuilder->build(
+        $config,
+        $sharedCalendarId,
+        $tierGroupIds,
+        !empty($config->fields['escalation_auto_n1_n2']),
+        !empty($config->fields['escalation_auto_n2_n3'])
+    );
 
     $calendarMap = [];
     $slaMap = [];
+    $entityIdToTierGroupIds = [];
     $perClientCount = 0;
 
     foreach (($created ?: [['name' => '', 'entities_id' => 0]]) as $i => $result) {
         $calendarOverride = $tree[$i]['settings']['calendar'] ?? null;
         $slaOverride = $tree[$i]['settings']['sla'] ?? null;
-        if ($calendarOverride !== null || $slaOverride !== null) {
+        $escalationOverride = $tree[$i]['settings']['escalation'] ?? null;
+        if ($calendarOverride !== null || $slaOverride !== null || $escalationOverride !== null) {
             $perClientCount++;
         }
 
@@ -121,13 +135,23 @@ if (isset($_POST['finish'])) {
             $calendarMap[$result['entities_id']] = $calendarId;
         }
 
+        // A client override can only ever narrow escalation (opt this client out, or change which
+        // hops are automatic) — it never invents tier groups of its own, see SupportTierBuilder.
+        $clientTierGroupIds = $escalationOverride !== null && empty($escalationOverride['enabled']) ? null : $tierGroupIds;
+        $clientAutoN1N2 = $escalationOverride !== null ? !empty($escalationOverride['auto_n1_n2']) : !empty($config->fields['escalation_auto_n1_n2']);
+        $clientAutoN2N3 = $escalationOverride !== null ? !empty($escalationOverride['auto_n2_n3']) : !empty($config->fields['escalation_auto_n2_n3']);
+        $entityIdToTierGroupIds[$result['entities_id']] = $clientTierGroupIds;
+
         $slaIds = $slaOverride !== null
             ? $slaBuilder->buildFromOverride(
                 $result['name'],
                 $slaOverride,
                 $calendarId,
                 !empty($config->fields['sla_escalation_enabled']),
-                (int) ($config->fields['sla_escalation_threshold_percent'] ?? 75)
+                (int) ($config->fields['sla_escalation_threshold_percent'] ?? 75),
+                $clientTierGroupIds,
+                $clientAutoN1N2,
+                $clientAutoN2N3
             )
             : $sharedSlaIds;
         if ($slaIds !== null) {
@@ -139,7 +163,7 @@ if (isset($_POST['finish'])) {
         $calendarBuilder->assignMap($calendarMap);
     }
     if ($slaMap !== []) {
-        $slaBuilder->assignMap($slaMap);
+        $slaBuilder->assignMap($slaMap, $tierGroupIds, $entityIdToTierGroupIds);
     }
 
     $olaBuilt = false;
@@ -205,6 +229,9 @@ if (isset($_POST['finish'])) {
     }
     if ($olaBuilt) {
         $messages[] = __('OLA (engagements internes) créés et assignés.', 'configurationglpiauto');
+    }
+    if ($tierGroupIds !== null) {
+        $messages[] = __('Groupes de support N1/N2/N3 créés, escalade automatique configurée.', 'configurationglpiauto');
     }
     if ($perClientCount > 0) {
         $messages[] = sprintf(__('%d client(s) avec des réglages personnalisés.', 'configurationglpiauto'), $perClientCount);
