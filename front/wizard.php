@@ -23,6 +23,7 @@ use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
+use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
@@ -103,6 +104,7 @@ if (isset($_POST['finish'])) {
     $servicesCreated = (new ServiceCatalogBuilder())->build($config);
     $statesCreated = (new StateBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
+    $ldapRulesCreated = (new RuleRightBuilder())->build($config);
 
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
     $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
@@ -151,6 +153,9 @@ if (isset($_POST['finish'])) {
     if ($helpdeskFormApplied) {
         $messages[] = __('Champs masqués sur les formulaires de création en libre-service.', 'configurationglpiauto');
     }
+    if ($ldapRulesCreated > 0) {
+        $messages[] = sprintf(__('%d règle(s) de droits LDAP créées.', 'configurationglpiauto'), $ldapRulesCreated);
+    }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 
     Html::redirect(ConfigurationProfile::getSearchURL());
@@ -187,6 +192,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'services_preview' => ServiceCatalogBuilder::getServicesPreview(),
     'states_preview'   => StateBuilder::getStatesPreview(),
     'wait_reasons_preview' => WaitReasonBuilder::getReasonsPreview(),
+    'native_profile_names' => Config::NATIVE_PROFILE_NAMES,
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 

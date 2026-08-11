@@ -9,6 +9,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-08-11
+
+Sprint 27: scaffolds LDAP/AD-driven entity+profile assignment (`RuleRight`) per site, closing the
+last unaddressed item from the real-GLPI-export audit (ROADMAP item 6, partially — see scope note
+in the entry below). New wizard step, no breaking changes.
+
+### Sprint 27 — LDAP/AD rights scaffolding per entity (2026-08-11)
+
+Closes ROADMAP item 6 (partially — see scope note below), the last unaddressed item from the
+real-GLPI-export audit. Confirmed in the export: 37 `RuleRight` rows, GLPI's native mechanism for
+auto-assigning a user's entity + profile from their AD/LDAP group membership at import/sync time
+(`RuleRightCollection`, fires automatically on every LDAP import/update — no extra wiring needed
+once the rows exist, same "just works once created" behavior as `SlaBuilder`'s `RuleTicket` rows).
+Two patterns were present in the export: (1) one rule per physical site (leaf entity) assigning a
+fixed profile, and (2) an org-wide function-based profile (e.g. "Finance"/"DSI" AD groups → a
+global profile regardless of site). Scoped to pattern (1) only, per explicit user confirmation —
+the AD group names are never reused from the export, only the *shape* of the rule.
+
+#### Added
+- `RuleRightBuilder`: creates one `RuleRight` per leaf entity in the tree (not every node at every
+  depth — matches the real pattern of one rule per physical site, the leaves of a Client > Site
+  tree). Criteria match both `_groups_id` and `memberof` (`OR`-ed, `PATTERN_CONTAIN`) against an
+  admin-supplied naming template containing the literal placeholder `{ENTITY}` (default
+  `GLPI_{ENTITY}`) — same belt-and-braces matching as the audited export, so the rule still fires
+  on a user's very first LDAP sync before GLPI's own group sync has caught up. The assigned
+  profile is a single admin-picked choice (`ldap_rights_profile`, validated against GLPI 11's 8
+  native profile names) applied to every generated rule.
+- New wizard step 12 ("Droits LDAP"): master toggle, group-name template input, profile dropdown,
+  and a live preview (JS, walking the same `window.cgaTree` state the entity-tree editor in step 2
+  already mutates) listing every leaf entity next to its resulting AD group name — updates as the
+  admin edits the template or the tree.
+- No-op entirely without a multi-site entity tree (mono-entité) — nothing to scaffold without at
+  least one site. Deliberately *not* added to `ConfigurationProfile`'s suggested-defaults baseline
+  (unlike every other Sprint 14-25 toggle): LDAP usage isn't a universal good practice independent
+  of org size, it depends on infrastructure the wizard has no way to know about.
+
+Validated against the real GLPI 11.0.8 test instance against an existing 2-client/4-site entity
+tree: wizard preview correctly listed all 4 leaf sites (not the 2 intermediate client nodes) with
+the live-edited template substituted; confirmed in DB 4 `RuleRight` rows with the correct
+`entities_id`/`profiles_id` actions and `_groups_id`/`memberof` `OR`-matched criteria against the
+custom group names. Local suite green (phpunit 10/10 — added `RuleRightBuilderTest` covering the
+pure `preview()` helper, phpstan clean, php-cs-fixer clean).
+
 ## [0.9.0] - 2026-08-11
 
 Sprint 26: splits the "Réglages généraux" step's single all-or-nothing toggle into 6 independently
@@ -1100,7 +1143,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.10.0
 [0.9.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.9.0
 [0.8.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.8.0
 [0.7.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.7.0
