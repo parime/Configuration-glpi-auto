@@ -307,6 +307,8 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'categories_preview' => CategoryBuilder::getCategoriesPreview(),
     'services_preview' => ServiceCatalogBuilder::getServicesPreview(),
     'states_preview'   => StateBuilder::getStatesPreview(),
+    'state_names'      => $config->getStateNames(),
+    'state_recommended_names' => StateBuilder::RECOMMENDED_NAMES,
     'wait_reasons_preview' => WaitReasonBuilder::getReasonsPreview(),
     'native_profile_names' => Config::NATIVE_PROFILE_NAMES,
     'task_categories_preview' => TaskCategoryBuilder::getCategoriesPreview(),

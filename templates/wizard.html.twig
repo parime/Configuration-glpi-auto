@@ -396,11 +396,23 @@
             <label class="form-check-label" for="cga-state-icons-enabled">{{ __('Ajouter des icônes (visibles dans la liste, le nom lui-même reste sans icône)', 'configurationglpiauto') }}</label>
           </div>
 
-          <ul class="list-group" id="cga-state-preview" style="max-width: 480px;">
+          <p class="text-muted small mb-1">{{ __('Les statuts marqués « recommandé » sont ceux utilisés par remise-glpi (déclenchement automatique remise/don/vente/restitution) — les décocher n\'empêche rien de fonctionner mais réduit l\'interopérabilité entre les deux plugins si vous utilisez remise-glpi.', 'configurationglpiauto') }}</p>
+          <ul class="list-group" id="cga-state-preview" style="max-width: 560px;">
             {% for state in states_preview %}
               <li class="list-group-item d-flex align-items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="state_names[]"
+                  value="{{ state.name }}"
+                  class="form-check-input cga-state-name-toggle"
+                  id="cga-state-name-{{ loop.index0 }}"
+                  {{ state.name in state_names ? 'checked' : '' }}
+                >
                 <span class="cga-state-preview-icon" style="display: none;">{{ state.icon }}</span>
-                <span>{{ state.name }}</span>
+                <label class="form-check-label" for="cga-state-name-{{ loop.index0 }}">{{ state.name }}</label>
+                {% if state.name in state_recommended_names %}
+                  <span class="badge bg-azure-lt ms-auto">{{ __('recommandé', 'configurationglpiauto') }}</span>
+                {% endif %}
               </li>
             {% endfor %}
           </ul>
@@ -1732,9 +1744,10 @@
       : Array.prototype.filter.call(document.querySelectorAll('.cga-service-branch-preview'), function (el) { return el.style.display !== 'none'; }).length
         + ' ' + "{{ __('branches avec services', 'configurationglpiauto')|e('js') }}";
 
-    document.getElementById('cga-summary-states').textContent = !stateEnabledInput.checked
+    var selectedStateCount = Array.prototype.filter.call(document.querySelectorAll('.cga-state-name-toggle'), function (el) { return el.checked; }).length;
+    document.getElementById('cga-summary-states').textContent = (!stateEnabledInput.checked || selectedStateCount === 0)
       ? "{{ __('Aucun', 'configurationglpiauto')|e('js') }}"
-      : ({{ states_preview|length }} + ' ' + "{{ __('statuts', 'configurationglpiauto')|e('js') }}" + (stateIconsEnabledInput.checked ? " {{ __('(avec icônes)', 'configurationglpiauto')|e('js') }}" : ''));
+      : (selectedStateCount + ' ' + "{{ __('statuts', 'configurationglpiauto')|e('js') }}" + (stateIconsEnabledInput.checked ? " {{ __('(avec icônes)', 'configurationglpiauto')|e('js') }}" : ''));
 
     document.getElementById('cga-summary-wait-reasons').textContent = !waitReasonsEnabledInput.checked
       ? "{{ __('Aucune', 'configurationglpiauto')|e('js') }}"

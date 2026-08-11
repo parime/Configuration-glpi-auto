@@ -272,6 +272,20 @@ le fichier uploadé est encodé en `data:` URI et injecté dans la variable CSS 
 délimite chaque bloc CSS qu'il écrit par un marqueur de commentaire (`mergeCssBlock()`) pour que
 couleur et logo coexistent sans s'écraser l'un l'autre lors des ré-exécutions.
 
+**Demande complémentaire — fait (2026-08-11)** : `StateBuilder` (Sprint 16) créait ses 14 statuts
+sans granularité (tout ou rien). Passé en cases à cocher individuelles, chacune activable/
+désactivable indépendamment — même principe que `category_branches`. Cinq statuts ("En stock",
+"Attribué", "Donné", "Vendu", "Attente restitution") marqués « recommandé » dans l'interface : ce
+sont ceux utilisés par le plugin `remise-glpi` (https://github.com/parime/remise-glpi) pour
+déclencher automatiquement son propre workflow de remise/don/vente/restitution sur changement
+d'État — les décocher ne casse rien (remise-glpi référence un État par ID configuré dans ses
+propres réglages, pas par nom exact), mais réduit l'interopérabilité entre les deux plugins si
+l'organisation utilise `remise-glpi`. **Bug trouvé et corrigé au passage** : les noms de statuts
+accentués ("Attribué", "Obsolète"...) étaient corrompus par la migration `addField()` — l'échappement
+JSON `\uXXXX` perdait son antislash en traversant la clause SQL `DEFAULT`, transformant "Attribué"
+en "Attribuu00e9". Corrigé en encodant le JSON par défaut avec `JSON_UNESCAPED_UNICODE` (caractères
+UTF-8 bruts, aucun antislash à perdre).
+
 ---
 
 ### 🚀 Version 1.1 - **En Développement**

@@ -9,6 +9,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-08-11
+
+Sprint 33: individually selectable element states, plus a real encoding bug fix found while
+validating it. No breaking changes.
+
+### Sprint 33 — selectable element states + remise-glpi interoperability (2026-08-11)
+
+User request: `StateBuilder`'s 14 states (Sprint 16) were all-or-nothing — add checkboxes so an
+admin can pick which ones to create, and flag a recommended minimum for interoperability with the
+user's other plugin, `remise-glpi` (https://github.com/parime/remise-glpi).
+
+#### Changed
+- `StateBuilder::build()` now creates only the states selected in `Config.state_names` (new field,
+  same whitelist-intersect pattern as `category_branches`) instead of all 14 unconditionally.
+- Five states — "En stock", "Attribué", "Donné", "Vendu", "Attente restitution" — are flagged
+  "recommandé" in the wizard UI: confirmed in `remise-glpi`'s own `ARCHITECTURE.md` that its
+  `handleStateBasedTrigger()` auto-launches a handover/donation/sale/return workflow off a `State`
+  change, matched by *state ID* configured in its own settings (not a hardcoded name) — so
+  unchecking these doesn't break anything, but keeps the two plugins usable together out of the
+  box for an admin running both.
+- All 14 remain selected by default (matches the previous all-or-nothing behavior exactly) — the
+  admin opts out per-state, not in.
+
+#### Fixed
+- **A real encoding bug**, found while validating the migration on the freshly-reset test
+  instance: several state names carry accents ("Attribué", "Obsolète", "Donné"...), and
+  `json_encode()`'s default `\uXXXX`-escaped output lost its backslash when embedded in the SQL
+  `DEFAULT` clause `Installer.php`'s migration writes for upgrading installs — corrupting
+  "Attribué" into "Attribuu00e9" in the database. Fixed everywhere this field is encoded
+  (`Config::getDefaults()`, `Config::prepareInput()`, the migration itself) by using
+  `JSON_UNESCAPED_UNICODE`, storing the raw UTF-8 character instead of a backslash-escape sequence
+  that had nowhere safe to survive.
+
+Validated against the real GLPI 11.0.8 test instance: confirmed the migration seeds all 14 states
+correctly (both a fresh-install and an upgrading-install path re-tested after the encoding fix,
+byte-for-byte correct accented names in the DB and in the resulting `glpi_states` rows), the wizard
+step renders all 14 with the 5 recommended ones badged, and unchecking 3 states results in exactly
+11 `State` rows created — not the unchecked ones. Local suite green (phpunit 10/10, phpstan clean,
+php-cs-fixer clean).
+
 ## [0.15.0] - 2026-08-11
 
 Sprint 32: per-entity logo upload — a client/site-specific logo alongside `BrandingBuilder`'s
@@ -1369,7 +1409,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.15.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.16.0
 [0.15.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.15.0
 [0.14.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.14.0
 [0.13.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.13.0
