@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.1] - 2026-08-12
+
+Complément au Sprint 34 : icônes sur les groupes de support N1/N2/N3, angle mort du sweep icônes
+(`SupportTierBuilder` a été construit après ce lot, jamais repris). Pas de rupture de compatibilité.
+
+### Added
+- `SupportTierBuilder` : icônes optionnelles (`support_tier_icons_enabled`) sur "Support N1/N2/N3"
+  via `DropdownTranslation` — même mécanisme que les autres intitulés, `Group extends
+  CommonTreeDropdown` confirmé éligible. Progression 🟢/🟡/🔴 (aucune légende nécessaire pour
+  repérer le niveau de sévérité d'un coup d'œil dans une liste d'affectation).
+
 ## [0.17.0] - 2026-08-12
 
 Sprint 34 : correctif CSRF/ergonomie du wizard, icônes sur les intitulés, escalade N1→N2→N3 entre
@@ -1513,7 +1524,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.17.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.17.1...HEAD
+[0.17.1]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.17.1
 [0.17.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.17.0
 [0.16.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.16.0
 [0.15.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.15.0

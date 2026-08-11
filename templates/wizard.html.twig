@@ -273,6 +273,15 @@
             <p class="text-muted small mb-2">{{ __('Crée 3 groupes techniciens (Support N1/N2/N3 — convention ITSM la plus répandue). Tout ticket créé démarre au N1 ; l\'escalade automatique (ci-dessous) le réaffecte au niveau suivant si le SLA de résolution approche ou dépasse son échéance.', 'configurationglpiauto') }}</p>
 
             <div class="form-check form-switch mb-2">
+              <input type="hidden" name="support_tier_icons_enabled" value="0">
+              <input type="checkbox" name="support_tier_icons_enabled" value="1" class="form-check-input" id="cga-support-tier-icons-enabled" {{ config.support_tier_icons_enabled|default(0) ? 'checked' : '' }}>
+              <label class="form-check-label" for="cga-support-tier-icons-enabled">{{ __('Ajouter des icônes (repérage rapide dans les listes d\'affectation)', 'configurationglpiauto') }}</label>
+            </div>
+            <p class="text-muted small mb-2">
+              {% for key, tier in support_tiers_preview %}<span class="cga-support-tier-icon" style="display: none;">{{ tier.icon }}</span> {{ tier.name }}{% if not loop.last %}, {% endif %}{% endfor %}
+            </p>
+
+            <div class="form-check form-switch mb-2">
               <input type="hidden" name="escalation_includes_n0" value="0">
               <input type="checkbox" name="escalation_includes_n0" value="1" class="form-check-input" id="cga-escalation-includes-n0" {{ config.escalation_includes_n0|default(0) ? 'checked' : '' }}>
               <label class="form-check-label" for="cga-escalation-includes-n0">{{ __('Inclure le niveau N0 (portail libre-service) dans le récapitulatif', 'configurationglpiauto') }}</label>
@@ -1111,6 +1120,7 @@
   toggleSlaEscalationFields();
 
   var escalationEnabledInput = wireSimpleToggle('cga-escalation-enabled', 'cga-escalation-fields');
+  wireIconsToggle('cga-support-tier-icons-enabled', '.cga-support-tier-icon');
 
   var categoryEnabledInput = document.getElementById('cga-category-enabled');
   var categoryFields = document.getElementById('cga-category-fields');

@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use DropdownTranslation;
 use Group;
 
 /**
@@ -39,13 +40,19 @@ use Group;
  * is active and which hops are automatic (`SlaBuilder`'s `$tierGroupIds`/`$autoN1N2`/`$autoN2N3`
  * params), read from `Config::getEscalationSettings()`'s shared value or a per-client
  * `settings.escalation` override.
+ *
+ * Icons (optional, `support_tier_icons_enabled`) follow the same `DropdownTranslation` mechanism
+ * as every other icon feature in this plugin — `Group extends CommonTreeDropdown` (confirmed in
+ * GLPI source), so it's eligible. A traffic-light progression (🟢/🟡/🔴) rather than an arbitrary
+ * pick: the point is scanning an assignment dropdown for severity at a glance, and green→red is
+ * the one color convention that needs no legend.
  */
 class SupportTierBuilder
 {
     private const TIERS = [
-        'n1' => 'Support N1',
-        'n2' => 'Support N2',
-        'n3' => 'Support N3',
+        'n1' => ['name' => 'Support N1', 'icon' => '🟢'],
+        'n2' => ['name' => 'Support N2', 'icon' => '🟡'],
+        'n3' => ['name' => 'Support N3', 'icon' => '🔴'],
     ];
 
     /**
@@ -57,16 +64,21 @@ class SupportTierBuilder
             return [];
         }
 
+        $withIcons = !empty($config->fields['support_tier_icons_enabled']);
         $ids = [];
-        foreach (self::TIERS as $key => $name) {
-            $ids[$key] = $this->getOrCreate($name);
+        foreach (self::TIERS as $key => $tier) {
+            $id = $this->getOrCreate($tier['name']);
+            if ($withIcons) {
+                $this->addIcon($id, $tier['name'], $tier['icon']);
+            }
+            $ids[$key] = $id;
         }
 
         return $ids;
     }
 
     /**
-     * @return array<string, string> tier key => group name, for the wizard's read-only preview.
+     * @return array<string, array{name: string, icon: string}> tier key => name/icon, for the wizard's read-only preview.
      */
     public static function getTiersPreview(): array
     {
@@ -85,6 +97,22 @@ class SupportTierBuilder
             'entities_id' => 0,
             'is_recursive' => 1,
             'is_assign' => 1,
+        ]);
+    }
+
+    private function addIcon(int $id, string $name, string $icon): void
+    {
+        $translation = new DropdownTranslation();
+        if ($translation->getFromDBByCrit(['itemtype' => Group::class, 'items_id' => $id, 'language' => 'fr_FR', 'field' => 'name'])) {
+            return;
+        }
+
+        $translation->add([
+            'itemtype' => Group::class,
+            'items_id' => $id,
+            'language' => 'fr_FR',
+            'field' => 'name',
+            'value' => sprintf('%s %s', $icon, $name),
         ]);
     }
 }

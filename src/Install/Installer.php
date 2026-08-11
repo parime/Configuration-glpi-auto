@@ -96,6 +96,7 @@ final class Installer
                 `escalation_includes_n0` tinyint NOT NULL DEFAULT 0,
                 `escalation_auto_n1_n2` tinyint NOT NULL DEFAULT 1,
                 `escalation_auto_n2_n3` tinyint NOT NULL DEFAULT 1,
+                `support_tier_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `ola_enabled` tinyint NOT NULL DEFAULT 0,
                 `ola_tiers` text,
                 `category_enabled` tinyint NOT NULL DEFAULT 0,
@@ -191,6 +192,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'escalation_includes_n0', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'escalation_auto_n1_n2', 'bool', ['value' => 1]);
             $migration->addField(self::CONFIGS_TABLE, 'escalation_auto_n2_n3', 'bool', ['value' => 1]);
+            $migration->addField(self::CONFIGS_TABLE, 'support_tier_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'ola_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'ola_tiers', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'state_enabled', 'bool', ['value' => 0]);
