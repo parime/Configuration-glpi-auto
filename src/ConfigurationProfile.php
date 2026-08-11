@@ -200,6 +200,14 @@ class ConfigurationProfile extends CommonDBTM
             // Same reasoning as ticket_template_enabled: a default Change/Problem template beats
             // GLPI's "no template at all" out of the box, regardless of org size.
             'change_problem_templates_enabled' => true,
+            // Mirrors whatever entity tree the admin already built in step 2 — same structure,
+            // just for "where" instead of "which org boundary", so no reason not to suggest it
+            // alongside entity_mode itself.
+            'locations_enabled' => true,
+            // A starter manufacturer list beats GLPI's empty one regardless of org size — the
+            // admin trims/extends it once real assets get entered.
+            'manufacturers_enabled' => true,
+            'kb_categories_enabled' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual

@@ -25,6 +25,9 @@ use GlpiPlugin\Configurationglpiauto\EntityBuilder;
 use GlpiPlugin\Configurationglpiauto\FollowupLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
+use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
+use GlpiPlugin\Configurationglpiauto\LocationBuilder;
+use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
@@ -123,6 +126,10 @@ if (isset($_POST['finish'])) {
     $solutionTemplatesCreated = (new SolutionLibraryBuilder())->build($config);
     $followupTemplatesCreated = (new FollowupLibraryBuilder())->build($config);
     $validationTemplatesCreated = (new ValidationTemplateBuilder())->build($config);
+    // Runs after EntityBuilder: resolves entities by name lookup to scope each location.
+    $locationsCreated = (new LocationBuilder())->build($config);
+    $manufacturersCreated = (new ManufacturerBuilder())->build($config);
+    $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
 
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
     $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
@@ -193,6 +200,15 @@ if (isset($_POST['finish'])) {
     if ($changeProblemTemplatesApplied) {
         $messages[] = __('Modèles de changement et de problème créés et assignés aux profils.', 'configurationglpiauto');
     }
+    if ($locationsCreated > 0) {
+        $messages[] = sprintf(__('%d lieux créés.', 'configurationglpiauto'), $locationsCreated);
+    }
+    if ($manufacturersCreated > 0) {
+        $messages[] = sprintf(__('%d fabricants créés.', 'configurationglpiauto'), $manufacturersCreated);
+    }
+    if ($kbCategoriesCreated > 0) {
+        $messages[] = sprintf(__('%d catégories de base de connaissances créées.', 'configurationglpiauto'), $kbCategoriesCreated);
+    }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 
     Html::redirect(ConfigurationProfile::getSearchURL());
@@ -235,6 +251,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'solution_library_preview' => SolutionLibraryBuilder::getLibraryPreview(),
     'followup_library_preview' => FollowupLibraryBuilder::getLibraryPreview(),
     'validation_templates_preview' => ValidationTemplateBuilder::getLibraryPreview(),
+    'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 

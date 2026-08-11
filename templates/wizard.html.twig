@@ -726,10 +726,46 @@
         <p class="text-muted small">{{ __('Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service n\'a aucun droit sur les changements/problèmes, la distinction base/support ne s\'applique pas.', 'configurationglpiauto') }}</p>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 15 : Récapitulatif #}
+      {# ---------------------------------------------------------------- Étape 15 : Général & Outils #}
       <div class="cga-wizard-step" data-step="15" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 15 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP et les intitulés de tâches/solutions/validations.', 'configurationglpiauto') }}</p>
+        <h3 class="mb-1">{{ __('Étape 15 : Général & Outils', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : des intitulés que GLPI ne propose pas par défaut, hors périmètre Assistance direct mais utiles dès la mise en service.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="locations_enabled" value="0">
+          <input type="checkbox" name="locations_enabled" value="1" class="form-check-input" id="cga-locations-enabled" {{ config.locations_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-locations-enabled">{{ __('Créer un lieu par entité de l\'arborescence', 'configurationglpiauto') }}</label>
+        </div>
+        <p id="cga-locations-fields" style="display: none;" class="text-muted small mb-3">{{ __('Reprend exactement l\'arborescence construite à l\'étape 2 (même noms, même imbrication) — un point de départ, à préciser ensuite avec de vraies adresses.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="manufacturers_enabled" value="0">
+          <input type="checkbox" name="manufacturers_enabled" value="1" class="form-check-input" id="cga-manufacturers-enabled" {{ config.manufacturers_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-manufacturers-enabled">{{ __('Créer une liste de fabricants courants', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-manufacturers-fields" style="display: none;" class="mb-3">
+          <p class="text-muted">{{ manufacturers_preview|join(', ') }}</p>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="kb_categories_enabled" value="0">
+          <input type="checkbox" name="kb_categories_enabled" value="1" class="form-check-input" id="cga-kb-categories-enabled" {{ config.kb_categories_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-kb-categories-enabled">{{ __('Créer les catégories de la base de connaissances', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-kb-categories-fields" style="display: none;">
+          <p class="text-muted small mb-1">{{ __('Mêmes thèmes que les catégories de tickets (étape 5), pour que le libre-service et la base de connaissances s\'organisent pareil.', 'configurationglpiauto') }}</p>
+          <div class="row">
+            {% for branch in categories_preview %}
+              <div class="col-6 cga-kb-branch-preview" data-branch="{{ branch.key }}">{{ branch.icon }} {{ branch.name }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 16 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="16" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 16 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, et les lieux/fabricants/catégories de base de connaissances.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -777,6 +813,9 @@
           <li class="list-group-item">
             <strong>{{ __('Suivis, validations & modèles CP', 'configurationglpiauto') }} :</strong> <span id="cga-summary-followups-validations"></span>
           </li>
+          <li class="list-group-item">
+            <strong>{{ __('Général & Outils', 'configurationglpiauto') }} :</strong> <span id="cga-summary-general-tools"></span>
+          </li>
         </ul>
       </div>
 
@@ -801,7 +840,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 15;
+  var STEP_COUNT = 16;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -824,6 +863,7 @@
     "{{ __('Droits LDAP', 'configurationglpiauto')|e('js') }}",
     "{{ __('Tâches & solutions', 'configurationglpiauto')|e('js') }}",
     "{{ __('Suivis & validations', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Général & Outils', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
 
@@ -916,6 +956,10 @@
     var servicePreview = document.querySelector('.cga-service-branch-preview[data-branch="' + toggle.dataset.branch + '"]');
     if (servicePreview) {
       servicePreview.style.display = toggle.checked ? '' : 'none';
+    }
+    var kbPreview = document.querySelector('.cga-kb-branch-preview[data-branch="' + toggle.dataset.branch + '"]');
+    if (kbPreview) {
+      kbPreview.style.display = toggle.checked ? '' : 'none';
     }
   }
   categoryEnabledInput.addEventListener('change', toggleCategoryFields);
@@ -1067,6 +1111,15 @@
   var followupLibraryEnabledInput = wireSimpleToggle('cga-followup-library-enabled', 'cga-followup-library-fields');
   var validationTemplatesEnabledInput = wireSimpleToggle('cga-validation-templates-enabled', 'cga-validation-templates-fields');
   var changeProblemTemplatesEnabledInput = document.getElementById('cga-change-problem-templates-enabled');
+  var locationsEnabledInput = wireSimpleToggle('cga-locations-enabled', 'cga-locations-fields');
+  var manufacturersEnabledInput = wireSimpleToggle('cga-manufacturers-enabled', 'cga-manufacturers-fields');
+  var kbCategoriesEnabledInput = document.getElementById('cga-kb-categories-enabled');
+  var kbCategoriesFields = document.getElementById('cga-kb-categories-fields');
+  function toggleKbCategoriesFields() {
+    kbCategoriesFields.style.display = kbCategoriesEnabledInput.checked ? '' : 'none';
+  }
+  kbCategoriesEnabledInput.addEventListener('change', toggleKbCategoriesFields);
+  toggleKbCategoriesFields();
 
   // Per-client/site calendar & SLA (Sprint 13): only meaningful once there's more than one
   // top-level entity to have its own settings, i.e. any multi-entité mode — not mono. Reuses
@@ -1620,6 +1673,14 @@
     document.getElementById('cga-summary-followups-validations').textContent = followupsValidationsParts.length
       ? followupsValidationsParts.join(', ')
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+
+    var generalToolsParts = [];
+    if (locationsEnabledInput.checked) { generalToolsParts.push("{{ __('lieux', 'configurationglpiauto')|e('js') }}"); }
+    if (manufacturersEnabledInput.checked) { generalToolsParts.push("{{ __('fabricants', 'configurationglpiauto')|e('js') }}"); }
+    if (kbCategoriesEnabledInput.checked) { generalToolsParts.push("{{ __('catégories base de connaissances', 'configurationglpiauto')|e('js') }}"); }
+    document.getElementById('cga-summary-general-tools').textContent = generalToolsParts.length
+      ? generalToolsParts.join(', ')
+      : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
   }
 
   function showStep(n) {
@@ -1744,7 +1805,7 @@
     });
     syncGeneralSettingsSelectAll();
 
-    ['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled'].forEach(function (field) {
+    ['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled'].forEach(function (field) {
       if (typeof defaults[field] !== 'undefined') {
         var input = document.getElementById('cga-' + field.replace(/_/g, '-'));
         input.checked = !!defaults[field];

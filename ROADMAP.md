@@ -208,13 +208,16 @@ Types de tâche de projet (`ProjectTaskType`), Gabarits de tâches de projets
 (`ProjectTaskTemplate`), Gabarits d'évènements externes (`PlanningExternalEventTemplate`),
 Catégories d'évènements (`PlanningEventCategory` — priorité basse, usage assez spécifique).
 
-**Général** (5 intitulés) — fait : Statuts des éléments (`StateBuilder`). Pas fait : Lieux
-(`Location`), Fabricants (`Manufacturer`). Pas prévu (sécurité anti-spam, pas de bonne pratique
-universelle à préremplir) : Listes noires (`Blacklist`), Contenu de mail interdit
-(`BlacklistedMailContent`).
+**Général** (5 intitulés) — fait : Statuts des éléments (`StateBuilder`). **Fait (Sprint 31,
+2026-08-11)** : Lieux (`LocationBuilder` — mirroir de l'arborescence d'entités de l'étape 2, pas
+une liste inventée : un `Location` par entité, même nom, même imbrication, scopé à l'entité
+réelle), Fabricants (`ManufacturerBuilder`, ~29 fabricants IT/bureautique courants). Pas prévu
+(sécurité anti-spam, pas de bonne pratique universelle à préremplir) : Listes noires
+(`Blacklist`), Contenu de mail interdit (`BlacklistedMailContent`).
 
-**Outils** — pas fait : Catégories de la base de connaissances (`KnowbaseItemCategory`),
-pertinent pour le libre-service (l'utilisateur consulte la base avant de créer un ticket).
+**Outils** — **fait (Sprint 31, 2026-08-11)** : Catégories de la base de connaissances
+(`KnowbaseCategoryBuilder`) — réutilise les 11 thèmes de `CategoryBuilder` (étape 5) plutôt
+qu'une seconde taxonomie inventée, filtré sur les branches effectivement sélectionnées.
 
 **Gestion** — pas fait, priorité basse (gestion documentaire/actifs, pas Assistance) : Rubriques
 des documents, Types de documents, Criticités.
@@ -239,8 +242,17 @@ exemples à traiter.
 **Décision utilisateur (2026-08-11)** : traiter tout le bloc Assistance + Général/Outils listés
 comme "pas fait" ci-dessus. Découpé en plusieurs sprints vu le volume — voir CHANGELOG.md pour
 l'avancement réel sprint par sprint (ce document décrit l'état au moment de l'audit, pas l'état
-courant). Sprint 29 (cycle de vie ticket/tâche/changement/problème) fait. Restent : Sprint 30
-(Projets), Sprint 31 (Général/Outils : Lieux, Fabricants, Catégories base de connaissances).
+courant). Sprint 29 (cycle de vie ticket/tâche/changement/problème) fait, Sprint 31 (Général/
+Outils) fait. Reste : Sprint 30 (Projets).
+
+**Bug corrigé au passage (Sprint 31, 2026-08-11)** : `Config::prepareInput()`'s traitement de
+`category_branches` castait `(array)` une chaîne JSON au lieu de la décoder — sur une instance
+vraiment neuve (jamais soumise via le formulaire), `getDefaults()` fournit `category_branches`
+sous forme de chaîne JSON, pas de tableau PHP, donc chaque nouvelle installation démarrait
+silencieusement avec 0 branche sélectionnée à l'étape 5 au lieu des 11 documentées. Resté invisible
+tant que l'instance de test accumulait des soumissions réelles (le tableau PHP écrase alors la
+chaîne) — révélé par la remise à zéro complète de l'environnement demandée cette session. Corrigé :
+`prepareInput()` décode maintenant explicitement si la valeur reçue est une chaîne.
 
 **Demande complémentaire (2026-08-11)** : personnalisation graphique par entité — un logo
 uploadable par client/site (pas seulement la couleur principale plugin-wide actuelle de
