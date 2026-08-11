@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use DropdownTranslation;
 use ProjectTaskType;
 use ProjectType;
 
@@ -38,22 +39,22 @@ use ProjectType;
 class ProjectTaxonomyBuilder
 {
     private const PROJECT_TYPES = [
-        ['name' => 'Interne', 'comment' => 'Initiative ou amélioration portée par l\'organisation elle-même'],
-        ['name' => 'Client / Prestation', 'comment' => 'Projet réalisé pour le compte d\'un client'],
-        ['name' => 'Infrastructure', 'comment' => 'Datacenter, réseau, serveurs, systèmes'],
-        ['name' => 'Déploiement / Migration', 'comment' => 'Mise en place ou bascule d\'un outil, d\'un système'],
-        ['name' => 'R&D / Innovation'],
+        ['name' => 'Interne', 'icon' => '🏠', 'comment' => 'Initiative ou amélioration portée par l\'organisation elle-même'],
+        ['name' => 'Client / Prestation', 'icon' => '🤝', 'comment' => 'Projet réalisé pour le compte d\'un client'],
+        ['name' => 'Infrastructure', 'icon' => '🖥️', 'comment' => 'Datacenter, réseau, serveurs, systèmes'],
+        ['name' => 'Déploiement / Migration', 'icon' => '🚀', 'comment' => 'Mise en place ou bascule d\'un outil, d\'un système'],
+        ['name' => 'R&D / Innovation', 'icon' => '💡'],
     ];
 
     private const TASK_TYPES = [
-        ['name' => 'Analyse & Cadrage'],
-        ['name' => 'Conception'],
-        ['name' => 'Développement'],
-        ['name' => 'Tests & Recette'],
-        ['name' => 'Déploiement'],
-        ['name' => 'Documentation'],
-        ['name' => 'Réunion & Pilotage'],
-        ['name' => 'Formation'],
+        ['name' => 'Analyse & Cadrage', 'icon' => '🔍'],
+        ['name' => 'Conception', 'icon' => '📐'],
+        ['name' => 'Développement', 'icon' => '💻'],
+        ['name' => 'Tests & Recette', 'icon' => '✅'],
+        ['name' => 'Déploiement', 'icon' => '🚀'],
+        ['name' => 'Documentation', 'icon' => '📄'],
+        ['name' => 'Réunion & Pilotage', 'icon' => '🗓️'],
+        ['name' => 'Formation', 'icon' => '🎓'],
     ];
 
     /**
@@ -65,13 +66,20 @@ class ProjectTaxonomyBuilder
             return 0;
         }
 
+        $withIcons = !empty($config->fields['project_taxonomy_icons_enabled']);
         $count = 0;
         foreach (self::PROJECT_TYPES as $type) {
-            $this->getOrCreate(ProjectType::class, $type['name'], $type['comment'] ?? '');
+            $id = $this->getOrCreate(ProjectType::class, $type['name'], $type['comment'] ?? '');
+            if ($withIcons) {
+                $this->addIcon(ProjectType::class, $id, $type['name'], $type['icon']);
+            }
             $count++;
         }
         foreach (self::TASK_TYPES as $type) {
-            $this->getOrCreate(ProjectTaskType::class, $type['name'], $type['comment'] ?? '');
+            $id = $this->getOrCreate(ProjectTaskType::class, $type['name'], $type['comment'] ?? '');
+            if ($withIcons) {
+                $this->addIcon(ProjectTaskType::class, $id, $type['name'], $type['icon']);
+            }
             $count++;
         }
 
@@ -79,7 +87,7 @@ class ProjectTaxonomyBuilder
     }
 
     /**
-     * @return array{project_types: array<int, array{name: string, comment?: string}>, task_types: array<int, array{name: string, comment?: string}>}
+     * @return array{project_types: array<int, array{name: string, icon: string, comment?: string}>, task_types: array<int, array{name: string, icon: string, comment?: string}>}
      */
     public static function getPreview(): array
     {
@@ -97,5 +105,24 @@ class ProjectTaxonomyBuilder
         }
 
         return (int) $item->add(['name' => $name, 'comment' => $comment]);
+    }
+
+    /**
+     * @param class-string<ProjectType|ProjectTaskType> $class
+     */
+    private function addIcon(string $class, int $id, string $name, string $icon): void
+    {
+        $translation = new DropdownTranslation();
+        if ($translation->getFromDBByCrit(['itemtype' => $class, 'items_id' => $id, 'language' => 'fr_FR', 'field' => 'name'])) {
+            return;
+        }
+
+        $translation->add([
+            'itemtype' => $class,
+            'items_id' => $id,
+            'language' => 'fr_FR',
+            'field' => 'name',
+            'value' => sprintf('%s %s', $icon, $name),
+        ]);
     }
 }

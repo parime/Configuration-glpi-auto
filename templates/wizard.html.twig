@@ -442,9 +442,15 @@
         </div>
 
         <div id="cga-wait-reasons-fields" style="display: none;">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="wait_reason_icons_enabled" value="0">
+            <input type="checkbox" name="wait_reason_icons_enabled" value="1" class="form-check-input" id="cga-wait-reason-icons-enabled" {{ config.wait_reason_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-wait-reason-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
           <ul class="list-group" style="max-width: 560px;">
             {% for reason in wait_reasons_preview %}
               <li class="list-group-item">
+                <span class="cga-wait-reason-icon" style="display: none;">{{ reason.icon }}</span>
                 <strong>{{ reason.name }}</strong><br>
                 {% if reason.followup_weeks > 0 %}
                   <span class="text-muted small">{{ __('Relance toutes les', 'configurationglpiauto') }} {{ reason.followup_weeks }} {{ reason.followup_weeks > 1 ? __('semaines', 'configurationglpiauto') : __('semaine', 'configurationglpiauto') }}{% if reason.followups_before_resolution > 0 %}, {{ __('clôture automatique après', 'configurationglpiauto') }} {{ reason.followups_before_resolution }} {{ __('relances sans réponse', 'configurationglpiauto') }}{% endif %}</span>
@@ -718,8 +724,14 @@
         </div>
         <div id="cga-solution-library-fields" style="display: none;">
           <p class="text-muted small mb-1">{{ __('Une taxonomie de clôture standard (assistance, résolution technique, sécurité, informationnel, gestion des accès), chacune visible seulement sur les types de ticket ITIL pertinents.', 'configurationglpiauto') }}</p>
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="solution_type_icons_enabled" value="0">
+            <input type="checkbox" name="solution_type_icons_enabled" value="1" class="form-check-input" id="cga-solution-type-icons-enabled" {{ config.solution_type_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-solution-type-icons-enabled">{{ __('Ajouter des icônes sur les types de solution', 'configurationglpiauto') }}</label>
+          </div>
           {% for type in solution_library_preview %}
             <div class="mb-2">
+              <span class="cga-solution-type-icon" style="display: none;">{{ type.icon }}</span>
               <strong>{{ type.name }}</strong>
               <ul class="mb-0">
                 {% for tpl in type.templates %}
@@ -788,7 +800,14 @@
           <label class="form-check-label" for="cga-manufacturers-enabled">{{ __('Créer une liste de fabricants courants', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-manufacturers-fields" style="display: none;" class="mb-3">
-          <p class="text-muted">{{ manufacturers_preview|join(', ') }}</p>
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="manufacturer_icons_enabled" value="0">
+            <input type="checkbox" name="manufacturer_icons_enabled" value="1" class="form-check-input" id="cga-manufacturer-icons-enabled" {{ config.manufacturer_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-manufacturer-icons-enabled">{{ __('Ajouter des icônes (par catégorie de fabricant)', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted">
+            {% for manufacturer in manufacturers_preview %}<span class="cga-manufacturer-icon" style="display: none;">{{ manufacturer.icon }}</span> {{ manufacturer.name }}{% if not loop.last %}, {% endif %}{% endfor %}
+          </p>
         </div>
 
         <div class="form-check form-switch mb-2">
@@ -816,22 +835,29 @@
           <input type="checkbox" name="project_taxonomy_enabled" value="1" class="form-check-input" id="cga-project-taxonomy-enabled" {{ config.project_taxonomy_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-project-taxonomy-enabled">{{ __('Créer les types de projet et de tâche de projet', 'configurationglpiauto') }}</label>
         </div>
-        <div id="cga-project-taxonomy-fields" style="display: none;" class="mb-3 row">
-          <div class="col-md-6">
-            <strong>{{ __('Types de projet', 'configurationglpiauto') }}</strong>
-            <ul class="mb-0">
-              {% for type in project_taxonomy_preview.project_types %}
-                <li>{{ type.name }}</li>
-              {% endfor %}
-            </ul>
+        <div id="cga-project-taxonomy-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="project_taxonomy_icons_enabled" value="0">
+            <input type="checkbox" name="project_taxonomy_icons_enabled" value="1" class="form-check-input" id="cga-project-taxonomy-icons-enabled" {{ config.project_taxonomy_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-project-taxonomy-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
           </div>
-          <div class="col-md-6">
-            <strong>{{ __('Types de tâche de projet', 'configurationglpiauto') }}</strong>
-            <ul class="mb-0">
-              {% for type in project_taxonomy_preview.task_types %}
-                <li>{{ type.name }}</li>
-              {% endfor %}
-            </ul>
+          <div class="row">
+            <div class="col-md-6">
+              <strong>{{ __('Types de projet', 'configurationglpiauto') }}</strong>
+              <ul class="mb-0">
+                {% for type in project_taxonomy_preview.project_types %}
+                  <li><span class="cga-project-taxonomy-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <strong>{{ __('Types de tâche de projet', 'configurationglpiauto') }}</strong>
+              <ul class="mb-0">
+                {% for type in project_taxonomy_preview.task_types %}
+                  <li><span class="cga-project-taxonomy-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -1109,6 +1135,7 @@
     waitReasonsFields.style.display = waitReasonsEnabledInput.checked ? '' : 'none';
   }
   waitReasonsEnabledInput.addEventListener('change', toggleWaitReasonsFields);
+  wireIconsToggle('cga-wait-reason-icons-enabled', '.cga-wait-reason-icon');
   toggleWaitReasonsFields();
 
   var brandingEnabledInput = document.getElementById('cga-branding-enabled');
@@ -1269,14 +1296,30 @@
     return checkbox;
   }
 
+  // Générique pour tout toggle "icônes" qui bascule la visibilité de spans .cga-xxx-icon dans un
+  // aperçu déjà rendu côté serveur — même pattern que toggleStateIcons() ci-dessus, factorisé pour
+  // les autres intitulés à icônes (fabricants, raisons d'attente, types de projet, types de
+  // solution) plutôt que dupliqué une fois par builder.
+  function wireIconsToggle(checkboxId, iconSelector) {
+    var checkbox = document.getElementById(checkboxId);
+    var icons = document.querySelectorAll(iconSelector);
+    function toggle() {
+      icons.forEach(function (icon) { icon.style.display = checkbox.checked ? '' : 'none'; });
+    }
+    checkbox.addEventListener('change', toggle);
+    toggle();
+  }
+
   var taskCategoriesEnabledInput = wireSimpleToggle('cga-task-categories-enabled', 'cga-task-categories-fields');
   var taskTemplatesEnabledInput = wireSimpleToggle('cga-task-templates-enabled', 'cga-task-templates-fields');
   var solutionLibraryEnabledInput = wireSimpleToggle('cga-solution-library-enabled', 'cga-solution-library-fields');
+  wireIconsToggle('cga-solution-type-icons-enabled', '.cga-solution-type-icon');
   var followupLibraryEnabledInput = wireSimpleToggle('cga-followup-library-enabled', 'cga-followup-library-fields');
   var validationTemplatesEnabledInput = wireSimpleToggle('cga-validation-templates-enabled', 'cga-validation-templates-fields');
   var changeProblemTemplatesEnabledInput = document.getElementById('cga-change-problem-templates-enabled');
   var locationsEnabledInput = wireSimpleToggle('cga-locations-enabled', 'cga-locations-fields');
   var manufacturersEnabledInput = wireSimpleToggle('cga-manufacturers-enabled', 'cga-manufacturers-fields');
+  wireIconsToggle('cga-manufacturer-icons-enabled', '.cga-manufacturer-icon');
   var kbCategoriesEnabledInput = document.getElementById('cga-kb-categories-enabled');
   var kbCategoriesFields = document.getElementById('cga-kb-categories-fields');
   function toggleKbCategoriesFields() {
@@ -1286,6 +1329,7 @@
   toggleKbCategoriesFields();
 
   var projectTaxonomyEnabledInput = wireSimpleToggle('cga-project-taxonomy-enabled', 'cga-project-taxonomy-fields');
+  wireIconsToggle('cga-project-taxonomy-icons-enabled', '.cga-project-taxonomy-icon');
   var projectTaskTemplatesEnabledInput = wireSimpleToggle('cga-project-task-templates-enabled', 'cga-project-task-templates-fields');
 
   // Per-client/site calendar & SLA (Sprint 13): only meaningful once there's more than one
