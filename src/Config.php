@@ -142,6 +142,13 @@ class Config extends CommonDBTM
             'category_icons_enabled' => 0,
             'state_enabled' => 0,
             'state_icons_enabled' => 0,
+            // JSON_UNESCAPED_UNICODE: several state names carry accents (Attribué, Obsolète...),
+            // and this default value also gets embedded literally in a SQL DEFAULT clause on
+            // upgrade (Installer.php's addField() call) — a `\uXXXX` escape sequence there is
+            // fragile (confirmed: MySQL's own backslash-escaping in a DEFAULT literal ate the
+            // backslash, corrupting "Attribué" into "Attribuu00e9"). Storing the raw UTF-8
+            // character instead sidesteps the whole class of problem.
+            'state_names' => json_encode(StateBuilder::getStateNames(), JSON_UNESCAPED_UNICODE),
             'general_ui_enabled' => 0,
             'notifications_enabled' => 0,
             'financial_info_enabled' => 0,
@@ -240,6 +247,19 @@ class Config extends CommonDBTM
         $branches = json_decode((string) ($this->fields['category_branches'] ?? '[]'), true);
 
         return is_array($branches) ? array_values(array_intersect(self::CATEGORY_BRANCH_KEYS, $branches)) : [];
+    }
+
+    /**
+     * Which of `StateBuilder`'s 14 states the admin wants created — same "whitelist-intersect,
+     * empty rather than a guess" reasoning as `getCategoryBranches()`.
+     *
+     * @return string[]
+     */
+    public function getStateNames(): array
+    {
+        $names = json_decode((string) ($this->fields['state_names'] ?? '[]'), true);
+
+        return is_array($names) ? array_values(array_intersect(StateBuilder::getStateNames(), $names)) : [];
     }
 
     /**
@@ -358,6 +378,18 @@ class Config extends CommonDBTM
 
         if (isset($input['state_enabled'])) {
             $input['state_enabled'] = !empty($input['state_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['state_names'])) {
+            // Same two shapes as category_branches (real array from the form vs. the JSON string
+            // getDefaults() seeds a fresh row with) — decode explicitly rather than `(array)`
+            // casting a string, which would wrap it as one bogus element instead of decoding it
+            // (the exact bug fixed in category_branches this same session).
+            $names = is_string($input['state_names']) ? (json_decode($input['state_names'], true) ?? []) : $input['state_names'];
+            $input['state_names'] = json_encode(array_values(array_intersect(
+                StateBuilder::getStateNames(),
+                is_array($names) ? $names : []
+            )), JSON_UNESCAPED_UNICODE);
         }
 
         if (isset($input['state_icons_enabled'])) {
