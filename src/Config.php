@@ -155,6 +155,12 @@ class Config extends CommonDBTM
             'ldap_rights_enabled' => 0,
             'ldap_rights_group_template' => 'GLPI_{ENTITY}',
             'ldap_rights_profile' => 'Technician',
+            'task_categories_enabled' => 0,
+            'task_templates_enabled' => 0,
+            'solution_library_enabled' => 0,
+            'followup_library_enabled' => 0,
+            'validation_templates_enabled' => 0,
+            'change_problem_templates_enabled' => 0,
         ];
     }
 
@@ -376,6 +382,12 @@ class Config extends CommonDBTM
 
         if (isset($input['ldap_rights_profile']) && !in_array($input['ldap_rights_profile'], self::NATIVE_PROFILE_NAMES, true)) {
             $input['ldap_rights_profile'] = 'Technician';
+        }
+
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled'] as $field) {
+            if (isset($input[$field])) {
+                $input[$field] = !empty($input[$field]) ? 1 : 0;
+            }
         }
 
         return $input;
