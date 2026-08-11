@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-08-11
+
+Sprint 25: notification, satisfaction survey, and validation good-practice defaults — including a
+real fix to Sprint 24's automatic follow-ups, which were silently never emailed to the requester.
+Closes the real-GLPI-export audit's full priority list. No breaking changes.
+
 ### Sprint 25 — notifications, satisfaction survey, committee validation (2026-08-11)
 
 Last item out of the real-GLPI-export audit priority order, bundling the ROADMAP's three remaining
@@ -1048,7 +1054,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.8.0
 [0.7.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.7.0
 [0.6.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.6.0
 [0.5.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.5.0
