@@ -28,6 +28,8 @@ use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\LocationBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
+use GlpiPlugin\Configurationglpiauto\ProjectTaskTemplateBuilder;
+use GlpiPlugin\Configurationglpiauto\ProjectTaxonomyBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
@@ -130,6 +132,9 @@ if (isset($_POST['finish'])) {
     $locationsCreated = (new LocationBuilder())->build($config);
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
+    $projectTaxonomyCreated = (new ProjectTaxonomyBuilder())->build($config);
+    // Runs after ProjectTaxonomyBuilder: resolves project task types by name lookup.
+    $projectTaskTemplatesCreated = (new ProjectTaskTemplateBuilder())->build($config);
 
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
     $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
@@ -209,6 +214,12 @@ if (isset($_POST['finish'])) {
     if ($kbCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de base de connaissances créées.', 'configurationglpiauto'), $kbCategoriesCreated);
     }
+    if ($projectTaxonomyCreated > 0) {
+        $messages[] = sprintf(__('%d types de projet/tâche de projet créés.', 'configurationglpiauto'), $projectTaxonomyCreated);
+    }
+    if ($projectTaskTemplatesCreated > 0) {
+        $messages[] = sprintf(__('%d gabarits de tâches de projets créés.', 'configurationglpiauto'), $projectTaskTemplatesCreated);
+    }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 
     Html::redirect(ConfigurationProfile::getSearchURL());
@@ -252,6 +263,8 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'followup_library_preview' => FollowupLibraryBuilder::getLibraryPreview(),
     'validation_templates_preview' => ValidationTemplateBuilder::getLibraryPreview(),
     'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
+    'project_taxonomy_preview' => ProjectTaxonomyBuilder::getPreview(),
+    'project_task_templates_preview' => ProjectTaskTemplateBuilder::getLibraryPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 
