@@ -69,7 +69,7 @@ class CategoryBuilder
                 ['name' => 'Licences & Clés'],
                 ['name' => 'Bug / Dysfonctionnement'],
             ]],
-            ['icon' => '🟧', 'name' => 'Microsoft 365 / Workspace', 'children' => [
+            ['icon' => '🟧', 'name' => 'Messagerie & Collaboration', 'children' => [
                 ['name' => 'Messagerie', 'comment' => 'Outlook'],
                 ['name' => 'Collaboration', 'comment' => 'Teams, SharePoint, OneDrive'],
                 ['name' => 'Bureautique', 'comment' => 'Excel, Word, PowerPoint'],
