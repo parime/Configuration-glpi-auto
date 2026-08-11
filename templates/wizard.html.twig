@@ -377,9 +377,43 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 8 : Branding #}
+      {# ---------------------------------------------------------------- Étape 8 : Raisons d'attente #}
       <div class="cga-wizard-step" data-step="8" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 8 : Personnalisation graphique', 'configurationglpiauto') }}</h3>
+        <h3 class="mb-1">{{ __('Étape 8 : Raisons d\'attente', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : des raisons de mise en attente avec relance et clôture automatiques — évite les tickets qui traînent indéfiniment. Le moteur d\'automatisation de GLPI est déjà actif par défaut, seules les raisons manquent.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="wait_reasons_enabled" value="0">
+          <input
+            type="checkbox"
+            name="wait_reasons_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-wait-reasons-enabled"
+            {{ config.wait_reasons_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-wait-reasons-enabled">{{ __('Créer les raisons d\'attente standards', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-wait-reasons-fields" style="display: none;">
+          <ul class="list-group" style="max-width: 560px;">
+            {% for reason in wait_reasons_preview %}
+              <li class="list-group-item">
+                <strong>{{ reason.name }}</strong><br>
+                {% if reason.followup_weeks > 0 %}
+                  <span class="text-muted small">{{ __('Relance toutes les', 'configurationglpiauto') }} {{ reason.followup_weeks }} {{ reason.followup_weeks > 1 ? __('semaines', 'configurationglpiauto') : __('semaine', 'configurationglpiauto') }}{% if reason.followups_before_resolution > 0 %}, {{ __('clôture automatique après', 'configurationglpiauto') }} {{ reason.followups_before_resolution }} {{ __('relances sans réponse', 'configurationglpiauto') }}{% endif %}</span>
+                {% else %}
+                  <span class="text-muted small">{{ __('Pas de relance automatique — catégorisation uniquement', 'configurationglpiauto') }}</span>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 9 : Branding #}
+      <div class="cga-wizard-step" data-step="9" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 9 : Personnalisation graphique', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : une couleur principale appliquée à l\'interface des entités créées.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -404,9 +438,9 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 9 : Réglages généraux #}
-      <div class="cga-wizard-step" data-step="9" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 9 : Réglages généraux GLPI', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 10 : Réglages généraux #}
+      <div class="cga-wizard-step" data-step="10" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 10 : Réglages généraux GLPI', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l\'usage — cette étape les corrige en une fois.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -433,9 +467,9 @@
         </ul>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 10 : Modèles de tickets #}
-      <div class="cga-wizard-step" data-step="10" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 10 : Modèles de tickets', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 11 : Modèles de tickets #}
+      <div class="cga-wizard-step" data-step="11" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 11 : Modèles de tickets', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l\'interface complète pour le support.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -486,10 +520,10 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 11 : Récapitulatif #}
-      <div class="cga-wizard-step" data-step="11" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 11 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, la personnalisation graphique, les réglages généraux et les modèles de tickets.', 'configurationglpiauto') }}</p>
+      {# ---------------------------------------------------------------- Étape 12 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="12" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 12 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux et les modèles de tickets.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -515,6 +549,9 @@
           </li>
           <li class="list-group-item">
             <strong>{{ __('Statuts des éléments', 'configurationglpiauto') }} :</strong> <span id="cga-summary-states"></span>
+          </li>
+          <li class="list-group-item">
+            <strong>{{ __('Raisons d\'attente', 'configurationglpiauto') }} :</strong> <span id="cga-summary-wait-reasons"></span>
           </li>
           <li class="list-group-item">
             <strong>{{ __('Personnalisation', 'configurationglpiauto') }} :</strong> <span id="cga-summary-branding"></span>
@@ -549,7 +586,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 11;
+  var STEP_COUNT = 12;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -565,6 +602,7 @@
     "{{ __('Catégories', 'configurationglpiauto')|e('js') }}",
     "{{ __('Catalogue de services', 'configurationglpiauto')|e('js') }}",
     "{{ __('Statuts', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Raisons d\'attente', 'configurationglpiauto')|e('js') }}",
     "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
     "{{ __('Réglages généraux', 'configurationglpiauto')|e('js') }}",
     "{{ __('Modèles de tickets', 'configurationglpiauto')|e('js') }}",
@@ -687,6 +725,14 @@
   stateIconsEnabledInput.addEventListener('change', toggleStateIcons);
   toggleStateFields();
   toggleStateIcons();
+
+  var waitReasonsEnabledInput = document.getElementById('cga-wait-reasons-enabled');
+  var waitReasonsFields = document.getElementById('cga-wait-reasons-fields');
+  function toggleWaitReasonsFields() {
+    waitReasonsFields.style.display = waitReasonsEnabledInput.checked ? '' : 'none';
+  }
+  waitReasonsEnabledInput.addEventListener('change', toggleWaitReasonsFields);
+  toggleWaitReasonsFields();
 
   var brandingEnabledInput = document.getElementById('cga-branding-enabled');
   var brandingFields = document.getElementById('cga-branding-fields');
@@ -1231,6 +1277,10 @@
       ? "{{ __('Aucun', 'configurationglpiauto')|e('js') }}"
       : ({{ states_preview|length }} + ' ' + "{{ __('statuts', 'configurationglpiauto')|e('js') }}" + (stateIconsEnabledInput.checked ? " {{ __('(avec icônes)', 'configurationglpiauto')|e('js') }}" : ''));
 
+    document.getElementById('cga-summary-wait-reasons').textContent = !waitReasonsEnabledInput.checked
+      ? "{{ __('Aucune', 'configurationglpiauto')|e('js') }}"
+      : ({{ wait_reasons_preview|length }} + ' ' + "{{ __('raisons d\'attente', 'configurationglpiauto')|e('js') }}");
+
     document.getElementById('cga-summary-branding').textContent = brandingEnabledInput.checked
       ? "{{ __('Couleur principale', 'configurationglpiauto')|e('js') }} " + brandingColorInput.value
       : "{{ __('Aucune', 'configurationglpiauto')|e('js') }}";
@@ -1347,6 +1397,11 @@
     if (typeof defaults.state_icons_enabled !== 'undefined') {
       stateIconsEnabledInput.checked = !!defaults.state_icons_enabled;
       toggleStateIcons();
+    }
+
+    if (typeof defaults.wait_reasons_enabled !== 'undefined') {
+      waitReasonsEnabledInput.checked = !!defaults.wait_reasons_enabled;
+      toggleWaitReasonsFields();
     }
 
     if (typeof defaults.general_settings_enabled !== 'undefined') {
