@@ -762,10 +762,53 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 16 : Récapitulatif #}
+      {# ---------------------------------------------------------------- Étape 16 : Projets #}
       <div class="cga-wizard-step" data-step="16" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 16 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, et les lieux/fabricants/catégories de base de connaissances.', 'configurationglpiauto') }}</p>
+        <h3 class="mb-1">{{ __('Étape 16 : Projets', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : des intitulés pour le module Projets, aucun n\'existe par défaut dans GLPI (hors les 3 statuts natifs, déjà suffisants — non modifiés dans l\'export de production audité).', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="project_taxonomy_enabled" value="0">
+          <input type="checkbox" name="project_taxonomy_enabled" value="1" class="form-check-input" id="cga-project-taxonomy-enabled" {{ config.project_taxonomy_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-project-taxonomy-enabled">{{ __('Créer les types de projet et de tâche de projet', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-project-taxonomy-fields" style="display: none;" class="mb-3 row">
+          <div class="col-md-6">
+            <strong>{{ __('Types de projet', 'configurationglpiauto') }}</strong>
+            <ul class="mb-0">
+              {% for type in project_taxonomy_preview.project_types %}
+                <li>{{ type.name }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <strong>{{ __('Types de tâche de projet', 'configurationglpiauto') }}</strong>
+            <ul class="mb-0">
+              {% for type in project_taxonomy_preview.task_types %}
+                <li>{{ type.name }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="project_task_templates_enabled" value="0">
+          <input type="checkbox" name="project_task_templates_enabled" value="1" class="form-check-input" id="cga-project-task-templates-enabled" {{ config.project_task_templates_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-project-task-templates-enabled">{{ __('Créer les gabarits de tâches de projets', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-project-task-templates-fields" style="display: none;">
+          <ul class="list-group" style="max-width: 560px;">
+            {% for tpl in project_task_templates_preview %}
+              <li class="list-group-item">{{ tpl.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 17 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="17" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 17 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits de projet.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -816,6 +859,9 @@
           <li class="list-group-item">
             <strong>{{ __('Général & Outils', 'configurationglpiauto') }} :</strong> <span id="cga-summary-general-tools"></span>
           </li>
+          <li class="list-group-item">
+            <strong>{{ __('Projets', 'configurationglpiauto') }} :</strong> <span id="cga-summary-projects"></span>
+          </li>
         </ul>
       </div>
 
@@ -840,7 +886,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 16;
+  var STEP_COUNT = 17;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -864,6 +910,7 @@
     "{{ __('Tâches & solutions', 'configurationglpiauto')|e('js') }}",
     "{{ __('Suivis & validations', 'configurationglpiauto')|e('js') }}",
     "{{ __('Général & Outils', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Projets', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
 
@@ -1120,6 +1167,9 @@
   }
   kbCategoriesEnabledInput.addEventListener('change', toggleKbCategoriesFields);
   toggleKbCategoriesFields();
+
+  var projectTaxonomyEnabledInput = wireSimpleToggle('cga-project-taxonomy-enabled', 'cga-project-taxonomy-fields');
+  var projectTaskTemplatesEnabledInput = wireSimpleToggle('cga-project-task-templates-enabled', 'cga-project-task-templates-fields');
 
   // Per-client/site calendar & SLA (Sprint 13): only meaningful once there's more than one
   // top-level entity to have its own settings, i.e. any multi-entité mode — not mono. Reuses
@@ -1681,6 +1731,13 @@
     document.getElementById('cga-summary-general-tools').textContent = generalToolsParts.length
       ? generalToolsParts.join(', ')
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+
+    var projectsParts = [];
+    if (projectTaxonomyEnabledInput.checked) { projectsParts.push("{{ __('types de projet/tâche', 'configurationglpiauto')|e('js') }}"); }
+    if (projectTaskTemplatesEnabledInput.checked) { projectsParts.push("{{ __('gabarits de tâches de projets', 'configurationglpiauto')|e('js') }}"); }
+    document.getElementById('cga-summary-projects').textContent = projectsParts.length
+      ? projectsParts.join(', ')
+      : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
   }
 
   function showStep(n) {
@@ -1805,7 +1862,7 @@
     });
     syncGeneralSettingsSelectAll();
 
-    ['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled'].forEach(function (field) {
+    ['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_task_templates_enabled'].forEach(function (field) {
       if (typeof defaults[field] !== 'undefined') {
         var input = document.getElementById('cga-' + field.replace(/_/g, '-'));
         input.checked = !!defaults[field];

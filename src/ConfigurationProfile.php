@@ -208,6 +208,10 @@ class ConfigurationProfile extends CommonDBTM
             // admin trims/extends it once real assets get entered.
             'manufacturers_enabled' => true,
             'kb_categories_enabled' => true,
+            // Project types/task types are useful scaffolding independent of org size, same
+            // reasoning as the rest of this baseline — the admin trims what doesn't apply.
+            'project_taxonomy_enabled' => true,
+            'project_task_templates_enabled' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual
