@@ -135,6 +135,10 @@ class Config extends CommonDBTM
             'sla_astreinte' => 0,
             'sla_escalation_enabled' => 0,
             'sla_escalation_threshold_percent' => 75,
+            'escalation_enabled' => 0,
+            'escalation_includes_n0' => 0,
+            'escalation_auto_n1_n2' => 1,
+            'escalation_auto_n2_n3' => 1,
             'ola_enabled' => 0,
             'ola_tiers' => json_encode(self::DEFAULT_OLA_TIERS),
             'category_enabled' => 0,
@@ -435,7 +439,7 @@ class Config extends CommonDBTM
             $input['ldap_rights_profile'] = 'Technician';
         }
 
-        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled'] as $field) {
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }
@@ -506,7 +510,24 @@ class Config extends CommonDBTM
             $clean['sla'] = $this->sanitizeSlaSettings($settings['sla']);
         }
 
+        if (is_array($settings['escalation'] ?? null)) {
+            $clean['escalation'] = $this->sanitizeEscalationSettings($settings['escalation']);
+        }
+
         return $clean;
+    }
+
+    /**
+     * @return array{enabled: bool, includes_n0: bool, auto_n1_n2: bool, auto_n2_n3: bool}
+     */
+    private function sanitizeEscalationSettings(array $escalation): array
+    {
+        return [
+            'enabled' => !empty($escalation['enabled']),
+            'includes_n0' => !empty($escalation['includes_n0']),
+            'auto_n1_n2' => !empty($escalation['auto_n1_n2']),
+            'auto_n2_n3' => !empty($escalation['auto_n2_n3']),
+        ];
     }
 
     private function sanitizeCalendarSettings(array $calendar): array

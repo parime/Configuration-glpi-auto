@@ -9,6 +9,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-08-12
+
+Sprint 34 : correctif CSRF/ergonomie du wizard, icônes sur les intitulés, escalade N1→N2→N3 entre
+niveaux de support — et un bug critique trouvé et corrigé en cours de route (soumission du wizard
+cassée par le tout premier correctif de ce même sprint). Pas de rupture de compatibilité.
+
+### Sprint 34 (partie 3/3) — escalade N1→N2→N3 + correctif critique du bouton Terminer (2026-08-12)
+
+#### Fixed — [CRITIQUE] régression introduite par le correctif CSRF de la partie 1/3
+
+Le correctif anti-double-clic du Sprint 34 (1/3) désactivait `#cga-wizard-finish` **de façon
+synchrone à l'intérieur du handler `submit`**. Conséquence, propre au fonctionnement des
+formulaires HTML : un bouton désactivé n'est jamais inclus dans les données envoyées, y compris
+quand la désactivation survient pendant l'événement `submit` lui-même, avant l'envoi réseau — le
+couple `name="finish"`/valeur du bouton disparaissait donc de la requête POST. Côté serveur,
+`isset($_POST['finish'])` devenait faux à **chaque** soumission, silencieusement : la page se
+ré-affichait normalement (aucune erreur visible, aucun message), sans qu'aucun des ~25 builders ne
+s'exécute. **Toute soumission de l'assistant était cassée depuis le merge de la PR #33**, pas
+seulement l'escalade en cours de test.
+
+Trouvé en testant l'escalade N1-N3 : `escalation_enabled` restait obstinément à 0 en base malgré
+une case cochée confirmée jusqu'au clic sur Terminer. Diagnostic confirmé étape par étape (jeton
+CSRF, corps de requête multipart, réponse brute du serveur) jusqu'à isoler la cause exacte.
+**Corrigé** en repoussant uniquement la désactivation de `finishBtn` d'un tick
+(`setTimeout(fn, 0)`), après que le navigateur a déjà capturé les données du formulaire pour cette
+soumission — `prevBtn`/`nextBtn` (de simples `type="button"`, jamais soumis) restent désactivés
+immédiatement. Revalidé de bout en bout sur une base vierge : soumission réelle, tous les builders
+s'exécutent, DB vérifiée.
+
+#### Added — Escalade entre niveaux de support (N1 → N2 → N3)
+
+Recherche web (2026-08-12, InvGate/Giva/TOPdesk/Buchanan...) : 3 niveaux (N1/N2/N3) est la
+convention ITSM la plus répandue ; N0 (Tier 0) est une couche additionnelle de libre-service sans
+équipe humaine, déjà couverte par le catalogue de services/formulaire d'accueil de ce plugin.
+
+- `SupportTierBuilder` (nouveau) : crée 3 groupes techniciens globaux ("Support N1/N2/N3",
+  `is_assign=1`) si `escalation_enabled`.
+- `SlaBuilder` étendu : réutilise le mécanisme d'escalade SlaLevel/OlaLevel du Sprint 28 (confirmé
+  dans le code source GLPI que `SlaLevel`/`OlaLevel` héritent de `RuleTicket` et supportent donc
+  l'action `_groups_id_assign`, pas seulement `priority`). Tout ticket créé démarre au groupe N1 ;
+  N1→N2 se déclenche au même seuil que l'escalade de priorité existante (`escalation_auto_n1_n2`) ;
+  N2→N3 se déclenche à l'échéance elle-même si le ticket n'est toujours pas résolu
+  (`escalation_auto_n2_n3`). Chaque hop est un toggle indépendant, y compris de la priorité
+  (`sla_escalation_enabled`, Sprint 28).
+- Réglable par client/site (étape 4, même panneau que le SLA par client) : un client peut
+  désactiver l'escalade ou choisir d'autres hops automatiques sans affecter les autres.
+- Case « Inclure le niveau N0 » : purement informative (N0 = libre-service déjà configuré ailleurs
+  dans l'assistant), aucun groupe N0 n'est créé — pas d'équipe humaine derrière ce niveau.
+
 ### Sprint 34 (partie 2/3) — icônes sur les intitulés (2026-08-12)
 
 Objectif : que le technicien retrouve rapidement ce qu'il cherche, même principe que les icônes
@@ -1464,7 +1513,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.16.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.17.0
 [0.16.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.16.0
 [0.15.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.15.0
 [0.14.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.14.0

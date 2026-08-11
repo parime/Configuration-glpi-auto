@@ -260,7 +260,38 @@
             >
             <span>% {{ __('du délai écoulé → priorité relevée d\'un cran (résolution, et engagement interne si activé)', 'configurationglpiauto') }}</span>
           </div>
-          <p class="text-muted small">{{ __('S\'applique à tout SLA/OLA créé sur cette étape — partagé ou par site/client. N\'affecte que la priorité — pas de réaffectation automatique à une autre équipe, GLPI ne sachant pas laquelle serait la bonne.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small">{{ __('S\'applique à tout SLA/OLA créé sur cette étape — partagé ou par site/client.', 'configurationglpiauto') }}</p>
+        </div>
+
+        <div class="mt-3 pt-3 border-top">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="escalation_enabled" value="0">
+            <input type="checkbox" name="escalation_enabled" value="1" class="form-check-input" id="cga-escalation-enabled" {{ config.escalation_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-escalation-enabled">{{ __('Activer l\'escalade entre niveaux de support (N1 → N2 → N3)', 'configurationglpiauto') }}</label>
+          </div>
+          <div id="cga-escalation-fields" style="display: none;">
+            <p class="text-muted small mb-2">{{ __('Crée 3 groupes techniciens (Support N1/N2/N3 — convention ITSM la plus répandue). Tout ticket créé démarre au N1 ; l\'escalade automatique (ci-dessous) le réaffecte au niveau suivant si le SLA de résolution approche ou dépasse son échéance.', 'configurationglpiauto') }}</p>
+
+            <div class="form-check form-switch mb-2">
+              <input type="hidden" name="escalation_includes_n0" value="0">
+              <input type="checkbox" name="escalation_includes_n0" value="1" class="form-check-input" id="cga-escalation-includes-n0" {{ config.escalation_includes_n0|default(0) ? 'checked' : '' }}>
+              <label class="form-check-label" for="cga-escalation-includes-n0">{{ __('Inclure le niveau N0 (portail libre-service) dans le récapitulatif', 'configurationglpiauto') }}</label>
+            </div>
+            <p class="text-muted small mb-2">{{ __('N0 = le libre-service déjà configuré aux étapes Catalogue de services / Formulaire d\'accueil — pas un groupe supplémentaire, juste un repère pour situer où commence le support humain.', 'configurationglpiauto') }}</p>
+
+            <div class="form-check form-switch mb-2">
+              <input type="hidden" name="escalation_auto_n1_n2" value="0">
+              <input type="checkbox" name="escalation_auto_n1_n2" value="1" class="form-check-input" id="cga-escalation-auto-n1-n2" {{ config.escalation_auto_n1_n2|default(1) ? 'checked' : '' }}>
+              <label class="form-check-label" for="cga-escalation-auto-n1-n2">{{ __('Escalade automatique N1 → N2 (au seuil ci-dessus)', 'configurationglpiauto') }}</label>
+            </div>
+            <div class="form-check form-switch mb-2">
+              <input type="hidden" name="escalation_auto_n2_n3" value="0">
+              <input type="checkbox" name="escalation_auto_n2_n3" value="1" class="form-check-input" id="cga-escalation-auto-n2-n3" {{ config.escalation_auto_n2_n3|default(1) ? 'checked' : '' }}>
+              <label class="form-check-label" for="cga-escalation-auto-n2-n3">{{ __('Escalade automatique N2 → N3 (à l\'échéance du SLA)', 'configurationglpiauto') }}</label>
+            </div>
+
+            <div id="cga-escalation-per-client-panels" style="display: none;"></div>
+          </div>
         </div>
       </div>
 
@@ -973,11 +1004,22 @@
   // clic renverrait donc le même jeton déjà consommé et se ferait rejeter par le pare-feu GLPI
   // (AccessDeniedHttpException brute, avant même que ce plugin ne s'exécute). Désactiver le bouton
   // dès le premier submit réel (après confirm()) empêche mécaniquement cette resoumission.
+  //
+  // setTimeout(..., 0) est indispensable ici, pas cosmétique : désactiver le bouton `finishBtn`
+  // de façon synchrone DANS le handler `submit` empêche le navigateur d'inclure son couple
+  // name=value ("finish") dans les données du formulaire envoyées — un bouton désactivé n'est
+  // jamais soumis, même s'il l'était encore au moment du clic qui a déclenché l'événement `submit`.
+  // Résultat observé sans ce délai : `isset($_POST['finish'])` est faux côté serveur, tout le bloc
+  // de traitement du wizard est silencieusement ignoré, la page se re-rend comme si de rien
+  // n'était — bug réel trouvé en testant l'escalade N1-N3 (aucune régression visible sans
+  // désactiver les champs pour vérifier, puisque la page semble se recharger normalement).
+  // `prevBtn`/`nextBtn` sont de simples `type="button"`, jamais soumis de toute façon : les
+  // désactiver immédiatement ne pose pas ce problème.
   wizardForm.addEventListener('submit', function () {
-    finishBtn.disabled = true;
     prevBtn.disabled = true;
     nextBtn.disabled = true;
     finishLabel.textContent = "{{ __('Création en cours...', 'configurationglpiauto')|e('js') }}";
+    setTimeout(function () { finishBtn.disabled = true; }, 0);
   });
 
   var stepLabels = [
@@ -1067,6 +1109,8 @@
   }
   slaEscalationEnabledInput.addEventListener('change', toggleSlaEscalationFields);
   toggleSlaEscalationFields();
+
+  var escalationEnabledInput = wireSimpleToggle('cga-escalation-enabled', 'cga-escalation-fields');
 
   var categoryEnabledInput = document.getElementById('cga-category-enabled');
   var categoryFields = document.getElementById('cga-category-fields');
@@ -1734,6 +1778,100 @@
     });
   }
 
+  // Escalade par client : pas de bascule dédiée, réutilise le même toggle "SLA différent par
+  // site/client" — l'escalade N1/N2/N3 n'a de sens qu'attachée à un SLA, même granularité.
+  var escalationPerClientPanels = document.getElementById('cga-escalation-per-client-panels');
+
+  function renderEscalationPerClientPanels() {
+    escalationPerClientPanels.innerHTML = '';
+    (window.cgaTree || []).forEach(function (node, i) {
+      var hasOverride = !!(node.settings && node.settings.escalation);
+      var settings = (node.settings && node.settings.escalation) || { enabled: false, includes_n0: false, auto_n1_n2: true, auto_n2_n3: true };
+
+      var card = document.createElement('div');
+      card.className = 'card mb-2';
+      var body = document.createElement('div');
+      body.className = 'card-body';
+
+      var title = document.createElement('h4');
+      title.className = 'mb-2';
+      title.textContent = node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}";
+      body.appendChild(title);
+
+      var useDefaultWrap = document.createElement('div');
+      useDefaultWrap.className = 'form-check form-switch mb-2';
+      var useDefaultInput = document.createElement('input');
+      useDefaultInput.type = 'checkbox';
+      useDefaultInput.className = 'form-check-input';
+      useDefaultInput.id = 'cga-esc-pc-' + i + '-usedefault';
+      useDefaultInput.checked = !hasOverride;
+      var useDefaultLabel = document.createElement('label');
+      useDefaultLabel.className = 'form-check-label';
+      useDefaultLabel.setAttribute('for', useDefaultInput.id);
+      useDefaultLabel.textContent = "{{ __('Utiliser le réglage d\'escalade par défaut', 'configurationglpiauto')|e('js') }}";
+      useDefaultWrap.appendChild(useDefaultInput);
+      useDefaultWrap.appendChild(useDefaultLabel);
+      body.appendChild(useDefaultWrap);
+
+      var customWrap = document.createElement('div');
+      customWrap.style.display = hasOverride ? '' : 'none';
+
+      function writeBack() {
+        node.settings = node.settings || {};
+        node.settings.escalation = settings;
+        syncTreeJson();
+      }
+
+      [
+        ['enabled', "{{ __('Activer l\'escalade pour cette entité', 'configurationglpiauto')|e('js') }}"],
+        ['auto_n1_n2', "{{ __('Escalade automatique N1 → N2', 'configurationglpiauto')|e('js') }}"],
+        ['auto_n2_n3', "{{ __('Escalade automatique N2 → N3', 'configurationglpiauto')|e('js') }}"],
+      ].forEach(function (pair) {
+        var wrap = document.createElement('div');
+        wrap.className = 'form-check form-switch mb-2';
+        var input = document.createElement('input');
+        input.type = 'checkbox';
+        input.className = 'form-check-input';
+        input.id = 'cga-esc-pc-' + i + '-' + pair[0];
+        input.checked = !!settings[pair[0]];
+        input.addEventListener('change', function () {
+          settings[pair[0]] = input.checked;
+          writeBack();
+        });
+        var label = document.createElement('label');
+        label.className = 'form-check-label';
+        label.setAttribute('for', input.id);
+        label.textContent = pair[1];
+        wrap.appendChild(input);
+        wrap.appendChild(label);
+        customWrap.appendChild(wrap);
+      });
+
+      body.appendChild(customWrap);
+
+      useDefaultInput.addEventListener('change', function () {
+        if (useDefaultInput.checked) {
+          if (node.settings) {
+            delete node.settings.escalation;
+            if (Object.keys(node.settings).length === 0) {
+              delete node.settings;
+            }
+          }
+          syncTreeJson();
+          customWrap.style.display = 'none';
+        } else {
+          node.settings = node.settings || {};
+          node.settings.escalation = { enabled: false, includes_n0: false, auto_n1_n2: true, auto_n2_n3: true };
+          syncTreeJson();
+          renderEscalationPerClientPanels();
+        }
+      });
+
+      card.appendChild(body);
+      escalationPerClientPanels.appendChild(card);
+    });
+  }
+
   function updateSlaMode() {
     var multiEntity = currentEntityMode() !== 'mono';
     slaPerClientToggleWrap.style.display = multiEntity ? '' : 'none';
@@ -1744,6 +1882,7 @@
     var perClient = multiEntity && slaPerClientToggle.checked;
     slaSharedSection.style.display = perClient ? 'none' : '';
     slaPerClientPanels.style.display = perClient ? '' : 'none';
+    escalationPerClientPanels.style.display = perClient ? '' : 'none';
 
     if (perClient) {
       // Unlike calendar, no ensureClientSettings() here: a client defaults to "use the shared
@@ -1751,8 +1890,10 @@
       // "Utiliser le SLA par défaut" checkbox (see renderSlaPerClientPanels()) — the per-client
       // mode toggle alone shouldn't force every client into a custom table.
       renderSlaPerClientPanels();
+      renderEscalationPerClientPanels();
     } else {
       stripClientSettings('sla');
+      stripClientSettings('escalation');
     }
     syncTreeJson();
   }
@@ -1809,6 +1950,9 @@
     var slaEscalationSuffix = slaEscalationEnabledInput.checked
       ? (" — {{ __('escalade à', 'configurationglpiauto')|e('js') }} " + document.getElementById('cga-sla-escalation-threshold').value + '%')
       : '';
+    if (escalationEnabledInput.checked) {
+      slaEscalationSuffix += " — {{ __('escalade N1→N2→N3', 'configurationglpiauto')|e('js') }}";
+    }
     if (slaPerClientToggle.checked) {
       var slaPcCount = (window.cgaTree || []).filter(function (n) { return n.settings && n.settings.sla && n.settings.sla.enabled; }).length;
       document.getElementById('cga-summary-sla').textContent = slaPcCount + ' ' + "{{ __('site(s)/client(s) avec un SLA propre', 'configurationglpiauto')|e('js') }}" + slaEscalationSuffix;
@@ -1984,6 +2128,12 @@
     if (typeof defaults.sla_escalation_enabled !== 'undefined') {
       slaEscalationEnabledInput.checked = !!defaults.sla_escalation_enabled;
       toggleSlaEscalationFields();
+    }
+    // escalation_enabled n'est volontairement dans aucun profil suggéré (opt-in explicite, cf.
+    // ConfigurationProfile::getSuggestedDefaults()) — ce bloc ne fait donc jamais rien aujourd'hui,
+    // gardé pour rester cohérent si un futur profil venait à le proposer.
+    if (typeof defaults.escalation_enabled !== 'undefined') {
+      escalationEnabledInput.checked = !!defaults.escalation_enabled;
     }
 
     if (typeof defaults.ola_enabled !== 'undefined') {
