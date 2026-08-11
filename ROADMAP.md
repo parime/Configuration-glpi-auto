@@ -146,13 +146,16 @@ basique, profils de démarrage.
    ça, la structure d'entités créée n'isole rien par elle-même, l'isolation dépend entièrement des
    droits configurés à la main après coup.
 
-7. **Modèles de notifications** (email de création/assignation/résolution de ticket). GLPI a des
-   modèles par défaut mais l'expérience utilisateur/client en dépend directement (ex : notifier le
-   bon niveau en cas d'escalade, point 4) — non touché par le wizard.
+7. **Modèles de notifications — fait (Sprint 25, 2026-08-11).** GLPI a déjà de bons modèles par
+   défaut ; le vrai manque était que plusieurs notifications de cycle de vie du ticket sont
+   `is_active=0` d'origine — dont `Ticket`/`auto_reminder`, exactement celle que déclenchent les
+   relances automatiques du Sprint 24 (bug réel corrigé au passage : les relances étaient créées
+   mais jamais notifiées au demandeur).
 
-8. **Workflow de validation (approbation)** — surtout pertinent pour les tickets de type
-   Changement : ITIL Change Management recommande une étape d'approbation avant application. GLPI
-   supporte les validations nativement, pas configuré par le wizard.
+8. **Workflow de validation (approbation) — fait partiellement (Sprint 25, 2026-08-11).** Ajout
+   d'une étape "Validation comité (2/3)" en plus de la "Validation" (100%) native, pour les
+   décisions collégiales. Le routage automatique vers un valideur (ex : manager N+1) reste hors
+   périmètre — dépend d'une hiérarchie LDAP/organisationnelle propre à chaque instance.
 
 9. **ISO 27001 — journalisation et piste d'audit.** La norme exige que les logs de sécurité
    couvrent qui/quoi/quand/où/comment (authentification, changements de droits, changements de
@@ -160,9 +163,11 @@ basique, profils de démarrage.
    automatiquement sans configuration — à vérifier si la rétention/le niveau de détail par défaut
    suffit, plutôt qu'à reconstruire quoi que ce soit.
 
-10. **Enquêtes de satisfaction post-résolution.** Pratique ITIL d'amélioration continue, GLPI le
-    supporte nativement, pas configuré par le wizard — probablement le moins prioritaire des
-    manques listés ici.
+10. **Enquêtes de satisfaction post-résolution — fait (Sprint 25, 2026-08-11).** L'enquête native
+    GLPI (1 à 5 étoiles + commentaire) était techniquement "activée" mais avec un taux
+    d'échantillonnage à 0% — traité par GLPI comme entièrement désactivé. Activée à 100%. Une
+    enquête multi-questions plus riche nécessiterait un outil externe (`inquest_config` = externe +
+    URL), hors périmètre car dépendant de l'outil choisi par chaque organisation.
 
 ---
 

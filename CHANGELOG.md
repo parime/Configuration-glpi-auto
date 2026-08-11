@@ -9,6 +9,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 25 — notifications, satisfaction survey, committee validation (2026-08-11)
+
+Last item out of the real-GLPI-export audit priority order, bundling the ROADMAP's three remaining
+items (7: notification templates, 8: validation workflow, 10: satisfaction survey). All three
+turned out to be small "flip GLPI's own good-practice defaults" fixes — like Sprint 18's general
+settings — rather than needing new object trees, so folded into `GeneralSettingsBuilder` under the
+existing `general_settings_enabled` toggle instead of adding new wizard steps for genuinely minor
+settings.
+
+#### Fixed
+- **A real bug in Sprint 24's own automation**: `glpi_notifications` (`Ticket`, `auto_reminder`)
+  ships `is_active = 0` — confirmed in source that this is the *exact* notification
+  `PendingReasonCron` fires for `WaitReasonBuilder`'s automatic follow-ups
+  (`NotificationEvent::raiseEvent('auto_reminder', ...)`). Without it, those follow-ups were being
+  added to the ticket internally but the requester was never actually emailed — silently defeating
+  half the point of the feature. Also enables `Ticket`/`update`, `Ticket`/`add_document`,
+  `Change`/`add_document`, `Problem`/`add_document` (all `is_active = 0` by default) —
+  `KnowbaseItem` new/update/delete notifications deliberately left alone (a content-management
+  concern, not core ticket-lifecycle communication).
+
+#### Changed
+- Native satisfaction survey (`Entity.inquest_config`/`inquest_rate`) enabled at the root entity for
+  both Ticket and Change: confirmed `inquest_rate = 0` by default makes GLPI treat it as fully
+  disabled regardless of `inquest_config`'s value. Only the built-in single-question survey (1-5
+  stars + optional comment) is turned on — a richer multi-question survey (like the one in the
+  audited production export) needs an external tool via `inquest_config = TYPE_EXTERNAL` +
+  `inquest_URL`, which depends on which third-party tool the org uses, so left out of scope.
+- New "Validation comité (2/3)" `ValidationStep` (67% required) alongside the single "Validation"
+  (100%) row GLPI ships by default — for multi-approver committee decisions, a real pattern
+  confirmed in the audited production export.
+
+Validated against the real GLPI 11.0.8 test instance: ran the wizard, confirmed in DB all 5 target
+notifications flipped to `is_active = 1`, the root entity's satisfaction survey fields, and both
+validation steps present with the correct percentages. Local suite green (phpunit 5/5, phpstan
+clean, php-cs-fixer clean).
+
 ## [0.7.0] - 2026-08-11
 
 Sprint 24: wait reasons with automatic follow-up and resolution (`PendingReason`), closing the
