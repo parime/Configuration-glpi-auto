@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-08-11
+
+Sprint 24: wait reasons with automatic follow-up and resolution (`PendingReason`), closing the
+third item out of the real-GLPI-export audit. No breaking changes.
+
 ### Sprint 24 — wait reasons with auto-followup and auto-resolve (2026-08-11)
 
 Third item out of the real-GLPI-export audit priority order (after French holidays and the Service
@@ -1007,7 +1012,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.7.0
 [0.6.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.6.0
 [0.5.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.5.0
 [0.4.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.4.0
