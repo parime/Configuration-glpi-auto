@@ -346,6 +346,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
     'project_taxonomy_preview' => ProjectTaxonomyBuilder::getPreview(),
     'project_task_templates_preview' => ProjectTaskTemplateBuilder::getLibraryPreview(),
+    'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 
