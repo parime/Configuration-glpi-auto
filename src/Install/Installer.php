@@ -92,6 +92,10 @@ final class Installer
                 `sla_astreinte` tinyint NOT NULL DEFAULT 0,
                 `sla_escalation_enabled` tinyint NOT NULL DEFAULT 0,
                 `sla_escalation_threshold_percent` int NOT NULL DEFAULT 75,
+                `escalation_enabled` tinyint NOT NULL DEFAULT 0,
+                `escalation_includes_n0` tinyint NOT NULL DEFAULT 0,
+                `escalation_auto_n1_n2` tinyint NOT NULL DEFAULT 1,
+                `escalation_auto_n2_n3` tinyint NOT NULL DEFAULT 1,
                 `ola_enabled` tinyint NOT NULL DEFAULT 0,
                 `ola_tiers` text,
                 `category_enabled` tinyint NOT NULL DEFAULT 0,
@@ -183,6 +187,10 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'sla_astreinte', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'sla_escalation_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'sla_escalation_threshold_percent', 'integer', ['value' => 75]);
+            $migration->addField(self::CONFIGS_TABLE, 'escalation_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'escalation_includes_n0', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'escalation_auto_n1_n2', 'bool', ['value' => 1]);
+            $migration->addField(self::CONFIGS_TABLE, 'escalation_auto_n2_n3', 'bool', ['value' => 1]);
             $migration->addField(self::CONFIGS_TABLE, 'ola_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'ola_tiers', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'state_enabled', 'bool', ['value' => 0]);
