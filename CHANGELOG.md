@@ -9,6 +9,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-08-11
+
+Sprint 32: per-entity logo upload — a client/site-specific logo alongside `BrandingBuilder`'s
+existing plugin-wide primary color. No breaking changes.
+
+### Sprint 32 — per-entity logo upload (2026-08-11)
+
+User request: each client/site entity should be able to have its own logo, uploadable through the
+wizard. Confirmed in GLPI source that `Entity` has no dedicated logo field — the closest native
+mechanisms are `custom_css_code` (already used by `BrandingBuilder` for the primary color) and the
+`custom_helpdesk_home_scene_left/right` illustration fields (decorative Helpdesk-home artwork, not
+a client-identity logo). Scope confirmed with the user via `AskUserQuestion` before building: real
+file upload + CSS injection, over upload-only or skipping the feature.
+
+#### Added
+- `BrandingBuilder::applyLogos()`: each uploaded logo is embedded as a `data:` URI and written into
+  the target entity's `custom_css_code`, overriding `--glpi-logo`/`--glpi-logo-reduced` — confirmed
+  in GLPI's own `_base.scss`/`_global-menu.scss` that the header/sidebar logo (`.glpi-logo`) is
+  entirely CSS-custom-property-driven, so this is the same "override a themeable variable, not an
+  arbitrary DOM selector" approach already used for the primary color, not a new class of risk.
+  Both writers now delimit their own CSS with a comment marker (`mergeCssBlock()`) so color and
+  logo — or any future CSS-writing feature, or an admin's own manual additions — coexist safely
+  across reruns instead of overwriting the whole field.
+- New file input per top-level entity (client/site) on the existing Branding wizard step, only
+  shown once `entity_logos_enabled` is on — the wizard form now submits as
+  `multipart/form-data`. Server-side validation (`front/wizard.php`): `getimagesize()` confirms the
+  upload is a genuine image rather than trusting the browser-supplied MIME type, 1&nbsp;MB size cap
+  (the file ends up base64-encoded, ~33% larger, inside a plain-text DB column), and SVG is
+  deliberately excluded from the allow-list (PNG/JPEG/WebP/GIF only) to avoid any embedded-script
+  question entirely rather than relying on background-image context not executing it.
+- Deliberately *not* added to `ConfigurationProfile`'s suggested defaults, same reasoning as
+  `ldap_rights_enabled`: there's no default file to suggest, so a pre-checked toggle with nothing
+  uploaded would do nothing — opt-in only, matching the reality that only the admin has the logo.
+
+Validated against the real GLPI 11.0.8 test instance: built a 2-client entity tree, uploaded a
+distinct 1×1 PNG to each via Playwright's real file-input handling, confirmed in DB that each
+entity's `custom_css_code` contains the exact byte-for-byte base64 of the file uploaded *for that
+entity* (not swapped or mixed between the two), correctly delimited and with `enable_custom_css`
+set. Local suite green (phpunit 10/10, phpstan clean, php-cs-fixer clean).
+
 ## [0.14.0] - 2026-08-11
 
 Sprint 30: Projets intitulés (types de projet, types de tâche de projet, gabarits de tâches de
@@ -1329,7 +1369,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.14.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.15.0
 [0.14.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.14.0
 [0.13.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.13.0
 [0.12.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.12.0
