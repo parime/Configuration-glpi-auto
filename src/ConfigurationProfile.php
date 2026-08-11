@@ -175,6 +175,9 @@ class ConfigurationProfile extends CommonDBTM
             // A real service catalog reduces free-text "hors catalogue" tickets and routes each
             // request to the right category automatically — same universal reasoning.
             'service_catalog_enabled' => true,
+            // Auto-followup + auto-resolve on unresponsive requesters avoids tickets languishing
+            // forever — universal good practice, not size-dependent.
+            'wait_reasons_enabled' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual

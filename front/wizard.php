@@ -27,6 +27,7 @@ use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
+use GlpiPlugin\Configurationglpiauto\WaitReasonBuilder;
 
 Session::checkRight(Config::$rightname, READ);
 
@@ -101,6 +102,7 @@ if (isset($_POST['finish'])) {
     $categoriesCreated = (new CategoryBuilder())->build($config);
     $servicesCreated = (new ServiceCatalogBuilder())->build($config);
     $statesCreated = (new StateBuilder())->build($config);
+    $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
 
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
     $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
@@ -133,6 +135,9 @@ if (isset($_POST['finish'])) {
     }
     if ($statesCreated !== []) {
         $messages[] = sprintf(__('%d statuts d\'éléments créés.', 'configurationglpiauto'), count($statesCreated));
+    }
+    if ($waitReasonsCreated > 0) {
+        $messages[] = sprintf(__('%d raisons d\'attente créées.', 'configurationglpiauto'), $waitReasonsCreated);
     }
     if ($brandingApplied) {
         $messages[] = __('Personnalisation graphique appliquée.', 'configurationglpiauto');
@@ -181,6 +186,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'categories_preview' => CategoryBuilder::getCategoriesPreview(),
     'services_preview' => ServiceCatalogBuilder::getServicesPreview(),
     'states_preview'   => StateBuilder::getStatesPreview(),
+    'wait_reasons_preview' => WaitReasonBuilder::getReasonsPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 

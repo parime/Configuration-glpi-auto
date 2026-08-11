@@ -9,6 +9,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 24 — wait reasons with auto-followup and auto-resolve (2026-08-11)
+
+Third item out of the real-GLPI-export audit priority order (after French holidays and the Service
+Catalog): `glpi_pendingreasons` ships empty on a fresh install, so tickets put "on hold" never get
+an automatic reminder or auto-close — they can sit forever waiting on a user who never replies.
+
+#### Changed
+- New `WaitReasonBuilder`: creates 4 `PendingReason` rows. Only "Attente de retour utilisateur"
+  gets full automation — a follow-up every 2 weeks (`ITILFollowupTemplate`), auto-resolved after 3
+  unanswered ones (`SolutionTemplate`). The other 3 ("Attente livraison fournisseur", "Intervention
+  planifiée", "Validation interne en attente") stay reminder-only or fully manual — confirmed
+  against a real production reference that auto-closing while waiting on a supplier or an internal
+  approval would be inappropriate (the org doesn't control that timeline), only the requester-wait
+  case is safe to auto-resolve.
+- Confirmed GLPI's automation engine (`PendingReasonCron`, crontask
+  `pendingreason_autobump_autosolve`) ships **active by default** (`state = 1`, every 30 minutes) —
+  nothing else needed to enable it, this sprint only had to create the reasons themselves.
+- `followup_frequency` built from GLPI's own `WEEK_TIMESTAMP` global constant (2/1 weeks), matching
+  the fixed day/week enum `PendingReason`'s own admin UI restricts this field to
+  (`PendingReason::getFollowupFrequencyValues()`) — not an arbitrary seconds value.
+- New `wait_reasons_enabled` toggle, new wizard step 8 (right after Statuts) — `STEP_COUNT` 11→12,
+  all later steps renumbered.
+
+Validated against the real GLPI 11.0.8 test instance: ran the wizard, confirmed in DB all 4
+`PendingReason` rows with the correct `followup_frequency`/`followups_before_resolution`/template
+links (and the reverse link from the follow-up template back to its `PendingReason`), and visually
+on Configuration > Intitulés > Raisons d'attente. Local suite green (phpunit 5/5, phpstan clean,
+php-cs-fixer clean).
+
 ## [0.6.0] - 2026-08-11
 
 Sprints 21-23: Urgency/Observers/Location hidden on GLPI's native self-service forms, French
