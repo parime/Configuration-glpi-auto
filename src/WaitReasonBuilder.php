@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use DropdownTranslation;
 use ITILFollowupTemplate;
 use PendingReason;
 use SolutionTemplate;
@@ -44,6 +45,7 @@ class WaitReasonBuilder
     private const REASONS = [
         [
             'name' => 'Attente de retour utilisateur',
+            'icon' => '⏳',
             'followup_weeks' => 2,
             'followups_before_resolution' => 3,
             'followup_content' => "Bonjour,\n\nNous sommes en attente d'informations complémentaires de votre part pour poursuivre le traitement de ce ticket. Merci de nous répondre dans les meilleurs délais.\n\nSans retour de votre part, ce ticket sera automatiquement clôturé après plusieurs relances.",
@@ -51,16 +53,19 @@ class WaitReasonBuilder
         ],
         [
             'name' => 'Attente livraison fournisseur',
+            'icon' => '🚚',
             'followup_weeks' => 0,
             'followups_before_resolution' => 0,
         ],
         [
             'name' => 'Intervention planifiée',
+            'icon' => '🗓️',
             'followup_weeks' => 0,
             'followups_before_resolution' => 0,
         ],
         [
             'name' => 'Validation interne en attente',
+            'icon' => '✅',
             'followup_weeks' => 1,
             'followups_before_resolution' => 0,
             'followup_content' => "Bonjour,\n\nCe ticket est en attente d'une validation interne. Merci de nous tenir informés de l'avancement de cette validation.",
@@ -76,9 +81,10 @@ class WaitReasonBuilder
             return 0;
         }
 
+        $withIcons = !empty($config->fields['wait_reason_icons_enabled']);
         $count = 0;
         foreach (self::REASONS as $reason) {
-            $this->getOrCreateReason($reason);
+            $this->getOrCreateReason($reason, $withIcons);
             $count++;
         }
 
@@ -86,17 +92,20 @@ class WaitReasonBuilder
     }
 
     /**
-     * @return array<int, array{name: string, followup_weeks: int, followups_before_resolution: int}>
+     * @return array<int, array{name: string, icon: string, followup_weeks: int, followups_before_resolution: int}>
      */
     public static function getReasonsPreview(): array
     {
         return self::REASONS;
     }
 
-    private function getOrCreateReason(array $reason): void
+    private function getOrCreateReason(array $reason, bool $withIcons): void
     {
         $pendingReason = new PendingReason();
         if ($pendingReason->getFromDBByCrit(['name' => $reason['name'], 'entities_id' => 0])) {
+            if ($withIcons) {
+                $this->addIcon((int) $pendingReason->getID(), $reason['name'], $reason['icon']);
+            }
             return;
         }
 
@@ -123,6 +132,26 @@ class WaitReasonBuilder
         if ($followupTemplateId > 0) {
             (new ITILFollowupTemplate())->update(['id' => $followupTemplateId, 'pendingreasons_id' => $id]);
         }
+
+        if ($withIcons) {
+            $this->addIcon((int) $id, $reason['name'], $reason['icon']);
+        }
+    }
+
+    private function addIcon(int $id, string $name, string $icon): void
+    {
+        $translation = new DropdownTranslation();
+        if ($translation->getFromDBByCrit(['itemtype' => PendingReason::class, 'items_id' => $id, 'language' => 'fr_FR', 'field' => 'name'])) {
+            return;
+        }
+
+        $translation->add([
+            'itemtype' => PendingReason::class,
+            'items_id' => $id,
+            'language' => 'fr_FR',
+            'field' => 'name',
+            'value' => sprintf('%s %s', $icon, $name),
+        ]);
     }
 
     private function getOrCreateFollowupTemplate(string $name, string $content): int

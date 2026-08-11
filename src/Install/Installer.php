@@ -116,15 +116,19 @@ final class Installer
                 `task_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `task_templates_enabled` tinyint NOT NULL DEFAULT 0,
                 `solution_library_enabled` tinyint NOT NULL DEFAULT 0,
+                `solution_type_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `followup_library_enabled` tinyint NOT NULL DEFAULT 0,
                 `validation_templates_enabled` tinyint NOT NULL DEFAULT 0,
                 `change_problem_templates_enabled` tinyint NOT NULL DEFAULT 0,
                 `locations_enabled` tinyint NOT NULL DEFAULT 0,
                 `manufacturers_enabled` tinyint NOT NULL DEFAULT 0,
+                `manufacturer_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `kb_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `project_taxonomy_enabled` tinyint NOT NULL DEFAULT 0,
+                `project_taxonomy_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `project_task_templates_enabled` tinyint NOT NULL DEFAULT 0,
                 `entity_logos_enabled` tinyint NOT NULL DEFAULT 0,
+                `wait_reason_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -222,15 +226,19 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'task_categories_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'task_templates_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'solution_library_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'solution_type_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'followup_library_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'validation_templates_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'change_problem_templates_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'locations_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'manufacturers_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'manufacturer_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'kb_categories_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'project_taxonomy_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'project_taxonomy_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'project_task_templates_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'entity_logos_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'wait_reason_icons_enabled', 'bool', ['value' => 0]);
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes

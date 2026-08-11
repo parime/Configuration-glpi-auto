@@ -9,7 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Sprint 34 (partie 1/2) — correctif CSRF, ergonomie du wizard (2026-08-11)
+### Sprint 34 (partie 2/3) — icônes sur les intitulés (2026-08-12)
+
+Objectif : que le technicien retrouve rapidement ce qu'il cherche, même principe que les icônes
+déjà en place sur les statuts et catégories ITIL, étendu partout où GLPI le permet techniquement.
+
+#### Changed
+- `ManufacturerBuilder`, `WaitReasonBuilder`, `ProjectTaxonomyBuilder`, `SolutionLibraryBuilder` :
+  icônes optionnelles (`DropdownTranslation`, fr_FR) sur `Manufacturer`, `PendingReason`,
+  `ProjectType`/`ProjectTaskType`, `SolutionType` — 4 nouveaux toggles indépendants
+  (`manufacturer_icons_enabled`, `wait_reason_icons_enabled`, `project_taxonomy_icons_enabled`,
+  `solution_type_icons_enabled`).
+- Fabricants : icônes groupées par catégorie de produit (💻 informatique, 🌐 réseau, 🖨️
+  impression...) plutôt qu'une icône par marque — pas de convention émoji par marque établie,
+  l'inventer aurait été arbitraire.
+- **Non couvert, pour une raison technique vérifiée dans le code source GLPI** :
+  `SolutionTemplate`/`TaskTemplate`/`ITILFollowupTemplate`/`ITILValidationTemplate` étendent
+  `AbstractITILChildTemplate`, pas `CommonDropdown` — le mécanisme d'icône par traduction ne s'y
+  applique pas. L'icône va sur `SolutionType` (le regroupement choisi en premier par le
+  technicien) à la place.
+
+#### Fixed
+- Bug introduit puis corrigé dans la même session, avant merge : le changement de forme des
+  données de `ManufacturerBuilder::getManufacturersPreview()` (chaînes → tableaux `{name, icon}`)
+  avait cassé le rendu Twig de l'étape 15 (`|join(', ')` sur des tableaux → avertissements PHP
+  « Array to string conversion » répétés, signalés par capture d'écran). Corrigé en adaptant la
+  boucle Twig ; revérifié en navigant les 17 étapes sans aucune erreur PHP.
+
+### Sprint 34 (partie 1/3) — correctif CSRF, ergonomie du wizard (2026-08-11)
 
 Premier lot de Sprint 34 (le reste — icônes sur les intitulés, escalade N1→N2→N3 — suit dans un
 commit séparé). Déclenché par un vrai bug signalé par l'utilisateur en cours de test.
