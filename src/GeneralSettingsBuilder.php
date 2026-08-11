@@ -33,29 +33,11 @@ use ValidationStep;
  * `GlpiPlugin\Configurationglpiauto\Config` class in the current namespace, so a bare `Config::`
  * call here would resolve to the wrong class.
  *
- * Also covers the "Statuts des tâches" project bucket mapping (`projecttask_unstarted_states_id`/
- * `_inprogress_states_id`/`_completed_states_id`) — GLPI ships exactly 3 native `ProjectState` rows
- * out of the box ("New", "Processing", "Closed", confirmed on a fresh 11.0.8 install) but leaves
- * this mapping unset, so project task progress tracking silently does nothing until an admin wires
- * it up by hand.
- *
- * Since Sprint 25, also covers three more good-practice defaults GLPI leaves off, found while
- * auditing a real production GLPI export:
- * - A handful of `glpi_notifications` rows ship `is_active = 0` — most notably `Ticket`/
- *   `auto_reminder`, the exact notification `PendingReasonCron` fires
- *   (`NotificationEvent::raiseEvent('auto_reminder', ...)`, confirmed in source) for the automatic
- *   follow-ups `WaitReasonBuilder` (Sprint 24) sets up — without it, those follow-ups get added to
- *   the ticket but the requester is never actually emailed, silently defeating half the feature.
- * - The native satisfaction survey (`Entity.inquest_config`/`inquest_rate`) is technically
- *   "enabled" out of the box but `inquest_rate = 0`, which GLPI's own code treats as fully
- *   disabled (`Entity::getValueToDisplay()` shows "Disabled" whenever the rate is 0, regardless of
- *   `inquest_config`). Only the built-in single-question (1-5 stars + optional comment) survey is
- *   turned on here — a richer multi-question survey (like the one in the audited production
- *   export) needs an external tool wired through `inquest_config = TYPE_EXTERNAL` + `inquest_URL`,
- *   which depends on which third-party survey tool the org already uses, so it's out of scope.
- * - `glpi_validationsteps` ships exactly one row ("Validation", 100% required) — a second
- *   "Validation comité" option (67%, i.e. 2/3) is added for multi-approver committee decisions,
- *   confirmed as a real pattern in the same production export.
+ * Split into 6 independently-gated groups (Sprint 26) rather than one `apply()` behind a single
+ * toggle — the earlier all-or-nothing design (everything from Sprint 18 through Sprint 25 folded
+ * into one `general_settings_enabled` flag) meant an admin who wanted the satisfaction survey but
+ * not, say, the committee validation step had no way to say so. Each group below matches one
+ * checkbox in the wizard's "Réglages généraux" step.
  */
 class GeneralSettingsBuilder
 {
@@ -72,38 +54,82 @@ class GeneralSettingsBuilder
     ];
 
     /**
-     * Applies the general settings if `general_settings_enabled` is on. Returns whether anything
-     * was applied.
+     * Applies every group whose own toggle is on. Returns whether anything was applied.
      */
     public function apply(Config $config): bool
     {
-        if (empty($config->fields['general_settings_enabled'])) {
-            return false;
+        $applied = false;
+
+        if (!empty($config->fields['general_ui_enabled'])) {
+            $this->applyGeneralUi();
+            $applied = true;
         }
 
+        if (!empty($config->fields['notifications_enabled'])) {
+            $this->applyNotifications();
+            $applied = true;
+        }
+
+        if (!empty($config->fields['financial_info_enabled'])) {
+            \Config::setConfigurationValues('core', ['auto_create_infocoms' => 1]);
+            $applied = true;
+        }
+
+        if (!empty($config->fields['project_task_states_enabled'])) {
+            $mapping = $this->projectTaskStateMapping();
+            if ($mapping !== []) {
+                \Config::setConfigurationValues('core', $mapping);
+            }
+            $applied = true;
+        }
+
+        if (!empty($config->fields['satisfaction_survey_enabled'])) {
+            $this->enableSatisfactionSurveys();
+            $applied = true;
+        }
+
+        if (!empty($config->fields['committee_validation_enabled'])) {
+            $this->ensureCommitteeValidationStep();
+            $applied = true;
+        }
+
+        return $applied;
+    }
+
+    /**
+     * "Interface & ergonomie" group: button layout, search form/pagination position, homepage
+     * tickets widget — cosmetic/ergonomic GLPI core defaults, unrelated to notifications or
+     * ticket workflow.
+     */
+    private function applyGeneralUi(): void
+    {
         \Config::setConfigurationValues('core', [
-            // Master "Activer les notifications" toggle, off by default on a fresh install.
-            'use_notifications'        => 1,
-            'notifications_mailing'    => 1,
-            'notifications_ajax'       => 1,
             // "Agencement du bouton d'action" : boutons Répondre/Observation/Solution séparés
             // plutôt que fusionnés dans un seul menu déroulant.
             'timeline_action_btn_layout' => \Config::TIMELINE_ACTION_BTN_SPLITTED,
             'show_search_form'         => 1,
             'search_pagination_on_top' => 1,
             'show_jobs_at_login'       => 1,
-            'auto_create_infocoms'     => 1,
-        ] + $this->projectTaskStateMapping());
-
-        $this->enableNotifications();
-        $this->enableSatisfactionSurveys();
-        $this->ensureCommitteeValidationStep();
-
-        return true;
+        ]);
     }
 
-    private function enableNotifications(): void
+    /**
+     * "Notifications" group: the master activation toggle (off by default on a fresh install)
+     * plus the specific ticket-lifecycle events GLPI ships inactive — most notably `Ticket`/
+     * `auto_reminder`, the exact notification `PendingReasonCron` fires
+     * (`NotificationEvent::raiseEvent('auto_reminder', ...)`, confirmed in source) for the
+     * automatic follow-ups `WaitReasonBuilder` sets up. Without it, those follow-ups get added to
+     * the ticket but the requester is never actually emailed, silently defeating half that
+     * feature — so this group matters even to an admin who only cares about wait reasons.
+     */
+    private function applyNotifications(): void
     {
+        \Config::setConfigurationValues('core', [
+            'use_notifications'     => 1,
+            'notifications_mailing' => 1,
+            'notifications_ajax'    => 1,
+        ]);
+
         $notification = new Notification();
         foreach (self::NOTIFICATIONS_TO_ENABLE as $target) {
             if ($notification->getFromDBByCrit(['itemtype' => $target['itemtype'], 'event' => $target['event']])) {
@@ -112,6 +138,16 @@ class GeneralSettingsBuilder
         }
     }
 
+    /**
+     * The native satisfaction survey (`Entity.inquest_config`/`inquest_rate`) is technically
+     * "enabled" out of the box but `inquest_rate = 0`, which GLPI's own code treats as fully
+     * disabled (`Entity::getValueToDisplay()` shows "Disabled" whenever the rate is 0, regardless
+     * of `inquest_config`). Only the built-in single-question (1-5 stars + optional comment)
+     * survey is turned on here — a richer multi-question survey (like the one in the audited
+     * production export) needs an external tool wired through `inquest_config = TYPE_EXTERNAL` +
+     * `inquest_URL`, which depends on which third-party survey tool the org already uses, so it's
+     * out of scope.
+     */
     private function enableSatisfactionSurveys(): void
     {
         (new Entity())->update([
@@ -127,6 +163,11 @@ class GeneralSettingsBuilder
         ]);
     }
 
+    /**
+     * `glpi_validationsteps` ships exactly one row ("Validation", 100% required) — a second
+     * "Validation comité" option (67%, i.e. 2/3) is added here for multi-approver committee
+     * decisions, confirmed as a real pattern in the audited production export.
+     */
     private function ensureCommitteeValidationStep(): void
     {
         $step = new ValidationStep();
