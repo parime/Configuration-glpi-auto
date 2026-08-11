@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-08-11
+
+Sprints 21-23: Urgency/Observers/Location hidden on GLPI's native self-service forms, French
+public holidays seeded on the calendar, and a 23-form Service Catalog on GLPI 11's native Form
+system (ROADMAP item 5, closing a long-standing gap) — plus a plugin logo and a vendor-neutral
+naming/icon follow-up on the catalog. No breaking changes.
+
 ### Fixed — Service Catalog: vendor-neutral naming and real icons (2026-08-11)
 
 Direct follow-up to Sprint 23, from user feedback on the real catalog screenshot: one service name
@@ -971,7 +978,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.6.0
 [0.5.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.5.0
 [0.4.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.4.0
 [0.3.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.3.0
