@@ -165,15 +165,19 @@ class Config extends CommonDBTM
             'task_categories_enabled' => 0,
             'task_templates_enabled' => 0,
             'solution_library_enabled' => 0,
+            'solution_type_icons_enabled' => 0,
             'followup_library_enabled' => 0,
             'validation_templates_enabled' => 0,
             'change_problem_templates_enabled' => 0,
             'locations_enabled' => 0,
             'manufacturers_enabled' => 0,
+            'manufacturer_icons_enabled' => 0,
             'kb_categories_enabled' => 0,
             'project_taxonomy_enabled' => 0,
+            'project_taxonomy_icons_enabled' => 0,
             'project_task_templates_enabled' => 0,
             'entity_logos_enabled' => 0,
+            'wait_reason_icons_enabled' => 0,
         ];
     }
 
@@ -431,7 +435,7 @@ class Config extends CommonDBTM
             $input['ldap_rights_profile'] = 'Technician';
         }
 
-        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_task_templates_enabled', 'entity_logos_enabled'] as $field) {
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

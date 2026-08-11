@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use DropdownTranslation;
 use SolutionTemplate;
 use SolutionType;
 
@@ -48,6 +49,7 @@ class SolutionLibraryBuilder
     private const TYPES = [
         [
             'name' => 'Assistance / Support utilisateur',
+            'icon' => '🙋',
             'comment' => 'Aide apportée à l\'utilisateur : explications, guidage, prise en main, formation — sans intervention technique sur un système.',
             'is_incident' => 1, 'is_request' => 1, 'is_problem' => 1, 'is_change' => 0,
             'templates' => [
@@ -63,6 +65,7 @@ class SolutionLibraryBuilder
         ],
         [
             'name' => 'Résolution technique',
+            'icon' => '🔧',
             'comment' => 'Correction matérielle (équipement, périphérique), logicielle (bug, mise à jour) ou de configuration système/réseau/application.',
             'is_incident' => 1, 'is_request' => 1, 'is_problem' => 1, 'is_change' => 1,
             'templates' => [
@@ -78,6 +81,7 @@ class SolutionLibraryBuilder
         ],
         [
             'name' => 'Sécurité',
+            'icon' => '🔒',
             'comment' => 'Gestion d\'un incident de sécurité : confinement, éradication de la menace, restauration, collecte de preuves.',
             'is_incident' => 1, 'is_request' => 0, 'is_problem' => 0, 'is_change' => 1,
             'templates' => [
@@ -93,6 +97,7 @@ class SolutionLibraryBuilder
         ],
         [
             'name' => 'Informationnel',
+            'icon' => 'ℹ️',
             'comment' => 'Clôtures sans intervention technique : comportement normal, doublon, annulation, hors périmètre.',
             'is_incident' => 1, 'is_request' => 1, 'is_problem' => 1, 'is_change' => 0,
             'templates' => [
@@ -108,6 +113,7 @@ class SolutionLibraryBuilder
         ],
         [
             'name' => 'Gestion des accès',
+            'icon' => '🔑',
             'comment' => 'Comptes utilisateurs, droits d\'accès, mots de passe.',
             'is_incident' => 1, 'is_request' => 1, 'is_problem' => 1, 'is_change' => 0,
             'templates' => [
@@ -133,9 +139,13 @@ class SolutionLibraryBuilder
             return 0;
         }
 
+        $withIcons = !empty($config->fields['solution_type_icons_enabled']);
         $count = 0;
         foreach (self::TYPES as $type) {
             $typeId = $this->getOrCreateType($type);
+            if ($withIcons) {
+                $this->addIcon($typeId, $type['name'], $type['icon']);
+            }
             foreach ($type['templates'] as $template) {
                 $this->getOrCreateTemplate($template['name'], $template['content'], $typeId);
                 $count++;
@@ -146,7 +156,7 @@ class SolutionLibraryBuilder
     }
 
     /**
-     * @return array<int, array{name: string, comment: string, templates: array<int, array{name: string, content: string}>}>
+     * @return array<int, array{name: string, icon: string, comment: string, templates: array<int, array{name: string, content: string}>}>
      */
     public static function getLibraryPreview(): array
     {
@@ -169,6 +179,22 @@ class SolutionLibraryBuilder
             'is_request' => $type['is_request'],
             'is_problem' => $type['is_problem'],
             'is_change' => $type['is_change'],
+        ]);
+    }
+
+    private function addIcon(int $id, string $name, string $icon): void
+    {
+        $translation = new DropdownTranslation();
+        if ($translation->getFromDBByCrit(['itemtype' => SolutionType::class, 'items_id' => $id, 'language' => 'fr_FR', 'field' => 'name'])) {
+            return;
+        }
+
+        $translation->add([
+            'itemtype' => SolutionType::class,
+            'items_id' => $id,
+            'language' => 'fr_FR',
+            'field' => 'name',
+            'value' => sprintf('%s %s', $icon, $name),
         ]);
     }
 

@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use DropdownTranslation;
 use Manufacturer;
 
 /**
@@ -29,18 +30,25 @@ use Manufacturer;
  * Broad, generic hardware/software vendor coverage (computers, network, printers, mobile,
  * software publishers) rather than a specific organization's actual supplier list — a starting
  * point the admin trims or extends, same philosophy as every other list in this plugin.
+ *
+ * Icons (optional, `manufacturer_icons_enabled`) are grouped *by product category* (computers,
+ * network, printers...) rather than a distinct icon per brand — there's no established per-brand
+ * emoji convention to draw from, and inventing one would look arbitrary. `Manufacturer extends
+ * CommonDropdown` (confirmed in GLPI source), so the same `DropdownTranslation` icon-prepend
+ * mechanism already used by `StateBuilder`/`CategoryBuilder` applies here too.
  */
 class ManufacturerBuilder
 {
     private const MANUFACTURERS = [
-        'Dell', 'HP', 'Lenovo', 'Apple', 'Microsoft', 'ASUS', 'Acer',
-        'Cisco', 'HPE Aruba', 'Fortinet', 'Ubiquiti', 'Netgear',
-        'Canon', 'Epson', 'Brother', 'Xerox',
-        'Samsung', 'LG',
-        'Synology', 'QNAP', 'NetApp',
-        'Logitech', 'Jabra', 'Poly',
-        'APC', 'Eaton',
-        'Oracle', 'VMware', 'Red Hat',
+        ['name' => 'Dell', 'icon' => '💻'], ['name' => 'HP', 'icon' => '💻'], ['name' => 'Lenovo', 'icon' => '💻'],
+        ['name' => 'Apple', 'icon' => '💻'], ['name' => 'Microsoft', 'icon' => '💻'], ['name' => 'ASUS', 'icon' => '💻'], ['name' => 'Acer', 'icon' => '💻'],
+        ['name' => 'Cisco', 'icon' => '🌐'], ['name' => 'HPE Aruba', 'icon' => '🌐'], ['name' => 'Fortinet', 'icon' => '🌐'], ['name' => 'Ubiquiti', 'icon' => '🌐'], ['name' => 'Netgear', 'icon' => '🌐'],
+        ['name' => 'Canon', 'icon' => '🖨️'], ['name' => 'Epson', 'icon' => '🖨️'], ['name' => 'Brother', 'icon' => '🖨️'], ['name' => 'Xerox', 'icon' => '🖨️'],
+        ['name' => 'Samsung', 'icon' => '📱'], ['name' => 'LG', 'icon' => '📱'],
+        ['name' => 'Synology', 'icon' => '💾'], ['name' => 'QNAP', 'icon' => '💾'], ['name' => 'NetApp', 'icon' => '💾'],
+        ['name' => 'Logitech', 'icon' => '🎧'], ['name' => 'Jabra', 'icon' => '🎧'], ['name' => 'Poly', 'icon' => '🎧'],
+        ['name' => 'APC', 'icon' => '🔌'], ['name' => 'Eaton', 'icon' => '🔌'],
+        ['name' => 'Oracle', 'icon' => '☁️'], ['name' => 'VMware', 'icon' => '☁️'], ['name' => 'Red Hat', 'icon' => '☁️'],
     ];
 
     /**
@@ -52,9 +60,13 @@ class ManufacturerBuilder
             return 0;
         }
 
+        $withIcons = !empty($config->fields['manufacturer_icons_enabled']);
         $count = 0;
-        foreach (self::MANUFACTURERS as $name) {
-            $this->getOrCreate($name);
+        foreach (self::MANUFACTURERS as $manufacturer) {
+            $id = $this->getOrCreate($manufacturer['name']);
+            if ($withIcons) {
+                $this->addIcon($id, $manufacturer['name'], $manufacturer['icon']);
+            }
             $count++;
         }
 
@@ -62,7 +74,7 @@ class ManufacturerBuilder
     }
 
     /**
-     * @return string[]
+     * @return array<int, array{name: string, icon: string}>
      */
     public static function getManufacturersPreview(): array
     {
@@ -77,5 +89,21 @@ class ManufacturerBuilder
         }
 
         return (int) $item->add(['name' => $name]);
+    }
+
+    private function addIcon(int $id, string $name, string $icon): void
+    {
+        $translation = new DropdownTranslation();
+        if ($translation->getFromDBByCrit(['itemtype' => Manufacturer::class, 'items_id' => $id, 'language' => 'fr_FR', 'field' => 'name'])) {
+            return;
+        }
+
+        $translation->add([
+            'itemtype' => Manufacturer::class,
+            'items_id' => $id,
+            'language' => 'fr_FR',
+            'field' => 'name',
+            'value' => sprintf('%s %s', $icon, $name),
+        ]);
     }
 }
