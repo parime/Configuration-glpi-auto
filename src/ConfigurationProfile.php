@@ -163,8 +163,14 @@ class ConfigurationProfile extends CommonDBTM
             'category_enabled' => true, 'category_branches' => Config::CATEGORY_BRANCH_KEYS, 'category_icons_enabled' => true,
             'state_enabled' => true, 'state_icons_enabled' => true,
             // Same reasoning: GLPI core's own general settings (notifications, search/pagination
-            // layout, split action buttons...) are unhelpful defaults regardless of org size.
-            'general_settings_enabled' => true,
+            // layout, split action buttons...) are unhelpful defaults regardless of org size —
+            // every group suggested on, the admin can still uncheck individual ones in step 10.
+            'general_ui_enabled' => true,
+            'notifications_enabled' => true,
+            'financial_info_enabled' => true,
+            'project_task_states_enabled' => true,
+            'satisfaction_survey_enabled' => true,
+            'committee_validation_enabled' => true,
             // Same reasoning again: a minimal self-service form vs. a fully qualified support form
             // is an ITIL good practice independent of org size.
             'ticket_template_enabled' => true,
