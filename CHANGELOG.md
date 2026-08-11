@@ -9,6 +9,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-08-11
+
+Sprint 31: Général/Outils intitulés (Lieux, Fabricants, Catégories de la base de connaissances)
+from the third audit, plus a real fix to a long-standing bug in `category_branches`' default
+value handling, caught only after resetting the test environment to a clean slate. No breaking
+changes.
+
+### Sprint 31 — Général/Outils intitulés (2026-08-11)
+
+Continues the third audit (see ROADMAP.md). This sprint covers the Général/Outils block: physical
+locations, hardware manufacturers, and knowledge-base categories.
+
+#### Added
+- `LocationBuilder`: mirrors the entity tree built in step 2 into a matching `Location` tree — one
+  location per entity node, same name, same nesting, scoped to that entity's real ID (not
+  root+recursive like most of this plugin's builders, since a `Location` is real per-site/client
+  data an MSP client shouldn't see another client's). Unlike `TaskCategoryBuilder`, there's no
+  invented generic list — connects the dots on data the admin already entered once, rather than
+  asking for the same site names a second time. No-op on an empty entity tree (mono-entité).
+- `ManufacturerBuilder`: ~29 common IT/office manufacturers (Dell, HP, Cisco, Microsoft...) — a
+  starting point, not every organization's real supplier list.
+- `KnowbaseCategoryBuilder`: reuses `CategoryBuilder`'s 11 top-level branch names/icons instead of
+  a second invented taxonomy, filtered to the branches actually selected in step 5 — a requester
+  browsing the knowledge base sees the same themes as when filing a ticket.
+- New wizard step 15 ("Général & Outils"), three independently-gated toggles.
+
+#### Fixed
+- **A real, long-standing bug** in `Config::prepareInput()`'s `category_branches` handling: it cast
+  the incoming value with `(array)`, which only works for a real PHP array (submitted from the
+  wizard's checkboxes) — `Config::getDefaults()` provides the same field as a JSON-encoded
+  *string*, and `(array) $jsonString` wraps the whole string as one bogus element instead of
+  decoding it, so `array_intersect()` against the 11 valid branch keys always came back empty. Net
+  effect: every genuinely fresh install of this plugin silently started step 5 with zero category
+  branches selected instead of the 11 documented in `getDefaults()`'s own comment and in
+  `ConfigurationProfile`'s suggested defaults. Invisible on the long-lived test instance (a real
+  form submission always overwrites the string with a proper array, masking it after the first
+  save) — only surfaced after resetting the docker test stack to a clean slate this session, which
+  is exactly why that reset was worth doing. Fixed by explicitly `json_decode`-ing when the
+  incoming value is a string.
+
+Validated against the real GLPI 11.0.8 test instance, freshly reset for this session: built a small
+multi-entity tree (2 clients, one with a child site) via the wizard, confirmed in DB the resulting
+`Location` rows exactly mirror it (correct names, nesting, and `entities_id` scoping), 29
+manufacturers created, and 11 KB categories matching the 11 selected category branches. Also
+specifically re-verified the `category_branches` fix by deleting the config row and confirming a
+freshly-recreated one now correctly seeds all 11 branches. Local suite green (phpunit 10/10,
+phpstan clean, php-cs-fixer clean).
+
 ## [0.12.0] - 2026-08-11
 
 Sprint 29: closes most of a third, more systematic audit (every dropdown type under Configuration
@@ -1247,7 +1295,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.13.0
 [0.12.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.12.0
 [0.11.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.11.0
 [0.10.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.10.0
