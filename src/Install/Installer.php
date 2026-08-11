@@ -111,6 +111,12 @@ final class Installer
                 `ldap_rights_enabled` tinyint NOT NULL DEFAULT 0,
                 `ldap_rights_group_template` varchar(255) NOT NULL DEFAULT 'GLPI_{ENTITY}',
                 `ldap_rights_profile` varchar(255) NOT NULL DEFAULT 'Technician',
+                `task_categories_enabled` tinyint NOT NULL DEFAULT 0,
+                `task_templates_enabled` tinyint NOT NULL DEFAULT 0,
+                `solution_library_enabled` tinyint NOT NULL DEFAULT 0,
+                `followup_library_enabled` tinyint NOT NULL DEFAULT 0,
+                `validation_templates_enabled` tinyint NOT NULL DEFAULT 0,
+                `change_problem_templates_enabled` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -200,6 +206,12 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'ldap_rights_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'ldap_rights_group_template', 'string', ['value' => 'GLPI_{ENTITY}']);
             $migration->addField(self::CONFIGS_TABLE, 'ldap_rights_profile', 'string', ['value' => 'Technician']);
+            $migration->addField(self::CONFIGS_TABLE, 'task_categories_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'task_templates_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'solution_library_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'followup_library_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'validation_templates_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'change_problem_templates_enabled', 'bool', ['value' => 0]);
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
