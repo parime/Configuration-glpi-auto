@@ -161,6 +161,9 @@ class Config extends CommonDBTM
             'followup_library_enabled' => 0,
             'validation_templates_enabled' => 0,
             'change_problem_templates_enabled' => 0,
+            'locations_enabled' => 0,
+            'manufacturers_enabled' => 0,
+            'kb_categories_enabled' => 0,
         ];
     }
 
@@ -331,9 +334,18 @@ class Config extends CommonDBTM
         }
 
         if (isset($input['category_branches'])) {
+            // Two different shapes reach here: a real array from the wizard form's
+            // `category_branches[]` checkboxes, or the JSON-encoded string getDefaults() uses for
+            // the fresh-install seed row (add()'s own prepareInputForAdd() call). `(array) $string`
+            // would wrap the whole JSON string as a single bogus element instead of decoding it —
+            // confirmed as a real bug (a fresh install silently got zero branches selected instead
+            // of all 11) via the empty-DB reset done this session, which finally surfaced it.
+            $branches = is_string($input['category_branches'])
+                ? (json_decode($input['category_branches'], true) ?? [])
+                : $input['category_branches'];
             $input['category_branches'] = json_encode(array_values(array_intersect(
                 self::CATEGORY_BRANCH_KEYS,
-                (array) $input['category_branches']
+                is_array($branches) ? $branches : []
             )));
         }
 
@@ -384,7 +396,7 @@ class Config extends CommonDBTM
             $input['ldap_rights_profile'] = 'Technician';
         }
 
-        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled'] as $field) {
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }
