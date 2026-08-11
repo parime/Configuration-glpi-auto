@@ -9,6 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 34 (partie 1/2) — correctif CSRF, ergonomie du wizard (2026-08-11)
+
+Premier lot de Sprint 34 (le reste — icônes sur les intitulés, escalade N1→N2→N3 — suit dans un
+commit séparé). Déclenché par un vrai bug signalé par l'utilisateur en cours de test.
+
+#### Fixed
+- **CSRF `AccessDeniedHttpException` intermittent sur `front/wizard.php`** : le bouton « Terminer »
+  n'avait aucune protection contre un double clic. Le traitement serveur (~25 builders séquentiels)
+  prend plusieurs secondes ; un second clic pendant ce délai repart avec le même jeton CSRF, déjà
+  consommé par GLPI (`Session::validateCSRF()` le retire de la session dès sa première validation
+  réussie) → rejet par le pare-feu du noyau avant même que ce plugin ne s'exécute. Corrigé en
+  désactivant le bouton (et en affichant « Création en cours... ») dès le premier `submit` réel.
+  Confirmé par une entrée réelle dans `files/_log/access-errors.log` au moment du signalement.
+- **Logo d'entité qui déborde de l'en-tête GLPI** : la règle CSS native `.page .glpi-logo` (boîte
+  fixe 100×55px) n'a pas de `background-size`, contrairement à la variante réduite (sidebar
+  repliée) qui l'a déjà — un logo uploadé de dimensions arbitraires débordait donc visuellement
+  dans le menu au lieu de s'adapter. `BrandingBuilder::buildLogoCss()` force désormais
+  `background-size: contain !important` sur cette règle. Texte d'aide ajouté sur le ratio
+  recommandé (~100×55px) à l'étape Personnalisation.
+
+#### Changed
+- Étape Statuts (7) : ajout d'une phrase d'intro sur le rôle des statuts + le commentaire de
+  chaque statut affiché en sous-texte sous son nom (donnée déjà disponible côté serveur, seul
+  l'affichage manquait) — pour que l'admin choisisse en connaissance de cause.
+- Étape Personnalisation (9) : le bouton « Aperçu » (simple pastille de couleur) est remplacé par
+  un mini bloc simulant l'en-tête GLPI (couleur + logo), mis à jour en direct en JS pendant la
+  saisie/le choix de fichier, sans soumettre le formulaire.
+
 ## [0.16.0] - 2026-08-11
 
 Sprint 33: individually selectable element states, plus a real encoding bug fix found while

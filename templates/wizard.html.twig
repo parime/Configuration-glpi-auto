@@ -396,22 +396,26 @@
             <label class="form-check-label" for="cga-state-icons-enabled">{{ __('Ajouter des icônes (visibles dans la liste, le nom lui-même reste sans icône)', 'configurationglpiauto') }}</label>
           </div>
 
+          <p class="text-muted small mb-1">{{ __('Le statut décrit la situation d\'un équipement dans son cycle de vie (en stock, attribué, en panne...) — il sert à filtrer et suivre le parc, indépendamment de sa localisation ou de son entité. Ne cochez que les statuts qui correspondent à des situations réelles chez vous ; chacun peut être appliqué aux ordinateurs, téléphones, moniteurs, licences, etc.', 'configurationglpiauto') }}</p>
           <p class="text-muted small mb-1">{{ __('Les statuts marqués « recommandé » sont ceux utilisés par remise-glpi (déclenchement automatique remise/don/vente/restitution) — les décocher n\'empêche rien de fonctionner mais réduit l\'interopérabilité entre les deux plugins si vous utilisez remise-glpi.', 'configurationglpiauto') }}</p>
           <ul class="list-group" id="cga-state-preview" style="max-width: 560px;">
             {% for state in states_preview %}
-              <li class="list-group-item d-flex align-items-center gap-2">
+              <li class="list-group-item d-flex align-items-start gap-2">
                 <input
                   type="checkbox"
                   name="state_names[]"
                   value="{{ state.name }}"
-                  class="form-check-input cga-state-name-toggle"
+                  class="form-check-input cga-state-name-toggle mt-1"
                   id="cga-state-name-{{ loop.index0 }}"
                   {{ state.name in state_names ? 'checked' : '' }}
                 >
                 <span class="cga-state-preview-icon" style="display: none;">{{ state.icon }}</span>
-                <label class="form-check-label" for="cga-state-name-{{ loop.index0 }}">{{ state.name }}</label>
+                <div class="flex-grow-1">
+                  <label class="form-check-label d-block" for="cga-state-name-{{ loop.index0 }}">{{ state.name }}</label>
+                  {% if state.comment %}<div class="text-muted small">{{ state.comment }}</div>{% endif %}
+                </div>
                 {% if state.name in state_recommended_names %}
-                  <span class="badge bg-azure-lt ms-auto">{{ __('recommandé', 'configurationglpiauto') }}</span>
+                  <span class="badge bg-azure-lt">{{ __('recommandé', 'configurationglpiauto') }}</span>
                 {% endif %}
               </li>
             {% endfor %}
@@ -471,12 +475,23 @@
           <label class="form-check-label" for="cga-branding-enabled">{{ __('Personnaliser la couleur principale', 'configurationglpiauto') }}</label>
         </div>
 
-        <div id="cga-branding-fields" style="display: none;" class="d-flex align-items-center gap-3">
+        <div id="cga-branding-fields" style="display: none;" class="d-flex align-items-start gap-3 flex-wrap">
           <div class="mb-3">
             <label class="form-label">{{ __('Couleur principale', 'configurationglpiauto') }}</label>
             <input type="color" name="branding_primary_color" id="cga-branding-color" class="form-control form-control-color" value="{{ config.branding_primary_color|default('#206bc4') }}">
           </div>
-          <button type="button" class="btn" id="cga-branding-swatch" style="min-width: 140px;">{{ __('Aperçu', 'configurationglpiauto') }}</button>
+
+          <div class="mb-3">
+            <p class="text-muted small mb-1">{{ __('Aperçu en direct de l\'en-tête GLPI', 'configurationglpiauto') }}</p>
+            <div style="border: 1px solid var(--tblr-border-color, #dee2e6); border-radius: 4px; overflow: hidden; width: 320px;">
+              <div id="cga-branding-preview-header" style="display: flex; align-items: center; gap: .5rem; padding: .5rem .75rem;">
+                <div id="cga-branding-preview-logo" style="width: 28px; height: 28px; flex-shrink: 0; border-radius: 4px; background-color: rgba(255,255,255,.25); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+                <strong style="color: #fff;">GLPI</strong>
+                <button type="button" tabindex="-1" id="cga-branding-preview-btn" class="btn btn-sm ms-auto" style="pointer-events: none;">{{ __('Nouveau ticket', 'configurationglpiauto') }}</button>
+              </div>
+            </div>
+            <p class="text-muted small mt-1 mb-0" id="cga-branding-preview-caption"></p>
+          </div>
         </div>
 
         <div class="form-check form-switch mb-2 mt-3">
@@ -492,7 +507,7 @@
           <label class="form-check-label" for="cga-entity-logos-enabled">{{ __('Ajouter un logo par entité', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-entity-logos-fields" style="display: none;">
-          <p class="text-muted small mb-2">{{ __('Un logo par site/client de l\'arborescence (étape 2) — remplace le logo GLPI dans l\'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 Mo maximum.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Un logo par site/client de l\'arborescence (étape 2) — remplace le logo GLPI dans l\'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 Mo maximum. L\'emplacement dans l\'en-tête GLPI est petit (environ 100×55 px) : une image large ou carrée sera automatiquement réduite pour y tenir sans déformation, un format proche de ce ratio donnera le meilleur rendu. Choisissez un fichier pour le voir dans l\'aperçu ci-dessus.', 'configurationglpiauto') }}</p>
           <div id="cga-entity-logos-panels"></div>
         </div>
       </div>
@@ -905,7 +920,7 @@
           style="display: none;"
           onclick="return confirm('{{ __('Ceci va créer/modifier de vraies entités dans GLPI (et, si activés, un calendrier et une personnalisation graphique) selon les choix faits. Continuer ?', 'configurationglpiauto')|e('js') }}');"
         >
-          {{ __('Terminer', 'configurationglpiauto') }}
+          <span id="cga-wizard-finish-label">{{ __('Terminer', 'configurationglpiauto') }}</span>
         </button>
       </div>
     </form>
@@ -923,6 +938,22 @@
   var prevBtn = document.getElementById('cga-wizard-prev');
   var nextBtn = document.getElementById('cga-wizard-next');
   var finishBtn = document.getElementById('cga-wizard-finish');
+  var finishLabel = document.getElementById('cga-wizard-finish-label');
+  var wizardForm = document.getElementById('cga-wizard-form');
+
+  // Le traitement serveur (~25 builders séquentiels) prend plusieurs secondes : sans garde, un
+  // admin qui ne voit rien se passer peut cliquer une seconde fois. Le jeton CSRF est à usage
+  // unique côté GLPI (Session::validateCSRF() le consomme dès sa première validation) — un second
+  // clic renverrait donc le même jeton déjà consommé et se ferait rejeter par le pare-feu GLPI
+  // (AccessDeniedHttpException brute, avant même que ce plugin ne s'exécute). Désactiver le bouton
+  // dès le premier submit réel (après confirm()) empêche mécaniquement cette resoumission.
+  wizardForm.addEventListener('submit', function () {
+    finishBtn.disabled = true;
+    prevBtn.disabled = true;
+    nextBtn.disabled = true;
+    finishLabel.textContent = "{{ __('Création en cours...', 'configurationglpiauto')|e('js') }}";
+  });
+
   var stepLabels = [
     "{{ __('Profil', 'configurationglpiauto')|e('js') }}",
     "{{ __('Entités', 'configurationglpiauto')|e('js') }}",
@@ -1083,20 +1114,26 @@
   var brandingEnabledInput = document.getElementById('cga-branding-enabled');
   var brandingFields = document.getElementById('cga-branding-fields');
   var brandingColorInput = document.getElementById('cga-branding-color');
-  var brandingSwatch = document.getElementById('cga-branding-swatch');
+  var brandingPreviewHeader = document.getElementById('cga-branding-preview-header');
+  var brandingPreviewBtn = document.getElementById('cga-branding-preview-btn');
+  var brandingPreviewLogo = document.getElementById('cga-branding-preview-logo');
+  var brandingPreviewCaption = document.getElementById('cga-branding-preview-caption');
 
   function toggleBrandingFields() {
     brandingFields.style.display = brandingEnabledInput.checked ? 'flex' : 'none';
   }
-  function updateSwatch() {
-    brandingSwatch.style.backgroundColor = brandingColorInput.value;
-    brandingSwatch.style.color = '#fff';
-    brandingSwatch.style.borderColor = brandingColorInput.value;
+  // Mini simulation de l'en-tête GLPI (.glpi-logo, --tblr-primary) — met à jour la couleur en
+  // direct depuis le sélecteur, sans attendre la soumission du formulaire.
+  function updatePreview() {
+    brandingPreviewHeader.style.backgroundColor = brandingColorInput.value;
+    brandingPreviewBtn.style.backgroundColor = '#fff';
+    brandingPreviewBtn.style.color = brandingColorInput.value;
+    brandingPreviewBtn.style.border = 'none';
   }
   brandingEnabledInput.addEventListener('change', toggleBrandingFields);
-  brandingColorInput.addEventListener('input', updateSwatch);
+  brandingColorInput.addEventListener('input', updatePreview);
   toggleBrandingFields();
-  updateSwatch();
+  updatePreview();
 
   var entityLogosEnabledInput = document.getElementById('cga-entity-logos-enabled');
   var entityLogosFields = document.getElementById('cga-entity-logos-fields');
@@ -1128,6 +1165,21 @@
       input.name = 'entity_logo_' + i;
       input.accept = 'image/png,image/jpeg,image/webp,image/gif';
       input.className = 'form-control form-control-sm';
+      // Aperçu instantané côté client (FileReader), indépendant de la conversion en data URI
+      // faite côté serveur à la soumission (front/wizard.php) — juste pour visualiser le choix
+      // avant d'envoyer le formulaire.
+      input.addEventListener('change', function () {
+        var file = input.files && input.files[0];
+        if (!file) {
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function () {
+          brandingPreviewLogo.style.backgroundImage = 'url(' + reader.result + ')';
+          brandingPreviewCaption.textContent = "{{ __('Aperçu :', 'configurationglpiauto')|e('js') }} " + (node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}");
+        };
+        reader.readAsDataURL(file);
+      });
       wrapper.appendChild(label);
       wrapper.appendChild(input);
       entityLogosPanels.appendChild(wrapper);
