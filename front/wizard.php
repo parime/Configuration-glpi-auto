@@ -18,16 +18,22 @@
 use GlpiPlugin\Configurationglpiauto\BrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\CalendarBuilder;
 use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
+use GlpiPlugin\Configurationglpiauto\ChangeProblemTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
+use GlpiPlugin\Configurationglpiauto\FollowupLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
+use GlpiPlugin\Configurationglpiauto\SolutionLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
+use GlpiPlugin\Configurationglpiauto\TaskCategoryBuilder;
+use GlpiPlugin\Configurationglpiauto\TaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
+use GlpiPlugin\Configurationglpiauto\ValidationTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\WaitReasonBuilder;
 
 Session::checkRight(Config::$rightname, READ);
@@ -111,11 +117,18 @@ if (isset($_POST['finish'])) {
     $statesCreated = (new StateBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
     $ldapRulesCreated = (new RuleRightBuilder())->build($config);
+    $taskCategoriesCreated = (new TaskCategoryBuilder())->build($config);
+    // Runs after TaskCategoryBuilder: resolves task categories by name lookup.
+    $taskTemplatesCreated = (new TaskTemplateBuilder())->build($config);
+    $solutionTemplatesCreated = (new SolutionLibraryBuilder())->build($config);
+    $followupTemplatesCreated = (new FollowupLibraryBuilder())->build($config);
+    $validationTemplatesCreated = (new ValidationTemplateBuilder())->build($config);
 
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
     $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
     $ticketTemplatesApplied = (new TicketTemplateBuilder())->apply($config);
     $helpdeskFormApplied = (new HelpdeskFormBuilder())->apply($config);
+    $changeProblemTemplatesApplied = (new ChangeProblemTemplateBuilder())->apply($config);
 
     $messages = [];
     $messages[] = empty($created)
@@ -162,6 +175,24 @@ if (isset($_POST['finish'])) {
     if ($ldapRulesCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de droits LDAP créées.', 'configurationglpiauto'), $ldapRulesCreated);
     }
+    if ($taskCategoriesCreated > 0) {
+        $messages[] = sprintf(__('%d catégories de tâches créées.', 'configurationglpiauto'), $taskCategoriesCreated);
+    }
+    if ($taskTemplatesCreated > 0) {
+        $messages[] = sprintf(__('%d gabarits de tâche créés.', 'configurationglpiauto'), $taskTemplatesCreated);
+    }
+    if ($solutionTemplatesCreated > 0) {
+        $messages[] = sprintf(__('%d gabarits de solution créés.', 'configurationglpiauto'), $solutionTemplatesCreated);
+    }
+    if ($followupTemplatesCreated > 0) {
+        $messages[] = sprintf(__('%d gabarits de suivis créés.', 'configurationglpiauto'), $followupTemplatesCreated);
+    }
+    if ($validationTemplatesCreated > 0) {
+        $messages[] = sprintf(__('%d gabarits de validation créés.', 'configurationglpiauto'), $validationTemplatesCreated);
+    }
+    if ($changeProblemTemplatesApplied) {
+        $messages[] = __('Modèles de changement et de problème créés et assignés aux profils.', 'configurationglpiauto');
+    }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 
     Html::redirect(ConfigurationProfile::getSearchURL());
@@ -199,6 +230,11 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'states_preview'   => StateBuilder::getStatesPreview(),
     'wait_reasons_preview' => WaitReasonBuilder::getReasonsPreview(),
     'native_profile_names' => Config::NATIVE_PROFILE_NAMES,
+    'task_categories_preview' => TaskCategoryBuilder::getCategoriesPreview(),
+    'task_templates_preview' => TaskTemplateBuilder::getLibraryPreview(),
+    'solution_library_preview' => SolutionLibraryBuilder::getLibraryPreview(),
+    'followup_library_preview' => FollowupLibraryBuilder::getLibraryPreview(),
+    'validation_templates_preview' => ValidationTemplateBuilder::getLibraryPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 

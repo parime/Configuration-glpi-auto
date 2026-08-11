@@ -636,10 +636,100 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 13 : Récapitulatif #}
+      {# ---------------------------------------------------------------- Étape 13 : Tâches & solutions #}
       <div class="cga-wizard-step" data-step="13" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 13 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets et les droits LDAP.', 'configurationglpiauto') }}</p>
+        <h3 class="mb-1">{{ __('Étape 13 : Tâches & solutions', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : des intitulés prêts à l\'emploi pour qualifier le travail technique et clôturer les tickets, aucun n\'existe par défaut dans GLPI.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="task_categories_enabled" value="0">
+          <input type="checkbox" name="task_categories_enabled" value="1" class="form-check-input" id="cga-task-categories-enabled" {{ config.task_categories_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-task-categories-enabled">{{ __('Créer les catégories de tâches', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-task-categories-fields" style="display: none;" class="mb-3">
+          <ul class="list-group" style="max-width: 480px;">
+            {% for cat in task_categories_preview %}
+              <li class="list-group-item">{{ cat.icon }} {{ cat.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="task_templates_enabled" value="0">
+          <input type="checkbox" name="task_templates_enabled" value="1" class="form-check-input" id="cga-task-templates-enabled" {{ config.task_templates_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-task-templates-enabled">{{ __('Créer les gabarits de tâche (checklists réutilisables)', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-task-templates-fields" style="display: none;" class="mb-3">
+          <ul class="list-group" style="max-width: 560px;">
+            {% for tpl in task_templates_preview %}
+              <li class="list-group-item">{{ tpl.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="solution_library_enabled" value="0">
+          <input type="checkbox" name="solution_library_enabled" value="1" class="form-check-input" id="cga-solution-library-enabled" {{ config.solution_library_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-solution-library-enabled">{{ __('Créer les types et gabarits de solution', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-solution-library-fields" style="display: none;">
+          <p class="text-muted small mb-1">{{ __('Une taxonomie de clôture standard (assistance, résolution technique, sécurité, informationnel, gestion des accès), chacune visible seulement sur les types de ticket ITIL pertinents.', 'configurationglpiauto') }}</p>
+          {% for type in solution_library_preview %}
+            <div class="mb-2">
+              <strong>{{ type.name }}</strong>
+              <ul class="mb-0">
+                {% for tpl in type.templates %}
+                  <li>{{ tpl.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 14 : Suivis & validations #}
+      <div class="cga-wizard-step" data-step="14" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 14 : Suivis, validations & modèles', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : des messages types pour garder le demandeur informé, des gabarits de demande de validation, et un modèle par défaut pour les changements et les problèmes.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="followup_library_enabled" value="0">
+          <input type="checkbox" name="followup_library_enabled" value="1" class="form-check-input" id="cga-followup-library-enabled" {{ config.followup_library_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-followup-library-enabled">{{ __('Créer les gabarits de suivis', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-followup-library-fields" style="display: none;" class="mb-3">
+          <ul class="list-group" style="max-width: 560px;">
+            {% for tpl in followup_library_preview %}
+              <li class="list-group-item">{{ tpl.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="validation_templates_enabled" value="0">
+          <input type="checkbox" name="validation_templates_enabled" value="1" class="form-check-input" id="cga-validation-templates-enabled" {{ config.validation_templates_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-validation-templates-enabled">{{ __('Créer les gabarits de validation', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-validation-templates-fields" style="display: none;" class="mb-3">
+          <ul class="list-group" style="max-width: 560px;">
+            {% for tpl in validation_templates_preview %}
+              <li class="list-group-item">{{ tpl.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="change_problem_templates_enabled" value="0">
+          <input type="checkbox" name="change_problem_templates_enabled" value="1" class="form-check-input" id="cga-change-problem-templates-enabled" {{ config.change_problem_templates_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-change-problem-templates-enabled">{{ __('Créer un modèle de changement et de problème par défaut', 'configurationglpiauto') }}</label>
+        </div>
+        <p class="text-muted small">{{ __('Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service n\'a aucun droit sur les changements/problèmes, la distinction base/support ne s\'applique pas.', 'configurationglpiauto') }}</p>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 15 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="15" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 15 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP et les intitulés de tâches/solutions/validations.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -681,6 +771,12 @@
           <li class="list-group-item">
             <strong>{{ __('Droits LDAP', 'configurationglpiauto') }} :</strong> <span id="cga-summary-ldap-rights"></span>
           </li>
+          <li class="list-group-item">
+            <strong>{{ __('Tâches & solutions', 'configurationglpiauto') }} :</strong> <span id="cga-summary-tasks-solutions"></span>
+          </li>
+          <li class="list-group-item">
+            <strong>{{ __('Suivis, validations & modèles CP', 'configurationglpiauto') }} :</strong> <span id="cga-summary-followups-validations"></span>
+          </li>
         </ul>
       </div>
 
@@ -705,7 +801,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 13;
+  var STEP_COUNT = 15;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -726,6 +822,8 @@
     "{{ __('Réglages généraux', 'configurationglpiauto')|e('js') }}",
     "{{ __('Modèles de tickets', 'configurationglpiauto')|e('js') }}",
     "{{ __('Droits LDAP', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Tâches & solutions', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Suivis & validations', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
 
@@ -951,6 +1049,24 @@
   ldapRightsTemplateInput.addEventListener('input', updateLdapRightsPreview);
   ldapRightsProfileInput.addEventListener('change', updateLdapRightsPreview);
   toggleLdapRightsFields();
+
+  function wireSimpleToggle(checkboxId, fieldsId) {
+    var checkbox = document.getElementById(checkboxId);
+    var fields = document.getElementById(fieldsId);
+    function toggle() {
+      fields.style.display = checkbox.checked ? '' : 'none';
+    }
+    checkbox.addEventListener('change', toggle);
+    toggle();
+    return checkbox;
+  }
+
+  var taskCategoriesEnabledInput = wireSimpleToggle('cga-task-categories-enabled', 'cga-task-categories-fields');
+  var taskTemplatesEnabledInput = wireSimpleToggle('cga-task-templates-enabled', 'cga-task-templates-fields');
+  var solutionLibraryEnabledInput = wireSimpleToggle('cga-solution-library-enabled', 'cga-solution-library-fields');
+  var followupLibraryEnabledInput = wireSimpleToggle('cga-followup-library-enabled', 'cga-followup-library-fields');
+  var validationTemplatesEnabledInput = wireSimpleToggle('cga-validation-templates-enabled', 'cga-validation-templates-fields');
+  var changeProblemTemplatesEnabledInput = document.getElementById('cga-change-problem-templates-enabled');
 
   // Per-client/site calendar & SLA (Sprint 13): only meaningful once there's more than one
   // top-level entity to have its own settings, i.e. any multi-entité mode — not mono. Reuses
@@ -1488,6 +1604,22 @@
     document.getElementById('cga-summary-ldap-rights').textContent = (ldapRightsEnabledInput.checked && ldapRightsLeafCount > 0)
       ? (ldapRightsLeafCount + ' ' + "{{ __('règle(s)', 'configurationglpiauto')|e('js') }}" + ' — ' + ldapRightsProfileInput.value)
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+
+    var tasksSolutionsParts = [];
+    if (taskCategoriesEnabledInput.checked) { tasksSolutionsParts.push("{{ __('catégories de tâches', 'configurationglpiauto')|e('js') }}"); }
+    if (taskTemplatesEnabledInput.checked) { tasksSolutionsParts.push("{{ __('gabarits de tâche', 'configurationglpiauto')|e('js') }}"); }
+    if (solutionLibraryEnabledInput.checked) { tasksSolutionsParts.push("{{ __('types/gabarits de solution', 'configurationglpiauto')|e('js') }}"); }
+    document.getElementById('cga-summary-tasks-solutions').textContent = tasksSolutionsParts.length
+      ? tasksSolutionsParts.join(', ')
+      : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+
+    var followupsValidationsParts = [];
+    if (followupLibraryEnabledInput.checked) { followupsValidationsParts.push("{{ __('gabarits de suivis', 'configurationglpiauto')|e('js') }}"); }
+    if (validationTemplatesEnabledInput.checked) { followupsValidationsParts.push("{{ __('gabarits de validation', 'configurationglpiauto')|e('js') }}"); }
+    if (changeProblemTemplatesEnabledInput.checked) { followupsValidationsParts.push("{{ __('modèles changement/problème', 'configurationglpiauto')|e('js') }}"); }
+    document.getElementById('cga-summary-followups-validations').textContent = followupsValidationsParts.length
+      ? followupsValidationsParts.join(', ')
+      : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
   }
 
   function showStep(n) {
@@ -1611,6 +1743,14 @@
       }
     });
     syncGeneralSettingsSelectAll();
+
+    ['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled'].forEach(function (field) {
+      if (typeof defaults[field] !== 'undefined') {
+        var input = document.getElementById('cga-' + field.replace(/_/g, '-'));
+        input.checked = !!defaults[field];
+        input.dispatchEvent(new Event('change'));
+      }
+    });
 
     if (typeof defaults.ticket_template_enabled !== 'undefined') {
       ticketTemplateEnabledInput.checked = !!defaults.ticket_template_enabled;
