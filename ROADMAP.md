@@ -201,12 +201,17 @@ réutilisables), Types de solutions + vraie bibliothèque de gabarits de solutio
 bibliothèque de gabarits de suivis (`FollowupLibraryBuilder`, 5 gabarits, distincts par nom de
 ceux liés aux raisons d'attente), Gabarits de validation (`ValidationTemplateBuilder`, 5
 gabarits). Sources des demandes (`RequestType`) — **vérifié, déjà suffisant** : GLPI ships 6
-valeurs par défaut (Helpdesk/E-Mail/Phone/Direct/Written/Other), rien à construire. Reste
-partiel : Statuts de projet (`GeneralSettingsBuilder` ne fait que *mapper* les 3 `ProjectState`
-natifs, n'en crée aucun nouveau — voir Sprint 30). Pas fait : Types de projet (`ProjectType`),
-Types de tâche de projet (`ProjectTaskType`), Gabarits de tâches de projets
-(`ProjectTaskTemplate`), Gabarits d'évènements externes (`PlanningExternalEventTemplate`),
-Catégories d'évènements (`PlanningEventCategory` — priorité basse, usage assez spécifique).
+valeurs par défaut (Helpdesk/E-Mail/Phone/Direct/Written/Other), rien à construire. **Fait
+(Sprint 30, 2026-08-11)** : Types de projet + types de tâche de projet
+(`ProjectTaxonomyBuilder`, 5 + 8, généralisés sur la pratique PM standard — l'export de production
+n'avait pas personnalisé ce point, seulement les statuts natifs), Gabarits de tâches de projets
+(`ProjectTaskTemplateBuilder`, 3 checklists réutilisables). Statuts de projet
+(`ProjectState`) — **vérifié, déjà suffisant** : GLPI ships les 3 statuts natifs
+(New/Processing/Closed), non personnalisés non plus dans l'export de production audité — pas de
+bonne pratique universelle identifiée pour en ajouter d'autres, `GeneralSettingsBuilder` continue
+de se contenter de les *mapper* pour le suivi d'avancement des tâches. Pas fait, priorité basse
+(usage assez spécifique) : Gabarits d'évènements externes (`PlanningExternalEventTemplate`),
+Catégories d'évènements (`PlanningEventCategory`).
 
 **Général** (5 intitulés) — fait : Statuts des éléments (`StateBuilder`). **Fait (Sprint 31,
 2026-08-11)** : Lieux (`LocationBuilder` — mirroir de l'arborescence d'entités de l'étape 2, pas
@@ -242,8 +247,10 @@ exemples à traiter.
 **Décision utilisateur (2026-08-11)** : traiter tout le bloc Assistance + Général/Outils listés
 comme "pas fait" ci-dessus. Découpé en plusieurs sprints vu le volume — voir CHANGELOG.md pour
 l'avancement réel sprint par sprint (ce document décrit l'état au moment de l'audit, pas l'état
-courant). Sprint 29 (cycle de vie ticket/tâche/changement/problème) fait, Sprint 31 (Général/
-Outils) fait. Reste : Sprint 30 (Projets).
+courant). Sprint 29 (cycle de vie ticket/tâche/changement/problème), Sprint 31 (Général/Outils)
+et Sprint 30 (Projets) sont faits — **la troisième vague d'audit est close**. Restent en attente,
+non cadrés techniquement : les intitulés basse-priorité explicitement laissés de côté ci-dessus
+(gabarits/catégories d'évènements planning), et le logo par entité (voir plus bas).
 
 **Bug corrigé au passage (Sprint 31, 2026-08-11)** : `Config::prepareInput()`'s traitement de
 `category_branches` castait `(array)` une chaîne JSON au lieu de la décoder — sur une instance

@@ -9,6 +9,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-08-11
+
+Sprint 30: Projets intitulés (types de projet, types de tâche de projet, gabarits de tâches de
+projets) — the last sprint from the third audit. No breaking changes.
+
+### Sprint 30 — Projets intitulés (2026-08-11)
+
+Closes the third audit (see ROADMAP.md). This sprint covers the Projets block: `ProjectType`,
+`ProjectTaskType`, and `ProjectTaskTemplate`, none of which GLPI ships by default.
+
+#### Added
+- `ProjectTaxonomyBuilder`: 5 `ProjectType` rows (Interne, Client/Prestation, Infrastructure,
+  Déploiement/Migration, R&D/Innovation) + 8 `ProjectTaskType` rows (Analyse & Cadrage,
+  Conception, Développement, Tests & Recette, Déploiement, Documentation, Réunion & Pilotage,
+  Formation). Unlike most other builders in this plugin, the audited production export had no
+  customization to draw from here (its own project-related export only had GLPI's 3 native
+  `ProjectState` rows, unmodified) — generalized from standard PM practice instead, cross-checked
+  against GLPI's own project-management documentation.
+- `ProjectTaskTemplateBuilder`: 3 reusable `ProjectTaskTemplate` rows (cadrage initial, point
+  d'avancement, revue de clôture), each resolving its `ProjectTaskType` by name against whatever
+  `ProjectTaxonomyBuilder` created — same independent-resolution pattern used throughout this
+  plugin (`TaskTemplateBuilder` against `TaskCategoryBuilder`, etc.).
+- New wizard step 16 ("Projets"), two independently-gated toggles.
+
+#### Verified, not built
+- `ProjectState`: GLPI ships 3 native rows (New/Processing/Closed) — confirmed unmodified in the
+  audited production export too, no universal good-practice case found for adding more.
+  `GeneralSettingsBuilder` continues to only *map* these 3 to the unstarted/in-progress/completed
+  buckets used for progress tracking.
+
+Validated against the real GLPI 11.0.8 test instance: confirmed in DB the exact 5 project types,
+8 task types, and 3 templates with correct `projecttasktypes_id` linkage. Local suite green
+(phpunit 10/10, phpstan clean, php-cs-fixer clean).
+
 ## [0.13.0] - 2026-08-11
 
 Sprint 31: Général/Outils intitulés (Lieux, Fabricants, Catégories de la base de connaissances)
@@ -1295,7 +1329,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.13.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.14.0...HEAD
+[0.14.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.14.0
 [0.13.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.13.0
 [0.12.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.12.0
 [0.11.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.11.0
