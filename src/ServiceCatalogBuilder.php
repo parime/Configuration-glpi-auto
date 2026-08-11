@@ -68,8 +68,8 @@ class ServiceCatalogBuilder
         ['branch' => 'it', 'name' => "Demande d'un nouvel écran", 'path' => ['Poste de travail', 'Écran & Affichage']],
         ['branch' => 'it', 'name' => "Demande d'un ordinateur portable", 'path' => ['Poste de travail', 'Portable']],
         ['branch' => 'it', 'name' => 'Demande de téléphone professionnel', 'path' => ['Téléphonie & VoIP', 'Smartphone & Flotte mobile']],
-        ['branch' => 'it', 'name' => "Demande de boîte mail ou d'alias", 'path' => ['Microsoft 365 / Workspace', 'Messagerie']],
-        ['branch' => 'it', 'name' => "Demande d'accès à un espace Teams / SharePoint", 'path' => ['Microsoft 365 / Workspace', 'Collaboration']],
+        ['branch' => 'it', 'name' => "Demande de boîte mail ou d'alias", 'path' => ['Messagerie & Collaboration', 'Messagerie']],
+        ['branch' => 'it', 'name' => "Demande d'accès à un espace collaboratif d'équipe", 'path' => ['Messagerie & Collaboration', 'Collaboration']],
         // Bâtiment & Moyens Généraux
         ['branch' => 'batiment', 'name' => 'Signaler un problème de chauffage ou climatisation', 'path' => ['CVC']],
         ['branch' => 'batiment', 'name' => "Demande d'intervention électricité", 'path' => ['Électricité & Éclairage']],
@@ -86,6 +86,24 @@ class ServiceCatalogBuilder
         ['branch' => 'securite', 'name' => "Demande de badge d'accès", 'path' => ["Contrôle d'Accès & Badges"]],
         // Services Généraux & Vie au Travail
         ['branch' => 'services_generaux', 'name' => 'Demande de fournitures de bureau', 'path' => ['Consommables & Fournitures']],
+    ];
+
+    // GLPI's own bundled illustration catalog (`public/lib/glpi-project/illustrations/icons.json`,
+    // resolved via `Glpi\UI\IllustrationManager` — no custom SVG import needed, these ship with
+    // core already) — one recognizable icon per branch instead of the generic default
+    // ("request-service") every rubric/form falls back to when `illustration` is left unset.
+    private const BRANCH_ILLUSTRATIONS = [
+        'it' => 'asset-desktop-1',
+        'batiment' => 'building',
+        'flotte' => 'car',
+        'rh' => 'group',
+        'achats' => 'order-supplies',
+        'securite' => 'security',
+        'services_generaux' => 'inventory',
+        'administratif' => 'legal',
+        'communication' => 'presentation',
+        'qualite' => 'diagnostic',
+        'maintenance' => 'factory',
     ];
 
     /**
@@ -106,7 +124,7 @@ class ServiceCatalogBuilder
         $formCategoryIds = [];
         foreach ($branches as $key) {
             if (isset($branchLookup[$key])) {
-                $formCategoryIds[$key] = $this->getOrCreateFormCategory($branchLookup[$key]);
+                $formCategoryIds[$key] = $this->getOrCreateFormCategory($branchLookup[$key], self::BRANCH_ILLUSTRATIONS[$key] ?? '');
             }
         }
 
@@ -119,7 +137,8 @@ class ServiceCatalogBuilder
             if ($itilCategoryId === null) {
                 continue;
             }
-            $this->getOrCreateServiceForm($service['name'], $formCategoryIds[$service['branch']], $itilCategoryId);
+            $illustration = self::BRANCH_ILLUSTRATIONS[$service['branch']] ?? '';
+            $this->getOrCreateServiceForm($service['name'], $formCategoryIds[$service['branch']], $itilCategoryId, $illustration);
             $count++;
         }
 
@@ -135,13 +154,14 @@ class ServiceCatalogBuilder
         return self::SERVICES;
     }
 
-    private function getOrCreateFormCategory(array $branch): int
+    private function getOrCreateFormCategory(array $branch, string $illustration): int
     {
         $item = new FormCategory();
         if (!$item->getFromDBByCrit(['name' => $branch['icon'] . ' ' . $branch['name'], 'forms_categories_id' => 0])) {
             $id = $item->add([
                 'name' => $branch['icon'] . ' ' . $branch['name'],
                 'forms_categories_id' => 0,
+                'illustration' => $illustration,
             ]);
             $item->getFromDB($id);
         }
@@ -171,7 +191,7 @@ class ServiceCatalogBuilder
         return $parentId;
     }
 
-    private function getOrCreateServiceForm(string $name, int $formCategoryId, int $itilCategoryId): void
+    private function getOrCreateServiceForm(string $name, int $formCategoryId, int $itilCategoryId, string $illustration): void
     {
         $form = new Form();
         if (!$form->getFromDBByCrit(['name' => $name, 'forms_categories_id' => $formCategoryId])) {
@@ -181,6 +201,7 @@ class ServiceCatalogBuilder
                 'entities_id' => 0,
                 'is_recursive' => 1,
                 'is_active' => 1,
+                'illustration' => $illustration,
             ]);
             $form->getFromDB($formId);
             $this->addQuestions((int) $form->getID());
