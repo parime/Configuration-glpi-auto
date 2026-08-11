@@ -296,9 +296,47 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 6 : Statuts des éléments #}
+      {# ---------------------------------------------------------------- Étape 6 : Catalogue de services #}
       <div class="cga-wizard-step" data-step="6" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 6 : Statuts des éléments', 'configurationglpiauto') }}</h3>
+        <h3 class="mb-1">{{ __('Étape 6 : Catalogue de services', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : des formulaires prêts à l\'emploi dans le portail libre-service — l\'utilisateur choisit un service précis, jamais une catégorie ; le ticket est automatiquement routé vers la bonne catégorie.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="service_catalog_enabled" value="0">
+          <input
+            type="checkbox"
+            name="service_catalog_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-service-catalog-enabled"
+            {{ config.service_catalog_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-service-catalog-enabled">{{ __('Créer le catalogue de services', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-service-catalog-fields" style="display: none;">
+          <p class="text-muted small">{{ __('Un service par ligne, groupé par branche cochée à l\'étape Catégories — décocher une branche là-bas retire aussi ses services ici.', 'configurationglpiauto') }}</p>
+          <div id="cga-service-catalog-preview">
+            {% for branch in categories_preview %}
+              {% set branch_services = services_preview|filter(s => s.branch == branch.key) %}
+              {% if branch_services|length %}
+                <div class="cga-service-branch-preview mb-2" data-branch="{{ branch.key }}">
+                  <strong>{{ branch.icon }} {{ branch.name }}</strong>
+                  <ul class="mb-0">
+                    {% for service in branch_services %}
+                      <li>{{ service.name }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 7 : Statuts des éléments #}
+      <div class="cga-wizard-step" data-step="7" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 7 : Statuts des éléments', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : un jeu de statuts standards pour le parc (ordinateurs, moniteurs, téléphones...) — aucun n\'existe par défaut dans GLPI.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -339,9 +377,9 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 7 : Branding #}
-      <div class="cga-wizard-step" data-step="7" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 7 : Personnalisation graphique', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 8 : Branding #}
+      <div class="cga-wizard-step" data-step="8" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 8 : Personnalisation graphique', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : une couleur principale appliquée à l\'interface des entités créées.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -366,9 +404,9 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 8 : Réglages généraux #}
-      <div class="cga-wizard-step" data-step="8" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 8 : Réglages généraux GLPI', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 9 : Réglages généraux #}
+      <div class="cga-wizard-step" data-step="9" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 9 : Réglages généraux GLPI', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l\'usage — cette étape les corrige en une fois.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -395,9 +433,9 @@
         </ul>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 9 : Modèles de tickets #}
-      <div class="cga-wizard-step" data-step="9" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 9 : Modèles de tickets', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 10 : Modèles de tickets #}
+      <div class="cga-wizard-step" data-step="10" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 10 : Modèles de tickets', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l\'interface complète pour le support.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -448,10 +486,10 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 10 : Récapitulatif #}
-      <div class="cga-wizard-step" data-step="10" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 10 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, les statuts, la personnalisation graphique, les réglages généraux et les modèles de tickets.', 'configurationglpiauto') }}</p>
+      {# ---------------------------------------------------------------- Étape 11 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="11" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 11 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, la personnalisation graphique, les réglages généraux et les modèles de tickets.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -471,6 +509,9 @@
           </li>
           <li class="list-group-item">
             <strong>{{ __('Catégories', 'configurationglpiauto') }} :</strong> <span id="cga-summary-categories"></span>
+          </li>
+          <li class="list-group-item">
+            <strong>{{ __('Catalogue de services', 'configurationglpiauto') }} :</strong> <span id="cga-summary-service-catalog"></span>
           </li>
           <li class="list-group-item">
             <strong>{{ __('Statuts des éléments', 'configurationglpiauto') }} :</strong> <span id="cga-summary-states"></span>
@@ -508,7 +549,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 10;
+  var STEP_COUNT = 11;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -522,6 +563,7 @@
     "{{ __('Calendrier', 'configurationglpiauto')|e('js') }}",
     "{{ __('SLA', 'configurationglpiauto')|e('js') }}",
     "{{ __('Catégories', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Catalogue de services', 'configurationglpiauto')|e('js') }}",
     "{{ __('Statuts', 'configurationglpiauto')|e('js') }}",
     "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
     "{{ __('Réglages généraux', 'configurationglpiauto')|e('js') }}",
@@ -607,6 +649,10 @@
     if (preview) {
       preview.style.display = toggle.checked ? '' : 'none';
     }
+    var servicePreview = document.querySelector('.cga-service-branch-preview[data-branch="' + toggle.dataset.branch + '"]');
+    if (servicePreview) {
+      servicePreview.style.display = toggle.checked ? '' : 'none';
+    }
   }
   categoryEnabledInput.addEventListener('change', toggleCategoryFields);
   categoryIconsEnabledInput.addEventListener('change', toggleCategoryIcons);
@@ -616,6 +662,14 @@
   });
   toggleCategoryFields();
   toggleCategoryIcons();
+
+  var serviceCatalogEnabledInput = document.getElementById('cga-service-catalog-enabled');
+  var serviceCatalogFields = document.getElementById('cga-service-catalog-fields');
+  function toggleServiceCatalogFields() {
+    serviceCatalogFields.style.display = serviceCatalogEnabledInput.checked ? '' : 'none';
+  }
+  serviceCatalogEnabledInput.addEventListener('change', toggleServiceCatalogFields);
+  toggleServiceCatalogFields();
 
   var stateEnabledInput = document.getElementById('cga-state-enabled');
   var stateFields = document.getElementById('cga-state-fields');
@@ -1168,6 +1222,11 @@
         + ' / ' + categoryBranchToggles.length + ' ' + "{{ __('branches', 'configurationglpiauto')|e('js') }}"
         + (categoryIconsEnabledInput.checked ? " {{ __('(avec icônes)', 'configurationglpiauto')|e('js') }}" : '');
 
+    document.getElementById('cga-summary-service-catalog').textContent = !serviceCatalogEnabledInput.checked
+      ? "{{ __('Aucun', 'configurationglpiauto')|e('js') }}"
+      : Array.prototype.filter.call(document.querySelectorAll('.cga-service-branch-preview'), function (el) { return el.style.display !== 'none'; }).length
+        + ' ' + "{{ __('branches avec services', 'configurationglpiauto')|e('js') }}";
+
     document.getElementById('cga-summary-states').textContent = !stateEnabledInput.checked
       ? "{{ __('Aucun', 'configurationglpiauto')|e('js') }}"
       : ({{ states_preview|length }} + ' ' + "{{ __('statuts', 'configurationglpiauto')|e('js') }}" + (stateIconsEnabledInput.checked ? " {{ __('(avec icônes)', 'configurationglpiauto')|e('js') }}" : ''));
@@ -1274,6 +1333,11 @@
     if (typeof defaults.category_icons_enabled !== 'undefined') {
       categoryIconsEnabledInput.checked = !!defaults.category_icons_enabled;
       toggleCategoryIcons();
+    }
+
+    if (typeof defaults.service_catalog_enabled !== 'undefined') {
+      serviceCatalogEnabledInput.checked = !!defaults.service_catalog_enabled;
+      toggleServiceCatalogFields();
     }
 
     if (typeof defaults.state_enabled !== 'undefined') {

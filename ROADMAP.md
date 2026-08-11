@@ -134,9 +134,10 @@ basique, profils de démarrage.
    du délai écoulé, réassignation à un niveau 2, priorité relevée). Sans ça, le SLA existe mais
    rien ne prévient personne avant qu'il soit dépassé.
 
-5. **Catalogue de services** (déjà dans la feuille de route initiale, jamais fait). Un petit
-   catalogue de demandes courantes (accès, matériel, compte...) avec SLA propre par type de
-   demande — sépare les demandes de service des incidents, pratique ITIL de base.
+5. **Catalogue de services — fait (Sprint 23, 2026-08-11).** `ServiceCatalogBuilder`, sur le
+   système natif de formulaires de GLPI 11 (`Glpi\Form\Form`) : 23 services sur 7 branches, chacun
+   ne demandant que titre + description, routé automatiquement vers la bonne catégorie de ticket
+   sans que l'utilisateur ait à la choisir. Validé de bout en bout avec un vrai compte Self-Service.
 
 6. **Droits/profils GLPI par entité — cloisonnement.** Le wizard configure la structure
    d'entités mais ne touche jamais aux profils GLPI (Technicien/Admin/Self-Service/Observateur) ni

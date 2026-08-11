@@ -172,6 +172,9 @@ class ConfigurationProfile extends CommonDBTM
             // and Observers/Location on GLPI's native self-service forms — same ITIL good-practice
             // reasoning, independent of org size.
             'helpdesk_form_hide_fields' => true,
+            // A real service catalog reduces free-text "hors catalogue" tickets and routes each
+            // request to the right category automatically — same universal reasoning.
+            'service_catalog_enabled' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual
