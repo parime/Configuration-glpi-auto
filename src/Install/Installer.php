@@ -18,6 +18,7 @@
 namespace GlpiPlugin\Configurationglpiauto\Install;
 
 use DBConnection;
+use DropdownTranslation;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\Profile;
@@ -209,6 +210,77 @@ final class Installer
             ['is_helpdeskvisible' => 0],
             ['itilcategories_id' => 0, 'name' => ['Incidents', 'Demandes', 'Problèmes', 'Changements']]
         );
+
+        // Renamed to a vendor-neutral name (user feedback: not every organization is on
+        // Microsoft 365) — restricted to this exact, distinctive name so nothing an admin created
+        // independently gets touched. `add()`/`update()` on this category elsewhere always match
+        // by current name, so an already-created row has to be renamed here too, not just in
+        // CategoryBuilder::CATEGORIES, or the next wizard run would create a duplicate instead of
+        // reusing it.
+        $DB->update(
+            'glpi_itilcategories',
+            ['name' => 'Messagerie & Collaboration'],
+            ['name' => 'Microsoft 365 / Workspace']
+        );
+        // The icon translation's value is only set once at creation (CategoryBuilder::buildNode()
+        // never updates it on reuse) — has to be fixed up here too, or it keeps showing the old
+        // name text next to the (unchanged) icon.
+        $renamedCategory = $DB->request('glpi_itilcategories', ['name' => 'Messagerie & Collaboration'])->current();
+        if ($renamedCategory !== null) {
+            $DB->update(
+                'glpi_dropdowntranslations',
+                ['value' => '🟧 Messagerie & Collaboration'],
+                [
+                    'itemtype' => 'ITILCategory',
+                    'items_id' => $renamedCategory['id'],
+                    'field' => 'name',
+                    'value' => '🟧 Microsoft 365 / Workspace',
+                ]
+            );
+            // GLPI auto-derives a second "completename" translation (breadcrumb path, e.g. "IT &
+            // SI > Microsoft 365 / Workspace") from the "name" one whenever it's created — fixing
+            // the "name" row above doesn't touch it, it has to be explicitly regenerated.
+            DropdownTranslation::regenerateAllCompletenameTranslationsFor('ITILCategory', $renamedCategory['id']);
+        }
+        // Same vendor-neutral rename for the matching Service Catalog form (Sprint 23).
+        $DB->update(
+            'glpi_forms_forms',
+            ['name' => "Demande d'accès à un espace collaboratif d'équipe"],
+            ['name' => 'Demande d\'accès à un espace Teams / SharePoint']
+        );
+
+        // Service Catalog rubrics/forms created before ServiceCatalogBuilder set `illustration`
+        // (Sprint 23's first version) are stuck with GLPI's generic default icon
+        // (IllustrationManager::DEFAULT_ILLUSTRATION) forever, since it's only set at creation —
+        // backfilled here, guarded to not overwrite anything an admin already customized by hand.
+        $branchIllustrations = [
+            '💻 IT & SI' => 'asset-desktop-1',
+            '🏢 Bâtiment & Moyens Généraux' => 'building',
+            '🚗 Flotte Automobile & Mobilité' => 'car',
+            '👤 Ressources Humaines' => 'group',
+            '🛒 Achats & Logistique' => 'order-supplies',
+            '🔐 Sécurité & Protection des Personnes' => 'security',
+            '🧹 Services Généraux & Vie au Travail' => 'inventory',
+            '📄 Administratif, Juridique & Finance' => 'legal',
+            '📢 Communication & Marketing' => 'presentation',
+            '📋 Qualité, QHSE & Conformité' => 'diagnostic',
+            '⚙️ Maintenance Industrielle & Technique' => 'factory',
+        ];
+        foreach ($branchIllustrations as $categoryName => $illustration) {
+            $DB->update(
+                'glpi_forms_categories',
+                ['illustration' => $illustration],
+                ['name' => $categoryName, 'forms_categories_id' => 0, 'illustration' => '']
+            );
+            $formCategory = $DB->request('glpi_forms_categories', ['name' => $categoryName, 'forms_categories_id' => 0])->current();
+            if ($formCategory !== null) {
+                $DB->update(
+                    'glpi_forms_forms',
+                    ['illustration' => $illustration],
+                    ['forms_categories_id' => $formCategory['id'], 'illustration' => '']
+                );
+            }
+        }
 
         Profile::install($migration);
 
