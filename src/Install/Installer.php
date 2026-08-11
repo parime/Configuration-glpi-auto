@@ -22,6 +22,7 @@ use DropdownTranslation;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\Profile;
+use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use Migration;
 
 /**
@@ -98,6 +99,7 @@ final class Installer
                 `category_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `state_enabled` tinyint NOT NULL DEFAULT 0,
                 `state_icons_enabled` tinyint NOT NULL DEFAULT 0,
+                `state_names` text,
                 `general_ui_enabled` tinyint NOT NULL DEFAULT 0,
                 `notifications_enabled` tinyint NOT NULL DEFAULT 0,
                 `financial_info_enabled` tinyint NOT NULL DEFAULT 0,
@@ -181,6 +183,11 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'ola_tiers', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'state_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'state_icons_enabled', 'bool', ['value' => 0]);
+            // Explicit default (unlike category_branches's precedent, which addField()s with no
+            // value and so comes back empty on upgrade): state_enabled alone used to create all 14
+            // states unconditionally, so an upgrading install needs state_names seeded to "all 14"
+            // to keep behaving the same on its next wizard run, not silently start creating zero.
+            $migration->addField(self::CONFIGS_TABLE, 'state_names', 'text', ['value' => json_encode(StateBuilder::getStateNames(), JSON_UNESCAPED_UNICODE)]);
             $migration->addField(self::CONFIGS_TABLE, 'category_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'category_branches', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'category_icons_enabled', 'bool', ['value' => 0]);

@@ -50,6 +50,16 @@ use Unmanaged;
  * row says otherwise (`getEmpty()`'s all-visible defaults only apply to GLPI's own blank "add new
  * state" form, not to states inserted directly) — so only the itemtypes that should show "Oui"
  * need a row here, not every itemtype with "Non".
+ *
+ * Individually selectable (`Config.state_names`, checkboxes on the wizard step) rather than
+ * all-or-nothing — same "no bundling" lesson as Sprint 26. Five of the 14 are flagged as
+ * recommended: this sibling plugin's own `remise-glpi`
+ * (https://github.com/parime/remise-glpi) auto-triggers a handover/return/donation/sale workflow
+ * off a `State` change, so an admin running both plugins needs "En stock"/"Attribué"/"Donné"/
+ * "Vendu"/"Attente restitution" to exist for the two plugins to actually interoperate — but
+ * `remise-glpi` matches by *state ID* (configured in its own settings, confirmed in its
+ * `ARCHITECTURE.md`), not by exact name string, so this is a recommendation to keep selected, not
+ * a hardcoded name dependency.
  */
 class StateBuilder
 {
@@ -69,6 +79,10 @@ class StateBuilder
         ['name' => 'Compte de service', 'comment' => 'Compte utilisé par des applications ou des bots', 'icon' => '🤖'],
         ['name' => 'Vendu', 'comment' => 'Le matériel a été cédé (Vendu) et ne fait plus partie du parc.', 'icon' => '💰'],
     ];
+
+    // Kept selected by default for interoperability with remise-glpi's own donation/sale/return
+    // workflow triggers — see class docblock.
+    public const RECOMMENDED_NAMES = ['En stock', 'Attribué', 'Donné', 'Vendu', 'Attente restitution'];
 
     // Only the itemtypes that should default to "Oui" — absence of a row means "Non" at runtime
     // (see class docblock), so the much longer list of component/infrastructure types that stay
@@ -97,6 +111,16 @@ class StateBuilder
     }
 
     /**
+     * @return string[] Every state name this builder knows how to create — used both as the
+     *         "all selected" default and to validate `Config.state_names` against a whitelist
+     *         (same role `Config::CATEGORY_BRANCH_KEYS` plays for category branches).
+     */
+    public static function getStateNames(): array
+    {
+        return array_column(self::STATES, 'name');
+    }
+
+    /**
      * @return string[] Names of the states created/reused, for the confirmation message.
      */
     public function build(Config $config): array
@@ -106,9 +130,13 @@ class StateBuilder
         }
 
         $withIcons = !empty($config->fields['state_icons_enabled']);
+        $selected = $config->getStateNames();
         $names = [];
 
         foreach (self::STATES as $state) {
+            if (!in_array($state['name'], $selected, true)) {
+                continue;
+            }
             $item = new State();
             if (!$item->getFromDBByCrit(['name' => $state['name']])) {
                 $id = $item->add([
