@@ -96,11 +96,22 @@ class BrandingBuilder
      * Overrides the header/sidebar logo (`--glpi-logo`) and its collapsed-sidebar variant
      * (`--glpi-logo-reduced`, confirmed in `_global-menu.scss`) with the uploaded image.
      */
+    /**
+     * `background-size: contain` is mandatory here, not cosmetic: confirmed in GLPI's own
+     * `_base.scss`, the expanded-sidebar `.page .glpi-logo` rule sets a fixed 100×55px box with
+     * `background: var(--glpi-logo) no-repeat` and *no* `background-size` at all (unlike the
+     * collapsed-sidebar `.glpi-logo` rule, which already sets `background-size: contain`) — GLPI's
+     * own shipped logo images happen to be pre-cropped to exactly that ratio, but an admin-uploaded
+     * logo of arbitrary dimensions renders at its native size and overflows the box uncropped
+     * (confirmed visually: a tall/wide logo spills over the menu below it). `!important` needed to
+     * outweigh that core rule's own specificity, same as the variable overrides below it.
+     */
     private function buildLogoCss(string $dataUri): string
     {
         $escaped = str_replace('"', '\\"', $dataUri);
 
-        return ":root { --glpi-logo: url(\"{$escaped}\") !important; --glpi-logo-reduced: url(\"{$escaped}\") !important; }";
+        return ".page .glpi-logo { background-size: contain !important; }\n"
+            . ":root { --glpi-logo: url(\"{$escaped}\") !important; --glpi-logo-reduced: url(\"{$escaped}\") !important; }";
     }
 
     /**
