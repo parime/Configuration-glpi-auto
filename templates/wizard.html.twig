@@ -36,7 +36,7 @@
     </div>
     <p class="text-muted small mb-4" id="cga-wizard-stepindicator"></p>
 
-    <form method="post" action="{{ config('root_doc') }}/plugins/configurationglpiauto/front/wizard.php" id="cga-wizard-form">
+    <form method="post" enctype="multipart/form-data" action="{{ config('root_doc') }}/plugins/configurationglpiauto/front/wizard.php" id="cga-wizard-form">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
 
       {# ---------------------------------------------------------------- Étape 1 : Profil #}
@@ -465,6 +465,23 @@
             <input type="color" name="branding_primary_color" id="cga-branding-color" class="form-control form-control-color" value="{{ config.branding_primary_color|default('#206bc4') }}">
           </div>
           <button type="button" class="btn" id="cga-branding-swatch" style="min-width: 140px;">{{ __('Aperçu', 'configurationglpiauto') }}</button>
+        </div>
+
+        <div class="form-check form-switch mb-2 mt-3">
+          <input type="hidden" name="entity_logos_enabled" value="0">
+          <input
+            type="checkbox"
+            name="entity_logos_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-entity-logos-enabled"
+            {{ config.entity_logos_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-entity-logos-enabled">{{ __('Ajouter un logo par entité', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-entity-logos-fields" style="display: none;">
+          <p class="text-muted small mb-2">{{ __('Un logo par site/client de l\'arborescence (étape 2) — remplace le logo GLPI dans l\'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 Mo maximum.', 'configurationglpiauto') }}</p>
+          <div id="cga-entity-logos-panels"></div>
         </div>
       </div>
 
@@ -1068,6 +1085,42 @@
   brandingColorInput.addEventListener('input', updateSwatch);
   toggleBrandingFields();
   updateSwatch();
+
+  var entityLogosEnabledInput = document.getElementById('cga-entity-logos-enabled');
+  var entityLogosFields = document.getElementById('cga-entity-logos-fields');
+  var entityLogosPanels = document.getElementById('cga-entity-logos-panels');
+  function toggleEntityLogosFields() {
+    entityLogosFields.style.display = entityLogosEnabledInput.checked ? '' : 'none';
+  }
+  entityLogosEnabledInput.addEventListener('change', toggleEntityLogosFields);
+  toggleEntityLogosFields();
+
+  // One file input per top-level entity (or a single one for mono-entité/empty tree, matching
+  // entities_id=0 fallback) — named by index, matching how front/wizard.php pairs
+  // EntityBuilder::topEntityIds() (same order as this array) with $_FILES['entity_logo_N'].
+  // Re-rendered whenever the branding step is shown so it always reflects the current tree; a
+  // previously-chosen file is lost on re-render (native <input type="file"> can't be repopulated
+  // programmatically anyway, same limitation any tree edit would cause).
+  function renderEntityLogoPanels() {
+    var tree = (window.cgaTree || []);
+    var nodes = tree.length ? tree : [{ name: "{{ __('Entité racine', 'configurationglpiauto')|e('js') }}" }];
+    entityLogosPanels.innerHTML = '';
+    nodes.forEach(function (node, i) {
+      var wrapper = document.createElement('div');
+      wrapper.className = 'mb-2';
+      var label = document.createElement('label');
+      label.className = 'form-label mb-1';
+      label.textContent = node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}";
+      var input = document.createElement('input');
+      input.type = 'file';
+      input.name = 'entity_logo_' + i;
+      input.accept = 'image/png,image/jpeg,image/webp,image/gif';
+      input.className = 'form-control form-control-sm';
+      wrapper.appendChild(label);
+      wrapper.appendChild(input);
+      entityLogosPanels.appendChild(wrapper);
+    });
+  }
 
   var generalSettingsGroupInputs = document.querySelectorAll('.cga-general-settings-group');
   var generalSettingsSelectAll = document.getElementById('cga-general-settings-select-all');
@@ -1687,8 +1740,11 @@
       ? "{{ __('Aucune', 'configurationglpiauto')|e('js') }}"
       : ({{ wait_reasons_preview|length }} + ' ' + "{{ __('raisons d\'attente', 'configurationglpiauto')|e('js') }}");
 
-    document.getElementById('cga-summary-branding').textContent = brandingEnabledInput.checked
-      ? "{{ __('Couleur principale', 'configurationglpiauto')|e('js') }} " + brandingColorInput.value
+    var brandingParts = [];
+    if (brandingEnabledInput.checked) { brandingParts.push("{{ __('Couleur principale', 'configurationglpiauto')|e('js') }} " + brandingColorInput.value); }
+    if (entityLogosEnabledInput.checked) { brandingParts.push("{{ __('logo(s) par entité', 'configurationglpiauto')|e('js') }}"); }
+    document.getElementById('cga-summary-branding').textContent = brandingParts.length
+      ? brandingParts.join(' + ')
       : "{{ __('Aucune', 'configurationglpiauto')|e('js') }}";
 
     var generalSettingsCheckedCount = 0;
@@ -1755,6 +1811,12 @@
       fillSummary();
     }
     updateLdapRightsPreview();
+    if (currentStep === 9) {
+      // Re-rendered only when actually entering this step (not on every navigation elsewhere) —
+      // a native <input type="file">'s selection can't survive a re-render, so this only refreshes
+      // when it matters (the tree may have changed since last time) rather than on every click.
+      renderEntityLogoPanels();
+    }
   }
 
   prevBtn.addEventListener('click', function () { showStep(currentStep - 1); });
