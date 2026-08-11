@@ -137,6 +137,7 @@ class Config extends CommonDBTM
             'ticket_template_enabled' => 0,
             'helpdesk_form_hide_fields' => 0,
             'service_catalog_enabled' => 0,
+            'wait_reasons_enabled' => 0,
         ];
     }
 
@@ -329,6 +330,10 @@ class Config extends CommonDBTM
 
         if (isset($input['service_catalog_enabled'])) {
             $input['service_catalog_enabled'] = !empty($input['service_catalog_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['wait_reasons_enabled'])) {
+            $input['wait_reasons_enabled'] = !empty($input['wait_reasons_enabled']) ? 1 : 0;
         }
 
         return $input;
