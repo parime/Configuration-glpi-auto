@@ -41,6 +41,41 @@ use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\ValidationTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\WaitReasonBuilder;
 
+/**
+ * Validates an uploaded entity logo and returns it as a `data:` URI, or null if missing/invalid.
+ * `getimagesize()` reads the actual image header rather than trusting the browser-supplied MIME
+ * type. SVG is deliberately not in the allow-list — it can carry an embedded `<script>`, and while
+ * that wouldn't execute rendered as a CSS `background-image`, excluding it removes the question
+ * entirely rather than relying on that distinction being reliable across browsers.
+ *
+ * @param array{error?: int, size?: int, tmp_name?: string} $file One entry of $_FILES.
+ */
+function buildEntityLogoDataUri(array $file): ?string
+{
+    if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+        return null;
+    }
+
+    // 1 MB cap: this ends up base64-encoded (~33% larger) inside custom_css_code, a plain text
+    // field — keeps the entity row (and every page load that renders this CSS) reasonably sized.
+    if (($file['size'] ?? 0) > 1_000_000 || ($file['tmp_name'] ?? '') === '') {
+        return null;
+    }
+
+    $info = @getimagesize($file['tmp_name']);
+    $allowedMimes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+    if ($info === false || !in_array($info['mime'], $allowedMimes, true)) {
+        return null;
+    }
+
+    $data = file_get_contents($file['tmp_name']);
+    if ($data === false) {
+        return null;
+    }
+
+    return 'data:' . $info['mime'] . ';base64,' . base64_encode($data);
+}
+
 Session::checkRight(Config::$rightname, READ);
 
 if (isset($_POST['finish'])) {
@@ -136,7 +171,21 @@ if (isset($_POST['finish'])) {
     // Runs after ProjectTaxonomyBuilder: resolves project task types by name lookup.
     $projectTaskTemplatesCreated = (new ProjectTaskTemplateBuilder())->build($config);
 
-    $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
+    $brandingBuilder = new BrandingBuilder();
+    $brandingApplied = $brandingBuilder->apply($config, $entityIds);
+
+    $logosCreated = 0;
+    if (!empty($config->fields['entity_logos_enabled'])) {
+        $entityIdToLogoDataUri = [];
+        foreach ($entityIds as $i => $entityId) {
+            $dataUri = buildEntityLogoDataUri((array) ($_FILES['entity_logo_' . $i] ?? []));
+            if ($dataUri !== null) {
+                $entityIdToLogoDataUri[$entityId] = $dataUri;
+            }
+        }
+        $logosCreated = $brandingBuilder->applyLogos($entityIdToLogoDataUri);
+    }
+
     $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
     $ticketTemplatesApplied = (new TicketTemplateBuilder())->apply($config);
     $helpdeskFormApplied = (new HelpdeskFormBuilder())->apply($config);
@@ -174,6 +223,9 @@ if (isset($_POST['finish'])) {
     }
     if ($brandingApplied) {
         $messages[] = __('Personnalisation graphique appliquée.', 'configurationglpiauto');
+    }
+    if ($logosCreated > 0) {
+        $messages[] = sprintf(__('%d logo(s) d\'entité appliqué(s).', 'configurationglpiauto'), $logosCreated);
     }
     if ($generalSettingsApplied) {
         $messages[] = __('Réglages généraux GLPI appliqués.', 'configurationglpiauto');

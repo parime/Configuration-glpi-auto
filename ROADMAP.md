@@ -261,11 +261,16 @@ tant que l'instance de test accumulait des soumissions réelles (le tableau PHP 
 chaîne) — révélé par la remise à zéro complète de l'environnement demandée cette session. Corrigé :
 `prepareInput()` décode maintenant explicitement si la valeur reçue est une chaîne.
 
-**Demande complémentaire (2026-08-11)** : personnalisation graphique par entité — un logo
-uploadable par client/site (pas seulement la couleur principale plugin-wide actuelle de
-`BrandingBuilder`), visible sur l'entité correspondante. Pas encore cadré techniquement
-(mécanisme de stockage GLPI pour les logos d'entité à confirmer en source avant de coder) — à
-traiter après Sprints 30/31.
+**Demande complémentaire — fait (2026-08-11)** : personnalisation graphique par entité — un logo
+uploadable par client/site (en plus de la couleur principale plugin-wide de `BrandingBuilder`),
+visible sur l'entité correspondante. Confirmé en source qu'aucun champ logo natif n'existe sur
+`Entity` — le mécanisme retenu (après confirmation avec l'utilisateur) réutilise
+`custom_css_code` (déjà natif par entité, déjà utilisé par `BrandingBuilder` pour la couleur) :
+le fichier uploadé est encodé en `data:` URI et injecté dans la variable CSS `--glpi-logo`
+(confirmée dans le SCSS source de GLPI, `.glpi-logo { background: var(--glpi-logo) no-repeat; }`)
+— pas d'upload `Document` séparé à maintenir, pas de sélecteur DOM fragile. `BrandingBuilder`
+délimite chaque bloc CSS qu'il écrit par un marqueur de commentaire (`mergeCssBlock()`) pour que
+couleur et logo coexistent sans s'écraser l'un l'autre lors des ré-exécutions.
 
 ---
 
