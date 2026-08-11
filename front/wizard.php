@@ -23,6 +23,7 @@ use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
+use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
@@ -98,6 +99,7 @@ if (isset($_POST['finish'])) {
     }
 
     $categoriesCreated = (new CategoryBuilder())->build($config);
+    $servicesCreated = (new ServiceCatalogBuilder())->build($config);
     $statesCreated = (new StateBuilder())->build($config);
 
     $brandingApplied = (new BrandingBuilder())->apply($config, $entityIds);
@@ -125,6 +127,9 @@ if (isset($_POST['finish'])) {
     }
     if ($categoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de tickets créées.', 'configurationglpiauto'), $categoriesCreated);
+    }
+    if ($servicesCreated > 0) {
+        $messages[] = sprintf(__('%d services créés dans le catalogue.', 'configurationglpiauto'), $servicesCreated);
     }
     if ($statesCreated !== []) {
         $messages[] = sprintf(__('%d statuts d\'éléments créés.', 'configurationglpiauto'), count($statesCreated));
@@ -174,6 +179,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'priority_labels'  => $priorityLabels,
     'category_branches' => $config->getCategoryBranches(),
     'categories_preview' => CategoryBuilder::getCategoriesPreview(),
+    'services_preview' => ServiceCatalogBuilder::getServicesPreview(),
     'states_preview'   => StateBuilder::getStatesPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);

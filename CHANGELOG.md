@@ -9,6 +9,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Sprint 23 — Service Catalog (ROADMAP item 5) (2026-08-11)
+
+Second item out of the real-GLPI-export audit and the biggest remaining ROADMAP gap: a self-service
+catalog, "never done" since the original roadmap. GLPI 11 has an entirely native, dedicated system
+for this (`Glpi\Form\Form`/`Question`/`Category`, `/Form/Render/N` — same subsystem
+`HelpdeskFormBuilder`, Sprint 21, works with, not the classic `ITILTemplate`).
+
+#### Changed
+- New `ServiceCatalogBuilder`: for each selected `category_branches` branch, creates/reuses a
+  `Glpi\Form\Category` catalog rubric (same icon/name as `CategoryBuilder`'s branch), then 23
+  service forms across 7 branches (IT & SI, Bâtiment, Flotte, RH, Achats, Sécurité, Services
+  Généraux) — adapted from the production export, generalized rather than copied verbatim (dropped
+  company-specific ones like "télétravail depuis l'étranger").
+- Each service form has only Title + Description (`Question`, same minimal philosophy as
+  `HelpdeskFormBuilder`) — **no category field shown to the user**. The resulting ticket's category
+  is fixed per service via `FormDestinationTicket`'s `ITILCategoryFieldConfig` with the
+  `SPECIFIC_VALUE` strategy, pointing at the matching `ITILCategory` `CategoryBuilder` already
+  built (resolved by name at build time, not hardcoded IDs — a service whose target category can't
+  be resolved, e.g. its branch was deselected, is skipped rather than created without one).
+  Confirmed via source (`Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy`) that the
+  alternative `LAST_VALID_ANSWER` strategy would instead read from a "Category"-type question —
+  deliberately not used, since picking a specific *service* already implies the category.
+- `AbstractConfigField::getKey()` (`Toolbox::slugify(static::class)`) used to build the destination
+  `config` JSON key at runtime instead of hardcoding the string — matches exactly what GLPI's own
+  admin UI produces.
+- `Form::add()` already creates a first `Section` and a default `FormDestination` on its own
+  (confirmed in `Form::post_addItem()`) — reused instead of hand-building them.
+- New `service_catalog_enabled` toggle, a new wizard step 6 (right after Catégories, since it
+  depends on that tree already existing) — `STEP_COUNT` 10→11, all later steps renumbered.
+
+Validated against the real GLPI 11.0.8 test instance: ran the wizard, confirmed in DB 23
+`glpi_forms_forms` rows across 11 `glpi_forms_categories` rubrics, and each
+`glpi_forms_destinations_formdestinations.config` pointing at the correct `specific_itilcategory_id`
+(spot-checked 4). **End-to-end test with the real `post-only` (Self-Service) account**: opened
+`/Form/Render/7` ("Réinitialisation de mot de passe"), confirmed only Title + Description are shown
+(screenshot), submitted it, and confirmed in DB the resulting `Ticket` row landed with
+`itilcategories_id` correctly set to "Mot de passe & Réinitialisation" (id 136) — automatically,
+with no category ever shown to the user. Local suite green (phpunit 5/5, phpstan clean,
+php-cs-fixer clean).
+
 ### Sprint 22 — French public holidays on the calendar (2026-08-11)
 
 First item out of the real-GLPI-export audit: `glpi_holidays` ships empty on a fresh install
