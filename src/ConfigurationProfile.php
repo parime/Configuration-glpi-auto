@@ -155,6 +155,9 @@ class ConfigurationProfile extends CommonDBTM
             'calendar_holidays_enabled' => true,
             'sla_enabled' => true, 'sla_tiers' => Config::getDefaultSlaTiers(), 'sla_astreinte' => false,
             'ola_enabled' => true, 'ola_tiers' => Config::getDefaultOlaTiers(),
+            // Warning before a deadline is breached (not just recording that it was) is standard
+            // ITIL practice, same universal reasoning as SLA/OLA themselves — not size-dependent.
+            'sla_escalation_enabled' => true, 'sla_escalation_threshold_percent' => 75,
             // Categories/states are universal ITIL/asset-management scaffolding, useful
             // regardless of org size or business model — unlike calendar/SLA they don't vary
             // per profile, so every non-minimal profile suggests the same values here. All 11

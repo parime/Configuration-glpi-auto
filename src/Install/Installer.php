@@ -89,6 +89,8 @@ final class Installer
                 `sla_enabled` tinyint NOT NULL DEFAULT 0,
                 `sla_tiers` text,
                 `sla_astreinte` tinyint NOT NULL DEFAULT 0,
+                `sla_escalation_enabled` tinyint NOT NULL DEFAULT 0,
+                `sla_escalation_threshold_percent` int NOT NULL DEFAULT 75,
                 `ola_enabled` tinyint NOT NULL DEFAULT 0,
                 `ola_tiers` text,
                 `category_enabled` tinyint NOT NULL DEFAULT 0,
@@ -161,6 +163,8 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'branding_primary_color', 'string', ['value' => '#206bc4']);
             $migration->addField(self::CONFIGS_TABLE, 'sla_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'sla_astreinte', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'sla_escalation_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'sla_escalation_threshold_percent', 'integer', ['value' => 75]);
             $migration->addField(self::CONFIGS_TABLE, 'ola_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'ola_tiers', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'state_enabled', 'bool', ['value' => 0]);

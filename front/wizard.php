@@ -76,7 +76,13 @@ if (isset($_POST['finish'])) {
         }
 
         $slaIds = $slaOverride !== null
-            ? $slaBuilder->buildFromOverride($result['name'], $slaOverride, $calendarId)
+            ? $slaBuilder->buildFromOverride(
+                $result['name'],
+                $slaOverride,
+                $calendarId,
+                !empty($config->fields['sla_escalation_enabled']),
+                (int) ($config->fields['sla_escalation_threshold_percent'] ?? 75)
+            )
             : $sharedSlaIds;
         if ($slaIds !== null) {
             $slaMap[$result['entities_id']] = $slaIds;
