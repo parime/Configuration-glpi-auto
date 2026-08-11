@@ -133,7 +133,12 @@ class Config extends CommonDBTM
             'category_icons_enabled' => 0,
             'state_enabled' => 0,
             'state_icons_enabled' => 0,
-            'general_settings_enabled' => 0,
+            'general_ui_enabled' => 0,
+            'notifications_enabled' => 0,
+            'financial_info_enabled' => 0,
+            'project_task_states_enabled' => 0,
+            'satisfaction_survey_enabled' => 0,
+            'committee_validation_enabled' => 0,
             'ticket_template_enabled' => 0,
             'helpdesk_form_hide_fields' => 0,
             'service_catalog_enabled' => 0,
@@ -316,8 +321,10 @@ class Config extends CommonDBTM
             $input['state_icons_enabled'] = !empty($input['state_icons_enabled']) ? 1 : 0;
         }
 
-        if (isset($input['general_settings_enabled'])) {
-            $input['general_settings_enabled'] = !empty($input['general_settings_enabled']) ? 1 : 0;
+        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled'] as $field) {
+            if (isset($input[$field])) {
+                $input[$field] = !empty($input[$field]) ? 1 : 0;
+            }
         }
 
         if (isset($input['ticket_template_enabled'])) {

@@ -41,6 +41,7 @@ final class Installer
         $migration->setVersion(PLUGIN_CONFIGURATIONGLPIAUTO_VERSION);
 
         $slaTiersSeed = null;
+        $generalSettingsSeed = null;
 
         if (!$DB->tableExists(self::PROFILES_TABLE)) {
             $charset   = DBConnection::getDefaultCharset();
@@ -95,7 +96,12 @@ final class Installer
                 `category_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `state_enabled` tinyint NOT NULL DEFAULT 0,
                 `state_icons_enabled` tinyint NOT NULL DEFAULT 0,
-                `general_settings_enabled` tinyint NOT NULL DEFAULT 0,
+                `general_ui_enabled` tinyint NOT NULL DEFAULT 0,
+                `notifications_enabled` tinyint NOT NULL DEFAULT 0,
+                `financial_info_enabled` tinyint NOT NULL DEFAULT 0,
+                `project_task_states_enabled` tinyint NOT NULL DEFAULT 0,
+                `satisfaction_survey_enabled` tinyint NOT NULL DEFAULT 0,
+                `committee_validation_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_enabled` tinyint NOT NULL DEFAULT 0,
                 `helpdesk_form_hide_fields` tinyint NOT NULL DEFAULT 0,
                 `service_catalog_enabled` tinyint NOT NULL DEFAULT 0,
@@ -159,7 +165,27 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'category_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'category_branches', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'category_icons_enabled', 'bool', ['value' => 0]);
-            $migration->addField(self::CONFIGS_TABLE, 'general_settings_enabled', 'bool', ['value' => 0]);
+
+            // general_settings_enabled (single all-or-nothing toggle) replaced by 6 independently
+            // gated groups (Sprint 26) — an admin could not, e.g., accept the satisfaction survey
+            // without also getting the committee validation step. Read the old singleton's value
+            // first (while the column still exists) so upgrading doesn't silently turn every group
+            // off for an instance that had it on; the actual backfill happens after
+            // executeMigration() below, same pattern as sla_tiers above.
+            if ($DB->fieldExists(self::CONFIGS_TABLE, 'general_settings_enabled')) {
+                $row = $DB->request(self::CONFIGS_TABLE, ['id' => 1])->current();
+                if ($row !== null) {
+                    $generalSettingsSeed = (int) $row['general_settings_enabled'];
+                }
+            }
+            $migration->addField(self::CONFIGS_TABLE, 'general_ui_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'notifications_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'financial_info_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'project_task_states_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'satisfaction_survey_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'committee_validation_enabled', 'bool', ['value' => 0]);
+            $migration->dropField(self::CONFIGS_TABLE, 'general_settings_enabled');
+
             $migration->addField(self::CONFIGS_TABLE, 'ticket_template_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'helpdesk_form_hide_fields', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'service_catalog_enabled', 'bool', ['value' => 0]);
@@ -290,6 +316,17 @@ final class Installer
 
         if ($slaTiersSeed !== null) {
             $DB->update(self::CONFIGS_TABLE, ['sla_tiers' => json_encode($slaTiersSeed)], ['id' => 1]);
+        }
+
+        if ($generalSettingsSeed !== null) {
+            $DB->update(self::CONFIGS_TABLE, [
+                'general_ui_enabled' => $generalSettingsSeed,
+                'notifications_enabled' => $generalSettingsSeed,
+                'financial_info_enabled' => $generalSettingsSeed,
+                'project_task_states_enabled' => $generalSettingsSeed,
+                'satisfaction_survey_enabled' => $generalSettingsSeed,
+                'committee_validation_enabled' => $generalSettingsSeed,
+            ], ['id' => 1]);
         }
 
         return true;

@@ -9,6 +9,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-08-11
+
+Sprint 26: splits the "Réglages généraux" step's single all-or-nothing toggle into 6 independently
+configurable groups, following direct user feedback that the bundled design didn't actually let the
+admin choose what to enable. No new features — a configurability/UX fix on top of Sprint 18-25's
+existing settings. Includes a DB migration (existing installs keep their prior on/off state).
+
+### Sprint 26 — split "Réglages généraux" into 6 independently-configurable groups (2026-08-11)
+
+User feedback after seeing the actual wizard UI for step 10: Sprint 18 through Sprint 25 had all
+been folded into a *single* `general_settings_enabled` toggle, so an admin who wanted the
+satisfaction survey but not the committee validation step (or any other such combination) had no
+way to say so — accept the whole bundle or reject the whole bundle. Confirmed by screenshot: one
+checkbox controlling 10 unrelated settings, with a flat bullet list underneath and no way to opt
+out of any single item.
+
+#### Changed
+- `general_settings_enabled` replaced by 6 independently-gated groups, each its own checkbox in
+  step 10 with its own description list: **Interface & ergonomie** (button layout, search
+  form/pagination position, homepage tickets widget), **Notifications** (master activation +
+  the 5 ticket-lifecycle events from Sprint 25, including the `auto_reminder` fix),
+  **Informations financières** (`auto_create_infocoms`), **Statuts des tâches de projet**
+  (`ProjectState` mapping), **Enquête de satisfaction**, **Validation comité**. A "Tout
+  sélectionner" convenience checkbox (indeterminate when only some groups are checked) replaces
+  the old single master toggle without bringing back the all-or-nothing behavior.
+- `GeneralSettingsBuilder::apply()` now applies each group only if its own `Config` field is on,
+  instead of one `general_settings_enabled` gate around everything.
+- `ConfigurationProfile::getSuggestedDefaults()` suggests all 6 groups on for every non-minimal
+  profile (same "universal good practice" reasoning as before) — the admin can still uncheck
+  individual ones in step 10.
+
+#### Migration
+- Existing installs: the 6 new `glpi_plugin_configurationglpiauto_configs` columns are backfilled
+  from the old `general_settings_enabled` value (read before the column is dropped) so an instance
+  that had it on keeps every group on rather than silently losing them.
+
+Validated against the real GLPI 11.0.8 test instance: reinstalled to run the migration, confirmed
+in DB the old column's value (1) backfilled onto all 6 new columns, then confirmed the old column
+was actually dropped. Playwright: step 10 renders all 6 groups checked with "Tout sélectionner"
+checked; unchecking two groups makes it indeterminate; the recap step's summary line reflects the
+partial count. End-to-end: reset `auto_create_infocoms`/`use_notifications`/`show_search_form` to
+0 and deleted the "Validation comité" row, ran the wizard with only Informations financières and
+Validation comité unchecked, confirmed those two stayed off/absent in DB while the other 4 groups'
+settings were (re)applied — proving the groups are genuinely independent, not just relabeled. Local
+suite green (phpunit 5/5, phpstan clean, php-cs-fixer clean).
+
 ## [0.8.0] - 2026-08-11
 
 Sprint 25: notification, satisfaction survey, and validation good-practice defaults — including a
@@ -1054,7 +1100,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.9.0
 [0.8.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.8.0
 [0.7.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.7.0
 [0.6.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.6.0

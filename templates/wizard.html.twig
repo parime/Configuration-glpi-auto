@@ -441,31 +441,68 @@
       {# ---------------------------------------------------------------- Étape 10 : Réglages généraux #}
       <div class="cga-wizard-step" data-step="10" style="display: none;">
         <h3 class="mb-1">{{ __('Étape 10 : Réglages généraux GLPI', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l\'usage — cette étape les corrige en une fois.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l\'usage — activez chaque groupe indépendamment selon vos besoins.', 'configurationglpiauto') }}</p>
 
-        <div class="form-check form-switch mb-3">
-          <input type="hidden" name="general_settings_enabled" value="0">
-          <input
-            type="checkbox"
-            name="general_settings_enabled"
-            value="1"
-            class="form-check-input"
-            id="cga-general-settings-enabled"
-            {{ config.general_settings_enabled|default(0) ? 'checked' : '' }}
-          >
-          <label class="form-check-label" for="cga-general-settings-enabled">{{ __('Appliquer les réglages généraux recommandés', 'configurationglpiauto') }}</label>
+        <div class="form-check mb-3">
+          <input type="checkbox" class="form-check-input" id="cga-general-settings-select-all">
+          <label class="form-check-label" for="cga-general-settings-select-all"><em>{{ __('Tout sélectionner', 'configurationglpiauto') }}</em></label>
         </div>
 
-        <ul class="list-group" id="cga-general-settings-fields" style="max-width: 560px; display: none;">
-          <li class="list-group-item">{{ __('Activer les notifications (par e-mail et dans le navigateur)', 'configurationglpiauto') }}</li>
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="general_ui_enabled" value="0">
+          <input type="checkbox" name="general_ui_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-general-ui-enabled" {{ config.general_ui_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-general-ui-enabled">{{ __('Interface & ergonomie', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
           <li class="list-group-item">{{ __('Agencement des boutons d\'action divisé (Répondre / Observation / Solution séparés)', 'configurationglpiauto') }}</li>
           <li class="list-group-item">{{ __('Afficher le moteur de recherche au-dessus des résultats', 'configurationglpiauto') }}</li>
           <li class="list-group-item">{{ __('Afficher la pagination au-dessus des résultats', 'configurationglpiauto') }}</li>
           <li class="list-group-item">{{ __('Montrer les nouveaux tickets sur la page d\'accueil', 'configurationglpiauto') }}</li>
-          <li class="list-group-item">{{ __('Activer les informations financières et administratives par défaut', 'configurationglpiauto') }}</li>
-          <li class="list-group-item">{{ __('Configurer les statuts des tâches de projet (non démarré / en cours / terminé)', 'configurationglpiauto') }}</li>
+        </ul>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="notifications_enabled" value="0">
+          <input type="checkbox" name="notifications_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-notifications-enabled" {{ config.notifications_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-notifications-enabled">{{ __('Notifications', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
+          <li class="list-group-item">{{ __('Activer les notifications (par e-mail et dans le navigateur)', 'configurationglpiauto') }}</li>
           <li class="list-group-item">{{ __('Activer les notifications de mise à jour, pièce jointe et relance automatique de ticket', 'configurationglpiauto') }}</li>
+        </ul>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="financial_info_enabled" value="0">
+          <input type="checkbox" name="financial_info_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-financial-info-enabled" {{ config.financial_info_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-financial-info-enabled">{{ __('Informations financières', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
+          <li class="list-group-item">{{ __('Activer les informations financières et administratives par défaut', 'configurationglpiauto') }}</li>
+        </ul>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="project_task_states_enabled" value="0">
+          <input type="checkbox" name="project_task_states_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-project-task-states-enabled" {{ config.project_task_states_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-project-task-states-enabled">{{ __('Statuts des tâches de projet', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
+          <li class="list-group-item">{{ __('Configurer les statuts des tâches de projet (non démarré / en cours / terminé)', 'configurationglpiauto') }}</li>
+        </ul>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="satisfaction_survey_enabled" value="0">
+          <input type="checkbox" name="satisfaction_survey_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-satisfaction-survey-enabled" {{ config.satisfaction_survey_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-satisfaction-survey-enabled">{{ __('Enquête de satisfaction', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
           <li class="list-group-item">{{ __('Activer l\'enquête de satisfaction native (1 à 5 étoiles, sur chaque ticket clos)', 'configurationglpiauto') }}</li>
+        </ul>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="committee_validation_enabled" value="0">
+          <input type="checkbox" name="committee_validation_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-committee-validation-enabled" {{ config.committee_validation_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-committee-validation-enabled">{{ __('Validation comité', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
           <li class="list-group-item">{{ __('Ajouter une étape de validation « Comité (2/3) » pour les décisions collégiales', 'configurationglpiauto') }}</li>
         </ul>
       </div>
@@ -755,13 +792,22 @@
   toggleBrandingFields();
   updateSwatch();
 
-  var generalSettingsEnabledInput = document.getElementById('cga-general-settings-enabled');
-  var generalSettingsFields = document.getElementById('cga-general-settings-fields');
-  function toggleGeneralSettingsFields() {
-    generalSettingsFields.style.display = generalSettingsEnabledInput.checked ? '' : 'none';
+  var generalSettingsGroupInputs = document.querySelectorAll('.cga-general-settings-group');
+  var generalSettingsSelectAll = document.getElementById('cga-general-settings-select-all');
+  function syncGeneralSettingsSelectAll() {
+    var checkedCount = 0;
+    generalSettingsGroupInputs.forEach(function (input) { if (input.checked) { checkedCount++; } });
+    generalSettingsSelectAll.checked = checkedCount === generalSettingsGroupInputs.length;
+    generalSettingsSelectAll.indeterminate = checkedCount > 0 && checkedCount < generalSettingsGroupInputs.length;
   }
-  generalSettingsEnabledInput.addEventListener('change', toggleGeneralSettingsFields);
-  toggleGeneralSettingsFields();
+  generalSettingsGroupInputs.forEach(function (input) {
+    input.addEventListener('change', syncGeneralSettingsSelectAll);
+  });
+  generalSettingsSelectAll.addEventListener('change', function () {
+    generalSettingsGroupInputs.forEach(function (input) { input.checked = generalSettingsSelectAll.checked; });
+    generalSettingsSelectAll.indeterminate = false;
+  });
+  syncGeneralSettingsSelectAll();
 
   var ticketTemplateEnabledInput = document.getElementById('cga-ticket-template-enabled');
   var ticketTemplateFields = document.getElementById('cga-ticket-template-fields');
@@ -1288,9 +1334,13 @@
       ? "{{ __('Couleur principale', 'configurationglpiauto')|e('js') }} " + brandingColorInput.value
       : "{{ __('Aucune', 'configurationglpiauto')|e('js') }}";
 
-    document.getElementById('cga-summary-general-settings').textContent = generalSettingsEnabledInput.checked
-      ? "{{ __('Appliqués', 'configurationglpiauto')|e('js') }}"
-      : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+    var generalSettingsCheckedCount = 0;
+    generalSettingsGroupInputs.forEach(function (input) { if (input.checked) { generalSettingsCheckedCount++; } });
+    document.getElementById('cga-summary-general-settings').textContent = generalSettingsCheckedCount === 0
+      ? "{{ __('Aucun', 'configurationglpiauto')|e('js') }}"
+      : (generalSettingsCheckedCount === generalSettingsGroupInputs.length
+        ? "{{ __('Tous les groupes appliqués', 'configurationglpiauto')|e('js') }}"
+        : (generalSettingsCheckedCount + ' ' + "{{ __('groupe(s) appliqué(s)', 'configurationglpiauto')|e('js') }}"));
 
     document.getElementById('cga-summary-ticket-templates').textContent = ticketTemplateEnabledInput.checked
       ? "{{ __('Simplifié + Complet, assignés aux profils', 'configurationglpiauto')|e('js') }}" + (helpdeskFormHideFieldsInput.checked ? " {{ __('(+ formulaires libre-service allégés)', 'configurationglpiauto')|e('js') }}" : '')
@@ -1407,10 +1457,12 @@
       toggleWaitReasonsFields();
     }
 
-    if (typeof defaults.general_settings_enabled !== 'undefined') {
-      generalSettingsEnabledInput.checked = !!defaults.general_settings_enabled;
-      toggleGeneralSettingsFields();
-    }
+    ['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled'].forEach(function (field) {
+      if (typeof defaults[field] !== 'undefined') {
+        document.getElementById('cga-' + field.replace(/_/g, '-')).checked = !!defaults[field];
+      }
+    });
+    syncGeneralSettingsSelectAll();
 
     if (typeof defaults.ticket_template_enabled !== 'undefined') {
       ticketTemplateEnabledInput.checked = !!defaults.ticket_template_enabled;
