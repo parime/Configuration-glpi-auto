@@ -232,6 +232,36 @@
         </div>
 
         <div id="cga-sla-per-client-panels" style="display: none;"></div>
+
+        <div class="mt-3 pt-3 border-top">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="sla_escalation_enabled" value="0">
+            <input
+              type="checkbox"
+              name="sla_escalation_enabled"
+              value="1"
+              class="form-check-input"
+              id="cga-sla-escalation-enabled"
+              {{ config.sla_escalation_enabled|default(0) ? 'checked' : '' }}
+            >
+            <label class="form-check-label" for="cga-sla-escalation-enabled">{{ __('Escalade automatique avant échéance', 'configurationglpiauto') }}</label>
+          </div>
+          <div id="cga-sla-escalation-fields" style="display: none;" class="d-flex align-items-center gap-2 mb-2">
+            <label class="form-label mb-0" for="cga-sla-escalation-threshold">{{ __('Déclenchement à', 'configurationglpiauto') }}</label>
+            <input
+              type="number"
+              min="50"
+              max="95"
+              name="sla_escalation_threshold_percent"
+              id="cga-sla-escalation-threshold"
+              class="form-control form-control-sm"
+              style="width: 80px;"
+              value="{{ config.sla_escalation_threshold_percent|default(75) }}"
+            >
+            <span>% {{ __('du délai écoulé → priorité relevée d\'un cran (résolution, et engagement interne si activé)', 'configurationglpiauto') }}</span>
+          </div>
+          <p class="text-muted small">{{ __('S\'applique à tout SLA/OLA créé sur cette étape — partagé ou par site/client. N\'affecte que la priorité — pas de réaffectation automatique à une autre équipe, GLPI ne sachant pas laquelle serait la bonne.', 'configurationglpiauto') }}</p>
+        </div>
       </div>
 
       {# ---------------------------------------------------------------- Étape 5 : Catégories #}
@@ -758,6 +788,14 @@
   }
   olaEnabledInput.addEventListener('change', toggleOlaFields);
   toggleOlaFields();
+
+  var slaEscalationEnabledInput = document.getElementById('cga-sla-escalation-enabled');
+  var slaEscalationFields = document.getElementById('cga-sla-escalation-fields');
+  function toggleSlaEscalationFields() {
+    slaEscalationFields.style.display = slaEscalationEnabledInput.checked ? '' : 'none';
+  }
+  slaEscalationEnabledInput.addEventListener('change', toggleSlaEscalationFields);
+  toggleSlaEscalationFields();
 
   var categoryEnabledInput = document.getElementById('cga-category-enabled');
   var categoryFields = document.getElementById('cga-category-fields');
@@ -1388,9 +1426,12 @@
     }
     document.getElementById('cga-summary-calendar').textContent = calendarSummary;
 
+    var slaEscalationSuffix = slaEscalationEnabledInput.checked
+      ? (" — {{ __('escalade à', 'configurationglpiauto')|e('js') }} " + document.getElementById('cga-sla-escalation-threshold').value + '%')
+      : '';
     if (slaPerClientToggle.checked) {
       var slaPcCount = (window.cgaTree || []).filter(function (n) { return n.settings && n.settings.sla && n.settings.sla.enabled; }).length;
-      document.getElementById('cga-summary-sla').textContent = slaPcCount + ' ' + "{{ __('site(s)/client(s) avec un SLA propre', 'configurationglpiauto')|e('js') }}";
+      document.getElementById('cga-summary-sla').textContent = slaPcCount + ' ' + "{{ __('site(s)/client(s) avec un SLA propre', 'configurationglpiauto')|e('js') }}" + slaEscalationSuffix;
     } else if (!slaEnabledInput.checked) {
       document.getElementById('cga-summary-sla').textContent = "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
     } else {
@@ -1404,6 +1445,7 @@
       if (olaEnabledInput.checked) {
         slaSummary += " — {{ __('+ OLA (engagements internes)', 'configurationglpiauto')|e('js') }}";
       }
+      slaSummary += slaEscalationSuffix;
       document.getElementById('cga-summary-sla').textContent = slaSummary;
     }
 
@@ -1517,6 +1559,10 @@
     applyTierDefaults('sla_tiers', defaults.sla_tiers);
     if (typeof defaults.sla_astreinte !== 'undefined') {
       slaAstreinteInput.checked = !!defaults.sla_astreinte;
+    }
+    if (typeof defaults.sla_escalation_enabled !== 'undefined') {
+      slaEscalationEnabledInput.checked = !!defaults.sla_escalation_enabled;
+      toggleSlaEscalationFields();
     }
 
     if (typeof defaults.ola_enabled !== 'undefined') {

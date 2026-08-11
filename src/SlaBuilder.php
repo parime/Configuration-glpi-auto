@@ -19,11 +19,15 @@ namespace GlpiPlugin\Configurationglpiauto;
 
 use CommonITILObject;
 use OLA;
+use OlaLevel;
+use OlaLevelAction;
 use Rule;
 use RuleAction;
 use RuleCriteria;
 use RuleTicket;
 use SLA;
+use SlaLevel;
+use SlaLevelAction;
 use SLM;
 
 /**
@@ -48,6 +52,20 @@ use SLM;
  * priority is Y" → "assign this level's SLA/OLA"), not an Entity update — `priority` is a
  * documented RuleTicket criterion (RuleCommonITILObject.php), the same mechanism GLPI's own docs
  * describe for priority-based SLA assignment.
+ *
+ * Since Sprint 28, also builds the escalation-level engine this class's docblock used to flag as
+ * deliberately out of scope: one `SlaLevel` per TTR (and one `OlaLevel` per OLA TTR, if OLA is
+ * enabled) that fires a configurable percentage of the delay before the deadline — confirmed in
+ * GLPI source (`Ticket.php` calls `SlaLevel::getFirstSlaLevel()`/`(new SLA)->addLevelToDo()`
+ * automatically whenever an SLA/OLA is assigned to a ticket, and the native `slaticket`/
+ * `olaticket` CronTasks that process due levels are active by default — no extra wiring needed,
+ * same "just works once created" pattern as this class's own `RuleTicket` rows). The only action
+ * is raising the ticket's priority one step (`SLA`/`OLA`'s priority-scoped rows already know
+ * their own priority, so the escalated value is deterministic) — reassigning to a "level 2" group
+ * was deliberately left out, same reasoning as Sprint 27's RuleRightBuilder skipping org-wide
+ * function profiles: this wizard has no way to know an org's real support-tier group names, and
+ * inventing fictional ones would be worse than not building it. The already-highest priority
+ * level gets no escalation level (nothing higher to escalate to).
  */
 class SlaBuilder
 {
@@ -68,20 +86,29 @@ class SlaBuilder
             !empty($config->fields['sla_astreinte']),
             !empty($config->fields['ola_enabled']),
             $config->getOlaTiers(),
-            $calendarId
+            $calendarId,
+            !empty($config->fields['sla_escalation_enabled']),
+            (int) ($config->fields['sla_escalation_threshold_percent'] ?? 75)
         );
     }
 
     /**
      * Same as build(), but for one client's own SLA/OLA override (see Config::sanitizeTree()'s
      * per-client `settings.sla`) instead of the plugin-wide shared settings — named after the
-     * client so it doesn't collide with the shared SLM or another client's.
+     * client so it doesn't collide with the shared SLM or another client's. Escalation is a
+     * plugin-wide policy (not part of the per-client override shape), so it's passed in from the
+     * same global Config a caller already has, not read from $sla.
      *
      * @param array{enabled: bool, astreinte: bool, tiers: array<string, array{tto_hours: int, ttr_hours: int}>, ola_enabled: bool, ola_tiers: array<string, array{tto_hours: int, ttr_hours: int}>} $sla
      * @return array<int, array{tto: int, ttr: int, ola_tto: ?int, ola_ttr: ?int}>|null
      */
-    public function buildFromOverride(string $clientName, array $sla, ?int $calendarId = null): ?array
-    {
+    public function buildFromOverride(
+        string $clientName,
+        array $sla,
+        ?int $calendarId = null,
+        bool $escalationEnabled = false,
+        int $escalationThresholdPercent = 75
+    ): ?array {
         if (empty($sla['enabled'])) {
             return null;
         }
@@ -92,7 +119,9 @@ class SlaBuilder
             !empty($sla['astreinte']),
             !empty($sla['ola_enabled']),
             $sla['ola_tiers'] ?? [],
-            $calendarId
+            $calendarId,
+            $escalationEnabled,
+            $escalationThresholdPercent
         );
     }
 
@@ -202,8 +231,16 @@ class SlaBuilder
      * @param array<string, array{tto_hours: int, ttr_hours: int}> $olaTiers
      * @return array<int, array{tto: int, ttr: int, ola_tto: ?int, ola_ttr: ?int}>
      */
-    private function buildSlm(string $name, array $tiers, bool $astreinte, bool $olaEnabled, array $olaTiers, ?int $calendarId): array
-    {
+    private function buildSlm(
+        string $name,
+        array $tiers,
+        bool $astreinte,
+        bool $olaEnabled,
+        array $olaTiers,
+        ?int $calendarId,
+        bool $escalationEnabled = false,
+        int $escalationThresholdPercent = 75
+    ): array {
         // Astreinte = couverture 24h/24, 7j/7 : GLPI interprete calendars_id=0 comme "pas de
         // calendrier", donc le SLA continue de courir en dehors des horaires ouvres — c'est le
         // meme mecanisme que le cas "aucun calendrier construit" ci-dessous, juste voulu cette
@@ -237,10 +274,67 @@ class SlaBuilder
                 $olaTtrId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTR, sprintf(__('OLA résolution — %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours']);
             }
 
+            if ($escalationEnabled) {
+                $this->ensureEscalationLevel(SlaLevel::class, $ttrId, (int) $tier['ttr_hours'], $priority, $escalationThresholdPercent);
+                if ($olaTtrId !== null) {
+                    $olaTier = $olaTiers[(string) $priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
+                    $this->ensureEscalationLevel(OlaLevel::class, $olaTtrId, (int) $olaTier['ttr_hours'], $priority, $escalationThresholdPercent);
+                }
+            }
+
             $result[$priority] = ['tto' => $ttoId, 'ttr' => $ttrId, 'ola_tto' => $olaTtoId, 'ola_ttr' => $olaTtrId];
         }
 
         return $result;
+    }
+
+    /**
+     * One escalation level on a TTR SLA/OLA row: fires `$thresholdPercent`% of the way through
+     * the delay (i.e. `100 - $thresholdPercent`% of it still remaining before breach) and raises
+     * the ticket's priority one step. The already-highest priority level is skipped — nothing
+     * higher to escalate to. Idempotent by (parent id, name).
+     *
+     * @param class-string<SlaLevel|OlaLevel> $class
+     */
+    private function ensureEscalationLevel(string $class, int $agreementId, int $ttrHours, int $priority, int $thresholdPercent): void
+    {
+        $maxPriority = max(Config::PRIORITY_LEVELS);
+        if ($priority >= $maxPriority) {
+            return;
+        }
+
+        $fkField = $class === SlaLevel::class ? 'slas_id' : 'olas_id';
+        $levelName = sprintf(__('Escalade — %s', 'configurationglpiauto'), CommonITILObject::getPriorityName($priority));
+
+        $level = new $class();
+        if ($level->getFromDBByCrit([$fkField => $agreementId, 'name' => $levelName])) {
+            return;
+        }
+
+        // Negative = before the deadline (confirmed in GLPI's LevelAgreementLevel::
+        // getExecutionTimes(): negative values are labelled "- N hour(s)/day(s)", fired that long
+        // before the TTO/TTR date). $thresholdPercent% elapsed = (100-$thresholdPercent)% of the
+        // delay still remaining when this fires.
+        $executionTime = -(int) round($ttrHours * 3600 * ((100 - $thresholdPercent) / 100));
+
+        $levelId = $level->add([
+            'name' => $levelName,
+            $fkField => $agreementId,
+            'execution_time' => $executionTime,
+            'match' => Rule::AND_MATCHING,
+            'is_active' => 1,
+            'is_recursive' => 1,
+        ]);
+
+        $actionClass = $class === SlaLevel::class ? SlaLevelAction::class : OlaLevelAction::class;
+        $actionFkField = $class === SlaLevel::class ? 'slalevels_id' : 'olalevels_id';
+
+        (new $actionClass())->add([
+            $actionFkField => $levelId,
+            'action_type' => 'assign',
+            'field' => 'priority',
+            'value' => $priority + 1,
+        ]);
     }
 
     /**
