@@ -9,6 +9,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-08-11
+
+Sprint 28: SLA/OLA escalation levels — a configurable-threshold priority escalation before a
+TTO/TTR deadline is breached, closing ROADMAP item 4 (partially — see scope note below). No
+breaking changes.
+
+### Sprint 28 — SLA/OLA escalation levels before breach (2026-08-11)
+
+Closes ROADMAP item 4 (partially — see scope note), the escalation-level engine `SlaBuilder.php`'s
+own docblock flagged from the start as "a distinct, considerably heavier feature to build later if
+actually needed." Confirmed via GLPI source this sprint that it's real ITIL standard practice, not
+a luxury: warn/escalate before a TTO/TTR deadline is breached, not just record that it happened.
+
+#### Added
+- `SlaBuilder` now creates one `SlaLevel` per priority tier's resolution (TTR) SLA — and, if OLA is
+  enabled, one matching `OlaLevel` on the OLA TTR — firing a configurable percentage of the delay
+  before the deadline (`sla_escalation_threshold_percent`, default 75%) and raising the ticket's
+  priority one step. The already-highest priority tier gets no escalation level (nothing higher to
+  escalate to). Confirmed in GLPI source: `Ticket.php` automatically queues the first level
+  (`SlaLevel::getFirstSlaLevel()` / `(new SLA)->addLevelToDo()`) whenever an SLA/OLA is assigned to
+  a ticket, and the native `slaticket`/`olaticket` CronTasks that process due levels are active by
+  default — no extra wiring needed, same "just works once created" pattern as this class's own
+  `RuleTicket` rows.
+- New "Escalade automatique avant échéance" control on the existing SLA wizard step (step 4) —
+  deliberately placed outside both the shared-SLA and per-client-SLA sections so it stays visible
+  and applies either way, rather than only in one of the two modes.
+- Deliberately out of scope, same reasoning as Sprint 27's `RuleRightBuilder`: reassigning the
+  ticket to a "level 2" support group — this wizard has no way to know an org's real support-tier
+  group names, and inventing fictional ones would be worse than not building it. Only the priority
+  is escalated.
+
+Validated against the real GLPI 11.0.8 test instance with an existing 3-SLM setup (1 shared + 2
+per-client, from earlier sprints' test data): confirmed in DB 15 `SlaLevel` + 15 `OlaLevel` rows
+(5 priority tiers × 3 SLMs, skipping the highest tier each time), each with the exact
+`execution_time` expected from its own TTR/OLA-TTR hours at the chosen threshold, and each
+`SlaLevelAction`/`OlaLevelAction` correctly assigning the next priority up. Confirmed the new
+control renders and stays functional in both shared and per-client SLA modes. Local suite green
+(phpunit 10/10, phpstan clean, php-cs-fixer clean).
+
 ## [0.10.0] - 2026-08-11
 
 Sprint 27: scaffolds LDAP/AD-driven entity+profile assignment (`RuleRight`) per site, closing the
@@ -1143,7 +1182,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.11.0
 [0.10.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.10.0
 [0.9.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.9.0
 [0.8.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.8.0

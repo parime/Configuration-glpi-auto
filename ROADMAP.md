@@ -130,12 +130,15 @@ basique, profils de démarrage.
    (catégorie+urgence obligatoires, rien de masqué) pour le reste — câblés via
    `glpi_profiles.tickettemplates_id`, un mécanisme natif GLPI par profil.
 
-4. **Niveaux d'escalade SLA/OLA (`SlaLevel`/`OlaLevel`).** Le docblock de `SlaBuilder.php` dit
-   depuis le début "not the full escalation-level engine — a distinct, considerably heavier
-   feature to build later if actually needed" ; la recherche confirme que c'est une vraie pratique
-   ITIL standard, pas un luxe : déclenchement automatique avant l'échéance du TTO/TTR (ex : à 75%
-   du délai écoulé, réassignation à un niveau 2, priorité relevée). Sans ça, le SLA existe mais
-   rien ne prévient personne avant qu'il soit dépassé.
+4. **Niveaux d'escalade SLA/OLA (`SlaLevel`/`OlaLevel`) — fait partiellement (Sprint 28,
+   2026-08-11).** `SlaBuilder` crée désormais un niveau d'escalade par palier de priorité (sauf le
+   plus haut, rien de plus haut vers quoi escalader) sur la résolution (SLA) et, si activé,
+   l'engagement interne (OLA) : déclenché à un pourcentage configurable du délai écoulé (75% par
+   défaut), action = priorité relevée d'un cran. Le moteur natif GLPI (`SlaLevel`/`OlaLevel`,
+   CronTasks `slaticket`/`olaticket`, actifs par défaut) s'en charge une fois les niveaux créés,
+   aucun câblage supplémentaire nécessaire. Reste hors périmètre, comme pour la réaffectation
+   automatique dans Sprint 27 : la réassignation à un "niveau 2" (groupe support), faute de savoir
+   quel groupe serait le bon dans une instance donnée.
 
 5. **Catalogue de services — fait (Sprint 23, 2026-08-11).** `ServiceCatalogBuilder`, sur le
    système natif de formulaires de GLPI 11 (`Glpi\Form\Form`) : 23 services sur 7 branches, chacun

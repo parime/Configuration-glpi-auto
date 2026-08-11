@@ -133,6 +133,8 @@ class Config extends CommonDBTM
             'sla_enabled' => 0,
             'sla_tiers' => json_encode(self::DEFAULT_SLA_TIERS),
             'sla_astreinte' => 0,
+            'sla_escalation_enabled' => 0,
+            'sla_escalation_threshold_percent' => 75,
             'ola_enabled' => 0,
             'ola_tiers' => json_encode(self::DEFAULT_OLA_TIERS),
             'category_enabled' => 0,
@@ -298,6 +300,16 @@ class Config extends CommonDBTM
 
         if (isset($input['sla_astreinte'])) {
             $input['sla_astreinte'] = !empty($input['sla_astreinte']) ? 1 : 0;
+        }
+
+        if (isset($input['sla_escalation_enabled'])) {
+            $input['sla_escalation_enabled'] = !empty($input['sla_escalation_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['sla_escalation_threshold_percent'])) {
+            // Below 50%: escalating before half the delay has even elapsed is noise, not an
+            // early warning. Above 95%: leaves no meaningful time to act before breach.
+            $input['sla_escalation_threshold_percent'] = max(50, min(95, (int) $input['sla_escalation_threshold_percent']));
         }
 
         if (isset($input['ola_enabled'])) {
