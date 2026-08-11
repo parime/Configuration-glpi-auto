@@ -51,6 +51,13 @@ class Config extends CommonDBTM
         'services_generaux', 'administratif', 'communication', 'qualite', 'maintenance',
     ];
 
+    // The 8 profiles GLPI 11 ships out of the box (confirmed on a fresh install) — used to
+    // validate ldap_rights_profile against a whitelist rather than trusting free text that could
+    // reference a profile that doesn't exist (RuleRightBuilder would then have nothing to assign).
+    public const NATIVE_PROFILE_NAMES = [
+        'Super-Admin', 'Admin', 'Supervisor', 'Technician', 'Hotliner', 'Observer', 'Self-Service', 'Read-Only',
+    ];
+
     // Starting point for a fresh sla_tiers table, editable by the admin afterward — same
     // philosophy as the plugin's other defaults (e.g. the old flat 4h/48h).
     private const DEFAULT_SLA_TIERS = [
@@ -143,6 +150,9 @@ class Config extends CommonDBTM
             'helpdesk_form_hide_fields' => 0,
             'service_catalog_enabled' => 0,
             'wait_reasons_enabled' => 0,
+            'ldap_rights_enabled' => 0,
+            'ldap_rights_group_template' => 'GLPI_{ENTITY}',
+            'ldap_rights_profile' => 'Technician',
         ];
     }
 
@@ -341,6 +351,19 @@ class Config extends CommonDBTM
 
         if (isset($input['wait_reasons_enabled'])) {
             $input['wait_reasons_enabled'] = !empty($input['wait_reasons_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['ldap_rights_enabled'])) {
+            $input['ldap_rights_enabled'] = !empty($input['ldap_rights_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['ldap_rights_group_template'])) {
+            $template = trim((string) $input['ldap_rights_group_template']);
+            $input['ldap_rights_group_template'] = str_contains($template, '{ENTITY}') ? $template : 'GLPI_{ENTITY}';
+        }
+
+        if (isset($input['ldap_rights_profile']) && !in_array($input['ldap_rights_profile'], self::NATIVE_PROFILE_NAMES, true)) {
+            $input['ldap_rights_profile'] = 'Technician';
         }
 
         return $input;

@@ -107,18 +107,21 @@ basique, profils de démarrage.
 
 *Manques identifiés, par ordre approximatif d'impact ITIL* :
 
-1. **OLA (Operational Level Agreement) — en cours (accepté par l'utilisateur, 2026-08-10).**
+1. **OLA (Operational Level Agreement) — fait (Sprint 14, 2026-08-10).**
    Engagement interne entre le helpdesk et les équipes support, qui vient épauler le SLA externe
    (ex : SLA "résolution sous 4h" au client ⇒ OLA interne "niveau 1 trie sous 30 min, niveau 2
-   diagnostique sous 2h"). GLPI le supporte nativement, quasi symétrique à SLA (`OLA` étend la
+   diagnostique sous 2h"). Implémenté dans `SlaBuilder` (même classe que le SLA externe, avec
+   `sla_astreinte` pour la couverture 24/7), quasi symétrique à SLA côté GLPI (`OLA` étend la
    même classe `LevelAgreement` que `SLA`, `glpi_olas`, `olas_id_tto`/`olas_id_ttr` sur les
    tickets, même moteur `RuleTicket`).
 
-2. **Catégories de tickets + types ITIL (Incident/Demande/Problème/Changement).** ITIL 4 distingue
-   4 types de ticket avec des pratiques de gestion différentes (Incident Management, Request
-   Management, Problem Management, Change Management) — GLPI a nativement `ITILCategory` et un
-   champ `type` sur les tickets, mais rien n'est pré-structuré par ce plugin. Sans catégories,
-   impossible de router/prioriser correctement, et le catalogue de services (point 4) en dépend.
+2. **Catégories de tickets + types ITIL (Incident/Demande/Problème/Changement) — fait (Sprint 17,
+   2026-08-10).** ITIL 4 distingue 4 types de ticket avec des pratiques de gestion différentes
+   (Incident Management, Request Management, Problem Management, Change Management) — GLPI a
+   nativement `ITILCategory` et un champ `type` sur les tickets. `CategoryBuilder` construit une
+   arborescence thématique réelle (IT, Bâtiment, Flotte, RH...) plutôt qu'une catégorie par type
+   ITIL (le type Incident/Demande est déjà géré nativement par GLPI, une catégorie par type
+   n'apportait rien — voir Sprint 17 dans le CHANGELOG).
 
 3. **Templates de tickets — fait (Sprint 19, 2026-08-10).** Pas un template par catégorie au
    final (`TicketTemplateBuilder`) : la pratique ITSM courante réserve ça au catalogue de services
@@ -139,12 +142,16 @@ basique, profils de démarrage.
    ne demandant que titre + description, routé automatiquement vers la bonne catégorie de ticket
    sans que l'utilisateur ait à la choisir. Validé de bout en bout avec un vrai compte Self-Service.
 
-6. **Droits/profils GLPI par entité — cloisonnement.** Le wizard configure la structure
-   d'entités mais ne touche jamais aux profils GLPI (Technicien/Admin/Self-Service/Observateur) ni
-   à qui a accès à quoi par entité. Particulièrement important en mode MSP (déjà noté plus haut :
-   "un client MSP ne doit pas voir les tickets d'un autre") mais pertinent aussi hors MSP — sans
-   ça, la structure d'entités créée n'isole rien par elle-même, l'isolation dépend entièrement des
-   droits configurés à la main après coup.
+6. **Droits/profils GLPI par entité — cloisonnement — fait partiellement (Sprint 26, 2026-08-11).**
+   `RuleRightBuilder` scaffolde une `RuleRight` par site (feuille de l'arborescence) : GLPI
+   affecte automatiquement l'entité + un profil fixe à un utilisateur d'après son groupe AD/LDAP
+   lors de la synchronisation — mécanisme confirmé sur un vrai export de production (37 règles
+   `RuleRight` réelles), généralisé via un gabarit de nom de groupe configurable plutôt que les
+   noms d'AD réels de l'export. Ne sert que si une synchronisation LDAP est prévue par
+   l'organisation — sans ça, cette étape ne crée rien d'utile, ce qui est le comportement attendu.
+   Restent hors périmètre (pattern différent, pas confirmé avec l'utilisateur) : l'affectation
+   d'un profil global par fonction métier (ex. "Finance"/"DSI" → profil, indépendamment du site) et
+   la gestion fine des droits par module au sein d'un même profil.
 
 7. **Modèles de notifications — fait (Sprint 25, 2026-08-11).** GLPI a déjà de bons modèles par
    défaut ; le vrai manque était que plusieurs notifications de cycle de vie du ticket sont

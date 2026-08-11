@@ -106,6 +106,9 @@ final class Installer
                 `helpdesk_form_hide_fields` tinyint NOT NULL DEFAULT 0,
                 `service_catalog_enabled` tinyint NOT NULL DEFAULT 0,
                 `wait_reasons_enabled` tinyint NOT NULL DEFAULT 0,
+                `ldap_rights_enabled` tinyint NOT NULL DEFAULT 0,
+                `ldap_rights_group_template` varchar(255) NOT NULL DEFAULT 'GLPI_{ENTITY}',
+                `ldap_rights_profile` varchar(255) NOT NULL DEFAULT 'Technician',
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -190,6 +193,9 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'helpdesk_form_hide_fields', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'service_catalog_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'wait_reasons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'ldap_rights_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'ldap_rights_group_template', 'string', ['value' => 'GLPI_{ENTITY}']);
+            $migration->addField(self::CONFIGS_TABLE, 'ldap_rights_profile', 'string', ['value' => 'Technician']);
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes

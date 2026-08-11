@@ -560,10 +560,56 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 12 : Récapitulatif #}
+      {# ---------------------------------------------------------------- Étape 12 : Droits LDAP #}
       <div class="cga-wizard-step" data-step="12" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 12 : Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux et les modèles de tickets.', 'configurationglpiauto') }}</p>
+        <h3 class="mb-1">{{ __('Étape 12 : Droits LDAP par entité', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : une règle d\'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l\'utilisateur lors de la synchronisation — ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n\'y a rien à générer.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="ldap_rights_enabled" value="0">
+          <input
+            type="checkbox"
+            name="ldap_rights_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-ldap-rights-enabled"
+            {{ config.ldap_rights_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-ldap-rights-enabled">{{ __('Générer une règle de droits par site', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-ldap-rights-fields" style="display: none;">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label" for="cga-ldap-rights-template">{{ __('Gabarit de nom de groupe AD/LDAP', 'configurationglpiauto') }}</label>
+              <input
+                type="text"
+                name="ldap_rights_group_template"
+                id="cga-ldap-rights-template"
+                class="form-control"
+                value="{{ config.ldap_rights_group_template|default('GLPI_{ENTITY}') }}"
+              >
+              <div class="form-text">{{ __('{ENTITY} est remplacé par le nom du site (espaces convertis en _).', 'configurationglpiauto') }}</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="cga-ldap-rights-profile">{{ __('Profil attribué', 'configurationglpiauto') }}</label>
+              <select name="ldap_rights_profile" id="cga-ldap-rights-profile" class="form-select">
+                {% for profile_name in native_profile_names %}
+                  <option value="{{ profile_name }}" {{ config.ldap_rights_profile|default('Technician') == profile_name ? 'selected' : '' }}>{{ profile_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <p class="text-muted small mb-1">{{ __('Une règle par site (feuille de l\'arborescence) — aperçu en fonction de l\'arborescence construite à l\'étape 2 :', 'configurationglpiauto') }}</p>
+          <ul class="list-group" id="cga-ldap-rights-preview" style="max-width: 560px;"></ul>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 13 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="13" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape 13 : Récapitulatif', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets et les droits LDAP.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
           <li class="list-group-item">
@@ -602,6 +648,9 @@
           <li class="list-group-item">
             <strong>{{ __('Modèles de tickets', 'configurationglpiauto') }} :</strong> <span id="cga-summary-ticket-templates"></span>
           </li>
+          <li class="list-group-item">
+            <strong>{{ __('Droits LDAP', 'configurationglpiauto') }} :</strong> <span id="cga-summary-ldap-rights"></span>
+          </li>
         </ul>
       </div>
 
@@ -626,7 +675,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 12;
+  var STEP_COUNT = 13;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -646,6 +695,7 @@
     "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
     "{{ __('Réglages généraux', 'configurationglpiauto')|e('js') }}",
     "{{ __('Modèles de tickets', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Droits LDAP', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
 
@@ -817,6 +867,52 @@
   }
   ticketTemplateEnabledInput.addEventListener('change', toggleTicketTemplateFields);
   toggleTicketTemplateFields();
+
+  var ldapRightsEnabledInput = document.getElementById('cga-ldap-rights-enabled');
+  var ldapRightsFields = document.getElementById('cga-ldap-rights-fields');
+  var ldapRightsTemplateInput = document.getElementById('cga-ldap-rights-template');
+  var ldapRightsProfileInput = document.getElementById('cga-ldap-rights-profile');
+  var ldapRightsPreviewList = document.getElementById('cga-ldap-rights-preview');
+  function toggleLdapRightsFields() {
+    ldapRightsFields.style.display = ldapRightsEnabledInput.checked ? '' : 'none';
+  }
+  function collectLeafEntityNames(nodes) {
+    var names = [];
+    (nodes || []).forEach(function (node) {
+      if (!node.name) { return; }
+      if (node.children && node.children.length) {
+        names = names.concat(collectLeafEntityNames(node.children));
+      } else {
+        names.push(node.name);
+      }
+    });
+    return names;
+  }
+  function updateLdapRightsPreview() {
+    var template = ldapRightsTemplateInput.value || 'GLPI_{ENTITY}';
+    var leaves = collectLeafEntityNames(window.cgaTree || []);
+    ldapRightsPreviewList.innerHTML = '';
+    if (template.indexOf('{ENTITY}') === -1 || leaves.length === 0) {
+      var empty = document.createElement('li');
+      empty.className = 'list-group-item text-muted';
+      empty.textContent = leaves.length === 0
+        ? "{{ __('Aucun site dans l\'arborescence (étape 2) — rien à générer.', 'configurationglpiauto')|e('js') }}"
+        : "{{ __('Le gabarit doit contenir {ENTITY}.', 'configurationglpiauto')|e('js') }}";
+      ldapRightsPreviewList.appendChild(empty);
+      return;
+    }
+    leaves.forEach(function (name) {
+      var group = template.replace('{ENTITY}', name.replace(/ /g, '_'));
+      var li = document.createElement('li');
+      li.className = 'list-group-item';
+      li.textContent = name + ' — ' + group;
+      ldapRightsPreviewList.appendChild(li);
+    });
+  }
+  ldapRightsEnabledInput.addEventListener('change', toggleLdapRightsFields);
+  ldapRightsTemplateInput.addEventListener('input', updateLdapRightsPreview);
+  ldapRightsProfileInput.addEventListener('change', updateLdapRightsPreview);
+  toggleLdapRightsFields();
 
   // Per-client/site calendar & SLA (Sprint 13): only meaningful once there's more than one
   // top-level entity to have its own settings, i.e. any multi-entité mode — not mono. Reuses
@@ -1345,6 +1441,11 @@
     document.getElementById('cga-summary-ticket-templates').textContent = ticketTemplateEnabledInput.checked
       ? "{{ __('Simplifié + Complet, assignés aux profils', 'configurationglpiauto')|e('js') }}" + (helpdeskFormHideFieldsInput.checked ? " {{ __('(+ formulaires libre-service allégés)', 'configurationglpiauto')|e('js') }}" : '')
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+
+    var ldapRightsLeafCount = collectLeafEntityNames(window.cgaTree || []).length;
+    document.getElementById('cga-summary-ldap-rights').textContent = (ldapRightsEnabledInput.checked && ldapRightsLeafCount > 0)
+      ? (ldapRightsLeafCount + ' ' + "{{ __('règle(s)', 'configurationglpiauto')|e('js') }}" + ' — ' + ldapRightsProfileInput.value)
+      : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
   }
 
   function showStep(n) {
@@ -1361,6 +1462,7 @@
     if (currentStep === STEP_COUNT) {
       fillSummary();
     }
+    updateLdapRightsPreview();
   }
 
   prevBtn.addEventListener('click', function () { showStep(currentStep - 1); });
