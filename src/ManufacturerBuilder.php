@@ -17,7 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use DropdownTranslation;
 use Manufacturer;
 
 /**
@@ -65,7 +64,7 @@ class ManufacturerBuilder
         foreach (self::MANUFACTURERS as $manufacturer) {
             $id = $this->getOrCreate($manufacturer['name']);
             if ($withIcons) {
-                $this->addIcon($id, $manufacturer['name'], $manufacturer['icon']);
+                Translations::applyIcon(Manufacturer::class, $id, $manufacturer['name'], $manufacturer['icon']);
             }
             $count++;
         }
@@ -89,21 +88,5 @@ class ManufacturerBuilder
         }
 
         return (int) $item->add(['name' => $name]);
-    }
-
-    private function addIcon(int $id, string $name, string $icon): void
-    {
-        $translation = new DropdownTranslation();
-        if ($translation->getFromDBByCrit(['itemtype' => Manufacturer::class, 'items_id' => $id, 'language' => 'fr_FR', 'field' => 'name'])) {
-            return;
-        }
-
-        $translation->add([
-            'itemtype' => Manufacturer::class,
-            'items_id' => $id,
-            'language' => 'fr_FR',
-            'field' => 'name',
-            'value' => sprintf('%s %s', $icon, $name),
-        ]);
     }
 }

@@ -17,7 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use DropdownTranslation;
 use ProjectTaskType;
 use ProjectType;
 
@@ -71,14 +70,14 @@ class ProjectTaxonomyBuilder
         foreach (self::PROJECT_TYPES as $type) {
             $id = $this->getOrCreate(ProjectType::class, $type['name'], $type['comment'] ?? '');
             if ($withIcons) {
-                $this->addIcon(ProjectType::class, $id, $type['name'], $type['icon']);
+                Translations::applyIcon(ProjectType::class, $id, $type['name'], $type['icon']);
             }
             $count++;
         }
         foreach (self::TASK_TYPES as $type) {
             $id = $this->getOrCreate(ProjectTaskType::class, $type['name'], $type['comment'] ?? '');
             if ($withIcons) {
-                $this->addIcon(ProjectTaskType::class, $id, $type['name'], $type['icon']);
+                Translations::applyIcon(ProjectTaskType::class, $id, $type['name'], $type['icon']);
             }
             $count++;
         }
@@ -105,24 +104,5 @@ class ProjectTaxonomyBuilder
         }
 
         return (int) $item->add(['name' => $name, 'comment' => $comment]);
-    }
-
-    /**
-     * @param class-string<ProjectType|ProjectTaskType> $class
-     */
-    private function addIcon(string $class, int $id, string $name, string $icon): void
-    {
-        $translation = new DropdownTranslation();
-        if ($translation->getFromDBByCrit(['itemtype' => $class, 'items_id' => $id, 'language' => 'fr_FR', 'field' => 'name'])) {
-            return;
-        }
-
-        $translation->add([
-            'itemtype' => $class,
-            'items_id' => $id,
-            'language' => 'fr_FR',
-            'field' => 'name',
-            'value' => sprintf('%s %s', $icon, $name),
-        ]);
     }
 }

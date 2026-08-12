@@ -17,7 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use DropdownTranslation;
 use KnowbaseItemCategory;
 
 /**
@@ -69,11 +68,7 @@ class KnowbaseCategoryBuilder
         $itemId = (int) $item->getID();
 
         if ($withIcon) {
-            $translation = new DropdownTranslation();
-            $transCrit = ['itemtype' => KnowbaseItemCategory::class, 'items_id' => $itemId, 'language' => 'fr_FR', 'field' => 'name'];
-            if (!$translation->getFromDBByCrit($transCrit)) {
-                $translation->add($transCrit + ['value' => sprintf('%s %s', $icon, $name)]);
-            }
+            Translations::applyIcon(KnowbaseItemCategory::class, $itemId, $name, $icon);
         }
 
         return $itemId;
