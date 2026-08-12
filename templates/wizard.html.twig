@@ -72,6 +72,22 @@
             </label>
           </div>
         {% endfor %}
+
+        <div class="alert alert-light border mt-3 mb-0" id="cga-express-panel">
+          <p class="mb-2">
+            <strong>⚡ {{ __('Configuration express', 'configurationglpiauto') }}</strong> —
+            {{ __('applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l\'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s\'applique à l\'entité racine seule.', 'configurationglpiauto') }}
+          </p>
+          <button
+            type="submit"
+            name="finish"
+            class="btn btn-outline-primary"
+            id="cga-wizard-express-finish"
+            onclick="return confirm('{{ __('Ceci va créer/modifier de vraies entités dans GLPI selon les réglages recommandés du profil sélectionné, sans passer en revue chaque étape. Continuer ?', 'configurationglpiauto')|e('js') }}');"
+          >
+            <span id="cga-wizard-express-finish-label">{{ __('Terminer avec les réglages recommandés', 'configurationglpiauto') }}</span>
+          </button>
+        </div>
       </div>
 
       {# ---------------------------------------------------------------- Étape 2 : Entités #}
@@ -1138,11 +1154,21 @@
   // désactiver les champs pour vérifier, puisque la page semble se recharger normalement).
   // `prevBtn`/`nextBtn` sont de simples `type="button"`, jamais soumis de toute façon : les
   // désactiver immédiatement ne pose pas ce problème.
+  var expressFinishBtn = document.getElementById('cga-wizard-express-finish');
+  var expressFinishLabel = document.getElementById('cga-wizard-express-finish-label');
   wizardForm.addEventListener('submit', function () {
     prevBtn.disabled = true;
     nextBtn.disabled = true;
     finishLabel.textContent = "{{ __('Création en cours...', 'configurationglpiauto')|e('js') }}";
-    setTimeout(function () { finishBtn.disabled = true; }, 0);
+    expressFinishLabel.textContent = "{{ __('Création en cours...', 'configurationglpiauto')|e('js') }}";
+    // Same "defer only the submitter's own disabling by one tick" pattern as finishBtn below —
+    // disabling either submit button synchronously inside this handler would exclude its
+    // name=finish pair from the submitted data even though it was enabled at click time (a
+    // disabled control is simply never included in form submission).
+    setTimeout(function () {
+      finishBtn.disabled = true;
+      expressFinishBtn.disabled = true;
+    }, 0);
   });
 
   var stepLabels = [
