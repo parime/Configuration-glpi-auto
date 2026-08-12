@@ -48,10 +48,10 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
         with:
           php-version: "8.2"
           coverage: none
@@ -72,10 +72,10 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
         with:
           php-version: "8.2"
           coverage: none
@@ -96,10 +96,10 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
         with:
           php-version: "8.2"
           coverage: xdebug
@@ -114,7 +114,7 @@ jobs:
           vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
 
       - name: "Upload coverage to Codecov"
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@a99c28d3f0da835de33ff2feb2e15691c7b9641f # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
         with:
           file: ./coverage.xml
           flags: unittests
@@ -128,17 +128,46 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
 
       - name: "Run Trivy vulnerability scanner"
-        uses: aquasecurity/trivy-action@master
+        # scanners vuln,secret,misconfig (etait vuln seul) : aligne sur la
+        # couverture deja en place sur le plugin jumeau remise-glpi, qui
+        # detectait des secrets/mauvaises configurations que ce depot ne
+        # verifiait pas du tout jusqu'ici.
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0, pas @master (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
         with:
           scan-type: 'fs'
           scan-ref: '.'
           exit-code: '1'
           ignore-unfixed: true
+          scanners: 'vuln,secret,misconfig'
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+
+  semgrep:
+    name: "Semgrep SAST"
+    runs-on: ubuntu-latest
+    needs: ci
+    # Analyse par motifs (SAST) : distincte de Trivy ci-dessus, qui couvre
+    # secrets/mauvaises configurations/vulnerabilites connues des dependances
+    # mais ne detecte pas des patterns de code dangereux (ex: injection SQL,
+    # usage risque d'une fonction PHP) - deux outils complementaires, pas
+    # redondants. Aligne sur le plugin jumeau remise-glpi, qui a ce job
+    # depuis le debut - absent ici jusqu'ici.
+    #
+    # Pas de `continue-on-error` : sur remise-glpi, l'avoir mis a rendu
+    # pendant un temps son statut CI "vert" quoi que semgrep trouve - corrige
+    # le 2026-08-12 sur ce depot-la (cf. son propre historique de commits).
+    # Reproduit ici directement sans cette erreur plutot que de la repeter.
+    container:
+      image: semgrep/semgrep
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
+      - run: semgrep ci --config auto
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
   dependabot:
     name: "Dependabot Security"
@@ -147,10 +176,10 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
         with:
           php-version: "8.2"
           coverage: none
@@ -171,7 +200,7 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
 
       - name: "Validate JSON files"
         run: |
@@ -200,7 +229,7 @@ jobs:
   quality-gate:
     name: "Quality Gate"
     runs-on: ubuntu-latest
-    needs: [phpstan, php-cs-fixer, phpunit, trivy, dependabot, validation]
+    needs: [phpstan, php-cs-fixer, phpunit, trivy, semgrep, dependabot, validation]
 
     steps:
       - name: "All checks passed"
@@ -210,5 +239,6 @@ jobs:
           echo "PHP-CS-Fixer: ✓"
           echo "PHPUnit: ✓"
           echo "Trivy: ✓"
+          echo "Semgrep: ✓"
           echo "Dependabot: ✓"
           echo "Validation: ✓"

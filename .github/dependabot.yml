@@ -22,6 +22,12 @@ updates:
       prefix: "chore"
       prefix-development: "chore"
       include: "scope"
+    # 7 jours avant de proposer une version tout juste publiee (cf. Semgrep
+    # dependabot-missing-cooldown, aligne sur le plugin jumeau remise-glpi) :
+    # laisse le temps a la communaute de detecter un paquet compromis/instable
+    # avant qu'on ne l'adopte.
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "github-actions"
     directory: "/.github/workflows"
@@ -38,3 +44,5 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    cooldown:
+      default-days: 7

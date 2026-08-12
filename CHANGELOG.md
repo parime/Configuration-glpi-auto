@@ -9,6 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-08-12
+
+### Added
+
+- CI : job `semgrep` (SAST) — absent jusqu'ici, alors que le plugin jumeau
+  [remise-glpi](https://github.com/parime/remise-glpi) l'a depuis le début. Pas de
+  `continue-on-error` (leçon tirée directement de remise-glpi le même jour : y avoir mis ça a
+  rendu son statut CI "vert" quoi que semgrep trouve, pendant un temps).
+- CI (Trivy) : scan étendu à `secret,misconfig` en plus de `vuln` — ce dépôt ne détectait aucun
+  secret commité ni mauvaise configuration jusqu'ici, seulement des vulnérabilités connues de
+  dépendances (déjà couvertes par ailleurs via `composer audit`).
+- `.github/dependabot.yml` : cooldown de 7 jours avant de proposer une version tout juste publiée
+  (composer + github-actions), aligné sur remise-glpi.
+
+### Fixed
+
+- CI : toutes les références d'actions GitHub non épinglées (`actions/checkout@v7`,
+  `shivammathur/setup-php@v2`, `codecov/codecov-action@v7`, `aquasecurity/trivy-action@master`)
+  épinglées au SHA complet — un tag ou une branche peuvent être redirigés silencieusement par le
+  propriétaire de l'action (supply-chain), `@master` en particulier pour trivy-action est
+  remplacé par un tag de version réel (`v0.36.0`) plutôt qu'une branche mouvante.
+
+Rapprochement CI/CD avec le plugin jumeau remise-glpi, dans l'autre sens cette fois : ce dépôt
+avait plus de couverture que remise-glpi sur certains points (matrice multi-versions GLPI,
+coverage PHPUnit/Codecov, validation JSON/YAML/XML) mais moins sur la sécurité (pas de scan de
+secrets, pas de SAST, actions non épinglées). Aucun changement de comportement du plugin
+lui-même.
+
 ## [0.18.0] - 2026-08-12
 
 Traductions anglais/allemand/italien/espagnol pour tous les intitulés générés qui supportent déjà
@@ -1550,7 +1578,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.18.0...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.19.0...HEAD
+[0.19.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.19.0
 [0.18.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.18.0
 [0.17.1]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.17.1
 [0.17.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.17.0
