@@ -323,6 +323,18 @@
         </div>
 
         <div id="cga-category-fields" style="display: none;">
+          <div class="card mb-3" style="max-width: 640px;">
+            <div class="card-body py-2">
+              <p class="text-muted small mb-2">{{ __('Profil métier — préremplit les branches ci-dessous et le SLA de l\'étape 4 (physique/administratif traité plus lentement que l\'IT). Toujours ajustable ensuite, dans les deux cas.', 'configurationglpiauto') }}</p>
+              <div class="d-flex gap-2 flex-wrap">
+                <button type="button" class="btn btn-sm btn-outline-secondary cga-business-profile-btn" data-business-profile="it">{{ __('💻 IT pur', 'configurationglpiauto') }}</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary cga-business-profile-btn" data-business-profile="rh">{{ __('👤 RH & Support interne', 'configurationglpiauto') }}</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary cga-business-profile-btn" data-business-profile="batiment">{{ __('🏢 Bâtiment & Moyens généraux', 'configurationglpiauto') }}</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary cga-business-profile-btn" data-business-profile="generaliste">{{ __('🧩 Multi-services (toutes verticales)', 'configurationglpiauto') }}</button>
+              </div>
+            </div>
+          </div>
+
           <div class="form-check form-switch mb-3">
             <input type="hidden" name="category_icons_enabled" value="0">
             <input
@@ -721,9 +733,10 @@
               <label class="form-label" for="cga-ldap-rights-profile">{{ __('Profil attribué', 'configurationglpiauto') }}</label>
               <select name="ldap_rights_profile" id="cga-ldap-rights-profile" class="form-select">
                 {% for profile_name in native_profile_names %}
-                  <option value="{{ profile_name }}" {{ config.ldap_rights_profile|default('Technician') == profile_name ? 'selected' : '' }}>{{ profile_name }}</option>
+                  <option value="{{ profile_name }}" {{ config.ldap_rights_profile|default('Admin') == profile_name ? 'selected' : '' }}>{{ profile_name }}</option>
                 {% endfor %}
               </select>
+              <div class="form-text">{{ __('« Admin » (par défaut) couvre la gestion quotidienne sans le risque d\'auto-élévation de « Super-Admin » : contrairement à Super-Admin, Admin ne peut ni éditer les profils GLPI (donc pas s\'en attribuer plus), ni modifier les règles LDAP/import qui gèrent justement cette synchronisation.', 'configurationglpiauto') }}</div>
             </div>
           </div>
 
@@ -1199,6 +1212,59 @@
   });
   toggleCategoryFields();
   toggleCategoryIcons();
+
+  // "Profils métier" quick-picker (Sprint 35) — pure client-side convenience over two fields that
+  // already exist (category_branches, sla_tiers), no new config field: picks the right branches
+  // and, unlike the IT-sourced baseline (Config::DEFAULT_SLA_TIERS), a plausible-but-invented SLA
+  // pace for verticals with no equivalent sourced ITIL practice — physical/administrative work
+  // simply can't be dispatched and resolved as fast as a software fix, so Bâtiment/RH scale the IT
+  // baseline by a flat ×2/×4 rather than pretending to independently-researched numbers. Always
+  // just a starting point, same as every other preset in this wizard — every field it touches
+  // stays editable on the very same screen right after clicking.
+  var BUSINESS_PROFILES = {
+    it: {
+      branches: ['it'],
+      sla_tiers: { 6: { tto_hours: 1, ttr_hours: 4 }, 5: { tto_hours: 2, ttr_hours: 8 }, 4: { tto_hours: 4, ttr_hours: 24 }, 3: { tto_hours: 8, ttr_hours: 48 }, 2: { tto_hours: 24, ttr_hours: 72 }, 1: { tto_hours: 48, ttr_hours: 120 } },
+    },
+    rh: {
+      branches: ['rh', 'administratif'],
+      sla_tiers: { 6: { tto_hours: 4, ttr_hours: 16 }, 5: { tto_hours: 8, ttr_hours: 32 }, 4: { tto_hours: 16, ttr_hours: 96 }, 3: { tto_hours: 32, ttr_hours: 192 }, 2: { tto_hours: 96, ttr_hours: 288 }, 1: { tto_hours: 192, ttr_hours: 480 } },
+    },
+    batiment: {
+      branches: ['batiment', 'services_generaux', 'maintenance'],
+      sla_tiers: { 6: { tto_hours: 2, ttr_hours: 8 }, 5: { tto_hours: 4, ttr_hours: 16 }, 4: { tto_hours: 8, ttr_hours: 48 }, 3: { tto_hours: 16, ttr_hours: 96 }, 2: { tto_hours: 48, ttr_hours: 144 }, 1: { tto_hours: 96, ttr_hours: 240 } },
+    },
+    generaliste: {
+      // All branches — read from the DOM rather than a second hardcoded key list, so this never
+      // drifts out of sync with CategoryBuilder::CATEGORIES (the twig loop above is already the
+      // single source of truth for what branches exist).
+      branches: Array.from(categoryBranchToggles).map(function (toggle) { return toggle.dataset.branch; }),
+      sla_tiers: null,
+    },
+  };
+  document.querySelectorAll('.cga-business-profile-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var profile = BUSINESS_PROFILES[btn.dataset.businessProfile];
+      if (!profile) {
+        return;
+      }
+      categoryBranchToggles.forEach(function (toggle) {
+        toggle.checked = profile.branches.indexOf(toggle.dataset.branch) !== -1;
+        toggle.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      if (!categoryEnabledInput.checked) {
+        categoryEnabledInput.checked = true;
+        categoryEnabledInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      if (profile.sla_tiers) {
+        if (!slaEnabledInput.checked) {
+          slaEnabledInput.checked = true;
+          slaEnabledInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        applyTierDefaults('sla_tiers', profile.sla_tiers);
+      }
+    });
+  });
 
   var serviceCatalogEnabledInput = document.getElementById('cga-service-catalog-enabled');
   var serviceCatalogFields = document.getElementById('cga-service-catalog-fields');

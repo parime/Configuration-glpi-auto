@@ -167,7 +167,15 @@ class Config extends CommonDBTM
             'wait_reasons_enabled' => 0,
             'ldap_rights_enabled' => 0,
             'ldap_rights_group_template' => 'GLPI_{ENTITY}',
-            'ldap_rights_profile' => 'Technician',
+            // Native "Admin" — deliberately not "Super-Admin" (fifth completeness audit, Sprint 35):
+            // the single most severe GLPI pain point found in web research is orgs defaulting too
+            // many people to Super-Admin out of convenience, since it's the only native profile
+            // with enough day-to-day capability. Confirmed by diffing glpi_profilerights: Admin
+            // already lacks `profile` write access (can't edit profile definitions, so can't grant
+            // itself more), `rule_ldap`/`rule_import` (can't rewrite the very sync rules this
+            // toggle creates), and `config` (no general instance configuration) — the exact
+            // self-elevation vectors, without inventing a new bespoke rights bitmask.
+            'ldap_rights_profile' => 'Admin',
             'task_categories_enabled' => 0,
             'task_templates_enabled' => 0,
             'task_template_icons_enabled' => 0,
@@ -444,7 +452,7 @@ class Config extends CommonDBTM
         }
 
         if (isset($input['ldap_rights_profile']) && !in_array($input['ldap_rights_profile'], self::NATIVE_PROFILE_NAMES, true)) {
-            $input['ldap_rights_profile'] = 'Technician';
+            $input['ldap_rights_profile'] = 'Admin';
         }
 
         foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled'] as $field) {
