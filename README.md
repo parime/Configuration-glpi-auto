@@ -64,8 +64,10 @@ installez/activez comme ci-dessus. Un stack Docker de test (GLPI + MariaDB) est 
 
 ## Documentation
 
-Pas encore de documentation utilisateur/API dediee — a venir au fur et a mesure des sprints (voir
-[ROADMAP.md](ROADMAP.md)).
+- [Tutoriel](docs/TUTORIAL.md) — parcours pas a pas des 17 etapes de l'assistant, avec capture
+  d'ecran de chacune.
+- [CHANGELOG.md](CHANGELOG.md) et [ROADMAP.md](ROADMAP.md) pour le detail technique de chaque
+  fonctionnalite.
 
 ## Contribution
 

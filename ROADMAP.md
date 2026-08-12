@@ -481,18 +481,22 @@ séparé recommandé plutôt qu'ajout ici.
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
-2. Documentation GitHub avec captures d'écran de chaque étape/menu, en guise de tutoriel.
+2. **Fait (v0.29.0, 2026-08-12).** Documentation GitHub avec captures d'écran de chaque étape,
+   `docs/TUTORIAL.md`.
 3. **Fait (v0.28.0, 2026-08-12).** Étoffement du catalogue de services : 23 → 50 services, les 4
    branches sans aucun service comblées (Administratif, Communication, Qualité, Maintenance), les
    branches trop réduites étoffées. Vérifié en base après resoumission du wizard.
 
 **Chantiers additionnels ouverts pendant cet audit** :
 - Variables Twig dans les gabarits — **fait (v0.27.0)**.
+- Prérequis de publication marketplace pour les deux dépôts sœurs — **fait** : `remise-glpi`
+  corrigé (PR #66 : manifeste déplacé à la racine, langue `<fr_FR>`→`<fr>`, version obsolète mise à
+  jour) ; `glpi-vulnerability-manager` audité mais volontairement pas touché — le plugin est encore
+  en 0.8.0, le fichier `plugin.json` documente lui-même que la publication est prévue à la v1.0,
+  pas avant.
 - Traductions `.po`/`.mo` de l'interface du wizard en en_GB/de_DE/it_IT/es_ES avant soumission
   marketplace (décidé avec l'utilisateur, toutes les langues déjà utilisées pour les traductions
-  de données) — pas encore commencé, gros chantier (centaines d'appels `__()`).
-- Vérification des prérequis de publication marketplace pour les deux dépôts sœurs
-  (`remise-glpi`, `glpi-vulnerability-manager`) — pas encore commencée.
+  de données) — reste à faire, gros chantier (centaines d'appels `__()`).
 
 ---
 
