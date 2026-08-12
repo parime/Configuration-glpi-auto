@@ -943,9 +943,14 @@
           <label class="form-check-label" for="cga-project-task-templates-enabled">{{ __('Créer les gabarits de tâches de projets', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-project-task-templates-fields" style="display: none;">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="project_task_template_icons_enabled" value="0">
+            <input type="checkbox" name="project_task_template_icons_enabled" value="1" class="form-check-input" id="cga-project-task-template-icons-enabled" {{ config.project_task_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-project-task-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
           <ul class="list-group" style="max-width: 560px;">
             {% for tpl in project_task_templates_preview %}
-              <li class="list-group-item">{{ tpl.name }}</li>
+              <li class="list-group-item"><span class="cga-project-task-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
             {% endfor %}
           </ul>
         </div>
@@ -1427,6 +1432,7 @@
   var projectTaxonomyEnabledInput = wireSimpleToggle('cga-project-taxonomy-enabled', 'cga-project-taxonomy-fields');
   wireIconsToggle('cga-project-taxonomy-icons-enabled', '.cga-project-taxonomy-icon');
   var projectTaskTemplatesEnabledInput = wireSimpleToggle('cga-project-task-templates-enabled', 'cga-project-task-templates-fields');
+  wireIconsToggle('cga-project-task-template-icons-enabled', '.cga-project-task-template-icon');
 
   // Per-client/site calendar & SLA (Sprint 13): only meaningful once there's more than one
   // top-level entity to have its own settings, i.e. any multi-entité mode — not mono. Reuses
@@ -2235,7 +2241,7 @@
     });
     syncGeneralSettingsSelectAll();
 
-    ['task_categories_enabled', 'task_templates_enabled', 'task_template_icons_enabled', 'solution_library_enabled', 'solution_template_icons_enabled', 'followup_library_enabled', 'followup_library_icons_enabled', 'validation_templates_enabled', 'validation_template_icons_enabled', 'change_problem_templates_enabled', 'change_problem_template_icons_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_task_templates_enabled'].forEach(function (field) {
+    ['task_categories_enabled', 'task_templates_enabled', 'task_template_icons_enabled', 'solution_library_enabled', 'solution_template_icons_enabled', 'followup_library_enabled', 'followup_library_icons_enabled', 'validation_templates_enabled', 'validation_template_icons_enabled', 'change_problem_templates_enabled', 'change_problem_template_icons_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_task_templates_enabled', 'project_task_template_icons_enabled'].forEach(function (field) {
       if (typeof defaults[field] !== 'undefined') {
         var input = document.getElementById('cga-' + field.replace(/_/g, '-'));
         input.checked = !!defaults[field];

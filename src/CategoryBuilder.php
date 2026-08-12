@@ -233,8 +233,12 @@ class CategoryBuilder
         $itemId = (int) $item->getID();
         $count = 1;
 
-        if ($withIcons && isset($node['icon'])) {
-            Translations::applyIcon(ITILCategory::class, $itemId, $node['name'], $node['icon']);
+        // Every node gets its translation once icons are enabled, even leaves that were never
+        // given an emoji (Translations::applyIcon() trims a blank icon to just the translated
+        // text) — an English/German/Italian/Spanish session shouldn't fall back to French for the
+        // ~37 leaf categories just because they have no icon of their own.
+        if ($withIcons) {
+            Translations::applyIcon(ITILCategory::class, $itemId, $node['name'], $node['icon'] ?? '');
         }
 
         foreach ($node['children'] ?? [] as $child) {

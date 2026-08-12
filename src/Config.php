@@ -187,6 +187,7 @@ class Config extends CommonDBTM
             'project_taxonomy_enabled' => 0,
             'project_taxonomy_icons_enabled' => 0,
             'project_task_templates_enabled' => 0,
+            'project_task_template_icons_enabled' => 0,
             'entity_logos_enabled' => 0,
             'wait_reason_icons_enabled' => 0,
         ];
@@ -446,7 +447,7 @@ class Config extends CommonDBTM
             $input['ldap_rights_profile'] = 'Technician';
         }
 
-        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled'] as $field) {
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

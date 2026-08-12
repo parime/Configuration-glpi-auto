@@ -291,64 +291,132 @@ UTF-8 bruts, aucun antislash à perdre).
 
 ---
 
-## 🔍 Quatrième audit — vérification visuelle + recherche marché (à faire, prochaine session)
+## 🔍 Quatrième audit — vérification de complétude + recherche marché (fait, 2026-08-12)
 
-**Contexte (2026-08-12)** : le Sprint 34 (icônes/traductions) puis sa correction v0.20.0 (gabarits
-de ticket/changement/problème/solution/tâche/suivi/validation, oubliés puis mal exclus à tort) ont
-montré que relire le code ne suffit pas à garantir qu'une fonctionnalité marche réellement dans
-l'interface — un `DropdownTranslation` peut exister en base sans jamais s'afficher nulle part
-(`ITILTemplate` n'a pas d'onglet Traductions), et inversement une classe peut sembler ne pas
-supporter un mécanisme alors qu'elle le supporte bel et bien (`AbstractITILChildTemplate`). Après
-plusieurs sprints rapides, il est probable que d'autres trous du même genre existent (traduction
-manquante quelque part, icône oubliée sur un intitulé, réglage créé mais jamais branché à un
-builder) — seul un audit par navigation réelle (pas une relecture de code) peut le confirmer.
-Note de session : ce point a été posé en fin de session (contexte proche de la limite), à reprendre
-en priorité à la prochaine ouverture.
+**Contexte** : le Sprint 34 (icônes/traductions) puis sa correction v0.20.0 (gabarits de ticket/
+changement/problème/solution/tâche/suivi/validation, oubliés puis mal exclus à tort) ont montré que
+relire le code ne suffit pas à garantir qu'une fonctionnalité marche réellement — un
+`DropdownTranslation` peut exister en base sans jamais s'afficher nulle part (`ITILTemplate` n'a
+pas d'onglet Traductions), et inversement une classe peut sembler ne pas supporter un mécanisme
+alors qu'elle le supporte bel et bien (`AbstractITILChildTemplate`). Audit mené en deux temps :
+recherche web (2 agents en parallèle) + un audit de complétude en base, plus rapide et plus
+exhaustif qu'un audit Playwright écran par écran pour ce cas précis (comparer le nombre de lignes
+réellement traduites au nombre total de lignes par itemtype révèle un trou aussi sûrement qu'une
+capture d'écran, sans le coût d'une visite par intitulé).
 
-1. **Audit de complétude via navigation web (Playwright)**, sur l'instance de test réelle :
-   - Parcourir chaque étape du wizard avec tous les toggles activés/désactivés dans les deux sens
-     (pas seulement "tout coché" comme le test A-to-Z du Sprint 34) — vérifier qu'aucune
-     combinaison ne casse, et que les aperçus (`*_preview`) reflètent vraiment ce qui sera créé.
-   - Repasser sur *chaque* catégorie de Configuration > Intitulés déjà marquée "fait" dans ce
-     ROADMAP (sections ci-dessus) : icône affichée au bon endroit (pas seulement présente en base
-     `glpi_dropdowntranslations`), traduction dans les 5 langues à chaque fois, et confirmation
-     qu'aucun item documenté "fait" n'est en réalité à moitié fait — même méthode qui a débusqué le
-     trou des gabarits (v0.20.0) : chercher activement la preuve visuelle, pas supposer que le code
-     suffit.
-   - Consigner tout écart trouvé comme un correctif dédié, pas glisser un rattrapage silencieux
-     dans un autre sprint.
+### Bugs trouvés et corrigés (v0.20.2)
 
-2. **Inventaire de ce qui reste configurable, non couvert par les 3 audits précédents.** Repasser
-   sur les zones de Configuration GLPI 11 pas encore auditées (Général, Administration...) —
-   chercher spécifiquement les réglages *hors* Intitulés (paramètres système, formulaires,
-   workflows, notifications) qui n'ont pas encore été regardés lors des audits Intitulés.
+Méthode : requête SQL comparant, pour chaque itemtype à icônes, le nombre total de lignes créées
+au nombre de lignes ayant réellement une traduction dans `glpi_dropdowntranslations` — tout écart
+est soit un item natif GLPI jamais touché par le plugin (attendu, ex. le gabarit "Default" natif de
+`TicketTemplate`), soit un vrai trou. Trois vrais trous trouvés :
 
-3. **Automatisations possibles — deux pistes à explorer séparément :**
-   - Via le plugin (nouveaux builders).
-   - Via le moteur de règles natif GLPI (`RuleTicket`/`RuleChange`/`RuleProblem`/
-     `RuleSoftwareCategory`...) — jusqu'ici volontairement laissé de côté pour la logique métier
-     (cf. section "Règles" ci-dessus, raisonnement : inventer des règles arbitraires serait pire
-     que rien). Vérifier par recherche s'il existe des règles "universelles" qui font consensus en
-     pratique ITSM (pas propres à une organisation) avant de proposer quoi que ce soit.
+1. **`WaitReasonBuilder` ne traduisait jamais ses gabarits liés.** Chaque `PendingReason` peut
+   créer son propre `ITILFollowupTemplate`/`SolutionTemplate` dédié (ex. "Attente de retour
+   utilisateur" génère un gabarit de suivi ET un gabarit de solution du même nom) — la raison
+   d'attente elle-même recevait bien son icône, mais ses deux gabarits liés, jamais. Aggravé par un
+   second bug dans le correctif lui-même : la branche "déjà existant" de `getOrCreateReason()`
+   retournait avant d'atteindre le nouveau code, donc réexécuter le wizard sur une instance déjà
+   configurée ne rattrapait rien — corrigé en relisant les IDs de gabarits liés directement depuis
+   la `PendingReason` existante.
+2. **`ProjectTaskTemplateBuilder` n'avait jamais eu d'icônes du tout** — angle mort du même genre
+   que celui corrigé en v0.20.0 pour `TicketTemplate`/`ChangeTemplate`/`ProblemTemplate` : la classe
+   (`ProjectTaskTemplate extends CommonDropdown`) n'a simplement jamais été incluse dans la liste
+   des itemtypes à traiter à l'époque. Nouveau réglage `project_task_template_icons_enabled` ajouté,
+   3 icônes choisies (🎯 Cadrage initial, 📍 Point d'avancement, 🏁 Revue de clôture).
+3. **`CategoryBuilder` : 37 sous-catégories de niveau 3 (sur 103 `ITILCategory` au total) n'avaient
+   jamais de traduction**, alors que les 5 langues existaient déjà dans `Translations.php` pour
+   chacune d'elles (travail déjà fait au Sprint "traductions", jamais branché) — la cause exacte :
+   `Translations::applyIcon()` n'était appelée que si le nœud avait une icône (`isset($node['icon'])`),
+   et les feuilles de l'arbre n'en ont volontairement jamais eu (choix de design du Sprint 16, pas
+   remis en cause). Corrigé en découplant les deux : `applyIcon()` accepte maintenant une icône
+   vide (`trim()` sur le résultat pour éviter un espace résiduel), et `CategoryBuilder` traduit
+   désormais chaque nœud dès que `category_icons_enabled` est actif, icône ou pas. Résultat pratique
+   pour l'utilisateur : une session en anglais/allemand/italien/espagnol voyait jusqu'ici les ~37
+   catégories les plus fines (ex. "Ordinateur fixe", "Wifi") rester en français au milieu d'une
+   arborescence sinon traduite — plus le cas.
 
-4. **Aperçu CSS/branding — passer de la déduction à l'exhaustif.** `BrandingBuilder` cible
-   aujourd'hui `--glpi-logo` et une couleur principale par déduction au cas par cas du SCSS source
-   GLPI. Objectif : récupérer/lister systématiquement les variables CSS personnalisables exposées
-   par GLPI 11 (thème `auror` et les autres thèmes natifs — voir si le thème est aussi configurable
-   dans notre wizard), pour permettre une personnalisation et un aperçu plus complets en appelant
-   les bonnes variables plutôt qu'en devinant une par une à chaque nouvelle demande.
+Les trois corrections vérifiées de bout en bout sur l'instance de test réelle (pas seulement en
+base) : soumission complète du wizard, recomptage SQL avant/après (66→103 pour `ITILCategory`,
+0→3 pour `ProjectTaskTemplate`, 5→7 et 10→11 pour les gabarits liés de `WaitReasonBuilder`).
+**Piège opérationnel rencontré en testant** : l'opcache PHP du conteneur GLPI n'a pas repris le
+correctif du bug n°1 tout de suite malgré `opcache.validate_timestamps=On` — un redémarrage du
+conteneur a été nécessaire. À garder en tête pour la prochaine session : si un correctif ne semble
+"pas prendre" en test alors que le code est correct, redémarrer le conteneur avant de creuser plus
+loin une fausse piste.
 
-5. **Recherche web — douleurs de configuration GLPI + benchmark concurrentiel.** Rechercher ce qui
-   pose le plus de problèmes aux utilisateurs de GLPI en configuration initiale (forums, issues
-   GitHub, retours communauté officielle) pour prioriser objectivement les prochains builders
-   plutôt que par intuition. En parallèle, regarder ce que proposent les principaux concurrents
-   ITSM (ServiceNow, Freshservice, Jira Service Management, Zendesk...) sur leur propre
-   onboarding/wizard de configuration initiale, pour identifier des fonctionnalités transposables à
-   ce plugin.
+Passé en revue tous les builders restants pour le même genre de trou (création d'un itemtype à
+icônes sans appel `applyIcon()` à proximité) — aucun autre trouvé à ce jour.
 
-6. **Livrable attendu** : synthèse de cet audit ajoutée à ce ROADMAP, avec des propositions
-   concrètes soumises à l'utilisateur avant toute implémentation — même méthode que les audits
-   précédents (pas de décision de priorité unilatérale).
+### Recherche web — points de friction GLPI réels (résumé, détail complet demandé à l'utilisateur si besoin)
+
+Recherché sur le forum GLPI officiel, les issues GitHub `glpi-project/glpi`, et le web général :
+structure d'entités mal comprise dès le départ (aucune vue d'impact avant de choisir) ; confusion
+SLA/OLA persistante malgré le presет déjà livré ; LDAP — connexion OK mais import KO, filtres
+fragiles, messages d'erreur peu clairs (très fréquent, non couvert par le plugin aujourd'hui) ;
+catégories de tickets mal filtrées par entité (mi-bug core, mi-config) ; droits/profils — risque
+réel d'auto-élévation faute de séparation stricte par défaut (axe ISO 27001 direct, pas encore
+traité) ; notifications email désactivées par défaut + pièges SMTP (très fréquent, bloquant, pas
+couvert) ; prérequis serveur mal anticipés avant même d'atteindre la configuration applicative (hors
+périmètre wizard, mais un contrôle de prérequis en tout début de parcours serait utile).
+
+### Recherche web — patterns d'onboarding des concurrents ITSM (résumé)
+
+ServiceNow (Guided Setup séquencé par dépendances, étapes verrouillées tant qu'un prérequis n'est
+pas actif) ; Freshservice (onboarding minimal 3 étapes, approfondissement plus tard — idée de "mode
+express" distinct du mode complet actuel) ; Jira Service Management (templates de projet métier
+pré-configurés en un clic — IT/RH/Facilities avec workflows+SLA assortis, fort potentiel de
+transposition) ; Zendesk (préparation du contenu self-service en amont plutôt qu'en fin de
+parcours).
+
+### Recherche — variables CSS GLPI 11 pour un branding exhaustif (résumé)
+
+`BrandingBuilder` ne surcharge aujourd'hui que `--glpi-logo` (une seule des 6 variantes réelles :
+`--glpi-logo-light/-light-reduced/-dark/-dark-reduced/-light-login/-dark-login` — le mode réduit, le
+mode sombre et l'écran de login gardent donc le logo natif GLPI) et une couleur primaire approximée
+(alors que `--tblr-primary`/`--tblr-primary-fg`/`--tblr-primary-darken` etc. existent, dérivées
+nativement par `color-mix`). GLPI 11 expose aussi `--glpi-mainmenu-*` (menu principal), des
+variables de portail helpdesk calculées depuis le menu, et surtout un **mécanisme officiel plus
+propre que `custom_css_code`** apparu en 11.0 : déposer un `.scss` dans `files/_themes`, auto-
+détecté comme palette sélectionnable — évite les soucis de spécificité (`!important` contre Tabler)
+et couvre nativement le dark mode, deux limites confirmées de l'approche actuelle. GLPI ships aussi
+17 palettes natives (`auror`, `dark`, `midnight`, `teclib`...) que le wizard ne propose pas de
+sélectionner aujourd'hui.
+
+---
+
+## 📮 Propositions issues du quatrième audit — à trancher avec l'utilisateur
+
+Aucune de ces pistes n'est implémentée — même méthode que les audits précédents, pas de décision de
+priorité unilatérale.
+
+1. **Séparation stricte des droits par défaut (axe sécurité/ISO 27001).** Le point de friction le
+   plus sévère trouvé en recherche (risque d'auto-élévation via le droit "Profils" global) rejoint
+   directement l'objectif ISO 27001 déjà affiché par ce plugin. Pourrait se traduire par un profil
+   "Administrateur technique" par défaut plus restrictif que Super-Admin, proposé (pas imposé) dans
+   `RuleRightBuilder`/le wizard.
+2. **Diagnostic LDAP pas-à-pas.** Le point de friction le plus fréquent trouvé. `RuleRightBuilder`
+   configure déjà l'affectation post-synchronisation, mais rien n'aide à *fiabiliser* la
+   synchronisation elle-même (filtre, bind, TLS) — un mode "test de connexion + filtre pré-validé"
+   serait un vrai gain, mais gros morceau (dépend fortement de l'annuaire de chaque organisation).
+3. **Notifications : vérifier/activer les modèles de cycle de vie manquants par défaut**, au-delà de
+   `auto_reminder` déjà traité (Sprint 25) — repasser sur la liste complète des notifications
+   `is_active=0` d'origine.
+4. **Mode "express" du wizard**, inspiré de Freshservice — un sous-ensemble de 4-5 réglages
+   critiques (entité, calendrier, un SLA par défaut, branding minimal) pour une mise en service en
+   quelques minutes, le mode actuel (17 étapes) devenant le mode "complet" à côté.
+5. **Bibliothèque de "profils métier" prêts à l'emploi**, inspirée de Jira Service Management — au
+   lieu du seul profil topique actuel (IT/Bâtiment/Flotte...), des jeux de catégories+SLA+gabarits
+   par verticale (IT pur, RH, Facilities...) sélectionnables en un clic à l'étape 1.
+6. **`BrandingBuilder` — couvrir les 6 variables de logo (pas seulement `--glpi-logo`) et la vraie
+   palette de couleurs Tabler**, plutôt que l'unique approximation actuelle ; envisager de proposer
+   les palettes natives GLPI (`auror`/`dark`/`midnight`...) comme choix simple dans le wizard, avant
+   d'aller jusqu'à générer une palette `.scss` custom (mécanisme plus propre mais plus gros chantier
+   — fichier à déposer dans `files/_themes`, hors du modèle "un DropdownTranslation/un CSS custom
+   par entité" utilisé partout ailleurs dans le plugin).
+7. **Contrôle de prérequis serveur en tout début de wizard** (PHP/MySQL versions, droits fichiers) —
+   hors configuration applicative à proprement parler, mais évite un échec avant même d'atteindre
+   l'étape 1.
 
 ---
 
