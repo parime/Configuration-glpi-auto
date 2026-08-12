@@ -348,11 +348,32 @@ loin une fausse piste.
 Passé en revue tous les builders restants pour le même genre de trou (création d'un itemtype à
 icônes sans appel `applyIcon()` à proximité) — aucun autre trouvé à ce jour.
 
+### Cinquième passage — audit navigateur réel (fait, 2026-08-12, v0.20.3)
+
+L'audit ci-dessus était base de données + code, pas une navigation réelle dans l'interface —
+l'utilisateur l'a fait remarquer, à raison (c'est précisément la leçon de la correction v0.20.0).
+Deux choses vérifiées en parcourant l'admin GLPI par Playwright :
+
+- **Configuration > Intitulés** : les captures d'écran/textes des pages déjà auditées confirment ce
+  que la base disait — pas d'écart trouvé entre les deux méthodes sur les intitulés déjà couverts.
+- **Configuration > Actions automatiques** : a révélé un vrai trou du même genre que
+  `auto_reminder` (Sprint 25) — les tâches automatiques `cartridge`/`consumable`/`software`
+  (alertes cartouches, consommables, expiration de licences) ships `Désactivé` par défaut, alors
+  que leurs `Notification` correspondantes sont déjà `is_active = 1` : la notification a l'air
+  configurée mais ne se déclenche jamais, faute de tâche pour la déclencher. Corrigé dans
+  `GeneralSettingsBuilder::applyNotifications()` (même toggle "Notifications" que le reste, cohérent
+  avec ce que la case promet). Vérifié en base (`state` 0→1) et dans l'admin réel (« Désactivé » →
+  « Programmée »).
+- **Configuration > Authentification** (LDAP/SMTP) et **> Collecteurs** confirmés non couverts —
+  déjà identifiés en recherche web comme le point de friction #1, restent dans les propositions
+  ci-dessous, pas traités dans cette passe (gros chantier, dépend de l'annuaire de chaque
+  organisation).
+
 ### Recherche web — points de friction GLPI réels (résumé, détail complet demandé à l'utilisateur si besoin)
 
 Recherché sur le forum GLPI officiel, les issues GitHub `glpi-project/glpi`, et le web général :
 structure d'entités mal comprise dès le départ (aucune vue d'impact avant de choisir) ; confusion
-SLA/OLA persistante malgré le presет déjà livré ; LDAP — connexion OK mais import KO, filtres
+SLA/OLA persistante malgré le preset déjà livré ; LDAP — connexion OK mais import KO, filtres
 fragiles, messages d'erreur peu clairs (très fréquent, non couvert par le plugin aujourd'hui) ;
 catégories de tickets mal filtrées par entité (mi-bug core, mi-config) ; droits/profils — risque
 réel d'auto-élévation faute de séparation stricte par défaut (axe ISO 27001 direct, pas encore
