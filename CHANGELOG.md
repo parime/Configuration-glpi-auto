@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.3] - 2026-08-12
+
+Cinquième passage d'audit — navigation réelle dans l'admin GLPI (Playwright), pas seulement base de
+données/code cette fois. Voir `ROADMAP.md` pour le détail.
+
+### Fixed
+- `GeneralSettingsBuilder` : les tâches automatiques `cartridge`/`consumable`/`software` (alertes
+  cartouches, consommables, expiration de licences) ships désactivées par défaut, alors que leurs
+  notifications correspondantes sont déjà actives — la notification semblait configurée mais ne se
+  déclenchait jamais. Activées par le même toggle "Notifications" que le reste (`notifications_enabled`).
+
 ## [0.20.2] - 2026-08-12
 
 Quatrième audit de complétude (comparaison SQL du nombre total de lignes vs lignes réellement
