@@ -135,7 +135,7 @@ jobs:
         # couverture deja en place sur le plugin jumeau remise-glpi, qui
         # detectait des secrets/mauvaises configurations que ce depot ne
         # verifiait pas du tout jusqu'ici.
-        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0, pas @master (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0, pas @master (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
         with:
           scan-type: 'fs'
           scan-ref: '.'
