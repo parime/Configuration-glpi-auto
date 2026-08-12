@@ -8,10 +8,7 @@
 
 Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une installation vierge en une plateforme operationnelle en quelques clics.
 
-> **Etat du projet (2026-08-10)** : en developpement actif — premiere release reelle `v0.1.0`. La
-> liste de fonctionnalites ci-dessous decrit la vision du plugin ; a ce stade sont reellement
-> implementes le catalogue de profils de configuration (CRUD, Sprint 1) et les reglages de
-> structure d'entites avec apercu en temps reel (Sprint 2). Voir [CHANGELOG.md](CHANGELOG.md) et
+> **Etat du projet (2026-08-12)** : `v0.30.1`. Voir [CHANGELOG.md](CHANGELOG.md) et
 > [ROADMAP.md](ROADMAP.md) pour l'etat sprint par sprint.
 
 ## Table des matieres
@@ -26,13 +23,25 @@ Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une insta
 
 ## Fonctionnalites
 
-- Assistant graphique moderne avec barre de progression
-- Plusieurs profils predefinis (PME, ETI, Grande entreprise, MSP, ISO 27001, ITIL)
-- Configuration automatique des entites, SLA, calendriers, catalogues de services
-- Mode Audit pour analyser les instances existantes
-- Export/Import de configurations via Blueprints
-- Assistant intelligent pour la creation des lieux avec geocodage
-- Support multilingue (Francais, Anglais)
+- Assistant graphique en 17 etapes avec barre de progression et un mode express (application
+  directe des reglages recommandes, sans repasser par chaque etape)
+- 4 profils predefinis (Installation simple, Plusieurs sites ou services, Plusieurs entreprises
+  clientes / MSP, Personnalise) qui pre-remplissent les etapes suivantes avec des valeurs adaptees
+- Structure d'entites (mono-site, multi-site, ou MSP) avec apercu en temps reel
+- Calendrier, SLA/OLA avec escalade automatique entre niveaux de support (N1 -> N2 -> N3)
+- Categories de tickets thematiques (11 branches selectionnables, jusqu'a 3 niveaux) et catalogue
+  de services en libre-service (formulaires natifs GLPI 11, routage automatique vers la bonne
+  categorie)
+- Statuts d'elements et raisons d'attente avec relance/cloture automatiques
+- Personnalisation graphique : couleur et logo, palette GLPI native ou personnalisee, reglages
+  differencies par client/site en mode MSP
+- Modeles de tickets (simplifie / complet) assignes automatiquement selon le profil GLPI de
+  l'utilisateur, droits LDAP (par site et par fonction/departement)
+- Bibliotheques de gabarits de taches, solutions, suivis et validations, avec variables Twig
+  dynamiques (donnees reelles du ticket/demandeur), modeles de changement et de probleme
+- Lieux, fabricants, categories de base de connaissances, rubriques documentaires (classification
+  ISO 27001) et niveaux de criticite, intitules du module Projets
+- Interface traduite en 5 langues (francais, anglais, allemand, italien, espagnol)
 
 ## Prerequis
 
@@ -61,6 +70,15 @@ composer install --no-dev   # vendor/autoload.php est requis au runtime, voir se
 Puis copiez/liez le dossier dans `plugins/configurationglpiauto` d'une instance GLPI 11, et
 installez/activez comme ci-dessus. Un stack Docker de test (GLPI + MariaDB) est fourni dans
 `docker-compose.test.yml`.
+
+## Utilisation
+
+Une fois le plugin active, l'assistant est accessible depuis **Administration > Profils de
+configuration > Configuration**. Choisissez un profil de depart (etape 1), puis parcourez les 17
+etapes en ajustant chaque reglage a vos besoins — rien n'est cree dans GLPI avant la derniere
+etape (Recapitulatif). Le mode express (bouton disponible des l'etape 1) applique directement les
+reglages recommandes du profil choisi, sans repasser par chaque etape. Voir le
+[tutoriel](docs/TUTORIAL.md) pour une capture d'ecran de chaque etape.
 
 ## Documentation
 
