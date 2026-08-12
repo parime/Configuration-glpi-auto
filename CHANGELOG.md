@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.27.0] - 2026-08-12
+
+Sixième audit (module Projets + points transverses) : préparation à la publication sur
+plugins.glpi-project.org, et variables Twig dans les gabarits de suivi/solution. Voir
+`ROADMAP.md` pour le détail complet de l'audit.
+
+### Added
+- `FollowupLibraryBuilder`/`SolutionLibraryBuilder` : les 15 gabarits utilisent désormais le
+  moteur Twig sandboxé natif de GLPI (`Glpi\ContentTemplates\TemplateManager`, disponible depuis
+  la 10.0 sur les gabarits de suivi/tâche/solution) pour une salutation personnalisée
+  (`Bonjour <nom>,` via `{{ requesters|first.fullname }}`, avec repli sur "Bonjour," si aucun
+  demandeur) — compatible Ticket/Change/Problem (le nom de variable racine change selon le type,
+  géré via `itemtype`). Vérifié en conditions réelles (ticket réel + Change réel créés pour
+  l'occasion) que le rendu est correct dans les deux cas.
+- Manifeste (`configurationglpiauto.xml`) : ajout de `<download_url>` par version (absent
+  jusqu'ici, la marketplace n'avait rien à proposer en téléchargement), déclaration de 3 langues
+  supplémentaires (de_DE/it_IT/es_ES) en plus de fr_FR/en_GB.
+
+### Fixed
+- `SolutionLibraryBuilder` : les 2 gabarits "Sécurité" référençaient déjà `{{ ticket.solvedate }}`
+  en dur alors que leur `SolutionType` est aussi sélectionnable sur un Change
+  (`is_change=1`) — où `ticket` n'existe pas, et le filtre Twig `date` traite un input
+  indéfini comme "maintenant", affichant silencieusement la date du jour au lieu de la vraie date
+  de résolution. Rendu itemtype-aware comme le reste de ce changement.
+
 ## [0.26.0] - 2026-08-12
 
 Règles de droits LDAP par fonction/département, en complément de la règle par site existante.

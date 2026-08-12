@@ -425,6 +425,68 @@ sélectionner aujourd'hui.
 
 ---
 
+### Sixième audit — module Projets + points transverses (fait, 2026-08-12, v0.26.0)
+
+Audit réel (code source GLPI + base de données, pas de suppositions) centré sur le module Projets à
+la demande de l'utilisateur, plus quelques questions transverses posées dans la foulée.
+
+**Projets** :
+- Notifications projet (`New/Update/Delete Project`, `New/Update/Delete Project Task`) —
+  **vérifié déjà actives par défaut** en base, contrairement au bug `auto_reminder` trouvé sur les
+  tickets (Sprint 25). Rien à corriger.
+- Statuts de projet (`ProjectState`) — re-confirmé : conclusion "déjà suffisant" du troisième audit
+  tient toujours (`is_finished`/`color` déjà cohérents nativement sur les 3 statuts).
+- Rôles d'équipe (`ProjectTeam`) — constante PHP figée (`Team::ROLE_MEMBER`...), pas une liste
+  configurable, rien à construire.
+- **Gap réel identifié, pas encore traité** : GLPI permet de sauver un projet existant comme
+  "modèle" (`is_template`) et d'en recréer un nouveau à partir de ce modèle — comme les gabarits de
+  ticket, mais **le plugin n'en fournit aucun**. Un ou deux modèles de projet pré-structurés (ex.
+  "Déploiement standard" avec tâches type déjà liées, sur les `ProjectType`/`ProjectTaskType`
+  existants) apporteraient la même valeur que `TaskTemplateBuilder` côté tickets. Pas encore cadré
+  avec l'utilisateur, pas de version cible.
+
+**Variables/balises dans les gabarits (suivi/tâche/solution/ticket) — correction en cours d'audit.**
+Première conclusion erronée : le système `##ticket.title##`
+(`NotificationTemplateTranslation::showAvailableTags()`) est bien exclusif aux notifications, mais
+en creusant `AbstractITILChildTemplate::getRenderedContent()` un second mécanisme, réel et distinct,
+existe depuis la 10.0 : `Glpi\ContentTemplates\TemplateManager`, un moteur **Twig sandboxé**
+(tags autorisés : `if`/`for`/`set`... ; filtres : `date`/`default`/`first`/`length`...) exposant les
+champs du ticket/change/problem (`{{ ticket.name }}`, `{{ ticket.requesters.users }}`,
+`{{ ticket.priority }}`...). **Fait (v0.27.0, 2026-08-12)** : `FollowupLibraryBuilder`/
+`SolutionLibraryBuilder` (15 gabarits) utilisent désormais une salutation personnalisée
+itemtype-aware (`{{ requesters|first.fullname }}`, repli sur "Bonjour," si vide) ; au passage, un
+vrai bug latent trouvé et corrigé sur les 2 gabarits "Sécurité" qui référençaient déjà
+`{{ ticket.solvedate }}` en dur alors que sélectionnables sur un Change. Vérifié en réel (ticket +
+Change créés pour l'occasion) que les deux branches rendent correctement. `TaskTemplateBuilder`
+(checklists techniciens, pas de salutation à personnaliser) laissé statique par nature du contenu.
+
+**Catégories FAQ** (`KnowbaseCategoryBuilder`) — re-confirmé créées et délibérément alignées sur les
+mêmes branches que les catégories ITIL/catalogue de services (filtrage identique), pas une seconde
+taxonomie inventée.
+
+**Documents** (`DocumentManagementBuilder`) — re-confirmé créés (v0.23.0), icônes + traductions
+complètes vérifiées sur les 8 termes (4 classifications + 4 niveaux de criticité) dans
+`Translations.php`, rien ne manque.
+
+**Personnalisation HTML/CSS des e-mails — gap réel identifié, pas encore traité.** GLPI a un champ
+global `mailing_signature` (jamais utilisé par le plugin) mais aucun habillage commun à toutes les
+notifications — chaque `NotificationTemplate` a son propre `content_html` isolé par langue.
+`BrandingBuilder` calcule déjà logo/couleurs ; les injecter dans la signature globale et/ou un
+en-tête HTML partagé serait généralisable. Décision de l'utilisateur : reporté après les trois
+chantiers ci-dessous.
+
+**Filigrane PDF sur documents confidentiels** — position inchangée depuis la première discussion :
+nature technique différente (traitement de fichier temps réel vs scaffolding one-shot), plugin
+séparé recommandé plutôt qu'ajout ici.
+
+**Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
+1. Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI —
+   vérification pure, pas de nouveau code.
+2. Documentation GitHub avec captures d'écran de chaque étape/menu, en guise de tutoriel.
+3. Étoffement du catalogue de services.
+
+---
+
 ## 📮 Propositions issues du quatrième audit — à trancher avec l'utilisateur
 
 Aucune de ces pistes n'est implémentée — même méthode que les audits précédents, pas de décision de
