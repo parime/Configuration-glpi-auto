@@ -92,6 +92,11 @@ class TicketTemplateBuilder
             $this->ensureMandatory($completeId, $so[$key] ?? -1);
         }
 
+        if (!empty($config->fields['ticket_template_icons_enabled'])) {
+            Translations::applyIcon(TicketTemplate::class, $simplifiedId, self::SIMPLIFIED_NAME, '📝');
+            Translations::applyIcon(TicketTemplate::class, $completeId, self::COMPLETE_NAME, '🛠️');
+        }
+
         $this->assignToProfiles($simplifiedId, $completeId);
 
         return true;

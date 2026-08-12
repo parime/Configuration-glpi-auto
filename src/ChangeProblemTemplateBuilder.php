@@ -60,6 +60,11 @@ class ChangeProblemTemplateBuilder
         $problemId = $this->getOrCreateTemplate(ProblemTemplate::class, self::PROBLEM_NAME);
         $this->ensureMandatory(ProblemTemplateMandatoryField::class, 'problemtemplates_id', $problemId, $problemSo['content'] ?? -1);
 
+        if (!empty($config->fields['change_problem_template_icons_enabled'])) {
+            Translations::applyIcon(ChangeTemplate::class, $changeId, self::CHANGE_NAME, '🔄');
+            Translations::applyIcon(ProblemTemplate::class, $problemId, self::PROBLEM_NAME, '🧩');
+        }
+
         $this->assignToProfiles($changeId, $problemId);
 
         return true;

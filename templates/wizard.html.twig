@@ -646,10 +646,15 @@
         </div>
 
         <div id="cga-ticket-template-fields" style="display: none;">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="ticket_template_icons_enabled" value="0">
+            <input type="checkbox" name="ticket_template_icons_enabled" value="1" class="form-check-input" id="cga-ticket-template-icons-enabled" {{ config.ticket_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-ticket-template-icons-enabled">{{ __('Ajouter des icônes sur les modèles', 'configurationglpiauto') }}</label>
+          </div>
           <div class="row">
             <div class="col-md-6">
               <ul class="list-group mb-3">
-                <li class="list-group-item list-group-item-secondary">{{ __('Simplifié — Self-Service, Read-Only', 'configurationglpiauto') }}</li>
+                <li class="list-group-item list-group-item-secondary"><span class="cga-ticket-template-icon" style="display: none;">📝</span> {{ __('Simplifié — Self-Service, Read-Only', 'configurationglpiauto') }}</li>
                 <li class="list-group-item">{{ __('Titre + description uniquement', 'configurationglpiauto') }}</li>
                 <li class="list-group-item">{{ __('Catégorie visible mais limitée aux 11 branches parentes', 'configurationglpiauto') }}</li>
                 <li class="list-group-item">{{ __('Urgence, impact, statut, lieu, attribution, niveaux de service (SLA/OLA) : masqués', 'configurationglpiauto') }}</li>
@@ -657,7 +662,7 @@
             </div>
             <div class="col-md-6">
               <ul class="list-group mb-3">
-                <li class="list-group-item list-group-item-secondary">{{ __('Complet — tous les autres profils', 'configurationglpiauto') }}</li>
+                <li class="list-group-item list-group-item-secondary"><span class="cga-ticket-template-icon" style="display: none;">🛠️</span> {{ __('Complet — tous les autres profils', 'configurationglpiauto') }}</li>
                 <li class="list-group-item">{{ __('Interface complète (aucun champ masqué)', 'configurationglpiauto') }}</li>
                 <li class="list-group-item">{{ __('Catégorie et urgence obligatoires', 'configurationglpiauto') }}</li>
               </ul>
@@ -750,9 +755,14 @@
           <label class="form-check-label" for="cga-task-templates-enabled">{{ __('Créer les gabarits de tâche (checklists réutilisables)', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-task-templates-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="task_template_icons_enabled" value="0">
+            <input type="checkbox" name="task_template_icons_enabled" value="1" class="form-check-input" id="cga-task-template-icons-enabled" {{ config.task_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-task-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
           <ul class="list-group" style="max-width: 560px;">
             {% for tpl in task_templates_preview %}
-              <li class="list-group-item">{{ tpl.name }}</li>
+              <li class="list-group-item"><span class="cga-task-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
             {% endfor %}
           </ul>
         </div>
@@ -769,13 +779,18 @@
             <input type="checkbox" name="solution_type_icons_enabled" value="1" class="form-check-input" id="cga-solution-type-icons-enabled" {{ config.solution_type_icons_enabled|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="cga-solution-type-icons-enabled">{{ __('Ajouter des icônes sur les types de solution', 'configurationglpiauto') }}</label>
           </div>
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="solution_template_icons_enabled" value="0">
+            <input type="checkbox" name="solution_template_icons_enabled" value="1" class="form-check-input" id="cga-solution-template-icons-enabled" {{ config.solution_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-solution-template-icons-enabled">{{ __('Ajouter des icônes sur les gabarits de solution', 'configurationglpiauto') }}</label>
+          </div>
           {% for type in solution_library_preview %}
             <div class="mb-2">
               <span class="cga-solution-type-icon" style="display: none;">{{ type.icon }}</span>
               <strong>{{ type.name }}</strong>
               <ul class="mb-0">
                 {% for tpl in type.templates %}
-                  <li>{{ tpl.name }}</li>
+                  <li><span class="cga-solution-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
                 {% endfor %}
               </ul>
             </div>
@@ -794,9 +809,14 @@
           <label class="form-check-label" for="cga-followup-library-enabled">{{ __('Créer les gabarits de suivis', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-followup-library-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="followup_library_icons_enabled" value="0">
+            <input type="checkbox" name="followup_library_icons_enabled" value="1" class="form-check-input" id="cga-followup-library-icons-enabled" {{ config.followup_library_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-followup-library-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
           <ul class="list-group" style="max-width: 560px;">
             {% for tpl in followup_library_preview %}
-              <li class="list-group-item">{{ tpl.name }}</li>
+              <li class="list-group-item"><span class="cga-followup-library-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
             {% endfor %}
           </ul>
         </div>
@@ -807,9 +827,14 @@
           <label class="form-check-label" for="cga-validation-templates-enabled">{{ __('Créer les gabarits de validation', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-validation-templates-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="validation_template_icons_enabled" value="0">
+            <input type="checkbox" name="validation_template_icons_enabled" value="1" class="form-check-input" id="cga-validation-template-icons-enabled" {{ config.validation_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-validation-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
           <ul class="list-group" style="max-width: 560px;">
             {% for tpl in validation_templates_preview %}
-              <li class="list-group-item">{{ tpl.name }}</li>
+              <li class="list-group-item"><span class="cga-validation-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
             {% endfor %}
           </ul>
         </div>
@@ -818,6 +843,17 @@
           <input type="hidden" name="change_problem_templates_enabled" value="0">
           <input type="checkbox" name="change_problem_templates_enabled" value="1" class="form-check-input" id="cga-change-problem-templates-enabled" {{ config.change_problem_templates_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-change-problem-templates-enabled">{{ __('Créer un modèle de changement et de problème par défaut', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-change-problem-templates-fields" style="display: none;" class="mb-2">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="change_problem_template_icons_enabled" value="0">
+            <input type="checkbox" name="change_problem_template_icons_enabled" value="1" class="form-check-input" id="cga-change-problem-template-icons-enabled" {{ config.change_problem_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-change-problem-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <ul class="list-group" style="max-width: 400px;">
+            <li class="list-group-item"><span class="cga-change-problem-template-icon" style="display: none;">🔄</span> {{ __('Changement standard', 'configurationglpiauto') }}</li>
+            <li class="list-group-item"><span class="cga-change-problem-template-icon" style="display: none;">🧩</span> {{ __('Problème standard', 'configurationglpiauto') }}</li>
+          </ul>
         </div>
         <p class="text-muted small">{{ __('Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service n\'a aucun droit sur les changements/problèmes, la distinction base/support ne s\'applique pas.', 'configurationglpiauto') }}</p>
       </div>
@@ -1291,6 +1327,7 @@
     ticketTemplateFields.style.display = ticketTemplateEnabledInput.checked ? '' : 'none';
   }
   ticketTemplateEnabledInput.addEventListener('change', toggleTicketTemplateFields);
+  wireIconsToggle('cga-ticket-template-icons-enabled', '.cga-ticket-template-icon');
   toggleTicketTemplateFields();
 
   var ldapRightsEnabledInput = document.getElementById('cga-ldap-rights-enabled');
@@ -1366,11 +1403,16 @@
 
   var taskCategoriesEnabledInput = wireSimpleToggle('cga-task-categories-enabled', 'cga-task-categories-fields');
   var taskTemplatesEnabledInput = wireSimpleToggle('cga-task-templates-enabled', 'cga-task-templates-fields');
+  wireIconsToggle('cga-task-template-icons-enabled', '.cga-task-template-icon');
   var solutionLibraryEnabledInput = wireSimpleToggle('cga-solution-library-enabled', 'cga-solution-library-fields');
   wireIconsToggle('cga-solution-type-icons-enabled', '.cga-solution-type-icon');
+  wireIconsToggle('cga-solution-template-icons-enabled', '.cga-solution-template-icon');
   var followupLibraryEnabledInput = wireSimpleToggle('cga-followup-library-enabled', 'cga-followup-library-fields');
+  wireIconsToggle('cga-followup-library-icons-enabled', '.cga-followup-library-icon');
   var validationTemplatesEnabledInput = wireSimpleToggle('cga-validation-templates-enabled', 'cga-validation-templates-fields');
-  var changeProblemTemplatesEnabledInput = document.getElementById('cga-change-problem-templates-enabled');
+  wireIconsToggle('cga-validation-template-icons-enabled', '.cga-validation-template-icon');
+  var changeProblemTemplatesEnabledInput = wireSimpleToggle('cga-change-problem-templates-enabled', 'cga-change-problem-templates-fields');
+  wireIconsToggle('cga-change-problem-template-icons-enabled', '.cga-change-problem-template-icon');
   var locationsEnabledInput = wireSimpleToggle('cga-locations-enabled', 'cga-locations-fields');
   var manufacturersEnabledInput = wireSimpleToggle('cga-manufacturers-enabled', 'cga-manufacturers-fields');
   wireIconsToggle('cga-manufacturer-icons-enabled', '.cga-manufacturer-icon');
@@ -2193,7 +2235,7 @@
     });
     syncGeneralSettingsSelectAll();
 
-    ['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_task_templates_enabled'].forEach(function (field) {
+    ['task_categories_enabled', 'task_templates_enabled', 'task_template_icons_enabled', 'solution_library_enabled', 'solution_template_icons_enabled', 'followup_library_enabled', 'followup_library_icons_enabled', 'validation_templates_enabled', 'validation_template_icons_enabled', 'change_problem_templates_enabled', 'change_problem_template_icons_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_task_templates_enabled'].forEach(function (field) {
       if (typeof defaults[field] !== 'undefined') {
         var input = document.getElementById('cga-' + field.replace(/_/g, '-'));
         input.checked = !!defaults[field];
@@ -2204,6 +2246,10 @@
     if (typeof defaults.ticket_template_enabled !== 'undefined') {
       ticketTemplateEnabledInput.checked = !!defaults.ticket_template_enabled;
       toggleTicketTemplateFields();
+    }
+    if (typeof defaults.ticket_template_icons_enabled !== 'undefined') {
+      document.getElementById('cga-ticket-template-icons-enabled').checked = !!defaults.ticket_template_icons_enabled;
+      document.getElementById('cga-ticket-template-icons-enabled').dispatchEvent(new Event('change'));
     }
 
     if (typeof defaults.helpdesk_form_hide_fields !== 'undefined') {

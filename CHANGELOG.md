@@ -9,6 +9,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-08-12
+
+Icônes + traductions EN/DE/IT/ES sur les gabarits ("Gabarits de ticket/changement/problème/
+solution/tâche/suivi/validation") — jusqu'ici seuls les statuts, catégories, types etc.
+en bénéficiaient. Correction d'une erreur de conception du sprint précédent : `TicketTemplate`/
+`ChangeTemplate`/`ProblemTemplate` (`ITILTemplate extends CommonDropdown`) n'avaient jamais reçu
+d'icônes du tout (angle mort, jamais construit), et `SolutionTemplate`/`TaskTemplate`/
+`ITILFollowupTemplate`/`ITILValidationTemplate` (`AbstractITILChildTemplate`) avaient été
+explicitement écartés sur la base d'une lecture de code incorrecte — vérifié empiriquement que
+GLPI accepte bien une traduction sur le champ `name` de ces gabarits via leur propre onglet
+« Traductions ». Aucune rupture de compatibilité.
+
+### Added
+- 6 nouveaux réglages « Ajouter des icônes » (un par famille de gabarit) : gabarits de ticket,
+  de changement/problème, de tâche, de suivi, de validation, de solution — chacun indépendant du
+  réglage existant qui crée déjà les gabarits eux-mêmes.
+- `TicketTemplateBuilder`/`ChangeProblemTemplateBuilder`/`TaskTemplateBuilder`/
+  `FollowupLibraryBuilder`/`ValidationTemplateBuilder`/`SolutionLibraryBuilder` : appellent
+  désormais `Translations::applyIcon()` sur chaque gabarit créé, avec les mêmes 5 langues
+  (fr_FR/en_GB/de_DE/it_IT/es_ES) que le reste du plugin.
+- ~30 nouveaux termes ajoutés à la table de correspondance de `src/Translations.php`.
+
+### Fixed
+- `TicketTemplate`/`ChangeTemplate`/`ProblemTemplate` : n'avaient jamais eu d'icônes, angle mort
+  du balayage d'icônes initial (`ITILTemplate` n'avait pas été identifié comme une des classes
+  concernées).
+
+Vérifié en conditions réelles, pas seulement en base : traduction `en_GB` visible avec sa session
+active dans le sélecteur natif "Modèle de ticket par défaut" (Profils > Assistance), et dans
+l'onglet « Traductions » des gabarits de solution/validation. La liste d'administration des
+intitulés (Configuration > Intitulés) n'affiche jamais l'icône, par conception de GLPI — seul
+l'endroit où la valeur est effectivement utilisée (sélecteur, ticket...) la montre.
+
 ## [0.19.0] - 2026-08-12
 
 ### Added

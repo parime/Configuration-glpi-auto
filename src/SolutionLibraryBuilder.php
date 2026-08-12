@@ -54,10 +54,12 @@ class SolutionLibraryBuilder
             'templates' => [
                 [
                     'name' => 'Accompagnement utilisateur réalisé',
+                    'icon' => '🙋',
                     'content' => "Bonjour,\n\nNous avons accompagné l'utilisateur pas à pas pour résoudre sa demande.\n\nAction réalisée : \n\nCordialement,",
                 ],
                 [
                     'name' => 'Formation dispensée',
+                    'icon' => '🎓',
                     'content' => "Bonjour,\n\nUne session de formation/sensibilisation a été dispensée à l'utilisateur sur l'outil concerné.\n\nPoints abordés : \n\nCordialement,",
                 ],
             ],
@@ -70,10 +72,12 @@ class SolutionLibraryBuilder
             'templates' => [
                 [
                     'name' => 'Résolution technique appliquée',
+                    'icon' => '🔧',
                     'content' => "Bonjour,\n\nLe problème a été identifié et corrigé.\n\nCause : \nAction réalisée : \n\nCordialement,",
                 ],
                 [
                     'name' => 'Remplacement de matériel effectué',
+                    'icon' => '🔩',
                     'content' => "Bonjour,\n\nLe matériel défectueux a été remplacé.\n\nÉquipement concerné : \nNouvel équipement : \n\nCordialement,",
                 ],
             ],
@@ -86,10 +90,12 @@ class SolutionLibraryBuilder
             'templates' => [
                 [
                     'name' => 'Confinement et éradication de la menace',
+                    'icon' => '🛡️',
                     'content' => "Incident de sécurité traité.\n\nAction immédiate : isolation du système impacté.\nÉradication : suppression des éléments malveillants, nettoyage des persistances.\n\nOutils utilisés : \nDate : {{ ticket.solvedate | date(\"d/m/Y H:i\") }}",
                 ],
                 [
                     'name' => 'Application de correctifs de sécurité',
+                    'icon' => '🩹',
                     'content' => "Correctifs appliqués suite à l'incident de sécurité.\n\nVulnérabilité corrigée : \nCorrectifs déployés : \n\nDate : {{ ticket.solvedate | date(\"d/m/Y H:i\") }}",
                 ],
             ],
@@ -102,10 +108,12 @@ class SolutionLibraryBuilder
             'templates' => [
                 [
                     'name' => 'Fonctionnement normal constaté',
+                    'icon' => '✅',
                     'content' => "Bonjour,\n\nAprès vérification, le comportement signalé est normal, aucune anomalie détectée.\n\nCordialement,",
                 ],
                 [
                     'name' => 'Ticket doublon',
+                    'icon' => '📑',
                     'content' => "Bonjour,\n\nCe ticket fait doublon avec une demande déjà en cours de traitement.\n\nTicket de référence : \n\nCordialement,",
                 ],
             ],
@@ -118,10 +126,12 @@ class SolutionLibraryBuilder
             'templates' => [
                 [
                     'name' => 'Compte créé ou modifié',
+                    'icon' => '👤',
                     'content' => "Bonjour,\n\nLe compte a été créé/modifié comme demandé.\n\nAccès accordés : \n\nCordialement,",
                 ],
                 [
                     'name' => 'Mot de passe réinitialisé',
+                    'icon' => '🔑',
                     'content' => "Bonjour,\n\nVotre mot de passe a été réinitialisé. Vous recevrez les identifiants par un canal séparé.\n\nCordialement,",
                 ],
             ],
@@ -139,6 +149,7 @@ class SolutionLibraryBuilder
         }
 
         $withIcons = !empty($config->fields['solution_type_icons_enabled']);
+        $withTemplateIcons = !empty($config->fields['solution_template_icons_enabled']);
         $count = 0;
         foreach (self::TYPES as $type) {
             $typeId = $this->getOrCreateType($type);
@@ -146,7 +157,10 @@ class SolutionLibraryBuilder
                 Translations::applyIcon(SolutionType::class, $typeId, $type['name'], $type['icon']);
             }
             foreach ($type['templates'] as $template) {
-                $this->getOrCreateTemplate($template['name'], $template['content'], $typeId);
+                $templateId = $this->getOrCreateTemplate($template['name'], $template['content'], $typeId);
+                if ($withTemplateIcons) {
+                    Translations::applyIcon(SolutionTemplate::class, $templateId, $template['name'], $template['icon']);
+                }
                 $count++;
             }
         }
