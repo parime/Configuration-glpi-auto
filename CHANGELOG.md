@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.1] - 2026-08-12
+
+### Added
+- `ROADMAP.md` : le diagnostic LDAP pas-à-pas (piste #2 des propositions du cinquième audit) est
+  explicitement écarté — décision utilisateur, chaque annuaire d'entreprise a ses propres filtres/
+  bind DN/schéma de groupes, un assistant générique se heurterait à du cas-par-cas contraire à la
+  philosophie du plugin (des builders universels, pas des outils ad hoc par organisation). Aucun
+  changement de comportement du plugin.
+
 ## [0.22.0] - 2026-08-12
 
 Deux pistes du cinquième audit (recherche marché) : séparation stricte des droits par défaut, et

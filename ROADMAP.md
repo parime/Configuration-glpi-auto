@@ -420,10 +420,13 @@ priorité unilatérale.
    attribué" de `RuleRightBuilder`/étape 12) passe de `Technician` à `Admin` par défaut, avec
    l'explication affichée dans le wizard — reste un simple menu déroulant, n'importe quel profil
    natif reste sélectionnable.
-2. **Diagnostic LDAP pas-à-pas.** Le point de friction le plus fréquent trouvé. `RuleRightBuilder`
-   configure déjà l'affectation post-synchronisation, mais rien n'aide à *fiabiliser* la
-   synchronisation elle-même (filtre, bind, TLS) — un mode "test de connexion + filtre pré-validé"
-   serait un vrai gain, mais gros morceau (dépend fortement de l'annuaire de chaque organisation).
+2. ❌ **Diagnostic LDAP pas-à-pas — écarté (décision utilisateur, 2026-08-12).** Le point de
+   friction le plus fréquent trouvé en recherche, mais chaque annuaire d'entreprise a ses propres
+   filtres, bind DN, schéma de groupes — un assistant de diagnostic générique se heurte à du
+   cas-par-cas qui ne rentre pas dans la philosophie du plugin (des builders universels,
+   applicables à n'importe quelle organisation, pas des outils ad hoc par annuaire). `RuleRightBuilder`
+   continue de couvrir la partie universelle (affectation post-synchronisation) ; fiabiliser la
+   connexion LDAP elle-même reste hors périmètre.
 3. ✅ **Notifications : tâches automatiques d'alerte manquantes — fait (v0.20.3, 2026-08-12).** Voir
    la section "Cinquième passage" ci-dessus.
 4. **Mode "express" du wizard**, inspiré de Freshservice — un sous-ensemble de 4-5 réglages
