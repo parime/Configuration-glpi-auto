@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.31.1] - 2026-08-13
+
+### Fixed
+- **Régression réelle introduite par la v0.31.0**, trouvée en relisant le code avec un œil
+  critique juste après l'avoir livré (pas signalée par l'utilisateur cette fois) :
+  `NotificationBrandingBuilder` n'écrivait qu'une ligne `language=''` par gabarit — GLPI résout
+  pourtant le contenu par la langue du *destinataire*
+  (`NotificationTemplate::getByLanguage()`, `WHERE language IN ($langue_destinataire, '')`), donc
+  tous les destinataires auraient reçu les libellés en français codés en dur, quelle que soit leur
+  langue GLPI — contredisait directement le travail de traduction 5 langues livré juste avant.
+  Corrigé : une ligne par langue (fr_FR/en_GB/de_DE/it_IT/es_ES), `''` servant à la fois de repli
+  universel et de contenu français (même convention que `locales/fr_FR.po`). Vérifié en base :
+  les 4 gabarits ont chacun leurs 5 lignes avec un contenu réellement différent par langue.
+
 ## [0.31.0] - 2026-08-13
 
 Habillage HTML des e-mails de notification, à partir d'un vrai jeu d'e-mails de production
