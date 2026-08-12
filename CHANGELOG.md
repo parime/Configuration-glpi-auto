@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.23.0] - 2026-08-12
+
+Trois pistes du ROADMAP : palette GLPI personnalisée, contrôle de prérequis, gestion documentaire.
+Voir `ROADMAP.md` pour le détail complet.
+
+### Added
+- `PaletteBuilder` (nouveau) : génère une palette GLPI native (Configuration > Générale >
+  Apparence, `files/_themes/`), sélectionnable par tout utilisateur dans ses préférences et
+  définie par défaut pour l'instance (`\Config::setConfigurationValues('core', ['palette' => ...])`)
+  — mécanisme distinct et complémentaire de `BrandingBuilder` (celui-ci force la couleur par
+  entité, celui-là ajoute un choix par défaut que chacun peut changer). Réutilise la couleur déjà
+  choisie à l'étape 9, nouvelle case "Créer une palette GLPI personnalisée".
+- `DocumentManagementBuilder` (nouveau) : Rubriques des documents (`DocumentCategory`, échelle de
+  classification ISO 27001 — Public/Interne/Confidentiel/Diffusion restreinte) et Criticités
+  (`BusinessCriticity`, impact métier des actifs — Critique/Élevée/Moyenne/Faible). `DocumentType`
+  non touché : GLPI ships déjà 73 types natifs, suffisant.
+- Bandeau informatif de vérification d'environnement en tout début de wizard (droits d'écriture
+  sur `files/_themes`/`GLPI_CACHE_DIR`, extension GD/Imagick) — jamais bloquant, visible seulement
+  s'il y a un point d'attention réel.
+
+### Fixed (upstream GLPI, worked around here)
+- `Glpi\UI\ThemeManager`/`Theme::getPath()` suppose toujours l'extension `.scss` pour une palette
+  personnalisée, même si `*.css` est accepté par la détection — un fichier `.css` fait planter
+  *tout* le site (500 partout, y compris la page de login, `ThemeManager::getCustomThemesPaths()`
+  tournant sur chaque requête). `PaletteBuilder` écrit toujours en `.scss`, contenu CSS classique.
+
 ## [0.22.1] - 2026-08-12
 
 ### Added

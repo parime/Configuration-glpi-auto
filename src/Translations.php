@@ -281,6 +281,17 @@ final class Translations
         'Maintenance Curative' => ['en_GB' => 'Corrective maintenance', 'de_DE' => 'Instandsetzung', 'it_IT' => 'Manutenzione Correttiva', 'es_ES' => 'Mantenimiento Correctivo'],
         'Étalonnage & Métrologie' => ['en_GB' => 'Calibration & Metrology', 'de_DE' => 'Kalibrierung & Messtechnik', 'it_IT' => 'Taratura e Metrologia', 'es_ES' => 'Calibración y Metrología'],
         'Pièces Détachées & Intervenants Externe' => ['en_GB' => 'Spare parts & External contractors', 'de_DE' => 'Ersatzteile & Externe Dienstleister', 'it_IT' => 'Ricambi e Fornitori esterni', 'es_ES' => 'Repuestos y Proveedores externos'],
+
+        // ---- DocumentManagementBuilder (glpi_documentcategories) ----
+        'Public' => ['en_GB' => 'Public', 'de_DE' => 'Öffentlich', 'it_IT' => 'Pubblico', 'es_ES' => 'Público'],
+        'Confidentiel' => ['en_GB' => 'Confidential', 'de_DE' => 'Vertraulich', 'it_IT' => 'Riservato', 'es_ES' => 'Confidencial'],
+        'Diffusion restreinte' => ['en_GB' => 'Restricted', 'de_DE' => 'Eingeschränkte Verteilung', 'it_IT' => 'Diffusione limitata', 'es_ES' => 'Difusión restringida'],
+
+        // ---- DocumentManagementBuilder (glpi_businesscriticities) ----
+        'Critique' => ['en_GB' => 'Critical', 'de_DE' => 'Kritisch', 'it_IT' => 'Critico', 'es_ES' => 'Crítico'],
+        'Élevée' => ['en_GB' => 'High', 'de_DE' => 'Hoch', 'it_IT' => 'Alta', 'es_ES' => 'Alta'],
+        'Moyenne' => ['en_GB' => 'Medium', 'de_DE' => 'Mittel', 'it_IT' => 'Media', 'es_ES' => 'Media'],
+        'Faible' => ['en_GB' => 'Low', 'de_DE' => 'Niedrig', 'it_IT' => 'Bassa', 'es_ES' => 'Baja'],
     ];
 
     /**
