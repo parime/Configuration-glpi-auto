@@ -334,4 +334,32 @@ final class Translations
             }
         }
     }
+
+    /**
+     * Same `DropdownTranslation` mechanism as `applyIcon()`, but for the `content` field of
+     * `ITILFollowupTemplate`/`SolutionTemplate`/`TaskTemplate` instead of `name` — confirmed in
+     * `AbstractITILChildTemplate::getRenderedContent()` that GLPI resolves *this* field the same
+     * way, by the session language of whichever technician applies the template. Unlike `applyIcon`,
+     * translations are supplied directly by the caller (each builder's own `TEMPLATES` array) rather
+     * than looked up from a shared `MAP`: template bodies are full paragraphs, not short recurring
+     * words, so a giant central map keyed by huge strings would be fragile (one whitespace
+     * difference and the lookup silently misses) for no real reuse benefit — the *only* piece that
+     * does repeat across templates (the "Bonjour"-style greeting Twig prefix) is already factored
+     * out as a `GREETING_EN`/`_DE`/`_IT`/`_ES` constant in each builder, same "small local
+     * duplication" convention as the French `GREETING` constant it mirrors.
+     *
+     * @param array<string, string> $translations Language code (`en_GB`/`de_DE`/`it_IT`/`es_ES`) =>
+     *        full translated content. No `fr_FR` key: the French row is the `content` field already
+     *        written by `add()`/`update()`, this only adds the *other* four.
+     */
+    public static function applyContent(string $itemtype, int $id, array $translations): void
+    {
+        foreach ($translations as $language => $content) {
+            $translation = new DropdownTranslation();
+            $crit = ['itemtype' => $itemtype, 'items_id' => $id, 'language' => $language, 'field' => 'content'];
+            if (!$translation->getFromDBByCrit($crit)) {
+                $translation->add($crit + ['value' => $content]);
+            }
+        }
+    }
 }

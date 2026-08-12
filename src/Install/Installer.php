@@ -138,6 +138,7 @@ final class Installer
                 `locations_enabled` tinyint NOT NULL DEFAULT 0,
                 `manufacturers_enabled` tinyint NOT NULL DEFAULT 0,
                 `manufacturer_icons_enabled` tinyint NOT NULL DEFAULT 0,
+                `manufacturer_dictionary_enabled` tinyint NOT NULL DEFAULT 0,
                 `kb_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `document_management_enabled` tinyint NOT NULL DEFAULT 0,
                 `document_management_icons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -268,6 +269,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'locations_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'manufacturers_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'manufacturer_icons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'manufacturer_dictionary_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'kb_categories_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'document_management_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'document_management_icons_enabled', 'bool', ['value' => 0]);
