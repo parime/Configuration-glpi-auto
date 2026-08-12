@@ -9,6 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.2] - 2026-08-12
+
+Quatrième audit de complétude (comparaison SQL du nombre total de lignes vs lignes réellement
+traduites, par itemtype) — trois trous réels trouvés et corrigés. Voir `ROADMAP.md` pour le détail
+complet, la recherche marché associée (douleurs de configuration GLPI, benchmark ITSM concurrent),
+et les 7 propositions soumises à l'utilisateur.
+
+### Fixed
+- `WaitReasonBuilder` : les gabarits de suivi/solution auto-créés par une raison d'attente
+  (`ITILFollowupTemplate`/`SolutionTemplate`) ne recevaient jamais d'icône ni de traduction, y
+  compris en réexécutant le wizard sur une instance déjà configurée (bug dans la branche
+  "déjà existant" du correctif lui-même, corrigé dans la même passe).
+- `CategoryBuilder` : 37 sous-catégories de niveau 3 sur 103 n'étaient jamais traduites alors que
+  les 5 langues existaient déjà dans `Translations.php` — `Translations::applyIcon()` n'était
+  appelée que si le nœud avait une icône, jamais pour les feuilles (qui n'en ont volontairement
+  aucune). `applyIcon()` accepte maintenant une icône vide.
+
+### Added
+- `ProjectTaskTemplateBuilder` : nouveau réglage "Ajouter des icônes"
+  (`project_task_template_icons_enabled`) — angle mort du même type que celui corrigé en v0.20.0
+  pour les gabarits de ticket/changement/problème, jamais construit à l'époque.
+
 ## [0.20.1] - 2026-08-12
 
 ### Added

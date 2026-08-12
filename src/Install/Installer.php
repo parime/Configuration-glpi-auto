@@ -138,6 +138,7 @@ final class Installer
                 `project_taxonomy_enabled` tinyint NOT NULL DEFAULT 0,
                 `project_taxonomy_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `project_task_templates_enabled` tinyint NOT NULL DEFAULT 0,
+                `project_task_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `entity_logos_enabled` tinyint NOT NULL DEFAULT 0,
                 `wait_reason_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
@@ -259,6 +260,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'project_taxonomy_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'project_taxonomy_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'project_task_templates_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'project_task_template_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'entity_logos_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'wait_reason_icons_enabled', 'bool', ['value' => 0]);
         }
