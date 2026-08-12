@@ -9,6 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.25.0] - 2026-08-12
+
+Quatre dernières pistes basse priorité du ROADMAP : sélection des palettes natives GLPI,
+évènements de planning, couleur par client, et mise à jour d'une note obsolète sur le
+cloisonnement des droits MSP. Voir `ROADMAP.md` pour le détail complet.
+
+### Added
+- Sélection d'une des 18 palettes natives GLPI (`auror`, `dark`, `midnight`...) comme choix par
+  défaut, alternative à la palette personnalisée (`PaletteBuilder`) — liste lue dynamiquement
+  depuis `Glpi\UI\ThemeManager::getCoreThemes()`, mutuellement exclusive avec la palette
+  personnalisée dans l'UI.
+- `PlanningEventBuilder` (nouveau) : Catégories d'évènements (`PlanningEventCategory`, avec
+  couleur native — c'est elle qui s'affiche réellement dans la grille de planning, pas le
+  mécanisme icône habituel) et Gabarits d'évènements externes (`PlanningExternalEventTemplate`,
+  récurrence volontairement laissée à l'admin).
+- `branding_per_client_enabled` : couleur indépendante par client/site (au lieu d'une seule
+  couleur partagée pour toutes les entités créées) — même schéma de panneau par entité que le
+  logo par entité déjà existant. `BrandingBuilder::applyPerClientColors()` (nouveau).
+
+### Changed
+- `ROADMAP.md` : note obsolète sur le cloisonnement des droits MSP mise à jour — `RuleRightBuilder`
+  (déjà livré) couvre déjà ce point pour les utilisateurs synchronisés LDAP (assignation à
+  l'entité feuille précise, jamais récursive).
+
 ## [0.24.0] - 2026-08-12
 
 Dernière piste du ROADMAP côté wizard : le mode "express". Voir `ROADMAP.md` pour le détail.

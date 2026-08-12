@@ -24,6 +24,8 @@ use Entity;
  * overrides, using GLPI's own built-in `Entity::enable_custom_css`/`custom_css_code` mechanism
  * (Configuration > Entités > onglet général, "Personnalisation CSS") — no file writes, no touching
  * GLPI's own static assets, just data already natively supported by GLPI for exactly this purpose.
+ * Color can also be set independently per top-level entity (`applyPerClientColors()`) rather than
+ * one shared color for all — the same per-entity-panel pattern `entity_logos_enabled` already uses.
  *
  * Color and logo are two independent toggles (`branding_enabled`/`entity_logos_enabled`) that can
  * both write into the *same* `custom_css_code` field, so each writes its own block delimited by a
@@ -100,6 +102,28 @@ class BrandingBuilder
         foreach ($entityIdToDataUri as $entityId => $dataUri) {
             $css = $this->buildLogoCss($dataUri);
             $this->mergeCssBlock((int) $entityId, self::LOGO_BLOCK_KEY, $css);
+            $count++;
+        }
+
+        return $count;
+    }
+
+    /**
+     * Same mechanism as `apply()`, one independent color per entity instead of the single shared
+     * one — for an MSP/multi-site admin who wants each client/site to keep its own brand color
+     * rather than all of them matching. Deliberately a separate method (not a variant of `apply()`)
+     * following the same "per-client is an independent path, not a parameter on the shared one"
+     * shape already established by `applyLogos()` alongside `apply()`.
+     *
+     * @param array<int, string> $entityIdToColor Entity ID => `#rrggbb`.
+     * @return int Number of entities with their own color applied.
+     */
+    public function applyPerClientColors(array $entityIdToColor): int
+    {
+        $count = 0;
+        foreach ($entityIdToColor as $entityId => $color) {
+            $css = $this->buildColorCss($color);
+            $this->mergeCssBlock((int) $entityId, self::COLOR_BLOCK_KEY, $css);
             $count++;
         }
 

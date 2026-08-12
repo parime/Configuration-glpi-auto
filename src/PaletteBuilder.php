@@ -50,6 +50,14 @@ namespace GlpiPlugin\Configurationglpiauto;
  * through both mechanisms. `BrandingBuilder` forces the look on everyone in a given entity with no
  * action needed; this one only sets the *default* a user gets before personally changing their own
  * preference — genuinely complementary, not redundant.
+ *
+ * `native_palette` (added alongside `custom_palette_enabled`) is the simpler alternative: instead
+ * of generating a file, just point `core.palette` directly at one of GLPI's own 17 built-in
+ * palette keys (`Glpi\UI\ThemeManager::getCoreThemes()`, no plugin-owned file at all) — for an
+ * admin who just wants "Midnight" or "Purple Haze" instance-wide rather than a brand color.
+ * Mutually exclusive with the custom palette in the wizard's own UI (one wins client-side); if
+ * both were somehow submitted, custom wins here since it reflects a more specific admin choice
+ * (an actual chosen color) than picking from a fixed native list.
  */
 class PaletteBuilder
 {
@@ -63,19 +71,26 @@ class PaletteBuilder
 
     public function apply(Config $config): bool
     {
-        if (empty($config->fields['custom_palette_enabled'])) {
-            return false;
+        if (!empty($config->fields['custom_palette_enabled'])) {
+            $color = (string) ($config->fields['branding_primary_color'] ?? '#206bc4');
+            $scss = $this->buildThemeFile($color);
+
+            $path = GLPI_THEMES_DIR . '/' . self::THEME_KEY . '.scss';
+            file_put_contents($path, $scss);
+
+            \Config::setConfigurationValues('core', ['palette' => self::THEME_KEY]);
+
+            return true;
         }
 
-        $color = (string) ($config->fields['branding_primary_color'] ?? '#206bc4');
-        $scss = $this->buildThemeFile($color);
+        $nativePalette = (string) ($config->fields['native_palette'] ?? '');
+        if ($nativePalette !== '') {
+            \Config::setConfigurationValues('core', ['palette' => $nativePalette]);
 
-        $path = GLPI_THEMES_DIR . '/' . self::THEME_KEY . '.scss';
-        file_put_contents($path, $scss);
+            return true;
+        }
 
-        \Config::setConfigurationValues('core', ['palette' => self::THEME_KEY]);
-
-        return true;
+        return false;
     }
 
     private function buildThemeFile(string $color): string

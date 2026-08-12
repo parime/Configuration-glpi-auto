@@ -52,18 +52,23 @@ encore implémentées :
   entreprise a des horaires différents et doit pouvoir les saisir librement. Nécessite de
   remplacer le couple begin/end unique par un ou plusieurs segments par jour.
 
-- **Multi-entité "même entreprise" vs "MSP" — purement cosmétique aujourd'hui.**
-  `Config::MODE_MULTI_SAME_COMPANY` et `Config::MODE_MULTI_MSP` ne sont lus nulle part dans
-  `EntityBuilder`, `CalendarBuilder`, `SlaBuilder` ou `BrandingBuilder` (vérifié par recherche
-  dans `src/`) — seul le bouton radio pré-coché à l'étape 1 du wizard change. Pour que la
-  distinction ait un sens réel, le mode MSP doit entraîner un traitement différent :
-  - calendrier et SLA propres à chaque client/site — **en cours (Sprint 13)**, étendu à tout mode
-    multi-entité (pas seulement MSP) suite au retour utilisateur ;
-  - logo/couleur de personnalisation différents par client (`BrandingBuilder` applique
-    aujourd'hui une seule couleur à toutes les entités créées) — toujours pas fait ;
-  - cloisonnement des droits entre entités clientes (un client MSP ne doit pas voir les tickets
-    d'un autre) — alors qu'une même entreprise multi-site partage plus naturellement
-    calendrier/SLA/branding et peut vouloir une visibilité croisée entre sites — toujours pas fait.
+- ✅ **Multi-entité "même entreprise" vs "MSP" — plus purement cosmétique, note obsolète mise à
+  jour (2026-08-12).** Écrite tôt dans le projet, avant que les sprints suivants n'aient
+  concrètement traité chacun des trois points listés à l'époque :
+  - calendrier et SLA propres à chaque client/site — **fait (Sprint 13)**, étendu à tout mode
+    multi-entité (pas seulement MSP) ;
+  - logo/couleur de personnalisation différents par client — logo déjà par-client depuis
+    longtemps (`entity_logo_N`, un fichier par nœud de premier niveau) ; **couleur — fait
+    (v0.25.0, 2026-08-12)**, nouveau réglage "Couleur différente par client/site" dans
+    `BrandingBuilder::applyPerClientColors()`, même schéma de panneau par entité que le logo ;
+  - cloisonnement des droits entre entités clientes — **déjà couvert pour les utilisateurs
+    synchronisés LDAP** (`RuleRightBuilder`, Sprint 27) : chaque règle assigne l'utilisateur à
+    l'entité *feuille* précise (pas la racine, pas récursif), ce qui suffit au cloisonnement natif
+    GLPI par défaut (confirmé en relisant `RuleRightBuilder::createRule()` — aucune action
+    `is_recursive` positionnée, donc non-récursif par défaut). Ne couvre pas les comptes créés à
+    la main (hors LDAP) ni le compte `glpi`/Super-Admin natif — restreindre ce dernier
+    automatiquement serait une action destructive risquant de verrouiller l'admin hors de son
+    instance, hors de portée d'un wizard de configuration.
 
 - ✅ **SLA plat (un seul TTO/TTR) au lieu de SLA par priorité — confirmé par recherche
   (2026-08-10), fait en Sprint 14.** Vérifié par recherche web (voir sources dans l'historique de conversation,
@@ -212,9 +217,13 @@ n'avait pas personnalisé ce point, seulement les statuts natifs), Gabarits de t
 (`ProjectState`) — **vérifié, déjà suffisant** : GLPI ships les 3 statuts natifs
 (New/Processing/Closed), non personnalisés non plus dans l'export de production audité — pas de
 bonne pratique universelle identifiée pour en ajouter d'autres, `GeneralSettingsBuilder` continue
-de se contenter de les *mapper* pour le suivi d'avancement des tâches. Pas fait, priorité basse
-(usage assez spécifique) : Gabarits d'évènements externes (`PlanningExternalEventTemplate`),
-Catégories d'évènements (`PlanningEventCategory`).
+de se contenter de les *mapper* pour le suivi d'avancement des tâches. ✅ **Gabarits d'évènements
+externes + Catégories d'évènements — fait (v0.25.0, 2026-08-12), nouveau `PlanningEventBuilder`.**
+`PlanningEventCategory` a un champ natif `color` (distinct du mécanisme icône
+`DropdownTranslation` utilisé partout ailleurs) — utilisé directement, la couleur étant ce qui
+s'affiche réellement dans la grille de planning GLPI. `PlanningExternalEventTemplate` laisse
+volontairement `rrule` (récurrence) à vide — un gabarit réutilisable (nom, description,
+catégorie, durée plausible), pas une décision de récurrence à la place de l'admin.
 
 **Général** (5 intitulés) — fait : Statuts des éléments (`StateBuilder`). **Fait (Sprint 31,
 2026-08-11)** : Lieux (`LocationBuilder` — mirroir de l'arborescence d'entités de l'étape 2, pas
@@ -468,9 +477,12 @@ priorité unilatérale.
    `Theme::getPath()` suppose toujours l'extension `.scss`, même pour un fichier `.css` pourtant
    accepté par la détection — un fichier `.css` fait planter *tout* le site (500 partout, y compris
    la page de login) car `ThemeManager::getCustomThemesPaths()` tourne sur chaque requête. Réutilise
-   la même couleur que la case au-dessus, pas un second sélecteur. Palettes natives GLPI
-   (`auror`/`dark`/`midnight`...) sélectionnables dans le wizard : toujours hors périmètre, gros
-   chantier séparé (sélection, pas génération).
+   la même couleur que la case au-dessus, pas un second sélecteur.
+   ✅ **Palettes natives GLPI sélectionnables dans le wizard — fait (v0.25.0, 2026-08-12).** Menu
+   déroulant listant les 18 palettes natives (`Glpi\UI\ThemeManager::getCoreThemes()`, noms/état
+   sombre lus dynamiquement depuis GLPI plutôt que dupliqués en dur dans le wizard), alternative
+   mutuellement exclusive à la palette personnalisée dans l'UI — `PaletteBuilder::apply()` pointe
+   simplement `core.palette` sur la clé native choisie, aucun fichier généré.
 7. ✅ **Contrôle de prérequis serveur en tout début de wizard — fait (v0.23.0, 2026-08-12), portée
    réduite à ce qui est réellement pertinent.** GLPI lui-même a déjà validé PHP/MySQL au moment de
    sa propre installation — revalider ces prérequis aurait été redondant. Recentré sur ce que ce
