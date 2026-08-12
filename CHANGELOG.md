@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-08-12
+
+Traductions anglais/allemand/italien/espagnol pour tous les intitulés générés qui supportent déjà
+des icônes — jusqu'ici, le mécanisme n'ajoutait qu'une icône, toujours en français, jamais une
+vraie traduction. Pas de rupture de compatibilité.
+
+### Added
+- `src/Translations.php` (nouveau) : table de correspondance centralisée (~154 termes français →
+  en_GB/de_DE/it_IT/es_ES) + une méthode statique unique `applyIcon()` qui remplace les 9 méthodes
+  privées quasi-identiques auparavant dupliquées dans `StateBuilder`, `CategoryBuilder`,
+  `TaskCategoryBuilder`, `KnowbaseCategoryBuilder`, `ManufacturerBuilder`, `WaitReasonBuilder`,
+  `ProjectTaxonomyBuilder`, `SolutionLibraryBuilder`, `SupportTierBuilder`. Chaque toggle « Ajouter
+  des icônes » existant crée désormais les 5 langues d'un coup au lieu du seul français — aucune
+  nouvelle case à cocher.
+- Les noms de fabricants (`ManufacturerBuilder`) n'ont pas d'entrée dans la table de correspondance
+  (noms de marque, identiques dans toutes les langues) : `applyIcon()` réutilise le texte français
+  pour les 4 autres langues afin que l'icône reste visible quelle que soit la session.
+- **Portée volontairement limitée aux données générées** (noms de statuts, catégories...) — la
+  traduction de l'interface propre de l'assistant (labels, aide, boutons) resterait un chantier
+  distinct : confirmé qu'aucun fichier `.po`/`.mo` n'existe dans ce dépôt pour l'assistant
+  lui-même, `en_GB` déclaré dans le manifeste n'a en réalité jamais été honoré.
+
+### Fixed
+- Refactor en passant : élimine la duplication de code (9 méthodes `addIcon()`/logique inline
+  quasi-identiques) au profit d'un point d'entrée unique.
+
 ## [0.17.1] - 2026-08-12
 
 Complément au Sprint 34 : icônes sur les groupes de support N1/N2/N3, angle mort du sweep icônes
@@ -1524,7 +1550,8 @@ for history rather than deleted outright.
 
 ---
 
-[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.17.1...HEAD
+[Unreleased]: https://github.com/parime/Configuration-glpi-auto/compare/v0.18.0...HEAD
+[0.18.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.18.0
 [0.17.1]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.17.1
 [0.17.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.17.0
 [0.16.0]: https://github.com/parime/Configuration-glpi-auto/releases/tag/v0.16.0
