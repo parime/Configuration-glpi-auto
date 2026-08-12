@@ -88,6 +88,8 @@ final class Installer
                 `branding_enabled` tinyint NOT NULL DEFAULT 0,
                 `branding_primary_color` varchar(7) NOT NULL DEFAULT '#206bc4',
                 `custom_palette_enabled` tinyint NOT NULL DEFAULT 0,
+                `native_palette` varchar(32) NOT NULL DEFAULT '',
+                `branding_per_client_enabled` tinyint NOT NULL DEFAULT 0,
                 `sla_enabled` tinyint NOT NULL DEFAULT 0,
                 `sla_tiers` text,
                 `sla_astreinte` tinyint NOT NULL DEFAULT 0,
@@ -138,6 +140,8 @@ final class Installer
                 `kb_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `document_management_enabled` tinyint NOT NULL DEFAULT 0,
                 `document_management_icons_enabled` tinyint NOT NULL DEFAULT 0,
+                `planning_events_enabled` tinyint NOT NULL DEFAULT 0,
+                `planning_events_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `project_taxonomy_enabled` tinyint NOT NULL DEFAULT 0,
                 `project_taxonomy_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `project_task_templates_enabled` tinyint NOT NULL DEFAULT 0,
@@ -195,6 +199,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'branding_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'branding_primary_color', 'string', ['value' => '#206bc4']);
             $migration->addField(self::CONFIGS_TABLE, 'custom_palette_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'native_palette', 'string', ['value' => '']);
             $migration->addField(self::CONFIGS_TABLE, 'sla_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'sla_astreinte', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'sla_escalation_enabled', 'bool', ['value' => 0]);
@@ -263,6 +268,9 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'kb_categories_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'document_management_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'document_management_icons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'planning_events_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'planning_events_icons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'branding_per_client_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'project_taxonomy_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'project_taxonomy_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'project_task_templates_enabled', 'bool', ['value' => 0]);

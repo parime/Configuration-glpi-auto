@@ -30,6 +30,7 @@ use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\LocationBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
 use GlpiPlugin\Configurationglpiauto\PaletteBuilder;
+use GlpiPlugin\Configurationglpiauto\PlanningEventBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaxonomyBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
@@ -227,6 +228,7 @@ if (isset($_POST['finish'])) {
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
     $documentManagementCreated = (new DocumentManagementBuilder())->build($config);
+    $planningEventsCreated = (new PlanningEventBuilder())->build($config);
     $projectTaxonomyCreated = (new ProjectTaxonomyBuilder())->build($config);
     // Runs after ProjectTaxonomyBuilder: resolves project task types by name lookup.
     $projectTaskTemplatesCreated = (new ProjectTaskTemplateBuilder())->build($config);
@@ -244,7 +246,29 @@ if (isset($_POST['finish'])) {
     }
 
     $brandingBuilder = new BrandingBuilder();
-    $brandingApplied = $brandingBuilder->apply($config, $colorEntityIds);
+    $perClientColorsCreated = 0;
+    // Per-client color only makes sense once there's more than one top-level entity to actually
+    // differentiate ($entityIds === [0] in mono-entité/empty-tree, same guard EntityLogos already
+    // relies on implicitly through its own per-node panel loop). The root entity (login-page
+    // fallback, added to $colorEntityIds above outside MSP mode) is deliberately never part of
+    // $entityIds itself, so it keeps the *shared* color below regardless of this toggle — an
+    // unauthenticated login page has no single "the" client color to show any more than it did
+    // before this feature existed.
+    if (!empty($config->fields['branding_per_client_enabled']) && $entityIds !== [0]) {
+        $entityIdToColor = [];
+        foreach ($entityIds as $i => $entityId) {
+            $color = (string) ($_POST['entity_color_' . $i] ?? '');
+            if (preg_match('/^#[0-9a-fA-F]{6}$/', $color)) {
+                $entityIdToColor[$entityId] = $color;
+            }
+        }
+        $perClientColorsCreated = $brandingBuilder->applyPerClientColors($entityIdToColor);
+
+        $sharedOnlyIds = array_diff($colorEntityIds, $entityIds);
+        $brandingApplied = $sharedOnlyIds !== [] && $brandingBuilder->apply($config, $sharedOnlyIds);
+    } else {
+        $brandingApplied = $brandingBuilder->apply($config, $colorEntityIds);
+    }
 
     $logosCreated = 0;
     if (!empty($config->fields['entity_logos_enabled'])) {
@@ -304,8 +328,13 @@ if (isset($_POST['finish'])) {
     if ($logosCreated > 0) {
         $messages[] = sprintf(__('%d logo(s) d\'entité appliqué(s).', 'configurationglpiauto'), $logosCreated);
     }
+    if ($perClientColorsCreated > 0) {
+        $messages[] = sprintf(__('%d couleur(s) par client/site appliquée(s).', 'configurationglpiauto'), $perClientColorsCreated);
+    }
     if ($paletteApplied) {
-        $messages[] = __('Palette GLPI personnalisée créée et définie par défaut.', 'configurationglpiauto');
+        $messages[] = !empty($config->fields['custom_palette_enabled'])
+            ? __('Palette GLPI personnalisée créée et définie par défaut.', 'configurationglpiauto')
+            : __('Palette GLPI native définie par défaut.', 'configurationglpiauto');
     }
     if ($generalSettingsApplied) {
         $messages[] = __('Réglages généraux GLPI appliqués.', 'configurationglpiauto');
@@ -348,6 +377,9 @@ if (isset($_POST['finish'])) {
     }
     if ($documentManagementCreated > 0) {
         $messages[] = sprintf(__('%d rubriques de documents/criticités créées.', 'configurationglpiauto'), $documentManagementCreated);
+    }
+    if ($planningEventsCreated > 0) {
+        $messages[] = sprintf(__('%d catégories/gabarits d\'évènements de planning créés.', 'configurationglpiauto'), $planningEventsCreated);
     }
     if ($projectTaxonomyCreated > 0) {
         $messages[] = sprintf(__('%d types de projet/tâche de projet créés.', 'configurationglpiauto'), $projectTaxonomyCreated);
@@ -395,6 +427,10 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'state_recommended_names' => StateBuilder::RECOMMENDED_NAMES,
     'wait_reasons_preview' => WaitReasonBuilder::getReasonsPreview(),
     'native_profile_names' => Config::NATIVE_PROFILE_NAMES,
+    'native_palettes' => array_map(
+        static fn (\Glpi\UI\Theme $theme) => ['key' => $theme->getKey(), 'name' => $theme->getName(), 'is_dark' => $theme->isDarkTheme()],
+        \Glpi\UI\ThemeManager::getInstance()->getCoreThemes()
+    ),
     'task_categories_preview' => TaskCategoryBuilder::getCategoriesPreview(),
     'task_templates_preview' => TaskTemplateBuilder::getLibraryPreview(),
     'solution_library_preview' => SolutionLibraryBuilder::getLibraryPreview(),
@@ -402,6 +438,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'validation_templates_preview' => ValidationTemplateBuilder::getLibraryPreview(),
     'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
     'document_management_preview' => DocumentManagementBuilder::getPreview(),
+    'planning_events_preview' => PlanningEventBuilder::getPreview(),
     'project_taxonomy_preview' => ProjectTaxonomyBuilder::getPreview(),
     'project_task_templates_preview' => ProjectTaskTemplateBuilder::getLibraryPreview(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),

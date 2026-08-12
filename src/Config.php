@@ -58,6 +58,15 @@ class Config extends CommonDBTM
         'Super-Admin', 'Admin', 'Supervisor', 'Technician', 'Hotliner', 'Observer', 'Self-Service', 'Read-Only',
     ];
 
+    // The 18 palette keys GLPI 11 ships out of the box (Glpi\UI\ThemeManager::getCoreThemes()) —
+    // same whitelist role as NATIVE_PROFILE_NAMES above, kept here rather than re-querying
+    // ThemeManager on every prepareInput() call for a fixed, rarely-changing list.
+    public const NATIVE_PALETTE_KEYS = [
+        'aerialgreen', 'auror', 'auror_dark', 'automn', 'classic', 'clockworkorange', 'dark',
+        'darker', 'flood', 'greenflat', 'hipster', 'icecream', 'lightblue', 'midnight',
+        'premiumred', 'purplehaze', 'teclib', 'vintage',
+    ];
+
     // Starting point for a fresh sla_tiers table, editable by the admin afterward — same
     // philosophy as the plugin's other defaults (e.g. the old flat 4h/48h).
     private const DEFAULT_SLA_TIERS = [
@@ -131,6 +140,8 @@ class Config extends CommonDBTM
             'branding_enabled' => 0,
             'branding_primary_color' => '#206bc4',
             'custom_palette_enabled' => 0,
+            'native_palette' => '',
+            'branding_per_client_enabled' => 0,
             'sla_enabled' => 0,
             'sla_tiers' => json_encode(self::DEFAULT_SLA_TIERS),
             'sla_astreinte' => 0,
@@ -195,6 +206,8 @@ class Config extends CommonDBTM
             'kb_categories_enabled' => 0,
             'document_management_enabled' => 0,
             'document_management_icons_enabled' => 0,
+            'planning_events_enabled' => 0,
+            'planning_events_icons_enabled' => 0,
             'project_taxonomy_enabled' => 0,
             'project_taxonomy_icons_enabled' => 0,
             'project_task_templates_enabled' => 0,
@@ -458,7 +471,14 @@ class Config extends CommonDBTM
             $input['ldap_rights_profile'] = 'Admin';
         }
 
-        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled'] as $field) {
+        // Empty string (no native palette chosen) is always valid — only a non-empty value has to
+        // match a real GLPI palette key, same "trust nothing free-text" reasoning as
+        // ldap_rights_profile above.
+        if (isset($input['native_palette']) && $input['native_palette'] !== '' && !in_array($input['native_palette'], self::NATIVE_PALETTE_KEYS, true)) {
+            $input['native_palette'] = '';
+        }
+
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }
