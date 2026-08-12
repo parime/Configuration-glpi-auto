@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.32.0] - 2026-08-13
+
+Traduction complète du contenu des gabarits (demandé explicitement : "tout sans exception") et
+dictionnaire de normalisation des fabricants.
+
+### Added
+- `Translations::applyContent()` (nouveau) : même mécanisme `DropdownTranslation` que
+  `applyIcon()`, sur le champ `content` cette fois. Les 18 gabarits de suivi/tâche/solution
+  (`FollowupLibraryBuilder`/`SolutionLibraryBuilder`/`TaskTemplateBuilder`) ont désormais leurs 4
+  traductions, salutation Twig incluse ("Bonjour" → "Hello"/"Hallo"/"Buongiorno"/"Hola",
+  itemtype-aware comme la v0.27.0). Vérifié en réel : une session anglaise reçoit "Hello glpi," et
+  le corps traduit en appliquant un gabarit à un vrai ticket.
+- `ManufacturerDictionaryBuilder` (nouveau) : 15 règles `RuleDictionnaryManufacturer` normalisant
+  les variantes de nom des plus grands fabricants (« Hewlett-Packard », « HP Inc. » → « HP »...).
+  Ne contredit pas le rejet précédent des dictionnaires logiciel/matériel (variantes propres à
+  chaque organisation, indevinables) : les variantes des grands fabricants sont documentées et
+  stables, écrites sans avoir besoin de l'inventaire réel d'une organisation. Vérifié avec l'outil
+  natif de test de règle de GLPI (`front/rule.test.php`).
+
 ## [0.31.1] - 2026-08-13
 
 ### Fixed
