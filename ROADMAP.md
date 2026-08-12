@@ -480,10 +480,19 @@ nature technique différente (traitement de fichier temps réel vs scaffolding o
 séparé recommandé plutôt qu'ajout ici.
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
-1. Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI —
-   vérification pure, pas de nouveau code.
+1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
 2. Documentation GitHub avec captures d'écran de chaque étape/menu, en guise de tutoriel.
-3. Étoffement du catalogue de services.
+3. **Fait (v0.28.0, 2026-08-12).** Étoffement du catalogue de services : 23 → 50 services, les 4
+   branches sans aucun service comblées (Administratif, Communication, Qualité, Maintenance), les
+   branches trop réduites étoffées. Vérifié en base après resoumission du wizard.
+
+**Chantiers additionnels ouverts pendant cet audit** :
+- Variables Twig dans les gabarits — **fait (v0.27.0)**.
+- Traductions `.po`/`.mo` de l'interface du wizard en en_GB/de_DE/it_IT/es_ES avant soumission
+  marketplace (décidé avec l'utilisateur, toutes les langues déjà utilisées pour les traductions
+  de données) — pas encore commencé, gros chantier (centaines d'appels `__()`).
+- Vérification des prérequis de publication marketplace pour les deux dépôts sœurs
+  (`remise-glpi`, `glpi-vulnerability-manager`) — pas encore commencée.
 
 ---
 
