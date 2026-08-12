@@ -14,6 +14,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   différé de la v0.29.0 pour ne pas casser la vérification CI officielle GLPI (les captures
   n'existaient pas encore sur `main` au moment de cette PR).
 
+## [0.30.1] - 2026-08-12
+
+### Fixed
+- **Régression réelle introduite par la v0.30.0**, signalée par l'utilisateur (capture d'écran
+  montrant un mélange de langue) : l'interface du wizard s'affichait en anglais pour les
+  utilisateurs francophones. Cause : `Plugin::loadLang()` (core GLPI) ne se rabat pas sur le texte
+  brut du `msgid` quand aucun `.mo` n'existe pour la langue de session — il descend jusqu'à
+  `en_GB.mo` en dernier recours. Comme `locales/fr_FR.mo` n'existait pas (hypothèse de départ
+  erronée : "le français est déjà le texte source, inutile de le compiler"), toute session en
+  `fr_FR` recevait silencieusement la traduction anglaise. Corrigé en ajoutant
+  `locales/fr_FR.{po,mo}` (mapping identité, `msgid` = `msgstr`, même pattern que remise-glpi).
+  Revérifié en réel dans les 5 langues (fr_FR inclus) après correctif — plus de mélange.
+
 ## [0.30.0] - 2026-08-12
 
 Traduction complète de l'interface du wizard (en_GB/de_DE/it_IT/es_ES), dernier prérequis avant
