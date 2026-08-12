@@ -227,8 +227,14 @@ réelle), Fabricants (`ManufacturerBuilder`, ~29 fabricants IT/bureautique coura
 (`KnowbaseCategoryBuilder`) — réutilise les 11 thèmes de `CategoryBuilder` (étape 5) plutôt
 qu'une seconde taxonomie inventée, filtré sur les branches effectivement sélectionnées.
 
-**Gestion** — pas fait, priorité basse (gestion documentaire/actifs, pas Assistance) : Rubriques
-des documents, Types de documents, Criticités.
+**Gestion** — ✅ **fait (v0.23.0, 2026-08-12).** `DocumentManagementBuilder` (nouveau) : Rubriques
+des documents (`DocumentCategory`) suivant l'échelle standard de classification de l'information
+ISO 27001 Annexe A.8.2 (Public/Interne/Confidentiel/Diffusion restreinte — aucun champ natif GLPI
+équivalent sur `Document`, c'est le mécanisme le plus proche), Criticités (`BusinessCriticity`,
+échelle d'impact métier à 4 niveaux, utilisée en réalité par les *actifs* via `Infocom`, pas les
+documents — confirmé via `information_schema.COLUMNS`). Types de documents (`DocumentType`) —
+**vérifié, déjà suffisant** : GLPI ships 73 types natifs (toutes les extensions courantes), rien à
+construire, même conclusion que `RequestType`/`ProjectState` ailleurs dans ce document.
 
 **Règles** (`Configuration > Règles`) — fait : Règles d'affectation d'habilitations à un
 utilisateur (`RuleRight`, Sprint 27). Étudié et volontairement pas fait : règles métier
@@ -444,14 +450,26 @@ priorité unilatérale.
    (RH, rarement classe "panne"), plutôt que des valeurs indépendamment inventées — cohérent avec le
    fait que ces multiplicateurs sont assumés comme un point de départ, pas une norme.
 6. ✅ **`BrandingBuilder` — couvrir les 6 variables de logo et la vraie palette de couleurs Tabler —
-   fait (v0.21.0, 2026-08-12).** Voir CHANGELOG.md. Reste hors périmètre, plus gros chantier :
-   proposer les palettes natives GLPI (`auror`/`dark`/`midnight`...) comme choix simple dans le
-   wizard, ou générer une palette `.scss` custom dans `files/_themes` (mécanisme plus propre mais
-   hors du modèle "un DropdownTranslation/un CSS custom par entité" utilisé partout ailleurs dans
-   le plugin).
-7. **Contrôle de prérequis serveur en tout début de wizard** (PHP/MySQL versions, droits fichiers) —
-   hors configuration applicative à proprement parler, mais évite un échec avant même d'atteindre
-   l'étape 1.
+   fait (v0.21.0, 2026-08-12).** Voir CHANGELOG.md.
+   ✅ **Palette `.scss` custom — fait (v0.23.0, 2026-08-12), nouveau `PaletteBuilder`.** Mécanisme
+   distinct et complémentaire de `BrandingBuilder` (confirmé dans `Glpi\UI\ThemeManager` : un fichier
+   dans `files/_themes/` devient une palette sélectionnable par tout utilisateur dans ses propres
+   préférences, `\Config::setConfigurationValues('core', ['palette' => ...])` en fait le choix par
+   défaut — pas un forçage par entité comme `custom_css_code`). **Piège GLPI core trouvé en testant** :
+   `Theme::getPath()` suppose toujours l'extension `.scss`, même pour un fichier `.css` pourtant
+   accepté par la détection — un fichier `.css` fait planter *tout* le site (500 partout, y compris
+   la page de login) car `ThemeManager::getCustomThemesPaths()` tourne sur chaque requête. Réutilise
+   la même couleur que la case au-dessus, pas un second sélecteur. Palettes natives GLPI
+   (`auror`/`dark`/`midnight`...) sélectionnables dans le wizard : toujours hors périmètre, gros
+   chantier séparé (sélection, pas génération).
+7. ✅ **Contrôle de prérequis serveur en tout début de wizard — fait (v0.23.0, 2026-08-12), portée
+   réduite à ce qui est réellement pertinent.** GLPI lui-même a déjà validé PHP/MySQL au moment de
+   sa propre installation — revalider ces prérequis aurait été redondant. Recentré sur ce que ce
+   plugin a spécifiquement besoin (droits d'écriture sur `files/_themes` pour la palette custom,
+   sur `GLPI_CACHE_DIR` pour GLPI en général — un vrai souci de permissions rencontré cette session
+   après une manipulation hors wizard, confirmant la pertinence du contrôle) : bandeau
+   informatif au-dessus de l'étape 1, jamais bloquant, visible seulement s'il y a un point
+   d'attention réel.
 
 ---
 

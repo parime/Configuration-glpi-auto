@@ -21,6 +21,7 @@ use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\ChangeProblemTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
+use GlpiPlugin\Configurationglpiauto\DocumentManagementBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
 use GlpiPlugin\Configurationglpiauto\FollowupLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
@@ -28,6 +29,7 @@ use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\LocationBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
+use GlpiPlugin\Configurationglpiauto\PaletteBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaxonomyBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
@@ -75,6 +77,39 @@ function buildEntityLogoDataUri(array $file): ?string
     }
 
     return 'data:' . $info['mime'] . ';base64,' . base64_encode($data);
+}
+
+/**
+ * Read-only environment checks specific to what *this wizard* is about to do — GLPI's own
+ * installer already validated its own PHP/MySQL version requirements before this plugin could
+ * even run, so re-checking those would be pointless duplication. Scoped instead to the two things
+ * this plugin's own file-writing features need and that genuinely vary by hosting environment
+ * (confirmed the hard way this session: a permissions slip on `GLPI_CACHE_DIR` after an
+ * out-of-band `rm -rf` produced a site-wide 500, not a wizard-specific failure). Informational
+ * only — never blocks continuing, matches every other "starting point, not a decision" toggle in
+ * this wizard.
+ *
+ * @return array<int, array{label: string, ok: bool, hint: string}>
+ */
+function checkEnvironmentPrerequisites(): array
+{
+    return [
+        [
+            'label' => __('Dossier des palettes personnalisées inscriptible', 'configurationglpiauto'),
+            'ok' => is_dir(GLPI_THEMES_DIR) && is_writable(GLPI_THEMES_DIR),
+            'hint' => sprintf(__('nécessaire à la palette personnalisée (étape 9) — vérifiez les droits sur %s', 'configurationglpiauto'), GLPI_THEMES_DIR),
+        ],
+        [
+            'label' => __('Dossier de cache GLPI inscriptible', 'configurationglpiauto'),
+            'ok' => is_dir(GLPI_CACHE_DIR) && is_writable(GLPI_CACHE_DIR),
+            'hint' => sprintf(__('nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s', 'configurationglpiauto'), GLPI_CACHE_DIR),
+        ],
+        [
+            'label' => __('Extension GD ou Imagick disponible', 'configurationglpiauto'),
+            'ok' => extension_loaded('gd') || extension_loaded('imagick'),
+            'hint' => __('utile pour valider les logos uploadés (étape 9) — ni l\'une ni l\'autre n\'est chargée', 'configurationglpiauto'),
+        ],
+    ];
 }
 
 Session::checkRight(Config::$rightname, READ);
@@ -191,6 +226,7 @@ if (isset($_POST['finish'])) {
     $locationsCreated = (new LocationBuilder())->build($config);
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
+    $documentManagementCreated = (new DocumentManagementBuilder())->build($config);
     $projectTaxonomyCreated = (new ProjectTaxonomyBuilder())->build($config);
     // Runs after ProjectTaxonomyBuilder: resolves project task types by name lookup.
     $projectTaskTemplatesCreated = (new ProjectTaskTemplateBuilder())->build($config);
@@ -221,6 +257,8 @@ if (isset($_POST['finish'])) {
         }
         $logosCreated = $brandingBuilder->applyLogos($entityIdToLogoDataUri);
     }
+
+    $paletteApplied = (new PaletteBuilder())->apply($config);
 
     $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
     $ticketTemplatesApplied = (new TicketTemplateBuilder())->apply($config);
@@ -266,6 +304,9 @@ if (isset($_POST['finish'])) {
     if ($logosCreated > 0) {
         $messages[] = sprintf(__('%d logo(s) d\'entité appliqué(s).', 'configurationglpiauto'), $logosCreated);
     }
+    if ($paletteApplied) {
+        $messages[] = __('Palette GLPI personnalisée créée et définie par défaut.', 'configurationglpiauto');
+    }
     if ($generalSettingsApplied) {
         $messages[] = __('Réglages généraux GLPI appliqués.', 'configurationglpiauto');
     }
@@ -305,6 +346,9 @@ if (isset($_POST['finish'])) {
     if ($kbCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de base de connaissances créées.', 'configurationglpiauto'), $kbCategoriesCreated);
     }
+    if ($documentManagementCreated > 0) {
+        $messages[] = sprintf(__('%d rubriques de documents/criticités créées.', 'configurationglpiauto'), $documentManagementCreated);
+    }
     if ($projectTaxonomyCreated > 0) {
         $messages[] = sprintf(__('%d types de projet/tâche de projet créés.', 'configurationglpiauto'), $projectTaxonomyCreated);
     }
@@ -332,6 +376,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
 }
 
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/wizard.html.twig', [
+    'prereq_checks'    => checkEnvironmentPrerequisites(),
     'config'           => $config->fields,
     'profiles'         => $profiles,
     'profile_defaults' => $profileDefaults,
@@ -356,6 +401,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'followup_library_preview' => FollowupLibraryBuilder::getLibraryPreview(),
     'validation_templates_preview' => ValidationTemplateBuilder::getLibraryPreview(),
     'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
+    'document_management_preview' => DocumentManagementBuilder::getPreview(),
     'project_taxonomy_preview' => ProjectTaxonomyBuilder::getPreview(),
     'project_task_templates_preview' => ProjectTaskTemplateBuilder::getLibraryPreview(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
