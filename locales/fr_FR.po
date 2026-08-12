@@ -949,6 +949,15 @@ msgstr "Optionnel : sépare le formulaire de création de ticket en deux — le 
 msgid "Un service par ligne, groupé par branche cochée à l'étape Catégories — décocher une branche là-bas retire aussi ses services ici."
 msgstr "Un service par ligne, groupé par branche cochée à l'étape Catégories — décocher une branche là-bas retire aussi ses services ici."
 
+msgid "Habiller les e-mails de notification (Nouveau ticket, Mise à jour, Résolution, Suivi)"
+msgstr "Habiller les e-mails de notification (Nouveau ticket, Mise à jour, Résolution, Suivi)"
+
+msgid "Remplace le modèle de notification GLPI par défaut de ces 4 évènements par une version HTML reprenant la couleur et le logo ci-dessus — un e-mail modifié à la main ensuite n'est plus jamais réécrit par une réexécution de l'assistant."
+msgstr "Remplace le modèle de notification GLPI par défaut de ces 4 évènements par une version HTML reprenant la couleur et le logo ci-dessus — un e-mail modifié à la main ensuite n'est plus jamais réécrit par une réexécution de l'assistant."
+
+msgid "%d modèle(s) de notification personnalisés."
+msgstr "%d modèle(s) de notification personnalisés."
+
 msgid "🏢 Bâtiment & Moyens généraux"
 msgstr "🏢 Bâtiment & Moyens généraux"
 
