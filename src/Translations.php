@@ -92,6 +92,11 @@ final class Translations
         'Déploiement' => ['en_GB' => 'Deployment', 'de_DE' => 'Bereitstellung', 'it_IT' => 'Distribuzione', 'es_ES' => 'Despliegue'],
         'Réunion & Pilotage' => ['en_GB' => 'Meeting & Steering', 'de_DE' => 'Besprechung & Steuerung', 'it_IT' => 'Riunione e Pilotaggio', 'es_ES' => 'Reunión y Seguimiento'],
 
+        // ---- ProjectTaskTemplateBuilder (glpi_projecttasktemplates) ----
+        'Cadrage initial' => ['en_GB' => 'Initial scoping', 'de_DE' => 'Erste Rahmenplanung', 'it_IT' => 'Definizione iniziale dell\'ambito', 'es_ES' => 'Definición inicial del alcance'],
+        'Point d\'avancement' => ['en_GB' => 'Progress check-in', 'de_DE' => 'Fortschrittsbesprechung', 'it_IT' => 'Punto di avanzamento', 'es_ES' => 'Punto de avance'],
+        'Revue de clôture' => ['en_GB' => 'Closure review', 'de_DE' => 'Abschlussbewertung', 'it_IT' => 'Revisione di chiusura', 'es_ES' => 'Revisión de cierre'],
+
         // ---- SolutionLibraryBuilder (glpi_solutiontypes) ----
         'Assistance / Support utilisateur' => ['en_GB' => 'Assistance / User support', 'de_DE' => 'Unterstützung / Benutzer-Support', 'it_IT' => 'Assistenza / Supporto utente', 'es_ES' => 'Asistencia / Soporte al usuario'],
         'Résolution technique' => ['en_GB' => 'Technical resolution', 'de_DE' => 'Technische Lösung', 'it_IT' => 'Risoluzione tecnica', 'es_ES' => 'Resolución técnica'],
@@ -300,7 +305,10 @@ final class Translations
             $translation = new DropdownTranslation();
             $crit = ['itemtype' => $itemtype, 'items_id' => $id, 'language' => $language, 'field' => 'name'];
             if (!$translation->getFromDBByCrit($crit)) {
-                $translation->add($crit + ['value' => sprintf('%s %s', $icon, $text)]);
+                // trim(): callers with no icon of their own (e.g. CategoryBuilder's leaf nodes,
+                // which were never given an emoji) pass '' here — still want the translated text
+                // alone, not a stray leading space from the empty icon slot.
+                $translation->add($crit + ['value' => trim(sprintf('%s %s', $icon, $text))]);
             }
         }
     }

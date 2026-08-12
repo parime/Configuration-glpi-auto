@@ -37,16 +37,19 @@ class ProjectTaskTemplateBuilder
     private const TEMPLATES = [
         [
             'name' => 'Cadrage initial',
+            'icon' => '🎯',
             'task_type' => 'Analyse & Cadrage',
             'description' => "Définir les objectifs, le périmètre, les livrables attendus et les parties prenantes du projet.",
         ],
         [
             'name' => 'Point d\'avancement',
+            'icon' => '📍',
             'task_type' => 'Réunion & Pilotage',
             'description' => "Faire le point sur l'avancement, les blocages et les prochaines étapes avec les parties prenantes.",
         ],
         [
             'name' => 'Revue de clôture',
+            'icon' => '🏁',
             'task_type' => 'Documentation',
             'description' => "Bilan du projet : objectifs atteints, écarts, retour d'expérience, documentation finale.",
         ],
@@ -61,9 +64,13 @@ class ProjectTaskTemplateBuilder
             return 0;
         }
 
+        $withIcons = !empty($config->fields['project_task_template_icons_enabled']);
         $count = 0;
         foreach (self::TEMPLATES as $template) {
-            $this->getOrCreateTemplate($template['name'], $template['description'], $this->findTaskTypeId($template['task_type']));
+            $templateId = $this->getOrCreateTemplate($template['name'], $template['description'], $this->findTaskTypeId($template['task_type']));
+            if ($withIcons) {
+                Translations::applyIcon(ProjectTaskTemplate::class, $templateId, $template['name'], $template['icon']);
+            }
             $count++;
         }
 
@@ -71,7 +78,7 @@ class ProjectTaskTemplateBuilder
     }
 
     /**
-     * @return array<int, array{name: string, task_type: string, description: string}>
+     * @return array<int, array{name: string, icon: string, task_type: string, description: string}>
      */
     public static function getLibraryPreview(): array
     {
