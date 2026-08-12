@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.0] - 2026-08-12
+
+Deux pistes du cinquième audit (recherche marché) : séparation stricte des droits par défaut, et
+profils métier prêts à l'emploi. Voir `ROADMAP.md` pour le raisonnement complet et les limites
+assumées de chacune.
+
+### Changed
+- `ldap_rights_profile` (réglage "Profil attribué" de `RuleRightBuilder`, étape 12 du wizard) passe
+  de `Technician` à `Admin` par défaut. Confirmé en diffant `glpi_profilerights` sur un GLPI 11.0.8
+  réel : Admin n'a déjà ni le droit `profile` en écriture, ni `rule_ldap`/`rule_import`, ni
+  `config` — les vecteurs d'auto-élévation identifiés comme le point de friction GLPI le plus
+  sévère en recherche — sans avoir à fabriquer un nouveau profil sur mesure. Toujours un simple
+  menu déroulant, tout profil natif reste sélectionnable.
+
+### Added
+- Étape 5 (Catégories) : 4 boutons "Profil métier" (IT pur / RH & Support interne / Bâtiment &
+  Moyens généraux / Multi-services) préremplissant en un clic les branches de catégories et le
+  tableau SLA de l'étape 4 — purement client (JavaScript), aucun nouveau champ serveur : réutilise
+  les branches et le mécanisme SLA déjà existants plutôt que d'ajouter du contenu métier par
+  verticale. RH et Bâtiment utilisent le rythme SLA IT existant multiplié par 4 et 2
+  respectivement (assumé comme point de départ, pas une pratique métier sourcée comme l'est le SLA
+  IT).
+
 ## [0.21.0] - 2026-08-12
 
 `BrandingBuilder` réécrit pour couvrir exhaustivement les variables CSS de personnalisation

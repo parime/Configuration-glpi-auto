@@ -411,24 +411,35 @@ sélectionner aujourd'hui.
 Aucune de ces pistes n'est implémentée — même méthode que les audits précédents, pas de décision de
 priorité unilatérale.
 
-1. **Séparation stricte des droits par défaut (axe sécurité/ISO 27001).** Le point de friction le
-   plus sévère trouvé en recherche (risque d'auto-élévation via le droit "Profils" global) rejoint
-   directement l'objectif ISO 27001 déjà affiché par ce plugin. Pourrait se traduire par un profil
-   "Administrateur technique" par défaut plus restrictif que Super-Admin, proposé (pas imposé) dans
-   `RuleRightBuilder`/le wizard.
+1. ✅ **Séparation stricte des droits par défaut (axe sécurité/ISO 27001) — fait (v0.22.0,
+   2026-08-12).** Diffé `glpi_profilerights` Admin vs Super-Admin sur un GLPI 11.0.8 réel plutôt que
+   deviner : Admin n'a déjà ni le droit `profile` en écriture (ne peut pas éditer les profils, donc
+   pas s'en attribuer plus), ni `rule_ldap`/`rule_import` (ne peut pas réécrire les règles de
+   synchronisation), ni `config` — exactement les vecteurs d'auto-élévation identifiés en recherche,
+   sans inventer un nouveau jeu de droits sur mesure. `ldap_rights_profile` (réglage "Profil
+   attribué" de `RuleRightBuilder`/étape 12) passe de `Technician` à `Admin` par défaut, avec
+   l'explication affichée dans le wizard — reste un simple menu déroulant, n'importe quel profil
+   natif reste sélectionnable.
 2. **Diagnostic LDAP pas-à-pas.** Le point de friction le plus fréquent trouvé. `RuleRightBuilder`
    configure déjà l'affectation post-synchronisation, mais rien n'aide à *fiabiliser* la
    synchronisation elle-même (filtre, bind, TLS) — un mode "test de connexion + filtre pré-validé"
    serait un vrai gain, mais gros morceau (dépend fortement de l'annuaire de chaque organisation).
-3. **Notifications : vérifier/activer les modèles de cycle de vie manquants par défaut**, au-delà de
-   `auto_reminder` déjà traité (Sprint 25) — repasser sur la liste complète des notifications
-   `is_active=0` d'origine.
+3. ✅ **Notifications : tâches automatiques d'alerte manquantes — fait (v0.20.3, 2026-08-12).** Voir
+   la section "Cinquième passage" ci-dessus.
 4. **Mode "express" du wizard**, inspiré de Freshservice — un sous-ensemble de 4-5 réglages
    critiques (entité, calendrier, un SLA par défaut, branding minimal) pour une mise en service en
    quelques minutes, le mode actuel (17 étapes) devenant le mode "complet" à côté.
-5. **Bibliothèque de "profils métier" prêts à l'emploi**, inspirée de Jira Service Management — au
-   lieu du seul profil topique actuel (IT/Bâtiment/Flotte...), des jeux de catégories+SLA+gabarits
-   par verticale (IT pur, RH, Facilities...) sélectionnables en un clic à l'étape 1.
+5. ✅ **Bibliothèque de "profils métier" prêts à l'emploi — fait (v0.22.0, 2026-08-12), portée
+   réduite par rapport à la piste initiale.** Contrairement au SLA IT (`Config::DEFAULT_SLA_TIERS`,
+   sourcé sur une vraie pratique ITIL), il n'existe aucune pratique RH/Facilities équivalente à citer
+   — inventer des gabarits/contenus complets par verticale aurait été le même risque que les règles
+   métier GLPI volontairement laissées de côté ("inventer serait pire que rien", cf. section
+   "Règles" plus haut). Implémenté à la place comme un préréglage 1-clic purement client (JS), sans
+   nouveau champ serveur : 4 boutons (IT pur / RH & Support interne / Bâtiment & Moyens généraux /
+   Multi-services) qui précochent les branches de catégories déjà conçues (étape 5) et remplissent
+   le tableau SLA (étape 4) avec le rythme IT existant ×2 (Bâtiment, intervention physique) ou ×4
+   (RH, rarement classe "panne"), plutôt que des valeurs indépendamment inventées — cohérent avec le
+   fait que ces multiplicateurs sont assumés comme un point de départ, pas une norme.
 6. ✅ **`BrandingBuilder` — couvrir les 6 variables de logo et la vraie palette de couleurs Tabler —
    fait (v0.21.0, 2026-08-12).** Voir CHANGELOG.md. Reste hors périmètre, plus gros chantier :
    proposer les palettes natives GLPI (`auror`/`dark`/`midnight`...) comme choix simple dans le
