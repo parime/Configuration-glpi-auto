@@ -958,6 +958,15 @@ msgstr "Replaces GLPI's default notification template for these 4 events with an
 msgid "%d modèle(s) de notification personnalisés."
 msgstr "%d notification template(s) personalized."
 
+msgid "Créer un dictionnaire pour normaliser les variantes de nom (ex. Hewlett-Packard, HP Inc. → HP)"
+msgstr "Create a dictionary to normalize name variants (e.g. Hewlett-Packard, HP Inc. → HP)"
+
+msgid "Sans filtrage possible par type de produit (limite native de GLPI, vérifiée) — mais un fabricant remonté par l'inventaire sous un nom légèrement différent (« Hewlett-Packard » au lieu de « HP ») sera automatiquement rattaché à la même fiche fabricant plutôt que d'en créer une nouvelle en double."
+msgstr "No filtering by product type is possible (native GLPI limitation, verified) — but a manufacturer reported by inventory under a slightly different name (\"Hewlett-Packard\" instead of \"HP\") will automatically be attached to the same manufacturer record instead of creating a new duplicate one."
+
+msgid "%d règle(s) de dictionnaire fabricant créées."
+msgstr "%d manufacturer dictionary rule(s) created."
+
 msgid "🏢 Bâtiment & Moyens généraux"
 msgstr "🏢 Facilities & General Services"
 

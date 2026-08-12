@@ -52,6 +52,16 @@ class SolutionLibraryBuilder
      */
     private const GREETING = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Bonjour {{ requesters|first.fullname }},{% else %}Bonjour,{% endif %}";
 
+    // Same GREETING_EN/_DE/_IT/_ES pattern as FollowupLibraryBuilder (see there for the full
+    // reasoning) — duplicated rather than shared, consistent with this codebase's convention.
+    private const GREETING_EN = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Hello {{ requesters|first.fullname }},{% else %}Hello,{% endif %}";
+
+    private const GREETING_DE = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Hallo {{ requesters|first.fullname }},{% else %}Hallo,{% endif %}";
+
+    private const GREETING_IT = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Buongiorno {{ requesters|first.fullname }},{% else %}Buongiorno,{% endif %}";
+
+    private const GREETING_ES = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Hola {{ requesters|first.fullname }},{% else %}Hola,{% endif %}";
+
     /**
      * `solvedate` is defined on every `CommonITILObjectParameters` child alike (Ticket/Change/
      * Problem), same itemtype-branching reasoning as GREETING above. Real bug caught while adding
@@ -74,11 +84,23 @@ class SolutionLibraryBuilder
                     'name' => 'Accompagnement utilisateur réalisé',
                     'icon' => '🙋',
                     'content' => self::GREETING . "\n\nNous avons accompagné l'utilisateur pas à pas pour résoudre sa demande.\n\nAction réalisée : \n\nCordialement,",
+                    'translations' => [
+                        'en_GB' => self::GREETING_EN . "\n\nWe guided the user step by step to resolve their request.\n\nAction taken: \n\nKind regards,",
+                        'de_DE' => self::GREETING_DE . "\n\nWir haben den Benutzer Schritt für Schritt bei der Lösung seiner Anfrage begleitet.\n\nDurchgeführte Maßnahme: \n\nMit freundlichen Grüßen,",
+                        'it_IT' => self::GREETING_IT . "\n\nAbbiamo accompagnato l'utente passo dopo passo per risolvere la sua richiesta.\n\nAzione svolta: \n\nCordiali saluti,",
+                        'es_ES' => self::GREETING_ES . "\n\nHemos acompañado al usuario paso a paso para resolver su solicitud.\n\nAcción realizada: \n\nAtentamente,",
+                    ],
                 ],
                 [
                     'name' => 'Formation dispensée',
                     'icon' => '🎓',
                     'content' => self::GREETING . "\n\nUne session de formation/sensibilisation a été dispensée à l'utilisateur sur l'outil concerné.\n\nPoints abordés : \n\nCordialement,",
+                    'translations' => [
+                        'en_GB' => self::GREETING_EN . "\n\nA training/awareness session was provided to the user on the tool concerned.\n\nTopics covered: \n\nKind regards,",
+                        'de_DE' => self::GREETING_DE . "\n\nDem Benutzer wurde eine Schulungs-/Sensibilisierungssitzung zum betreffenden Tool angeboten.\n\nBehandelte Themen: \n\nMit freundlichen Grüßen,",
+                        'it_IT' => self::GREETING_IT . "\n\nÈ stata erogata all'utente una sessione di formazione/sensibilizzazione sullo strumento in questione.\n\nArgomenti trattati: \n\nCordiali saluti,",
+                        'es_ES' => self::GREETING_ES . "\n\nSe ha impartido al usuario una sesión de formación/sensibilización sobre la herramienta en cuestión.\n\nTemas tratados: \n\nAtentamente,",
+                    ],
                 ],
             ],
         ],
@@ -92,11 +114,23 @@ class SolutionLibraryBuilder
                     'name' => 'Résolution technique appliquée',
                     'icon' => '🔧',
                     'content' => self::GREETING . "\n\nLe problème a été identifié et corrigé.\n\nCause : \nAction réalisée : \n\nCordialement,",
+                    'translations' => [
+                        'en_GB' => self::GREETING_EN . "\n\nThe issue has been identified and fixed.\n\nCause: \nAction taken: \n\nKind regards,",
+                        'de_DE' => self::GREETING_DE . "\n\nDas Problem wurde identifiziert und behoben.\n\nUrsache: \nDurchgeführte Maßnahme: \n\nMit freundlichen Grüßen,",
+                        'it_IT' => self::GREETING_IT . "\n\nIl problema è stato individuato e risolto.\n\nCausa: \nAzione svolta: \n\nCordiali saluti,",
+                        'es_ES' => self::GREETING_ES . "\n\nSe ha identificado y corregido el problema.\n\nCausa: \nAcción realizada: \n\nAtentamente,",
+                    ],
                 ],
                 [
                     'name' => 'Remplacement de matériel effectué',
                     'icon' => '🔩',
                     'content' => self::GREETING . "\n\nLe matériel défectueux a été remplacé.\n\nÉquipement concerné : \nNouvel équipement : \n\nCordialement,",
+                    'translations' => [
+                        'en_GB' => self::GREETING_EN . "\n\nThe faulty equipment has been replaced.\n\nEquipment concerned: \nNew equipment: \n\nKind regards,",
+                        'de_DE' => self::GREETING_DE . "\n\nDas defekte Gerät wurde ersetzt.\n\nBetroffenes Gerät: \nNeues Gerät: \n\nMit freundlichen Grüßen,",
+                        'it_IT' => self::GREETING_IT . "\n\nL'apparecchiatura difettosa è stata sostituita.\n\nApparecchiatura interessata: \nNuova apparecchiatura: \n\nCordiali saluti,",
+                        'es_ES' => self::GREETING_ES . "\n\nSe ha sustituido el equipo defectuoso.\n\nEquipo afectado: \nNuevo equipo: \n\nAtentamente,",
+                    ],
                 ],
             ],
         ],
@@ -110,11 +144,26 @@ class SolutionLibraryBuilder
                     'name' => 'Confinement et éradication de la menace',
                     'icon' => '🛡️',
                     'content' => 'Incident de sécurité traité.' . "\n\nAction immédiate : isolation du système impacté.\nÉradication : suppression des éléments malveillants, nettoyage des persistances.\n\nOutils utilisés : \nDate : " . self::SOLVE_DATE,
+                    // No GREETING here (matches the French version — a security incident report
+                    // isn't addressed "Bonjour X,", same for every language). SOLVE_DATE itself
+                    // needs no per-language variant: pure Twig/date filter, no literal words.
+                    'translations' => [
+                        'en_GB' => 'Security incident handled.' . "\n\nImmediate action: isolation of the affected system.\nEradication: removal of malicious elements, cleanup of persistence mechanisms.\n\nTools used: \nDate: " . self::SOLVE_DATE,
+                        'de_DE' => 'Sicherheitsvorfall behandelt.' . "\n\nSofortmaßnahme: Isolierung des betroffenen Systems.\nBeseitigung: Entfernung schädlicher Elemente, Bereinigung von Persistenzmechanismen.\n\nVerwendete Werkzeuge: \nDatum: " . self::SOLVE_DATE,
+                        'it_IT' => 'Incidente di sicurezza gestito.' . "\n\nAzione immediata: isolamento del sistema colpito.\nEradicazione: rimozione degli elementi dannosi, pulizia dei meccanismi di persistenza.\n\nStrumenti utilizzati: \nData: " . self::SOLVE_DATE,
+                        'es_ES' => 'Incidente de seguridad tratado.' . "\n\nAcción inmediata: aislamiento del sistema afectado.\nErradicación: eliminación de los elementos maliciosos, limpieza de las persistencias.\n\nHerramientas utilizadas: \nFecha: " . self::SOLVE_DATE,
+                    ],
                 ],
                 [
                     'name' => 'Application de correctifs de sécurité',
                     'icon' => '🩹',
                     'content' => "Correctifs appliqués suite à l'incident de sécurité.\n\nVulnérabilité corrigée : \nCorrectifs déployés : \n\nDate : " . self::SOLVE_DATE,
+                    'translations' => [
+                        'en_GB' => "Patches applied following the security incident.\n\nVulnerability fixed: \nPatches deployed: \n\nDate: " . self::SOLVE_DATE,
+                        'de_DE' => "Nach dem Sicherheitsvorfall wurden Patches eingespielt.\n\nBehobene Schwachstelle: \nEingespielte Patches: \n\nDatum: " . self::SOLVE_DATE,
+                        'it_IT' => "Patch applicate a seguito dell'incidente di sicurezza.\n\nVulnerabilità corretta: \nPatch distribuite: \n\nData: " . self::SOLVE_DATE,
+                        'es_ES' => "Parches aplicados a raíz del incidente de seguridad.\n\nVulnerabilidad corregida: \nParches desplegados: \n\nFecha: " . self::SOLVE_DATE,
+                    ],
                 ],
             ],
         ],
@@ -128,11 +177,23 @@ class SolutionLibraryBuilder
                     'name' => 'Fonctionnement normal constaté',
                     'icon' => '✅',
                     'content' => self::GREETING . "\n\nAprès vérification, le comportement signalé est normal, aucune anomalie détectée.\n\nCordialement,",
+                    'translations' => [
+                        'en_GB' => self::GREETING_EN . "\n\nAfter verification, the reported behavior is normal, no anomaly was detected.\n\nKind regards,",
+                        'de_DE' => self::GREETING_DE . "\n\nNach Überprüfung ist das gemeldete Verhalten normal, es wurde keine Anomalie festgestellt.\n\nMit freundlichen Grüßen,",
+                        'it_IT' => self::GREETING_IT . "\n\nDopo la verifica, il comportamento segnalato è normale, non è stata rilevata alcuna anomalia.\n\nCordiali saluti,",
+                        'es_ES' => self::GREETING_ES . "\n\nTras la verificación, el comportamiento notificado es normal, no se ha detectado ninguna anomalía.\n\nAtentamente,",
+                    ],
                 ],
                 [
                     'name' => 'Ticket doublon',
                     'icon' => '📑',
                     'content' => self::GREETING . "\n\nCe ticket fait doublon avec une demande déjà en cours de traitement.\n\nTicket de référence : \n\nCordialement,",
+                    'translations' => [
+                        'en_GB' => self::GREETING_EN . "\n\nThis ticket is a duplicate of a request already being processed.\n\nReference ticket: \n\nKind regards,",
+                        'de_DE' => self::GREETING_DE . "\n\nDieses Ticket ist ein Duplikat einer bereits in Bearbeitung befindlichen Anfrage.\n\nReferenzticket: \n\nMit freundlichen Grüßen,",
+                        'it_IT' => self::GREETING_IT . "\n\nQuesto ticket è un duplicato di una richiesta già in corso di elaborazione.\n\nTicket di riferimento: \n\nCordiali saluti,",
+                        'es_ES' => self::GREETING_ES . "\n\nEste ticket es un duplicado de una solicitud que ya está siendo tramitada.\n\nTicket de referencia: \n\nAtentamente,",
+                    ],
                 ],
             ],
         ],
@@ -146,11 +207,23 @@ class SolutionLibraryBuilder
                     'name' => 'Compte créé ou modifié',
                     'icon' => '👤',
                     'content' => self::GREETING . "\n\nLe compte a été créé/modifié comme demandé.\n\nAccès accordés : \n\nCordialement,",
+                    'translations' => [
+                        'en_GB' => self::GREETING_EN . "\n\nThe account has been created/modified as requested.\n\nAccess granted: \n\nKind regards,",
+                        'de_DE' => self::GREETING_DE . "\n\nDas Konto wurde wie gewünscht angelegt/geändert.\n\nGewährter Zugriff: \n\nMit freundlichen Grüßen,",
+                        'it_IT' => self::GREETING_IT . "\n\nL'account è stato creato/modificato come richiesto.\n\nAccessi concessi: \n\nCordiali saluti,",
+                        'es_ES' => self::GREETING_ES . "\n\nLa cuenta ha sido creada/modificada según lo solicitado.\n\nAccesos concedidos: \n\nAtentamente,",
+                    ],
                 ],
                 [
                     'name' => 'Mot de passe réinitialisé',
                     'icon' => '🔑',
                     'content' => self::GREETING . "\n\nVotre mot de passe a été réinitialisé. Vous recevrez les identifiants par un canal séparé.\n\nCordialement,",
+                    'translations' => [
+                        'en_GB' => self::GREETING_EN . "\n\nYour password has been reset. You will receive the credentials through a separate channel.\n\nKind regards,",
+                        'de_DE' => self::GREETING_DE . "\n\nIhr Passwort wurde zurückgesetzt. Die Zugangsdaten erhalten Sie über einen separaten Kanal.\n\nMit freundlichen Grüßen,",
+                        'it_IT' => self::GREETING_IT . "\n\nLa vostra password è stata reimpostata. Riceverete le credenziali tramite un canale separato.\n\nCordiali saluti,",
+                        'es_ES' => self::GREETING_ES . "\n\nSu contraseña ha sido restablecida. Recibirá las credenciales por un canal separado.\n\nAtentamente,",
+                    ],
                 ],
             ],
         ],
@@ -179,6 +252,7 @@ class SolutionLibraryBuilder
                 if ($withTemplateIcons) {
                     Translations::applyIcon(SolutionTemplate::class, $templateId, $template['name'], $template['icon']);
                 }
+                Translations::applyContent(SolutionTemplate::class, $templateId, $template['translations']);
                 $count++;
             }
         }
@@ -187,7 +261,7 @@ class SolutionLibraryBuilder
     }
 
     /**
-     * @return array<int, array{name: string, icon: string, comment: string, templates: array<int, array{name: string, content: string}>}>
+     * @return array<int, array{name: string, icon: string, comment: string, templates: array<int, array{name: string, content: string, translations: array<string, string>}>}>
      */
     public static function getLibraryPreview(): array
     {

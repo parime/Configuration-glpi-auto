@@ -987,6 +987,12 @@
           <p class="text-muted">
             {% for manufacturer in manufacturers_preview %}<span class="cga-manufacturer-icon" style="display: none;">{{ manufacturer.icon }}</span> {{ manufacturer.name }}{% if not loop.last %}, {% endif %}{% endfor %}
           </p>
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="manufacturer_dictionary_enabled" value="0">
+            <input type="checkbox" name="manufacturer_dictionary_enabled" value="1" class="form-check-input" id="cga-manufacturer-dictionary-enabled" {{ config.manufacturer_dictionary_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-manufacturer-dictionary-enabled">{{ __('Créer un dictionnaire pour normaliser les variantes de nom (ex. Hewlett-Packard, HP Inc. → HP)', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-0">{{ __('Sans filtrage possible par type de produit (limite native de GLPI, vérifiée) — mais un fabricant remonté par l\'inventaire sous un nom légèrement différent (« Hewlett-Packard » au lieu de « HP ») sera automatiquement rattaché à la même fiche fabricant plutôt que d\'en créer une nouvelle en double.', 'configurationglpiauto') }}</p>
         </div>
 
         <div class="form-check form-switch mb-2">

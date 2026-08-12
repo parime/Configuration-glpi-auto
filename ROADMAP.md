@@ -484,6 +484,19 @@ balises correctement substituées. **Corrigé en v0.31.1** : régression trouvé
 un œil critique — une seule ligne `language=''` par gabarit aurait montré des libellés français à
 tout destinataire, quelle que soit sa langue GLPI. Une ligne par langue désormais (5 langues).
 
+**Contenu des gabarits de suivi/tâche/solution traduit — fait (v0.32.0, 2026-08-13).** Trouvé lors
+de l'analyse critique post-v0.31.1 : même type de limite que le bug des notifications, contenu
+traduisible en théorie (`AbstractITILChildTemplate::getRenderedContent()` appelle
+`DropdownTranslation::getTranslatedValue(..., $_SESSION['glpilanguage'], ...)`) mais aucune ligne
+`DropdownTranslation` n'existait pour leur `content`. D'abord laissé de côté ("moins grave, texte
+de départ qu'un technicien édite"), puis l'utilisateur a explicitement demandé de traduire "tout
+sans exception" — corrigé. `Translations::applyContent()` (nouveau, même mécanisme que
+`applyIcon()` mais sur le champ `content`) : les 18 gabarits (5 suivis + 10 solutions + 3 tâches)
+ont désormais leurs 4 traductions, y compris la salutation Twig ("Bonjour" → "Hello"/"Hallo"/
+"Buongiorno"/"Hola", même prudence itemtype-aware que la v0.27.0). Vérifié en réel : une session
+anglaise appliquant un gabarit de suivi reçoit bien "Hello glpi," et le corps traduit, rendu Twig
+inclus.
+
 **Filigrane PDF sur documents confidentiels** — position inchangée depuis la première discussion :
 nature technique différente (traitement de fichier temps réel vs scaffolding one-shot), plugin
 séparé recommandé plutôt qu'ajout ici.
@@ -494,8 +507,21 @@ dans la liste déroulante fabricant lors de la création d'un ordinateur. Vérif
 (`DESCRIBE glpi_manufacturers`) : la table n'a aucun champ de portée par type d'actif (juste
 `id`/`name`/`comment`/dates) — c'est une liste plate partagée par tous les types d'actifs GLPI
 nativement, sans mécanisme de filtrage. Implémenter ce filtrage demanderait un moteur de règles
-JS/dictionnaire personnalisé (chantier non trivial, pas juste un champ à cocher). Laissé de côté
-sauf demande explicite de le construire quand même.
+JS personnalisé (chantier non trivial, pas juste un champ à cocher). Laissé de côté sauf demande
+explicite de le construire quand même.
+
+**Fabricants — dictionnaire de normalisation — fait (v0.32.0, 2026-08-13).** Suite à la remarque
+ci-dessus, l'utilisateur a proposé une piste différente et réellement construite : un dictionnaire
+GLPI natif (`RuleDictionnaryManufacturer`, confirmé dans le code source — `getActions()` supporte
+`assign` sur le champ `name`) pour normaliser les variantes de nom qu'un vrai inventaire remonte
+(« Hewlett-Packard », « HP Inc. »… → « HP »). Contrairement aux dictionnaires logiciel/matériel
+étudiés et rejetés plus tôt (variantes propres à l'inventaire réel de chaque organisation,
+impossibles à deviner à l'avance), les variantes des plus grands fabricants sont documentées et
+stables (chaînes `sys_vendor`/WMI `Manufacturer` connues) — pas besoin des données réelles d'une
+organisation pour écrire ces règles. `ManufacturerDictionaryBuilder` (nouveau) : 15 règles (sur les
+29 fabricants créés, ceux avec des variantes réellement documentées). Vérifié avec l'outil natif de
+test de règle de GLPI (`front/rule.test.php`) : « Hewlett-Packard » → validé → fabricant assigné
+« HP ».
 
 **Idée à cadrer, pas encore construite (proposée par l'utilisateur, 2026-08-12)** : générer des
 « actifs personnalisés » GLPI (`Glpi\Asset\AssetDefinition`, système natif GLPI 10+, Configuration
@@ -508,6 +534,30 @@ hyperviseur...). Nécessite de vérifier l'API réelle
 de création d'`AssetDefinition` par code (pas encore fait) et de définir un jeu de champs par
 branche sans tomber dans le sur-mesure par organisation (même principe généraliste que le reste du
 plugin). Pas de version cible.
+
+**Lieux — assistant d'adresse interactif, cadré (proposé par l'utilisateur, 2026-08-13, pas encore
+construit).** Confirme que la ligne « assistant intelligent avec géocodage » retirée du README lors
+du nettoyage v0.31.0 correspondait bien à une vraie idée, pas juste du texte marketing oublié :
+autocomplétion de rue pendant la saisie (façon site e-commerce) + code postal → ville pré-rempli, à
+l'étape Lieux (`LocationBuilder`, aujourd'hui un simple miroir de l'arborescence sans adresse
+réelle). Recherche faite sur les API disponibles :
+- **Nominatim** (OpenStreetMap) et **Photon** (komoot) : couverture mondiale, gratuites, sans clé,
+  CORS déjà activé sur leurs instances publiques — mais usage public strictement limité (~1 req/s
+  sur Nominatim, pas de saisie assistée en rafale, sinon blocage 403/429) : auto-hébergement
+  recommandé pour un usage réel, la démo publique suffit pour un usage ponctuel (admin, une seule
+  fois, pendant l'assistant).
+- **LocationIQ**/**OpenCage** : alternatives avec clé API, quota gratuit quotidien plus confortable,
+  posture RGPD plus explicite (OpenCage).
+- **Point RGPD réel à traiter** : chaque frappe envoie un bout d'adresse à un service tiers — prévoir
+  un vrai opt-in, un seuil minimum de caractères + debounce, et documenter l'auto-hébergement comme
+  option pour les organisations sensibles.
+- **Recommandation** : Nominatim public par défaut (gratuit, mondial, suffisant pour un usage
+  ponctuel dans l'assistant) avec `User-Agent` correct et debounce, endpoint configurable pour
+  qu'un admin pointe vers sa propre instance ou LocationIQ/OpenCage sans changement de code.
+
+Techniquement différent de tout le reste du plugin (première dépendance à un service externe, appel
+JS navigateur plutôt que scaffolding serveur pur) — mérite d'être cadré à part avant de commencer.
+Pas de version cible.
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.

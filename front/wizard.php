@@ -29,6 +29,7 @@ use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\LocationBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
+use GlpiPlugin\Configurationglpiauto\ManufacturerDictionaryBuilder;
 use GlpiPlugin\Configurationglpiauto\NotificationBrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\PaletteBuilder;
 use GlpiPlugin\Configurationglpiauto\PlanningEventBuilder;
@@ -229,6 +230,7 @@ if (isset($_POST['finish'])) {
     // Runs after EntityBuilder: resolves entities by name lookup to scope each location.
     $locationsCreated = (new LocationBuilder())->build($config);
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
+    $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
     $documentManagementCreated = (new DocumentManagementBuilder())->build($config);
     $planningEventsCreated = (new PlanningEventBuilder())->build($config);
@@ -390,6 +392,9 @@ if (isset($_POST['finish'])) {
     }
     if ($manufacturersCreated > 0) {
         $messages[] = sprintf(__('%d fabricants créés.', 'configurationglpiauto'), $manufacturersCreated);
+    }
+    if ($manufacturerDictionaryCreated > 0) {
+        $messages[] = sprintf(__('%d règle(s) de dictionnaire fabricant créées.', 'configurationglpiauto'), $manufacturerDictionaryCreated);
     }
     if ($kbCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de base de connaissances créées.', 'configurationglpiauto'), $kbCategoriesCreated);
