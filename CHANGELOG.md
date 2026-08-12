@@ -9,7 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.31.0] - 2026-08-13
+
+Habillage HTML des e-mails de notification, à partir d'un vrai jeu d'e-mails de production
+audité (couleur/logo déjà calculés par `BrandingBuilder`, balises GLPI natives vérifiées une par
+une dans le code source plutôt que devinées).
+
 ### Added
+- `NotificationBrandingBuilder` (nouveau) : remplace le modèle de notification GLPI par défaut
+  (partagé nativement par tous les évènements ticket — confirmé en base : `new`/`update`/`solved`/
+  `add_followup` pointent tous vers le même template id) par un modèle HTML dédié et coloré pour
+  chacun de ces 4 évènements, avec le logo de l'entité racine s'il existe. Idempotent via un
+  marqueur HTML (pas le pattern habituel "la ligne existe déjà, ne rien faire" : ceci *modifie* une
+  ligne native, donc un e-mail modifié à la main ensuite n'est plus jamais réécrit par une
+  réexécution de l'assistant).
 - Manifeste marketplace (`configurationglpiauto.xml`) : `<screenshots>` renseigné (6 captures),
   différé de la v0.29.0 pour ne pas casser la vérification CI officielle GLPI (les captures
   n'existaient pas encore sur `main` au moment de cette PR).
@@ -23,6 +36,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   autres items listés ("Mode Audit", "Blueprints") sont aussi de purs items `[ ]` non cochés du
   ROADMAP, jamais livrés. Liste réécrite pour refléter ce qui est réellement livré, ancre
   "Utilisation" du sommaire réparée (menait nulle part, la section n'avait jamais été écrite).
+- `Installer.php` : la migration d'ajout de colonne pour `notification_branding_enabled` manquait
+  sur le chemin de mise à jour (ajoutée seulement au `CREATE TABLE` d'une install neuve) — trouvé
+  en testant en réel (colonne absente après réinstallation), même classe de bug que celle déjà
+  documentée pour d'autres colonnes plus tôt dans le projet.
+
+Vérifié de bout en bout en conditions réelles : gabarits créés, évènements réassignés en base,
+idempotence confirmée (resoumission → 0 modèle réécrit, hash de contenu identique), et un vrai
+ticket créé pour confirmer que la notification en file d'attente contient bien le HTML habillé
+avec les balises GLPI correctement substituées (titre, contenu — aucune balise `##ticket.xxx##`
+laissée non résolue).
 
 ## [0.30.1] - 2026-08-12
 

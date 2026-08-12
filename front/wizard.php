@@ -29,6 +29,7 @@ use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\LocationBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
+use GlpiPlugin\Configurationglpiauto\NotificationBrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\PaletteBuilder;
 use GlpiPlugin\Configurationglpiauto\PlanningEventBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaskTemplateBuilder;
@@ -284,6 +285,16 @@ if (isset($_POST['finish'])) {
         $logosCreated = $brandingBuilder->applyLogos($entityIdToLogoDataUri);
     }
 
+    // Reuses whatever color/logo were already collected above for the UI — root entity's own logo
+    // if one was uploaded (matches the login-page fallback logic just above), the shared primary
+    // color (not a per-client one: GLPI notification templates aren't entity-scoped the way
+    // custom_css_code is, one shared set of branded templates for the whole instance).
+    $notificationBrandingCreated = (new NotificationBrandingBuilder())->apply(
+        $config,
+        (string) ($config->fields['branding_primary_color'] ?? '#206bc4'),
+        $entityIdToLogoDataUri[0] ?? null,
+    );
+
     $paletteApplied = (new PaletteBuilder())->apply($config);
 
     $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
@@ -332,6 +343,9 @@ if (isset($_POST['finish'])) {
     }
     if ($perClientColorsCreated > 0) {
         $messages[] = sprintf(__('%d couleur(s) par client/site appliquée(s).', 'configurationglpiauto'), $perClientColorsCreated);
+    }
+    if ($notificationBrandingCreated > 0) {
+        $messages[] = sprintf(__('%d modèle(s) de notification personnalisés.', 'configurationglpiauto'), $notificationBrandingCreated);
     }
     if ($paletteApplied) {
         $messages[] = !empty($config->fields['custom_palette_enabled'])

@@ -235,6 +235,66 @@ class BrandingBuilder
     }
 
     /**
+     * Writes the same logo/color already applied to the UI into each entity's
+     * `mailing_signature` (`Entity::getUsedConfig('mailing_signature', ...)`, appended by GLPI core
+     * — confirmed in `NotificationTemplate.php` — after "-- " at the end of every outgoing
+     * notification email, HTML *and* plain-text versions). Confirmed empirically (Symfony
+     * `HtmlSanitizer::sanitize()`, the same one GLPI runs the signature through via
+     * `RichText::getSafeHtml()`) that a `data:` URI `<img>` survives sanitization — GLPI itself
+     * doesn't strip it. The colored text stays reliable everywhere; the logo image is a bonus that
+     * some mail clients (Outlook desktop in particular) are known to block `data:` images for, same
+     * "point de départ, ajustable" spirit as the rest of this plugin rather than a hard requirement.
+     * Plain-text fallback (`getTextFromHtml()`, called by GLPI core itself) degrades to just the
+     * entity name, so nothing breaks for recipients on a text-only client either.
+     *
+     * @param array<int, string>      $entityIdToDataUri Entity ID => logo `data:` URI (per-entity
+     *        only — this plugin has no separate "shared logo" concept, `entity_logos_enabled`
+     *        always uploads one per node).
+     * @param array<int, string>      $entityIdToColor   Entity ID => `#rrggbb`, falls back to
+     *        `$sharedColor` for any entity not present (e.g. per-client color toggle disabled, or
+     *        this specific node kept the shared value).
+     * @return int Number of entities with a signature applied.
+     */
+    public function applyMailingSignatures(
+        array $entityIds,
+        array $entityIdToDataUri,
+        array $entityIdToColor,
+        string $sharedColor,
+    ): int {
+        $count = 0;
+        foreach ($entityIds as $entityId) {
+            $entity = new Entity();
+            if (!$entity->getFromDB($entityId)) {
+                continue;
+            }
+
+            $color = $entityIdToColor[$entityId] ?? $sharedColor;
+            $dataUri = $entityIdToDataUri[$entityId] ?? null;
+            $html = $this->buildSignatureHtml((string) $entity->fields['name'], $color, $dataUri);
+
+            $entity->update([
+                'id' => $entityId,
+                'mailing_signature' => $html,
+            ]);
+            $count++;
+        }
+
+        return $count;
+    }
+
+    private function buildSignatureHtml(string $entityName, string $color, ?string $dataUri): string
+    {
+        $safeName = htmlspecialchars($entityName, ENT_QUOTES, 'UTF-8');
+        $logoTag = $dataUri !== null
+            ? '<img src="' . htmlspecialchars($dataUri, ENT_QUOTES, 'UTF-8') . '" alt="' . $safeName . '" style="max-height:32px;vertical-align:middle;margin-right:8px;"><br>'
+            : '';
+
+        return '<div style="margin-top:8px;">' . $logoTag
+            . '<span style="color:' . $color . ';font-weight:bold;">' . $safeName . '</span>'
+            . '</div>';
+    }
+
+    /**
      * @return array{0: int, 1: int, 2: int}
      */
     private function hexToRgb(string $hex): array

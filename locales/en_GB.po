@@ -949,6 +949,15 @@ msgstr "Optional: splits the ticket creation form in two — the minimum for a b
 msgid "Un service par ligne, groupé par branche cochée à l'étape Catégories — décocher une branche là-bas retire aussi ses services ici."
 msgstr "One service per line, grouped by branch checked in the Categories step — unchecking a branch there also removes its services here."
 
+msgid "Habiller les e-mails de notification (Nouveau ticket, Mise à jour, Résolution, Suivi)"
+msgstr "Style notification e-mails (New ticket, Update, Resolution, Follow-up)"
+
+msgid "Remplace le modèle de notification GLPI par défaut de ces 4 évènements par une version HTML reprenant la couleur et le logo ci-dessus — un e-mail modifié à la main ensuite n'est plus jamais réécrit par une réexécution de l'assistant."
+msgstr "Replaces GLPI's default notification template for these 4 events with an HTML version using the color and logo above — once an e-mail has been hand-edited afterwards, re-running the wizard never overwrites it again."
+
+msgid "%d modèle(s) de notification personnalisés."
+msgstr "%d notification template(s) personalized."
+
 msgid "🏢 Bâtiment & Moyens généraux"
 msgstr "🏢 Facilities & General Services"
 

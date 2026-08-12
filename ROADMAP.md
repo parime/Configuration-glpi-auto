@@ -468,16 +468,44 @@ taxonomie inventée.
 complètes vérifiées sur les 8 termes (4 classifications + 4 niveaux de criticité) dans
 `Translations.php`, rien ne manque.
 
-**Personnalisation HTML/CSS des e-mails — gap réel identifié, pas encore traité.** GLPI a un champ
-global `mailing_signature` (jamais utilisé par le plugin) mais aucun habillage commun à toutes les
-notifications — chaque `NotificationTemplate` a son propre `content_html` isolé par langue.
-`BrandingBuilder` calcule déjà logo/couleurs ; les injecter dans la signature globale et/ou un
-en-tête HTML partagé serait généralisable. Décision de l'utilisateur : reporté après les trois
-chantiers ci-dessous.
+**Personnalisation HTML/CSS des e-mails — fait (v0.31.0, 2026-08-13).** Piste initiale
+(`mailing_signature`) réévaluée en cours de route : ce champ ne supporte que du texte simple
+d'après l'UI (`<textarea>`), et surtout — trouvé en creusant le vrai flux de rendu
+(`NotificationTemplate::makeAllReplacements()`) — GLPI ne partage aucun habillage HTML commun entre
+notifications : chaque évènement (nouveau ticket, mise à jour...) pointe en réalité vers le *même*
+`NotificationTemplate` natif partagé (confirmé en base), pas des gabarits distincts. Un vrai jeu
+d'e-mails HTML de production (4 évènements, balises `##ticket.xxx##` réelles) a servi de référence
+de structure — `NotificationBrandingBuilder` (nouveau) crée un gabarit HTML dédié par évènement
+(nouveau ticket/mise à jour/résolution/nouveau suivi) avec la couleur/logo déjà calculés par
+`BrandingBuilder`, et réassigne l'évènement correspondant vers ce nouveau gabarit. Vérifié de bout
+en bout : gabarits créés, évènements réassignés en base, idempotence confirmée, et un vrai ticket
+créé pour confirmer que la notification réellement mise en file contient le HTML habillé avec les
+balises correctement substituées.
 
 **Filigrane PDF sur documents confidentiels** — position inchangée depuis la première discussion :
 nature technique différente (traitement de fichier temps réel vs scaffolding one-shot), plugin
 séparé recommandé plutôt qu'ajout ici.
+
+**Fabricants — visibilité selon le type de produit, vérifié non supporté nativement (2026-08-12).**
+L'utilisateur a fait remarquer qu'un fabricant comme Jabra (casques/audio) ne devrait pas apparaître
+dans la liste déroulante fabricant lors de la création d'un ordinateur. Vérifié en base
+(`DESCRIBE glpi_manufacturers`) : la table n'a aucun champ de portée par type d'actif (juste
+`id`/`name`/`comment`/dates) — c'est une liste plate partagée par tous les types d'actifs GLPI
+nativement, sans mécanisme de filtrage. Implémenter ce filtrage demanderait un moteur de règles
+JS/dictionnaire personnalisé (chantier non trivial, pas juste un champ à cocher). Laissé de côté
+sauf demande explicite de le construire quand même.
+
+**Idée à cadrer, pas encore construite (proposée par l'utilisateur, 2026-08-12)** : générer des
+« actifs personnalisés » GLPI (`Glpi\Asset\AssetDefinition`, système natif GLPI 10+, Configuration
+> Actifs > Types d'actifs personnalisés) en fonction des branches de catégories sélectionnées à
+l'étape 5 — ex. la branche « Flotte Automobile » activée créerait un type d'actif « Véhicule » avec
+des champs pertinents (immatriculation, type de carburant, date de contrôle technique...), la
+branche « Bâtiment » un type « Local »/« Salle » ou équivalent, la branche « IT & SI » un type
+« Serveur » distinct de l'actif natif `Computer` (champs propres : position en baie, RAID,
+hyperviseur...). Nécessite de vérifier l'API réelle
+de création d'`AssetDefinition` par code (pas encore fait) et de définir un jeu de champs par
+branche sans tomber dans le sur-mesure par organisation (même principe généraliste que le reste du
+plugin). Pas de version cible.
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
