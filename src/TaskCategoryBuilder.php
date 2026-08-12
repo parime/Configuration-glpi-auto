@@ -17,7 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use DropdownTranslation;
 use TaskCategory;
 
 /**
@@ -94,11 +93,7 @@ class TaskCategoryBuilder
         $itemId = (int) $item->getID();
 
         if ($withIcons) {
-            $translation = new DropdownTranslation();
-            $transCrit = ['itemtype' => TaskCategory::class, 'items_id' => $itemId, 'language' => 'fr_FR', 'field' => 'name'];
-            if (!$translation->getFromDBByCrit($transCrit)) {
-                $translation->add($transCrit + ['value' => sprintf('%s %s', $node['icon'], $node['name'])]);
-            }
+            Translations::applyIcon(TaskCategory::class, $itemId, $node['name'], $node['icon']);
         }
 
         return 1;
