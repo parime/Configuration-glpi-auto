@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.26.0] - 2026-08-12
+
+Règles de droits LDAP par fonction/département, en complément de la règle par site existante.
+Cadrage confirmé avec l'utilisateur : intégré à l'étape 12 existante (« Droits LDAP »), pas une
+nouvelle étape séparée.
+
+### Added
+- Étape 12 (Droits LDAP) : liste répétable optionnelle de règles fonction/département — un nom de
+  groupe AD/LDAP et un profil natif, indépendant du site de l'utilisateur (ex. le groupe "Finance"
+  reçoit toujours tel profil, quel que soit son site). Chaque paire devient une `RuleRight` GLPI
+  distincte qui n'agit que sur le profil (aucune action `entities_id`) — confirmée en base comme
+  s'accumulant avec les règles par site déjà générées plutôt que les remplacer (GLPI ne s'arrête
+  pas à la première règle qui matche).
+- `RuleRightBuilder::buildFunctionRights()` (nouveau) et `Config::getLdapFunctionRights()`/
+  `sanitizeLdapFunctionRights()` (validation : groupe non vide, profil parmi les profils natifs
+  existants).
+- Colonne `ldap_function_rights` (texte JSON) sur la table de config du plugin.
+
 ## [0.25.0] - 2026-08-12
 
 Quatre dernières pistes basse priorité du ROADMAP : sélection des palettes natives GLPI,

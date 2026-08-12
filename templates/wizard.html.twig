@@ -811,6 +811,12 @@
 
           <p class="text-muted small mb-1">{{ __('Une règle par site (feuille de l\'arborescence) — aperçu en fonction de l\'arborescence construite à l\'étape 2 :', 'configurationglpiauto') }}</p>
           <ul class="list-group" id="cga-ldap-rights-preview" style="max-width: 560px;"></ul>
+
+          <hr class="my-3">
+          <label class="form-label mb-1">{{ __('Règles par fonction/département (optionnel)', 'configurationglpiauto') }}</label>
+          <p class="text-muted small mb-2">{{ __('En complément de la règle par site ci-dessus, indépendant du site de l\'utilisateur — ex. le groupe AD "Finance" reçoit toujours tel profil, quel que soit son site. Chaque ligne devient une règle GLPI distincte, qui n\'affecte que le profil (pas l\'entité).', 'configurationglpiauto') }}</p>
+          <div id="cga-ldap-function-rights-rows" class="mb-2"></div>
+          <button type="button" class="btn btn-sm btn-outline-secondary" id="cga-ldap-function-rights-add">{{ __('+ Ajouter une règle', 'configurationglpiauto') }}</button>
         </div>
       </div>
 
@@ -1650,6 +1656,69 @@
   ldapRightsTemplateInput.addEventListener('input', updateLdapRightsPreview);
   ldapRightsProfileInput.addEventListener('change', updateLdapRightsPreview);
   toggleLdapRightsFields();
+
+  // Function/department LDAP rules (Sprint 36) — a user-supplied list of (AD group name, profile)
+  // pairs, entity-independent, layered on top of the per-site rule above rather than replacing it
+  // (confirmed in GLPI's own RuleRight::executeActions(): a rule with only a `profiles_id` assign
+  // action and no `entities_id` action accumulates into `_ldap_rules.rules_rights`, separate from
+  // the per-site `rules_entities_rights` — GLPI's RuleRightCollection doesn't stop at the first
+  // match, so both kinds of rules apply together for the same user). Department names are entirely
+  // organization-specific (same reasoning as ldap_rights_group_template's own {ENTITY} placeholder)
+  // so this is a blank, admin-filled list, never a guessed set of names like "Finance"/"DSI".
+  var NATIVE_PROFILE_NAMES = {{ native_profile_names|json_encode|raw }};
+  var ldapFunctionRightsRows = document.getElementById('cga-ldap-function-rights-rows');
+  var ldapFunctionRightsAddBtn = document.getElementById('cga-ldap-function-rights-add');
+  var ldapFunctionRightsIndex = 0;
+
+  function addLdapFunctionRightsRow(group, profile) {
+    var idx = ldapFunctionRightsIndex++;
+    var row = document.createElement('div');
+    row.className = 'row mb-2 align-items-center';
+
+    var groupCol = document.createElement('div');
+    groupCol.className = 'col-5';
+    var groupInput = document.createElement('input');
+    groupInput.type = 'text';
+    groupInput.name = 'ldap_function_rights[' + idx + '][group]';
+    groupInput.className = 'form-control form-control-sm';
+    groupInput.placeholder = "{{ __('Nom du groupe AD/LDAP', 'configurationglpiauto')|e('js') }}";
+    groupInput.value = group || '';
+    groupCol.appendChild(groupInput);
+
+    var profileCol = document.createElement('div');
+    profileCol.className = 'col-5';
+    var profileSelect = document.createElement('select');
+    profileSelect.name = 'ldap_function_rights[' + idx + '][profile]';
+    profileSelect.className = 'form-select form-select-sm';
+    NATIVE_PROFILE_NAMES.forEach(function (name) {
+      var opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      if (name === profile) { opt.selected = true; }
+      profileSelect.appendChild(opt);
+    });
+    profileCol.appendChild(profileSelect);
+
+    var removeCol = document.createElement('div');
+    removeCol.className = 'col-2';
+    var removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'btn btn-sm btn-outline-danger';
+    removeBtn.textContent = '×';
+    removeBtn.addEventListener('click', function () { row.remove(); });
+    removeCol.appendChild(removeBtn);
+
+    row.appendChild(groupCol);
+    row.appendChild(profileCol);
+    row.appendChild(removeCol);
+    ldapFunctionRightsRows.appendChild(row);
+  }
+
+  ldapFunctionRightsAddBtn.addEventListener('click', function () { addLdapFunctionRightsRow('', NATIVE_PROFILE_NAMES[0]); });
+
+  ({{ ldap_function_rights|default([])|json_encode|raw }}).forEach(function (pair) {
+    addLdapFunctionRightsRow(pair.group, pair.profile);
+  });
 
   function wireSimpleToggle(checkboxId, fieldsId) {
     var checkbox = document.getElementById(checkboxId);

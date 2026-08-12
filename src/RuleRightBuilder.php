@@ -48,6 +48,17 @@ use RuleRight;
  *
  * No-op entirely if there's no entity tree (mono-entité) — nothing to scaffold without at least
  * one site.
+ *
+ * `buildFunctionRights()` (Sprint 36) covers a genuinely different pattern, layered on top rather
+ * than replacing the per-site rules above: a function/department AD group (e.g. "Finance") that
+ * should always get a given profile regardless of which site the user is on. Confirmed in GLPI's
+ * own `RuleRight::executeActions()` that a rule with *only* a `profiles_id` assign action (no
+ * `entities_id` action) accumulates into `_ldap_rules.rules_rights`, kept separate from the
+ * per-site `rules_entities_rights` — and `RuleRightCollection::$stop_on_first_match = false`
+ * (confirmed in source) means both kinds of rules apply together for the same user, not one
+ * overriding the other. Department names are exactly as organization-specific as the per-site
+ * `{ENTITY}` group-name template above, so this is a blank, admin-supplied list
+ * (`ldap_function_rights`), never a guessed set of names.
  */
 class RuleRightBuilder
 {
@@ -75,6 +86,30 @@ class RuleRightBuilder
         foreach ($this->collectLeafEntities($config->getEntityTree(), 0) as $leaf) {
             $groupName = str_replace('{ENTITY}', str_replace(' ', '_', $leaf['name']), $template);
             $this->createRule($leaf['entitiesId'], $leaf['name'], $groupName, $profileId);
+            $count++;
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param array<int, array{group: string, profile: string}> $pairs Already validated by
+     *        Config::sanitizeLdapFunctionRights() — group non-empty, profile a real native name.
+     * @return int Number of function-right rules created/reused.
+     */
+    public function buildFunctionRights(array $pairs): int
+    {
+        if (empty($pairs)) {
+            return 0;
+        }
+
+        $count = 0;
+        foreach ($pairs as $pair) {
+            $profile = new Profile();
+            if (!$profile->getFromDBByCrit(['name' => $pair['profile']])) {
+                continue;
+            }
+            $this->createFunctionRule($pair['group'], (int) $profile->getID());
             $count++;
         }
 
@@ -202,6 +237,57 @@ class RuleRightBuilder
             'action_type' => 'assign',
             'field' => '_entities_id_default',
             'value' => $entityId,
+        ]);
+
+        (new RuleAction())->add([
+            'rules_id' => $rulesId,
+            'action_type' => 'assign',
+            'field' => '_profiles_id_default',
+            'value' => $profileId,
+        ]);
+    }
+
+    /**
+     * Same shape as createRule() above, minus every `entities_id`/`_entities_id_default` action —
+     * confirmed in `RuleRight::executeActions()` that omitting the entity action entirely (not
+     * setting it to some placeholder value) is what routes this rule into the entity-independent
+     * `rules_rights` accumulator rather than `rules_entities_rights`.
+     */
+    private function createFunctionRule(string $groupName, int $profileId): void
+    {
+        $ruleName = sprintf('Droits LDAP — fonction %s', $groupName);
+
+        $rule = new RuleRight();
+        if ($rule->getFromDBByCrit(['name' => $ruleName])) {
+            return;
+        }
+
+        $rulesId = $rule->add([
+            'name' => $ruleName,
+            'sub_type' => RuleRight::class,
+            'match' => Rule::OR_MATCHING,
+            'is_active' => 1,
+        ]);
+
+        (new RuleCriteria())->add([
+            'rules_id' => $rulesId,
+            'criteria' => '_groups_id',
+            'condition' => Rule::PATTERN_CONTAIN,
+            'pattern' => $groupName,
+        ]);
+
+        (new RuleCriteria())->add([
+            'rules_id' => $rulesId,
+            'criteria' => 'memberof',
+            'condition' => Rule::PATTERN_CONTAIN,
+            'pattern' => $groupName,
+        ]);
+
+        (new RuleAction())->add([
+            'rules_id' => $rulesId,
+            'action_type' => 'assign',
+            'field' => 'profiles_id',
+            'value' => $profileId,
         ]);
 
         (new RuleAction())->add([
