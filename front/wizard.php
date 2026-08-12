@@ -195,8 +195,20 @@ if (isset($_POST['finish'])) {
     // Runs after ProjectTaxonomyBuilder: resolves project task types by name lookup.
     $projectTaskTemplatesCreated = (new ProjectTaskTemplateBuilder())->build($config);
 
+    // The login screen (no active session yet) falls back to the *root* entity's custom CSS
+    // (confirmed in GLPI core: Glpi\Application\View\Extension\FrontEndAssetsExtension::customCss()
+    // reads $_SESSION['glpiactive_entity'] when set, entity 0 otherwise) — so without this, the
+    // color chosen here would never reach the login page in any multi-entity mode, since
+    // $entityIds only lists the top-level *client* entities there, never entity 0 itself. Only
+    // added outside MSP mode: an MSP's unauthenticated login page has no single "the" client color
+    // to show, leaking one client's branding there would be wrong, not just incomplete.
+    $colorEntityIds = $entityIds;
+    if ($config->fields['entity_mode'] !== Config::MODE_MULTI_MSP && !in_array(0, $colorEntityIds, true)) {
+        $colorEntityIds[] = 0;
+    }
+
     $brandingBuilder = new BrandingBuilder();
-    $brandingApplied = $brandingBuilder->apply($config, $entityIds);
+    $brandingApplied = $brandingBuilder->apply($config, $colorEntityIds);
 
     $logosCreated = 0;
     if (!empty($config->fields['entity_logos_enabled'])) {

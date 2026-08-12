@@ -429,12 +429,12 @@ priorité unilatérale.
 5. **Bibliothèque de "profils métier" prêts à l'emploi**, inspirée de Jira Service Management — au
    lieu du seul profil topique actuel (IT/Bâtiment/Flotte...), des jeux de catégories+SLA+gabarits
    par verticale (IT pur, RH, Facilities...) sélectionnables en un clic à l'étape 1.
-6. **`BrandingBuilder` — couvrir les 6 variables de logo (pas seulement `--glpi-logo`) et la vraie
-   palette de couleurs Tabler**, plutôt que l'unique approximation actuelle ; envisager de proposer
-   les palettes natives GLPI (`auror`/`dark`/`midnight`...) comme choix simple dans le wizard, avant
-   d'aller jusqu'à générer une palette `.scss` custom (mécanisme plus propre mais plus gros chantier
-   — fichier à déposer dans `files/_themes`, hors du modèle "un DropdownTranslation/un CSS custom
-   par entité" utilisé partout ailleurs dans le plugin).
+6. ✅ **`BrandingBuilder` — couvrir les 6 variables de logo et la vraie palette de couleurs Tabler —
+   fait (v0.21.0, 2026-08-12).** Voir CHANGELOG.md. Reste hors périmètre, plus gros chantier :
+   proposer les palettes natives GLPI (`auror`/`dark`/`midnight`...) comme choix simple dans le
+   wizard, ou générer une palette `.scss` custom dans `files/_themes` (mécanisme plus propre mais
+   hors du modèle "un DropdownTranslation/un CSS custom par entité" utilisé partout ailleurs dans
+   le plugin).
 7. **Contrôle de prérequis serveur en tout début de wizard** (PHP/MySQL versions, droits fichiers) —
    hors configuration applicative à proprement parler, mais évite un échec avant même d'atteindre
    l'étape 1.

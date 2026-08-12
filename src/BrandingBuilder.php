@@ -31,21 +31,45 @@ use Entity;
  * one doesn't erase the other, and neither clobbers anything an admin might have added by hand
  * outside those markers.
  *
- * The logo itself is confirmed in GLPI's own `_base.scss` to be entirely CSS-custom-property-driven
- * (`.glpi-logo { background: var(--glpi-logo) no-repeat; }`, with `--glpi-logo-reduced` for the
- * collapsed sidebar state) — the same "override a CSS variable, not an arbitrary DOM selector"
- * approach this class already used for the primary color, confirmed more stable than targeting
- * GLPI's markup directly. Embedded as a `data:` URI (base64) rather than uploaded as a `Document` —
- * self-contained in the same field GLPI already stores this kind of customization in, no separate
- * file storage/serving path to keep in sync. Login-page-specific logo variables are deliberately
- * not touched: `custom_css_code` only applies once inside an authenticated entity context, by which
- * point the login screen is already behind the user.
+ * Fifth completeness audit (Sprint 35, 2026-08-12) replaced the earlier version of this class, which
+ * only touched `--tblr-primary`/`--tblr-primary-rgb` (buttons/links) and `--glpi-logo`/
+ * `--glpi-logo-reduced` (sidebar logo, expanded/collapsed) — guessed one variable at a time across
+ * several sprints, never checked against the full list. Confirmed directly in this GLPI 11.0.8
+ * install's own `css/includes/_base.scss` (not just researched) which variables exist and how they
+ * derive from each other:
+ * - `--glpi-logo`/`--glpi-logo-reduced` are themselves aliases of `--glpi-logo-light`/
+ *   `--glpi-logo-light-reduced` (`--glpi-logo: var(--glpi-logo-light);`) — overriding only the alias
+ *   left `--glpi-logo-dark`/`-dark-reduced` (referenced directly by some rules, not just through the
+ *   alias) and the two login-page variables (`--glpi-logo-light-login`/`-dark-login`,
+ *   `.page-anonymous .glpi-logo` hardcodes the `-dark-login` one) completely untouched — an admin's
+ *   uploaded logo never appeared on the login screen.
+ * - `--tblr-primary-darken` (`color-mix(in srgb, var(--tblr-primary), black 10%)`) and
+ *   `--glpi-mainmenu-active-bg`/`--glpi-illustrations-*` (all `color-mix()`/`hsl(from ...)` derived
+ *   from `--glpi-mainmenu-bg`) don't need overriding at all: CSS custom properties resolve at
+ *   used-value time, so once the variable they reference is overridden, they recompute automatically
+ *   — confirmed by reading the derivation chain, not assumed.
+ * - The wizard's own live preview (`cga-branding-preview-header`) has always simulated the *sidebar*
+ *   turning the chosen color, but the implementation only ever recolored buttons/links
+ *   (`--tblr-primary`) — `--glpi-mainmenu-bg` (the actual sidebar background) was never touched,
+ *   a real promise/result mismatch. Now applies the same color there too, with `--glpi-mainmenu-fg`/
+ *   `-fg-muted` recomputed for contrast the same way `--tblr-primary-fg` already is.
+ *
+ * Embedded as a `data:` URI (base64) rather than uploaded as a `Document` — self-contained in the
+ * same field GLPI already stores this kind of customization in, no separate file storage/serving
+ * path to keep in sync.
  */
 class BrandingBuilder
 {
     private const COLOR_BLOCK_KEY = 'branding-color';
 
     private const LOGO_BLOCK_KEY = 'branding-logo';
+
+    // GLPI's own default foreground for --tblr-primary-fg (css/includes/_base.scss) — reused here
+    // as the "dark text" half of the contrast choice so a custom color close to GLPI's own default
+    // still resolves to the exact same foreground GLPI ships, not a slightly different dark tone.
+    private const DARK_FG = '#1e293b';
+
+    private const LIGHT_FG = '#ffffff';
 
     /**
      * @param int[] $entityIds
@@ -83,20 +107,53 @@ class BrandingBuilder
     }
 
     /**
-     * Overrides Tabler's (GLPI's admin theme) primary-color CSS custom properties.
+     * Overrides both Tabler's (GLPI's admin theme) primary-color variables (buttons, links) *and*
+     * the sidebar/header background (`--glpi-mainmenu-*`) with the same admin-chosen color — the
+     * wizard's own preview already simulates the sidebar turning that color, this makes the real
+     * result match it. Foreground text color is recomputed for each background rather than left at
+     * GLPI's own default (`--tblr-primary-fg`/`--glpi-mainmenu-fg` assume GLPI's own default
+     * yellow/navy backgrounds; an admin-chosen color close to white or black would otherwise pair
+     * with the wrong text color and become unreadable).
      */
     private function buildColorCss(string $color): string
     {
         [$r, $g, $b] = $this->hexToRgb($color);
+        $fg = $this->contrastingForeground($r, $g, $b);
 
-        return ":root { --tblr-primary: {$color} !important; --tblr-primary-rgb: {$r}, {$g}, {$b} !important; }";
+        return ":root {\n"
+            . "  --tblr-primary: {$color} !important;\n"
+            . "  --tblr-primary-rgb: {$r}, {$g}, {$b} !important;\n"
+            . "  --tblr-primary-fg: {$fg} !important;\n"
+            . "  --glpi-mainmenu-bg: {$color} !important;\n"
+            . "  --glpi-mainmenu-fg: {$fg} !important;\n"
+            . "  --glpi-mainmenu-fg-muted: {$fg}99 !important;\n"
+            . '}';
     }
 
     /**
-     * Overrides the header/sidebar logo (`--glpi-logo`) and its collapsed-sidebar variant
-     * (`--glpi-logo-reduced`, confirmed in `_global-menu.scss`) with the uploaded image.
+     * Perceptual (not full WCAG-contrast-ratio) luminance heuristic — matches the weighting
+     * (`0.299R + 0.587G + 0.114B`) commonly used for this exact "pick readable text for an arbitrary
+     * background" problem; a full WCAG relative-luminance/contrast-ratio computation would be more
+     * rigorous but is overkill for a binary black-or-white choice.
      */
+    private function contrastingForeground(int $r, int $g, int $b): string
+    {
+        $luminance = 0.299 * $r + 0.587 * $g + 0.114 * $b;
+
+        return $luminance > 149 ? self::DARK_FG : self::LIGHT_FG;
+    }
+
     /**
+     * Overrides every logo-related CSS custom property GLPI 11 exposes with the same uploaded
+     * image: the sidebar/header alias (`--glpi-logo`/`-reduced`) *and* the "light"/"dark" source
+     * variables it points to (some rules reference `--glpi-logo-dark`/`-dark-reduced` directly,
+     * bypassing the alias — confirmed in `_base.scss`), plus the two login-page variables
+     * (`--glpi-logo-light-login`/`-dark-login`, `.page-anonymous .glpi-logo` hardcodes the latter).
+     * One logo image can't be optimized for every one of those backgrounds at once, so this
+     * deliberately favors "the custom logo is visible everywhere" over "each variant has ideal
+     * contrast" — still strictly better than the previous behavior, where the login screen and any
+     * rule bypassing the `--glpi-logo` alias silently kept GLPI's own default logo.
+     *
      * `background-size: contain` is mandatory here, not cosmetic: confirmed in GLPI's own
      * `_base.scss`, the expanded-sidebar `.page .glpi-logo` rule sets a fixed 100×55px box with
      * `background: var(--glpi-logo) no-repeat` and *no* `background-size` at all (unlike the
@@ -109,9 +166,19 @@ class BrandingBuilder
     private function buildLogoCss(string $dataUri): string
     {
         $escaped = str_replace('"', '\\"', $dataUri);
+        $url = "url(\"{$escaped}\") !important";
 
         return ".page .glpi-logo { background-size: contain !important; }\n"
-            . ":root { --glpi-logo: url(\"{$escaped}\") !important; --glpi-logo-reduced: url(\"{$escaped}\") !important; }";
+            . ":root {\n"
+            . "  --glpi-logo: {$url};\n"
+            . "  --glpi-logo-reduced: {$url};\n"
+            . "  --glpi-logo-light: {$url};\n"
+            . "  --glpi-logo-light-reduced: {$url};\n"
+            . "  --glpi-logo-dark: {$url};\n"
+            . "  --glpi-logo-dark-reduced: {$url};\n"
+            . "  --glpi-logo-light-login: {$url};\n"
+            . "  --glpi-logo-dark-login: {$url};\n"
+            . '}';
     }
 
     /**
