@@ -18,6 +18,7 @@
 namespace GlpiPlugin\Configurationglpiauto;
 
 use CommonITILSatisfaction;
+use CronTask;
 use Entity;
 use Notification;
 use ProjectState;
@@ -51,6 +52,18 @@ class GeneralSettingsBuilder
         ['itemtype' => 'Ticket', 'event' => 'auto_reminder'],
         ['itemtype' => 'Change', 'event' => 'add_document'],
         ['itemtype' => 'Problem', 'event' => 'add_document'],
+    ];
+
+    // [itemtype, name] pairs matched against glpi_crontasks — confirmed via a fresh 11.0.8 install
+    // that these three ship disabled (`state = CronTask::STATE_DISABLE`) while their matching
+    // `Notification` row (Cartridges/Consumables/Software Licenses "alert" events, checked
+    // separately) already ships `is_active = 1`: the notification looks fully configured, but
+    // silently never fires because nothing ever triggers it. `contract`, the fourth native
+    // asset-expiry crontask, already ships active and is left alone.
+    private const CRONTASKS_TO_ENABLE = [
+        ['itemtype' => 'CartridgeItem', 'name' => 'cartridge'],
+        ['itemtype' => 'ConsumableItem', 'name' => 'consumable'],
+        ['itemtype' => 'SoftwareLicense', 'name' => 'software'],
     ];
 
     /**
@@ -121,6 +134,12 @@ class GeneralSettingsBuilder
      * automatic follow-ups `WaitReasonBuilder` sets up. Without it, those follow-ups get added to
      * the ticket but the requester is never actually emailed, silently defeating half that
      * feature — so this group matters even to an admin who only cares about wait reasons.
+     *
+     * Also activates the 3 native cron tasks (`CRONTASKS_TO_ENABLE`) that ship disabled despite
+     * their matching `Notification` row already being active — same "looks configured, silently
+     * does nothing" trap as `auto_reminder` above, found by comparing `glpi_crontasks.state`
+     * against `glpi_notifications.is_active` on a fresh install (fourth completeness audit,
+     * Sprint 35).
      */
     private function applyNotifications(): void
     {
@@ -134,6 +153,13 @@ class GeneralSettingsBuilder
         foreach (self::NOTIFICATIONS_TO_ENABLE as $target) {
             if ($notification->getFromDBByCrit(['itemtype' => $target['itemtype'], 'event' => $target['event']])) {
                 $notification->update(['id' => $notification->getID(), 'is_active' => 1]);
+            }
+        }
+
+        $cronTask = new CronTask();
+        foreach (self::CRONTASKS_TO_ENABLE as $target) {
+            if ($cronTask->getFromDBByCrit(['itemtype' => $target['itemtype'], 'name' => $target['name']])) {
+                $cronTask->update(['id' => $cronTask->getID(), 'state' => CronTask::STATE_WAITING]);
             }
         }
     }
