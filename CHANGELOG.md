@@ -14,6 +14,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   différé de la v0.29.0 pour ne pas casser la vérification CI officielle GLPI (les captures
   n'existaient pas encore sur `main` au moment de cette PR).
 
+## [0.30.0] - 2026-08-12
+
+Traduction complète de l'interface du wizard (en_GB/de_DE/it_IT/es_ES), dernier prérequis avant
+soumission à plugins.glpi-project.org.
+
+### Added
+- `locales/{en_GB,de_DE,it_IT,es_ES}.{po,mo}` (nouveau) : les 318 chaînes `__()`/`_n()` du domaine
+  `configurationglpiauto` (templates, builders, `front/`, `setup.php`) traduites dans les 4 langues
+  déjà utilisées pour les traductions de données. Aucun changement de code nécessaire — GLPI charge
+  automatiquement un dossier `locales/` par convention (`Plugin.php`, confirmé en lisant le core).
+- Manifeste : langues de_DE/it_IT/es_ES déclarées (ajoutées v0.26.0) désormais réellement honorées
+  par l'interface, pas seulement les traductions de données.
+
+Vérifié en conditions réelles sur l'instance de test : bascule de langue testée pour les 4 langues,
+aucune régression, aucun caractère mal encodé. Limite connue, hors périmètre gettext : les noms et
+descriptions des 4 profils prédéfinis (`ConfigurationProfile`) restent en français — ce sont des
+données en base au moment de l'installation, pas des chaînes `__()`.
+
+### Removed
+- `.github/workflows/locales-sync.yml` : infrastructure vestige jamais fonctionnelle (dépend de
+  Transifex, jamais configuré — pas de secret `TRANSIFEX_TOKEN` — et référence un `hook.php` qui
+  n'existe pas dans ce dépôt). Filtrée sur `locales/**`, elle ne s'était jamais déclenchée avant
+  que ce dossier existe ; désormais qu'il existe, elle échouait sur chaque PR touchant les
+  traductions sans que ça n'ait de sens de la corriger — pas l'infrastructure réellement utilisée
+  ici (`.po`/`.mo` gérés manuellement).
+
 ## [0.29.0] - 2026-08-12
 
 Documentation utilisateur : tutoriel avec capture d'écran de chaque étape de l'assistant.

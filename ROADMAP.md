@@ -494,9 +494,10 @@ séparé recommandé plutôt qu'ajout ici.
   jour) ; `glpi-vulnerability-manager` audité mais volontairement pas touché — le plugin est encore
   en 0.8.0, le fichier `plugin.json` documente lui-même que la publication est prévue à la v1.0,
   pas avant.
-- Traductions `.po`/`.mo` de l'interface du wizard en en_GB/de_DE/it_IT/es_ES avant soumission
-  marketplace (décidé avec l'utilisateur, toutes les langues déjà utilisées pour les traductions
-  de données) — reste à faire, gros chantier (centaines d'appels `__()`).
+- Traductions `.po`/`.mo` de l'interface du wizard en en_GB/de_DE/it_IT/es_ES — **fait (v0.30.0,
+  2026-08-12)**. 318 chaînes traduites, vérifié en réel dans les 4 langues (aucune régression,
+  aucun problème d'encodage). Dernier prérequis marketplace pour ce dépôt, avec le choix de
+  `<state>` (dev → stable) qui reste à trancher avec l'utilisateur.
 
 ---
 
