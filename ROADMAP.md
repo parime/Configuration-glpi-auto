@@ -435,9 +435,18 @@ priorité unilatérale.
    connexion LDAP elle-même reste hors périmètre.
 3. ✅ **Notifications : tâches automatiques d'alerte manquantes — fait (v0.20.3, 2026-08-12).** Voir
    la section "Cinquième passage" ci-dessus.
-4. **Mode "express" du wizard**, inspiré de Freshservice — un sous-ensemble de 4-5 réglages
-   critiques (entité, calendrier, un SLA par défaut, branding minimal) pour une mise en service en
-   quelques minutes, le mode actuel (17 étapes) devenant le mode "complet" à côté.
+4. ✅ **Mode "express" du wizard — fait (v0.24.0, 2026-08-12), inspiré de Freshservice.** Découvert
+   en concevant la fonctionnalité que la mécanique nécessaire existait déjà : choisir un profil à
+   l'étape 1 déclenche déjà `applyProfileDefaults()`, qui préremplit *tous* les champs des 17 étapes
+   (calendrier, SLA, catégories, réglages généraux...) via `ConfigurationProfile::
+   getSuggestedDefaults()`. Le seul vrai manque était la navigation : rien ne permettait de terminer
+   sans cliquer "Suivant" 16 fois pour relire chaque écran déjà rempli. Ajouté un second bouton
+   "Terminer avec les réglages recommandés" directement sous les choix de profil (étape 1), qui
+   soumet le même formulaire unique avec `name="finish"` — aucune nouvelle logique serveur, aucun
+   nouveau champ de config, juste un raccourci de navigation. Le plus pertinent en mode mono-entité
+   (rien d'autre à décider) ; en mode multi-site/MSP, l'arborescence réelle (étape 2) reste à
+   construire séparément ensuite, sans quoi tout s'applique à l'entité racine seule — précisé dans
+   le texte du bouton et la confirmation.
 5. ✅ **Bibliothèque de "profils métier" prêts à l'emploi — fait (v0.22.0, 2026-08-12), portée
    réduite par rapport à la piste initiale.** Contrairement au SLA IT (`Config::DEFAULT_SLA_TIERS`,
    sourcé sur une vraie pratique ITIL), il n'existe aucune pratique RH/Facilities équivalente à citer
