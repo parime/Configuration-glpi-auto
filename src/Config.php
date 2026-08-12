@@ -188,6 +188,7 @@ class Config extends CommonDBTM
             // toggle creates), and `config` (no general instance configuration) — the exact
             // self-elevation vectors, without inventing a new bespoke rights bitmask.
             'ldap_rights_profile' => 'Admin',
+            'ldap_function_rights' => '[]',
             'task_categories_enabled' => 0,
             'task_templates_enabled' => 0,
             'task_template_icons_enabled' => 0,
@@ -315,6 +316,16 @@ class Config extends CommonDBTM
         return is_array($tree) ? $tree : [];
     }
 
+    /**
+     * @return array<int, array{group: string, profile: string}>
+     */
+    public function getLdapFunctionRights(): array
+    {
+        $rights = json_decode((string) ($this->fields['ldap_function_rights'] ?? '[]'), true);
+
+        return is_array($rights) ? $rights : [];
+    }
+
     public function prepareInputForUpdate($input)
     {
         return $this->prepareInput($input);
@@ -339,6 +350,10 @@ class Config extends CommonDBTM
             $tree = json_decode((string) $input['entity_tree_json'], true);
             $input['entity_tree'] = json_encode(is_array($tree) ? $this->sanitizeTree($tree) : []);
             unset($input['entity_tree_json']);
+        }
+
+        if (isset($input['ldap_function_rights'])) {
+            $input['ldap_function_rights'] = json_encode($this->sanitizeLdapFunctionRights($input['ldap_function_rights']));
         }
 
         if (isset($input['calendar_enabled'])) {
@@ -527,6 +542,36 @@ class Config extends CommonDBTM
             }
 
             $clean[] = $cleanNode;
+        }
+
+        return $clean;
+    }
+
+    /**
+     * Drops any row with an empty group name or a profile outside NATIVE_PROFILE_NAMES — same
+     * "trust nothing free-text" reasoning as ldap_rights_profile/native_palette, applied per-row
+     * since this is a user-supplied list rather than a single field.
+     *
+     * @param mixed $rights Raw $_POST['ldap_function_rights'] shape: array<int, array{group?: string, profile?: string}>
+     * @return array<int, array{group: string, profile: string}>
+     */
+    private function sanitizeLdapFunctionRights($rights): array
+    {
+        if (!is_array($rights)) {
+            return [];
+        }
+
+        $clean = [];
+        foreach ($rights as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+            $group = trim((string) ($row['group'] ?? ''));
+            $profile = (string) ($row['profile'] ?? '');
+            if ($group === '' || !in_array($profile, self::NATIVE_PROFILE_NAMES, true)) {
+                continue;
+            }
+            $clean[] = ['group' => $group, 'profile' => $profile];
         }
 
         return $clean;

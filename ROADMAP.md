@@ -160,9 +160,13 @@ basique, profils de démarrage.
    `RuleRight` réelles), généralisé via un gabarit de nom de groupe configurable plutôt que les
    noms d'AD réels de l'export. Ne sert que si une synchronisation LDAP est prévue par
    l'organisation — sans ça, cette étape ne crée rien d'utile, ce qui est le comportement attendu.
-   Restent hors périmètre (pattern différent, pas confirmé avec l'utilisateur) : l'affectation
-   d'un profil global par fonction métier (ex. "Finance"/"DSI" → profil, indépendamment du site) et
-   la gestion fine des droits par module au sein d'un même profil.
+   L'affectation d'un profil global par fonction métier (ex. "Finance"/"DSI" → profil,
+   indépendamment du site) — **fait (Sprint 36, 2026-08-12).** Intégrée à l'étape LDAP existante
+   plutôt qu'une étape séparée (confirmé avec l'utilisateur) : liste répétable optionnelle de
+   paires (groupe AD, profil), chaque paire devient une `RuleRight` sans action `entities_id`, qui
+   s'accumule avec les règles par site ci-dessus plutôt que les remplacer (confirmé en base et dans
+   le code source de `RuleRightCollection`). Reste hors périmètre : la gestion fine des droits par
+   module au sein d'un même profil.
 
 7. **Modèles de notifications — fait (Sprint 25, 2026-08-11).** GLPI a déjà de bons modèles par
    défaut ; le vrai manque était que plusieurs notifications de cycle de vie du ticket sont
