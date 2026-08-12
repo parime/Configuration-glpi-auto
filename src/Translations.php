@@ -99,6 +99,44 @@ final class Translations
         'Informationnel' => ['en_GB' => 'Informational', 'de_DE' => 'Informativ', 'it_IT' => 'Informativo', 'es_ES' => 'Informativo'],
         'Gestion des accès' => ['en_GB' => 'Access management', 'de_DE' => 'Zugriffsverwaltung', 'it_IT' => 'Gestione degli accessi', 'es_ES' => 'Gestión de accesos'],
 
+        // ---- TicketTemplateBuilder (glpi_tickettemplates) ----
+        'Ticket simplifié (libre-service)' => ['en_GB' => 'Simplified ticket (self-service)', 'de_DE' => 'Vereinfachtes Ticket (Self-Service)', 'it_IT' => 'Ticket semplificato (self-service)', 'es_ES' => 'Ticket simplificado (autoservicio)'],
+        'Ticket complet (support)' => ['en_GB' => 'Full ticket (support)', 'de_DE' => 'Vollständiges Ticket (Support)', 'it_IT' => 'Ticket completo (supporto)', 'es_ES' => 'Ticket completo (soporte)'],
+
+        // ---- ChangeProblemTemplateBuilder (glpi_changetemplates / glpi_problemtemplates) ----
+        'Changement standard' => ['en_GB' => 'Standard change', 'de_DE' => 'Standardänderung', 'it_IT' => 'Cambiamento standard', 'es_ES' => 'Cambio estándar'],
+        'Problème standard' => ['en_GB' => 'Standard problem', 'de_DE' => 'Standardproblem', 'it_IT' => 'Problema standard', 'es_ES' => 'Problema estándar'],
+
+        // ---- TaskTemplateBuilder (glpi_tasktemplates) ----
+        'Onboarding — Arrivée collaborateur' => ['en_GB' => 'Onboarding — New employee', 'de_DE' => 'Onboarding — Neuer Mitarbeiter', 'it_IT' => 'Onboarding — Nuovo dipendente', 'es_ES' => 'Incorporación — Nuevo empleado'],
+        'Offboarding — Départ collaborateur' => ['en_GB' => 'Offboarding — Employee departure', 'de_DE' => 'Offboarding — Austritt Mitarbeiter', 'it_IT' => 'Offboarding — Uscita dipendente', 'es_ES' => 'Baja — Salida de empleado'],
+
+        // ---- FollowupLibraryBuilder (glpi_itilfollowuptemplates) ----
+        'Relance — informations complémentaires demandées' => ['en_GB' => 'Follow-up — additional information requested', 'de_DE' => 'Nachfrage — zusätzliche Informationen angefordert', 'it_IT' => 'Sollecito — informazioni aggiuntive richieste', 'es_ES' => 'Recordatorio — información adicional solicitada'],
+        'Notification — commande ou livraison en cours' => ['en_GB' => 'Notification — order or delivery in progress', 'de_DE' => 'Benachrichtigung — Bestellung oder Lieferung läuft', 'it_IT' => 'Notifica — ordine o consegna in corso', 'es_ES' => 'Notificación — pedido o entrega en curso'],
+        'Notification — escalade fournisseur' => ['en_GB' => 'Notification — vendor escalation', 'de_DE' => 'Benachrichtigung — Eskalation an Lieferant', 'it_IT' => 'Notifica — escalation al fornitore', 'es_ES' => 'Notificación — escalado al proveedor'],
+        'Notification — intervention planifiée' => ['en_GB' => 'Notification — scheduled intervention', 'de_DE' => 'Benachrichtigung — geplanter Eingriff', 'it_IT' => 'Notifica — intervento pianificato', 'es_ES' => 'Notificación — intervención programada'],
+        'Notification — validation en cours' => ['en_GB' => 'Notification — approval in progress', 'de_DE' => 'Benachrichtigung — Freigabe läuft', 'it_IT' => 'Notifica — approvazione in corso', 'es_ES' => 'Notificación — aprobación en curso'],
+
+        // ---- ValidationTemplateBuilder (glpi_itilvalidationtemplates) ----
+        'Validation hiérarchique (N+1)' => ['en_GB' => 'Hierarchical approval (line manager)', 'de_DE' => 'Hierarchische Freigabe (Vorgesetzter)', 'it_IT' => 'Approvazione gerarchica (responsabile)', 'es_ES' => 'Aprobación jerárquica (responsable directo)'],
+        'Validation technique' => ['en_GB' => 'Technical approval', 'de_DE' => 'Technische Freigabe', 'it_IT' => 'Approvazione tecnica', 'es_ES' => 'Aprobación técnica'],
+        'Validation comité' => ['en_GB' => 'Committee approval', 'de_DE' => 'Ausschussfreigabe', 'it_IT' => 'Approvazione del comitato', 'es_ES' => 'Aprobación del comité'],
+        'Validation sécurité' => ['en_GB' => 'Security approval', 'de_DE' => 'Sicherheitsfreigabe', 'it_IT' => 'Approvazione sicurezza', 'es_ES' => 'Aprobación de seguridad'],
+        'Validation simple' => ['en_GB' => 'Simple approval', 'de_DE' => 'Einfache Freigabe', 'it_IT' => 'Approvazione semplice', 'es_ES' => 'Aprobación simple'],
+
+        // ---- SolutionLibraryBuilder (glpi_solutiontemplates) ----
+        'Accompagnement utilisateur réalisé' => ['en_GB' => 'User guided through the issue', 'de_DE' => 'Benutzer begleitet', 'it_IT' => 'Utente assistito passo-passo', 'es_ES' => 'Usuario acompañado paso a paso'],
+        'Formation dispensée' => ['en_GB' => 'Training provided', 'de_DE' => 'Schulung durchgeführt', 'it_IT' => 'Formazione erogata', 'es_ES' => 'Formación impartida'],
+        'Résolution technique appliquée' => ['en_GB' => 'Technical fix applied', 'de_DE' => 'Technische Lösung angewendet', 'it_IT' => 'Risoluzione tecnica applicata', 'es_ES' => 'Resolución técnica aplicada'],
+        'Remplacement de matériel effectué' => ['en_GB' => 'Hardware replaced', 'de_DE' => 'Hardware ersetzt', 'it_IT' => 'Hardware sostituito', 'es_ES' => 'Hardware sustituido'],
+        'Confinement et éradication de la menace' => ['en_GB' => 'Threat contained and eradicated', 'de_DE' => 'Bedrohung eingedämmt und beseitigt', 'it_IT' => 'Minaccia contenuta ed eliminata', 'es_ES' => 'Amenaza contenida y erradicada'],
+        'Application de correctifs de sécurité' => ['en_GB' => 'Security patches applied', 'de_DE' => 'Sicherheitspatches angewendet', 'it_IT' => 'Patch di sicurezza applicate', 'es_ES' => 'Parches de seguridad aplicados'],
+        'Fonctionnement normal constaté' => ['en_GB' => 'Normal behavior confirmed', 'de_DE' => 'Normales Verhalten festgestellt', 'it_IT' => 'Funzionamento normale confermato', 'es_ES' => 'Funcionamiento normal confirmado'],
+        'Ticket doublon' => ['en_GB' => 'Duplicate ticket', 'de_DE' => 'Doppeltes Ticket', 'it_IT' => 'Ticket duplicato', 'es_ES' => 'Ticket duplicado'],
+        'Compte créé ou modifié' => ['en_GB' => 'Account created or modified', 'de_DE' => 'Konto erstellt oder geändert', 'it_IT' => 'Account creato o modificato', 'es_ES' => 'Cuenta creada o modificada'],
+        'Mot de passe réinitialisé' => ['en_GB' => 'Password reset', 'de_DE' => 'Passwort zurückgesetzt', 'it_IT' => 'Password reimpostata', 'es_ES' => 'Contraseña restablecida'],
+
         // ---- SupportTierBuilder (glpi_groups) ----
         'Support N1' => ['en_GB' => 'Support N1', 'de_DE' => 'Support N1', 'it_IT' => 'Supporto N1', 'es_ES' => 'Soporte N1'],
         'Support N2' => ['en_GB' => 'Support N2', 'de_DE' => 'Support N2', 'it_IT' => 'Supporto N2', 'es_ES' => 'Soporte N2'],
