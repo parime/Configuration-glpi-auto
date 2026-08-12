@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.24.0] - 2026-08-12
+
+Dernière piste du ROADMAP côté wizard : le mode "express". Voir `ROADMAP.md` pour le détail.
+
+### Added
+- Bouton "Terminer avec les réglages recommandés" à l'étape 1 (Profil), visible dès qu'un profil
+  est sélectionné — soumet immédiatement le wizard avec les valeurs déjà préremplies par
+  `applyProfileDefaults()`/`ConfigurationProfile::getSuggestedDefaults()`, sans passer en revue
+  les 17 étapes. Purement une navigation raccourcie (même formulaire, même bouton `name="finish"`)
+  : aucun nouveau champ de configuration, aucune nouvelle logique serveur.
+
 ## [0.23.0] - 2026-08-12
 
 Trois pistes du ROADMAP : palette GLPI personnalisée, contrôle de prérequis, gestion documentaire.
