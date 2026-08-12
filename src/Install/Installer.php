@@ -149,6 +149,7 @@ final class Installer
                 `project_task_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `entity_logos_enabled` tinyint NOT NULL DEFAULT 0,
                 `wait_reason_icons_enabled` tinyint NOT NULL DEFAULT 0,
+                `notification_branding_enabled` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -279,6 +280,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'project_task_template_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'entity_logos_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'wait_reason_icons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'notification_branding_enabled', 'bool', ['value' => 0]);
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes

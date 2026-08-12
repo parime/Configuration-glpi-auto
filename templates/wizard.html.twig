@@ -637,6 +637,20 @@
           <p class="text-muted small mb-2">{{ __('Un logo par site/client de l\'arborescence (étape 2) — remplace le logo GLPI dans l\'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 Mo maximum. L\'emplacement dans l\'en-tête GLPI est petit (environ 100×55 px) : une image large ou carrée sera automatiquement réduite pour y tenir sans déformation, un format proche de ce ratio donnera le meilleur rendu. Choisissez un fichier pour le voir dans l\'aperçu ci-dessus.', 'configurationglpiauto') }}</p>
           <div id="cga-entity-logos-panels"></div>
         </div>
+
+        <div class="form-check form-switch mb-1 mt-3">
+          <input type="hidden" name="notification_branding_enabled" value="0">
+          <input
+            type="checkbox"
+            name="notification_branding_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-notification-branding-enabled"
+            {{ config.notification_branding_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-notification-branding-enabled">{{ __('Habiller les e-mails de notification (Nouveau ticket, Mise à jour, Résolution, Suivi)', 'configurationglpiauto') }}</label>
+        </div>
+        <p class="text-muted small mb-0">{{ __('Remplace le modèle de notification GLPI par défaut de ces 4 évènements par une version HTML reprenant la couleur et le logo ci-dessus — un e-mail modifié à la main ensuite n\'est plus jamais réécrit par une réexécution de l\'assistant.', 'configurationglpiauto') }}</p>
       </div>
 
       {# ---------------------------------------------------------------- Étape 10 : Réglages généraux #}
