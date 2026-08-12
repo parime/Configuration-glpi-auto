@@ -61,7 +61,7 @@
         "glpi-plugin": {
             "key": "configurationglpiauto",
             "name": "Configuration GLPI Auto",
-            "version": "0.20.3",
+            "version": "0.21.0",
             "license": "GPL-3.0-or-later"
         }
     }

@@ -9,6 +9,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-08-12
+
+`BrandingBuilder` réécrit pour couvrir exhaustivement les variables CSS de personnalisation
+exposées par GLPI 11 (`css/includes/_base.scss`, confirmé directement dans le code source de
+l'instance, pas seulement recherché) au lieu d'en deviner une par une à chaque nouvelle demande.
+Voir `ROADMAP.md` pour le détail complet.
+
+### Changed
+- Logo : couvre maintenant les 6 variables réelles (`--glpi-logo-light`/`-light-reduced`/`-dark`/
+  `-dark-reduced`/`-light-login`/`-dark-login`) au lieu de seulement l'alias `--glpi-logo`/
+  `-reduced` — le logo d'un admin n'apparaissait jusqu'ici jamais sur l'écran de connexion
+  (variables login jamais touchées) ni sur certaines règles CSS qui référencent directement la
+  variante "dark" plutôt que l'alias.
+- Couleur : la couleur principale du wizard s'applique désormais aussi à `--glpi-mainmenu-bg`
+  (fond de la barre latérale), pas seulement `--tblr-primary` (boutons/liens) — l'aperçu en direct
+  du wizard simulait déjà la barre latérale prenant cette couleur, l'implémentation ne le faisait
+  pas. Couleur de texte (`--tblr-primary-fg`/`--glpi-mainmenu-fg`) recalculée par contraste
+  (luminance perceptuelle) plutôt que laissée aux valeurs par défaut de GLPI, pour rester lisible
+  quelle que soit la couleur choisie.
+- L'écran de connexion (page non authentifiée) reçoit maintenant la couleur choisie en mode
+  mono-entité et multi-entité "même entreprise" — confirmé dans le code source de GLPI que la page
+  de connexion utilise le CSS personnalisé de l'entité racine en repli
+  (`FrontEndAssetsExtension::customCss()`), jamais exploité jusqu'ici. Toujours exclu en mode MSP :
+  une page de connexion non authentifiée ne doit pas laisser fuiter la couleur d'un client en
+  particulier.
+
+Vérifié de bout en bout sur l'instance réelle : styles calculés du navigateur (pas seulement le
+contenu de la base) confirmant que la barre latérale, le texte et le logo affichent bien les
+valeurs choisies après une vraie soumission du wizard et un vrai changement d'entité active.
+
 ## [0.20.3] - 2026-08-12
 
 Cinquième passage d'audit — navigation réelle dans l'admin GLPI (Playwright), pas seulement base de
