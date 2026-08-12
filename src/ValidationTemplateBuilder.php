@@ -39,23 +39,28 @@ class ValidationTemplateBuilder
     private const TEMPLATES = [
         [
             'name' => 'Validation hiérarchique (N+1)',
+            'icon' => '👔',
             'content' => "Bonjour,\n\nUne demande nécessite votre validation en tant que responsable hiérarchique du demandeur.\n\nMerci de valider ou refuser avec commentaire.",
         ],
         [
             'name' => 'Validation technique',
+            'icon' => '🔧',
             'content' => "Bonjour,\n\nCette demande est soumise à validation technique.\n\nMerci de vérifier la conformité technique/budgétaire avant validation.",
         ],
         [
             'name' => 'Validation comité',
+            'icon' => '👥',
             'content' => "Bonjour,\n\nCette demande requiert l'approbation du comité.\n\nMerci de valider ou refuser avec commentaire.",
             'committee' => true,
         ],
         [
             'name' => 'Validation sécurité',
+            'icon' => '🔒',
             'content' => "Bonjour,\n\nCette demande a un impact sécurité, merci d'évaluer les risques avant validation.",
         ],
         [
             'name' => 'Validation simple',
+            'icon' => '✅',
             'content' => "Bonjour,\n\nMerci de valider ou refuser cette demande.",
         ],
     ];
@@ -70,11 +75,15 @@ class ValidationTemplateBuilder
         }
 
         $committeeStepId = $this->findCommitteeStepId();
+        $withIcons = !empty($config->fields['validation_template_icons_enabled']);
 
         $count = 0;
         foreach (self::TEMPLATES as $template) {
             $stepId = (!empty($template['committee']) && $committeeStepId !== null) ? $committeeStepId : 0;
-            $this->getOrCreateTemplate($template['name'], $template['content'], $stepId);
+            $templateId = $this->getOrCreateTemplate($template['name'], $template['content'], $stepId);
+            if ($withIcons) {
+                Translations::applyIcon(ITILValidationTemplate::class, $templateId, $template['name'], $template['icon']);
+            }
             $count++;
         }
 
@@ -82,7 +91,7 @@ class ValidationTemplateBuilder
     }
 
     /**
-     * @return array<int, array{name: string, content: string}>
+     * @return array<int, array{name: string, icon: string, content: string}>
      */
     public static function getLibraryPreview(): array
     {

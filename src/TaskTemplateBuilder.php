@@ -37,16 +37,19 @@ class TaskTemplateBuilder
     private const TEMPLATES = [
         [
             'name' => 'Onboarding — Arrivée collaborateur',
+            'icon' => '🆕',
             'category' => 'Gestion des comptes utilisateurs',
             'content' => "CHECKLIST ONBOARDING\n\n- Créer le compte et la messagerie\n- Configurer le poste de travail et les périphériques\n- Installer les logiciels métier et licences nécessaires\n- Configurer les accès applicatifs et VPN si besoin\n- Remettre le matériel et le guide utilisateur\n- Valider les accès avec le collaborateur",
         ],
         [
             'name' => 'Offboarding — Départ collaborateur',
+            'icon' => '🚪',
             'category' => 'Gestion des comptes utilisateurs',
             'content' => "CHECKLIST OFFBOARDING\n\n- Désactiver le compte et la messagerie\n- Révoquer les accès VPN et applicatifs\n- Récupérer et reconditionner le matériel\n- Archiver ou transférer les données\n- Résilier les licences nominatives\n- Mettre à jour le statut de l'équipement dans GLPI",
         ],
         [
             'name' => 'Maintenance préventive',
+            'icon' => '🧰',
             'category' => 'Maintenance préventive',
             'content' => "CHECKLIST MAINTENANCE PRÉVENTIVE\n\n- Vérifier les mises à jour système et pilotes\n- Contrôler l'espace disque et l'état du disque\n- Vérifier les sauvegardes\n- Nettoyer physiquement le matériel si nécessaire\n- Consigner les anomalies constatées",
         ],
@@ -61,9 +64,13 @@ class TaskTemplateBuilder
             return 0;
         }
 
+        $withIcons = !empty($config->fields['task_template_icons_enabled']);
         $count = 0;
         foreach (self::TEMPLATES as $template) {
-            $this->getOrCreateTemplate($template['name'], $template['content'], $this->findCategoryId($template['category']));
+            $templateId = $this->getOrCreateTemplate($template['name'], $template['content'], $this->findCategoryId($template['category']));
+            if ($withIcons) {
+                Translations::applyIcon(TaskTemplate::class, $templateId, $template['name'], $template['icon']);
+            }
             $count++;
         }
 
@@ -71,7 +78,7 @@ class TaskTemplateBuilder
     }
 
     /**
-     * @return array<int, array{name: string, category: string, content: string}>
+     * @return array<int, array{name: string, icon: string, category: string, content: string}>
      */
     public static function getLibraryPreview(): array
     {

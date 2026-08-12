@@ -36,22 +36,27 @@ class FollowupLibraryBuilder
     private const TEMPLATES = [
         [
             'name' => 'Relance — informations complémentaires demandées',
+            'icon' => '❓',
             'content' => "Bonjour,\n\nNous avons besoin d'informations complémentaires pour avancer sur votre demande :\n- \n\nMerci de nous répondre dans les meilleurs délais.\n\nCordialement,",
         ],
         [
             'name' => 'Notification — commande ou livraison en cours',
+            'icon' => '📦',
             'content' => "Bonjour,\n\nVotre demande est en cours de traitement. Nous attendons la livraison du matériel/logiciel nécessaire et vous tiendrons informé dès réception.\n\nCordialement,",
         ],
         [
             'name' => 'Notification — escalade fournisseur',
+            'icon' => '🪜',
             'content' => "Bonjour,\n\nVotre ticket a été transmis à notre fournisseur/éditeur pour analyse. Nous reviendrons vers vous dès que nous aurons un retour.\n\nCordialement,",
         ],
         [
             'name' => 'Notification — intervention planifiée',
+            'icon' => '🗓️',
             'content' => "Bonjour,\n\nUne intervention est planifiée pour résoudre votre demande. Merci de vous assurer de votre disponibilité à la date convenue.\n\nCordialement,",
         ],
         [
             'name' => 'Notification — validation en cours',
+            'icon' => '✅',
             'content' => "Bonjour,\n\nVotre demande nécessite une validation avant de pouvoir être traitée. Nous vous informerons dès qu'elle aura été obtenue.\n\nCordialement,",
         ],
     ];
@@ -65,9 +70,13 @@ class FollowupLibraryBuilder
             return 0;
         }
 
+        $withIcons = !empty($config->fields['followup_library_icons_enabled']);
         $count = 0;
         foreach (self::TEMPLATES as $template) {
-            $this->getOrCreateTemplate($template['name'], $template['content']);
+            $templateId = $this->getOrCreateTemplate($template['name'], $template['content']);
+            if ($withIcons) {
+                Translations::applyIcon(ITILFollowupTemplate::class, $templateId, $template['name'], $template['icon']);
+            }
             $count++;
         }
 
@@ -75,7 +84,7 @@ class FollowupLibraryBuilder
     }
 
     /**
-     * @return array<int, array{name: string, content: string}>
+     * @return array<int, array{name: string, icon: string, content: string}>
      */
     public static function getLibraryPreview(): array
     {
