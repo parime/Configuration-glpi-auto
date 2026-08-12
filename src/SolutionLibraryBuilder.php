@@ -45,6 +45,24 @@ use SolutionType;
  */
 class SolutionLibraryBuilder
 {
+    /**
+     * Same itemtype-aware Twig prefix as `FollowupLibraryBuilder::GREETING` (see there for the
+     * full reasoning) — duplicated rather than shared, consistent with this codebase's existing
+     * "small local duplication over a cross-builder helper" convention.
+     */
+    private const GREETING = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Bonjour {{ requesters|first.fullname }},{% else %}Bonjour,{% endif %}";
+
+    /**
+     * `solvedate` is defined on every `CommonITILObjectParameters` child alike (Ticket/Change/
+     * Problem), same itemtype-branching reasoning as GREETING above. Real bug caught while adding
+     * this: the two "Sécurité" templates already referenced `{{ ticket.solvedate }}` directly
+     * (added in an earlier sprint) despite `SolutionType::is_change=1` making them selectable on a
+     * Change — where `ticket` is undefined and Twig's `date` filter treats a null/undefined input
+     * as "now", silently showing today's date instead of the real resolution date. Fixed alongside
+     * the new GREETING rollout rather than left as a latent bug.
+     */
+    private const SOLVE_DATE = "{% set solve_date = itemtype == 'Change' ? change.solvedate : (itemtype == 'Problem' ? problem.solvedate : ticket.solvedate) %}{{ solve_date | date('d/m/Y H:i') }}";
+
     private const TYPES = [
         [
             'name' => 'Assistance / Support utilisateur',
@@ -55,12 +73,12 @@ class SolutionLibraryBuilder
                 [
                     'name' => 'Accompagnement utilisateur réalisé',
                     'icon' => '🙋',
-                    'content' => "Bonjour,\n\nNous avons accompagné l'utilisateur pas à pas pour résoudre sa demande.\n\nAction réalisée : \n\nCordialement,",
+                    'content' => self::GREETING . "\n\nNous avons accompagné l'utilisateur pas à pas pour résoudre sa demande.\n\nAction réalisée : \n\nCordialement,",
                 ],
                 [
                     'name' => 'Formation dispensée',
                     'icon' => '🎓',
-                    'content' => "Bonjour,\n\nUne session de formation/sensibilisation a été dispensée à l'utilisateur sur l'outil concerné.\n\nPoints abordés : \n\nCordialement,",
+                    'content' => self::GREETING . "\n\nUne session de formation/sensibilisation a été dispensée à l'utilisateur sur l'outil concerné.\n\nPoints abordés : \n\nCordialement,",
                 ],
             ],
         ],
@@ -73,12 +91,12 @@ class SolutionLibraryBuilder
                 [
                     'name' => 'Résolution technique appliquée',
                     'icon' => '🔧',
-                    'content' => "Bonjour,\n\nLe problème a été identifié et corrigé.\n\nCause : \nAction réalisée : \n\nCordialement,",
+                    'content' => self::GREETING . "\n\nLe problème a été identifié et corrigé.\n\nCause : \nAction réalisée : \n\nCordialement,",
                 ],
                 [
                     'name' => 'Remplacement de matériel effectué',
                     'icon' => '🔩',
-                    'content' => "Bonjour,\n\nLe matériel défectueux a été remplacé.\n\nÉquipement concerné : \nNouvel équipement : \n\nCordialement,",
+                    'content' => self::GREETING . "\n\nLe matériel défectueux a été remplacé.\n\nÉquipement concerné : \nNouvel équipement : \n\nCordialement,",
                 ],
             ],
         ],
@@ -91,12 +109,12 @@ class SolutionLibraryBuilder
                 [
                     'name' => 'Confinement et éradication de la menace',
                     'icon' => '🛡️',
-                    'content' => "Incident de sécurité traité.\n\nAction immédiate : isolation du système impacté.\nÉradication : suppression des éléments malveillants, nettoyage des persistances.\n\nOutils utilisés : \nDate : {{ ticket.solvedate | date(\"d/m/Y H:i\") }}",
+                    'content' => 'Incident de sécurité traité.' . "\n\nAction immédiate : isolation du système impacté.\nÉradication : suppression des éléments malveillants, nettoyage des persistances.\n\nOutils utilisés : \nDate : " . self::SOLVE_DATE,
                 ],
                 [
                     'name' => 'Application de correctifs de sécurité',
                     'icon' => '🩹',
-                    'content' => "Correctifs appliqués suite à l'incident de sécurité.\n\nVulnérabilité corrigée : \nCorrectifs déployés : \n\nDate : {{ ticket.solvedate | date(\"d/m/Y H:i\") }}",
+                    'content' => "Correctifs appliqués suite à l'incident de sécurité.\n\nVulnérabilité corrigée : \nCorrectifs déployés : \n\nDate : " . self::SOLVE_DATE,
                 ],
             ],
         ],
@@ -109,12 +127,12 @@ class SolutionLibraryBuilder
                 [
                     'name' => 'Fonctionnement normal constaté',
                     'icon' => '✅',
-                    'content' => "Bonjour,\n\nAprès vérification, le comportement signalé est normal, aucune anomalie détectée.\n\nCordialement,",
+                    'content' => self::GREETING . "\n\nAprès vérification, le comportement signalé est normal, aucune anomalie détectée.\n\nCordialement,",
                 ],
                 [
                     'name' => 'Ticket doublon',
                     'icon' => '📑',
-                    'content' => "Bonjour,\n\nCe ticket fait doublon avec une demande déjà en cours de traitement.\n\nTicket de référence : \n\nCordialement,",
+                    'content' => self::GREETING . "\n\nCe ticket fait doublon avec une demande déjà en cours de traitement.\n\nTicket de référence : \n\nCordialement,",
                 ],
             ],
         ],
@@ -127,12 +145,12 @@ class SolutionLibraryBuilder
                 [
                     'name' => 'Compte créé ou modifié',
                     'icon' => '👤',
-                    'content' => "Bonjour,\n\nLe compte a été créé/modifié comme demandé.\n\nAccès accordés : \n\nCordialement,",
+                    'content' => self::GREETING . "\n\nLe compte a été créé/modifié comme demandé.\n\nAccès accordés : \n\nCordialement,",
                 ],
                 [
                     'name' => 'Mot de passe réinitialisé',
                     'icon' => '🔑',
-                    'content' => "Bonjour,\n\nVotre mot de passe a été réinitialisé. Vous recevrez les identifiants par un canal séparé.\n\nCordialement,",
+                    'content' => self::GREETING . "\n\nVotre mot de passe a été réinitialisé. Vous recevrez les identifiants par un canal séparé.\n\nCordialement,",
                 ],
             ],
         ],

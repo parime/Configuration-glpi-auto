@@ -39,14 +39,24 @@
     </authors>
     <versions>
         <version>
+            <num>0.27.0</num>
+            <compatibility>=11.0.0</compatibility>
+            <php-version>=8.2</php-version>
+            <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.27.0/configuration-glpi-auto-0.27.0.zip</download_url>
+        </version>
+        <version>
             <num>0.26.0</num>
             <compatibility>=11.0.0</compatibility>
             <php-version>=8.2</php-version>
+            <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.26.0/configuration-glpi-auto-0.26.0.zip</download_url>
         </version>
     </versions>
     <langs>
         <lang>fr_FR</lang>
         <lang>en_GB</lang>
+        <lang>de_DE</lang>
+        <lang>it_IT</lang>
+        <lang>es_ES</lang>
     </langs>
     <license>GPL v3+</license>
     <tags>

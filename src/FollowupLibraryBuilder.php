@@ -33,31 +33,46 @@ use ITILFollowupTemplate;
  */
 class FollowupLibraryBuilder
 {
+    /**
+     * Twig prefix (GLPI's own `Glpi\ContentTemplates\TemplateManager`, sandboxed, available on
+     * `ITILFollowupTemplate`/`SolutionTemplate`/`TaskTemplate` since 10.0 — confirmed via
+     * `AbstractITILChildTemplate::getRenderedContent()`) resolving to a real "Bonjour <nom>,"
+     * when the ticket/change/problem has at least one requester, falling back to the generic
+     * "Bonjour," otherwise. `itemtype` picks the right root node — these templates are shared
+     * across Ticket/Change/Problem (`AbstractITILChildTemplate`'s three children), each exposing
+     * its data under a *different* root variable name (`ticket`/`change`/`problem`), so a template
+     * can't hardcode `ticket.requesters` without breaking on the other two. `.fullname` (GLPI's
+     * `User::getFriendlyName()`) rather than `.firstname` — falls back to the login when
+     * firstname/realname aren't set, `.firstname` alone would silently render blank on those
+     * accounts (confirmed empirically: the seed `glpi` account has neither set).
+     */
+    private const GREETING = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Bonjour {{ requesters|first.fullname }},{% else %}Bonjour,{% endif %}";
+
     private const TEMPLATES = [
         [
             'name' => 'Relance — informations complémentaires demandées',
             'icon' => '❓',
-            'content' => "Bonjour,\n\nNous avons besoin d'informations complémentaires pour avancer sur votre demande :\n- \n\nMerci de nous répondre dans les meilleurs délais.\n\nCordialement,",
+            'content' => self::GREETING . "\n\nNous avons besoin d'informations complémentaires pour avancer sur votre demande :\n- \n\nMerci de nous répondre dans les meilleurs délais.\n\nCordialement,",
         ],
         [
             'name' => 'Notification — commande ou livraison en cours',
             'icon' => '📦',
-            'content' => "Bonjour,\n\nVotre demande est en cours de traitement. Nous attendons la livraison du matériel/logiciel nécessaire et vous tiendrons informé dès réception.\n\nCordialement,",
+            'content' => self::GREETING . "\n\nVotre demande est en cours de traitement. Nous attendons la livraison du matériel/logiciel nécessaire et vous tiendrons informé dès réception.\n\nCordialement,",
         ],
         [
             'name' => 'Notification — escalade fournisseur',
             'icon' => '🪜',
-            'content' => "Bonjour,\n\nVotre ticket a été transmis à notre fournisseur/éditeur pour analyse. Nous reviendrons vers vous dès que nous aurons un retour.\n\nCordialement,",
+            'content' => self::GREETING . "\n\nVotre ticket a été transmis à notre fournisseur/éditeur pour analyse. Nous reviendrons vers vous dès que nous aurons un retour.\n\nCordialement,",
         ],
         [
             'name' => 'Notification — intervention planifiée',
             'icon' => '🗓️',
-            'content' => "Bonjour,\n\nUne intervention est planifiée pour résoudre votre demande. Merci de vous assurer de votre disponibilité à la date convenue.\n\nCordialement,",
+            'content' => self::GREETING . "\n\nUne intervention est planifiée pour résoudre votre demande. Merci de vous assurer de votre disponibilité à la date convenue.\n\nCordialement,",
         ],
         [
             'name' => 'Notification — validation en cours',
             'icon' => '✅',
-            'content' => "Bonjour,\n\nVotre demande nécessite une validation avant de pouvoir être traitée. Nous vous informerons dès qu'elle aura été obtenue.\n\nCordialement,",
+            'content' => self::GREETING . "\n\nVotre demande nécessite une validation avant de pouvoir être traitée. Nous vous informerons dès qu'elle aura été obtenue.\n\nCordialement,",
         ],
     ];
 
