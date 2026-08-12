@@ -292,6 +292,17 @@ final class Translations
         'Élevée' => ['en_GB' => 'High', 'de_DE' => 'Hoch', 'it_IT' => 'Alta', 'es_ES' => 'Alta'],
         'Moyenne' => ['en_GB' => 'Medium', 'de_DE' => 'Mittel', 'it_IT' => 'Media', 'es_ES' => 'Media'],
         'Faible' => ['en_GB' => 'Low', 'de_DE' => 'Niedrig', 'it_IT' => 'Bassa', 'es_ES' => 'Baja'],
+
+        // ---- PlanningEventBuilder (glpi_planningeventcategories) ----
+        'Réunion' => ['en_GB' => 'Meeting', 'de_DE' => 'Besprechung', 'it_IT' => 'Riunione', 'es_ES' => 'Reunión'],
+        'Maintenance planifiée' => ['en_GB' => 'Scheduled maintenance', 'de_DE' => 'Geplante Wartung', 'it_IT' => 'Manutenzione pianificata', 'es_ES' => 'Mantenimiento programado'],
+        'Congés / Absences' => ['en_GB' => 'Leave / Absences', 'de_DE' => 'Urlaub / Abwesenheiten', 'it_IT' => 'Ferie / Assenze', 'es_ES' => 'Vacaciones / Ausencias'],
+        'Astreinte / Garde' => ['en_GB' => 'On-call duty', 'de_DE' => 'Bereitschaftsdienst', 'it_IT' => 'Reperibilità', 'es_ES' => 'Guardia'],
+
+        // ---- PlanningEventBuilder (glpi_planningexternaleventtemplates) ----
+        'Réunion d\'équipe' => ['en_GB' => 'Team meeting', 'de_DE' => 'Team-Besprechung', 'it_IT' => 'Riunione di team', 'es_ES' => 'Reunión de equipo'],
+        'Formation planifiée' => ['en_GB' => 'Scheduled training', 'de_DE' => 'Geplante Schulung', 'it_IT' => 'Formazione pianificata', 'es_ES' => 'Formación programada'],
+        'Astreinte' => ['en_GB' => 'On-call duty', 'de_DE' => 'Bereitschaftsdienst', 'it_IT' => 'Reperibilità', 'es_ES' => 'Guardia'],
     ];
 
     /**

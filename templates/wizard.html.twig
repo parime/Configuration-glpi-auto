@@ -594,6 +594,33 @@
           <div class="form-text">{{ __('Différent de la case ci-dessus : celle-ci force la couleur sur toutes les entités créées ; celle-ci ajoute une palette GLPI native (Configuration > Générale > Apparence) que chaque utilisateur peut choisir dans ses propres préférences, définie ici comme choix par défaut.', 'configurationglpiauto') }}</div>
         </div>
 
+        <div class="mb-2 mt-2" id="cga-native-palette-wrap">
+          <label class="form-label mb-1" for="cga-native-palette">{{ __('...ou choisir une des palettes GLPI existantes comme choix par défaut', 'configurationglpiauto') }}</label>
+          <select name="native_palette" id="cga-native-palette" class="form-select" style="max-width: 320px;">
+            <option value="">{{ __('Aucune (garder Auror, le thème GLPI par défaut)', 'configurationglpiauto') }}</option>
+            {% for palette in native_palettes %}
+              <option value="{{ palette.key }}" {{ config.native_palette|default('') == palette.key ? 'selected' : '' }}>{{ palette.name }}{{ palette.is_dark ? ' (' ~ __('sombre', 'configurationglpiauto') ~ ')' : '' }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-check form-switch mb-2 mt-3">
+          <input type="hidden" name="branding_per_client_enabled" value="0">
+          <input
+            type="checkbox"
+            name="branding_per_client_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-branding-per-client-enabled"
+            {{ config.branding_per_client_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-branding-per-client-enabled">{{ __('Couleur différente par client/site (au lieu d\'une seule couleur partagée)', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-branding-per-client-fields" style="display: none;">
+          <p class="text-muted small mb-2">{{ __('Une couleur par nœud de premier niveau de l\'arborescence (étape 2) — préremplie avec la couleur ci-dessus, ajustable individuellement.', 'configurationglpiauto') }}</p>
+          <div id="cga-branding-per-client-panels" class="d-flex gap-3 flex-wrap"></div>
+        </div>
+
         <div class="form-check form-switch mb-2 mt-3">
           <input type="hidden" name="entity_logos_enabled" value="0">
           <input
@@ -983,6 +1010,42 @@
               <ul class="mb-0">
                 {% for crit in document_management_preview.business_criticities %}
                   <li><span class="cga-document-management-icon" style="display: none;">{{ crit.icon }}</span> {{ crit.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="planning_events_enabled" value="0">
+          <input type="checkbox" name="planning_events_enabled" value="1" class="form-check-input" id="cga-planning-events-enabled" {{ config.planning_events_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-planning-events-enabled">{{ __('Créer les catégories et gabarits d\'évènements de planning', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-planning-events-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="planning_events_icons_enabled" value="0">
+            <input type="checkbox" name="planning_events_icons_enabled" value="1" class="form-check-input" id="cga-planning-events-icons-enabled" {{ config.planning_events_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-planning-events-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <strong>{{ __('Catégories d\'évènements', 'configurationglpiauto') }}</strong>
+              <p class="text-muted small mb-1">{{ __('Chacune avec une couleur distincte dans le planning GLPI.', 'configurationglpiauto') }}</p>
+              <ul class="mb-0">
+                {% for cat in planning_events_preview.categories %}
+                  <li>
+                    <span class="cga-planning-events-icon" style="display: none;">{{ cat.icon }}</span>
+                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 2px; background-color: {{ cat.color }};"></span>
+                    {{ cat.name }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <strong>{{ __('Gabarits d\'évènements externes', 'configurationglpiauto') }}</strong>
+              <ul class="mb-0">
+                {% for tpl in planning_events_preview.templates %}
+                  <li><span class="cga-planning-events-icon" style="display: none;"></span>{{ tpl.name }} <span class="text-muted small">— {{ tpl.category }}</span></li>
                 {% endfor %}
               </ul>
             </div>
@@ -1408,6 +1471,23 @@
   }
   brandingEnabledInput.addEventListener('change', toggleBrandingFields);
   brandingColorInput.addEventListener('input', updatePreview);
+
+  // Custom palette (color-derived) and native palette (pick one of GLPI's 18 built-in themes) are
+  // two different answers to the same "what's the default palette" question — mutually exclusive
+  // in the UI so it's clear only one wins (PaletteBuilder itself also has custom win if both were
+  // somehow submitted, but the UI shouldn't let that ambiguity arise in the first place).
+  var customPaletteEnabledInput = document.getElementById('cga-custom-palette-enabled');
+  var nativePaletteSelect = document.getElementById('cga-native-palette');
+  customPaletteEnabledInput.addEventListener('change', function () {
+    if (customPaletteEnabledInput.checked) {
+      nativePaletteSelect.value = '';
+    }
+  });
+  nativePaletteSelect.addEventListener('change', function () {
+    if (nativePaletteSelect.value !== '') {
+      customPaletteEnabledInput.checked = false;
+    }
+  });
   toggleBrandingFields();
   updatePreview();
 
@@ -1426,6 +1506,42 @@
   // Re-rendered whenever the branding step is shown so it always reflects the current tree; a
   // previously-chosen file is lost on re-render (native <input type="file"> can't be repopulated
   // programmatically anyway, same limitation any tree edit would cause).
+  var brandingPerClientEnabledInput = document.getElementById('cga-branding-per-client-enabled');
+  var brandingPerClientFields = document.getElementById('cga-branding-per-client-fields');
+  var brandingPerClientPanels = document.getElementById('cga-branding-per-client-panels');
+  function toggleBrandingPerClientFields() {
+    brandingPerClientFields.style.display = brandingPerClientEnabledInput.checked ? '' : 'none';
+  }
+  brandingPerClientEnabledInput.addEventListener('change', toggleBrandingPerClientFields);
+  toggleBrandingPerClientFields();
+
+  // Unlike renderEntityLogoPanels() (native <input type="file"> can't survive a re-render), a
+  // color input's value survives fine — only render once so re-entering step 9 doesn't wipe edits
+  // already made, and only rebuild if the tree's node count actually changed (client added/removed
+  // in step 2 since the panels were last built).
+  function renderBrandingPerClientPanels() {
+    var tree = (window.cgaTree || []);
+    var nodes = tree.length ? tree : [{ name: "{{ __('Entité racine', 'configurationglpiauto')|e('js') }}" }];
+    if (brandingPerClientPanels.children.length === nodes.length) {
+      return;
+    }
+    brandingPerClientPanels.innerHTML = '';
+    nodes.forEach(function (node, i) {
+      var wrapper = document.createElement('div');
+      var label = document.createElement('label');
+      label.className = 'form-label mb-1 d-block';
+      label.textContent = node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}";
+      var input = document.createElement('input');
+      input.type = 'color';
+      input.name = 'entity_color_' + i;
+      input.className = 'form-control form-control-color';
+      input.value = brandingColorInput.value;
+      wrapper.appendChild(label);
+      wrapper.appendChild(input);
+      brandingPerClientPanels.appendChild(wrapper);
+    });
+  }
+
   function renderEntityLogoPanels() {
     var tree = (window.cgaTree || []);
     var nodes = tree.length ? tree : [{ name: "{{ __('Entité racine', 'configurationglpiauto')|e('js') }}" }];
@@ -1585,6 +1701,9 @@
 
   var documentManagementEnabledInput = wireSimpleToggle('cga-document-management-enabled', 'cga-document-management-fields');
   wireIconsToggle('cga-document-management-icons-enabled', '.cga-document-management-icon');
+
+  var planningEventsEnabledInput = wireSimpleToggle('cga-planning-events-enabled', 'cga-planning-events-fields');
+  wireIconsToggle('cga-planning-events-icons-enabled', '.cga-planning-events-icon');
 
   var projectTaxonomyEnabledInput = wireSimpleToggle('cga-project-taxonomy-enabled', 'cga-project-taxonomy-fields');
   wireIconsToggle('cga-project-taxonomy-icons-enabled', '.cga-project-taxonomy-icon');
@@ -2284,6 +2403,7 @@
       // a native <input type="file">'s selection can't survive a re-render, so this only refreshes
       // when it matters (the tree may have changed since last time) rather than on every click.
       renderEntityLogoPanels();
+      renderBrandingPerClientPanels();
     }
   }
 
