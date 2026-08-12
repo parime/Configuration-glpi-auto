@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.28.0] - 2026-08-12
+
+Catalogue de services étoffé (suite du sixième audit).
+
+### Added
+- `ServiceCatalogBuilder` : 27 nouveaux services (23 → 50), tous ancrés sur des sous-catégories
+  réelles de `CategoryBuilder` (aucun chemin inventé, vérifié en base après resoumission — 50
+  services créés, aucun ignoré silencieusement pour cause de chemin introuvable). Couvre
+  notamment les 4 branches qui n'avaient encore aucun service (Administratif/Juridique/Finance,
+  Communication & Marketing, Qualité/QHSE/Conformité, Maintenance Industrielle & Technique) et
+  étoffe les branches existantes trop réduites (Bâtiment, Flotte, RH, Achats, Sécurité, Services
+  Généraux : 1 à 3 services chacune auparavant).
+
 ## [0.27.0] - 2026-08-12
 
 Sixième audit (module Projets + points transverses) : préparation à la publication sur

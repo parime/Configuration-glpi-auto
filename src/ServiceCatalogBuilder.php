@@ -74,18 +74,49 @@ class ServiceCatalogBuilder
         ['branch' => 'batiment', 'name' => 'Signaler un problème de chauffage ou climatisation', 'path' => ['CVC']],
         ['branch' => 'batiment', 'name' => "Demande d'intervention électricité", 'path' => ['Électricité & Éclairage']],
         ['branch' => 'batiment', 'name' => "Demande de mobilier ou d'aménagement de poste", 'path' => ['Mobilier & Aménagement']],
+        ['branch' => 'batiment', 'name' => "Signaler une fuite d'eau ou un problème sanitaire", 'path' => ['Plomberie & Sanitaires']],
+        ['branch' => 'batiment', 'name' => 'Problème de porte, serrure ou badge de local', 'path' => ['Serrurerie, Portes & Fenêtres']],
+        ['branch' => 'batiment', 'name' => "Réservation ou problème d'équipement de salle de réunion", 'path' => ['Salles de réunion & Équipements']],
+        ['branch' => 'batiment', 'name' => 'Signaler un problème de propreté ou demander un nettoyage', 'path' => ['Prestations & Hygiène', 'Propreté & Nettoyage']],
         // Flotte Automobile & Mobilité
         ['branch' => 'flotte', 'name' => "Demande d'entretien véhicule", 'path' => ['Entretien & Réparation']],
+        ['branch' => 'flotte', 'name' => 'Déclarer un sinistre ou un dommage véhicule', 'path' => ['Sinistres & Carrosserie']],
+        ['branch' => 'flotte', 'name' => 'Demande de carte carburant ou badge de recharge', 'path' => ['Carburant & Recharge']],
         // Ressources Humaines
         ['branch' => 'rh', 'name' => 'Demande de formation', 'path' => ['Formation & Montée en compétences']],
         ['branch' => 'rh', 'name' => 'Demande de congé ou absence', 'path' => ['Absences & Congés']],
+        ['branch' => 'rh', 'name' => "Déclarer une arrivée, un départ ou une mutation", 'path' => ['Mouvements de personnel']],
+        ['branch' => 'rh', 'name' => "Demande de télétravail ou d'aménagement du temps de travail", 'path' => ['Organisation du travail']],
+        ['branch' => 'rh', 'name' => 'Demande administrative RH', 'path' => ['Administration RH']],
         // Achats & Logistique
         ['branch' => 'achats', 'name' => "Demande d'achat ou commande de fournitures", 'path' => ['Sourcing & Commande']],
         ['branch' => 'achats', 'name' => "Retour ou SAV d'un article", 'path' => ['Retours, SAV & Garanties']],
+        ['branch' => 'achats', 'name' => 'Suivi de réception ou de livraison', 'path' => ['Réception, Livraison & Expédition']],
+        ['branch' => 'achats', 'name' => "Demande de déménagement ou d'archivage", 'path' => ['Déménagement & Archivage']],
         // Sécurité & Protection des Personnes
         ['branch' => 'securite', 'name' => "Demande de badge d'accès", 'path' => ["Contrôle d'Accès & Badges"]],
+        ['branch' => 'securite', 'name' => 'Signaler un dysfonctionnement vidéosurveillance ou alarme', 'path' => ['Vidéosurveillance & Alarmes']],
+        ['branch' => 'securite', 'name' => 'Signaler un incident ou une urgence sécurité', 'path' => ['Gestion des Incidents & Urgences']],
+        ['branch' => 'securite', 'name' => 'Demande liée à la santé et sécurité au travail', 'path' => ['Santé & Sécurité au Travail']],
         // Services Généraux & Vie au Travail
         ['branch' => 'services_generaux', 'name' => 'Demande de fournitures de bureau', 'path' => ['Consommables & Fournitures']],
+        ['branch' => 'services_generaux', 'name' => 'Signaler un problème lié à la pause ou à la restauration', 'path' => ['Pause & Restauration']],
+        ['branch' => 'services_generaux', 'name' => 'Demande liée au tri ou au recyclage', 'path' => ['RSE & Recyclage']],
+        // Administratif, Juridique & Finance
+        ['branch' => 'administratif', 'name' => 'Demande liée à une facture ou un paiement', 'path' => ['Finance & Comptabilité']],
+        ['branch' => 'administratif', 'name' => 'Demande de relecture ou signature de contrat', 'path' => ['Juridique & Contrats']],
+        ['branch' => 'administratif', 'name' => 'Envoi de courrier ou demande de reprographie', 'path' => ['Courrier & Reprographie']],
+        // Communication & Marketing
+        ['branch' => 'communication', 'name' => 'Demande de modification sur le site web ou intranet', 'path' => ['Site Web & Intranet']],
+        ['branch' => 'communication', 'name' => 'Demande de publication sur les réseaux sociaux', 'path' => ['Réseaux Sociaux & Marketing']],
+        ['branch' => 'communication', 'name' => 'Demande de support pour un événement', 'path' => ['Événementiel & Affichage']],
+        // Qualité, QHSE & Conformité
+        ['branch' => 'qualite', 'name' => 'Déclarer une non-conformité', 'path' => ['Non-conformités & Actions']],
+        ['branch' => 'qualite', 'name' => 'Demande liée à un audit ou un contrôle', 'path' => ['Audits & Contrôles']],
+        // Maintenance Industrielle & Technique
+        ['branch' => 'maintenance', 'name' => 'Demande de maintenance préventive', 'path' => ['Maintenance Préventive & Contrôles']],
+        ['branch' => 'maintenance', 'name' => 'Signaler une panne ou un besoin de maintenance curative', 'path' => ['Maintenance Curative']],
+        ['branch' => 'maintenance', 'name' => "Demande d'étalonnage d'un instrument", 'path' => ['Étalonnage & Métrologie']],
     ];
 
     // GLPI's own bundled illustration catalog (`public/lib/glpi-project/illustrations/icons.json`,
