@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.29.0] - 2026-08-12
+
+Documentation utilisateur : tutoriel avec capture d'écran de chaque étape de l'assistant.
+
+### Added
+- `docs/TUTORIAL.md` (nouveau) : parcours des 17 étapes de l'assistant, une capture d'écran réelle
+  par étape (profil "Plusieurs sites ou services"), lié depuis le README.
+
+Le `<screenshots>` du manifeste marketplace sera renseigné dans un correctif séparé une fois ces
+images réellement présentes sur `main` — la CI officielle GLPI (`plugin-ci-workflows`) vérifie que
+chaque URL de capture résout, contrairement à `download_url` qu'elle tolère en 404 tant que la
+release n'est pas encore publiée ; référencer des captures qui n'existent pas encore sur `main`
+aurait fait échouer la CI de cette PR.
+
 ## [0.28.0] - 2026-08-12
 
 Catalogue de services étoffé (suite du sixième audit).
