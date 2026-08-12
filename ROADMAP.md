@@ -291,6 +291,67 @@ UTF-8 bruts, aucun antislash à perdre).
 
 ---
 
+## 🔍 Quatrième audit — vérification visuelle + recherche marché (à faire, prochaine session)
+
+**Contexte (2026-08-12)** : le Sprint 34 (icônes/traductions) puis sa correction v0.20.0 (gabarits
+de ticket/changement/problème/solution/tâche/suivi/validation, oubliés puis mal exclus à tort) ont
+montré que relire le code ne suffit pas à garantir qu'une fonctionnalité marche réellement dans
+l'interface — un `DropdownTranslation` peut exister en base sans jamais s'afficher nulle part
+(`ITILTemplate` n'a pas d'onglet Traductions), et inversement une classe peut sembler ne pas
+supporter un mécanisme alors qu'elle le supporte bel et bien (`AbstractITILChildTemplate`). Après
+plusieurs sprints rapides, il est probable que d'autres trous du même genre existent (traduction
+manquante quelque part, icône oubliée sur un intitulé, réglage créé mais jamais branché à un
+builder) — seul un audit par navigation réelle (pas une relecture de code) peut le confirmer.
+Note de session : ce point a été posé en fin de session (contexte proche de la limite), à reprendre
+en priorité à la prochaine ouverture.
+
+1. **Audit de complétude via navigation web (Playwright)**, sur l'instance de test réelle :
+   - Parcourir chaque étape du wizard avec tous les toggles activés/désactivés dans les deux sens
+     (pas seulement "tout coché" comme le test A-to-Z du Sprint 34) — vérifier qu'aucune
+     combinaison ne casse, et que les aperçus (`*_preview`) reflètent vraiment ce qui sera créé.
+   - Repasser sur *chaque* catégorie de Configuration > Intitulés déjà marquée "fait" dans ce
+     ROADMAP (sections ci-dessus) : icône affichée au bon endroit (pas seulement présente en base
+     `glpi_dropdowntranslations`), traduction dans les 5 langues à chaque fois, et confirmation
+     qu'aucun item documenté "fait" n'est en réalité à moitié fait — même méthode qui a débusqué le
+     trou des gabarits (v0.20.0) : chercher activement la preuve visuelle, pas supposer que le code
+     suffit.
+   - Consigner tout écart trouvé comme un correctif dédié, pas glisser un rattrapage silencieux
+     dans un autre sprint.
+
+2. **Inventaire de ce qui reste configurable, non couvert par les 3 audits précédents.** Repasser
+   sur les zones de Configuration GLPI 11 pas encore auditées (Général, Administration...) —
+   chercher spécifiquement les réglages *hors* Intitulés (paramètres système, formulaires,
+   workflows, notifications) qui n'ont pas encore été regardés lors des audits Intitulés.
+
+3. **Automatisations possibles — deux pistes à explorer séparément :**
+   - Via le plugin (nouveaux builders).
+   - Via le moteur de règles natif GLPI (`RuleTicket`/`RuleChange`/`RuleProblem`/
+     `RuleSoftwareCategory`...) — jusqu'ici volontairement laissé de côté pour la logique métier
+     (cf. section "Règles" ci-dessus, raisonnement : inventer des règles arbitraires serait pire
+     que rien). Vérifier par recherche s'il existe des règles "universelles" qui font consensus en
+     pratique ITSM (pas propres à une organisation) avant de proposer quoi que ce soit.
+
+4. **Aperçu CSS/branding — passer de la déduction à l'exhaustif.** `BrandingBuilder` cible
+   aujourd'hui `--glpi-logo` et une couleur principale par déduction au cas par cas du SCSS source
+   GLPI. Objectif : récupérer/lister systématiquement les variables CSS personnalisables exposées
+   par GLPI 11 (thème `auror` et les autres thèmes natifs — voir si le thème est aussi configurable
+   dans notre wizard), pour permettre une personnalisation et un aperçu plus complets en appelant
+   les bonnes variables plutôt qu'en devinant une par une à chaque nouvelle demande.
+
+5. **Recherche web — douleurs de configuration GLPI + benchmark concurrentiel.** Rechercher ce qui
+   pose le plus de problèmes aux utilisateurs de GLPI en configuration initiale (forums, issues
+   GitHub, retours communauté officielle) pour prioriser objectivement les prochains builders
+   plutôt que par intuition. En parallèle, regarder ce que proposent les principaux concurrents
+   ITSM (ServiceNow, Freshservice, Jira Service Management, Zendesk...) sur leur propre
+   onboarding/wizard de configuration initiale, pour identifier des fonctionnalités transposables à
+   ce plugin.
+
+6. **Livrable attendu** : synthèse de cet audit ajoutée à ce ROADMAP, avec des propositions
+   concrètes soumises à l'utilisateur avant toute implémentation — même méthode que les audits
+   précédents (pas de décision de priorité unilatérale).
+
+---
+
 ### 🚀 Version 1.1 - **En Développement**
 
 **Prévue** : Q4 2026
