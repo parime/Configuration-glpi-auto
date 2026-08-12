@@ -14,6 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   différé de la v0.29.0 pour ne pas casser la vérification CI officielle GLPI (les captures
   n'existaient pas encore sur `main` au moment de cette PR).
 
+### Fixed
+- `README.md` : bandeau et liste "Fonctionnalités" jamais mis à jour depuis la toute première
+  version du projet (2026-08-10, avant le vrai travail) — signalé par l'utilisateur, qui a
+  remarqué l'absence d'une fonctionnalité ("assistant intelligent de création des lieux avec
+  géocodage") jamais réellement construite (`LocationBuilder` fait un miroir simple de
+  l'arborescence d'entités, par choix — jamais un assistant de géocodage). En creusant, deux
+  autres items listés ("Mode Audit", "Blueprints") sont aussi de purs items `[ ]` non cochés du
+  ROADMAP, jamais livrés. Liste réécrite pour refléter ce qui est réellement livré, ancre
+  "Utilisation" du sommaire réparée (menait nulle part, la section n'avait jamais été écrite).
+
 ## [0.30.1] - 2026-08-12
 
 ### Fixed
