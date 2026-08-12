@@ -32,6 +32,14 @@ aucune régression, aucun caractère mal encodé. Limite connue, hors périmètr
 descriptions des 4 profils prédéfinis (`ConfigurationProfile`) restent en français — ce sont des
 données en base au moment de l'installation, pas des chaînes `__()`.
 
+### Removed
+- `.github/workflows/locales-sync.yml` : infrastructure vestige jamais fonctionnelle (dépend de
+  Transifex, jamais configuré — pas de secret `TRANSIFEX_TOKEN` — et référence un `hook.php` qui
+  n'existe pas dans ce dépôt). Filtrée sur `locales/**`, elle ne s'était jamais déclenchée avant
+  que ce dossier existe ; désormais qu'il existe, elle échouait sur chaque PR touchant les
+  traductions sans que ça n'ait de sens de la corriger — pas l'infrastructure réellement utilisée
+  ici (`.po`/`.mo` gérés manuellement).
+
 ## [0.29.0] - 2026-08-12
 
 Documentation utilisateur : tutoriel avec capture d'écran de chaque étape de l'assistant.
