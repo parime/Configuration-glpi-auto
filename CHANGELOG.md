@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.1] - 2026-08-12
+
+### Added
+- `ROADMAP.md` : nouvelle section "Quatrième audit" cadrant le travail à reprendre en priorité —
+  audit de complétude par navigation Playwright réelle (pas une relecture de code, leçon tirée de
+  la correction v0.20.0), inventaire des réglages GLPI encore non couverts, pistes d'automatisation
+  (plugin + moteur de règles natif GLPI), passage de l'aperçu CSS/branding de la déduction au
+  systématique, et recherche marché (douleurs de configuration GLPI courantes + benchmark des
+  wizards d'onboarding des principaux concurrents ITSM). Aucun changement de comportement du
+  plugin.
+
 ## [0.20.0] - 2026-08-12
 
 Icônes + traductions EN/DE/IT/ES sur les gabarits ("Gabarits de ticket/changement/problème/
