@@ -22,10 +22,10 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
         with:
           php-version: "8.2"
           tools: composer
@@ -106,7 +106,7 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
 
       - name: "Install Transifex client"
         run: |
