@@ -93,4 +93,12 @@
         <requirement>glpi >= 11.0.0</requirement>
         <requirement>php >= 8.2</requirement>
     </requirements>
+    <screenshots>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/01-profil.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/02-entites.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/06-catalogue-services.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/09-personnalisation.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/12-droits-ldap.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/17-recapitulatif.png</screenshot>
+    </screenshots>
 </root>
