@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Manifeste marketplace (`configurationglpiauto.xml`) : `<screenshots>` renseigné (6 captures),
+  différé de la v0.29.0 pour ne pas casser la vérification CI officielle GLPI (les captures
+  n'existaient pas encore sur `main` au moment de cette PR).
+
 ## [0.29.0] - 2026-08-12
 
 Documentation utilisateur : tutoriel avec capture d'écran de chaque étape de l'assistant.
