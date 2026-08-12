@@ -1,0 +1,968 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: configurationglpiauto\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "%d catégories de base de connaissances créées."
+msgstr "%d catégories de base de connaissances créées."
+
+msgid "%d catégories de tickets créées."
+msgstr "%d catégories de tickets créées."
+
+msgid "%d catégories de tâches créées."
+msgstr "%d catégories de tâches créées."
+
+msgid "%d catégories/gabarits d'évènements de planning créés."
+msgstr "%d catégories/gabarits d'évènements de planning créés."
+
+msgid "%d client(s) avec des réglages personnalisés."
+msgstr "%d client(s) avec des réglages personnalisés."
+
+msgid "%d couleur(s) par client/site appliquée(s)."
+msgstr "%d couleur(s) par client/site appliquée(s)."
+
+msgid "%d fabricants créés."
+msgstr "%d fabricants créés."
+
+msgid "%d gabarits de solution créés."
+msgstr "%d gabarits de solution créés."
+
+msgid "%d gabarits de suivis créés."
+msgstr "%d gabarits de suivis créés."
+
+msgid "%d gabarits de tâche créés."
+msgstr "%d gabarits de tâche créés."
+
+msgid "%d gabarits de tâches de projets créés."
+msgstr "%d gabarits de tâches de projets créés."
+
+msgid "%d gabarits de validation créés."
+msgstr "%d gabarits de validation créés."
+
+msgid "%d lieux créés."
+msgstr "%d lieux créés."
+
+msgid "%d logo(s) d'entité appliqué(s)."
+msgstr "%d logo(s) d'entité appliqué(s)."
+
+msgid "%d raisons d'attente créées."
+msgstr "%d raisons d'attente créées."
+
+msgid "%d rubriques de documents/criticités créées."
+msgstr "%d rubriques de documents/criticités créées."
+
+msgid "%d règle(s) de droits LDAP créées."
+msgstr "%d règle(s) de droits LDAP créées."
+
+msgid "%d règle(s) de droits par fonction créées."
+msgstr "%d règle(s) de droits par fonction créées."
+
+msgid "%d services créés dans le catalogue."
+msgstr "%d services créés dans le catalogue."
+
+msgid "%d statuts d'éléments créés."
+msgstr "%d statuts d'éléments créés."
+
+msgid "%d types de projet/tâche de projet créés."
+msgstr "%d types de projet/tâche de projet créés."
+
+msgid "(+ formulaires libre-service allégés)"
+msgstr "(+ formulaires libre-service allégés)"
+
+msgid "(avec icônes)"
+msgstr "(avec icônes)"
+
+msgid "(sans nom)"
+msgstr "(sans nom)"
+
+msgid "+ Ajouter une règle"
+msgstr "+ Ajouter une règle"
+
+msgid "+ OLA (engagements internes)"
+msgstr "+ OLA (engagements internes)"
+
+msgid "...ou choisir une des palettes GLPI existantes comme choix par défaut"
+msgstr "...ou choisir une des palettes GLPI existantes comme choix par défaut"
+
+msgid "Activer l'enquête de satisfaction native (1 à 5 étoiles, sur chaque ticket clos)"
+msgstr "Activer l'enquête de satisfaction native (1 à 5 étoiles, sur chaque ticket clos)"
+
+msgid "Activer l'escalade entre niveaux de support (N1 → N2 → N3)"
+msgstr "Activer l'escalade entre niveaux de support (N1 → N2 → N3)"
+
+msgid "Activer l'escalade pour cette entité"
+msgstr "Activer l'escalade pour cette entité"
+
+msgid "Activer les informations financières et administratives par défaut"
+msgstr "Activer les informations financières et administratives par défaut"
+
+msgid "Activer les notifications (par e-mail et dans le navigateur)"
+msgstr "Activer les notifications (par e-mail et dans le navigateur)"
+
+msgid "Activer les notifications de mise à jour, pièce jointe et relance automatique de ticket"
+msgstr "Activer les notifications de mise à jour, pièce jointe et relance automatique de ticket"
+
+msgid "Activer les tâches automatiques d'alerte cartouches, consommables et expiration de licences (désactivées par défaut, alors que les notifications correspondantes le sont déjà)"
+msgstr "Activer les tâches automatiques d'alerte cartouches, consommables et expiration de licences (désactivées par défaut, alors que les notifications correspondantes le sont déjà)"
+
+msgid "Afficher la pagination au-dessus des résultats"
+msgstr "Afficher la pagination au-dessus des résultats"
+
+msgid "Afficher le moteur de recherche au-dessus des résultats"
+msgstr "Afficher le moteur de recherche au-dessus des résultats"
+
+msgid "Agencement des boutons d'action divisé (Répondre / Observation / Solution séparés)"
+msgstr "Agencement des boutons d'action divisé (Répondre / Observation / Solution séparés)"
+
+msgid "Ajouter des engagements internes (OLA)"
+msgstr "Ajouter des engagements internes (OLA)"
+
+msgid "Ajouter des icônes"
+msgstr "Ajouter des icônes"
+
+msgid "Ajouter des icônes (par catégorie de fabricant)"
+msgstr "Ajouter des icônes (par catégorie de fabricant)"
+
+msgid "Ajouter des icônes (repérage rapide dans les listes d'affectation)"
+msgstr "Ajouter des icônes (repérage rapide dans les listes d'affectation)"
+
+msgid "Ajouter des icônes (visibles dans la liste, le nom lui-même reste sans icône)"
+msgstr "Ajouter des icônes (visibles dans la liste, le nom lui-même reste sans icône)"
+
+msgid "Ajouter des icônes sur les gabarits de solution"
+msgstr "Ajouter des icônes sur les gabarits de solution"
+
+msgid "Ajouter des icônes sur les modèles"
+msgstr "Ajouter des icônes sur les modèles"
+
+msgid "Ajouter des icônes sur les types de solution"
+msgstr "Ajouter des icônes sur les types de solution"
+
+msgid "Ajouter les jours fériés français (8 jours fixes)"
+msgstr "Ajouter les jours fériés français (8 jours fixes)"
+
+msgid "Ajouter un client"
+msgstr "Ajouter un client"
+
+msgid "Ajouter un logo par entité"
+msgstr "Ajouter un logo par entité"
+
+msgid "Ajouter une entité"
+msgstr "Ajouter une entité"
+
+msgid "Ajouter une sous-entité"
+msgstr "Ajouter une sous-entité"
+
+msgid "Ajouter une étape de validation « Comité (2/3) » pour les décisions collégiales"
+msgstr "Ajouter une étape de validation « Comité (2/3) » pour les décisions collégiales"
+
+msgid "Aperçu"
+msgstr "Aperçu"
+
+msgid "Aperçu :"
+msgstr "Aperçu :"
+
+msgid "Aperçu en direct de l'en-tête GLPI"
+msgstr "Aperçu en direct de l'en-tête GLPI"
+
+msgid "Arborescence"
+msgstr "Arborescence"
+
+msgid "Assistant de configuration"
+msgstr "Assistant de configuration"
+
+msgid "Astreinte (24h/24, 7j/7)"
+msgstr "Astreinte (24h/24, 7j/7)"
+
+msgid "Astreinte (couverture 24h/24, 7j/7 — le délai continue de courir en dehors des horaires ouvrés)"
+msgstr "Astreinte (couverture 24h/24, 7j/7 — le délai continue de courir en dehors des horaires ouvrés)"
+
+msgid "Aucun"
+msgstr "Aucun"
+
+msgid "Aucun site dans l'arborescence (étape 2) — rien à générer."
+msgstr "Aucun site dans l'arborescence (étape 2) — rien à générer."
+
+msgid "Aucune"
+msgstr "Aucune"
+
+msgid "Aucune (garder Auror, le thème GLPI par défaut)"
+msgstr "Aucune (garder Auror, le thème GLPI par défaut)"
+
+msgid "Aucune entité ajoutée pour l'instant."
+msgstr "Aucune entité ajoutée pour l'instant."
+
+msgid "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
+msgstr "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
+
+msgid "Calendrier"
+msgstr "Calendrier"
+
+msgid "Calendrier créé et assigné, avec les jours fériés français."
+msgstr "Calendrier créé et assigné, avec les jours fériés français."
+
+msgid "Calendrier créé et assigné."
+msgstr "Calendrier créé et assigné."
+
+msgid "Calendrier différent par site ou client"
+msgstr "Calendrier différent par site ou client"
+
+msgid "Catalogue de services"
+msgstr "Catalogue de services"
+
+msgid "Catégorie et urgence obligatoires"
+msgstr "Catégorie et urgence obligatoires"
+
+msgid "Catégorie visible mais limitée aux 11 branches parentes"
+msgstr "Catégorie visible mais limitée aux 11 branches parentes"
+
+msgid "Catégories"
+msgstr "Catégories"
+
+msgid "Catégories d'évènements"
+msgstr "Catégories d'évènements"
+
+msgid "Ceci va créer/modifier de vraies entités dans GLPI (et, si activés, un calendrier et une personnalisation graphique) selon les choix faits. Continuer ?"
+msgstr "Ceci va créer/modifier de vraies entités dans GLPI (et, si activés, un calendrier et une personnalisation graphique) selon les choix faits. Continuer ?"
+
+msgid "Ceci va créer/modifier de vraies entités dans GLPI selon les réglages recommandés du profil sélectionné, sans passer en revue chaque étape. Continuer ?"
+msgstr "Ceci va créer/modifier de vraies entités dans GLPI selon les réglages recommandés du profil sélectionné, sans passer en revue chaque étape. Continuer ?"
+
+msgid "Ces formulaires du portail libre-service sont un système distinct des modèles de tickets ci-dessus (nouveau moteur de formulaires GLPI 11) — un utilisateur de base n'a pas la visibilité nécessaire pour juger de l'urgence réelle de sa demande, c'est au support de la qualifier."
+msgstr "Ces formulaires du portail libre-service sont un système distinct des modèles de tickets ci-dessus (nouveau moteur de formulaires GLPI 11) — un utilisateur de base n'a pas la visibilité nécessaire pour juger de l'urgence réelle de sa demande, c'est au support de la qualifier."
+
+msgid "Chacune avec une couleur distincte dans le planning GLPI."
+msgstr "Chacune avec une couleur distincte dans le planning GLPI."
+
+msgid "Champs masqués sur les formulaires de création en libre-service."
+msgstr "Champs masqués sur les formulaires de création en libre-service."
+
+msgid "Changement standard"
+msgstr "Changement standard"
+
+msgid "Choisissez la structure d'entités à mettre en place — l'aperçu à droite se met à jour en direct."
+msgstr "Choisissez la structure d'entités à mettre en place — l'aperçu à droite se met à jour en direct."
+
+msgid "Classification de sensibilité (norme ISO 27001, à affiner selon vos besoins)."
+msgstr "Classification de sensibilité (norme ISO 27001, à affiner selon vos besoins)."
+
+msgid "Complet — tous les autres profils"
+msgstr "Complet — tous les autres profils"
+
+msgid "Configuration"
+msgstr "Configuration"
+
+msgid "Configuration express"
+msgstr "Configuration express"
+
+msgid "Configurer les statuts des tâches de projet (non démarré / en cours / terminé)"
+msgstr "Configurer les statuts des tâches de projet (non démarré / en cours / terminé)"
+
+msgid "Configurez, si besoin, les horaires d'ouverture appliqués aux entités créées."
+msgstr "Configurez, si besoin, les horaires d'ouverture appliqués aux entités créées."
+
+msgid "Couleur différente par client/site (au lieu d'une seule couleur partagée)"
+msgstr "Couleur différente par client/site (au lieu d'une seule couleur partagée)"
+
+msgid "Couleur principale"
+msgstr "Couleur principale"
+
+msgid "Criticités"
+msgstr "Criticités"
+
+msgid "Création en cours..."
+msgstr "Création en cours..."
+
+msgid "Crée 3 groupes techniciens (Support N1/N2/N3 — convention ITSM la plus répandue). Tout ticket créé démarre au N1 ; l'escalade automatique (ci-dessous) le réaffecte au niveau suivant si le SLA de résolution approche ou dépasse son échéance."
+msgstr "Crée 3 groupes techniciens (Support N1/N2/N3 — convention ITSM la plus répandue). Tout ticket créé démarre au N1 ; l'escalade automatique (ci-dessous) le réaffecte au niveau suivant si le SLA de résolution approche ou dépasse son échéance."
+
+msgid "Créer des SLA standards"
+msgstr "Créer des SLA standards"
+
+msgid "Créer deux modèles de tickets et les assigner aux profils"
+msgstr "Créer deux modèles de tickets et les assigner aux profils"
+
+msgid "Créer le catalogue de services"
+msgstr "Créer le catalogue de services"
+
+msgid "Créer les catégories de la base de connaissances"
+msgstr "Créer les catégories de la base de connaissances"
+
+msgid "Créer les catégories de tickets"
+msgstr "Créer les catégories de tickets"
+
+msgid "Créer les catégories de tâches"
+msgstr "Créer les catégories de tâches"
+
+msgid "Créer les catégories et gabarits d'évènements de planning"
+msgstr "Créer les catégories et gabarits d'évènements de planning"
+
+msgid "Créer les gabarits de suivis"
+msgstr "Créer les gabarits de suivis"
+
+msgid "Créer les gabarits de tâche (checklists réutilisables)"
+msgstr "Créer les gabarits de tâche (checklists réutilisables)"
+
+msgid "Créer les gabarits de tâches de projets"
+msgstr "Créer les gabarits de tâches de projets"
+
+msgid "Créer les gabarits de validation"
+msgstr "Créer les gabarits de validation"
+
+msgid "Créer les raisons d'attente standards"
+msgstr "Créer les raisons d'attente standards"
+
+msgid "Créer les rubriques de documents et les niveaux de criticité"
+msgstr "Créer les rubriques de documents et les niveaux de criticité"
+
+msgid "Créer les statuts d'éléments standards"
+msgstr "Créer les statuts d'éléments standards"
+
+msgid "Créer les types de projet et de tâche de projet"
+msgstr "Créer les types de projet et de tâche de projet"
+
+msgid "Créer les types et gabarits de solution"
+msgstr "Créer les types et gabarits de solution"
+
+msgid "Créer un SLA pour cette entité"
+msgstr "Créer un SLA pour cette entité"
+
+msgid "Créer un calendrier d'horaires d'ouverture"
+msgstr "Créer un calendrier d'horaires d'ouverture"
+
+msgid "Créer un calendrier pour cette entité"
+msgstr "Créer un calendrier pour cette entité"
+
+msgid "Créer un lieu par entité de l'arborescence"
+msgstr "Créer un lieu par entité de l'arborescence"
+
+msgid "Créer un modèle de changement et de problème par défaut"
+msgstr "Créer un modèle de changement et de problème par défaut"
+
+msgid "Créer une liste de fabricants courants"
+msgstr "Créer une liste de fabricants courants"
+
+msgid "Créer une palette GLPI personnalisée avec cette couleur (sélectionnable par tous, appliquée par défaut)"
+msgstr "Créer une palette GLPI personnalisée avec cette couleur (sélectionnable par tous, appliquée par défaut)"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Différent de la case ci-dessus : celle-ci force la couleur sur toutes les entités créées ; celle-ci ajoute une palette GLPI native (Configuration > Générale > Apparence) que chaque utilisateur peut choisir dans ses propres préférences, définie ici comme choix par défaut."
+msgstr "Différent de la case ci-dessus : celle-ci force la couleur sur toutes les entités créées ; celle-ci ajoute une palette GLPI native (Configuration > Générale > Apparence) que chaque utilisateur peut choisir dans ses propres préférences, définie ici comme choix par défaut."
+
+msgid "Dossier de cache GLPI inscriptible"
+msgstr "Dossier de cache GLPI inscriptible"
+
+msgid "Dossier des palettes personnalisées inscriptible"
+msgstr "Dossier des palettes personnalisées inscriptible"
+
+msgid "Droits LDAP"
+msgstr "Droits LDAP"
+
+msgid "Déclenchement à"
+msgstr "Déclenchement à"
+
+msgid "En complément de la règle par site ci-dessus, indépendant du site de l'utilisateur — ex. le groupe AD \"Finance\" reçoit toujours tel profil, quel que soit son site. Chaque ligne devient une règle GLPI distincte, qui n'affecte que le profil (pas l'entité)."
+msgstr "En complément de la règle par site ci-dessus, indépendant du site de l'utilisateur — ex. le groupe AD \"Finance\" reçoit toujours tel profil, quel que soit son site. Chaque ligne devient une règle GLPI distincte, qui n'affecte que le profil (pas l'entité)."
+
+msgid "Enquête de satisfaction"
+msgstr "Enquête de satisfaction"
+
+msgid "Entité racine"
+msgstr "Entité racine"
+
+msgid "Entités"
+msgstr "Entités"
+
+msgid "Escalade N3 — %s"
+msgstr "Escalade N3 — %s"
+
+msgid "Escalade automatique N1 → N2"
+msgstr "Escalade automatique N1 → N2"
+
+msgid "Escalade automatique N1 → N2 (au seuil ci-dessus)"
+msgstr "Escalade automatique N1 → N2 (au seuil ci-dessus)"
+
+msgid "Escalade automatique N2 → N3"
+msgstr "Escalade automatique N2 → N3"
+
+msgid "Escalade automatique N2 → N3 (à l'échéance du SLA)"
+msgstr "Escalade automatique N2 → N3 (à l'échéance du SLA)"
+
+msgid "Escalade automatique avant échéance"
+msgstr "Escalade automatique avant échéance"
+
+msgid "Escalade — %s"
+msgstr "Escalade — %s"
+
+msgid "Ex : Entreprise Dupont"
+msgstr "Ex : Entreprise Dupont"
+
+msgid "Ex : Paris, Lyon..."
+msgstr "Ex : Paris, Lyon..."
+
+msgid "Extension GD ou Imagick disponible"
+msgstr "Extension GD ou Imagick disponible"
+
+msgid "Fermeture"
+msgstr "Fermeture"
+
+msgid "Gabarit de nom de groupe AD/LDAP"
+msgstr "Gabarit de nom de groupe AD/LDAP"
+
+msgid "Gabarits d'évènements externes"
+msgstr "Gabarits d'évènements externes"
+
+msgid "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
+msgstr "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
+
+msgid "Général & Outils"
+msgstr "Général & Outils"
+
+msgid "Générer une règle de droits par site"
+msgstr "Générer une règle de droits par site"
+
+msgid "Horaires standard"
+msgstr "Horaires standard"
+
+msgid "Horaires — %s"
+msgstr "Horaires — %s"
+
+msgid "Impact métier d'un actif (matériel, logiciel...), utilisé dans ses informations financières."
+msgstr "Impact métier d'un actif (matériel, logiciel...), utilisé dans ses informations financières."
+
+msgid "Inclure le niveau N0 (portail libre-service) dans le récapitulatif"
+msgstr "Inclure le niveau N0 (portail libre-service) dans le récapitulatif"
+
+msgid "Informations financières"
+msgstr "Informations financières"
+
+msgid "Installation simple"
+msgstr "Installation simple"
+
+msgid "Interface & ergonomie"
+msgstr "Interface & ergonomie"
+
+msgid "Interface complète (aucun champ masqué)"
+msgstr "Interface complète (aucun champ masqué)"
+
+msgid "Jour de l'An, Fête du Travail, Victoire 1945, Fête nationale, Assomption, Toussaint, Armistice, Noël. Sans ça, les échéances SLA/OLA continuent de courir un jour férié. Les jours mobiles (Pâques, Ascension, Pentecôte) ne sont pas inclus — ils changent de date chaque année, à ajouter à la main."
+msgstr "Jour de l'An, Fête du Travail, Victoire 1945, Fête nationale, Assomption, Toussaint, Armistice, Noël. Sans ça, les échéances SLA/OLA continuent de courir un jour férié. Les jours mobiles (Pâques, Ascension, Pentecôte) ne sont pas inclus — ils changent de date chaque année, à ajouter à la main."
+
+msgid "Jours ouvrés"
+msgstr "Jours ouvrés"
+
+msgid "L'OLA est un engagement interne entre le support et les équipes techniques, plus court que le SLA externe — il doit être tenu pour que le SLA le soit aussi."
+msgstr "L'OLA est un engagement interne entre le support et les équipes techniques, plus court que le SLA externe — il doit être tenu pour que le SLA le soit aussi."
+
+msgid "Lancer l'assistant de configuration"
+msgstr "Lancer l'assistant de configuration"
+
+msgid "Le gabarit doit contenir {ENTITY}."
+msgstr "Le gabarit doit contenir {ENTITY}."
+
+msgid "Le statut décrit la situation d'un équipement dans son cycle de vie (en stock, attribué, en panne...) — il sert à filtrer et suivre le parc, indépendamment de sa localisation ou de son entité. Ne cochez que les statuts qui correspondent à des situations réelles chez vous ; chacun peut être appliqué aux ordinateurs, téléphones, moniteurs, licences, etc."
+msgstr "Le statut décrit la situation d'un équipement dans son cycle de vie (en stock, attribué, en panne...) — il sert à filtrer et suivre le parc, indépendamment de sa localisation ou de son entité. Ne cochez que les statuts qui correspondent à des situations réelles chez vous ; chacun peut être appliqué aux ordinateurs, téléphones, moniteurs, licences, etc."
+
+msgid "Les statuts marqués « recommandé » sont ceux utilisés par remise-glpi (déclenchement automatique remise/don/vente/restitution) — les décocher n'empêche rien de fonctionner mais réduit l'interopérabilité entre les deux plugins si vous utilisez remise-glpi."
+msgstr "Les statuts marqués « recommandé » sont ceux utilisés par remise-glpi (déclenchement automatique remise/don/vente/restitution) — les décocher n'empêche rien de fonctionner mais réduit l'interopérabilité entre les deux plugins si vous utilisez remise-glpi."
+
+msgid "Masquer Urgence, Observateurs et Lieu sur les formulaires natifs « Signaler un incident » / « Faire une demande »"
+msgstr "Masquer Urgence, Observateurs et Lieu sur les formulaires natifs « Signaler un incident » / « Faire une demande »"
+
+msgid "Modèles de changement et de problème créés et assignés aux profils."
+msgstr "Modèles de changement et de problème créés et assignés aux profils."
+
+msgid "Modèles de tickets"
+msgstr "Modèles de tickets"
+
+msgid "Modèles de tickets créés et assignés aux profils."
+msgstr "Modèles de tickets créés et assignés aux profils."
+
+msgid "Mono-entité — une seule structure, pas de sous-entités"
+msgstr "Mono-entité — une seule structure, pas de sous-entités"
+
+msgid "Montrer les nouveaux tickets sur la page d'accueil"
+msgstr "Montrer les nouveaux tickets sur la page d'accueil"
+
+msgid "Multi-entité — infogérance de plusieurs entreprises clientes (MSP)"
+msgstr "Multi-entité — infogérance de plusieurs entreprises clientes (MSP)"
+
+msgid "Multi-entité — plusieurs sites ou services d'une même entreprise"
+msgstr "Multi-entité — plusieurs sites ou services d'une même entreprise"
+
+msgid "Mêmes thèmes que les catégories de tickets (étape 5), pour que le libre-service et la base de connaissances s'organisent pareil."
+msgstr "Mêmes thèmes que les catégories de tickets (étape 5), pour que le libre-service et la base de connaissances s'organisent pareil."
+
+msgid "N0 = le libre-service déjà configuré aux étapes Catalogue de services / Formulaire d'accueil — pas un groupe supplémentaire, juste un repère pour situer où commence le support humain."
+msgstr "N0 = le libre-service déjà configuré aux étapes Catalogue de services / Formulaire d'accueil — pas un groupe supplémentaire, juste un repère pour situer où commence le support humain."
+
+msgid "Nom de la sous-entité"
+msgstr "Nom de la sous-entité"
+
+msgid "Nom du calendrier"
+msgstr "Nom du calendrier"
+
+msgid "Nom du groupe AD/LDAP"
+msgstr "Nom du groupe AD/LDAP"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Nouveau ticket"
+msgstr "Nouveau ticket"
+
+msgid "OLA (engagements internes) créés et assignés."
+msgstr "OLA (engagements internes) créés et assignés."
+
+msgid "OLA prise en charge — %s"
+msgstr "OLA prise en charge — %s"
+
+msgid "OLA résolution — %s"
+msgstr "OLA résolution — %s"
+
+msgid "Optionnel : des formulaires prêts à l'emploi dans le portail libre-service — l'utilisateur choisit un service précis, jamais une catégorie ; le ticket est automatiquement routé vers la bonne catégorie."
+msgstr "Optionnel : des formulaires prêts à l'emploi dans le portail libre-service — l'utilisateur choisit un service précis, jamais une catégorie ; le ticket est automatiquement routé vers la bonne catégorie."
+
+msgid "Optionnel : des intitulés pour le module Projets, aucun n'existe par défaut dans GLPI (hors les 3 statuts natifs, déjà suffisants — non modifiés dans l'export de production audité)."
+msgstr "Optionnel : des intitulés pour le module Projets, aucun n'existe par défaut dans GLPI (hors les 3 statuts natifs, déjà suffisants — non modifiés dans l'export de production audité)."
+
+msgid "Optionnel : des intitulés prêts à l'emploi pour qualifier le travail technique et clôturer les tickets, aucun n'existe par défaut dans GLPI."
+msgstr "Optionnel : des intitulés prêts à l'emploi pour qualifier le travail technique et clôturer les tickets, aucun n'existe par défaut dans GLPI."
+
+msgid "Optionnel : des intitulés que GLPI ne propose pas par défaut, hors périmètre Assistance direct mais utiles dès la mise en service."
+msgstr "Optionnel : des intitulés que GLPI ne propose pas par défaut, hors périmètre Assistance direct mais utiles dès la mise en service."
+
+msgid "Optionnel : des messages types pour garder le demandeur informé, des gabarits de demande de validation, et un modèle par défaut pour les changements et les problèmes."
+msgstr "Optionnel : des messages types pour garder le demandeur informé, des gabarits de demande de validation, et un modèle par défaut pour les changements et les problèmes."
+
+msgid "Optionnel : des raisons de mise en attente avec relance et clôture automatiques — évite les tickets qui traînent indéfiniment. Le moteur d'automatisation de GLPI est déjà actif par défaut, seules les raisons manquent."
+msgstr "Optionnel : des raisons de mise en attente avec relance et clôture automatiques — évite les tickets qui traînent indéfiniment. Le moteur d'automatisation de GLPI est déjà actif par défaut, seules les raisons manquent."
+
+msgid "Optionnel : délais standards de prise en charge et de résolution des tickets, appliqués aux entités créées."
+msgstr "Optionnel : délais standards de prise en charge et de résolution des tickets, appliqués aux entités créées."
+
+msgid "Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l'usage — activez chaque groupe indépendamment selon vos besoins."
+msgstr "Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l'usage — activez chaque groupe indépendamment selon vos besoins."
+
+msgid "Optionnel : un jeu de statuts standards pour le parc (ordinateurs, moniteurs, téléphones...) — aucun n'existe par défaut dans GLPI."
+msgstr "Optionnel : un jeu de statuts standards pour le parc (ordinateurs, moniteurs, téléphones...) — aucun n'existe par défaut dans GLPI."
+
+msgid "Optionnel : une arborescence de catégories thématiques (IT, Bâtiment, Flotte, RH...), pas une par type ITIL — le type (Incident/Demande) est déjà géré nativement par GLPI. Décochez les branches qui ne s'appliquent pas à votre organisation."
+msgstr "Optionnel : une arborescence de catégories thématiques (IT, Bâtiment, Flotte, RH...), pas une par type ITIL — le type (Incident/Demande) est déjà géré nativement par GLPI. Décochez les branches qui ne s'appliquent pas à votre organisation."
+
+msgid "Optionnel : une couleur principale appliquée à l'interface des entités créées."
+msgstr "Optionnel : une couleur principale appliquée à l'interface des entités créées."
+
+msgid "Optionnel : une règle d'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l'utilisateur lors de la synchronisation — ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n'y a rien à générer."
+msgstr "Optionnel : une règle d'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l'utilisateur lors de la synchronisation — ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n'y a rien à générer."
+
+msgid "Ouverture"
+msgstr "Ouverture"
+
+msgid "Palette GLPI native définie par défaut."
+msgstr "Palette GLPI native définie par défaut."
+
+msgid "Palette GLPI personnalisée créée et définie par défaut."
+msgstr "Palette GLPI personnalisée créée et définie par défaut."
+
+msgid "Pas de relance automatique — catégorisation uniquement"
+msgstr "Pas de relance automatique — catégorisation uniquement"
+
+msgid "Personnalisation"
+msgstr "Personnalisation"
+
+msgid "Personnalisation graphique appliquée."
+msgstr "Personnalisation graphique appliquée."
+
+msgid "Personnaliser la couleur principale"
+msgstr "Personnaliser la couleur principale"
+
+msgid "Personnalisé"
+msgstr "Personnalisé"
+
+msgid "Plusieurs entreprises clientes (infogérance)"
+msgstr "Plusieurs entreprises clientes (infogérance)"
+
+msgid "Plusieurs sites ou services (une seule entreprise)"
+msgstr "Plusieurs sites ou services (une seule entreprise)"
+
+msgid "Priorité"
+msgstr "Priorité"
+
+msgid "Prise en charge (h)"
+msgstr "Prise en charge (h)"
+
+msgid "Prise en charge — %s"
+msgstr "Prise en charge — %s"
+
+msgid "Problème standard"
+msgstr "Problème standard"
+
+msgid "Profil"
+msgstr "Profil"
+
+msgid "Profil attribué"
+msgstr "Profil attribué"
+
+msgid "Profil métier — préremplit les branches ci-dessous et le SLA de l'étape 4 (physique/administratif traité plus lentement que l'IT). Toujours ajustable ensuite, dans les deux cas."
+msgstr "Profil métier — préremplit les branches ci-dessous et le SLA de l'étape 4 (physique/administratif traité plus lentement que l'IT). Toujours ajustable ensuite, dans les deux cas."
+
+msgid "Projets"
+msgstr "Projets"
+
+msgid "Précédent"
+msgstr "Précédent"
+
+msgid "Quel profil correspond le mieux à votre organisation ? Ce choix pré-remplit la structure d'entités, le calendrier et les SLA des étapes suivantes avec des valeurs adaptées — vous pourrez tout ajuster ensuite."
+msgstr "Quel profil correspond le mieux à votre organisation ? Ce choix pré-remplit la structure d'entités, le calendrier et les SLA des étapes suivantes avec des valeurs adaptées — vous pourrez tout ajuster ensuite."
+
+msgid "Raisons d'attente"
+msgstr "Raisons d'attente"
+
+msgid "Relance toutes les"
+msgstr "Relance toutes les"
+
+msgid "Reprend exactement l'arborescence construite à l'étape 2 (même noms, même imbrication) — un point de départ, à préciser ensuite avec de vraies adresses."
+msgstr "Reprend exactement l'arborescence construite à l'étape 2 (même noms, même imbrication) — un point de départ, à préciser ensuite avec de vraies adresses."
+
+msgid "Retirer"
+msgstr "Retirer"
+
+msgid "Rubriques des documents"
+msgstr "Rubriques des documents"
+
+msgid "Règles par fonction/département (optionnel)"
+msgstr "Règles par fonction/département (optionnel)"
+
+msgid "Récapitulatif"
+msgstr "Récapitulatif"
+
+msgid "Réglages généraux"
+msgstr "Réglages généraux"
+
+msgid "Réglages généraux GLPI appliqués."
+msgstr "Réglages généraux GLPI appliqués."
+
+msgid "Résolution (h)"
+msgstr "Résolution (h)"
+
+msgid "Résolution — %s"
+msgstr "Résolution — %s"
+
+msgid "S'applique à tout SLA/OLA créé sur cette étape — partagé ou par site/client."
+msgstr "S'applique à tout SLA/OLA créé sur cette étape — partagé ou par site/client."
+
+msgid "SLA"
+msgstr "SLA"
+
+msgid "SLA créés et assignés."
+msgstr "SLA créés et assignés."
+
+msgid "SLA différent par site ou client"
+msgstr "SLA différent par site ou client"
+
+msgid "SLA — %s"
+msgstr "SLA — %s"
+
+msgid "Se met à jour en direct pendant que vous réglez les options à gauche — rien n'est enregistré tant que vous ne validez pas."
+msgstr "Se met à jour en direct pendant que vous réglez les options à gauche — rien n'est enregistré tant que vous ne validez pas."
+
+msgid "Simplifié + Complet, assignés aux profils"
+msgstr "Simplifié + Complet, assignés aux profils"
+
+msgid "Simplifié — Self-Service, Read-Only"
+msgstr "Simplifié — Self-Service, Read-Only"
+
+msgid "Statuts"
+msgstr "Statuts"
+
+msgid "Statuts des tâches de projet"
+msgstr "Statuts des tâches de projet"
+
+msgid "Statuts des éléments"
+msgstr "Statuts des éléments"
+
+msgid "Structure"
+msgstr "Structure"
+
+msgid "Structure créée : %s."
+msgstr "Structure créée : %s."
+
+msgid "Suivant"
+msgstr "Suivant"
+
+msgid "Suivis & validations"
+msgstr "Suivis & validations"
+
+msgid "Suivis, validations & modèles CP"
+msgstr "Suivis, validations & modèles CP"
+
+msgid "Terminer"
+msgstr "Terminer"
+
+msgid "Terminer avec les réglages recommandés"
+msgstr "Terminer avec les réglages recommandés"
+
+msgid "Titre"
+msgstr "Titre"
+
+msgid "Titre + description uniquement"
+msgstr "Titre + description uniquement"
+
+msgid "Tous les groupes appliqués"
+msgstr "Tous les groupes appliqués"
+
+msgid "Tout sélectionner"
+msgstr "Tout sélectionner"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Types de projet"
+msgstr "Types de projet"
+
+msgid "Types de tâche de projet"
+msgstr "Types de tâche de projet"
+
+msgid "Tâches & solutions"
+msgstr "Tâches & solutions"
+
+msgid "Un logo par site/client de l'arborescence (étape 2) — remplace le logo GLPI dans l'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 Mo maximum. L'emplacement dans l'en-tête GLPI est petit (environ 100×55 px) : une image large ou carrée sera automatiquement réduite pour y tenir sans déformation, un format proche de ce ratio donnera le meilleur rendu. Choisissez un fichier pour le voir dans l'aperçu ci-dessus."
+msgstr "Un logo par site/client de l'arborescence (étape 2) — remplace le logo GLPI dans l'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 Mo maximum. L'emplacement dans l'en-tête GLPI est petit (environ 100×55 px) : une image large ou carrée sera automatiquement réduite pour y tenir sans déformation, un format proche de ce ratio donnera le meilleur rendu. Choisissez un fichier pour le voir dans l'aperçu ci-dessus."
+
+msgid "Un nœud par client. Chaque client peut avoir un nombre différent de sous-entités, à sa propre profondeur."
+msgstr "Un nœud par client. Chaque client peut avoir un nombre différent de sous-entités, à sa propre profondeur."
+
+msgid "Un nœud par site/service de premier niveau. Chacun peut avoir un nombre différent de sous-entités, à sa propre profondeur."
+msgstr "Un nœud par site/service de premier niveau. Chacun peut avoir un nombre différent de sous-entités, à sa propre profondeur."
+
+msgid "Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service n'a aucun droit sur les changements/problèmes, la distinction base/support ne s'applique pas."
+msgstr "Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service n'a aucun droit sur les changements/problèmes, la distinction base/support ne s'applique pas."
+
+msgid "Une couleur par nœud de premier niveau de l'arborescence (étape 2) — préremplie avec la couleur ci-dessus, ajustable individuellement."
+msgstr "Une couleur par nœud de premier niveau de l'arborescence (étape 2) — préremplie avec la couleur ci-dessus, ajustable individuellement."
+
+msgid "Une règle par site (feuille de l'arborescence) — aperçu en fonction de l'arborescence construite à l'étape 2 :"
+msgstr "Une règle par site (feuille de l'arborescence) — aperçu en fonction de l'arborescence construite à l'étape 2 :"
+
+msgid "Une taxonomie de clôture standard (assistance, résolution technique, sécurité, informationnel, gestion des accès), chacune visible seulement sur les types de ticket ITIL pertinents."
+msgstr "Une taxonomie de clôture standard (assistance, résolution technique, sécurité, informationnel, gestion des accès), chacune visible seulement sur les types de ticket ITIL pertinents."
+
+msgid "Urgence, impact, statut, lieu, attribution, niveaux de service (SLA/OLA) : masqués"
+msgstr "Urgence, impact, statut, lieu, attribution, niveaux de service (SLA/OLA) : masqués"
+
+msgid "Utiliser le SLA par défaut"
+msgstr "Utiliser le SLA par défaut"
+
+msgid "Utiliser le réglage d'escalade par défaut"
+msgstr "Utiliser le réglage d'escalade par défaut"
+
+msgid "Validation comité"
+msgstr "Validation comité"
+
+msgid "Votre société (MSP)"
+msgstr "Votre société (MSP)"
+
+msgid "Vérification de l'environnement"
+msgstr "Vérification de l'environnement"
+
+msgid "Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits de projet."
+msgstr "Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits de projet."
+
+msgid "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
+msgstr "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
+
+msgid "astreinte 24h/24, 7j/7"
+msgstr "astreinte 24h/24, 7j/7"
+
+msgid "branches"
+msgstr "branches"
+
+msgid "branches avec services"
+msgstr "branches avec services"
+
+msgid "catégories base de connaissances"
+msgstr "catégories base de connaissances"
+
+msgid "catégories de tâches"
+msgstr "catégories de tâches"
+
+msgid "certains points ci-dessous peuvent limiter des fonctionnalités du wizard. Cela n'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée vous intéresse."
+msgstr "certains points ci-dessous peuvent limiter des fonctionnalités du wizard. Cela n'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée vous intéresse."
+
+msgid "clôture automatique après"
+msgstr "clôture automatique après"
+
+msgid "du délai écoulé → priorité relevée d'un cran (résolution, et engagement interne si activé)"
+msgstr "du délai écoulé → priorité relevée d'un cran (résolution, et engagement interne si activé)"
+
+msgid "escalade N1→N2→N3"
+msgstr "escalade N1→N2→N3"
+
+msgid "escalade à"
+msgstr "escalade à"
+
+msgid "fabricants"
+msgstr "fabricants"
+
+msgid "gabarits de suivis"
+msgstr "gabarits de suivis"
+
+msgid "gabarits de tâche"
+msgstr "gabarits de tâche"
+
+msgid "gabarits de tâches de projets"
+msgstr "gabarits de tâches de projets"
+
+msgid "gabarits de validation"
+msgstr "gabarits de validation"
+
+msgid "groupe(s) appliqué(s)"
+msgstr "groupe(s) appliqué(s)"
+
+msgid "jours fériés"
+msgstr "jours fériés"
+
+msgid "lieux"
+msgstr "lieux"
+
+msgid "logo(s) par entité"
+msgstr "logo(s) par entité"
+
+msgid "modèles changement/problème"
+msgstr "modèles changement/problème"
+
+msgid "nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s"
+msgstr "nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s"
+
+msgid "nécessaire à la palette personnalisée (étape 9) — vérifiez les droits sur %s"
+msgstr "nécessaire à la palette personnalisée (étape 9) — vérifiez les droits sur %s"
+
+msgid "raisons d'attente"
+msgstr "raisons d'attente"
+
+msgid "recommandé"
+msgstr "recommandé"
+
+msgid "relances sans réponse"
+msgstr "relances sans réponse"
+
+msgid "règle(s)"
+msgstr "règle(s)"
+
+msgid "semaine"
+msgstr "semaine"
+
+msgid "semaines"
+msgstr "semaines"
+
+msgid "site(s)/client(s) avec un SLA propre"
+msgstr "site(s)/client(s) avec un SLA propre"
+
+msgid "site(s)/client(s) avec un calendrier propre"
+msgstr "site(s)/client(s) avec un calendrier propre"
+
+msgid "sombre"
+msgstr "sombre"
+
+msgid "statuts"
+msgstr "statuts"
+
+msgid "types de projet/tâche"
+msgstr "types de projet/tâche"
+
+msgid "types/gabarits de solution"
+msgstr "types/gabarits de solution"
+
+msgid "utile pour valider les logos uploadés (étape 9) — ni l'une ni l'autre n'est chargée"
+msgstr "utile pour valider les logos uploadés (étape 9) — ni l'une ni l'autre n'est chargée"
+
+msgid "{ENTITY} est remplacé par le nom du site (espaces convertis en _)."
+msgstr "{ENTITY} est remplacé par le nom du site (espaces convertis en _)."
+
+msgid "« Admin » (par défaut) couvre la gestion quotidienne sans le risque d'auto-élévation de « Super-Admin » : contrairement à Super-Admin, Admin ne peut ni éditer les profils GLPI (donc pas s'en attribuer plus), ni modifier les règles LDAP/import qui gèrent justement cette synchronisation."
+msgstr "« Admin » (par défaut) couvre la gestion quotidienne sans le risque d'auto-élévation de « Super-Admin » : contrairement à Super-Admin, Admin ne peut ni éditer les profils GLPI (donc pas s'en attribuer plus), ni modifier les règles LDAP/import qui gèrent justement cette synchronisation."
+
+msgid "Étape"
+msgstr "Étape"
+
+msgid "Étape 1 : Profil"
+msgstr "Étape 1 : Profil"
+
+msgid "Étape 10 : Réglages généraux GLPI"
+msgstr "Étape 10 : Réglages généraux GLPI"
+
+msgid "Étape 11 : Modèles de tickets"
+msgstr "Étape 11 : Modèles de tickets"
+
+msgid "Étape 12 : Droits LDAP par entité"
+msgstr "Étape 12 : Droits LDAP par entité"
+
+msgid "Étape 13 : Tâches & solutions"
+msgstr "Étape 13 : Tâches & solutions"
+
+msgid "Étape 14 : Suivis, validations & modèles"
+msgstr "Étape 14 : Suivis, validations & modèles"
+
+msgid "Étape 15 : Général & Outils"
+msgstr "Étape 15 : Général & Outils"
+
+msgid "Étape 16 : Projets"
+msgstr "Étape 16 : Projets"
+
+msgid "Étape 17 : Récapitulatif"
+msgstr "Étape 17 : Récapitulatif"
+
+msgid "Étape 2 : Structure des entités"
+msgstr "Étape 2 : Structure des entités"
+
+msgid "Étape 3 : Calendrier"
+msgstr "Étape 3 : Calendrier"
+
+msgid "Étape 4 : Niveaux de service (SLA)"
+msgstr "Étape 4 : Niveaux de service (SLA)"
+
+msgid "Étape 5 : Catégories de tickets"
+msgstr "Étape 5 : Catégories de tickets"
+
+msgid "Étape 6 : Catalogue de services"
+msgstr "Étape 6 : Catalogue de services"
+
+msgid "Étape 7 : Statuts des éléments"
+msgstr "Étape 7 : Statuts des éléments"
+
+msgid "Étape 8 : Raisons d'attente"
+msgstr "Étape 8 : Raisons d'attente"
+
+msgid "Étape 9 : Personnalisation graphique"
+msgstr "Étape 9 : Personnalisation graphique"
+
+msgid "Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l'interface complète pour le support."
+msgstr "Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l'interface complète pour le support."
+
+msgid "Un service par ligne, groupé par branche cochée à l'étape Catégories — décocher une branche là-bas retire aussi ses services ici."
+msgstr "Un service par ligne, groupé par branche cochée à l'étape Catégories — décocher une branche là-bas retire aussi ses services ici."
+
+msgid "🏢 Bâtiment & Moyens généraux"
+msgstr "🏢 Bâtiment & Moyens généraux"
+
+msgid "👤 RH & Support interne"
+msgstr "👤 RH & Support interne"
+
+msgid "💻 IT pur"
+msgstr "💻 IT pur"
+
+msgid "🧩 Multi-services (toutes verticales)"
+msgstr "🧩 Multi-services (toutes verticales)"
+
+msgid "Profil de configuration"
+msgid_plural "Profils de configuration"
+msgstr[0] "Profil de configuration"
+msgstr[1] "Profils de configuration"
+
