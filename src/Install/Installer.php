@@ -112,6 +112,7 @@ final class Installer
                 `satisfaction_survey_enabled` tinyint NOT NULL DEFAULT 0,
                 `committee_validation_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_enabled` tinyint NOT NULL DEFAULT 0,
+                `ticket_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `helpdesk_form_hide_fields` tinyint NOT NULL DEFAULT 0,
                 `service_catalog_enabled` tinyint NOT NULL DEFAULT 0,
                 `wait_reasons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -120,11 +121,16 @@ final class Installer
                 `ldap_rights_profile` varchar(255) NOT NULL DEFAULT 'Technician',
                 `task_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `task_templates_enabled` tinyint NOT NULL DEFAULT 0,
+                `task_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `solution_library_enabled` tinyint NOT NULL DEFAULT 0,
                 `solution_type_icons_enabled` tinyint NOT NULL DEFAULT 0,
+                `solution_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `followup_library_enabled` tinyint NOT NULL DEFAULT 0,
+                `followup_library_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `validation_templates_enabled` tinyint NOT NULL DEFAULT 0,
+                `validation_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `change_problem_templates_enabled` tinyint NOT NULL DEFAULT 0,
+                `change_problem_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `locations_enabled` tinyint NOT NULL DEFAULT 0,
                 `manufacturers_enabled` tinyint NOT NULL DEFAULT 0,
                 `manufacturer_icons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -227,6 +233,7 @@ final class Installer
             $migration->dropField(self::CONFIGS_TABLE, 'general_settings_enabled');
 
             $migration->addField(self::CONFIGS_TABLE, 'ticket_template_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'ticket_template_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'helpdesk_form_hide_fields', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'service_catalog_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'wait_reasons_enabled', 'bool', ['value' => 0]);
@@ -235,11 +242,16 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'ldap_rights_profile', 'string', ['value' => 'Technician']);
             $migration->addField(self::CONFIGS_TABLE, 'task_categories_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'task_templates_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'task_template_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'solution_library_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'solution_type_icons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'solution_template_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'followup_library_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'followup_library_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'validation_templates_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'validation_template_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'change_problem_templates_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'change_problem_template_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'locations_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'manufacturers_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'manufacturer_icons_enabled', 'bool', ['value' => 0]);
