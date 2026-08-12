@@ -216,7 +216,9 @@ if (isset($_POST['finish'])) {
     $servicesCreated = (new ServiceCatalogBuilder())->build($config);
     $statesCreated = (new StateBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
-    $ldapRulesCreated = (new RuleRightBuilder())->build($config);
+    $ruleRightBuilder = new RuleRightBuilder();
+    $ldapRulesCreated = $ruleRightBuilder->build($config);
+    $ldapFunctionRulesCreated = $ruleRightBuilder->buildFunctionRights($config->getLdapFunctionRights());
     $taskCategoriesCreated = (new TaskCategoryBuilder())->build($config);
     // Runs after TaskCategoryBuilder: resolves task categories by name lookup.
     $taskTemplatesCreated = (new TaskTemplateBuilder())->build($config);
@@ -348,6 +350,9 @@ if (isset($_POST['finish'])) {
     if ($ldapRulesCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de droits LDAP créées.', 'configurationglpiauto'), $ldapRulesCreated);
     }
+    if ($ldapFunctionRulesCreated > 0) {
+        $messages[] = sprintf(__('%d règle(s) de droits par fonction créées.', 'configurationglpiauto'), $ldapFunctionRulesCreated);
+    }
     if ($taskCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de tâches créées.', 'configurationglpiauto'), $taskCategoriesCreated);
     }
@@ -415,6 +420,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'modes'            => Config::getModes(),
     'max_levels'       => Config::MAX_LEVELS,
     'entity_tree'      => $config->getEntityTree(),
+    'ldap_function_rights' => $config->getLdapFunctionRights(),
     'sla_tiers'        => $config->getSlaTiers(),
     'ola_tiers'        => $config->getOlaTiers(),
     'priority_levels'  => Config::PRIORITY_LEVELS,

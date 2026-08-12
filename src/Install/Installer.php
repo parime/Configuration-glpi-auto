@@ -122,6 +122,7 @@ final class Installer
                 `ldap_rights_enabled` tinyint NOT NULL DEFAULT 0,
                 `ldap_rights_group_template` varchar(255) NOT NULL DEFAULT 'GLPI_{ENTITY}',
                 `ldap_rights_profile` varchar(255) NOT NULL DEFAULT 'Admin',
+                `ldap_function_rights` text,
                 `task_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `task_templates_enabled` tinyint NOT NULL DEFAULT 0,
                 `task_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -250,6 +251,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'ldap_rights_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'ldap_rights_group_template', 'string', ['value' => 'GLPI_{ENTITY}']);
             $migration->addField(self::CONFIGS_TABLE, 'ldap_rights_profile', 'string', ['value' => 'Admin']);
+            $migration->addField(self::CONFIGS_TABLE, 'ldap_function_rights', 'text', ['value' => '[]']);
             $migration->addField(self::CONFIGS_TABLE, 'task_categories_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'task_templates_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'task_template_icons_enabled', 'bool', ['value' => 0]);
