@@ -484,6 +484,18 @@ balises correctement substituées. **Corrigé en v0.31.1** : régression trouvé
 un œil critique — une seule ligne `language=''` par gabarit aurait montré des libellés français à
 tout destinataire, quelle que soit sa langue GLPI. Une ligne par langue désormais (5 langues).
 
+**Observation (analyse critique post-v0.31.1)** : les gabarits de suivi/tâche/solution
+(`FollowupLibraryBuilder`/`TaskTemplateBuilder`/`SolutionLibraryBuilder`, ~18 gabarits) ont le
+même type de limite que le bug corrigé en v0.31.1, mais moins grave. Leur contenu est traduisible
+en théorie (`AbstractITILChildTemplate::getRenderedContent()` appelle
+`DropdownTranslation::getTranslatedValue(..., $_SESSION['glpilanguage'], ...)`), mais aucune ligne
+`DropdownTranslation` n'existe pour leur `content` — un technicien non francophone verrait le texte
+du gabarit en français (juste le *nom* du gabarit dans la liste déroulante est traduit, via
+`Translations::applyIcon()`). Moins grave que le bug des notifications : c'est un point de départ
+qu'un technicien édite avant d'enregistrer sur le ticket, pas un e-mail parti automatiquement vers
+un client. Laissé de côté pour l'instant (18 gabarits × 5 langues serait un chantier de traduction
+conséquent) — à reconsidérer si un utilisateur non francophone le signale en pratique.
+
 **Filigrane PDF sur documents confidentiels** — position inchangée depuis la première discussion :
 nature technique différente (traitement de fichier temps réel vs scaffolding one-shot), plugin
 séparé recommandé plutôt qu'ajout ici.
