@@ -480,7 +480,9 @@ de structure — `NotificationBrandingBuilder` (nouveau) crée un gabarit HTML d
 `BrandingBuilder`, et réassigne l'évènement correspondant vers ce nouveau gabarit. Vérifié de bout
 en bout : gabarits créés, évènements réassignés en base, idempotence confirmée, et un vrai ticket
 créé pour confirmer que la notification réellement mise en file contient le HTML habillé avec les
-balises correctement substituées.
+balises correctement substituées. **Corrigé en v0.31.1** : régression trouvée en se relisant avec
+un œil critique — une seule ligne `language=''` par gabarit aurait montré des libellés français à
+tout destinataire, quelle que soit sa langue GLPI. Une ligne par langue désormais (5 langues).
 
 **Filigrane PDF sur documents confidentiels** — position inchangée depuis la première discussion :
 nature technique différente (traitement de fichier temps réel vs scaffolding one-shot), plugin
