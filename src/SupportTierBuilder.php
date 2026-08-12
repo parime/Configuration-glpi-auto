@@ -17,7 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use DropdownTranslation;
 use Group;
 
 /**
@@ -69,7 +68,7 @@ class SupportTierBuilder
         foreach (self::TIERS as $key => $tier) {
             $id = $this->getOrCreate($tier['name']);
             if ($withIcons) {
-                $this->addIcon($id, $tier['name'], $tier['icon']);
+                Translations::applyIcon(Group::class, $id, $tier['name'], $tier['icon']);
             }
             $ids[$key] = $id;
         }
@@ -100,19 +99,4 @@ class SupportTierBuilder
         ]);
     }
 
-    private function addIcon(int $id, string $name, string $icon): void
-    {
-        $translation = new DropdownTranslation();
-        if ($translation->getFromDBByCrit(['itemtype' => Group::class, 'items_id' => $id, 'language' => 'fr_FR', 'field' => 'name'])) {
-            return;
-        }
-
-        $translation->add([
-            'itemtype' => Group::class,
-            'items_id' => $id,
-            'language' => 'fr_FR',
-            'field' => 'name',
-            'value' => sprintf('%s %s', $icon, $name),
-        ]);
-    }
 }

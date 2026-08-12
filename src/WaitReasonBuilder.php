@@ -17,7 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use DropdownTranslation;
 use ITILFollowupTemplate;
 use PendingReason;
 use SolutionTemplate;
@@ -104,7 +103,7 @@ class WaitReasonBuilder
         $pendingReason = new PendingReason();
         if ($pendingReason->getFromDBByCrit(['name' => $reason['name'], 'entities_id' => 0])) {
             if ($withIcons) {
-                $this->addIcon((int) $pendingReason->getID(), $reason['name'], $reason['icon']);
+                Translations::applyIcon(PendingReason::class, (int) $pendingReason->getID(), $reason['name'], $reason['icon']);
             }
             return;
         }
@@ -134,24 +133,8 @@ class WaitReasonBuilder
         }
 
         if ($withIcons) {
-            $this->addIcon((int) $id, $reason['name'], $reason['icon']);
+            Translations::applyIcon(PendingReason::class, (int) $id, $reason['name'], $reason['icon']);
         }
-    }
-
-    private function addIcon(int $id, string $name, string $icon): void
-    {
-        $translation = new DropdownTranslation();
-        if ($translation->getFromDBByCrit(['itemtype' => PendingReason::class, 'items_id' => $id, 'language' => 'fr_FR', 'field' => 'name'])) {
-            return;
-        }
-
-        $translation->add([
-            'itemtype' => PendingReason::class,
-            'items_id' => $id,
-            'language' => 'fr_FR',
-            'field' => 'name',
-            'value' => sprintf('%s %s', $icon, $name),
-        ]);
     }
 
     private function getOrCreateFollowupTemplate(string $name, string $content): int

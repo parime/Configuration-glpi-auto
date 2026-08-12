@@ -17,7 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use DropdownTranslation;
 use SolutionTemplate;
 use SolutionType;
 
@@ -144,7 +143,7 @@ class SolutionLibraryBuilder
         foreach (self::TYPES as $type) {
             $typeId = $this->getOrCreateType($type);
             if ($withIcons) {
-                $this->addIcon($typeId, $type['name'], $type['icon']);
+                Translations::applyIcon(SolutionType::class, $typeId, $type['name'], $type['icon']);
             }
             foreach ($type['templates'] as $template) {
                 $this->getOrCreateTemplate($template['name'], $template['content'], $typeId);
@@ -179,22 +178,6 @@ class SolutionLibraryBuilder
             'is_request' => $type['is_request'],
             'is_problem' => $type['is_problem'],
             'is_change' => $type['is_change'],
-        ]);
-    }
-
-    private function addIcon(int $id, string $name, string $icon): void
-    {
-        $translation = new DropdownTranslation();
-        if ($translation->getFromDBByCrit(['itemtype' => SolutionType::class, 'items_id' => $id, 'language' => 'fr_FR', 'field' => 'name'])) {
-            return;
-        }
-
-        $translation->add([
-            'itemtype' => SolutionType::class,
-            'items_id' => $id,
-            'language' => 'fr_FR',
-            'field' => 'name',
-            'value' => sprintf('%s %s', $icon, $name),
         ]);
     }
 

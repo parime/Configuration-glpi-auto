@@ -17,7 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use DropdownTranslation;
 use ITILCategory;
 
 /**
@@ -235,11 +234,7 @@ class CategoryBuilder
         $count = 1;
 
         if ($withIcons && isset($node['icon'])) {
-            $translation = new DropdownTranslation();
-            $transCrit = ['itemtype' => ITILCategory::class, 'items_id' => $itemId, 'language' => 'fr_FR', 'field' => 'name'];
-            if (!$translation->getFromDBByCrit($transCrit)) {
-                $translation->add($transCrit + ['value' => sprintf('%s %s', $node['icon'], $node['name'])]);
-            }
+            Translations::applyIcon(ITILCategory::class, $itemId, $node['name'], $node['icon']);
         }
 
         foreach ($node['children'] ?? [] as $child) {

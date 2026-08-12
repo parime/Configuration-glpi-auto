@@ -19,7 +19,6 @@ namespace GlpiPlugin\Configurationglpiauto;
 
 use Computer;
 use Contract;
-use DropdownTranslation;
 use DropdownVisibility;
 use Line;
 use Monitor;
@@ -38,11 +37,11 @@ use Unmanaged;
  * calendar/SLA — instance-wide (`entities_id => 0`, `is_recursive => 1`).
  *
  * The `name` field is always plain text, per explicit instruction — an icon there would corrupt
- * matching/sorting. Icons (optional, `state_icons_enabled`) live only in a `DropdownTranslation`
- * (fr_FR, field `name`). Confirmed against a real GLPI 11.0.8 instance that the translation
- * `value` is rendered as *escaped plain text*, not HTML — an `<i class="ti ...">` tag shows up
- * literally instead of rendering — so the icon has to be a plain Unicode emoji character
- * prepended to the name, not markup.
+ * matching/sorting. Icons (optional, `state_icons_enabled`) live only in `DropdownTranslation` rows
+ * (one per language, see `Translations::applyIcon()`, field `name`). Confirmed against a real
+ * GLPI 11.0.8 instance that the translation `value` is rendered as *escaped plain text*, not HTML —
+ * an `<i class="ti ...">` tag shows up literally instead of rendering — so the icon has to be a
+ * plain Unicode emoji character prepended to the name, not markup.
  *
  * Visibility (which asset types a state can be applied to) is governed by `DropdownVisibility`
  * rows (`itemtype => State::class`, `visible_itemtype => <asset class>`). Confirmed by reading
@@ -162,17 +161,7 @@ class StateBuilder
             }
 
             if ($withIcons) {
-                $translation = new DropdownTranslation();
-                $value = sprintf('%s %s', $state['icon'], $state['name']);
-                if (!$translation->getFromDBByCrit(['itemtype' => State::class, 'items_id' => $stateId, 'language' => 'fr_FR', 'field' => 'name'])) {
-                    $translation->add([
-                        'itemtype' => State::class,
-                        'items_id' => $stateId,
-                        'language' => 'fr_FR',
-                        'field' => 'name',
-                        'value' => $value,
-                    ]);
-                }
+                Translations::applyIcon(State::class, $stateId, $state['name'], $state['icon']);
             }
 
             $names[] = $state['name'];
