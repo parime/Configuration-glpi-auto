@@ -2,7 +2,7 @@
 <root>
     <name>Configuration GLPI Auto</name>
     <key>configurationglpiauto</key>
-    <state>dev</state>
+    <state>stable</state>
     <logo>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/misc/logos/logo.png</logo>
     <description>
         <short>
@@ -38,6 +38,12 @@
         <author>Parime</author>
     </authors>
     <versions>
+        <version>
+            <num>0.37.0</num>
+            <compatibility>=11.0.0</compatibility>
+            <php-version>=8.2</php-version>
+            <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.37.0/configuration-glpi-auto-0.37.0.zip</download_url>
+        </version>
         <version>
             <num>0.36.0</num>
             <compatibility>=11.0.0</compatibility>
