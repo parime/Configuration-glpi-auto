@@ -217,6 +217,8 @@ class Config extends CommonDBTM
             'entity_logos_enabled' => 0,
             'wait_reason_icons_enabled' => 0,
             'notification_branding_enabled' => 0,
+            'location_geocoding_enabled' => 0,
+            'location_geocoding_endpoint' => 'https://nominatim.openstreetmap.org',
         ];
     }
 
@@ -488,6 +490,18 @@ class Config extends CommonDBTM
             $input['ldap_rights_profile'] = 'Admin';
         }
 
+        if (isset($input['location_geocoding_endpoint'])) {
+            // Only ever an admin-typed URL, never request data reaching ajax/geocode.php — but
+            // validated here too (not just there) since this is the one place that actually
+            // writes it to storage. https:// only: the proxy forwards this over the network,
+            // an http:// (or any other scheme, including file:// gadgets) endpoint has no
+            // legitimate use here.
+            $endpoint = rtrim(trim((string) $input['location_geocoding_endpoint']), '/');
+            $input['location_geocoding_endpoint'] = preg_match('#^https://[^\s]+$#', $endpoint)
+                ? $endpoint
+                : 'https://nominatim.openstreetmap.org';
+        }
+
         // Empty string (no native palette chosen) is always valid — only a non-empty value has to
         // match a real GLPI palette key, same "trust nothing free-text" reasoning as
         // ldap_rights_profile above.
@@ -495,7 +509,7 @@ class Config extends CommonDBTM
             $input['native_palette'] = '';
         }
 
-        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled', 'notification_branding_enabled', 'manufacturer_dictionary_enabled'] as $field) {
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled', 'notification_branding_enabled', 'manufacturer_dictionary_enabled', 'location_geocoding_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

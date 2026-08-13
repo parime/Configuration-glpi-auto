@@ -979,6 +979,30 @@ msgstr "💻 TI puro"
 msgid "🧩 Multi-services (toutes verticales)"
 msgstr "🧩 Multiservicio (todos los sectores)"
 
+msgid "Assistant d'adresse (suggestions de rue pendant la saisie, ville pré-remplie depuis le code postal)"
+msgstr "Asistente de dirección (sugerencias de calle mientras se escribe, ciudad autocompletada a partir del código postal)"
+
+msgid "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement."
+msgstr "Envía cada pulsación a un servicio externo (OpenStreetMap Nominatim por defecto) para proponer sugerencias — desactivado por defecto, se activa voluntariamente."
+
+msgid "Service de géocodage (avancé)"
+msgstr "Servicio de geocodificación (avanzado)"
+
+msgid "Instance Nominatim/Photon auto-hébergée ou compatible, pour un usage réel au-delà d'un essai ponctuel."
+msgstr "Instancia autoalojada de Nominatim/Photon o servicio compatible, para un uso real más allá de una prueba puntual."
+
+msgid "Rue, numéro..."
+msgstr "Calle, número..."
+
+msgid "Code postal"
+msgstr "Código postal"
+
+msgid "Ville"
+msgstr "Ciudad"
+
+msgid "Pays"
+msgstr "País"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Perfil de configuración"
