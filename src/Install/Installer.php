@@ -153,6 +153,7 @@ final class Installer
                 `notification_branding_enabled` tinyint NOT NULL DEFAULT 0,
                 `location_geocoding_enabled` tinyint NOT NULL DEFAULT 0,
                 `location_geocoding_endpoint` varchar(255) NOT NULL DEFAULT 'https://nominatim.openstreetmap.org',
+                `project_templates_enabled` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -287,6 +288,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'notification_branding_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'location_geocoding_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'location_geocoding_endpoint', 'string', ['value' => 'https://nominatim.openstreetmap.org']);
+            $migration->addField(self::CONFIGS_TABLE, 'project_templates_enabled', 'bool', ['value' => 0]);
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes

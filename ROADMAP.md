@@ -438,12 +438,15 @@ la demande de l'utilisateur, plus quelques questions transverses posées dans la
   tient toujours (`is_finished`/`color` déjà cohérents nativement sur les 3 statuts).
 - Rôles d'équipe (`ProjectTeam`) — constante PHP figée (`Team::ROLE_MEMBER`...), pas une liste
   configurable, rien à construire.
-- **Gap réel identifié, pas encore traité** : GLPI permet de sauver un projet existant comme
-  "modèle" (`is_template`) et d'en recréer un nouveau à partir de ce modèle — comme les gabarits de
-  ticket, mais **le plugin n'en fournit aucun**. Un ou deux modèles de projet pré-structurés (ex.
-  "Déploiement standard" avec tâches type déjà liées, sur les `ProjectType`/`ProjectTaskType`
-  existants) apporteraient la même valeur que `TaskTemplateBuilder` côté tickets. Pas encore cadré
-  avec l'utilisateur, pas de version cible.
+- **Gap réel identifié — fait (v0.34.0, 2026-08-13).** GLPI permet de sauver un projet existant
+  comme "modèle" (`is_template`) et d'en recréer un nouveau à partir de ce modèle — comme les
+  gabarits de ticket, mais le plugin n'en fournissait aucun. `ProjectTemplateBuilder` construit
+  deux modèles pré-structurés (« Déploiement standard », 6 tâches ; « Projet interne — cycle
+  court », 3 tâches) en s'appuyant sur `Project::getCloneRelations()` (confirmé dans le code
+  source de GLPI : inclut `ProjectTask::class`, donc le sélecteur de gabarit natif clone déjà les
+  tâches automatiquement). Vérifié en réel via le vrai flux `project.form.php?...&withtemplate=2` :
+  les 6 tâches apparaissent bien sur le nouveau projet, sans rien à construire côté UI. Détail
+  complet dans `CHANGELOG.md` `[0.34.0]`.
 
 **Variables/balises dans les gabarits (suivi/tâche/solution/ticket) — correction en cours d'audit.**
 Première conclusion erronée : le système `##ticket.title##`
