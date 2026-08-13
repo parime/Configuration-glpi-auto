@@ -640,13 +640,13 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    arbre à 2 niveaux (Bâtiment A > Étage 1) créé avec le bon rattachement `locations_id`, y compris
    quand l'entité parente elle-même n'a pas de lieu propre (rattachement direct à la racine, même
    règle de compression que pour l'arbre d'entités).
-2. **Catégories d'utilisateur (`UserCategory`)** — vide nativement, l'utilisateur demande à quoi ça
-   sert. Vérifié dans le code de GLPI : champ réel sur `User` (`usercategories_id`), importable
-   depuis un attribut LDAP (`AuthLDAP::category_field`), utilisé comme critère de ciblage de
-   notification (`NotificationTargetCommonITILObject`) et comme axe de statistiques (`Stat.php`).
-   Un axe de classification RH générique (Employé/Prestataire/Stagiaire/Alternant/Consultant...),
-   indépendant des profils/droits GLPI — candidat solide pour un contenu générique universel, du
-   même type que `PendingReason`/`State`.
+2. ✅ **Catégories d'utilisateur (`UserCategory`) — fait (v0.41.0, 2026-08-13).** Vide nativement,
+   l'utilisateur a demandé à quoi ça sert. Vérifié dans le code de GLPI : champ réel sur `User`
+   (`usercategories_id`), importable depuis un attribut LDAP (`AuthLDAP::category_field`), utilisé
+   comme critère de ciblage de notification (`NotificationTargetCommonITILObject`) et comme axe de
+   statistiques (`Stat.php`) — indépendant des profils/droits GLPI. `UserCategoryBuilder` (nouveau) :
+   6 catégories génériques (Employé, Prestataire externe, Stagiaire, Alternant, Intérimaire,
+   Consultant). Vérifié en réel : les 6 lignes créées dans `glpi_usercategories`.
 3. **Opérateurs téléphoniques (`LineOperator`) et types de fibre
    (`NetworkPortFiberchannelType`)** — tous deux vides nativement. Attention : ce ne sont pas les
    mêmes natures de liste. `LineOperator` = noms de marque d'opérateurs télécom, propres à chaque

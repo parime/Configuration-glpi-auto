@@ -1034,6 +1034,25 @@
         </div>
 
         <div class="form-check form-switch mb-2">
+          <input type="hidden" name="user_categories_enabled" value="0">
+          <input type="checkbox" name="user_categories_enabled" value="1" class="form-check-input" id="cga-user-categories-enabled" {{ config.user_categories_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-user-categories-enabled">{{ __('Créer des catégories d\'utilisateur courantes', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-user-categories-fields" style="display: none;" class="mb-3">
+          <p class="text-muted small mb-1">{{ __('Classification indépendante des profils/droits — qui est la personne pour l\'organisation (salarié, prestataire...), pas ce qu\'elle peut faire dans GLPI. Importable depuis un attribut LDAP, utilisable en critère de ciblage de notification et en statistiques.', 'configurationglpiauto') }}</p>
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="user_category_icons_enabled" value="0">
+            <input type="checkbox" name="user_category_icons_enabled" value="1" class="form-check-input" id="cga-user-category-icons-enabled" {{ config.user_category_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-user-category-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <ul class="mb-0">
+            {% for category in user_categories_preview %}
+              <li><span class="cga-user-category-icon" style="display: none;">{{ category.icon }}</span> {{ category.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
           <input type="hidden" name="kb_categories_enabled" value="0">
           <input type="checkbox" name="kb_categories_enabled" value="1" class="form-check-input" id="cga-kb-categories-enabled" {{ config.kb_categories_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-kb-categories-enabled">{{ __('Créer les catégories de la base de connaissances', 'configurationglpiauto') }}</label>
@@ -2274,6 +2293,8 @@
   var manufacturersEnabledInput = wireSimpleToggle('cga-manufacturers-enabled', 'cga-manufacturers-fields');
   wireIconsToggle('cga-manufacturer-icons-enabled', '.cga-manufacturer-icon');
   var requestTypeTranslationsEnabledInput = wireSimpleToggle('cga-request-type-translations-enabled', 'cga-request-type-translations-fields');
+  var userCategoriesEnabledInput = wireSimpleToggle('cga-user-categories-enabled', 'cga-user-categories-fields');
+  wireIconsToggle('cga-user-category-icons-enabled', '.cga-user-category-icon');
   var kbCategoriesEnabledInput = document.getElementById('cga-kb-categories-enabled');
   var kbCategoriesFields = document.getElementById('cga-kb-categories-fields');
   function toggleKbCategoriesFields() {

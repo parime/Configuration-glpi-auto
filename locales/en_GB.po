@@ -1087,6 +1087,15 @@ msgstr "Website"
 msgid "Téléphone"
 msgstr "Phone"
 
+msgid "%d catégories d'utilisateur créées."
+msgstr "%d user categories created."
+
+msgid "Classification indépendante des profils/droits — qui est la personne pour l'organisation (salarié, prestataire...), pas ce qu'elle peut faire dans GLPI. Importable depuis un attribut LDAP, utilisable en critère de ciblage de notification et en statistiques."
+msgstr "A classification independent of profiles/rights — who the person is to the organization (employee, contractor...), not what they can do in GLPI. Importable from an LDAP attribute, usable as a notification-targeting criterion and in statistics."
+
+msgid "Créer des catégories d'utilisateur courantes"
+msgstr "Create common user categories"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Configuration profile"
