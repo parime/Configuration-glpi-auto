@@ -61,6 +61,9 @@ msgstr "%d regola/e di diritti LDAP create."
 msgid "%d règle(s) de droits par fonction créées."
 msgstr "%d regola/e di diritti per funzione create."
 
+msgid "%d règle(s) d'unicité de numéro de série créées."
+msgstr "%d regola/e di unicità del numero di serie create."
+
 msgid "%d services créés dans le catalogue."
 msgstr "%d servizi creati nel catalogo."
 
@@ -1044,6 +1047,12 @@ msgstr "Una classificazione indipendente da profili/diritti — chi è la person
 
 msgid "Créer des catégories d'utilisateur courantes"
 msgstr "Crea categorie utente comuni"
+
+msgid "Interdire les numéros de série en double"
+msgstr "Vietare i numeri di serie duplicati"
+
+msgid "Bloque la création ou la modification d'un élément si son numéro de série existe déjà sur un autre élément du même type — évite les doublons issus d'une saisie manuelle ou d'un import incohérent. Un numéro de série vide n'est jamais considéré comme un doublon."
+msgstr "Blocca la creazione o la modifica di un elemento se il suo numero di serie esiste già su un altro elemento dello stesso tipo — evita duplicati dovuti a inserimento manuale o a un'importazione incoerente. Un numero di serie vuoto non è mai considerato un duplicato."
 
 msgid "Catégories de tickets"
 msgstr "Categorie di ticket"

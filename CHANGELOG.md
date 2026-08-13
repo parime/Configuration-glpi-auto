@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.43.0] - 2026-08-13
+
+### Added
+- `FieldUnicityBuilder` (nouveau) : interdit les numéros de série en double sur les six types
+  d'actifs matériel sérialisables (Ordinateurs, Écrans, Matériel réseau, Périphériques, Téléphones,
+  Imprimantes) via `FieldUnicity`, native GLPI, vide par défaut. Un numéro de série vide n'est
+  jamais traité comme un doublon (confirmé dans `CommonDBTM::checkUnicity()`). Règle unique par
+  type, entité racine + `is_recursive` (s'applique à toute l'instance — pas de variante par
+  site/client pertinente ici). Toggle dédié (`field_unicity_enabled`), désactivé par défaut. Audit
+  préalable confirmé faisable : `FieldUnicity::$can_be_translated` est `false` dans le cœur GLPI,
+  donc pas de case à cocher icônes (les lignes `DropdownTranslation` ne seraient jamais lues).
+
 ## [0.42.0] - 2026-08-13
 
 ### Changed
