@@ -1117,8 +1117,8 @@ msgstr "Crea i comuni operatori telefonici francesi"
 msgid "%d types de matériel créés."
 msgstr "%d tipi di dispositivo creati."
 
-msgid "Créer les types courants pour Ordinateurs, Écrans, Matériel réseau, Périphériques, Téléphones, Imprimantes"
-msgstr "Crea i tipi comuni per Computer, Monitor, Apparecchiature di rete, Periferiche, Telefoni, Stampanti"
+msgid "Créer les types courants de matériel (ordinateurs, écrans, réseau, racks, câbles, disques durs...)"
+msgstr "Crea i tipi comuni di hardware (computer, monitor, rete, rack, cavi, dischi rigidi...)"
 
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"

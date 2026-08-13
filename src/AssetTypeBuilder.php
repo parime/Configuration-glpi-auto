@@ -17,12 +17,20 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use CableType;
+use CartridgeItemType;
+use CertificateType;
 use ComputerType;
+use DeviceBatteryType;
+use DeviceCaseType;
+use DeviceHardDriveType;
 use MonitorType;
 use NetworkEquipmentType;
+use PDUType;
 use PeripheralType;
 use PhoneType;
 use PrinterType;
+use RackType;
 
 /**
  * Turns on `asset_types_enabled` into real `*Type` rows (`glpi_computertypes`,
@@ -35,19 +43,35 @@ use PrinterType;
  * own per-itemtype content research before seeding, deliberately left for a later, separately
  * scoped pass (see ROADMAP.md) rather than rushed through in one block.
  *
+ * Second pass (v0.51.0) added 8 more: Racks/PDU (physical infrastructure, same reasoning as the
+ * matching `FieldUnicityBuilder` entries), Certificats (SSL/TLS, signature de code, client,
+ * S/MIME — standard PKI use-case categories), Disques durs/Batteries/Boîtiers de composant
+ * (`DeviceHardDrive`/`DeviceBattery`/`DeviceCase` — standard, stable hardware taxonomy, not
+ * vendor-specific), Câbles (Ethernet/fibre/alimentation/USB — physical media types, not brands),
+ * Cartouches d'impression (toner/encre/tambour/kit de maintenance). `Enclosure` (Châssis), also
+ * flagged as a candidate in the original audit, turned out to have no `Type` dropdown at all in
+ * GLPI core (`glpi_enclosuretypes` doesn't exist — confirmed via a direct `DESCRIBE`, not assumed
+ * from the table-name pattern) — dropped from scope entirely, not just deferred.
+ * `SoftwareLicenseType` deliberately deferred to a later pass despite being audited: unlike every
+ * other table here, it's a `CommonTreeDropdown` (`softwarelicensetypes_id`/`level`/
+ * `ancestors_cache`/`completename` columns) — needs the same care already given to
+ * `CategoryBuilder`'s tree-building, not a flat `add()` bolted onto this class.
+ *
  * Deliberately excluded from this batch despite being in the same native "Types" section:
  * `AgentType` (auto-created by `Agent::handleAgent()` the moment any real inventory agent
  * connects — seeding it ourselves would be redundant, not filling a real gap) and
  * `Assets_AssetType` (tied to a specific `AssetDefinition` a plugin/admin has to create first, not
  * a standalone global dropdown).
  *
- * All six `*Type` classes extend `CommonDropdown` (`ComputerType`/`MonitorType`/`PeripheralType`/
- * `PhoneType`/`PrinterType` via `CommonType`, `NetworkEquipmentType` directly) with no
- * `$can_be_translated` override, so the inherited default (`true`) applies — same icon mechanism as
- * `ManufacturerBuilder`.
+ * All 14 `*Type` classes extend `CommonDropdown` (directly or via `CommonType`/`CommonDeviceType`)
+ * with no `$can_be_translated` override, so the inherited default (`true`) applies — same icon
+ * mechanism as `ManufacturerBuilder`. Three (`RackType`/`PDUType`/`CertificateType`) also carry
+ * `entities_id`/`is_recursive` columns (confirmed via `DESCRIBE`) — scoped to the root entity,
+ * recursive, same as every other entity-scoped dropdown this plugin creates.
  */
 class AssetTypeBuilder
 {
+    private const ENTITY_SCOPED_ITEMTYPES = [RackType::class, PDUType::class, CertificateType::class];
     /**
      * @var array<string, array<int, array{name: string, icon: string}>>
      */
@@ -92,6 +116,55 @@ class AssetTypeBuilder
             ['name' => 'Multifonction', 'icon' => '📠'],
             ['name' => 'Imprimante d\'étiquettes', 'icon' => '🏷️'],
         ],
+        RackType::class => [
+            ['name' => 'Rack serveur 19″', 'icon' => '🗄️'],
+            ['name' => 'Rack réseau', 'icon' => '🔀'],
+            ['name' => 'Rack ouvert', 'icon' => '📐'],
+        ],
+        PDUType::class => [
+            ['name' => 'Basique', 'icon' => '🔌'],
+            ['name' => 'Mesuré (metered)', 'icon' => '📊'],
+            ['name' => 'Commuté (switched)', 'icon' => '🔀'],
+            ['name' => 'Commuté et mesuré', 'icon' => '⚡'],
+        ],
+        CertificateType::class => [
+            ['name' => 'SSL/TLS', 'icon' => '🔒'],
+            ['name' => 'Signature de code', 'icon' => '✍️'],
+            ['name' => 'Certificat client', 'icon' => '🪪'],
+            ['name' => 'S/MIME (messagerie)', 'icon' => '📧'],
+        ],
+        DeviceHardDriveType::class => [
+            ['name' => 'HDD', 'icon' => '💽'],
+            ['name' => 'SSD SATA', 'icon' => '💾'],
+            ['name' => 'SSD NVMe', 'icon' => '💾'],
+            ['name' => 'Hybride (SSHD)', 'icon' => '💿'],
+        ],
+        DeviceBatteryType::class => [
+            ['name' => 'Lithium-ion', 'icon' => '🔋'],
+            ['name' => 'Lithium-polymère', 'icon' => '🔋'],
+            ['name' => 'NiMH', 'icon' => '🔋'],
+            ['name' => 'Plomb-acide', 'icon' => '🔋'],
+        ],
+        DeviceCaseType::class => [
+            ['name' => 'Tour (Tower)', 'icon' => '🖥️'],
+            ['name' => 'Rack-mount', 'icon' => '🗄️'],
+            ['name' => 'Format compact (SFF)', 'icon' => '📦'],
+            ['name' => 'Tout-en-un (AIO)', 'icon' => '🖥️'],
+        ],
+        CableType::class => [
+            ['name' => 'Ethernet Cat5e', 'icon' => '🔌'],
+            ['name' => 'Ethernet Cat6', 'icon' => '🔌'],
+            ['name' => 'Ethernet Cat6a', 'icon' => '🔌'],
+            ['name' => 'Fibre optique', 'icon' => '💡'],
+            ['name' => 'Alimentation', 'icon' => '⚡'],
+            ['name' => 'USB', 'icon' => '🔌'],
+        ],
+        CartridgeItemType::class => [
+            ['name' => 'Toner', 'icon' => '🖨️'],
+            ['name' => 'Cartouche d\'encre', 'icon' => '🖋️'],
+            ['name' => 'Tambour (drum)', 'icon' => '🥁'],
+            ['name' => 'Kit de maintenance', 'icon' => '🧰'],
+        ],
     ];
 
     /**
@@ -128,11 +201,20 @@ class AssetTypeBuilder
 
     private function getOrCreate(string $itemtype, string $name): int
     {
+        $isEntityScoped = in_array($itemtype, self::ENTITY_SCOPED_ITEMTYPES, true);
+
         $item = new $itemtype();
-        if ($item->getFromDBByCrit(['name' => $name])) {
+        $crit = $isEntityScoped ? ['name' => $name, 'entities_id' => 0] : ['name' => $name];
+        if ($item->getFromDBByCrit($crit)) {
             return (int) $item->getID();
         }
 
-        return (int) $item->add(['name' => $name]);
+        $input = ['name' => $name];
+        if ($isEntityScoped) {
+            $input['entities_id'] = 0;
+            $input['is_recursive'] = 1;
+        }
+
+        return (int) $item->add($input);
     }
 }

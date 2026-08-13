@@ -9,7 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.50.0] - 2026-08-13
+## [0.51.0] - 2026-08-14
+
+### Added
+- `AssetTypeBuilder` étendu de 6 à 14 catégories : Racks (serveur 19″, réseau, ouvert), PDU
+  (basique, mesuré, commuté, commuté+mesuré — classification standard du secteur), Certificats
+  (SSL/TLS, signature de code, client, S/MIME), Disques durs (HDD, SSD SATA, SSD NVMe, hybride
+  SSHD), Batteries (Li-ion, Li-Po, NiMH, plomb-acide), Boîtiers (tour, rack-mount, SFF, AIO),
+  Câbles (Ethernet Cat5e/6/6a, fibre optique, alimentation, USB), Cartouches d'impression (toner,
+  encre, tambour, kit de maintenance) — 33 nouveaux types, 61 au total sur les 14 tables. Icônes
+  optionnelles incluses. Racks/PDU/Certificats sont scopés par entité (racine + récursif),
+  confirmé via `DESCRIBE` que ces 3 tables ont bien les colonnes `entities_id`/`is_recursive`,
+  contrairement aux 11 autres.
+- `Enclosure` (Châssis), candidat listé dans l'audit précédent, confirmé sans table `Type` du tout
+  dans GLPI (`glpi_enclosuretypes` n'existe pas) — écarté du périmètre, pas juste différé.
 
 ### Added
 - `AssetTypeBuilder` (nouveau) : crée des types courants pour les 6 catégories de matériel déjà
