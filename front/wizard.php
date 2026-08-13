@@ -22,6 +22,7 @@ use GlpiPlugin\Configurationglpiauto\ChangeProblemTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\DocumentManagementBuilder;
+use GlpiPlugin\Configurationglpiauto\EntityAddressBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
 use GlpiPlugin\Configurationglpiauto\FollowupLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
@@ -141,6 +142,32 @@ function collectLocationDataFromPost(): array
             $prefix = 'location_' . $field . '_';
             if (str_starts_with($key, $prefix)) {
                 $sanitized = sanitizeCoordinate((string) $value, $max);
+                if ($sanitized !== '') {
+                    $byPath[substr($key, strlen($prefix))][$field] = $sanitized;
+                }
+            }
+        }
+    }
+
+    return $byPath;
+}
+
+/**
+ * Collects every `entity_comms_<field>_<path>` field — `Entity`'s own `phonenumber`/`fax`/
+ * `website`/`email`, fields `Location` has no equivalent of, so they can't be folded into
+ * `collectLocationDataFromPost()`'s reused address data. Same path-based scan, only rendered by
+ * the wizard's JS when `entity_native_address_enabled` is checked.
+ *
+ * @return array<string, array{phonenumber?: string, fax?: string, website?: string, email?: string}>
+ */
+function collectEntityCommsFromPost(): array
+{
+    $byPath = [];
+    foreach (['phonenumber', 'fax', 'website', 'email'] as $field) {
+        $prefix = 'entity_comms_' . $field . '_';
+        foreach ($_POST as $key => $value) {
+            if (str_starts_with($key, $prefix)) {
+                $sanitized = trim((string) $value);
                 if ($sanitized !== '') {
                     $byPath[substr($key, strlen($prefix))][$field] = $sanitized;
                 }
@@ -363,6 +390,10 @@ if (isset($_POST['finish'])) {
     $locationDataByPath = !empty($config->fields['locations_enabled']) ? collectLocationDataFromPost() : [];
     $locationChildrenByPath = !empty($config->fields['locations_enabled']) ? collectLocationChildrenFromPost() : [];
     $locationsCreated = (new LocationBuilder())->build($config, $locationDataByPath, $locationChildrenByPath);
+    // Reuses $locationDataByPath (same physical address, no reason to type it twice) plus its own
+    // phonenumber/fax/website/email fields, with no Location equivalent.
+    $entityCommsByPath = !empty($config->fields['entity_native_address_enabled']) ? collectEntityCommsFromPost() : [];
+    $entityAddressesApplied = (new EntityAddressBuilder())->build($config, $locationDataByPath, $entityCommsByPath);
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
@@ -553,6 +584,9 @@ if (isset($_POST['finish'])) {
     }
     if ($requestTypeTranslationsCreated > 0) {
         $messages[] = sprintf(__('%d source(s) de demande traduites.', 'configurationglpiauto'), $requestTypeTranslationsCreated);
+    }
+    if ($entityAddressesApplied > 0) {
+        $messages[] = sprintf(__('%d fiche(s) d\'entité complétées avec leur adresse.', 'configurationglpiauto'), $entityAddressesApplied);
     }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 

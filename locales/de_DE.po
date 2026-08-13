@@ -1066,6 +1066,27 @@ msgstr "Untergeordnete Standorte (Gebäude, Etage, Raum...)"
 msgid "Nom du lieu enfant (ex. Bâtiment A)"
 msgstr "Name des untergeordneten Standorts (z. B. Gebäude A)"
 
+msgid "%d fiche(s) d'entité complétées avec leur adresse."
+msgstr "%d Entitätsdatensatz/-sätze mit Adresse vervollständigt."
+
+msgid "Compléter aussi la fiche adresse native de chaque entité (GLPI > Entités > Adresse)"
+msgstr "Auch die native Adresskarte jeder Entität ausfüllen (GLPI > Entitäten > Adresse)"
+
+msgid "E-mail"
+msgstr "E-Mail"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Reprend l'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper — ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité."
+msgstr "Übernimmt die unten bereits eingegebene Adresse für jede Entität, ohne sie erneut einzugeben — fügt nur Telefon/Fax/Website/E-Mail hinzu, spezifisch für den Entitätsdatensatz."
+
+msgid "Site web"
+msgstr "Website"
+
+msgid "Téléphone"
+msgstr "Telefon"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Konfigurationsprofil"

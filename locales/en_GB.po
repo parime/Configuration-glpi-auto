@@ -1066,6 +1066,27 @@ msgstr "Child locations (building, floor, room...)"
 msgid "Nom du lieu enfant (ex. Bâtiment A)"
 msgstr "Child location name (e.g. Building A)"
 
+msgid "%d fiche(s) d'entité complétées avec leur adresse."
+msgstr "%d entity record(s) completed with their address."
+
+msgid "Compléter aussi la fiche adresse native de chaque entité (GLPI > Entités > Adresse)"
+msgstr "Also fill in each entity's own native address tab (GLPI > Entities > Address)"
+
+msgid "E-mail"
+msgstr "Email"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Reprend l'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper — ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité."
+msgstr "Reuses the address already entered below for each entity, without retyping it — just adds phone/fax/website/email, specific to the entity record."
+
+msgid "Site web"
+msgstr "Website"
+
+msgid "Téléphone"
+msgstr "Phone"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Configuration profile"
