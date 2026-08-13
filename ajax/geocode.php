@@ -62,9 +62,12 @@ if ($endpoint === '' || !preg_match('#^https://#', $endpoint)) {
 }
 
 // Free-form query ("12 rue de la Paix, Paris") or a postcode-only lookup (city auto-fill) —
-// never both at once, the caller picks one mode.
+// never both at once, the caller picks one mode. `town`/`country` are optional hints from
+// whatever the admin has already typed in those fields, on either mode.
 $query = trim((string) ($_GET['q'] ?? ''));
 $postcode = trim((string) ($_GET['postcode'] ?? ''));
+$town = trim((string) ($_GET['town'] ?? ''));
+$country = trim((string) ($_GET['country'] ?? ''));
 
 if (mb_strlen($query) < 3 && mb_strlen($postcode) < 3) {
     echo json_encode([]);
@@ -85,7 +88,17 @@ if ($postcode !== '') {
     // dominant-audience default (same reasoning as the hardcoded French public holidays already
     // used elsewhere) when that field is still empty.
     $params['postalcode'] = mb_substr($postcode, 0, 16);
-    $country = trim((string) ($_GET['country'] ?? ''));
+    $params['country'] = $country !== '' ? mb_substr($country, 0, 100) : 'France';
+} elseif ($town !== '' || $country !== '') {
+    // Same ambiguity problem as the postcode branch, confirmed live: a plain "avenue" query with
+    // nothing else to go on matches streets anywhere in France (or the world). Nominatim's
+    // *structured* query mode (separate street/city/country fields, never combined with a plain
+    // `q`) narrows the search to whatever the admin has already filled in above the street field,
+    // rather than searching the whole country for a street name alone.
+    $params['street'] = mb_substr($query, 0, 200);
+    if ($town !== '') {
+        $params['city'] = mb_substr($town, 0, 100);
+    }
     $params['country'] = $country !== '' ? mb_substr($country, 0, 100) : 'France';
 } else {
     $params['q'] = mb_substr($query, 0, 200);
@@ -114,7 +127,9 @@ try {
 }
 
 // Trim to just what the wizard's JS actually needs — never forward the full, sometimes very large
-// Nominatim payload (bounding boxes, OSM internal ids...) to the browser.
+// Nominatim payload (bounding boxes, OSM internal ids...) to the browser. `lat`/`lon` are always
+// present on every Nominatim result (top-level, not under `address`) — glpi_locations has its own
+// `latitude`/`longitude` columns, unused until now.
 $suggestions = [];
 foreach ($results as $result) {
     $address = $result['address'] ?? [];
@@ -125,6 +140,8 @@ foreach ($results as $result) {
         'postcode' => (string) ($address['postcode'] ?? ''),
         'town' => (string) ($address['city'] ?? $address['town'] ?? $address['village'] ?? ''),
         'country' => (string) ($address['country'] ?? ''),
+        'latitude' => (string) ($result['lat'] ?? ''),
+        'longitude' => (string) ($result['lon'] ?? ''),
     ];
 }
 

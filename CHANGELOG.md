@@ -9,6 +9,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.35.0] - 2026-08-13
+
+Suite de l'assistant d'adresse (v0.33.0) : coordonnées GPS + deux vrais bugs remontés par
+l'utilisateur en testant la fonctionnalité en réel.
+
+### Added
+- Coordonnées GPS (`glpi_locations.latitude`/`longitude`, colonnes natives GLPI jamais utilisées
+  jusqu'ici) : récupérées automatiquement depuis Nominatim (une suggestion de rue choisie les
+  écrase toujours ; le centroïde d'un code postal ne les remplit que si rien n'est déjà saisi),
+  champs restant éditables à la main sinon.
+
+### Fixed
+- **"si je tape une adresse il complete ou sugère... il me propose des chose qui ne sont pas a
+  paris"** — la recherche de rue en texte libre ("avenue") n'était jamais restreinte à la
+  ville/pays déjà saisis, remontant des résultats partout en France (même bug déjà corrigé pour le
+  code postal seul en v0.33.0, pas encore appliqué ici). Corrigé en passant `town`/`country` à
+  `ajax/geocode.php`, qui bascule alors sur le mode de recherche *structurée* de Nominatim
+  (`street`+`city`+`country` séparés) plutôt qu'une recherche libre sur tout le pays.
+- **"pas hyper lisible"** — la liste de suggestions utilisait `list-group`, sans fond opaque
+  propre : le texte se superposait visuellement aux champs code postal/ville/pays et aux bascules
+  en dessous (confirmé sur une vraie capture d'écran). Corrigé en réutilisant `dropdown-menu`
+  (Bootstrap/Tabler, fond/bordure/ombre déjà corrects nativement) à la place.
+- **Bug latent trouvé pendant cette même correction, avant toute mise en ligne** : `dropdown-menu`
+  est masqué par sa propre règle CSS (`display: none`, normalement levée par le composant JS
+  Bootstrap natif, non utilisé ici) — `suggestions.style.display = ''` retombait donc sur cette
+  règle et gardait la liste invisible même une fois remplie de vrais résultats. Corrigé en forçant
+  `'block'` plutôt qu'une chaîne vide. Trouvé en vérifiant l'état réel du DOM après une recherche,
+  pas juste en relisant le code.
+
 ## [0.34.0] - 2026-08-13
 
 Modèles de projet pré-structurés — dernier chantier ouvert du sixième audit (v0.26.0) : GLPI

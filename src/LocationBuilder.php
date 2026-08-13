@@ -28,12 +28,13 @@ use Location;
  *
  * Unlike `TaskCategoryBuilder`/`ManufacturerBuilder`, there's no universal "good practice" list of
  * location names to invent — a `Location` is real address/premises data (`glpi_locations` has
- * `address`/`postcode`/`town`/`country`/`building`/`room` columns), inherently specific to each
- * organization. What *is* universal is that whatever site/client structure the admin already
- * described as an entity tree almost always corresponds 1:1 to physical locations too — so this
- * builder connects the dots rather than asking the admin to re-type the same site names a second
- * time as locations. `entities_id`-scoped (not global) so an MSP client only ever sees its own
- * location, same data-isolation reasoning as `RuleRightBuilder`/`SlaBuilder`.
+ * `address`/`postcode`/`town`/`country`/`building`/`room`/`latitude`/`longitude` columns),
+ * inherently specific to each organization. What *is* universal is that whatever site/client
+ * structure the admin already described as an entity tree almost always corresponds 1:1 to
+ * physical locations too — so this builder connects the dots rather than asking the admin to
+ * re-type the same site names a second time as locations. `entities_id`-scoped (not global) so an
+ * MSP client only ever sees its own location, same data-isolation reasoning as
+ * `RuleRightBuilder`/`SlaBuilder`.
  *
  * No-op on an empty entity tree (mono-entité) — same "nothing to scaffold without at least one
  * site" rule as `RuleRightBuilder`, no location name to invent out of thin air.
@@ -41,7 +42,7 @@ use Location;
 class LocationBuilder
 {
     /**
-     * @param array<int, array{address?: string, postcode?: string, town?: string, country?: string}> $topLevelAddresses
+     * @param array<int, array{address?: string, postcode?: string, town?: string, country?: string, latitude?: string, longitude?: string}> $topLevelAddresses
      *        Real address data collected by the wizard's "Lieux" step (street-autocomplete +
      *        postcode→town assistant), keyed by the same top-level-entity index used everywhere
      *        else in the wizard (`entity_color_N`/`entity_logo_N`). Only ever applied to the
@@ -65,7 +66,7 @@ class LocationBuilder
 
     /**
      * @param array{name: string, children: array} $node
-     * @param array{address?: string, postcode?: string, town?: string, country?: string} $address
+     * @param array{address?: string, postcode?: string, town?: string, country?: string, latitude?: string, longitude?: string} $address
      */
     private function buildNode(array $node, int $parentEntityId, int $parentLocationId, array $address = []): int
     {

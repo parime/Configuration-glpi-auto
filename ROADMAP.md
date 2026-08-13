@@ -565,6 +565,18 @@ mondiale sans un pays associé (« 69001 » = Lyon *ou* un quartier de Zaporijji
 réel contre le vrai service Nominatim (pas de mock) via Playwright : suggestions de rue réelles,
 ville correctement résolue depuis le code postal, données persistées sur le bon `Location`.
 
+**Suite (v0.35.0, 2026-08-13)** — deux vrais problèmes remontés par l'utilisateur en testant la
+fonctionnalité (capture d'écran à l'appui) : la recherche de rue en texte libre n'était pas non
+plus restreinte à la ville/pays déjà saisis (même défaut que le code postal seul, pas encore
+corrigé ici — même correctif étendu, recherche structurée Nominatim `street`+`city`+`country`), et
+la liste de suggestions se superposait visuellement aux champs en dessous (`list-group` sans fond
+opaque propre → `dropdown-menu` Bootstrap/Tabler). Un second bug latent trouvé pendant cette
+correction, avant mise en ligne : `dropdown-menu` est masqué par sa propre règle CSS, jamais levée
+sans le composant JS Bootstrap natif — la liste restait invisible même remplie de vrais résultats
+tant que l'affichage forcé restait une chaîne vide au lieu de `'block'`. Coordonnées GPS
+(`glpi_locations.latitude`/`longitude`) ajoutées au passage : déjà fournies par Nominatim, jamais
+exploitées jusqu'ici. Détail complet dans `CHANGELOG.md` `[0.35.0]`.
+
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
 2. **Fait (v0.29.0, 2026-08-12).** Documentation GitHub avec captures d'écran de chaque étape,
