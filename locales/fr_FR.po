@@ -337,9 +337,6 @@ msgstr "Créer un calendrier d'horaires d'ouverture"
 msgid "Créer un calendrier pour cette entité"
 msgstr "Créer un calendrier pour cette entité"
 
-msgid "Créer un lieu par entité de l'arborescence"
-msgstr "Créer un lieu par entité de l'arborescence"
-
 msgid "Créer un modèle de changement et de problème par défaut"
 msgstr "Créer un modèle de changement et de problème par défaut"
 
@@ -628,9 +625,6 @@ msgstr "Raisons d'attente"
 msgid "Relance toutes les"
 msgstr "Relance toutes les"
 
-msgid "Reprend exactement l'arborescence construite à l'étape 2 (même noms, même imbrication) — un point de départ, à préciser ensuite avec de vraies adresses."
-msgstr "Reprend exactement l'arborescence construite à l'étape 2 (même noms, même imbrication) — un point de départ, à préciser ensuite avec de vraies adresses."
-
 msgid "Retirer"
 msgstr "Retirer"
 
@@ -771,9 +765,6 @@ msgstr "Votre société (MSP)"
 
 msgid "Vérification de l'environnement"
 msgstr "Vérification de l'environnement"
-
-msgid "Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits de projet."
-msgstr "Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits de projet."
 
 msgid "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
 msgstr "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
@@ -979,9 +970,6 @@ msgstr "💻 IT pur"
 msgid "🧩 Multi-services (toutes verticales)"
 msgstr "🧩 Multi-services (toutes verticales)"
 
-msgid "Assistant d'adresse (suggestions de rue pendant la saisie, ville pré-remplie depuis le code postal)"
-msgstr "Assistant d'adresse (suggestions de rue pendant la saisie, ville pré-remplie depuis le code postal)"
-
 msgid "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement."
 msgstr "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement."
 
@@ -1023,6 +1011,42 @@ msgstr "Latitude"
 
 msgid "Longitude"
 msgstr "Longitude"
+
+msgid "+ Ajouter une adresse"
+msgstr "+ Ajouter une adresse"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "Altitude"
+msgstr "Altitude"
+
+msgid "Assistant d'adresse (suggestions de rue pendant la saisie, ville/région/pays pré-remplis)"
+msgstr "Assistant d'adresse (suggestions de rue pendant la saisie, ville/région/pays pré-remplis)"
+
+msgid "Associer une adresse à des entités de l'arborescence"
+msgstr "Associer une adresse à des entités de l'arborescence"
+
+msgid "Bâtiment"
+msgstr "Bâtiment"
+
+msgid "Code"
+msgstr "Code"
+
+msgid "Commentaire"
+msgstr "Commentaire"
+
+msgid "Parcourez l'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur les entités qui en ont une (site, agence...) — les autres n'auront aucun lieu créé, comme sur une installation GLPI neuve."
+msgstr "Parcourez l'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur les entités qui en ont une (site, agence...) — les autres n'auront aucun lieu créé, comme sur une installation GLPI neuve."
+
+msgid "Pièce"
+msgstr "Pièce"
+
+msgid "Réduire"
+msgstr "Réduire"
+
+msgid "Région / État"
+msgstr "Région / État"
 
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"

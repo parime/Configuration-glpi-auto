@@ -577,6 +577,24 @@ tant que l'affichage forcé restait une chaîne vide au lieu de `'block'`. Coord
 (`glpi_locations.latitude`/`longitude`) ajoutées au passage : déjà fournies par Nominatim, jamais
 exploitées jusqu'ici. Détail complet dans `CHANGELOG.md` `[0.35.0]`.
 
+**Refonte (v0.36.0, 2026-08-13)** — retour utilisateur direct après usage réel de l'assistant :
+« tu met les entité dans les lieu, mais s'en ai pas, par contre faire en sorte que l'on puisse
+saisir ou non une adresse pour chaque entité et sous entité, se serais bien ». Confirmait un vrai
+défaut de conception : `LocationBuilder` mirrorait TOUTE l'arborescence d'entités en Lieux sans
+condition (un département interne sans adresse propre devenait quand même un Lieu), avec adresse
+saisissable seulement sur les nœuds racine. Reconstruit pour qu'un `Location` ne soit créé QUE là
+où l'admin saisit effectivement quelque chose, à n'importe quel niveau de l'arbre — l'étape 15
+affiche désormais l'arborescence complète avec un bouton « + Ajouter une adresse » repliable par
+nœud. Deux demandes supplémentaires dans la foulée, toutes deux traitées dans la même version :
+alias (`glpi_locations.alias`, jamais utilisé) et l'ensemble des champs natifs de `glpi_locations`
+(code, commentaire, état/région, bâtiment, pièce, altitude — pas seulement adresse/code postal/
+ville/pays). Un bug trouvé pendant cette refonte, avant mise en ligne : le validateur de
+coordonnées rejetait toute altitude à 4 chiffres (limite à 3 chiffres avant la virgule, correcte
+pour latitude/longitude mais pas pour une altitude de montagne). Vérifié en réel : une entité sans
+donnée ne produit aucun Lieu, une sous-entité avec adresse+alias+tous les champs produit un
+`Location` correctement scopé et rattaché à la racine (son parent n'ayant pas de Lieu). Détail
+complet dans `CHANGELOG.md` `[0.36.0]`.
+
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
 2. **Fait (v0.29.0, 2026-08-12).** Documentation GitHub avec captures d'écran de chaque étape,

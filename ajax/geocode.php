@@ -139,6 +139,7 @@ foreach ($results as $result) {
         'address' => $road,
         'postcode' => (string) ($address['postcode'] ?? ''),
         'town' => (string) ($address['city'] ?? $address['town'] ?? $address['village'] ?? ''),
+        'state' => (string) ($address['state'] ?? ''),
         'country' => (string) ($address['country'] ?? ''),
         'latitude' => (string) ($result['lat'] ?? ''),
         'longitude' => (string) ($result['lon'] ?? ''),

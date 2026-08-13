@@ -337,9 +337,6 @@ msgstr "Crear un calendario de horario laboral"
 msgid "Créer un calendrier pour cette entité"
 msgstr "Crear un calendario para esta entidad"
 
-msgid "Créer un lieu par entité de l'arborescence"
-msgstr "Crear una ubicación por entidad del árbol"
-
 msgid "Créer un modèle de changement et de problème par défaut"
 msgstr "Crear una plantilla predeterminada de cambio y problema"
 
@@ -628,9 +625,6 @@ msgstr "Motivos de espera"
 msgid "Relance toutes les"
 msgstr "Recordatorio cada"
 
-msgid "Reprend exactement l'arborescence construite à l'étape 2 (même noms, même imbrication) — un point de départ, à préciser ensuite avec de vraies adresses."
-msgstr "Recoge exactamente el árbol construido en el paso 2 (mismos nombres, misma anidación) — un punto de partida, a precisar después con direcciones reales."
-
 msgid "Retirer"
 msgstr "Quitar"
 
@@ -771,9 +765,6 @@ msgstr "Su empresa (MSP)"
 
 msgid "Vérification de l'environnement"
 msgstr "Verificación del entorno"
-
-msgid "Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits de projet."
-msgstr "Revise sus elecciones antes de finalizar — este paso crea realmente las entidades, el calendario, los SLA, las categorías, el catálogo de servicios, los estados, los motivos de espera, la personalización gráfica, los ajustes generales, las plantillas de tickets, los derechos LDAP, las etiquetas de tareas/soluciones/aprobaciones, las ubicaciones/fabricantes/categorías de base de conocimiento, y los tipos/plantillas de proyecto."
 
 msgid "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
 msgstr "aplica de inmediato los ajustes recomendados de arriba para el perfil seleccionado, sin repasar cada uno de los 17 pasos. Ideal para una instalación simple/de un solo sitio; para una estructura multisitio o MSP, el árbol real (paso 2) todavía queda por construir después, de lo contrario todo se aplica solo a la entidad raíz."
@@ -979,9 +970,6 @@ msgstr "💻 TI puro"
 msgid "🧩 Multi-services (toutes verticales)"
 msgstr "🧩 Multiservicio (todos los sectores)"
 
-msgid "Assistant d'adresse (suggestions de rue pendant la saisie, ville pré-remplie depuis le code postal)"
-msgstr "Asistente de dirección (sugerencias de calle mientras se escribe, ciudad autocompletada a partir del código postal)"
-
 msgid "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement."
 msgstr "Envía cada pulsación a un servicio externo (OpenStreetMap Nominatim por defecto) para proponer sugerencias — desactivado por defecto, se activa voluntariamente."
 
@@ -1023,6 +1011,42 @@ msgstr "Latitud"
 
 msgid "Longitude"
 msgstr "Longitud"
+
+msgid "+ Ajouter une adresse"
+msgstr "+ Añadir una dirección"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "Altitude"
+msgstr "Altitud"
+
+msgid "Assistant d'adresse (suggestions de rue pendant la saisie, ville/région/pays pré-remplis)"
+msgstr "Asistente de dirección (sugerencias de calle mientras se escribe, ciudad/región/país autocompletados)"
+
+msgid "Associer une adresse à des entités de l'arborescence"
+msgstr "Asociar una dirección a entidades del árbol"
+
+msgid "Bâtiment"
+msgstr "Edificio"
+
+msgid "Code"
+msgstr "Código"
+
+msgid "Commentaire"
+msgstr "Comentario"
+
+msgid "Parcourez l'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur les entités qui en ont une (site, agence...) — les autres n'auront aucun lieu créé, comme sur une installation GLPI neuve."
+msgstr "Recorra el árbol de abajo y abra \"Añadir una dirección\" en las entidades que tengan una (sede, sucursal...) — las demás no tendrán ninguna ubicación creada, igual que en una instalación GLPI nueva."
+
+msgid "Pièce"
+msgstr "Habitación"
+
+msgid "Réduire"
+msgstr "Contraer"
+
+msgid "Région / État"
+msgstr "Región / Estado"
 
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
