@@ -1018,6 +1018,12 @@ msgstr "Revise sus elecciones antes de finalizar — este paso crea realmente la
 msgid "modèles de projet"
 msgstr "plantillas de proyecto"
 
+msgid "Latitude"
+msgstr "Latitud"
+
+msgid "Longitude"
+msgstr "Longitud"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Perfil de configuración"

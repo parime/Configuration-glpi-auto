@@ -84,6 +84,24 @@ function buildEntityLogoDataUri(array $file): ?string
 }
 
 /**
+ * Validates a GPS coordinate typed or auto-filled on the Lieux step (`ajax/geocode.php` normally
+ * fills these from Nominatim, but the field stays a plain editable text input, so a hand-typed or
+ * pasted value is just as possible) — same "trust nothing free-text" reasoning already applied to
+ * `branding_primary_color`/`native_palette`/`location_geocoding_endpoint`. Returns '' (silently
+ * dropped by the caller's `array_filter`) rather than throwing: same "never block finishing the
+ * wizard over an optional field" posture as everywhere else in this file.
+ */
+function sanitizeCoordinate(string $value, float $max): string
+{
+    $value = trim($value);
+    if ($value === '' || !preg_match('/^-?\d{1,3}(\.\d+)?$/', $value) || abs((float) $value) > $max) {
+        return '';
+    }
+
+    return $value;
+}
+
+/**
  * Read-only environment checks specific to what *this wizard* is about to do — GLPI's own
  * installer already validated its own PHP/MySQL version requirements before this plugin could
  * even run, so re-checking those would be pointless duplication. Scoped instead to the two things
@@ -237,6 +255,8 @@ if (isset($_POST['finish'])) {
                 'postcode' => trim((string) ($_POST['location_postcode_' . $i] ?? '')),
                 'town' => trim((string) ($_POST['location_town_' . $i] ?? '')),
                 'country' => trim((string) ($_POST['location_country_' . $i] ?? '')),
+                'latitude' => sanitizeCoordinate((string) ($_POST['location_latitude_' . $i] ?? ''), 90),
+                'longitude' => sanitizeCoordinate((string) ($_POST['location_longitude_' . $i] ?? ''), 180),
             ];
             $address = array_filter($address, static fn ($value) => $value !== '');
             if ($address !== []) {
