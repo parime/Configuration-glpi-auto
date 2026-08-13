@@ -947,6 +947,24 @@
         </div>
 
         <div class="form-check form-switch mb-2">
+          <input type="hidden" name="asset_types_enabled" value="0">
+          <input type="checkbox" name="asset_types_enabled" value="1" class="form-check-input" id="cga-asset-types-enabled" {{ config.asset_types_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-asset-types-enabled">{{ __('Créer les types courants pour Ordinateurs, Écrans, Matériel réseau, Périphériques, Téléphones, Imprimantes', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-asset-types-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="asset_type_icons_enabled" value="0">
+            <input type="checkbox" name="asset_type_icons_enabled" value="1" class="form-check-input" id="cga-asset-type-icons-enabled" {{ config.asset_type_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-asset-type-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          {% for itemtype, types in asset_types_preview %}
+            <p class="text-muted small mb-1">
+              {% for type in types %}<span class="cga-asset-type-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}{% if not loop.last %}, {% endif %}{% endfor %}
+            </p>
+          {% endfor %}
+        </div>
+
+        <div class="form-check form-switch mb-2">
           <input type="hidden" name="request_type_translations_enabled" value="0">
           <input type="checkbox" name="request_type_translations_enabled" value="1" class="form-check-input" id="cga-request-type-translations-enabled" {{ config.request_type_translations_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-request-type-translations-enabled">{{ __('Traduire les sources de demande natives de GLPI', 'configurationglpiauto') }}</label>
@@ -2356,6 +2374,8 @@
   });
   var manufacturersEnabledInput = wireSimpleToggle('cga-manufacturers-enabled', 'cga-manufacturers-fields');
   var lineOperatorsEnabledInput = wireSimpleToggle('cga-line-operators-enabled', 'cga-line-operators-fields');
+  var assetTypesEnabledInput = wireSimpleToggle('cga-asset-types-enabled', 'cga-asset-types-fields');
+  wireIconsToggle('cga-asset-type-icons-enabled', '.cga-asset-type-icon');
   wireIconsToggle('cga-manufacturer-icons-enabled', '.cga-manufacturer-icon');
   var requestTypeTranslationsEnabledInput = wireSimpleToggle('cga-request-type-translations-enabled', 'cga-request-type-translations-fields');
   var userCategoriesEnabledInput = wireSimpleToggle('cga-user-categories-enabled', 'cga-user-categories-fields');

@@ -9,7 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.49.0] - 2026-08-13
+## [0.50.0] - 2026-08-13
+
+### Added
+- `AssetTypeBuilder` (nouveau) : crée des types courants pour les 6 catégories de matériel déjà
+  couvertes par `ManufacturerBuilder`/`FieldUnicityBuilder` — Ordinateurs (bureau, portable,
+  serveur, mini PC, tablette), Écrans (LCD/LED, tactile, vidéoprojecteur), Matériel réseau (switch,
+  routeur, pare-feu, point d'accès Wi-Fi, répartiteur de charge), Périphériques (clavier, souris,
+  webcam, casque, station d'accueil, scanner, disque externe), Téléphones (smartphone, fixe, DECT,
+  softphone), Imprimantes (laser, jet d'encre, multifonction, étiquettes). Les 6 tables natives
+  confirmées vides sur une instance fraîche. Icônes optionnelles (`asset_type_icons_enabled`), même
+  mécanisme que les autres intitulés à icônes de ce plugin. Activé par défaut.
+- Sur les ~30 tables natives "Types" vides identifiées lors de l'audit précédent, seules ces 6 sont
+  traitées dans cette passe (les mêmes déjà couvertes par fabricants/unicité) — le reste (Racks,
+  PDU, Cluster, DatabaseInstance, DeviceSensor...) nécessite sa propre recherche de contenu par
+  itemtype avant d'être seedé, volontairement pas traité d'un bloc. `AgentType` et
+  `Assets_AssetType` exclus délibérément (le premier est auto-créé par GLPI lui-même à la première
+  connexion d'un agent d'inventaire réel, le second dépend d'une définition d'actif personnalisée
+  que l'admin doit créer avant qu'il ait un sens).
 
 ### Added
 - `LineOperatorBuilder` (nouveau) : crée les 4 grands opérateurs mobiles français (Orange, SFR,

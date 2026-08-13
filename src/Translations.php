@@ -311,6 +311,46 @@ final class Translations
         'Réunion d\'équipe' => ['en_GB' => 'Team meeting', 'de_DE' => 'Team-Besprechung', 'it_IT' => 'Riunione di team', 'es_ES' => 'Reunión de equipo'],
         'Formation planifiée' => ['en_GB' => 'Scheduled training', 'de_DE' => 'Geplante Schulung', 'it_IT' => 'Formazione pianificata', 'es_ES' => 'Formación programada'],
         'Astreinte' => ['en_GB' => 'On-call duty', 'de_DE' => 'Bereitschaftsdienst', 'it_IT' => 'Reperibilità', 'es_ES' => 'Guardia'],
+
+        // ---- AssetTypeBuilder (glpi_computertypes) ----
+        'Ordinateur de bureau' => ['en_GB' => 'Desktop computer', 'de_DE' => 'Desktop-Computer', 'it_IT' => 'Computer desktop', 'es_ES' => 'Ordenador de sobremesa'],
+        'Ordinateur portable' => ['en_GB' => 'Laptop', 'de_DE' => 'Laptop', 'it_IT' => 'Laptop', 'es_ES' => 'Portátil'],
+        'Serveur' => ['en_GB' => 'Server', 'de_DE' => 'Server', 'it_IT' => 'Server', 'es_ES' => 'Servidor'],
+        'Mini PC' => ['en_GB' => 'Mini PC', 'de_DE' => 'Mini-PC', 'it_IT' => 'Mini PC', 'es_ES' => 'Mini PC'],
+        'Tablette' => ['en_GB' => 'Tablet', 'de_DE' => 'Tablet', 'it_IT' => 'Tablet', 'es_ES' => 'Tableta'],
+
+        // ---- AssetTypeBuilder (glpi_monitortypes) ----
+        'Écran LCD/LED' => ['en_GB' => 'LCD/LED monitor', 'de_DE' => 'LCD/LED-Monitor', 'it_IT' => 'Monitor LCD/LED', 'es_ES' => 'Monitor LCD/LED'],
+        'Écran tactile' => ['en_GB' => 'Touchscreen', 'de_DE' => 'Touchscreen', 'it_IT' => 'Touchscreen', 'es_ES' => 'Pantalla táctil'],
+        'Vidéoprojecteur' => ['en_GB' => 'Projector', 'de_DE' => 'Beamer', 'it_IT' => 'Videoproiettore', 'es_ES' => 'Proyector'],
+
+        // ---- AssetTypeBuilder (glpi_networkequipmenttypes) ----
+        'Switch' => ['en_GB' => 'Switch', 'de_DE' => 'Switch', 'it_IT' => 'Switch', 'es_ES' => 'Conmutador'],
+        'Routeur' => ['en_GB' => 'Router', 'de_DE' => 'Router', 'it_IT' => 'Router', 'es_ES' => 'Router'],
+        'Pare-feu' => ['en_GB' => 'Firewall', 'de_DE' => 'Firewall', 'it_IT' => 'Firewall', 'es_ES' => 'Cortafuegos'],
+        'Point d\'accès Wi-Fi' => ['en_GB' => 'Wi-Fi access point', 'de_DE' => 'WLAN-Zugangspunkt', 'it_IT' => 'Punto di accesso Wi-Fi', 'es_ES' => 'Punto de acceso Wi-Fi'],
+        'Répartiteur de charge' => ['en_GB' => 'Load balancer', 'de_DE' => 'Lastverteiler', 'it_IT' => 'Bilanciatore di carico', 'es_ES' => 'Balanceador de carga'],
+
+        // ---- AssetTypeBuilder (glpi_peripheraltypes) ----
+        'Clavier' => ['en_GB' => 'Keyboard', 'de_DE' => 'Tastatur', 'it_IT' => 'Tastiera', 'es_ES' => 'Teclado'],
+        'Souris' => ['en_GB' => 'Mouse', 'de_DE' => 'Maus', 'it_IT' => 'Mouse', 'es_ES' => 'Ratón'],
+        'Webcam' => ['en_GB' => 'Webcam', 'de_DE' => 'Webcam', 'it_IT' => 'Webcam', 'es_ES' => 'Webcam'],
+        'Casque' => ['en_GB' => 'Headset', 'de_DE' => 'Headset', 'it_IT' => 'Cuffie', 'es_ES' => 'Auriculares'],
+        'Station d\'accueil' => ['en_GB' => 'Docking station', 'de_DE' => 'Dockingstation', 'it_IT' => 'Docking station', 'es_ES' => 'Estación de acoplamiento'],
+        'Scanner' => ['en_GB' => 'Scanner', 'de_DE' => 'Scanner', 'it_IT' => 'Scanner', 'es_ES' => 'Escáner'],
+        'Disque externe' => ['en_GB' => 'External drive', 'de_DE' => 'Externe Festplatte', 'it_IT' => 'Disco esterno', 'es_ES' => 'Disco externo'],
+
+        // ---- AssetTypeBuilder (glpi_phonetypes) ----
+        'Smartphone' => ['en_GB' => 'Smartphone', 'de_DE' => 'Smartphone', 'it_IT' => 'Smartphone', 'es_ES' => 'Smartphone'],
+        'Téléphone fixe' => ['en_GB' => 'Desk phone', 'de_DE' => 'Festnetztelefon', 'it_IT' => 'Telefono fisso', 'es_ES' => 'Teléfono fijo'],
+        'Téléphone DECT' => ['en_GB' => 'DECT phone', 'de_DE' => 'DECT-Telefon', 'it_IT' => 'Telefono DECT', 'es_ES' => 'Teléfono DECT'],
+        'Softphone' => ['en_GB' => 'Softphone', 'de_DE' => 'Softphone', 'it_IT' => 'Softphone', 'es_ES' => 'Softphone'],
+
+        // ---- AssetTypeBuilder (glpi_printertypes) ----
+        'Imprimante laser' => ['en_GB' => 'Laser printer', 'de_DE' => 'Laserdrucker', 'it_IT' => 'Stampante laser', 'es_ES' => 'Impresora láser'],
+        'Imprimante jet d\'encre' => ['en_GB' => 'Inkjet printer', 'de_DE' => 'Tintenstrahldrucker', 'it_IT' => 'Stampante a getto d\'inchiostro', 'es_ES' => 'Impresora de inyección de tinta'],
+        'Multifonction' => ['en_GB' => 'Multifunction printer', 'de_DE' => 'Multifunktionsdrucker', 'it_IT' => 'Stampante multifunzione', 'es_ES' => 'Impresora multifunción'],
+        'Imprimante d\'étiquettes' => ['en_GB' => 'Label printer', 'de_DE' => 'Etikettendrucker', 'it_IT' => 'Stampante di etichette', 'es_ES' => 'Impresora de etiquetas'],
     ];
 
     /**
