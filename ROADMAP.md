@@ -683,27 +683,24 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    nécessite le même soin que la construction de l'arbre de `CategoryBuilder`), Équipements passifs
    de datacenter (PassiveDCEquipment), Câbles fibre (`NetworkPortFiberchannelType`, protocole SAN
    générique et stable, déjà écarté du périmètre "opérateurs télécom" ailleurs dans ce document).
-5. **Jours fériés par pays, selon le pays saisi sur un Lieu.** `CalendarBuilder` n'applique
-   aujourd'hui que les jours fériés français, en dur. Demandé : dès qu'une adresse avec un pays est
-   saisie sur un Lieu (assistant d'adresse v0.33.0+), proposer d'appliquer automatiquement les
-   jours fériés propres à ce pays — mais explicitement **seulement pour les pays où on dispose
-   réellement de la donnée** (pas de case à cocher qui ne ferait rien pour un pays non couvert).
-   **Source de données réelle trouvée et vérifiée (2026-08-13)** : l'API publique gratuite
-   Nager.Date (`https://date.nager.at/api/v3/PublicHolidays/{année}/{code pays ISO}`), testée en
-   direct avec des jours fériés français réels et actuels — couvre ~100 pays
-   (`/api/v3/AvailableCountries`). **Pas encore construit**, trois questions de conception restent
-   ouvertes avant de s'y mettre : (1) le champ pays des Lieux est actuellement du texte libre ("
-   France", "Allemagne"...), il faudrait une table de correspondance nom→code ISO 3166-1 alpha-2 au
-   moins pour les pays européens/courants ; (2) GLPI's `Holiday.is_perpetual` ne gère qu'un
-   mois/jour fixe répété chaque année (déjà la raison pour laquelle `CalendarBuilder` exclut les
-   jours fériés mobiles français type Pâques/Ascension) — Nager.Date fournit des dates précises par
-   année, pas une règle récurrente, donc soit se limiter aux jours fériés à date fixe par pays (même
-   simplification que l'existant), soit créer des jours non-perpétuels nécessitant un rafraîchissement
-   chaque année (recréer/mettre à jour à chaque nouvelle exécution du wizard, ce qui est cohérent
-   avec la nature de cet outil de configuration réutilisable) ; (3) dépendance à un nouveau service
-   externe non encore utilisé par ce plugin (contrairement à Nominatim déjà accepté pour l'assistant
-   d'adresse), à valider avec l'utilisateur avant d'ajouter cet appel réseau supplémentaire au
-   parcours du wizard.
+5. ✅ **Jours fériés par pays — fait (v0.52.0, 2026-08-14), sur demande explicite ("fait les jours
+   fériés").** `CountryHolidayBuilder` (nouveau), étape "Lieux" : crée les jours fériés natifs GLPI
+   des pays saisis sur les adresses (hors France, déjà couverte à l'étape Calendrier), source
+   Nager.Date déjà vérifiée en direct. Les trois questions de conception ont été tranchées : (1)
+   table de correspondance nom→code ISO pour ~25 pays européens/courants (français/anglais),
+   un pays non reconnu est simplement ignoré ; (2) limitation `is_perpetual` de GLPI résolue en
+   déterminant empiriquement les jours fériés à date fixe (comparaison de deux années
+   consécutives, même simplification que pour la France) plutôt que de gérer un rafraîchissement
+   annuel — pas de jours mobiles créés ; (3) nouvelle dépendance externe acceptée (même
+   raisonnement que Nominatim pour l'assistant d'adresse). **Bug de qualité réel trouvé et corrigé
+   pendant la vérification, avant tout envoi** : Nager.Date retourne aussi des jours fériés
+   *régionaux* mélangés aux jours fériés nationaux (champ `global` de l'API) — confirmé en direct
+   pour l'Allemagne, où "Heilige Drei Könige"/"Mariä Himmelfahrt"/"Weltkindertag" ne sont fériés
+   que dans certains Länder, pas dans tout le pays. Sans filtrer sur `global: true`, ces jours
+   auraient été créés comme si toute l'Allemagne les observait — corrigé avant la première
+   soumission testée. Volontairement pas rattaché automatiquement à un calendrier (pas de moyen
+   fiable de savoir depuis les données du plugin à quel calendrier un pays donné devrait
+   s'appliquer) — à faire par l'admin une fois les jours fériés créés.
 6. ✅ **Unicité des champs (`FieldUnicity`) — fait (v0.43.0, 2026-08-13), scope réduit au cas
    universel.** Audité avant construction (`src/FieldUnicity.php` du cœur GLPI) : contrairement aux
    dropdowns de contenu, `FieldUnicity` définit bien des *règles* de contrainte, plus proche des
