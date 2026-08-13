@@ -922,8 +922,8 @@ msgstr "💻 Reine IT"
 msgid "🧩 Multi-services (toutes verticales)"
 msgstr "🧩 Multiservice (alle Bereiche)"
 
-msgid "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement."
-msgstr "Sendet jede Eingabe an einen externen Dienst (standardmäßig OpenStreetMap Nominatim), um Vorschläge zu liefern — standardmäßig deaktiviert, bewusst zu aktivieren."
+msgid "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — activé par défaut, désactivable ci-dessus si l'envoi de l'adresse en cours de saisie à ce service pose problème."
+msgstr "Sendet jede Eingabe an einen externen Dienst (standardmäßig OpenStreetMap Nominatim), um Vorschläge zu liefern — standardmäßig aktiviert, oben deaktivierbar, falls das Senden der gerade eingegebenen Adresse an diesen Dienst ein Problem darstellt."
 
 msgid "Service de géocodage (avancé)"
 msgstr "Geokodierungsdienst (erweitert)"
