@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.45.0] - 2026-08-13
+
+### Changed
+- L'assistant d'adresse (suggestions de rue Nominatim pendant la saisie, étape 3) passe lui aussi
+  de désactivé à activé par défaut, même raisonnement que les icônes (v0.44.0) : réversible,
+  bénéfice systématique, coche toujours visible pour le désactiver si l'envoi de l'adresse en
+  cours de saisie à un service externe (OpenStreetMap Nominatim) pose problème. Texte d'aide mis à
+  jour en conséquence.
+
 ## [0.44.0] - 2026-08-13
 
 ### Changed

@@ -217,7 +217,7 @@ class Config extends CommonDBTM
             'entity_logos_enabled' => 0,
             'wait_reason_icons_enabled' => 1,
             'notification_branding_enabled' => 0,
-            'location_geocoding_enabled' => 0,
+            'location_geocoding_enabled' => 1,
             'location_geocoding_endpoint' => 'https://nominatim.openstreetmap.org',
             'project_templates_enabled' => 0,
             'request_type_translations_enabled' => 0,

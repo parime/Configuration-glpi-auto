@@ -116,7 +116,7 @@
             <input type="checkbox" name="location_geocoding_enabled" value="1" class="form-check-input" id="cga-location-geocoding-enabled" {{ config.location_geocoding_enabled|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="cga-location-geocoding-enabled">{{ __('Assistant d\'adresse (suggestions de rue pendant la saisie, ville/région/pays pré-remplis)', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small mb-2">{{ __('Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — activé par défaut, désactivable ci-dessus si l\'envoi de l\'adresse en cours de saisie à ce service pose problème.', 'configurationglpiauto') }}</p>
 
           <div id="cga-location-geocoding-fields" style="display: none;" class="mb-3">
             <label class="form-label" for="cga-location-geocoding-endpoint">{{ __('Service de géocodage (avancé)', 'configurationglpiauto') }}</label>
