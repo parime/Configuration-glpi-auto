@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.39.0] - 2026-08-13
+
+### Added
+- Lieux enfants arbitraires : `glpi_locations` a son propre arbre indépendant de l'arborescence
+  d'entités (`locations_id` auto-référencé) — un même site peut avoir plusieurs niveaux imbriqués
+  (Bâtiment > Étage > Salle) sans rapport avec la structure d'entités. Chaque panneau "Ajouter une
+  adresse" (étape 15) propose désormais un éditeur récursif identique à celui de l'arborescence
+  d'entités (étape 2) : ajout/retrait de lieux enfants à profondeur arbitraire, chacun avec son
+  propre nom + adresse/code postal/ville/région/pays. `LocationBuilder` les crée toujours (contra-
+  irement aux entités : ajouter un lieu enfant est déjà le geste explicite qui justifie sa création),
+  rattachés à l'entité du panneau parent, imbriqués sous le lieu de cette entité si elle en a un, ou
+  directement sous la racine sinon — même règle de compression déjà en place pour l'arbre d'entités.
+
 ## [0.38.0] - 2026-08-13
 
 ### Added

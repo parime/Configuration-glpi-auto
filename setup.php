@@ -24,7 +24,7 @@ use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 // vendor/ — same constraint documented on the sibling glpi-vulnerability-manager plugin.
 require_once __DIR__ . '/vendor/autoload.php';
 
-define('PLUGIN_CONFIGURATIONGLPIAUTO_VERSION', '0.38.0');
+define('PLUGIN_CONFIGURATIONGLPIAUTO_VERSION', '0.39.0');
 define('PLUGIN_CONFIGURATIONGLPIAUTO_MIN_GLPI', '11.0.0');
 define('PLUGIN_CONFIGURATIONGLPIAUTO_MAX_GLPI', '11.99.99');
 define('PLUGIN_CONFIGURATIONGLPIAUTO_MIN_PHP', '8.2.0');
