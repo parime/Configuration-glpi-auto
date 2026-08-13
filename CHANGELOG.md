@@ -9,14 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Documentation
-- ROADMAP.md : recherche complète sur les deux idées "Marketplace & plugins recommandés" — clé
-  d'enregistrement GLPI Network confirmée réelle, 3 plugins identifiés (remise-glpi, Escalade,
-  One-Time Secret). Complétée après déblocage du marketplace natif sur l'instance de test (vraie
-  clé d'enregistrement renseignée) : clés exactes confirmées en direct (`escalade`,
-  `onetimesecret`), mécanisme d'installation en un clic identifié (`data-action="download_plugin"`),
-  et confirmé que remise-glpi n'est pas encore publié sur le marketplace natif. Toujours pas
-  construit, reste à cadrer.
+## [0.48.0] - 2026-08-13
+
+### Added
+- `MarketplaceBuilder` (nouveau), étape "Réglages généraux GLPI" : champ pour saisir une clé
+  d'enregistrement GLPI Network (au moins gratuite), écrite directement dans la config native GLPI
+  (`\Config::setConfigurationValues('core', ['glpinetwork_registration_key' => ...])`, le mécanisme
+  exact de la page native "Enregistrement" — jamais dupliquée dans la table de ce plugin, qui n'a
+  aucun chiffrement au niveau champ contrairement au stockage natif via `GLPIKey`). Sans cette clé,
+  le marketplace natif de GLPI reste vide.
+- Panneau "plugins recommandés" (informationnel, pas d'installation automatique) : `remise-glpi`
+  (l'un des plugins sœurs, absent du marketplace natif — lien GitHub direct), `Escalade` (clé
+  marketplace confirmée `escalade`) et `One-Time Secret` (clé confirmée `onetimesecret` — vérifiée
+  en direct sur le marketplace natif, différente du nom du dépôt GitHub `one-timesecret`).
+  Installation volontairement laissée à l'admin (un clic dans Configuration > Plugins > Marketplace
+  une fois la clé renseignée) plutôt qu'automatisée depuis ce wizard — télécharger/exécuter du code
+  tiers est une catégorie de risque différente du reste de ce plugin.
 
 ## [0.47.0] - 2026-08-13
 

@@ -32,6 +32,7 @@ use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\LocationBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerDictionaryBuilder;
+use GlpiPlugin\Configurationglpiauto\MarketplaceBuilder;
 use GlpiPlugin\Configurationglpiauto\NotificationBrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\PaletteBuilder;
 use GlpiPlugin\Configurationglpiauto\PlanningEventBuilder;
@@ -400,6 +401,9 @@ if (isset($_POST['finish'])) {
     $userCategoriesCreated = (new UserCategoryBuilder())->build($config);
     $fieldUnicityRulesCreated = (new FieldUnicityBuilder())->build($config);
     $rssFeedsCreated = (new RSSFeedBuilder())->build($config);
+    // Never stored in $config (our own table has no field-level encryption) — read straight from
+    // POST, forwarded directly to GLPI core's own encrypted config store.
+    $marketplaceRegistrationSaved = (new MarketplaceBuilder())->build((string) ($_POST['glpi_network_registration_key'] ?? ''));
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
@@ -603,6 +607,9 @@ if (isset($_POST['finish'])) {
     if ($rssFeedsCreated > 0) {
         $messages[] = sprintf(__('%d flux RSS ajouté(s).', 'configurationglpiauto'), $rssFeedsCreated);
     }
+    if ($marketplaceRegistrationSaved > 0) {
+        $messages[] = __('Clé d\'enregistrement GLPI Network enregistrée.', 'configurationglpiauto');
+    }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 
     Html::redirect(ConfigurationProfile::getSearchURL());
@@ -663,6 +670,10 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'user_categories_preview' => UserCategoryBuilder::getCategoriesPreview(),
     'field_unicity_rules_preview' => FieldUnicityBuilder::getRulesPreview(),
     'rss_feeds_preview' => RSSFeedBuilder::getFeedsPreview(),
+    'marketplace_recommended_plugins' => MarketplaceBuilder::getRecommendedPluginsPreview(),
+    // Read straight from GLPI core's own encrypted store, matching the native "Enregistrement"
+    // page's own behavior — never mirrored into this plugin's own config table (see MarketplaceBuilder).
+    'glpi_network_registration_key' => \GLPINetwork::getRegistrationKey(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
