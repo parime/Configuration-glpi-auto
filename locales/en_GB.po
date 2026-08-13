@@ -337,9 +337,6 @@ msgstr "Create a business-hours calendar"
 msgid "Créer un calendrier pour cette entité"
 msgstr "Create a calendar for this entity"
 
-msgid "Créer un lieu par entité de l'arborescence"
-msgstr "Create a location per entity in the tree"
-
 msgid "Créer un modèle de changement et de problème par défaut"
 msgstr "Create a default change and problem template"
 
@@ -628,9 +625,6 @@ msgstr "Pending reasons"
 msgid "Relance toutes les"
 msgstr "Reminder every"
 
-msgid "Reprend exactement l'arborescence construite à l'étape 2 (même noms, même imbrication) — un point de départ, à préciser ensuite avec de vraies adresses."
-msgstr "Exactly mirrors the tree built in step 2 (same names, same nesting) — a starting point, to be refined afterwards with real addresses."
-
 msgid "Retirer"
 msgstr "Remove"
 
@@ -771,9 +765,6 @@ msgstr "Your company (MSP)"
 
 msgid "Vérification de l'environnement"
 msgstr "Environment check"
-
-msgid "Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits de projet."
-msgstr "Check your choices before finishing — this step actually creates the entities, calendar, SLAs, categories, service catalog, statuses, pending reasons, graphic customization, general settings, ticket templates, LDAP rights, task/solution/approval labels, locations/manufacturers/knowledge base categories, and project types/templates."
 
 msgid "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
 msgstr "immediately applies the recommended settings above for the selected profile, without going back through each of the 17 steps. Ideal for a simple/single-site installation; for a multi-site or MSP structure, the real tree (step 2) still needs to be built afterwards, otherwise everything applies to the root entity alone."
@@ -979,9 +970,6 @@ msgstr "💻 Pure IT"
 msgid "🧩 Multi-services (toutes verticales)"
 msgstr "🧩 Multi-service (all verticals)"
 
-msgid "Assistant d'adresse (suggestions de rue pendant la saisie, ville pré-remplie depuis le code postal)"
-msgstr "Address assistant (street suggestions while typing, town pre-filled from the postcode)"
-
 msgid "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement."
 msgstr "Sends each keystroke to an external service (OpenStreetMap Nominatim by default) to suggest matches — disabled by default, opt in deliberately."
 
@@ -1023,6 +1011,42 @@ msgstr "Latitude"
 
 msgid "Longitude"
 msgstr "Longitude"
+
+msgid "+ Ajouter une adresse"
+msgstr "+ Add an address"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "Altitude"
+msgstr "Altitude"
+
+msgid "Assistant d'adresse (suggestions de rue pendant la saisie, ville/région/pays pré-remplis)"
+msgstr "Address assistant (street suggestions while typing, town/region/country pre-filled)"
+
+msgid "Associer une adresse à des entités de l'arborescence"
+msgstr "Associate an address with entities in the tree"
+
+msgid "Bâtiment"
+msgstr "Building"
+
+msgid "Code"
+msgstr "Code"
+
+msgid "Commentaire"
+msgstr "Comment"
+
+msgid "Parcourez l'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur les entités qui en ont une (site, agence...) — les autres n'auront aucun lieu créé, comme sur une installation GLPI neuve."
+msgstr "Browse the tree below and open \"Add an address\" on the entities that have one (site, branch...) — the others will get no location at all, just like on a fresh GLPI install."
+
+msgid "Pièce"
+msgstr "Room"
+
+msgid "Réduire"
+msgstr "Collapse"
+
+msgid "Région / État"
+msgstr "Region / State"
 
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"

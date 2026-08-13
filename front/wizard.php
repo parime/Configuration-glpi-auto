@@ -84,21 +84,70 @@ function buildEntityLogoDataUri(array $file): ?string
 }
 
 /**
- * Validates a GPS coordinate typed or auto-filled on the Lieux step (`ajax/geocode.php` normally
- * fills these from Nominatim, but the field stays a plain editable text input, so a hand-typed or
- * pasted value is just as possible) — same "trust nothing free-text" reasoning already applied to
- * `branding_primary_color`/`native_palette`/`location_geocoding_endpoint`. Returns '' (silently
- * dropped by the caller's `array_filter`) rather than throwing: same "never block finishing the
- * wizard over an optional field" posture as everywhere else in this file.
+ * Validates a GPS coordinate/altitude typed or auto-filled on the Lieux step (`ajax/geocode.php`
+ * normally fills latitude/longitude from Nominatim, but the fields stay plain editable text
+ * inputs, so a hand-typed or pasted value is just as possible; altitude is always manual, no
+ * geocoding service returns elevation) — same "trust nothing free-text" reasoning already applied
+ * to `branding_primary_color`/`native_palette`/`location_geocoding_endpoint`. No digit-count cap
+ * before the decimal point: latitude/longitude never exceed 3 digits by definition, but altitude
+ * routinely does (a 2000m mountain site is a 4-digit value) — the `$max` range check is what
+ * actually bounds each field, not the string shape. Returns '' (silently dropped by the caller)
+ * rather than throwing: same "never block finishing the wizard over an optional field" posture as
+ * everywhere else in this file.
  */
 function sanitizeCoordinate(string $value, float $max): string
 {
     $value = trim($value);
-    if ($value === '' || !preg_match('/^-?\d{1,3}(\.\d+)?$/', $value) || abs((float) $value) > $max) {
+    if ($value === '' || !preg_match('/^-?\d+(\.\d+)?$/', $value) || abs((float) $value) > $max) {
         return '';
     }
 
     return $value;
+}
+
+/**
+ * Collects every `location_<field>_<path>` field the "Lieux" step's JS may have submitted, for
+ * *any* node of the entity tree (not just the top-level ones) — `<path>` is the node's own
+ * root-to-node child-index chain joined by `-` (e.g. `"1-0"`), the same encoding
+ * `LocationBuilder::buildNode()` computes while walking `Config::getEntityTree()`, so a path here
+ * always lines up with the exact node it was typed against. Scans `$_POST` directly rather than
+ * looping over a known list of paths: unlike `entity_color_N`/`entity_logo_N` (always exactly one
+ * entry per top-level node), nothing on this side knows in advance which paths exist deeper in the
+ * tree — only the wizard's own JS, which only ever renders inputs for nodes an admin has actually
+ * expanded.
+ *
+ * @return array<string, array<string, string>> Path => non-empty fields only (a node with nothing
+ *         filled in has no entry at all, matching `LocationBuilder`'s "no data, no Location" rule).
+ */
+function collectLocationDataFromPost(): array
+{
+    $textFields = ['address', 'postcode', 'town', 'state', 'country', 'building', 'room', 'code', 'alias', 'comment'];
+    $coordinateFields = ['latitude' => 90.0, 'longitude' => 180.0, 'altitude' => 10_000.0];
+
+    $byPath = [];
+    foreach ($_POST as $key => $value) {
+        foreach ($textFields as $field) {
+            $prefix = 'location_' . $field . '_';
+            if (str_starts_with($key, $prefix)) {
+                $sanitized = trim((string) $value);
+                if ($sanitized !== '') {
+                    $byPath[substr($key, strlen($prefix))][$field] = $sanitized;
+                }
+                continue 2;
+            }
+        }
+        foreach ($coordinateFields as $field => $max) {
+            $prefix = 'location_' . $field . '_';
+            if (str_starts_with($key, $prefix)) {
+                $sanitized = sanitizeCoordinate((string) $value, $max);
+                if ($sanitized !== '') {
+                    $byPath[substr($key, strlen($prefix))][$field] = $sanitized;
+                }
+            }
+        }
+    }
+
+    return $byPath;
 }
 
 /**
@@ -246,25 +295,10 @@ if (isset($_POST['finish'])) {
     $solutionTemplatesCreated = (new SolutionLibraryBuilder())->build($config);
     $followupTemplatesCreated = (new FollowupLibraryBuilder())->build($config);
     $validationTemplatesCreated = (new ValidationTemplateBuilder())->build($config);
-    // Runs after EntityBuilder: resolves entities by name lookup to scope each location.
-    $topLevelAddresses = [];
-    if (!empty($config->fields['locations_enabled'])) {
-        foreach ($entityIds as $i => $entityId) {
-            $address = [
-                'address' => trim((string) ($_POST['location_address_' . $i] ?? '')),
-                'postcode' => trim((string) ($_POST['location_postcode_' . $i] ?? '')),
-                'town' => trim((string) ($_POST['location_town_' . $i] ?? '')),
-                'country' => trim((string) ($_POST['location_country_' . $i] ?? '')),
-                'latitude' => sanitizeCoordinate((string) ($_POST['location_latitude_' . $i] ?? ''), 90),
-                'longitude' => sanitizeCoordinate((string) ($_POST['location_longitude_' . $i] ?? ''), 180),
-            ];
-            $address = array_filter($address, static fn ($value) => $value !== '');
-            if ($address !== []) {
-                $topLevelAddresses[$i] = $address;
-            }
-        }
-    }
-    $locationsCreated = (new LocationBuilder())->build($config, $topLevelAddresses);
+    // Runs after EntityBuilder: LocationBuilder resolves entities by name lookup to scope each
+    // location it actually creates.
+    $locationDataByPath = !empty($config->fields['locations_enabled']) ? collectLocationDataFromPost() : [];
+    $locationsCreated = (new LocationBuilder())->build($config, $locationDataByPath);
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);

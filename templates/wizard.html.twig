@@ -969,15 +969,15 @@
         <div class="form-check form-switch mb-2">
           <input type="hidden" name="locations_enabled" value="0">
           <input type="checkbox" name="locations_enabled" value="1" class="form-check-input" id="cga-locations-enabled" {{ config.locations_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-locations-enabled">{{ __('Créer un lieu par entité de l\'arborescence', 'configurationglpiauto') }}</label>
+          <label class="form-check-label" for="cga-locations-enabled">{{ __('Associer une adresse à des entités de l\'arborescence', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-locations-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-2">{{ __('Reprend exactement l\'arborescence construite à l\'étape 2 (même noms, même imbrication) — un point de départ, à préciser ensuite avec de vraies adresses.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Parcourez l\'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur les entités qui en ont une (site, agence...) — les autres n\'auront aucun lieu créé, comme sur une installation GLPI neuve.', 'configurationglpiauto') }}</p>
 
           <div class="form-check form-switch mb-2">
             <input type="hidden" name="location_geocoding_enabled" value="0">
             <input type="checkbox" name="location_geocoding_enabled" value="1" class="form-check-input" id="cga-location-geocoding-enabled" {{ config.location_geocoding_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-location-geocoding-enabled">{{ __('Assistant d\'adresse (suggestions de rue pendant la saisie, ville pré-remplie depuis le code postal)', 'configurationglpiauto') }}</label>
+            <label class="form-check-label" for="cga-location-geocoding-enabled">{{ __('Assistant d\'adresse (suggestions de rue pendant la saisie, ville/région/pays pré-remplis)', 'configurationglpiauto') }}</label>
           </div>
           <p class="text-muted small mb-2">{{ __('Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement.', 'configurationglpiauto') }}</p>
 
@@ -987,7 +987,7 @@
             <p class="text-muted small mb-0">{{ __('Instance Nominatim/Photon auto-hébergée ou compatible, pour un usage réel au-delà d\'un essai ponctuel.', 'configurationglpiauto') }}</p>
           </div>
 
-          <div id="cga-locations-panels" class="d-flex gap-3 flex-wrap"></div>
+          <div id="cga-locations-tree"></div>
         </div>
 
         <div class="form-check form-switch mb-2">
@@ -1646,7 +1646,7 @@
   // file's own docblock. Debounced client-side here as the other half of the same rate-limit
   // discipline (the free public Nominatim instance used by default tolerates ~1 req/s).
   var CGA_GEOCODE_URL = "{{ config('root_doc') }}/plugins/configurationglpiauto/ajax/geocode.php";
-  var locationsPanels = document.getElementById('cga-locations-panels');
+  var locationsTreeRoot = document.getElementById('cga-locations-tree');
 
   function cgaDebounce(fn, delayMs) {
     var timer = null;
@@ -1657,195 +1657,266 @@
     };
   }
 
-  // One panel per top-level entity (or a single fallback for mono-entité/empty tree, same
-  // convention as renderBrandingPerClientPanels()/renderEntityLogoPanels()) — named
-  // location_address_N/location_postcode_N/location_town_N/location_country_N, matching how
-  // front/wizard.php pairs $entityIds (same order) with these indices. Only rebuilt when the
-  // node count actually changed, so revisiting this step doesn't wipe addresses already typed.
-  function renderLocationPanels() {
-    var tree = (window.cgaTree || []);
-    var nodes = tree.length ? tree : [{ name: "{{ __('Entité racine', 'configurationglpiauto')|e('js') }}" }];
-    if (locationsPanels.children.length === nodes.length) {
-      return;
-    }
-    locationsPanels.innerHTML = '';
-    nodes.forEach(function (node, i) {
-      var nodeName = node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}";
+  function cgaMakeInput(name, placeholder, extraClass) {
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.name = name;
+    input.className = 'form-control form-control-sm' + (extraClass ? ' ' + extraClass : '');
+    input.placeholder = placeholder;
+    return input;
+  }
 
-      var wrapper = document.createElement('div');
-      wrapper.className = 'mb-2';
-      wrapper.style.minWidth = '260px';
+  // Every user-fillable native glpi_locations column, not just address/postcode/town/country —
+  // same "tout sans exception" standard already applied to translations this session. Nominatim
+  // can suggest address/postcode/town/state/country/latitude/longitude; code/alias/comment/
+  // building/room/altitude are always manual (no geocoding service returns elevation), same as on
+  // GLPI's own native Location form.
+  //
+  // Builds the full field set for one tree node, named by its own path (`location_address_1-0`
+  // etc.) — matches LocationBuilder::buildNode()'s own path computation exactly, so
+  // front/wizard.php's collectLocationDataFromPost() always lines each field up with the right
+  // node regardless of tree depth.
+  function buildLocationFieldsPanel(path) {
+    var panel = document.createElement('div');
+    panel.className = 'card card-body p-2 mb-2';
+    panel.style.maxWidth = '640px';
 
-      var label = document.createElement('label');
-      label.className = 'form-label mb-1 fw-bold';
-      label.textContent = nodeName;
-      wrapper.appendChild(label);
+    var addressGroup = document.createElement('div');
+    addressGroup.className = 'position-relative mb-1';
+    var addressInput = cgaMakeInput('location_address_' + path, "{{ __('Rue, numéro...', 'configurationglpiauto')|e('js') }}");
+    addressInput.autocomplete = 'off';
+    // `dropdown-menu` (Bootstrap/Tabler component) rather than `list-group`: comes with its own
+    // opaque, theme-aware background/border/shadow built in — a plain `list-group` here rendered
+    // see-through over the fields/toggles underneath it (confirmed from a real screenshot), since
+    // nothing gave the floating list itself a solid background.
+    var suggestions = document.createElement('ul');
+    suggestions.className = 'dropdown-menu position-absolute w-100';
+    suggestions.style.zIndex = '20';
+    suggestions.style.display = 'none';
+    suggestions.style.maxHeight = '220px';
+    suggestions.style.overflowY = 'auto';
+    addressGroup.appendChild(addressInput);
+    addressGroup.appendChild(suggestions);
+    panel.appendChild(addressGroup);
 
-      var addressGroup = document.createElement('div');
-      addressGroup.className = 'position-relative mb-1';
-      var addressInput = document.createElement('input');
-      addressInput.type = 'text';
-      addressInput.name = 'location_address_' + i;
-      addressInput.className = 'form-control form-control-sm';
-      addressInput.placeholder = "{{ __('Rue, numéro...', 'configurationglpiauto')|e('js') }}";
-      addressInput.autocomplete = 'off';
-      // `dropdown-menu` (Bootstrap/Tabler component) rather than `list-group`: comes with its own
-      // opaque, theme-aware background/border/shadow built in — a plain `list-group` here rendered
-      // see-through over the fields/toggles underneath it (confirmed from a real screenshot),
-      // since nothing gave the floating list itself a solid background.
-      var suggestions = document.createElement('ul');
-      suggestions.className = 'dropdown-menu position-absolute w-100';
-      suggestions.style.zIndex = '20';
+    var row1 = document.createElement('div');
+    row1.className = 'd-flex gap-1 mb-1';
+    var postcodeInput = cgaMakeInput('location_postcode_' + path, "{{ __('Code postal', 'configurationglpiauto')|e('js') }}");
+    postcodeInput.style.maxWidth = '120px';
+    var townInput = cgaMakeInput('location_town_' + path, "{{ __('Ville', 'configurationglpiauto')|e('js') }}");
+    var stateInput = cgaMakeInput('location_state_' + path, "{{ __('Région / État', 'configurationglpiauto')|e('js') }}");
+    var countryInput = cgaMakeInput('location_country_' + path, "{{ __('Pays', 'configurationglpiauto')|e('js') }}");
+    row1.appendChild(postcodeInput);
+    row1.appendChild(townInput);
+    row1.appendChild(stateInput);
+    row1.appendChild(countryInput);
+    panel.appendChild(row1);
+
+    var row2 = document.createElement('div');
+    row2.className = 'd-flex gap-1 mb-1';
+    var buildingInput = cgaMakeInput('location_building_' + path, "{{ __('Bâtiment', 'configurationglpiauto')|e('js') }}");
+    var roomInput = cgaMakeInput('location_room_' + path, "{{ __('Pièce', 'configurationglpiauto')|e('js') }}");
+    var codeInput = cgaMakeInput('location_code_' + path, "{{ __('Code', 'configurationglpiauto')|e('js') }}");
+    var aliasInput = cgaMakeInput('location_alias_' + path, "{{ __('Alias', 'configurationglpiauto')|e('js') }}");
+    row2.appendChild(buildingInput);
+    row2.appendChild(roomInput);
+    row2.appendChild(codeInput);
+    row2.appendChild(aliasInput);
+    panel.appendChild(row2);
+
+    var commentInput = document.createElement('textarea');
+    commentInput.name = 'location_comment_' + path;
+    commentInput.className = 'form-control form-control-sm mb-1';
+    commentInput.rows = 2;
+    commentInput.placeholder = "{{ __('Commentaire', 'configurationglpiauto')|e('js') }}";
+    panel.appendChild(commentInput);
+
+    // Coordonnées GPS (glpi_locations.latitude/longitude/altitude, jamais renseignées ailleurs
+    // dans le plugin) : latitude/longitude remplies automatiquement depuis Nominatim, altitude
+    // toujours manuelle (aucun service de géocodage ne la fournit) — les trois éditables à la main
+    // dans tous les cas (un admin peut coller des coordonnées récupérées ailleurs).
+    var gpsRow = document.createElement('div');
+    gpsRow.className = 'd-flex gap-1';
+    var latInput = cgaMakeInput('location_latitude_' + path, "{{ __('Latitude', 'configurationglpiauto')|e('js') }}");
+    var lonInput = cgaMakeInput('location_longitude_' + path, "{{ __('Longitude', 'configurationglpiauto')|e('js') }}");
+    var altInput = cgaMakeInput('location_altitude_' + path, "{{ __('Altitude', 'configurationglpiauto')|e('js') }}");
+    gpsRow.appendChild(latInput);
+    gpsRow.appendChild(lonInput);
+    gpsRow.appendChild(altInput);
+    panel.appendChild(gpsRow);
+
+    function clearSuggestions() {
+      suggestions.innerHTML = '';
       suggestions.style.display = 'none';
-      suggestions.style.maxHeight = '220px';
-      suggestions.style.overflowY = 'auto';
-      addressGroup.appendChild(addressInput);
-      addressGroup.appendChild(suggestions);
-      wrapper.appendChild(addressGroup);
+    }
 
-      var postcodeInput = document.createElement('input');
-      postcodeInput.type = 'text';
-      postcodeInput.name = 'location_postcode_' + i;
-      postcodeInput.className = 'form-control form-control-sm mb-1';
-      postcodeInput.placeholder = "{{ __('Code postal', 'configurationglpiauto')|e('js') }}";
-      postcodeInput.style.maxWidth = '140px';
-      wrapper.appendChild(postcodeInput);
+    function fillFromSuggestion(item) {
+      addressInput.value = item.address || addressInput.value;
+      if (item.postcode) { postcodeInput.value = item.postcode; }
+      if (item.town) { townInput.value = item.town; }
+      if (item.state) { stateInput.value = item.state; }
+      if (item.country) { countryInput.value = item.country; }
+      // Toujours écrasées (contrairement à ville/état/pays plus bas) : choisir une suggestion est
+      // un geste explicite et précis, contrairement au remplissage code postal → ville plus large.
+      if (item.latitude) { latInput.value = item.latitude; }
+      if (item.longitude) { lonInput.value = item.longitude; }
+      clearSuggestions();
+    }
 
-      var townInput = document.createElement('input');
-      townInput.type = 'text';
-      townInput.name = 'location_town_' + i;
-      townInput.className = 'form-control form-control-sm mb-1';
-      townInput.placeholder = "{{ __('Ville', 'configurationglpiauto')|e('js') }}";
-      wrapper.appendChild(townInput);
+    var fetchAddressSuggestions = cgaDebounce(function (query) {
+      // Sans ça, une recherche comme "avenue" seule remonte des résultats partout en France — en
+      // repassant la ville/pays déjà saisis (s'ils le sont), ajax/geocode.php restreint la
+      // recherche Nominatim à cette zone au lieu de chercher "avenue" sur tout le pays.
+      var townHint = townInput.value.trim();
+      var countryHint = countryInput.value.trim();
+      var addressUrl = CGA_GEOCODE_URL + '?q=' + encodeURIComponent(query)
+        + (townHint !== '' ? '&town=' + encodeURIComponent(townHint) : '')
+        + (countryHint !== '' ? '&country=' + encodeURIComponent(countryHint) : '');
+      fetch(addressUrl)
+        .then(function (res) { return res.ok ? res.json() : []; })
+        .then(function (results) {
+          clearSuggestions();
+          if (!Array.isArray(results) || results.length === 0) {
+            return;
+          }
+          results.forEach(function (item) {
+            var li = document.createElement('li');
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'dropdown-item small text-wrap';
+            button.textContent = item.label;
+            button.addEventListener('click', function () { fillFromSuggestion(item); });
+            li.appendChild(button);
+            suggestions.appendChild(li);
+          });
+          // `.dropdown-menu` (Bootstrap/Tabler) is `display: none` by its own CSS rule, only ever
+          // shown via a `.show` class Bootstrap's own JS toggles — since that JS component isn't
+          // wired up here, an empty inline style falls back to that CSS rule and stays hidden.
+          // `'block'` overrides it directly instead.
+          suggestions.style.display = 'block';
+        })
+        .catch(function () { clearSuggestions(); });
+    }, 400);
 
-      var countryInput = document.createElement('input');
-      countryInput.type = 'text';
-      countryInput.name = 'location_country_' + i;
-      countryInput.className = 'form-control form-control-sm mb-1';
-      countryInput.placeholder = "{{ __('Pays', 'configurationglpiauto')|e('js') }}";
-      wrapper.appendChild(countryInput);
-
-      // Coordonnées GPS (glpi_locations.latitude/longitude, jamais renseignées ailleurs dans le
-      // plugin) : remplies automatiquement depuis Nominatim, éditables à la main sinon (un admin
-      // peut coller des coordonnées récupérées ailleurs sans passer par l'autocomplétion).
-      var gpsRow = document.createElement('div');
-      gpsRow.className = 'd-flex gap-1';
-      var latInput = document.createElement('input');
-      latInput.type = 'text';
-      latInput.name = 'location_latitude_' + i;
-      latInput.className = 'form-control form-control-sm';
-      latInput.placeholder = "{{ __('Latitude', 'configurationglpiauto')|e('js') }}";
-      var lonInput = document.createElement('input');
-      lonInput.type = 'text';
-      lonInput.name = 'location_longitude_' + i;
-      lonInput.className = 'form-control form-control-sm';
-      lonInput.placeholder = "{{ __('Longitude', 'configurationglpiauto')|e('js') }}";
-      gpsRow.appendChild(latInput);
-      gpsRow.appendChild(lonInput);
-      wrapper.appendChild(gpsRow);
-
-      function clearSuggestions() {
-        suggestions.innerHTML = '';
-        suggestions.style.display = 'none';
+    addressInput.addEventListener('input', function () {
+      if (!locationGeocodingEnabledInput.checked) {
+        return;
       }
-
-      function fillFromSuggestion(item) {
-        addressInput.value = item.address || addressInput.value;
-        if (item.postcode) { postcodeInput.value = item.postcode; }
-        if (item.town) { townInput.value = item.town; }
-        if (item.country) { countryInput.value = item.country; }
-        // Toujours écrasées (contrairement à ville/pays plus bas) : choisir une suggestion est un
-        // geste explicite et précis, contrairement au remplissage code postal → ville plus large.
-        if (item.latitude) { latInput.value = item.latitude; }
-        if (item.longitude) { lonInput.value = item.longitude; }
+      var query = addressInput.value.trim();
+      if (query.length < 3) {
+        clearSuggestions();
+        return;
+      }
+      fetchAddressSuggestions(query);
+    });
+    document.addEventListener('click', function (evt) {
+      if (evt.target !== addressInput) {
         clearSuggestions();
       }
+    });
 
-      var fetchAddressSuggestions = cgaDebounce(function (query) {
-        // Sans ça, une recherche comme "avenue" seule remonte des résultats partout en France —
-        // en repassant la ville/pays déjà saisis (s'ils le sont), ajax/geocode.php restreint la
-        // recherche Nominatim à cette zone au lieu de chercher "avenue" sur tout le pays.
-        var townHint = townInput.value.trim();
-        var countryHint = countryInput.value.trim();
-        var addressUrl = CGA_GEOCODE_URL + '?q=' + encodeURIComponent(query)
-          + (townHint !== '' ? '&town=' + encodeURIComponent(townHint) : '')
-          + (countryHint !== '' ? '&country=' + encodeURIComponent(countryHint) : '');
-        fetch(addressUrl)
-          .then(function (res) { return res.ok ? res.json() : []; })
-          .then(function (results) {
-            clearSuggestions();
-            if (!Array.isArray(results) || results.length === 0) {
-              return;
-            }
-            results.forEach(function (item) {
-              var li = document.createElement('li');
-              var button = document.createElement('button');
-              button.type = 'button';
-              button.className = 'dropdown-item small text-wrap';
-              button.textContent = item.label;
-              button.addEventListener('click', function () { fillFromSuggestion(item); });
-              li.appendChild(button);
-              suggestions.appendChild(li);
-            });
-            // `.dropdown-menu` (Bootstrap/Tabler) is `display: none` by its own CSS rule, only
-            // ever shown via a `.show` class Bootstrap's own JS toggles — since that JS component
-            // isn't wired up here, an empty inline style falls back to that CSS rule and stays
-            // hidden. `'block'` overrides it directly instead.
-            suggestions.style.display = 'block';
-          })
-          .catch(function () { clearSuggestions(); });
-      }, 400);
+    // Code postal → ville : déclenché à la sortie du champ (pas à chaque frappe, un code postal
+    // n'a de sens qu'une fois complet), ne remplit la ville/état que s'ils sont encore vides pour
+    // ne jamais écraser une correction déjà faite à la main.
+    postcodeInput.addEventListener('blur', function () {
+      if (!locationGeocodingEnabledInput.checked) {
+        return;
+      }
+      var postcode = postcodeInput.value.trim();
+      if (postcode.length < 3 || townInput.value.trim() !== '') {
+        return;
+      }
+      // Passe le pays déjà saisi (sinon ajax/geocode.php retombe sur son défaut) — un code postal
+      // seul est ambigu à l'échelle mondiale (69001 existe aussi bien à Lyon qu'en Ukraine), et ce
+      // résultat écrase la ville sans relecture possible par l'admin.
+      var countryHint = countryInput.value.trim();
+      var postcodeUrl = CGA_GEOCODE_URL + '?postcode=' + encodeURIComponent(postcode)
+        + (countryHint !== '' ? '&country=' + encodeURIComponent(countryHint) : '');
+      fetch(postcodeUrl)
+        .then(function (res) { return res.ok ? res.json() : []; })
+        .then(function (results) {
+          if (Array.isArray(results) && results.length > 0 && results[0].town) {
+            townInput.value = results[0].town;
+            if (results[0].state && stateInput.value.trim() === '') { stateInput.value = results[0].state; }
+            if (results[0].country && countryInput.value.trim() === '') { countryInput.value = results[0].country; }
+            // Centroïde du code postal, moins précis qu'une suggestion de rue choisie
+            // explicitement — ne remplit que si rien n'a déjà été saisi.
+            if (results[0].latitude && latInput.value.trim() === '') { latInput.value = results[0].latitude; }
+            if (results[0].longitude && lonInput.value.trim() === '') { lonInput.value = results[0].longitude; }
+          }
+        })
+        .catch(function () {});
+    });
 
-      addressInput.addEventListener('input', function () {
-        if (!locationGeocodingEnabledInput.checked) {
-          return;
-        }
-        var query = addressInput.value.trim();
-        if (query.length < 3) {
-          clearSuggestions();
-          return;
-        }
-        fetchAddressSuggestions(query);
-      });
-      document.addEventListener('click', function (evt) {
-        if (evt.target !== addressInput) {
-          clearSuggestions();
-        }
-      });
+    return panel;
+  }
 
-      // Code postal → ville : déclenché à la sortie du champ (pas à chaque frappe, un code postal
-      // n'a de sens qu'une fois complet), ne remplit la ville que si elle est encore vide pour ne
-      // jamais écraser une correction déjà faite à la main.
-      postcodeInput.addEventListener('blur', function () {
-        if (!locationGeocodingEnabledInput.checked) {
-          return;
-        }
-        var postcode = postcodeInput.value.trim();
-        if (postcode.length < 3 || townInput.value.trim() !== '') {
-          return;
-        }
-        // Passe le pays déjà saisi (sinon ajax/geocode.php retombe sur son défaut) — un code
-        // postal seul est ambigu à l'échelle mondiale (69001 existe aussi bien à Lyon qu'en
-        // Ukraine), et ce résultat écrase la ville sans relecture possible par l'admin.
-        var countryHint = countryInput.value.trim();
-        var postcodeUrl = CGA_GEOCODE_URL + '?postcode=' + encodeURIComponent(postcode)
-          + (countryHint !== '' ? '&country=' + encodeURIComponent(countryHint) : '');
-        fetch(postcodeUrl)
-          .then(function (res) { return res.ok ? res.json() : []; })
-          .then(function (results) {
-            if (Array.isArray(results) && results.length > 0 && results[0].town) {
-              townInput.value = results[0].town;
-              if (results[0].country && countryInput.value.trim() === '') { countryInput.value = results[0].country; }
-              // Centroïde du code postal, moins précis qu'une suggestion de rue choisie
-              // explicitement — ne remplit que si rien n'a déjà été saisi.
-              if (results[0].latitude && latInput.value.trim() === '') { latInput.value = results[0].latitude; }
-              if (results[0].longitude && lonInput.value.trim() === '') { lonInput.value = results[0].longitude; }
-            }
-          })
-          .catch(function () {});
-      });
+  function cgaCountTreeNodes(nodes) {
+    var count = 0;
+    (nodes || []).forEach(function (node) {
+      count += 1 + cgaCountTreeNodes(node.children || []);
+    });
+    return count;
+  }
 
-      locationsPanels.appendChild(wrapper);
+  // Un nœud sans adresse ni aucun autre champ rempli ne devient pas un Lieu du tout côté serveur
+  // (LocationBuilder) — le panneau de champs reste donc replié par défaut sur chaque nœud plutôt
+  // que déployé partout, pour ne pas donner l'impression qu'un Lieu vide sera créé.
+  function buildLocationNode(node, path, depth) {
+    var nodeName = node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}";
+
+    var container = document.createElement('div');
+    container.className = 'mb-1';
+    container.style.marginLeft = (depth * 20) + 'px';
+
+    var header = document.createElement('div');
+    header.className = 'd-flex align-items-center gap-2 mb-1';
+    var nameLabel = document.createElement('span');
+    nameLabel.textContent = (depth > 0 ? '↳ ' : '') + nodeName;
+    if (depth === 0) {
+      nameLabel.className = 'fw-bold';
+    }
+    var toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    toggleBtn.className = 'btn btn-sm btn-outline-secondary';
+    var addLabel = "{{ __('+ Ajouter une adresse', 'configurationglpiauto')|e('js') }}";
+    var collapseLabel = "{{ __('Réduire', 'configurationglpiauto')|e('js') }}";
+    toggleBtn.textContent = addLabel;
+    header.appendChild(nameLabel);
+    header.appendChild(toggleBtn);
+    container.appendChild(header);
+
+    var fieldsPanel = buildLocationFieldsPanel(path);
+    fieldsPanel.style.display = 'none';
+    container.appendChild(fieldsPanel);
+
+    var expanded = false;
+    toggleBtn.addEventListener('click', function () {
+      expanded = !expanded;
+      fieldsPanel.style.display = expanded ? '' : 'none';
+      toggleBtn.textContent = expanded ? collapseLabel : addLabel;
+    });
+
+    (node.children || []).forEach(function (child, i) {
+      container.appendChild(buildLocationNode(child, path + '-' + i, depth + 1));
+    });
+
+    return container;
+  }
+
+  // Rebuilt only when the tree's total node count (all depths) actually changed, so revisiting
+  // this step doesn't collapse panels or wipe fields already typed deeper in the tree.
+  function renderLocationsTree() {
+    var tree = (window.cgaTree || []);
+    var nodes = tree.length ? tree : [{ name: "{{ __('Entité racine', 'configurationglpiauto')|e('js') }}", children: [] }];
+    var totalNodes = cgaCountTreeNodes(nodes);
+    if (locationsTreeRoot.dataset.nodeCount == totalNodes) {
+      return;
+    }
+    locationsTreeRoot.dataset.nodeCount = String(totalNodes);
+    locationsTreeRoot.innerHTML = '';
+    nodes.forEach(function (node, i) {
+      locationsTreeRoot.appendChild(buildLocationNode(node, String(i), 0));
     });
   }
 
@@ -2743,7 +2814,7 @@
       renderBrandingPerClientPanels();
     }
     if (currentStep === 15) {
-      renderLocationPanels();
+      renderLocationsTree();
     }
   }
 
