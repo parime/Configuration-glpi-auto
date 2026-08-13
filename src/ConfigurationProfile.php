@@ -212,6 +212,9 @@ class ConfigurationProfile extends CommonDBTM
             // reasoning as the rest of this baseline — the admin trims what doesn't apply.
             'project_taxonomy_enabled' => true,
             'project_task_templates_enabled' => true,
+            // Same reasoning: a ready-to-duplicate project skeleton (tasks already linked) beats
+            // starting every project from a blank page, regardless of org size.
+            'project_templates_enabled' => true,
         ];
 
         // Tighter than the standard baseline at every level — round-the-clock contractual
