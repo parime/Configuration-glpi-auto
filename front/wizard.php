@@ -39,6 +39,7 @@ use GlpiPlugin\Configurationglpiauto\ProjectTaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaxonomyBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\RequestTypeTranslationBuilder;
+use GlpiPlugin\Configurationglpiauto\RSSFeedBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
@@ -398,6 +399,7 @@ if (isset($_POST['finish'])) {
     $entityAddressesApplied = (new EntityAddressBuilder())->build($config, $locationDataByPath, $entityCommsByPath);
     $userCategoriesCreated = (new UserCategoryBuilder())->build($config);
     $fieldUnicityRulesCreated = (new FieldUnicityBuilder())->build($config);
+    $rssFeedsCreated = (new RSSFeedBuilder())->build($config);
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
@@ -598,6 +600,9 @@ if (isset($_POST['finish'])) {
     if ($fieldUnicityRulesCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) d\'unicité de numéro de série créées.', 'configurationglpiauto'), $fieldUnicityRulesCreated);
     }
+    if ($rssFeedsCreated > 0) {
+        $messages[] = sprintf(__('%d flux RSS ajouté(s).', 'configurationglpiauto'), $rssFeedsCreated);
+    }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 
     Html::redirect(ConfigurationProfile::getSearchURL());
@@ -657,6 +662,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'request_type_translations_preview' => RequestTypeTranslationBuilder::getPreview(),
     'user_categories_preview' => UserCategoryBuilder::getCategoriesPreview(),
     'field_unicity_rules_preview' => FieldUnicityBuilder::getRulesPreview(),
+    'rss_feeds_preview' => RSSFeedBuilder::getFeedsPreview(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);

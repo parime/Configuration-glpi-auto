@@ -64,6 +64,15 @@ msgstr "%d role-based rights rule(s) created."
 msgid "%d règle(s) d'unicité de numéro de série créées."
 msgstr "%d serial number uniqueness rule(s) created."
 
+msgid "%d flux RSS ajouté(s)."
+msgstr "%d RSS feed(s) added."
+
+msgid "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"
+msgstr "Add the CERT-FR (ANSSI) security advisory RSS feed"
+
+msgid "Visible dans Outils > Flux RSS pour toute l'instance — utile pour suivre les vulnérabilités affectant le parc sans quitter GLPI."
+msgstr "Visible under Tools > RSS Feeds instance-wide — useful for tracking vulnerabilities affecting the fleet without leaving GLPI."
+
 msgid "%d services créés dans le catalogue."
 msgstr "%d services created in the catalog."
 

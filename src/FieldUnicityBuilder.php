@@ -22,12 +22,16 @@ use FieldUnicity;
 /**
  * Turns a Config's field-uniqueness setting into real `FieldUnicity` rows (`glpi_fieldunicities`)
  * — a native GLPI mechanism, empty by default on a fresh install, that blocks (or notifies on)
- * saving a second asset with the same value on a chosen field. Scoped here to the single most
- * universal, uncontroversial case: serial number uniqueness on the six serializable hardware asset
- * types GLPI ships (`$CFG_GLPI['unicity_types']` also lists Budget/Contact/Contract/Software/
- * Supplier/User/Certificate/Rack/... — left alone, since "unique serial number" doesn't apply to
- * those the same way and picking fields for them is an org-specific judgment call, not a universal
- * default).
+ * saving a second asset with the same value on a chosen field. Scoped to serial-number uniqueness
+ * on every itemtype in `$CFG_GLPI['unicity_types']` (20 total) that both (a) genuinely has its own
+ * `serial` column (confirmed via `information_schema` against a real instance — Cluster does not,
+ * despite being in that array) and (b) has a serial number meaningful as a real-world unique
+ * identifier: the six original hardware asset types, plus Rack/Enclosure/PDU (physical
+ * infrastructure, same reasoning), SoftwareLicense (its `serial` column is the license key — a
+ * duplicate almost always means the same license was entered twice), Certificate (X.509 serial),
+ * and Item_DeviceSimcard (SIM ICCID). Left alone: Budget/Contact/Contract/Supplier/User (no
+ * `serial` column at all, or — for User — no direct-column field this mechanism could target
+ * without joining `glpi_useremails`).
  *
  * `action_refuse = 1` (block the duplicate outright) rather than `action_notify` — the latter would
  * need a companion `NotificationTargetFieldUnicity` template wired up to actually alert anyone
@@ -52,6 +56,12 @@ class FieldUnicityBuilder
         ['itemtype' => 'Peripheral', 'label' => 'Périphériques'],
         ['itemtype' => 'Phone', 'label' => 'Téléphones'],
         ['itemtype' => 'Printer', 'label' => 'Imprimantes'],
+        ['itemtype' => 'Rack', 'label' => 'Racks'],
+        ['itemtype' => 'Enclosure', 'label' => 'Châssis'],
+        ['itemtype' => 'PDU', 'label' => 'PDU'],
+        ['itemtype' => 'SoftwareLicense', 'label' => 'Licences logicielles'],
+        ['itemtype' => 'Certificate', 'label' => 'Certificats'],
+        ['itemtype' => 'Item_DeviceSimcard', 'label' => 'Cartes SIM'],
     ];
 
     /**

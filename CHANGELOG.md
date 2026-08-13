@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.47.0] - 2026-08-13
+
+### Added
+- `FieldUnicityBuilder` étendu de 6 à 12 règles : ajout de Racks, Châssis (Enclosure), PDU
+  (mêmes raisons que les 6 types matériel initiaux — infrastructure physique sérialisée),
+  Licences logicielles (le champ `serial` y est la clé de licence — un doublon signifie presque
+  toujours une double saisie de la même licence), Certificats (numéro de série X.509) et Cartes SIM
+  (ICCID). Confirmé via `information_schema` sur une instance réelle que chacun a bien sa propre
+  colonne `serial` (`Cluster`, lui aussi éligible côté GLPI, n'en a pas — écarté).
+- `RSSFeedBuilder` (nouveau) : ajoute le flux RSS des avis de sécurité CERT-FR (ANSSI,
+  `https://www.cert.ssi.gouv.fr/feed/`, vérifié en direct — un vrai flux actif, pas une URL
+  devinée), visible dans Outils > Flux RSS pour toute l'instance (`Entity_RSSFeed`, entité racine +
+  récursif). Toggle dédié (`rss_feeds_enabled`), activé par défaut (même socle que le reste du
+  wizard depuis v0.46.0). Le nom/la description du flux sont récupérés automatiquement par GLPI lui-
+  même au moment de la création (fetch live du flux), pas besoin de les coder en dur.
+
 ## [0.46.0] - 2026-08-13
 
 ### Changed

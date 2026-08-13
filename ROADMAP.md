@@ -686,6 +686,16 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    dans `CommonDBTM::checkUnicity()` : un numéro de série vide n'est jamais traité comme un
    doublon, donc aucun risque de bloquer la création de plusieurs actifs sans série renseignée.
    Vérifié en réel : les 6 règles créées avec les bons champs, resoumission sans doublon.
+
+   **Extension à 12 règles — fait (v0.47.0, 2026-08-13).** Sur question directe de l'utilisateur
+   ("pouvons-nous faire un truc ?"), réaudité les 20 itemtypes éligibles avec le même filtre
+   (colonne `serial` réellement présente, confirmé par `information_schema` sur une instance réelle
+   — `Cluster` en est dépourvu malgré son éligibilité). Six candidats supplémentaires passaient le
+   même test d'universalité que les six premiers : Racks/Châssis/PDU (infrastructure physique, même
+   raisonnement), Licences logicielles (le `serial` y est la clé de licence — un doublon signifie
+   presque toujours une double saisie), Certificats (numéro de série X.509), Cartes SIM (ICCID).
+   `User` écarté explicitement : pas de colonne e-mail directe sur `glpi_users` (l'e-mail vit dans
+   `glpi_useremails`, relation 1-N), donc pas exploitable par ce mécanisme sans le détourner.
 7. ✅ **Adresse native de l'Entité (`Entity`), distincte du Lieu — fait (v0.40.0, 2026-08-13).**
    Repéré sur l'onglet "Adresse" natif d'une entité (`front/entity.form.php`) : `glpi_entities` a
    ses propres champs téléphone/fax/site web/e-mail/code postal/ville/état/pays/adresse/latitude/
@@ -762,22 +772,39 @@ Transcend, NVIDIA, Broadcom, SK hynix) — décider lesquels ajouter à `Manufac
 (avec icône, catégorie) est une décision de contenu différente de la normalisation de doublons déjà
 décidés.
 
+**Flux RSS CERT-FR — fait (v0.47.0, 2026-08-13).** Demandé explicitement par l'utilisateur
+("notamment le CERT-FR pour les français"). `RSSFeedBuilder` (nouveau) ajoute le flux natif GLPI
+(Outils > Flux RSS, vide par défaut) des avis de sécurité CERT-FR/ANSSI. URL vérifiée en direct
+(`https://www.cert.ssi.gouv.fr/feed/`, un vrai flux actif avec du contenu réel au moment du test)
+plutôt que devinée. Visibilité instance-wide via `Entity_RSSFeed` (entité racine + récursif) —
+sans ça, un flux `RSSFeed` n'est visible que par son créateur. Nom/description récupérés par GLPI
+lui-même au moment de l'ajout (fetch live du flux par `RSSFeed::prepareInputForAdd()`), pas codés
+en dur ici. Scope volontairement limité à ce seul flux (pas un mécanisme générique "ajouter
+n'importe quel flux") — France-spécifique mais assumé, même logique que les jours fériés déjà
+France-first ailleurs dans ce plugin.
+
 **Étape "Marketplace & plugins recommandés" — pas encore cadrée, capturée telle quelle sur demande
 explicite ("ajoute donc ça à la roadmap des chantiers à mener"), 2026-08-13.** Deux idées proposées
 par l'utilisateur, à trancher avant de construire quoi que ce soit :
-1. **Clé API du marketplace GLPI.** Proposer, à une étape du wizard, de saisir une clé
-   d'enregistrement (probablement l'enregistrement GLPI Network, Configuration > Générale >
-   Enregistrement — à confirmer dans le code GLPI réel avant de construire, pas encore vérifié) pour
-   débloquer l'accès à davantage de plugins/fonctionnalités du marketplace.
-2. **Liste de plugins recommandés/indispensables pour démarrer avec GLPI**, avec explication de
-   pourquoi chacun est utile, mise en avant explicite du plugin de l'utilisateur lui-même
-   (`remise-glpi`, https://github.com/parime/remise-glpi — gestion de feuilles de prêt/retour/vente/
-   don de matériel pour la traçabilité, centralisation des documents dans GLPI), plus d'autres pistes
-   citées par l'utilisateur à vérifier/qualifier : un plugin de type "OneTimeSecret" pour le partage
-   sécurisé de mots de passe, un plugin de gestion des escalades. Portée, mécanisme d'installation
-   réel (le marketplace GLPI installe-t-il un plugin tiers automatiquement, ou seulement les plugins
-   officiels référencés ?) et liste exacte des plugins tiers à recommander restent à vérifier dans le
-   code GLPI réel avant de cadrer un plan de construction — même méthode que les audits précédents.
+1. **Clé API du marketplace GLPI — mécanisme confirmé réel (2026-08-13), pas encore construit.**
+   Vérifié dans `src/Glpi/Marketplace/` du cœur GLPI : `GLPINetwork::getRegistrationKey()` et
+   `GLPINetwork::getRegistrationInformations()` existent bel et bien, le marketplace natif affiche
+   un message d'avertissement tant qu'aucune clé n'est renseignée ("A registration, at least a free
+   one, is required to use marketplace!"), et certains plugins du catalogue exigent une offre
+   GLPI Network supérieure (`required_offers`) pour être visibles/installables. Reste à définir : où
+   dans le wizard proposer ce champ, et si le saisir change réellement quelque chose pour les
+   plugins gratuits/tiers visés au point 2 ci-dessous (à vérifier avant de construire).
+2. **Liste de plugins recommandés/indispensables pour démarrer avec GLPI, confirmé par
+   l'utilisateur (2026-08-13) : "OneTimeSecret" et "Escalade" sont de vrais plugins déjà publiés
+   sur le marketplace natif de GLPI** (pas à inventer, existent réellement). Mise en avant explicite
+   du plugin de l'utilisateur lui-même (`remise-glpi`, https://github.com/parime/remise-glpi —
+   gestion de feuilles de prêt/retour/vente/don de matériel pour la traçabilité, centralisation des
+   documents dans GLPI). Reste à faire avant de construire : retrouver la clé/le nom exact de
+   "OneTimeSecret" et "Escalade" sur plugins.glpi-project.org (pas encore recherché), et vérifier le
+   mécanisme d'installation réel (le marketplace natif installe-t-il un plugin tiers directement
+   depuis le wizard, ou faut-il rediriger l'admin vers Configuration > Marketplace pour l'installer
+   lui-même en un clic ?) avant de cadrer un plan de construction — même méthode que les audits
+   précédents.
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
