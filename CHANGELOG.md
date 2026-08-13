@@ -9,6 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.34.0] - 2026-08-13
+
+Modèles de projet pré-structurés — dernier chantier ouvert du sixième audit (v0.26.0) : GLPI
+permet de sauver un projet comme "modèle" et d'en recréer un nouveau à partir de lui, mais le
+plugin n'en fournissait aucun.
+
+### Added
+- `ProjectTemplateBuilder` (nouveau) : deux vrais `Project` marqués `is_template=1` avec leurs
+  `ProjectTask` déjà rattachées — « Déploiement standard » (6 étapes, cadrage → clôture) et
+  « Projet interne — cycle court » (3 étapes, réutilise les mêmes jalons que la bibliothèque
+  `ProjectTaskTemplateBuilder`). Confirmé en lisant le code source de GLPI plutôt que supposé :
+  `Project` utilise le mécanisme de gabarit générique `CommonDBTM`
+  (`is_template`/`template_name`), et `Project::getCloneRelations()` inclut explicitement
+  `ProjectTask::class` — le sélecteur de gabarit que `CommonDBTM` affiche déjà nativement sur
+  "+ Nouveau" clone donc automatiquement les tâches liées, sans rien à construire côté UI.
+- Pas de bascule "icônes" ici contrairement à la plupart des autres constructeurs de ce plugin :
+  vérifié dans le code de GLPI que `Project` n'est pas un `CommonDropdown` et que
+  `DropdownTranslation::getTranslatedValue()` n'est jamais appelé ni pour son nom ni pour son
+  sélecteur de gabarit (qui affiche `template_name` directement) — un appel à
+  `Translations::applyIcon()` aurait écrit des lignes que rien ne lit jamais. L'icône est donc
+  simplement intégrée au nom du modèle.
+
+### Verified
+- Vérifié en réel (Playwright, pas de mock) contre le vrai flux natif de GLPI : ouverture de
+  `project.form.php?id=<modèle>&withtemplate=2`, formulaire pré-rempli depuis le modèle,
+  enregistrement d'un nouveau projet réel — les 6 tâches du modèle « Déploiement standard » sont
+  apparues automatiquement sur le nouveau projet, aucune action supplémentaire nécessaire.
+
 ## [0.33.0] - 2026-08-13
 
 Assistant d'adresse interactif pour l'étape Lieux — demandé explicitement par l'utilisateur

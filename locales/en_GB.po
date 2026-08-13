@@ -1003,6 +1003,21 @@ msgstr "Town"
 msgid "Pays"
 msgstr "Country"
 
+msgid "%d modèle(s) de projet créés, structure de tâches incluse."
+msgstr "%d project template(s) created, task structure included."
+
+msgid "Créer des modèles de projet pré-structurés (tâches déjà liées)"
+msgstr "Create pre-structured project templates (tasks already linked)"
+
+msgid "Un vrai projet marqué comme modèle, avec ses tâches déjà rattachées — \"+ Nouveau\" sur Projets propose ensuite de démarrer depuis ce modèle, tâches incluses."
+msgstr "A real project marked as a template, with its tasks already attached — \"+ New\" on Projects then offers to start from this template, tasks included."
+
+msgid "Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits/modèles de projet."
+msgstr "Review your choices before finishing — this step actually creates entities, the calendar, SLAs, categories, the service catalog, statuses, wait reasons, custom branding, general settings, ticket templates, LDAP rights, task/solution/validation labels, locations/manufacturers/knowledge base categories, and project types/templates."
+
+msgid "modèles de projet"
+msgstr "project templates"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Configuration profile"

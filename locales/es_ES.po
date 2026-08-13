@@ -1003,6 +1003,21 @@ msgstr "Ciudad"
 msgid "Pays"
 msgstr "País"
 
+msgid "%d modèle(s) de projet créés, structure de tâches incluse."
+msgstr "%d plantilla(s) de proyecto creadas, estructura de tareas incluida."
+
+msgid "Créer des modèles de projet pré-structurés (tâches déjà liées)"
+msgstr "Crear plantillas de proyecto preestructuradas (tareas ya vinculadas)"
+
+msgid "Un vrai projet marqué comme modèle, avec ses tâches déjà rattachées — \"+ Nouveau\" sur Projets propose ensuite de démarrer depuis ce modèle, tâches incluses."
+msgstr "Un proyecto real marcado como plantilla, con sus tareas ya vinculadas — \"+ Nuevo\" en Proyectos propone luego partir de esta plantilla, tareas incluidas."
+
+msgid "Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits/modèles de projet."
+msgstr "Revise sus elecciones antes de finalizar — este paso crea realmente las entidades, el calendario, los SLA, las categorías, el catálogo de servicios, los estados, los motivos de espera, la personalización de marca, la configuración general, las plantillas de tickets, los derechos LDAP, las etiquetas de tareas/soluciones/validaciones, las ubicaciones/fabricantes/categorías de la base de conocimiento, y los tipos/plantillas de proyecto."
+
+msgid "modèles de projet"
+msgstr "plantillas de proyecto"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Perfil de configuración"
