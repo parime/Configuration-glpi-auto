@@ -1108,6 +1108,12 @@ msgstr "S'obtient gratuitement sur"
 msgid "Une fois le marketplace débloqué, ces plugins sont installables en un clic depuis Configuration > Plugins > Marketplace — non installés automatiquement par cet assistant."
 msgstr "Une fois le marketplace débloqué, ces plugins sont installables en un clic depuis Configuration > Plugins > Marketplace — non installés automatiquement par cet assistant."
 
+msgid "%d opérateurs téléphoniques créés."
+msgstr "%d opérateurs téléphoniques créés."
+
+msgid "Créer les opérateurs téléphoniques français courants"
+msgstr "Créer les opérateurs téléphoniques français courants"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Profil de configuration"
