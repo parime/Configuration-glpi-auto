@@ -659,16 +659,29 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    de succès. `NetworkPortFiberchannelType` (malgré son nom FR "Types de fibre") concerne en réalité
    le protocole de stockage SAN Fibre Channel (débits 1/2/4/8/16/32 Gb, FCoE...) — rien à voir avec
    la fibre internet résidentielle/entreprise, écarté du périmètre "opérateurs télécom" de ce point.
-4. **Grande liste de dropdowns "Types" natifs vides** — repérée en parcourant l'écran Intitulés >
-   Types. Vérifié par requête sur `information_schema` : ~25 tables natives à 0 ligne, parmi
-   lesquelles des candidats plausibles à un contenu générique (types d'ordinateurs, de moniteurs,
-   de matériels réseau, d'imprimantes, de périphériques, de téléphones, de boîtiers, de contrats,
-   de contact, de fournisseurs, de certificats, de budgets, de baies, de PDU, de cartouches, de
-   consommables, de câbles, de lignes, de capteurs, de batteries, de disques durs, de clusters,
-   d'instances de base de données, de machines virtuelles, de licences logicielles) et d'autres
-   probablement auto-gérées par GLPI lui-même plutôt qu'à seeder manuellement (types d'agent
-   d'inventaire, types d'actifs liés au nouveau système `AssetDefinition`) — à vérifier au cas par
-   cas avant de construire, trop volumineux pour être traité d'un bloc sans prioriser.
+4. **Grande liste de dropdowns "Types" natifs vides — première tranche faite (v0.50.0,
+   2026-08-13), le reste toujours à prioriser.** Requête `information_schema` réexécutée :
+   33 tables natives `glpi_*types` à 0 ligne (plus large que l'estimation initiale de ~25).
+   ✅ **Traité** : les 6 mêmes catégories déjà couvertes par `ManufacturerBuilder`/
+   `FieldUnicityBuilder` — `AssetTypeBuilder` (nouveau) seed Ordinateurs/Écrans/Matériel réseau/
+   Périphériques/Téléphones/Imprimantes avec des types standards du secteur (desktop/laptop/
+   serveur, LCD/tactile, switch/routeur/pare-feu, clavier/souris/webcam, smartphone/fixe/DECT,
+   laser/jet d'encre/multifonction). ❌ **Explicitement écartés, auto-gérés par GLPI** :
+   `AgentType` (confirmé dans `Agent::handleAgent()` — la ligne "Core" est auto-créée à la première
+   connexion d'un agent d'inventaire réel, la seeder nous-mêmes serait redondant) et
+   `Assets_AssetType` (sa clé étrangère `assets_assetdefinitions_id` la rend dépendante d'une
+   définition d'actif personnalisée que l'admin doit créer avant qu'un type ait un sens — pas un
+   dropdown global autonome). ⏳ **Reste à traiter, chacun nécessitant sa propre recherche de
+   contenu avant construction** (25 tables) : Baies (Rack), Châssis (Enclosure — absent de la
+   requête initiale, à revérifier), PDU, Cluster, Cartouches (CartridgeItem), Consommables
+   (ConsumableItem), Câbles (Cable), Certificats (Certificate), Contrats (Contract), Contacts
+   (Contact), Fournisseurs (Supplier), Budgets (Budget), Lignes (Line), Domaines (Domain),
+   Appliances (Appliance), Batteries (DeviceBattery), Boîtiers (DeviceCase), Composants génériques
+   (DeviceGeneric), Disques durs (DeviceHardDrive), Capteurs (DeviceSensor), Instances de base de
+   données (DatabaseInstance), Machines virtuelles (VirtualMachine), Licences logicielles
+   (SoftwareLicense), Équipements passifs de datacenter (PassiveDCEquipment), Câbles fibre
+   (`NetworkPortFiberchannelType`, déjà écarté du périmètre "opérateurs télécom" ailleurs dans ce
+   document mais toujours candidat ici en tant que protocole SAN générique et stable).
 5. **Jours fériés par pays, selon le pays saisi sur un Lieu.** `CalendarBuilder` n'applique
    aujourd'hui que les jours fériés français, en dur. Demandé : dès qu'une adresse avec un pays est
    saisie sur un Lieu (assistant d'adresse v0.33.0+), proposer d'appliquer automatiquement les

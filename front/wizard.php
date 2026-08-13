@@ -15,6 +15,7 @@
  * -------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Configurationglpiauto\AssetTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\BrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\CalendarBuilder;
 use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
@@ -408,6 +409,7 @@ if (isset($_POST['finish'])) {
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $lineOperatorsCreated = (new LineOperatorBuilder())->build($config);
+    $assetTypesCreated = (new AssetTypeBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
     $documentManagementCreated = (new DocumentManagementBuilder())->build($config);
     $planningEventsCreated = (new PlanningEventBuilder())->build($config);
@@ -579,6 +581,9 @@ if (isset($_POST['finish'])) {
     if ($lineOperatorsCreated > 0) {
         $messages[] = sprintf(__('%d opérateurs téléphoniques créés.', 'configurationglpiauto'), $lineOperatorsCreated);
     }
+    if ($assetTypesCreated > 0) {
+        $messages[] = sprintf(__('%d types de matériel créés.', 'configurationglpiauto'), $assetTypesCreated);
+    }
     if ($kbCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de base de connaissances créées.', 'configurationglpiauto'), $kbCategoriesCreated);
     }
@@ -667,6 +672,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'validation_templates_preview' => ValidationTemplateBuilder::getLibraryPreview(),
     'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
     'line_operators_preview' => LineOperatorBuilder::getOperatorsPreview(),
+    'asset_types_preview' => AssetTypeBuilder::getTypesPreview(),
     'document_management_preview' => DocumentManagementBuilder::getPreview(),
     'planning_events_preview' => PlanningEventBuilder::getPreview(),
     'project_taxonomy_preview' => ProjectTaxonomyBuilder::getPreview(),

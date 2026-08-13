@@ -1114,6 +1114,12 @@ msgstr "%d phone operators created."
 msgid "Créer les opérateurs téléphoniques français courants"
 msgstr "Create common French phone operators"
 
+msgid "%d types de matériel créés."
+msgstr "%d asset types created."
+
+msgid "Créer les types courants pour Ordinateurs, Écrans, Matériel réseau, Périphériques, Téléphones, Imprimantes"
+msgstr "Create common types for Computers, Monitors, Network equipment, Peripherals, Phones, Printers"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Configuration profile"
