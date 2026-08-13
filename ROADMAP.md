@@ -716,6 +716,14 @@ d'étape (Lieux, Personnalisation par client), soumission complète avec les don
 base, rendu correct en session anglaise. `docs/TUTORIAL.md` et ses 18 captures d'écran repris à
 l'identique du nouveau parcours.
 
+**Icônes cochées par défaut — fait (v0.44.0, 2026-08-13).** Retour utilisateur direct après capture
+d'écran de l'étape 3 : les 17 cases "Ajouter des icônes" du wizard étaient décochées par défaut
+(opt-in), obligeant à les activer une par une malgré un coût nul et un bénéfice systématique.
+Basculées en cochées par défaut (opt-out) dans `Config::getDefaults()` — aucun préréglage de
+`ConfigurationProfile::getSuggestedDefaults()` ne les force à `false`, donc le changement s'applique
+à tous les profils sans exception. Vérifié en réel sur une instance neuve (config remise à zéro) :
+les 17 cases confirmées pré-cochées au premier chargement du wizard.
+
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
 2. **Fait (v0.29.0, 2026-08-12).** Documentation GitHub avec captures d'écran de chaque étape,
