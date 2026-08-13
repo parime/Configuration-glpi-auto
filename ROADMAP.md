@@ -526,17 +526,31 @@ organisation pour écrire ces règles. `ManufacturerDictionaryBuilder` (nouveau)
 test de règle de GLPI (`front/rule.test.php`) : « Hewlett-Packard » → validé → fabricant assigné
 « HP ».
 
-**Idée à cadrer, pas encore construite (proposée par l'utilisateur, 2026-08-12)** : générer des
-« actifs personnalisés » GLPI (`Glpi\Asset\AssetDefinition`, système natif GLPI 10+, Configuration
-> Actifs > Types d'actifs personnalisés) en fonction des branches de catégories sélectionnées à
-l'étape 5 — ex. la branche « Flotte Automobile » activée créerait un type d'actif « Véhicule » avec
-des champs pertinents (immatriculation, type de carburant, date de contrôle technique...), la
-branche « Bâtiment » un type « Local »/« Salle » ou équivalent, la branche « IT & SI » un type
-« Serveur » distinct de l'actif natif `Computer` (champs propres : position en baie, RAID,
-hyperviseur...). Nécessite de vérifier l'API réelle
-de création d'`AssetDefinition` par code (pas encore fait) et de définir un jeu de champs par
-branche sans tomber dans le sur-mesure par organisation (même principe généraliste que le reste du
-plugin). Pas de version cible.
+**Idée cadrée, débloquée, pas encore construite (proposée par l'utilisateur, 2026-08-12 ; API
+confirmée le 2026-08-13 après avoir repéré le sujet dans les vidéos de formation GLPI de Patrice
+Vaillant, https://www.youtube.com/@patricevaillant — chaîne listée par GLPI lui-même dans
+« Ils parlent de nous »)** : générer des « actifs personnalisés » GLPI en fonction des branches de
+catégories sélectionnées à l'étape 5 — ex. la branche « Flotte Automobile » activée créerait un
+type d'actif « Véhicule » avec des champs pertinents (immatriculation, type de carburant, date de
+contrôle technique...), la branche « Bâtiment » un type « Local »/« Salle » ou équivalent, la
+branche « IT & SI » un type « Serveur » distinct de l'actif natif `Computer` (champs propres :
+position en baie, RAID, hyperviseur...).
+
+**Blocage levé** : vérifié directement dans le code source de GLPI 11.0.8 réel (pas supposé) —
+`Glpi\Asset\AssetDefinition` (`src/Glpi/Asset/AssetDefinition.php`) est un vrai `CommonDBTM`
+(`extends AbstractDefinition`), pas seulement une manipulation via l'UI. Ce n'est PAS du GLPI 10+
+comme noté précédemment : la généricité est native depuis la GLPI 11 seulement, migrée depuis
+l'ancien plugin externe « Generic Object » (confirmé dans la doc officielle,
+https://help.glpi-project.org/documentation/modules/configuration/asset-definitions). Champs clés
+côté `add()`/`update()` : `system_name` (fige le nom, génère la classe
+`GlpiCustomAsset<SystemName>Asset`), `capacities` (tableau JSON de « capacités » modulaires —
+25+ disponibles dans `src/Glpi/Asset/Capacity/` : `HasNetworkPortCapacity`,
+`HasVirtualMachineCapacity`, `HasInfocomCapacity`, `IsInventoriableCapacity`... — chaque type
+d'actif active uniquement celles qui le concernent), `profiles`, `translations`, `fields_display`.
+Reste à définir un jeu de champs/capacités par branche sans tomber dans le sur-mesure par
+organisation (même principe généraliste que le reste du plugin). Pas de version cible — l'utilisateur
+a choisi de documenter le déblocage plutôt que de lancer la construction immédiatement
+(2026-08-13).
 
 **Lieux — assistant d'adresse interactif — fait (v0.33.0, 2026-08-13).** Demandé explicitement par
 l'utilisateur ("les adresse on a dit un truc interractif, comme pour les site internet ou tu
