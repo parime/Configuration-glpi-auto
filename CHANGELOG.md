@@ -9,6 +9,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.36.0] - 2026-08-13
+
+Refonte de l'étape Lieux suite à un retour utilisateur direct sur v0.33.0/v0.35.0 en usage réel
+("tu met les entité dans les lieu, mais s'en ai pas, par contre faire en sorte que l'on puisse
+saisir ou non une adresse pour chaque entité et sous entité" ; "pour les lieux on pourrais leur
+proposer de mettre un alias" ; "faut que l'on puisse remplir tout les champs natif de glpi").
+
+### Changed
+- **`LocationBuilder` ne mirror plus systématiquement toute l'arborescence d'entités.** Avant : un
+  `Location` était créé pour CHAQUE entité/sous-entité de l'arbre, avec adresse possible seulement
+  sur les nœuds racine — même les départements internes sans adresse propre finissaient en Lieux.
+  Maintenant : un `Location` n'est créé QUE là où l'admin a effectivement saisi quelque chose, à
+  N'IMPORTE quel niveau de l'arbre (pas seulement les nœuds racine). Un nœud sans donnée n'a aucun
+  Lieu — ses descendants, s'ils en ont, se rattachent au plus proche ancêtre qui a un Lieu (ou à la
+  racine s'il n'y en a aucun), sans niveau vide intercalé.
+- L'étape 15 (Lieux) affiche désormais l'arborescence complète (tous niveaux, pas seulement les
+  entités racine), avec un bouton « + Ajouter une adresse » repliable par nœud plutôt que des
+  panneaux fixes uniquement sur les clients/sites de premier niveau.
+
+### Added
+- Tous les champs natifs de `glpi_locations` sont désormais saisissables, pas seulement adresse/
+  code postal/ville/pays : `code`, `alias`, `commentaire`, `état/région` (distinct du pays),
+  `bâtiment`, `pièce`, et `altitude`. Nominatim peut suggérer adresse/code postal/ville/état/pays/
+  latitude/longitude ; le reste (code, alias, commentaire, bâtiment, pièce, altitude — aucun
+  service de géocodage ne fournit l'altitude) reste toujours en saisie manuelle, comme sur le
+  formulaire natif de GLPI.
+
+### Fixed
+- Bug trouvé pendant cette refonte, avant mise en ligne : le validateur de coordonnées GPS
+  (`sanitizeCoordinate()`) limitait le nombre de chiffres avant la virgule à 3 — correct pour
+  latitude/longitude, mais rejetait toute altitude à 4 chiffres (un site de montagne à 2000m,
+  par exemple). Corrigé en ne bornant que par la plage (`$max`), pas par la forme de la chaîne.
+
 ## [0.35.0] - 2026-08-13
 
 Suite de l'assistant d'adresse (v0.33.0) : coordonnées GPS + deux vrais bugs remontés par
