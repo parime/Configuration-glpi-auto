@@ -1066,6 +1066,27 @@ msgstr "Ubicaciones hijas (edificio, planta, sala...)"
 msgid "Nom du lieu enfant (ex. Bâtiment A)"
 msgstr "Nombre de la ubicación hija (ej. Edificio A)"
 
+msgid "%d fiche(s) d'entité complétées avec leur adresse."
+msgstr "%d ficha(s) de entidad completadas con su dirección."
+
+msgid "Compléter aussi la fiche adresse native de chaque entité (GLPI > Entités > Adresse)"
+msgstr "Completar también la ficha de dirección nativa de cada entidad (GLPI > Entidades > Dirección)"
+
+msgid "E-mail"
+msgstr "Correo electrónico"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Reprend l'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper — ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité."
+msgstr "Reutiliza la dirección ya introducida abajo para cada entidad, sin volver a escribirla — solo añade teléfono/fax/sitio web/correo electrónico, propios de la ficha de entidad."
+
+msgid "Site web"
+msgstr "Sitio web"
+
+msgid "Téléphone"
+msgstr "Teléfono"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Perfil de configuración"

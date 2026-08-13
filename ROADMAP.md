@@ -679,14 +679,15 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    contrainte (ex. "le numéro de série doit être unique sur les Ordinateurs") — plus proche des
    règles métier déjà volontairement laissées de côté ailleurs dans ce plugin (`RuleTicket`...)
    qu'un simple contenu à préremplir. À auditer avant de se prononcer sur la faisabilité générique.
-7. **Adresse native de l'Entité (`Entity`), distincte du Lieu.** Repéré sur l'onglet "Adresse" natif
-   d'une entité (`front/entity.form.php`) : `glpi_entities` a ses propres champs
-   téléphone/fax/site web/e-mail/code postal/ville/état/pays/adresse/latitude/longitude/altitude,
-   avec sa propre carte Leaflet — un mécanisme entièrement distinct de `glpi_locations` (que ce
-   plugin remplit déjà). Demandé : pouvoir aussi compléter ces champs-là, directement sur
-   l'entité elle-même. Recoupe potentiellement l'assistant d'adresse déjà construit pour les Lieux
-   (même genre de champs, même autocomplétion Nominatim envisageable) — à clarifier si c'est un
-   canal supplémentaire indépendant ou une extension du même assistant.
+7. ✅ **Adresse native de l'Entité (`Entity`), distincte du Lieu — fait (v0.40.0, 2026-08-13).**
+   Repéré sur l'onglet "Adresse" natif d'une entité (`front/entity.form.php`) : `glpi_entities` a
+   ses propres champs téléphone/fax/site web/e-mail/code postal/ville/état/pays/adresse/latitude/
+   longitude/altitude, avec sa propre carte Leaflet — un mécanisme entièrement distinct de
+   `glpi_locations`. Tranché en faveur d'une extension du même assistant plutôt qu'un canal
+   indépendant : `EntityAddressBuilder` (nouveau) réutilise l'adresse déjà saisie dans le panneau
+   "Lieux" de chaque entité (aucune retypée), et n'ajoute que téléphone/fax/site web/e-mail — les
+   seuls champs sans équivalent sur `Location`. Toggle dédié, désactivé par défaut. Vérifié en réel :
+   adresse + les 4 nouveaux champs correctement persistés sur la fiche entité.
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.

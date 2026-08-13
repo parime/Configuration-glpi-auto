@@ -987,6 +987,13 @@
             <p class="text-muted small mb-0">{{ __('Instance Nominatim/Photon auto-hébergée ou compatible, pour un usage réel au-delà d\'un essai ponctuel.', 'configurationglpiauto') }}</p>
           </div>
 
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="entity_native_address_enabled" value="0">
+            <input type="checkbox" name="entity_native_address_enabled" value="1" class="form-check-input" id="cga-entity-native-address-enabled" {{ config.entity_native_address_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-entity-native-address-enabled">{{ __('Compléter aussi la fiche adresse native de chaque entité (GLPI > Entités > Adresse)', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-2">{{ __('Reprend l\'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper — ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité.', 'configurationglpiauto') }}</p>
+
           <div id="cga-locations-tree"></div>
         </div>
 
@@ -1759,6 +1766,23 @@
     gpsRow.appendChild(altInput);
     panel.appendChild(gpsRow);
 
+    // Champs propres à la fiche entité (glpi_entities), sans équivalent sur Location — visibles
+    // seulement si "Compléter aussi la fiche adresse native de chaque entité" est coché ; l'adresse
+    // elle-même (rue/ville/état/pays/GPS ci-dessus) est réutilisée telle quelle côté serveur,
+    // jamais retapée ici.
+    var entityCommsRow = document.createElement('div');
+    entityCommsRow.className = 'd-flex gap-1 flex-wrap mt-1 cga-entity-comms-fields';
+    entityCommsRow.style.display = entityNativeAddressEnabledInput.checked ? '' : 'none';
+    var phoneInput = cgaMakeInput('entity_comms_phonenumber_' + path, "{{ __('Téléphone', 'configurationglpiauto')|e('js') }}");
+    var faxInput = cgaMakeInput('entity_comms_fax_' + path, "{{ __('Fax', 'configurationglpiauto')|e('js') }}");
+    var websiteInput = cgaMakeInput('entity_comms_website_' + path, "{{ __('Site web', 'configurationglpiauto')|e('js') }}");
+    var emailInput = cgaMakeInput('entity_comms_email_' + path, "{{ __('E-mail', 'configurationglpiauto')|e('js') }}");
+    entityCommsRow.appendChild(phoneInput);
+    entityCommsRow.appendChild(faxInput);
+    entityCommsRow.appendChild(websiteInput);
+    entityCommsRow.appendChild(emailInput);
+    panel.appendChild(entityCommsRow);
+
     function clearSuggestions() {
       suggestions.innerHTML = '';
       suggestions.style.display = 'none';
@@ -2238,6 +2262,15 @@
   wireIconsToggle('cga-change-problem-template-icons-enabled', '.cga-change-problem-template-icon');
   var locationsEnabledInput = wireSimpleToggle('cga-locations-enabled', 'cga-locations-fields');
   var locationGeocodingEnabledInput = wireSimpleToggle('cga-location-geocoding-enabled', 'cga-location-geocoding-fields');
+  // No single "fields" container to toggle (the fields it governs are scattered across every
+  // per-node location panel, built lazily) — instead show/hide every `.cga-entity-comms-fields`
+  // block on change, same effect as wireSimpleToggle for a single container.
+  var entityNativeAddressEnabledInput = document.getElementById('cga-entity-native-address-enabled');
+  entityNativeAddressEnabledInput.addEventListener('change', function () {
+    document.querySelectorAll('.cga-entity-comms-fields').forEach(function (el) {
+      el.style.display = entityNativeAddressEnabledInput.checked ? '' : 'none';
+    });
+  });
   var manufacturersEnabledInput = wireSimpleToggle('cga-manufacturers-enabled', 'cga-manufacturers-fields');
   wireIconsToggle('cga-manufacturer-icons-enabled', '.cga-manufacturer-icon');
   var requestTypeTranslationsEnabledInput = wireSimpleToggle('cga-request-type-translations-enabled', 'cga-request-type-translations-fields');
