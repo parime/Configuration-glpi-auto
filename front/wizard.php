@@ -47,6 +47,7 @@ use GlpiPlugin\Configurationglpiauto\SupportTierBuilder;
 use GlpiPlugin\Configurationglpiauto\TaskCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\TaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
+use GlpiPlugin\Configurationglpiauto\UserCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\ValidationTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\WaitReasonBuilder;
 
@@ -394,6 +395,7 @@ if (isset($_POST['finish'])) {
     // phonenumber/fax/website/email fields, with no Location equivalent.
     $entityCommsByPath = !empty($config->fields['entity_native_address_enabled']) ? collectEntityCommsFromPost() : [];
     $entityAddressesApplied = (new EntityAddressBuilder())->build($config, $locationDataByPath, $entityCommsByPath);
+    $userCategoriesCreated = (new UserCategoryBuilder())->build($config);
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
@@ -588,6 +590,9 @@ if (isset($_POST['finish'])) {
     if ($entityAddressesApplied > 0) {
         $messages[] = sprintf(__('%d fiche(s) d\'entité complétées avec leur adresse.', 'configurationglpiauto'), $entityAddressesApplied);
     }
+    if ($userCategoriesCreated > 0) {
+        $messages[] = sprintf(__('%d catégories d\'utilisateur créées.', 'configurationglpiauto'), $userCategoriesCreated);
+    }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 
     Html::redirect(ConfigurationProfile::getSearchURL());
@@ -645,6 +650,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'project_task_templates_preview' => ProjectTaskTemplateBuilder::getLibraryPreview(),
     'project_templates_preview' => ProjectTemplateBuilder::getPreview(),
     'request_type_translations_preview' => RequestTypeTranslationBuilder::getPreview(),
+    'user_categories_preview' => UserCategoryBuilder::getCategoriesPreview(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
