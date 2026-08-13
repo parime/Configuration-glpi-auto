@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+- ROADMAP.md : recherche sur 8 plugins tiers proposés par l'utilisateur (PDF, Used items export,
+  More satisfaction, VIP, Oauth IMAP, Data Injection, Tag, Carbon), vérifiés en direct sur le
+  marketplace natif. Correction : le plugin "Tag" natif est un système de tags génériques, pas de
+  l'impression d'étiquettes — le vrai candidat est "QR Code Label". Vérifié que remise-glpi n'a pas
+  déjà de fonctionnalité d'étiquette. Mécanisme `Plugin::isPluginActive()` confirmé pour une
+  intégration conditionnelle au wizard, pas encore construite. Ajout aussi du nettoyage du dépôt
+  (code mort, fichiers inutilisés) à la liste des chantiers.
+
+### Fixed
+- 3 PR Dependabot passées en revue (bumps de SHA d'actions GitHub épinglées) : #39 mergée. #40/#41
+  approuvées mais laissées ouvertes — le jeton `gh` de cette session n'a pas le scope `workflow`
+  requis pour merger une PR modifiant `.github/workflows/*.yml`.
+
 ## [0.52.0] - 2026-08-14
 
 ### Added
