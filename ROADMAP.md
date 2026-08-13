@@ -724,6 +724,15 @@ Basculées en cochées par défaut (opt-out) dans `Config::getDefaults()` — au
 à tous les profils sans exception. Vérifié en réel sur une instance neuve (config remise à zéro) :
 les 17 cases confirmées pré-cochées au premier chargement du wizard.
 
+**Assistant d'adresse activé par défaut — fait (v0.45.0, 2026-08-13).** Question initiale de
+l'utilisateur sur une capture d'écran ("il est pas intelligent") clarifiée : la case "Assistant
+d'adresse" était simplement décochée dans son test, pas un bug — mais sur sa demande explicite
+("tu fais le reste"), basculée en activée par défaut, même raisonnement que les icônes juste
+au-dessus (réversible, bénéfice systématique). Seule nuance par rapport aux icônes : chaque frappe
+part vers un service externe (OpenStreetMap Nominatim par défaut) — texte d'aide mis à jour pour
+expliquer clairement pourquoi/comment la désactiver si besoin, pas juste "à activer
+volontairement" comme avant.
+
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
 2. **Fait (v0.29.0, 2026-08-12).** Documentation GitHub avec captures d'écran de chaque étape,

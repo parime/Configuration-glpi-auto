@@ -922,8 +922,8 @@ msgstr "💻 IT puro"
 msgid "🧩 Multi-services (toutes verticales)"
 msgstr "🧩 Multiservizio (tutti i settori)"
 
-msgid "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement."
-msgstr "Invia ogni digitazione a un servizio esterno (OpenStreetMap Nominatim per impostazione predefinita) per proporre suggerimenti — disattivato per impostazione predefinita, da attivare volontariamente."
+msgid "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — activé par défaut, désactivable ci-dessus si l'envoi de l'adresse en cours de saisie à ce service pose problème."
+msgstr "Invia ogni digitazione a un servizio esterno (OpenStreetMap Nominatim per impostazione predefinita) per proporre suggerimenti — attivato per impostazione predefinita, disattivabile qui sopra se l'invio dell'indirizzo digitato a questo servizio è un problema."
 
 msgid "Service de géocodage (avancé)"
 msgstr "Servizio di geocodifica (avanzato)"
