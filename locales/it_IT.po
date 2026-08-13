@@ -64,6 +64,15 @@ msgstr "%d regola/e di diritti per funzione create."
 msgid "%d règle(s) d'unicité de numéro de série créées."
 msgstr "%d regola/e di unicità del numero di serie create."
 
+msgid "%d flux RSS ajouté(s)."
+msgstr "%d feed RSS aggiunto/i."
+
+msgid "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"
+msgstr "Aggiungi il feed RSS degli avvisi di sicurezza CERT-FR (ANSSI)"
+
+msgid "Visible dans Outils > Flux RSS pour toute l'instance — utile pour suivre les vulnérabilités affectant le parc sans quitter GLPI."
+msgstr "Visibile in Strumenti > Feed RSS per tutta l'istanza — utile per monitorare le vulnerabilità che interessano il parco senza uscire da GLPI."
+
 msgid "%d services créés dans le catalogue."
 msgstr "%d servizi creati nel catalogo."
 
