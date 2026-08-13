@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.44.0] - 2026-08-13
+
+### Changed
+- Les 17 cases "Ajouter des icônes" du wizard (catégories, statuts, support N1-N3, fabricants,
+  raisons d'attente, catégories d'utilisateur, gabarits de tickets/tâches/solutions/suivis/
+  validations/changements-problèmes, gestion documentaire, évènements de planning, types de
+  projet/tâche de projet) sont désormais **cochées par défaut** — retour utilisateur direct après
+  usage réel du wizard. Auparavant décochées par défaut (opt-in), l'admin devait les activer une
+  par une malgré leur coût nul et leur bénéfice systématique (repérage visuel immédiat dans les
+  listes déroulantes). Reste désactivable individuellement à tout moment ; aucun changement pour
+  les instances déjà configurées (seul le point de départ d'une instance neuve change).
+
 ## [0.43.0] - 2026-08-13
 
 ### Added
