@@ -299,6 +299,14 @@ final class Translations
         'Congés / Absences' => ['en_GB' => 'Leave / Absences', 'de_DE' => 'Urlaub / Abwesenheiten', 'it_IT' => 'Ferie / Assenze', 'es_ES' => 'Vacaciones / Ausencias'],
         'Astreinte / Garde' => ['en_GB' => 'On-call duty', 'de_DE' => 'Bereitschaftsdienst', 'it_IT' => 'Reperibilità', 'es_ES' => 'Guardia'],
 
+        // ---- UserCategoryBuilder (glpi_usercategories) ----
+        'Employé' => ['en_GB' => 'Employee', 'de_DE' => 'Mitarbeiter', 'it_IT' => 'Dipendente', 'es_ES' => 'Empleado'],
+        'Prestataire externe' => ['en_GB' => 'External contractor', 'de_DE' => 'Externer Dienstleister', 'it_IT' => 'Fornitore esterno', 'es_ES' => 'Proveedor externo'],
+        'Stagiaire' => ['en_GB' => 'Intern', 'de_DE' => 'Praktikant', 'it_IT' => 'Tirocinante', 'es_ES' => 'Becario'],
+        'Alternant' => ['en_GB' => 'Apprentice', 'de_DE' => 'Auszubildender', 'it_IT' => 'Apprendista', 'es_ES' => 'Aprendiz'],
+        'Intérimaire' => ['en_GB' => 'Temporary worker', 'de_DE' => 'Zeitarbeiter', 'it_IT' => 'Lavoratore interinale', 'es_ES' => 'Trabajador temporal'],
+        'Consultant' => ['en_GB' => 'Consultant', 'de_DE' => 'Berater', 'it_IT' => 'Consulente', 'es_ES' => 'Consultor'],
+
         // ---- PlanningEventBuilder (glpi_planningexternaleventtemplates) ----
         'Réunion d\'équipe' => ['en_GB' => 'Team meeting', 'de_DE' => 'Team-Besprechung', 'it_IT' => 'Riunione di team', 'es_ES' => 'Reunión de equipo'],
         'Formation planifiée' => ['en_GB' => 'Scheduled training', 'de_DE' => 'Geplante Schulung', 'it_IT' => 'Formazione pianificata', 'es_ES' => 'Formación programada'],

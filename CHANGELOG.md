@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.41.0] - 2026-08-13
+
+### Added
+- `UserCategoryBuilder` (nouveau) : 6 catégories d'utilisateur génériques (Employé, Prestataire
+  externe, Stagiaire, Alternant, Intérimaire, Consultant) dans `UserCategory`, vide par défaut sur
+  GLPI. Confirmé un vrai usage avant de construire : champ importable depuis un attribut LDAP
+  (`AuthLDAP::category_field`), utilisé en critère de ciblage de notification
+  (`NotificationTargetCommonITILObject`) et en axe de statistiques (`Stat.php`) — indépendant des
+  profils/droits GLPI.
+
 ## [0.40.0] - 2026-08-13
 
 ### Added
