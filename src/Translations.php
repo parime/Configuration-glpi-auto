@@ -351,6 +351,55 @@ final class Translations
         'Imprimante jet d\'encre' => ['en_GB' => 'Inkjet printer', 'de_DE' => 'Tintenstrahldrucker', 'it_IT' => 'Stampante a getto d\'inchiostro', 'es_ES' => 'Impresora de inyección de tinta'],
         'Multifonction' => ['en_GB' => 'Multifunction printer', 'de_DE' => 'Multifunktionsdrucker', 'it_IT' => 'Stampante multifunzione', 'es_ES' => 'Impresora multifunción'],
         'Imprimante d\'étiquettes' => ['en_GB' => 'Label printer', 'de_DE' => 'Etikettendrucker', 'it_IT' => 'Stampante di etichette', 'es_ES' => 'Impresora de etiquetas'],
+
+        // ---- AssetTypeBuilder (glpi_racktypes) ----
+        'Rack serveur 19″' => ['en_GB' => '19″ server rack', 'de_DE' => '19″-Server-Rack', 'it_IT' => 'Rack server 19″', 'es_ES' => 'Rack de servidor 19″'],
+        'Rack réseau' => ['en_GB' => 'Network rack', 'de_DE' => 'Netzwerk-Rack', 'it_IT' => 'Rack di rete', 'es_ES' => 'Rack de red'],
+        'Rack ouvert' => ['en_GB' => 'Open frame rack', 'de_DE' => 'Offenes Rack', 'it_IT' => 'Rack aperto', 'es_ES' => 'Rack abierto'],
+
+        // ---- AssetTypeBuilder (glpi_pdutypes) ----
+        'Basique' => ['en_GB' => 'Basic', 'de_DE' => 'Einfach', 'it_IT' => 'Base', 'es_ES' => 'Básico'],
+        'Mesuré (metered)' => ['en_GB' => 'Metered', 'de_DE' => 'Gemessen', 'it_IT' => 'Misurato', 'es_ES' => 'Medido'],
+        'Commuté (switched)' => ['en_GB' => 'Switched', 'de_DE' => 'Schaltbar', 'it_IT' => 'Commutato', 'es_ES' => 'Conmutado'],
+        'Commuté et mesuré' => ['en_GB' => 'Switched and metered', 'de_DE' => 'Schaltbar und gemessen', 'it_IT' => 'Commutato e misurato', 'es_ES' => 'Conmutado y medido'],
+
+        // ---- AssetTypeBuilder (glpi_certificatetypes) ----
+        'SSL/TLS' => ['en_GB' => 'SSL/TLS', 'de_DE' => 'SSL/TLS', 'it_IT' => 'SSL/TLS', 'es_ES' => 'SSL/TLS'],
+        'Signature de code' => ['en_GB' => 'Code signing', 'de_DE' => 'Codesignatur', 'it_IT' => 'Firma del codice', 'es_ES' => 'Firma de código'],
+        'Certificat client' => ['en_GB' => 'Client certificate', 'de_DE' => 'Clientzertifikat', 'it_IT' => 'Certificato client', 'es_ES' => 'Certificado de cliente'],
+        'S/MIME (messagerie)' => ['en_GB' => 'S/MIME (email)', 'de_DE' => 'S/MIME (E-Mail)', 'it_IT' => 'S/MIME (posta elettronica)', 'es_ES' => 'S/MIME (correo)'],
+
+        // ---- AssetTypeBuilder (glpi_deviceharddrivetypes) ----
+        'HDD' => ['en_GB' => 'HDD', 'de_DE' => 'HDD', 'it_IT' => 'HDD', 'es_ES' => 'HDD'],
+        'SSD SATA' => ['en_GB' => 'SATA SSD', 'de_DE' => 'SATA-SSD', 'it_IT' => 'SSD SATA', 'es_ES' => 'SSD SATA'],
+        'SSD NVMe' => ['en_GB' => 'NVMe SSD', 'de_DE' => 'NVMe-SSD', 'it_IT' => 'SSD NVMe', 'es_ES' => 'SSD NVMe'],
+        'Hybride (SSHD)' => ['en_GB' => 'Hybrid (SSHD)', 'de_DE' => 'Hybrid (SSHD)', 'it_IT' => 'Ibrido (SSHD)', 'es_ES' => 'Híbrido (SSHD)'],
+
+        // ---- AssetTypeBuilder (glpi_devicebatterytypes) ----
+        'Lithium-ion' => ['en_GB' => 'Lithium-ion', 'de_DE' => 'Lithium-Ionen', 'it_IT' => 'Litio-ione', 'es_ES' => 'Ion-litio'],
+        'Lithium-polymère' => ['en_GB' => 'Lithium-polymer', 'de_DE' => 'Lithium-Polymer', 'it_IT' => 'Litio-polimero', 'es_ES' => 'Polímero de litio'],
+        'NiMH' => ['en_GB' => 'NiMH', 'de_DE' => 'NiMH', 'it_IT' => 'NiMH', 'es_ES' => 'NiMH'],
+        'Plomb-acide' => ['en_GB' => 'Lead-acid', 'de_DE' => 'Blei-Säure', 'it_IT' => 'Piombo-acido', 'es_ES' => 'Plomo-ácido'],
+
+        // ---- AssetTypeBuilder (glpi_devicecasetypes) ----
+        'Tour (Tower)' => ['en_GB' => 'Tower', 'de_DE' => 'Tower', 'it_IT' => 'Tower', 'es_ES' => 'Torre'],
+        'Rack-mount' => ['en_GB' => 'Rack-mount', 'de_DE' => 'Rack-Montage', 'it_IT' => 'Montaggio a rack', 'es_ES' => 'Montaje en rack'],
+        'Format compact (SFF)' => ['en_GB' => 'Small form factor (SFF)', 'de_DE' => 'Kleiner Formfaktor (SFF)', 'it_IT' => 'Formato compatto (SFF)', 'es_ES' => 'Factor de forma reducido (SFF)'],
+        'Tout-en-un (AIO)' => ['en_GB' => 'All-in-one (AIO)', 'de_DE' => 'All-in-One (AIO)', 'it_IT' => 'Tutto-in-uno (AIO)', 'es_ES' => 'Todo en uno (AIO)'],
+
+        // ---- AssetTypeBuilder (glpi_cabletypes) ----
+        'Ethernet Cat5e' => ['en_GB' => 'Ethernet Cat5e', 'de_DE' => 'Ethernet Cat5e', 'it_IT' => 'Ethernet Cat5e', 'es_ES' => 'Ethernet Cat5e'],
+        'Ethernet Cat6' => ['en_GB' => 'Ethernet Cat6', 'de_DE' => 'Ethernet Cat6', 'it_IT' => 'Ethernet Cat6', 'es_ES' => 'Ethernet Cat6'],
+        'Ethernet Cat6a' => ['en_GB' => 'Ethernet Cat6a', 'de_DE' => 'Ethernet Cat6a', 'it_IT' => 'Ethernet Cat6a', 'es_ES' => 'Ethernet Cat6a'],
+        'Fibre optique' => ['en_GB' => 'Fiber optic', 'de_DE' => 'Glasfaser', 'it_IT' => 'Fibra ottica', 'es_ES' => 'Fibra óptica'],
+        'Alimentation' => ['en_GB' => 'Power', 'de_DE' => 'Stromversorgung', 'it_IT' => 'Alimentazione', 'es_ES' => 'Alimentación'],
+        'USB' => ['en_GB' => 'USB', 'de_DE' => 'USB', 'it_IT' => 'USB', 'es_ES' => 'USB'],
+
+        // ---- AssetTypeBuilder (glpi_cartridgeitemtypes) ----
+        'Toner' => ['en_GB' => 'Toner', 'de_DE' => 'Toner', 'it_IT' => 'Toner', 'es_ES' => 'Tóner'],
+        'Cartouche d\'encre' => ['en_GB' => 'Ink cartridge', 'de_DE' => 'Tintenpatrone', 'it_IT' => 'Cartuccia d\'inchiostro', 'es_ES' => 'Cartucho de tinta'],
+        'Tambour (drum)' => ['en_GB' => 'Drum', 'de_DE' => 'Trommel', 'it_IT' => 'Tamburo', 'es_ES' => 'Tambor'],
+        'Kit de maintenance' => ['en_GB' => 'Maintenance kit', 'de_DE' => 'Wartungskit', 'it_IT' => 'Kit di manutenzione', 'es_ES' => 'Kit de mantenimiento'],
     ];
 
     /**
