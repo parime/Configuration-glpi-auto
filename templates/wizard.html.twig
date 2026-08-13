@@ -1862,6 +1862,135 @@
         .catch(function () {});
     });
 
+    // Lieux enfants (bâtiment, étage, salle...) : glpi_locations a son propre arbre indépendant
+    // (locations_id auto-référencé), sans rapport avec l'arborescence d'entités — un même site
+    // peut avoir plusieurs niveaux imbriqués qui n'ont pas leur propre entité. Éditeur récursif
+    // identique à celui de l'étape 2 (_entity_structure_fields.html.twig : add/remove par nœud,
+    // arbre sérialisé en JSON plutôt que des champs plats dont la forme serait connue à l'avance)
+    // — réutilise directement ses classes CSS (.cga-tree/.cga-node-children/.cga-node-row),
+    // globales sur la page puisque ce partial est déjà inclus pour l'étape Entités.
+    var childrenState = [];
+    var childrenJsonInput = document.createElement('input');
+    childrenJsonInput.type = 'hidden';
+    childrenJsonInput.name = 'location_children_' + path;
+    childrenJsonInput.value = '[]';
+    panel.appendChild(childrenJsonInput);
+
+    var childrenSection = document.createElement('div');
+    childrenSection.className = 'mt-2 ps-2 border-start border-2';
+    var childrenLabel = document.createElement('div');
+    childrenLabel.className = 'form-label small fw-bold mb-1';
+    childrenLabel.textContent = "{{ __('Lieux enfants (bâtiment, étage, salle...)', 'configurationglpiauto')|e('js') }}";
+    var childrenEditor = document.createElement('div');
+    childrenEditor.className = 'cga-tree';
+    var addChildBtn = document.createElement('button');
+    addChildBtn.type = 'button';
+    addChildBtn.className = 'btn btn-outline-secondary btn-sm mt-1';
+    addChildBtn.innerHTML = '<i class="ti ti-plus"></i> ' + "{{ __('Ajouter un lieu enfant', 'configurationglpiauto')|e('js') }}";
+    childrenSection.appendChild(childrenLabel);
+    childrenSection.appendChild(childrenEditor);
+    childrenSection.appendChild(addChildBtn);
+    panel.appendChild(childrenSection);
+
+    function syncChildrenJson() {
+      childrenJsonInput.value = JSON.stringify(childrenState);
+    }
+
+    function renderChildNode(node, parentArray, container) {
+      var wrapper = document.createElement('div');
+      wrapper.className = 'cga-node-children';
+
+      var row = document.createElement('div');
+      row.className = 'cga-node-row';
+      var nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.className = 'form-control form-control-sm';
+      nameInput.value = node.name;
+      nameInput.placeholder = "{{ __('Nom du lieu enfant (ex. Bâtiment A)', 'configurationglpiauto')|e('js') }}";
+      nameInput.addEventListener('input', function () {
+        node.name = nameInput.value;
+        syncChildrenJson();
+      });
+      row.appendChild(nameInput);
+
+      var addSubBtn = document.createElement('button');
+      addSubBtn.type = 'button';
+      addSubBtn.className = 'btn btn-outline-secondary btn-sm';
+      addSubBtn.title = "{{ __('Ajouter un lieu enfant', 'configurationglpiauto')|e('js') }}";
+      addSubBtn.innerHTML = '<i class="ti ti-plus"></i>';
+      addSubBtn.addEventListener('click', function () {
+        node.children.push({ name: '', fields: {}, children: [] });
+        renderChildrenEditor();
+      });
+      row.appendChild(addSubBtn);
+
+      var removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'btn btn-outline-danger btn-sm';
+      removeBtn.title = "{{ __('Retirer', 'configurationglpiauto')|e('js') }}";
+      removeBtn.innerHTML = '<i class="ti ti-x"></i>';
+      removeBtn.addEventListener('click', function () {
+        var idx = parentArray.indexOf(node);
+        if (idx !== -1) {
+          parentArray.splice(idx, 1);
+        }
+        renderChildrenEditor();
+      });
+      row.appendChild(removeBtn);
+      wrapper.appendChild(row);
+
+      // Champs complets (adresse, code, alias...) sur ce lieu enfant lui-même — mêmes champs que
+      // le lieu de l'entité, mais liés à l'objet `node.fields` de cet arbre plutôt qu'à des
+      // inputs nommés statiquement, puisque ce nœud n'existait pas avant que l'admin l'ajoute.
+      var subFieldsRow = document.createElement('div');
+      subFieldsRow.className = 'd-flex gap-1 flex-wrap mb-1';
+      ['address', 'postcode', 'town', 'state', 'country'].forEach(function (field) {
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'form-control form-control-sm';
+        input.style.maxWidth = '160px';
+        input.placeholder = fieldPlaceholders[field];
+        input.value = node.fields[field] || '';
+        input.addEventListener('input', function () {
+          if (input.value.trim() === '') {
+            delete node.fields[field];
+          } else {
+            node.fields[field] = input.value;
+          }
+          syncChildrenJson();
+        });
+        subFieldsRow.appendChild(input);
+      });
+      wrapper.appendChild(subFieldsRow);
+
+      node.children.forEach(function (child) {
+        renderChildNode(child, node.children, wrapper);
+      });
+
+      container.appendChild(wrapper);
+    }
+
+    var fieldPlaceholders = {
+      address: "{{ __('Rue, numéro...', 'configurationglpiauto')|e('js') }}",
+      postcode: "{{ __('Code postal', 'configurationglpiauto')|e('js') }}",
+      town: "{{ __('Ville', 'configurationglpiauto')|e('js') }}",
+      state: "{{ __('Région / État', 'configurationglpiauto')|e('js') }}",
+      country: "{{ __('Pays', 'configurationglpiauto')|e('js') }}",
+    };
+
+    function renderChildrenEditor() {
+      childrenEditor.innerHTML = '';
+      childrenState.forEach(function (node) {
+        renderChildNode(node, childrenState, childrenEditor);
+      });
+      syncChildrenJson();
+    }
+
+    addChildBtn.addEventListener('click', function () {
+      childrenState.push({ name: '', fields: {}, children: [] });
+      renderChildrenEditor();
+    });
+
     return panel;
   }
 

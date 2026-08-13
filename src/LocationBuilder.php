@@ -45,6 +45,16 @@ use Location;
  * shape, but only among nodes that actually got a `Location` — a node with no data of its own never
  * becomes an empty placeholder level; its own children (if they have data) attach directly to the
  * nearest ancestor that does have a `Location`, or to the root (`locations_id = 0`) if none do.
+ *
+ * On top of that entity-derived tree, an admin can also freely add purely manual sub-locations
+ * under any entity's own location (e.g. "Bâtiment A" → "Étage 1" → "Salle 204") — `glpi_locations`
+ * has its own independent tree (`locations_id` self-referencing), so a single entity can genuinely
+ * own many nested physical places with no entity of their own. These never go through the
+ * "no data, no Location" filter above: the admin adding one via the wizard's own tree editor
+ * (mirrors `_entity_structure_fields.html.twig`'s add/remove pattern) is itself the deliberate
+ * signal to create it, exactly like adding a node to the entity tree itself always creates that
+ * entity. Always scoped to the same `entities_id` as the entity whose panel they were added under
+ * — a building/floor/room belongs to the site's own entity, not a new one of their own.
  */
 class LocationBuilder
 {
@@ -55,10 +65,15 @@ class LocationBuilder
      *        child of the second top-level node) — the same path encoding the wizard's JS builds
      *        while walking `window.cgaTree`. A node with no entry in this array (or an empty one)
      *        gets no `Location` at all.
+     * @param array<string, array<int, array{name: string, fields: array<string, string>, children: array}>> $childrenByPath
+     *        Purely manual sub-locations added under each entity path's own panel, keyed by the
+     *        same path — each entry is the array of top-level child nodes for that entity (as
+     *        opposed to $dataByPath, which only ever holds *one* set of fields per path: the
+     *        entity's own location).
      * @return int Number of locations actually created/updated (i.e. nodes with real data — not a
      *             count of every entity in the tree).
      */
-    public function build(Config $config, array $dataByPath = []): int
+    public function build(Config $config, array $dataByPath = [], array $childrenByPath = []): int
     {
         if (empty($config->fields['locations_enabled'])) {
             return 0;
@@ -66,7 +81,7 @@ class LocationBuilder
 
         $count = 0;
         foreach ($config->getEntityTree() as $i => $node) {
-            $count += $this->buildNode($node, 0, 0, (string) $i, $dataByPath);
+            $count += $this->buildNode($node, 0, 0, (string) $i, $dataByPath, $childrenByPath);
         }
 
         return $count;
@@ -75,8 +90,9 @@ class LocationBuilder
     /**
      * @param array{name: string, children: array} $node
      * @param array<string, array<string, string>> $dataByPath
+     * @param array<string, array<int, array{name: string, fields: array<string, string>, children: array}>> $childrenByPath
      */
-    private function buildNode(array $node, int $parentEntityId, int $parentLocationId, string $path, array $dataByPath): int
+    private function buildNode(array $node, int $parentEntityId, int $parentLocationId, string $path, array $dataByPath, array $childrenByPath): int
     {
         $name = (string) ($node['name'] ?? '');
         if ($name === '') {
@@ -111,8 +127,42 @@ class LocationBuilder
             $count = 1;
         }
 
+        $count += $this->buildManualChildren($childrenByPath[$path] ?? [], $entityId, $locationId);
+
         foreach ($node['children'] ?? [] as $i => $child) {
-            $count += $this->buildNode($child, $entityId, $locationId, $path . '-' . $i, $dataByPath);
+            $count += $this->buildNode($child, $entityId, $locationId, $path . '-' . $i, $dataByPath, $childrenByPath);
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param array<int, array{name: string, fields: array<string, string>, children: array}> $children
+     */
+    private function buildManualChildren(array $children, int $entityId, int $parentLocationId): int
+    {
+        $count = 0;
+        foreach ($children as $child) {
+            $name = trim((string) ($child['name'] ?? ''));
+            if ($name === '') {
+                // No name means the admin added the row via "+" but never filled it in — same
+                // "nothing to invent" rule as an entity tree node with an empty name.
+                continue;
+            }
+
+            $fields = is_array($child['fields'] ?? null) ? $child['fields'] : [];
+            $location = new Location();
+            $crit = ['name' => $name, 'locations_id' => $parentLocationId, 'entities_id' => $entityId];
+            if (!$location->getFromDBByCrit($crit)) {
+                $id = $location->add($crit + ['is_recursive' => 1] + $fields);
+                $location->getFromDB($id);
+            } else {
+                $location->update(['id' => $location->getID()] + $fields);
+            }
+            $count++;
+
+            $grandChildren = is_array($child['children'] ?? null) ? $child['children'] : [];
+            $count += $this->buildManualChildren($grandChildren, $entityId, (int) $location->getID());
         }
 
         return $count;

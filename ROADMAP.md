@@ -627,17 +627,19 @@ L'utilisateur a parcouru plusieurs écrans natifs de GLPI (Intitulés, Entités)
 instance réelle et a soulevé sept pistes d'un coup. Consignées ici sans construire, sur sa propre
 demande explicite ("ajout tout ce que je viens de te dire dans la liste des chantier a faire").
 
-1. **Lieux — lieux enfants arbitraires avec arborescence éditable, comme les entités.** Le
-   `LocationBuilder` actuel (v0.36.0) crée au plus un `Location` par nœud de l'arborescence
-   d'entités, avec un rattachement 1:1 forcé. `glpi_locations` a pourtant son propre arbre
-   indépendant (`locations_id` auto-référencé) — un même site peut avoir plusieurs lieux imbriqués
-   (Bâtiment > Étage > Salle) sans rapport avec la structure d'entités. Demandé : dans le panneau
-   "Ajouter une adresse" de chaque entité, pouvoir ajouter des lieux enfants librement (nom + tous
-   les champs déjà supportés), à profondeur arbitraire, avec un éditeur récursif identique à celui
-   de l'arborescence d'entités (`_entity_structure_fields.html.twig` : nœuds `{name, children}`
-   sérialisés en JSON, boutons `+`/`x` par nœud, aperçu en direct). Nécessite un second canal de
-   données par entité (JSON, comme l'arbre d'entités lui-même) en plus des champs plats déjà en
-   place pour le lieu propre de l'entité — les champs plats existants ne changent pas.
+1. ✅ **Lieux — lieux enfants arbitraires avec arborescence éditable, comme les entités — fait
+   (v0.39.0, 2026-08-13).** `LocationBuilder` créait au plus un `Location` par nœud de
+   l'arborescence d'entités, avec un rattachement 1:1 forcé. `glpi_locations` a pourtant son propre
+   arbre indépendant (`locations_id` auto-référencé) — un même site peut avoir plusieurs lieux
+   imbriqués (Bâtiment > Étage > Salle) sans rapport avec la structure d'entités. Chaque panneau
+   "Ajouter une adresse" propose désormais un éditeur récursif identique à celui de l'arborescence
+   d'entités (réutilise directement les classes CSS de `_entity_structure_fields.html.twig` : nœuds
+   `{name, fields, children}` sérialisés en JSON par entité, boutons `+`/`x` par nœud). Contrairement
+   aux entités de l'étape 2, ajouter un lieu enfant le crée toujours (le geste explicite de l'ajouter
+   est déjà la justification, pas de règle "aucune donnée = pas de lieu" ici). Vérifié en réel :
+   arbre à 2 niveaux (Bâtiment A > Étage 1) créé avec le bon rattachement `locations_id`, y compris
+   quand l'entité parente elle-même n'a pas de lieu propre (rattachement direct à la racine, même
+   règle de compression que pour l'arbre d'entités).
 2. **Catégories d'utilisateur (`UserCategory`)** — vide nativement, l'utilisateur demande à quoi ça
    sert. Vérifié dans le code de GLPI : champ réel sur `User` (`usercategories_id`), importable
    depuis un attribut LDAP (`AuthLDAP::category_field`), utilisé comme critère de ciblage de
