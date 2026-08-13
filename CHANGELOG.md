@@ -9,7 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.48.0] - 2026-08-13
+## [0.49.0] - 2026-08-13
+
+### Added
+- `LineOperatorBuilder` (nouveau) : crée les 4 grands opérateurs mobiles français (Orange, SFR,
+  Bouygues Telecom, Free) dans `LineOperator`, natif GLPI, vide par défaut. France-first,
+  assumé — un opérateur télécom n'a de sens que dans un pays donné, contrairement à un fabricant
+  matériel mondial. MCC/MNC réels renseignés (208 + un par opérateur, recoupés sur 3 sources
+  indépendantes), activé par défaut.
+
+### Fixed
+- Bug réel trouvé pendant la vérification de `LineOperatorBuilder` : `glpi_lineoperators` a un
+  index `UNIQUE(mcc, mnc)`, et GLPI met `0` par défaut (pas `NULL`) sur ces champs entiers quand ils
+  ne sont pas fournis à `add()` — sans les renseigner explicitement, seul le premier opérateur était
+  créé, les 3 suivants étaient silencieusement rejetés par la contrainte d'unicité (0/0 en
+  doublon), sans aucune erreur visible dans le message de succès du wizard ni dans les logs GLPI.
+  Uniquement repéré en comptant les lignes en base après soumission.
 
 ### Added
 - `MarketplaceBuilder` (nouveau), étape "Réglages généraux GLPI" : champ pour saisir une clé

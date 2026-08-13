@@ -29,6 +29,7 @@ use GlpiPlugin\Configurationglpiauto\FollowupLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
+use GlpiPlugin\Configurationglpiauto\LineOperatorBuilder;
 use GlpiPlugin\Configurationglpiauto\LocationBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerDictionaryBuilder;
@@ -406,6 +407,7 @@ if (isset($_POST['finish'])) {
     $marketplaceRegistrationSaved = (new MarketplaceBuilder())->build((string) ($_POST['glpi_network_registration_key'] ?? ''));
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
+    $lineOperatorsCreated = (new LineOperatorBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
     $documentManagementCreated = (new DocumentManagementBuilder())->build($config);
     $planningEventsCreated = (new PlanningEventBuilder())->build($config);
@@ -574,6 +576,9 @@ if (isset($_POST['finish'])) {
     if ($manufacturerDictionaryCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de dictionnaire fabricant créées.', 'configurationglpiauto'), $manufacturerDictionaryCreated);
     }
+    if ($lineOperatorsCreated > 0) {
+        $messages[] = sprintf(__('%d opérateurs téléphoniques créés.', 'configurationglpiauto'), $lineOperatorsCreated);
+    }
     if ($kbCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de base de connaissances créées.', 'configurationglpiauto'), $kbCategoriesCreated);
     }
@@ -661,6 +666,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'followup_library_preview' => FollowupLibraryBuilder::getLibraryPreview(),
     'validation_templates_preview' => ValidationTemplateBuilder::getLibraryPreview(),
     'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
+    'line_operators_preview' => LineOperatorBuilder::getOperatorsPreview(),
     'document_management_preview' => DocumentManagementBuilder::getPreview(),
     'planning_events_preview' => PlanningEventBuilder::getPreview(),
     'project_taxonomy_preview' => ProjectTaxonomyBuilder::getPreview(),
