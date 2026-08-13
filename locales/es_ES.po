@@ -1048,6 +1048,15 @@ msgstr "Contraer"
 msgid "Région / État"
 msgstr "Región / Estado"
 
+msgid "%d source(s) de demande traduites."
+msgstr "%d fuente(s) de solicitud traducidas."
+
+msgid "GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, sans traduction — une session française (ou allemande, italienne, espagnole) les voit telles quelles tant qu'aucune traduction n'existe."
+msgstr "GLPI instala estos 6 valores en inglés independientemente del idioma elegido, sin traducción — una sesión francesa (o alemana, italiana, española) los ve tal cual hasta que exista una traducción."
+
+msgid "Traduire les sources de demande natives de GLPI"
+msgstr "Traducir las fuentes de solicitud nativas de GLPI"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Perfil de configuración"

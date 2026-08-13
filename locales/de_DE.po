@@ -1048,6 +1048,15 @@ msgstr "Reduzieren"
 msgid "Région / État"
 msgstr "Region / Bundesland"
 
+msgid "%d source(s) de demande traduites."
+msgstr "%d Anfragequelle(n) übersetzt."
+
+msgid "GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, sans traduction — une session française (ou allemande, italienne, espagnole) les voit telles quelles tant qu'aucune traduction n'existe."
+msgstr "GLPI installiert diese 6 Werte unabhängig von der gewählten Sprache auf Englisch, ohne Übersetzung — eine französische (oder deutsche, italienische, spanische) Sitzung sieht sie unverändert, solange keine Übersetzung existiert."
+
+msgid "Traduire les sources de demande natives de GLPI"
+msgstr "Native Anfragequellen von GLPI übersetzen"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Konfigurationsprofil"

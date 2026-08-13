@@ -1048,6 +1048,15 @@ msgstr "Comprimi"
 msgid "Région / État"
 msgstr "Regione / Stato"
 
+msgid "%d source(s) de demande traduites."
+msgstr "%d fonte/i della richiesta tradotte."
+
+msgid "GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, sans traduction — une session française (ou allemande, italienne, espagnole) les voit telles quelles tant qu'aucune traduction n'existe."
+msgstr "GLPI installa questi 6 valori in inglese indipendentemente dalla lingua scelta, senza traduzione — una sessione francese (o tedesca, italiana, spagnola) li vede così come sono finché non esiste una traduzione."
+
+msgid "Traduire les sources de demande natives de GLPI"
+msgstr "Traduci le fonti di richiesta native di GLPI"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Profilo di configurazione"
