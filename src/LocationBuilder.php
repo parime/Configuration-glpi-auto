@@ -41,17 +41,23 @@ use Location;
 class LocationBuilder
 {
     /**
+     * @param array<int, array{address?: string, postcode?: string, town?: string, country?: string}> $topLevelAddresses
+     *        Real address data collected by the wizard's "Lieux" step (street-autocomplete +
+     *        postcode→town assistant), keyed by the same top-level-entity index used everywhere
+     *        else in the wizard (`entity_color_N`/`entity_logo_N`). Only ever applied to the
+     *        top-level `Location` of each tree — a street address describes a site, not each
+     *        internal department/service nested under it, so children never inherit it.
      * @return int Number of locations created/reused.
      */
-    public function build(Config $config): int
+    public function build(Config $config, array $topLevelAddresses = []): int
     {
         if (empty($config->fields['locations_enabled'])) {
             return 0;
         }
 
         $count = 0;
-        foreach ($config->getEntityTree() as $node) {
-            $count += $this->buildNode($node, 0, 0);
+        foreach ($config->getEntityTree() as $i => $node) {
+            $count += $this->buildNode($node, 0, 0, $topLevelAddresses[$i] ?? []);
         }
 
         return $count;
@@ -59,8 +65,9 @@ class LocationBuilder
 
     /**
      * @param array{name: string, children: array} $node
+     * @param array{address?: string, postcode?: string, town?: string, country?: string} $address
      */
-    private function buildNode(array $node, int $parentEntityId, int $parentLocationId): int
+    private function buildNode(array $node, int $parentEntityId, int $parentLocationId, array $address = []): int
     {
         $name = (string) ($node['name'] ?? '');
         if ($name === '') {
@@ -76,8 +83,13 @@ class LocationBuilder
         $location = new Location();
         $crit = ['name' => $name, 'locations_id' => $parentLocationId, 'entities_id' => $entityId];
         if (!$location->getFromDBByCrit($crit)) {
-            $id = $location->add($crit + ['is_recursive' => 1]);
+            $id = $location->add($crit + ['is_recursive' => 1] + $address);
             $location->getFromDB($id);
+        } elseif ($address !== []) {
+            // Re-run of the wizard on an already-scaffolded site: the admin may have just filled in
+            // (or corrected) the address on a location created by an earlier pass without one —
+            // same "latest input wins" behaviour as BrandingBuilder::applyPerClientColors().
+            $location->update(['id' => $location->getID()] + $address);
         }
         $locationId = (int) $location->getID();
         $count = 1;

@@ -535,12 +535,12 @@ de création d'`AssetDefinition` par code (pas encore fait) et de définir un je
 branche sans tomber dans le sur-mesure par organisation (même principe généraliste que le reste du
 plugin). Pas de version cible.
 
-**Lieux — assistant d'adresse interactif, cadré (proposé par l'utilisateur, 2026-08-13, pas encore
-construit).** Confirme que la ligne « assistant intelligent avec géocodage » retirée du README lors
-du nettoyage v0.31.0 correspondait bien à une vraie idée, pas juste du texte marketing oublié :
-autocomplétion de rue pendant la saisie (façon site e-commerce) + code postal → ville pré-rempli, à
-l'étape Lieux (`LocationBuilder`, aujourd'hui un simple miroir de l'arborescence sans adresse
-réelle). Recherche faite sur les API disponibles :
+**Lieux — assistant d'adresse interactif — fait (v0.33.0, 2026-08-13).** Demandé explicitement par
+l'utilisateur ("les adresse on a dit un truc interractif, comme pour les site internet ou tu
+commence a taper ta rue il la sugère, idm tu met le code postal tu a la ville"), confirmant que la
+ligne « assistant intelligent avec géocodage » retirée du README lors du nettoyage v0.31.0
+correspondait bien à une vraie idée, pas du texte marketing oublié. Recherche faite sur les API
+disponibles avant de construire :
 - **Nominatim** (OpenStreetMap) et **Photon** (komoot) : couverture mondiale, gratuites, sans clé,
   CORS déjà activé sur leurs instances publiques — mais usage public strictement limité (~1 req/s
   sur Nominatim, pas de saisie assistée en rafale, sinon blocage 403/429) : auto-hébergement
@@ -548,16 +548,19 @@ réelle). Recherche faite sur les API disponibles :
   fois, pendant l'assistant).
 - **LocationIQ**/**OpenCage** : alternatives avec clé API, quota gratuit quotidien plus confortable,
   posture RGPD plus explicite (OpenCage).
-- **Point RGPD réel à traiter** : chaque frappe envoie un bout d'adresse à un service tiers — prévoir
-  un vrai opt-in, un seuil minimum de caractères + debounce, et documenter l'auto-hébergement comme
-  option pour les organisations sensibles.
-- **Recommandation** : Nominatim public par défaut (gratuit, mondial, suffisant pour un usage
-  ponctuel dans l'assistant) avec `User-Agent` correct et debounce, endpoint configurable pour
-  qu'un admin pointe vers sa propre instance ou LocationIQ/OpenCage sans changement de code.
+- **Point RGPD réel traité** : chaque frappe envoie un bout d'adresse à un service tiers — opt-in
+  réel (rien n'est envoyé tant que la case n'est pas cochée dans le navigateur de l'admin), seuil
+  minimum de 3 caractères + debounce 400 ms, endpoint auto-hébergeable pour les organisations
+  sensibles.
 
-Techniquement différent de tout le reste du plugin (première dépendance à un service externe, appel
-JS navigateur plutôt que scaffolding serveur pur) — mérite d'être cadré à part avant de commencer.
-Pas de version cible.
+Construit comme prévu : Nominatim public par défaut avec `User-Agent` correct et debounce, endpoint
+admin-configurable (`ajax/geocode.php`, proxy serveur — SSRF fermé, l'endpoint est toujours lu
+depuis la config stockée, jamais depuis la requête client). Deux bugs réels trouvés et corrigés
+avant mise en ligne (détail dans `CHANGELOG.md` `[0.33.0]`) : la persistance en base bloquait le
+tout premier essai de l'assistant, et une recherche par code postal seul était ambiguë à l'échelle
+mondiale sans un pays associé (« 69001 » = Lyon *ou* un quartier de Zaporijjia, Ukraine). Vérifié en
+réel contre le vrai service Nominatim (pas de mock) via Playwright : suggestions de rue réelles,
+ville correctement résolue depuis le code postal, données persistées sur le bon `Location`.
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.

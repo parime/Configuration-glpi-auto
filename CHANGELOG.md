@@ -9,6 +9,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.33.0] - 2026-08-13
+
+Assistant d'adresse interactif pour l'étape Lieux — demandé explicitement par l'utilisateur
+("les adresse on a dit un truc interractif, comme pour les site internet ou tu commence a taper
+ta rue il la sugère, idm tu met le code postal tu a la ville"), cadré dans la v0.32.0 (recherche
+API dans ROADMAP.md), construit ici.
+
+### Added
+- `ajax/geocode.php` (nouveau) : proxy serveur vers un service compatible Nominatim (OpenStreetMap
+  Nominatim public par défaut, endpoint admin-configurable pour une instance auto-hébergée ou
+  LocationIQ/OpenCage). Proxifié plutôt qu'un appel direct depuis le navigateur pour deux raisons
+  réelles : un `fetch()` navigateur ne peut pas fixer de `User-Agent` (exigé par la politique
+  d'usage de Nominatim), et l'endpoint cible est lu exclusivement depuis la config stockée
+  côté serveur (jamais depuis la requête du client) pour fermer tout SSRF. Utilise
+  `Toolbox::getGuzzleClient()` (cœur GLPI) pour respecter le proxy sortant déjà configuré par
+  l'admin GLPI.
+- `Config::location_geocoding_enabled`/`location_geocoding_endpoint` (nouveaux réglages) : bascule
+  d'activation (opt-in réel, rien n'est envoyé au service tiers tant qu'elle n'est pas cochée dans
+  le navigateur de l'admin) et endpoint avancé, validé côté serveur (`https://` uniquement).
+- `LocationBuilder::build()` accepte désormais des données d'adresse par entité de premier niveau
+  (rue/code postal/ville/pays), écrites sur le `Location` racine de chaque site — jamais propagées
+  aux lieux enfants, une adresse décrit un site, pas chaque service qui y est nichée.
+- Étape 15 (Lieux) : panneau par site avec autocomplétion de rue (saisie → suggestions Nominatim,
+  débouncée 400 ms) et remplissage automatique de la ville à partir du code postal (déclenché à la
+  sortie du champ, jamais s'il y a déjà une ville saisie à la main).
+
+### Fixed
+- Deux problèmes réels trouvés lors de la vérification en direct (Playwright + vraie instance
+  Nominatim), avant toute mise en ligne :
+  - Le proxy refusait toute requête tant que `location_geocoding_enabled` n'était pas déjà
+    enregistré en base — ce qui bloquait systématiquement le tout premier essai de l'assistant
+    pendant l'assistant lui-même (rien n'est encore enregistré avant de cliquer sur "Terminer").
+    L'opt-in réel est la case cochée dans le navigateur à l'instant T (seule condition qui
+    déclenche réellement un appel côté JS) ; la persistance en base n'apportait aucune protection
+    supplémentaire au-delà du droit déjà vérifié par `Session::checkRight()`.
+  - Une recherche par code postal seul est ambiguë à l'échelle mondiale (« 69001 » correspond à la
+    fois à Lyon et à un quartier de Zaporijjia, Ukraine — confirmé en réel) et ce résultat écrasait
+    la ville sans relecture possible par l'admin. Corrigé en associant systématiquement un pays à
+    la recherche : celui déjà saisi par l'admin, ou « France » par défaut (même logique que les
+    jours fériés français déjà codés en dur ailleurs dans le plugin).
+
 ## [0.32.0] - 2026-08-13
 
 Traduction complète du contenu des gabarits (demandé explicitement : "tout sans exception") et
