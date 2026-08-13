@@ -131,6 +131,13 @@
           </div>
           <p class="text-muted small mb-2">{{ __('Reprend l\'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper — ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité.', 'configurationglpiauto') }}</p>
 
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="country_holidays_enabled" value="0">
+            <input type="checkbox" name="country_holidays_enabled" value="1" class="form-check-input" id="cga-country-holidays-enabled" {{ config.country_holidays_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-country-holidays-enabled">{{ __('Ajouter les jours fériés des pays saisis ci-dessous (hors France, déjà couverte à l\'étape Calendrier)', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-2">{{ __('Uniquement les jours fériés à date fixe (comme pour la France) — un pays non reconnu ou non couvert par le service utilisé est simplement ignoré, sans rien inventer. Les jours fériés créés ne sont pas rattachés automatiquement à un calendrier : à faire vous-même dans Configuration > Calendriers une fois créés.', 'configurationglpiauto') }}</p>
+
           <div id="cga-locations-tree"></div>
         </div>
       </div>
