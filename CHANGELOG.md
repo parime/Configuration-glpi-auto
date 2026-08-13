@@ -10,10 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Documentation
-- ROADMAP.md : recherche complète (dépôt GitHub officiel + README, pas une supposition) sur les
-  deux idées "Marketplace & plugins recommandés" — clé d'enregistrement GLPI Network confirmée
-  réelle, 3 plugins identifiés et vérifiés (remise-glpi, Escalade, One-Time Secret) avec description
-  et clé probable. Toujours pas construit, reste à cadrer.
+- ROADMAP.md : recherche complète sur les deux idées "Marketplace & plugins recommandés" — clé
+  d'enregistrement GLPI Network confirmée réelle, 3 plugins identifiés (remise-glpi, Escalade,
+  One-Time Secret). Complétée après déblocage du marketplace natif sur l'instance de test (vraie
+  clé d'enregistrement renseignée) : clés exactes confirmées en direct (`escalade`,
+  `onetimesecret`), mécanisme d'installation en un clic identifié (`data-action="download_plugin"`),
+  et confirmé que remise-glpi n'est pas encore publié sur le marketplace natif. Toujours pas
+  construit, reste à cadrer.
 
 ## [0.47.0] - 2026-08-13
 
