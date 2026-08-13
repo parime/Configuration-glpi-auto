@@ -844,6 +844,55 @@ ci-dessous vérifiés en conditions réelles (recherche live dans Configuration 
      catégorie de risque différente du reste de ce plugin (qui ne fait que créer du contenu dans les
      propres tables de GLPI).
 
+**Intégration conditionnelle de plugins tiers au wizard — pas encore cadrée, liste proposée par
+l'utilisateur (2026-08-14), vérifiée en direct sur le marketplace natif désormais débloqué (mêmes
+clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de supposition) :**
+- **PDF** (`pdf`, Teclib/Remi Collet/Nelly Mahu-Lasson) — export PDF d'une fiche d'inventaire.
+- **Used items export** (`useditemsexport`, TECLIB') — export PDF de la liste du matériel affecté
+  à un utilisateur.
+- **More satisfaction** (`satisfaction`, Infotel) — enrichit l'enquête de satisfaction native.
+  Demandé : proposer des enquêtes toutes faites + leur paramétrage, **visible dans le wizard
+  uniquement si le plugin est installé** (sinon la section n'apparaît pas du tout).
+- **VIP** (`vip`, Infotel/PROBESYS et al.) — marque les demandeurs VIP sur les tickets. Même
+  demande de configuration conditionnelle.
+- **Oauth IMAP** (`oauthimap`, TECLIB') — authentification OAuth pour les collecteurs de mail
+  (Microsoft 365/Google imposent de plus en plus OAuth, l'authentification IMAP simple devient
+  obsolète chez ces fournisseurs).
+- **Data Injection** (`datainjection`) — import CSV en masse, plugin de référence bien établi dans
+  l'écosystème GLPI.
+- **Carbon** (`carbon`, TECLIB') — évaluation d'impact environnemental du parc, cohérent avec l'axe
+  ISO27001/bonnes pratiques déjà porté par ce plugin.
+- **Correction sur "TAG" demandé par l'utilisateur** : le plugin natif "Tag" (`tag`, TECLIB') est un
+  système de tags génériques sur n'importe quel objet GLPI (mots-clés de classification), **pas**
+  de l'impression d'étiquettes physiques. Le vrai candidat pour ça est **"QR Code Label"**
+  (`qrcodelabel`, Etienne Gaillard) — "Génère des étiquettes d'inventaire avec QR codes pour
+  imprimantes d'étiquettes" — ou **"Barcode"** (`barcode`, David Durieux) pour des codes-barres
+  classiques. **Vérifié dans remise-glpi (README/ARCHITECTURE/CHANGELOG, 2026-08-14) : aucune
+  fonctionnalité d'étiquette/QR code/code-barre là-dedans** — pas de doublon avec le plugin sœur de
+  l'utilisateur, contrairement à sa propre inquiétude initiale.
+- **Mécanisme technique confirmé faisable** : `Plugin::isPluginActive('clé')` (natif GLPI) permet
+  de détecter si un plugin tiers est installé et actif, et donc de n'afficher une section du wizard
+  que dans ce cas (sinon rien, on passe à la suite — exactement la demande de l'utilisateur). Reste
+  à faire avant de construire quoi que ce soit : auditer le schéma de configuration réel de chaque
+  plugin ciblé (More Satisfaction, VIP, QR Code Label en priorité, ce sont les trois où l'utilisateur
+  a explicitement demandé une configuration depuis le wizard) pour savoir quoi proposer concrètement
+  — même méthode que tous les audits précédents, pas de supposition sur l'API interne d'un plugin
+  tiers avant de l'avoir lue.
+
+**Maintenance du dépôt — pas encore faite, demandé explicitement (2026-08-14) :**
+- **Nettoyage du code mort et des fichiers non utilisés.** Une première tentative de détection
+  automatique (recherche des classes `src/*.php` jamais référencées ailleurs) s'est révélée peu
+  fiable (faux positifs sur des builders pourtant utilisés activement) — nécessite une vraie passe
+  dédiée avec un outillage fiable (ex. recherche exhaustive sur `templates/`/`install/`/`ajax/` en
+  plus de `src/`/`front/`, pas juste un grep rapide) plutôt qu'un résultat bâclé.
+- **Revue des pull requests en cours** — faite le jour même : 3 PR Dependabot ouvertes (mises à jour
+  de SHA d'actions GitHub épinglées, aucun changement fonctionnel vérifié dans chaque diff). PR #39
+  (codecov-action) approuvée et mergée. PR #40 (shivammathur/setup-php) et #41
+  (aquasecurity/trivy-action) approuvées mais **pas mergées** : le jeton `gh` utilisé dans cette
+  session n'a pas le scope OAuth `workflow` requis par GitHub pour merger une PR qui modifie
+  `.github/workflows/*.yml` — à merger manuellement par l'utilisateur, ou réautoriser `gh auth
+  login` avec ce scope.
+
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
 2. **Fait (v0.29.0, 2026-08-12).** Documentation GitHub avec captures d'écran de chaque étape,
