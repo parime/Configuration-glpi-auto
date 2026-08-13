@@ -259,7 +259,7 @@ function checkEnvironmentPrerequisites(): array
         [
             'label' => __('Dossier des palettes personnalisées inscriptible', 'configurationglpiauto'),
             'ok' => is_dir(GLPI_THEMES_DIR) && is_writable(GLPI_THEMES_DIR),
-            'hint' => sprintf(__('nécessaire à la palette personnalisée (étape 9) — vérifiez les droits sur %s', 'configurationglpiauto'), GLPI_THEMES_DIR),
+            'hint' => sprintf(__('nécessaire à la palette personnalisée (étape 17) — vérifiez les droits sur %s', 'configurationglpiauto'), GLPI_THEMES_DIR),
         ],
         [
             'label' => __('Dossier de cache GLPI inscriptible', 'configurationglpiauto'),
@@ -269,7 +269,7 @@ function checkEnvironmentPrerequisites(): array
         [
             'label' => __('Extension GD ou Imagick disponible', 'configurationglpiauto'),
             'ok' => extension_loaded('gd') || extension_loaded('imagick'),
-            'hint' => __('utile pour valider les logos uploadés (étape 9) — ni l\'une ni l\'autre n\'est chargée', 'configurationglpiauto'),
+            'hint' => __('utile pour valider les logos uploadés (étape 17) — ni l\'une ni l\'autre n\'est chargée', 'configurationglpiauto'),
         ],
     ];
 }

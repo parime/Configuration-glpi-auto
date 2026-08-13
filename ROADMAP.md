@@ -689,6 +689,26 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    seuls champs sans équivalent sur `Location`. Toggle dédié, désactivé par défaut. Vérifié en réel :
    adresse + les 4 nouveaux champs correctement persistés sur la fiche entité.
 
+**Réordonnancement des 18 étapes du wizard — fait (v0.42.0, 2026-08-13).** Retour utilisateur
+direct après avoir suivi tout le parcours en conditions réelles : « on ne m'a pas demandé les
+lieux » (l'étape Lieux était noyée dans un des huit interrupteurs de l'étape "Général & Outils",
+en position 15 sur 17 — après la personnalisation graphique, les gabarits de tickets, les droits
+LDAP...) et une demande explicite de revoir l'ordre pour un parcours plus logique, la partie CSS
+("Personnalisation graphique") reléguée en tout dernier car jugée non prioritaire. Lieux extrait de
+"Général & Outils" en une étape autonome, placée juste après "Entités" (étape 3) puisqu'une adresse
+dépend directement de la structure d'entités qui vient d'être construite ; Personnalisation
+graphique déplacée de l'étape 9 à l'étape 17 (avant-dernière, juste avant le Récapitulatif). Les 16
+autres étapes réordonnées en conséquence pour rester un parcours cohérent (structure → temps/SLA →
+contenu métier ITIL → droits/réglages → bibliothèques transverses → esthétique → validation finale).
+Titres d'étape découplés du numéro (`Étape {{ N }} : {{ Sujet }}`, le numéro en Twig brut) pour que
+tout futur réordonnancement n'exige plus de nouvelle traduction par étape déplacée. Restructuration
+mécanique du template (3000+ lignes) faite via un script PHP à vérification stricte des bornes
+plutôt qu'à la main, pour éliminer le risque d'erreur de copier-coller. Vérifié en réel : parcours
+complet des 18 étapes, déclenchement JS des deux panneaux dont la condition dépendait du numéro
+d'étape (Lieux, Personnalisation par client), soumission complète avec les données persistées en
+base, rendu correct en session anglaise. `docs/TUTORIAL.md` et ses 18 captures d'écran repris à
+l'identique du nouveau parcours.
+
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
 2. **Fait (v0.29.0, 2026-08-12).** Documentation GitHub avec captures d'écran de chaque étape,

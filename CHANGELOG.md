@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.42.0] - 2026-08-13
+
+### Changed
+- Réordonnancement complet des 18 étapes de l'assistant pour un parcours plus logique, suite à un
+  retour utilisateur direct après usage réel (« on ne m'a pas demandé les lieux »). L'étape "Lieux"
+  était noyée parmi huit interrupteurs de l'étape "Général & Outils" (position 15/17) ; elle devient
+  une étape autonome (3/18), juste après "Entités" dont elle dépend directement. "Personnalisation
+  graphique" (couleur/logo), jugée non prioritaire par l'utilisateur, passe de l'étape 9 à l'étape
+  17 (juste avant le Récapitulatif). Les autres étapes réordonnées en conséquence : structure →
+  temps/SLA → contenu métier ITIL → droits/réglages → bibliothèques transverses → esthétique →
+  validation finale.
+- Titres d'étape découplés du numéro (`Étape {{ N }} : {{ Sujet }}`) : le numéro est un entier Twig
+  brut, le sujet une chaîne traduite stable et indépendante de sa position — un futur
+  réordonnancement n'exigera plus de nouvelles traductions par étape déplacée.
+- `docs/TUTORIAL.md` et ses 18 captures d'écran repris intégralement pour refléter le nouveau
+  parcours.
+
 ## [0.41.0] - 2026-08-13
 
 ### Added
