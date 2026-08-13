@@ -9,6 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.46.0] - 2026-08-13
+
+### Changed
+- La quasi-totalité des cases "Activer" du wizard passent à cochées par défaut (opt-out plutôt
+  qu'opt-in) — même raisonnement que les icônes/l'assistant d'adresse, étendu à tout ce qui était
+  déjà considéré "bonne pratique universelle" par les profils prédéfinis
+  (`ConfigurationProfile::getSuggestedDefaults()`) mais pas encore par le point de départ brut
+  (`Config::getDefaults()`, utilisé par le profil "Personnalisé"). Restent décochées par défaut,
+  seule exception délibérée : la personnalisation graphique (couleur/logo/palette/e-mails) — un
+  changement visuel de toute l'instance sans donnée admin réelle (couleur/logo) à appliquer, déjà
+  volontairement dépriorisée (étape 17/18, cf. v0.42.0).
+- `FieldUnicityBuilder` (v0.43.0) fait désormais partie de ce socle par défaut également.
+
+### Fixed
+- `ManufacturerDictionaryBuilder` : ajout des variantes manquantes sur 3 fabricants déjà couverts
+  (Acer, Cisco, Samsung) et couverture de 9 fabricants canoniques qui n'avaient encore aucune règle
+  (Fortinet, Logitech, Oracle, Red Hat, HPE Aruba, Ubiquiti, Netgear, Canon, Brother, QNAP, Jabra,
+  Poly, APC, Eaton) — les 29 fabricants canoniques ont maintenant une règle de normalisation.
+  Plusieurs variantes confirmées via un vrai export `Manufacturer` d'une instance GLPI réelle
+  (glpi-agent), pas juste une recherche générique. Un second passage sur un fabricant déjà couvert
+  ajoute désormais les variantes manquantes à la règle existante au lieu de l'ignorer entièrement —
+  un admin qui remet à jour le plugin après cette correction en bénéficie aussi, pas seulement une
+  installation neuve.
+
 ## [0.45.0] - 2026-08-13
 
 ### Changed
