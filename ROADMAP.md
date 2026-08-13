@@ -794,17 +794,32 @@ par l'utilisateur, à trancher avant de construire quoi que ce soit :
    GLPI Network supérieure (`required_offers`) pour être visibles/installables. Reste à définir : où
    dans le wizard proposer ce champ, et si le saisir change réellement quelque chose pour les
    plugins gratuits/tiers visés au point 2 ci-dessous (à vérifier avant de construire).
-2. **Liste de plugins recommandés/indispensables pour démarrer avec GLPI, confirmé par
-   l'utilisateur (2026-08-13) : "OneTimeSecret" et "Escalade" sont de vrais plugins déjà publiés
-   sur le marketplace natif de GLPI** (pas à inventer, existent réellement). Mise en avant explicite
-   du plugin de l'utilisateur lui-même (`remise-glpi`, https://github.com/parime/remise-glpi —
-   gestion de feuilles de prêt/retour/vente/don de matériel pour la traçabilité, centralisation des
-   documents dans GLPI). Reste à faire avant de construire : retrouver la clé/le nom exact de
-   "OneTimeSecret" et "Escalade" sur plugins.glpi-project.org (pas encore recherché), et vérifier le
-   mécanisme d'installation réel (le marketplace natif installe-t-il un plugin tiers directement
-   depuis le wizard, ou faut-il rediriger l'admin vers Configuration > Marketplace pour l'installer
-   lui-même en un clic ?) avant de cadrer un plan de construction — même méthode que les audits
-   précédents.
+2. **Liste de plugins recommandés/indispensables pour démarrer avec GLPI — 3 plugins identifiés et
+   vérifiés (dépôt GitHub officiel + README pour chacun, 2026-08-13), pas encore construit :**
+   - **remise-glpi** (https://github.com/parime/remise-glpi, plugin de l'utilisateur — mise en avant
+     explicite). Gestion de feuilles de prêt/retour/vente/don de matériel pour la traçabilité,
+     centralisation des documents associés dans GLPI.
+   - **Escalade** (clé `escalade`, dépôt officiel `pluginsGLPI/escalade` — le compte GitHub officiel
+     des plugins GLPI, pas un tiers). Simplifie l'escalade de tickets vers des *groupes* (pas des
+     utilisateurs individuels) ; ajoute un historique graphique des groupes assignés, un widget de
+     tableau de bord, un critère de recherche de tickets dédié, et un clonage de ticket. Maintenu
+     activement (v2.10.5 au moment de la vérification, compatible GLPI 11.0.x).
+   - **One-Time Secret** (clé probable `one-timesecret`, dépôt `ticgal/one-timesecret`, auteur
+     TICGAL — déjà vu comme auteur de plusieurs plugins dans le marketplace natif de l'utilisateur).
+     Ajoute un bouton sur la timeline d'un ticket pour partager un mot de passe via un lien à usage
+     unique et durée de vie configurable (service onetimesecret.com ou instance auto-hébergée),
+     plutôt que d'écrire le mot de passe en clair dans le ticket.
+
+   Confirmé aussi (2026-08-13) : l'API marketplace réelle (`services.glpi-network.com/api/marketplace/`)
+   exige une authentification serveur (`X-Glpi-Network-Uid`/`X-Registration-Key`) même pour lister
+   les plugins publics — impossible à interroger sans un enregistrement GLPI Network valide, ce qui
+   explique pourquoi le marketplace de test de ce projet (sans clé) affiche une liste vide alors que
+   celui de l'utilisateur (avec une clé, même gratuite) affiche les 122 plugins normalement. Reste à
+   faire avant de construire : vérifier le mécanisme d'installation réel (le marketplace natif
+   installe-t-il un plugin tiers directement depuis le wizard, ou faut-il rediriger l'admin vers
+   Configuration > Marketplace pour l'installer lui-même en un clic ?) et confirmer la clé exacte de
+   chaque plugin dans le catalogue marketplace lui-même (pas juste son dépôt GitHub) avant de cadrer
+   un plan de construction — même méthode que les audits précédents.
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.

@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+- ROADMAP.md : recherche complète (dépôt GitHub officiel + README, pas une supposition) sur les
+  deux idées "Marketplace & plugins recommandés" — clé d'enregistrement GLPI Network confirmée
+  réelle, 3 plugins identifiés et vérifiés (remise-glpi, Escalade, One-Time Secret) avec description
+  et clé probable. Toujours pas construit, reste à cadrer.
+
 ## [0.47.0] - 2026-08-13
 
 ### Added
