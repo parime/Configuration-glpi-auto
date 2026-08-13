@@ -733,6 +733,52 @@ part vers un service externe (OpenStreetMap Nominatim par défaut) — texte d'a
 expliquer clairement pourquoi/comment la désactiver si besoin, pas juste "à activer
 volontairement" comme avant.
 
+**Presque tout activé par défaut — fait (v0.46.0, 2026-08-13).** Généralisation explicite de
+l'utilisateur après les deux points ci-dessus ("il faudrait limite tout activé par défaut et
+l'utilisateur choisis ce qu'il ne veut pas"). Étendu `Config::getDefaults()` (le point de départ
+brut, utilisé par le profil "Personnalisé") pour qu'il corresponde à ce que
+`ConfigurationProfile::getSuggestedDefaults()` considérait déjà comme "bonne pratique universelle"
+pour les profils préréglés — pas une nouvelle liste inventée, juste le même socle déjà validé
+appliqué aussi au point de départ brut. `FieldUnicityBuilder` (v0.43.0, pas encore dans ce socle)
+inclus aussi. Seule exception délibérée conservée : la personnalisation graphique (couleur/logo/
+palette/e-mails, étape 17/18) — recolorer toute l'instance sans qu'un admin ait choisi une couleur
+reste différent d'ajouter du contenu à des listes vides, et cette étape est déjà explicitement
+dépriorisée depuis le réordonnancement (v0.42.0). Vérifié en réel : soumission complète sur le
+profil "Personnalisé" (le cas le plus strict, sans préréglage de profil), tout le contenu attendu
+correctement créé en base sans erreur.
+
+**Dictionnaire de fabricants — deuxième passage, fait (v0.46.0, 2026-08-13).** Suite à la demande
+utilisateur de vérifier les variantes manquantes, confirmées via un vrai export `Manufacturer` d'une
+instance GLPI réelle peuplée par glpi-agent (pas une recherche générique) : 3 fabricants déjà
+couverts avaient des variantes réelles manquantes (Acer, Cisco, Samsung), et 9 des 29 fabricants
+canoniques n'avaient encore aucune règle du tout (Fortinet, Logitech, Oracle, Red Hat, HPE Aruba,
+Ubiquiti, Netgear, Canon, Brother, QNAP, Jabra, Poly, APC, Eaton) — les 29 ont maintenant une règle.
+`createRule()` ajoute aussi désormais les critères manquants à une règle déjà existante au lieu de
+l'ignorer entièrement, pour qu'un admin qui remet à jour le plugin en bénéficie aussi. Non traité,
+noté pour un chantier séparé (changement de portée, pas juste une correction de variantes) : le
+même export révèle plusieurs fabricants matériel réels et récurrents absents des 29 canoniques
+(Intel, Kingston, Toshiba, Western Digital, Sony, Seagate, Micron, SanDisk, Realtek, TP-Link,
+Transcend, NVIDIA, Broadcom, SK hynix) — décider lesquels ajouter à `ManufacturerBuilder` lui-même
+(avec icône, catégorie) est une décision de contenu différente de la normalisation de doublons déjà
+décidés.
+
+**Étape "Marketplace & plugins recommandés" — pas encore cadrée, capturée telle quelle sur demande
+explicite ("ajoute donc ça à la roadmap des chantiers à mener"), 2026-08-13.** Deux idées proposées
+par l'utilisateur, à trancher avant de construire quoi que ce soit :
+1. **Clé API du marketplace GLPI.** Proposer, à une étape du wizard, de saisir une clé
+   d'enregistrement (probablement l'enregistrement GLPI Network, Configuration > Générale >
+   Enregistrement — à confirmer dans le code GLPI réel avant de construire, pas encore vérifié) pour
+   débloquer l'accès à davantage de plugins/fonctionnalités du marketplace.
+2. **Liste de plugins recommandés/indispensables pour démarrer avec GLPI**, avec explication de
+   pourquoi chacun est utile, mise en avant explicite du plugin de l'utilisateur lui-même
+   (`remise-glpi`, https://github.com/parime/remise-glpi — gestion de feuilles de prêt/retour/vente/
+   don de matériel pour la traçabilité, centralisation des documents dans GLPI), plus d'autres pistes
+   citées par l'utilisateur à vérifier/qualifier : un plugin de type "OneTimeSecret" pour le partage
+   sécurisé de mots de passe, un plugin de gestion des escalades. Portée, mécanisme d'installation
+   réel (le marketplace GLPI installe-t-il un plugin tiers automatiquement, ou seulement les plugins
+   officiels référencés ?) et liste exacte des plugins tiers à recommander restent à vérifier dans le
+   code GLPI réel avant de cadrer un plan de construction — même méthode que les audits précédents.
+
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
 2. **Fait (v0.29.0, 2026-08-12).** Documentation GitHub avec captures d'écran de chaque étape,
