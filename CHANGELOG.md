@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.52.0] - 2026-08-14
+
+### Added
+- `CountryHolidayBuilder` (nouveau), étape "Lieux" : crée les jours fériés natifs GLPI (`Holiday`)
+  des pays saisis sur les adresses de la wizard (hors France, déjà couverte à l'étape Calendrier).
+  Source réelle : l'API publique gratuite Nager.Date, vérifiée en direct avant construction (vrais
+  jours fériés allemands actuels retournés). Seulement les jours fériés à date fixe — déterminé
+  empiriquement en comparant deux années consécutives, même simplification déjà appliquée à la
+  France (`Holiday.is_perpetual` ne gère pas les dates mobiles type Pâques). Filtre aussi sur le
+  champ `global` de l'API pour exclure les jours fériés régionaux (confirmé en réel pour
+  l'Allemagne : "Heilige Drei Könige"/"Mariä Himmelfahrt" ne sont pas fériés dans tout le pays).
+  ~25 pays reconnus (noms français/anglais courants) — un pays non reconnu ou non couvert par le
+  service est simplement ignoré, rien n'est inventé. Les jours fériés créés ne sont pas rattachés
+  automatiquement à un calendrier (aucun moyen fiable de savoir depuis les données du plugin à quel
+  calendrier un pays donné devrait s'appliquer) — à faire par l'admin dans Configuration >
+  Calendriers une fois créés. Toggle dédié (`country_holidays_enabled`), activé par défaut.
+
 ## [0.51.0] - 2026-08-14
 
 ### Added

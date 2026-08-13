@@ -22,6 +22,7 @@ use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\ChangeProblemTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
+use GlpiPlugin\Configurationglpiauto\CountryHolidayBuilder;
 use GlpiPlugin\Configurationglpiauto\DocumentManagementBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityAddressBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
@@ -396,6 +397,9 @@ if (isset($_POST['finish'])) {
     $locationDataByPath = !empty($config->fields['locations_enabled']) ? collectLocationDataFromPost() : [];
     $locationChildrenByPath = !empty($config->fields['locations_enabled']) ? collectLocationChildrenFromPost() : [];
     $locationsCreated = (new LocationBuilder())->build($config, $locationDataByPath, $locationChildrenByPath);
+    // Scans only the top-level Location panels' own country field, not child locations' (bâtiment/
+    // étage/salle very rarely differ from their parent's country).
+    $countryHolidaysCreated = (new CountryHolidayBuilder())->build($config, array_column($locationDataByPath, 'country'));
     // Reuses $locationDataByPath (same physical address, no reason to type it twice) plus its own
     // phonenumber/fax/website/email fields, with no Location equivalent.
     $entityCommsByPath = !empty($config->fields['entity_native_address_enabled']) ? collectEntityCommsFromPost() : [];
@@ -607,6 +611,9 @@ if (isset($_POST['finish'])) {
     }
     if ($entityAddressesApplied > 0) {
         $messages[] = sprintf(__('%d fiche(s) d\'entité complétées avec leur adresse.', 'configurationglpiauto'), $entityAddressesApplied);
+    }
+    if ($countryHolidaysCreated > 0) {
+        $messages[] = sprintf(__('%d jour(s) férié(s) étranger(s) créés.', 'configurationglpiauto'), $countryHolidaysCreated);
     }
     if ($userCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories d\'utilisateur créées.', 'configurationglpiauto'), $userCategoriesCreated);

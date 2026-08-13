@@ -1120,6 +1120,15 @@ msgstr "%d types de matériel créés."
 msgid "Créer les types courants de matériel (ordinateurs, écrans, réseau, racks, câbles, disques durs...)"
 msgstr "Créer les types courants de matériel (ordinateurs, écrans, réseau, racks, câbles, disques durs...)"
 
+msgid "%d jour(s) férié(s) étranger(s) créés."
+msgstr "%d jour(s) férié(s) étranger(s) créés."
+
+msgid "Ajouter les jours fériés des pays saisis ci-dessous (hors France, déjà couverte à l'étape Calendrier)"
+msgstr "Ajouter les jours fériés des pays saisis ci-dessous (hors France, déjà couverte à l'étape Calendrier)"
+
+msgid "Uniquement les jours fériés à date fixe (comme pour la France) — un pays non reconnu ou non couvert par le service utilisé est simplement ignoré, sans rien inventer. Les jours fériés créés ne sont pas rattachés automatiquement à un calendrier : à faire vous-même dans Configuration > Calendriers une fois créés."
+msgstr "Uniquement les jours fériés à date fixe (comme pour la France) — un pays non reconnu ou non couvert par le service utilisé est simplement ignoré, sans rien inventer. Les jours fériés créés ne sont pas rattachés automatiquement à un calendrier : à faire vous-même dans Configuration > Calendriers une fois créés."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Profil de configuration"
