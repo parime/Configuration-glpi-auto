@@ -971,7 +971,24 @@
           <input type="checkbox" name="locations_enabled" value="1" class="form-check-input" id="cga-locations-enabled" {{ config.locations_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-locations-enabled">{{ __('Créer un lieu par entité de l\'arborescence', 'configurationglpiauto') }}</label>
         </div>
-        <p id="cga-locations-fields" style="display: none;" class="text-muted small mb-3">{{ __('Reprend exactement l\'arborescence construite à l\'étape 2 (même noms, même imbrication) — un point de départ, à préciser ensuite avec de vraies adresses.', 'configurationglpiauto') }}</p>
+        <div id="cga-locations-fields" style="display: none;" class="mb-3">
+          <p class="text-muted small mb-2">{{ __('Reprend exactement l\'arborescence construite à l\'étape 2 (même noms, même imbrication) — un point de départ, à préciser ensuite avec de vraies adresses.', 'configurationglpiauto') }}</p>
+
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="location_geocoding_enabled" value="0">
+            <input type="checkbox" name="location_geocoding_enabled" value="1" class="form-check-input" id="cga-location-geocoding-enabled" {{ config.location_geocoding_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-location-geocoding-enabled">{{ __('Assistant d\'adresse (suggestions de rue pendant la saisie, ville pré-remplie depuis le code postal)', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-2">{{ __('Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement.', 'configurationglpiauto') }}</p>
+
+          <div id="cga-location-geocoding-fields" style="display: none;" class="mb-3">
+            <label class="form-label" for="cga-location-geocoding-endpoint">{{ __('Service de géocodage (avancé)', 'configurationglpiauto') }}</label>
+            <input type="text" name="location_geocoding_endpoint" id="cga-location-geocoding-endpoint" class="form-control" style="max-width: 480px;" value="{{ config.location_geocoding_endpoint|default('https://nominatim.openstreetmap.org') }}">
+            <p class="text-muted small mb-0">{{ __('Instance Nominatim/Photon auto-hébergée ou compatible, pour un usage réel au-delà d\'un essai ponctuel.', 'configurationglpiauto') }}</p>
+          </div>
+
+          <div id="cga-locations-panels" class="d-flex gap-3 flex-wrap"></div>
+        </div>
 
         <div class="form-check form-switch mb-2">
           <input type="hidden" name="manufacturers_enabled" value="0">
@@ -1604,6 +1621,168 @@
     });
   }
 
+  // Server-side proxy (ajax/geocode.php) — never called with a client-chosen host, see that
+  // file's own docblock. Debounced client-side here as the other half of the same rate-limit
+  // discipline (the free public Nominatim instance used by default tolerates ~1 req/s).
+  var CGA_GEOCODE_URL = "{{ config('root_doc') }}/plugins/configurationglpiauto/ajax/geocode.php";
+  var locationsPanels = document.getElementById('cga-locations-panels');
+
+  function cgaDebounce(fn, delayMs) {
+    var timer = null;
+    return function () {
+      var args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () { fn.apply(null, args); }, delayMs);
+    };
+  }
+
+  // One panel per top-level entity (or a single fallback for mono-entité/empty tree, same
+  // convention as renderBrandingPerClientPanels()/renderEntityLogoPanels()) — named
+  // location_address_N/location_postcode_N/location_town_N/location_country_N, matching how
+  // front/wizard.php pairs $entityIds (same order) with these indices. Only rebuilt when the
+  // node count actually changed, so revisiting this step doesn't wipe addresses already typed.
+  function renderLocationPanels() {
+    var tree = (window.cgaTree || []);
+    var nodes = tree.length ? tree : [{ name: "{{ __('Entité racine', 'configurationglpiauto')|e('js') }}" }];
+    if (locationsPanels.children.length === nodes.length) {
+      return;
+    }
+    locationsPanels.innerHTML = '';
+    nodes.forEach(function (node, i) {
+      var nodeName = node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}";
+
+      var wrapper = document.createElement('div');
+      wrapper.className = 'mb-2';
+      wrapper.style.minWidth = '260px';
+
+      var label = document.createElement('label');
+      label.className = 'form-label mb-1 fw-bold';
+      label.textContent = nodeName;
+      wrapper.appendChild(label);
+
+      var addressGroup = document.createElement('div');
+      addressGroup.className = 'position-relative mb-1';
+      var addressInput = document.createElement('input');
+      addressInput.type = 'text';
+      addressInput.name = 'location_address_' + i;
+      addressInput.className = 'form-control form-control-sm';
+      addressInput.placeholder = "{{ __('Rue, numéro...', 'configurationglpiauto')|e('js') }}";
+      addressInput.autocomplete = 'off';
+      var suggestions = document.createElement('ul');
+      suggestions.className = 'list-group position-absolute w-100';
+      suggestions.style.zIndex = '20';
+      suggestions.style.display = 'none';
+      suggestions.style.maxHeight = '220px';
+      suggestions.style.overflowY = 'auto';
+      addressGroup.appendChild(addressInput);
+      addressGroup.appendChild(suggestions);
+      wrapper.appendChild(addressGroup);
+
+      var postcodeInput = document.createElement('input');
+      postcodeInput.type = 'text';
+      postcodeInput.name = 'location_postcode_' + i;
+      postcodeInput.className = 'form-control form-control-sm mb-1';
+      postcodeInput.placeholder = "{{ __('Code postal', 'configurationglpiauto')|e('js') }}";
+      postcodeInput.style.maxWidth = '140px';
+      wrapper.appendChild(postcodeInput);
+
+      var townInput = document.createElement('input');
+      townInput.type = 'text';
+      townInput.name = 'location_town_' + i;
+      townInput.className = 'form-control form-control-sm mb-1';
+      townInput.placeholder = "{{ __('Ville', 'configurationglpiauto')|e('js') }}";
+      wrapper.appendChild(townInput);
+
+      var countryInput = document.createElement('input');
+      countryInput.type = 'text';
+      countryInput.name = 'location_country_' + i;
+      countryInput.className = 'form-control form-control-sm';
+      countryInput.placeholder = "{{ __('Pays', 'configurationglpiauto')|e('js') }}";
+      wrapper.appendChild(countryInput);
+
+      function clearSuggestions() {
+        suggestions.innerHTML = '';
+        suggestions.style.display = 'none';
+      }
+
+      function fillFromSuggestion(item) {
+        addressInput.value = item.address || addressInput.value;
+        if (item.postcode) { postcodeInput.value = item.postcode; }
+        if (item.town) { townInput.value = item.town; }
+        if (item.country) { countryInput.value = item.country; }
+        clearSuggestions();
+      }
+
+      var fetchAddressSuggestions = cgaDebounce(function (query) {
+        fetch(CGA_GEOCODE_URL + '?q=' + encodeURIComponent(query))
+          .then(function (res) { return res.ok ? res.json() : []; })
+          .then(function (results) {
+            clearSuggestions();
+            if (!Array.isArray(results) || results.length === 0) {
+              return;
+            }
+            results.forEach(function (item) {
+              var li = document.createElement('li');
+              li.className = 'list-group-item list-group-item-action py-1 px-2 small';
+              li.style.cursor = 'pointer';
+              li.textContent = item.label;
+              li.addEventListener('click', function () { fillFromSuggestion(item); });
+              suggestions.appendChild(li);
+            });
+            suggestions.style.display = '';
+          })
+          .catch(function () { clearSuggestions(); });
+      }, 400);
+
+      addressInput.addEventListener('input', function () {
+        if (!locationGeocodingEnabledInput.checked) {
+          return;
+        }
+        var query = addressInput.value.trim();
+        if (query.length < 3) {
+          clearSuggestions();
+          return;
+        }
+        fetchAddressSuggestions(query);
+      });
+      document.addEventListener('click', function (evt) {
+        if (evt.target !== addressInput) {
+          clearSuggestions();
+        }
+      });
+
+      // Code postal → ville : déclenché à la sortie du champ (pas à chaque frappe, un code postal
+      // n'a de sens qu'une fois complet), ne remplit la ville que si elle est encore vide pour ne
+      // jamais écraser une correction déjà faite à la main.
+      postcodeInput.addEventListener('blur', function () {
+        if (!locationGeocodingEnabledInput.checked) {
+          return;
+        }
+        var postcode = postcodeInput.value.trim();
+        if (postcode.length < 3 || townInput.value.trim() !== '') {
+          return;
+        }
+        // Passe le pays déjà saisi (sinon ajax/geocode.php retombe sur son défaut) — un code
+        // postal seul est ambigu à l'échelle mondiale (69001 existe aussi bien à Lyon qu'en
+        // Ukraine), et ce résultat écrase la ville sans relecture possible par l'admin.
+        var countryHint = countryInput.value.trim();
+        var postcodeUrl = CGA_GEOCODE_URL + '?postcode=' + encodeURIComponent(postcode)
+          + (countryHint !== '' ? '&country=' + encodeURIComponent(countryHint) : '');
+        fetch(postcodeUrl)
+          .then(function (res) { return res.ok ? res.json() : []; })
+          .then(function (results) {
+            if (Array.isArray(results) && results.length > 0 && results[0].town) {
+              townInput.value = results[0].town;
+              if (results[0].country && countryInput.value.trim() === '') { countryInput.value = results[0].country; }
+            }
+          })
+          .catch(function () {});
+      });
+
+      locationsPanels.appendChild(wrapper);
+    });
+  }
+
   var generalSettingsGroupInputs = document.querySelectorAll('.cga-general-settings-group');
   var generalSettingsSelectAll = document.getElementById('cga-general-settings-select-all');
   function syncGeneralSettingsSelectAll() {
@@ -1778,6 +1957,7 @@
   var changeProblemTemplatesEnabledInput = wireSimpleToggle('cga-change-problem-templates-enabled', 'cga-change-problem-templates-fields');
   wireIconsToggle('cga-change-problem-template-icons-enabled', '.cga-change-problem-template-icon');
   var locationsEnabledInput = wireSimpleToggle('cga-locations-enabled', 'cga-locations-fields');
+  var locationGeocodingEnabledInput = wireSimpleToggle('cga-location-geocoding-enabled', 'cga-location-geocoding-fields');
   var manufacturersEnabledInput = wireSimpleToggle('cga-manufacturers-enabled', 'cga-manufacturers-fields');
   wireIconsToggle('cga-manufacturer-icons-enabled', '.cga-manufacturer-icon');
   var kbCategoriesEnabledInput = document.getElementById('cga-kb-categories-enabled');
@@ -2493,6 +2673,9 @@
       // when it matters (the tree may have changed since last time) rather than on every click.
       renderEntityLogoPanels();
       renderBrandingPerClientPanels();
+    }
+    if (currentStep === 15) {
+      renderLocationPanels();
     }
   }
 

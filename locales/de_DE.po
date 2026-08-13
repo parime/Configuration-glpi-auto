@@ -979,6 +979,30 @@ msgstr "💻 Reine IT"
 msgid "🧩 Multi-services (toutes verticales)"
 msgstr "🧩 Multiservice (alle Bereiche)"
 
+msgid "Assistant d'adresse (suggestions de rue pendant la saisie, ville pré-remplie depuis le code postal)"
+msgstr "Adressassistent (Straßenvorschläge während der Eingabe, Ort automatisch anhand der Postleitzahl ausgefüllt)"
+
+msgid "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement."
+msgstr "Sendet jede Eingabe an einen externen Dienst (standardmäßig OpenStreetMap Nominatim), um Vorschläge zu liefern — standardmäßig deaktiviert, bewusst zu aktivieren."
+
+msgid "Service de géocodage (avancé)"
+msgstr "Geokodierungsdienst (erweitert)"
+
+msgid "Instance Nominatim/Photon auto-hébergée ou compatible, pour un usage réel au-delà d'un essai ponctuel."
+msgstr "Selbst gehostete Nominatim/Photon-Instanz oder kompatibler Dienst, für den echten Einsatz über einen einmaligen Test hinaus."
+
+msgid "Rue, numéro..."
+msgstr "Straße, Hausnummer..."
+
+msgid "Code postal"
+msgstr "Postleitzahl"
+
+msgid "Ville"
+msgstr "Ort"
+
+msgid "Pays"
+msgstr "Land"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Konfigurationsprofil"

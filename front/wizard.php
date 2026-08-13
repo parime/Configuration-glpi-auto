@@ -228,7 +228,22 @@ if (isset($_POST['finish'])) {
     $followupTemplatesCreated = (new FollowupLibraryBuilder())->build($config);
     $validationTemplatesCreated = (new ValidationTemplateBuilder())->build($config);
     // Runs after EntityBuilder: resolves entities by name lookup to scope each location.
-    $locationsCreated = (new LocationBuilder())->build($config);
+    $topLevelAddresses = [];
+    if (!empty($config->fields['locations_enabled'])) {
+        foreach ($entityIds as $i => $entityId) {
+            $address = [
+                'address' => trim((string) ($_POST['location_address_' . $i] ?? '')),
+                'postcode' => trim((string) ($_POST['location_postcode_' . $i] ?? '')),
+                'town' => trim((string) ($_POST['location_town_' . $i] ?? '')),
+                'country' => trim((string) ($_POST['location_country_' . $i] ?? '')),
+            ];
+            $address = array_filter($address, static fn ($value) => $value !== '');
+            if ($address !== []) {
+                $topLevelAddresses[$i] = $address;
+            }
+        }
+    }
+    $locationsCreated = (new LocationBuilder())->build($config, $topLevelAddresses);
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
