@@ -152,6 +152,68 @@ function collectLocationDataFromPost(): array
 }
 
 /**
+ * Collects every `location_children_<path>` hidden field the "Lieux" step's JS may have submitted
+ * — one JSON blob per entity path, holding whatever purely manual sub-locations (building/floor/
+ * room, no entity of their own) the admin freely added/removed via that path's own tree editor.
+ * Unlike `collectLocationDataFromPost()` (fixed, statically-known field set per path), this tree's
+ * *shape* is entirely admin-driven, so it's serialized as JSON client-side rather than a a growing
+ * set of flat named inputs — same reasoning `_entity_structure_fields.html.twig` already uses for
+ * `entity_tree_json`.
+ *
+ * Recursively re-sanitizes every node server-side rather than trusting the submitted JSON shape:
+ * unknown keys dropped, coordinates range-checked via `sanitizeCoordinate()`, a node with no name
+ * kept (its `name` becomes '', `LocationBuilder` itself skips nameless nodes) so a malformed/
+ * tampered blob never crashes the wizard, only silently produces fewer locations.
+ *
+ * @return array<string, array<int, array{name: string, fields: array<string, string>, children: array}>>
+ */
+function collectLocationChildrenFromPost(): array
+{
+    $textFields = ['address', 'postcode', 'town', 'state', 'country', 'building', 'room', 'code', 'alias', 'comment'];
+    $coordinateFields = ['latitude' => 90.0, 'longitude' => 180.0, 'altitude' => 10_000.0];
+
+    $sanitizeNode = function (array $node) use (&$sanitizeNode, $textFields, $coordinateFields): array {
+        $fields = is_array($node['fields'] ?? null) ? $node['fields'] : [];
+        $sanitizedFields = [];
+        foreach ($textFields as $field) {
+            $value = trim((string) ($fields[$field] ?? ''));
+            if ($value !== '') {
+                $sanitizedFields[$field] = $value;
+            }
+        }
+        foreach ($coordinateFields as $field => $max) {
+            $value = sanitizeCoordinate((string) ($fields[$field] ?? ''), $max);
+            if ($value !== '') {
+                $sanitizedFields[$field] = $value;
+            }
+        }
+
+        $children = is_array($node['children'] ?? null) ? $node['children'] : [];
+
+        return [
+            'name' => trim((string) ($node['name'] ?? '')),
+            'fields' => $sanitizedFields,
+            'children' => array_values(array_map($sanitizeNode, array_filter($children, 'is_array'))),
+        ];
+    };
+
+    $byPath = [];
+    foreach ($_POST as $key => $value) {
+        $prefix = 'location_children_';
+        if (!str_starts_with($key, $prefix) || !is_string($value)) {
+            continue;
+        }
+        $decoded = json_decode($value, true);
+        if (!is_array($decoded)) {
+            continue;
+        }
+        $byPath[substr($key, strlen($prefix))] = array_values(array_map($sanitizeNode, array_filter($decoded, 'is_array')));
+    }
+
+    return $byPath;
+}
+
+/**
  * Read-only environment checks specific to what *this wizard* is about to do — GLPI's own
  * installer already validated its own PHP/MySQL version requirements before this plugin could
  * even run, so re-checking those would be pointless duplication. Scoped instead to the two things
@@ -299,7 +361,8 @@ if (isset($_POST['finish'])) {
     // Runs after EntityBuilder: LocationBuilder resolves entities by name lookup to scope each
     // location it actually creates.
     $locationDataByPath = !empty($config->fields['locations_enabled']) ? collectLocationDataFromPost() : [];
-    $locationsCreated = (new LocationBuilder())->build($config, $locationDataByPath);
+    $locationChildrenByPath = !empty($config->fields['locations_enabled']) ? collectLocationChildrenFromPost() : [];
+    $locationsCreated = (new LocationBuilder())->build($config, $locationDataByPath, $locationChildrenByPath);
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);

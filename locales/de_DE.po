@@ -1057,6 +1057,15 @@ msgstr "GLPI installiert diese 6 Werte unabhängig von der gewählten Sprache au
 msgid "Traduire les sources de demande natives de GLPI"
 msgstr "Native Anfragequellen von GLPI übersetzen"
 
+msgid "Ajouter un lieu enfant"
+msgstr "Untergeordneten Standort hinzufügen"
+
+msgid "Lieux enfants (bâtiment, étage, salle...)"
+msgstr "Untergeordnete Standorte (Gebäude, Etage, Raum...)"
+
+msgid "Nom du lieu enfant (ex. Bâtiment A)"
+msgstr "Name des untergeordneten Standorts (z. B. Gebäude A)"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Konfigurationsprofil"
