@@ -647,15 +647,18 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    statistiques (`Stat.php`) — indépendant des profils/droits GLPI. `UserCategoryBuilder` (nouveau) :
    6 catégories génériques (Employé, Prestataire externe, Stagiaire, Alternant, Intérimaire,
    Consultant). Vérifié en réel : les 6 lignes créées dans `glpi_usercategories`.
-3. **Opérateurs téléphoniques (`LineOperator`) et types de fibre
-   (`NetworkPortFiberchannelType`)** — tous deux vides nativement. Attention : ce ne sont pas les
-   mêmes natures de liste. `LineOperator` = noms de marque d'opérateurs télécom, propres à chaque
-   *pays* (Orange/SFR/Bouygues/Free en France, tout autre ailleurs) — moins universel qu'un
-   fabricant matériel mondial (`ManufacturerBuilder`), à cadrer explicitement (poser un défaut
-   France, comme les jours fériés, ou laisser vide). `NetworkPortFiberchannelType`, malgré son nom
-   FR ("Types de fibre"), concerne en réalité le protocole de stockage SAN Fibre Channel (débits
-   1/2/4/8/16/32 Gb, FCoE...) — rien à voir avec la fibre internet résidentielle/entreprise — une
-   liste technique stable et universelle, candidat plus solide que les opérateurs.
+3. ✅ **Opérateurs téléphoniques (`LineOperator`) — fait (v0.49.0, 2026-08-13), défaut France
+   posé comme pour les jours fériés.** `LineOperatorBuilder` (nouveau) : 4 grands opérateurs mobiles
+   français (Orange, SFR, Bouygues Telecom, Free), avec MCC/MNC réels recoupés sur 3 sources
+   indépendantes pour éviter d'inventer un numéro. **Bug réel trouvé pendant la vérification** :
+   `glpi_lineoperators` a un index `UNIQUE(mcc, mnc)`, et GLPI met `0` par défaut (pas `NULL`) sur
+   ces champs entiers non fournis — sans MCC/MNC explicites et distincts, seul le premier opérateur
+   se créait, les 3 suivants étaient silencieusement rejetés par la contrainte d'unicité, sans
+   aucune erreur visible ni dans le message de succès du wizard ni dans les logs GLPI. Repéré
+   uniquement en comptant les lignes en base après soumission — pas en faisant confiance au message
+   de succès. `NetworkPortFiberchannelType` (malgré son nom FR "Types de fibre") concerne en réalité
+   le protocole de stockage SAN Fibre Channel (débits 1/2/4/8/16/32 Gb, FCoE...) — rien à voir avec
+   la fibre internet résidentielle/entreprise, écarté du périmètre "opérateurs télécom" de ce point.
 4. **Grande liste de dropdowns "Types" natifs vides** — repérée en parcourant l'écran Intitulés >
    Types. Vérifié par requête sur `information_schema` : ~25 tables natives à 0 ligne, parmi
    lesquelles des candidats plausibles à un contenu générique (types d'ordinateurs, de moniteurs,
@@ -671,8 +674,22 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    saisie sur un Lieu (assistant d'adresse v0.33.0+), proposer d'appliquer automatiquement les
    jours fériés propres à ce pays — mais explicitement **seulement pour les pays où on dispose
    réellement de la donnée** (pas de case à cocher qui ne ferait rien pour un pays non couvert).
-   Nécessite une vraie source de données par pays (calendrier des jours fériés), pas encore
-   identifiée/vérifiée.
+   **Source de données réelle trouvée et vérifiée (2026-08-13)** : l'API publique gratuite
+   Nager.Date (`https://date.nager.at/api/v3/PublicHolidays/{année}/{code pays ISO}`), testée en
+   direct avec des jours fériés français réels et actuels — couvre ~100 pays
+   (`/api/v3/AvailableCountries`). **Pas encore construit**, trois questions de conception restent
+   ouvertes avant de s'y mettre : (1) le champ pays des Lieux est actuellement du texte libre ("
+   France", "Allemagne"...), il faudrait une table de correspondance nom→code ISO 3166-1 alpha-2 au
+   moins pour les pays européens/courants ; (2) GLPI's `Holiday.is_perpetual` ne gère qu'un
+   mois/jour fixe répété chaque année (déjà la raison pour laquelle `CalendarBuilder` exclut les
+   jours fériés mobiles français type Pâques/Ascension) — Nager.Date fournit des dates précises par
+   année, pas une règle récurrente, donc soit se limiter aux jours fériés à date fixe par pays (même
+   simplification que l'existant), soit créer des jours non-perpétuels nécessitant un rafraîchissement
+   chaque année (recréer/mettre à jour à chaque nouvelle exécution du wizard, ce qui est cohérent
+   avec la nature de cet outil de configuration réutilisable) ; (3) dépendance à un nouveau service
+   externe non encore utilisé par ce plugin (contrairement à Nominatim déjà accepté pour l'assistant
+   d'adresse), à valider avec l'utilisateur avant d'ajouter cet appel réseau supplémentaire au
+   parcours du wizard.
 6. ✅ **Unicité des champs (`FieldUnicity`) — fait (v0.43.0, 2026-08-13), scope réduit au cas
    universel.** Audité avant construction (`src/FieldUnicity.php` du cœur GLPI) : contrairement aux
    dropdowns de contenu, `FieldUnicity` définit bien des *règles* de contrainte, plus proche des
