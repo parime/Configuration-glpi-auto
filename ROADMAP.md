@@ -784,42 +784,40 @@ n'importe quel flux") — France-spécifique mais assumé, même logique que les
 France-first ailleurs dans ce plugin.
 
 **Étape "Marketplace & plugins recommandés" — pas encore cadrée, capturée telle quelle sur demande
-explicite ("ajoute donc ça à la roadmap des chantiers à mener"), 2026-08-13.** Deux idées proposées
-par l'utilisateur, à trancher avant de construire quoi que ce soit :
-1. **Clé API du marketplace GLPI — mécanisme confirmé réel (2026-08-13), pas encore construit.**
-   Vérifié dans `src/Glpi/Marketplace/` du cœur GLPI : `GLPINetwork::getRegistrationKey()` et
-   `GLPINetwork::getRegistrationInformations()` existent bel et bien, le marketplace natif affiche
-   un message d'avertissement tant qu'aucune clé n'est renseignée ("A registration, at least a free
-   one, is required to use marketplace!"), et certains plugins du catalogue exigent une offre
-   GLPI Network supérieure (`required_offers`) pour être visibles/installables. Reste à définir : où
-   dans le wizard proposer ce champ, et si le saisir change réellement quelque chose pour les
-   plugins gratuits/tiers visés au point 2 ci-dessous (à vérifier avant de construire).
-2. **Liste de plugins recommandés/indispensables pour démarrer avec GLPI — 3 plugins identifiés et
-   vérifiés (dépôt GitHub officiel + README pour chacun, 2026-08-13), pas encore construit :**
+explicite ("ajoute donc ça à la roadmap des chantiers à mener"), 2026-08-13. Mise à jour le même
+jour : l'utilisateur a renseigné une vraie clé d'enregistrement GLPI Network sur l'instance Docker
+de test, débloquant le marketplace natif — les points ci-dessous sont maintenant vérifiés en
+conditions réelles (recherche live dans Configuration > Plugins > Marketplace > Découvrir), plus
+seulement via GitHub.** Deux idées proposées par l'utilisateur, à trancher avant de construire quoi
+que ce soit :
+1. **Clé API du marketplace GLPI — mécanisme confirmé réel.** `GLPINetwork::getRegistrationKey()`
+   existe bel et bien (`src/Glpi/Marketplace/` du cœur GLPI), stockée chiffrée dans
+   `glpi_configs` (`glpinetwork_registration_key`). Confirmé aussi que l'API réelle
+   (`services.glpi-network.com/api/marketplace/plugins`) exige une authentification serveur même
+   pour lister les plugins publics (`INVALID_GLPI_NETWORK_UID` sans clé) — sans elle, GLPI simule
+   côté client une liste vide plutôt que d'appeler l'API. Reste à définir : où dans le wizard
+   proposer ce champ (probablement l'étape "Réglages généraux GLPI", à côté des autres réglages
+   natifs).
+2. **Liste de plugins recommandés — 3 plugins vérifiés en direct sur le marketplace natif
+   maintenant débloqué (clé, note, licence, auteur, bouton d'installation réel inspectés) :**
    - **remise-glpi** (https://github.com/parime/remise-glpi, plugin de l'utilisateur — mise en avant
      explicite). Gestion de feuilles de prêt/retour/vente/don de matériel pour la traçabilité,
-     centralisation des documents associés dans GLPI.
-   - **Escalade** (clé `escalade`, dépôt officiel `pluginsGLPI/escalade` — le compte GitHub officiel
-     des plugins GLPI, pas un tiers). Simplifie l'escalade de tickets vers des *groupes* (pas des
-     utilisateurs individuels) ; ajoute un historique graphique des groupes assignés, un widget de
-     tableau de bord, un critère de recherche de tickets dédié, et un clonage de ticket. Maintenu
-     activement (v2.10.5 au moment de la vérification, compatible GLPI 11.0.x).
-   - **One-Time Secret** (clé probable `one-timesecret`, dépôt `ticgal/one-timesecret`, auteur
-     TICGAL — déjà vu comme auteur de plusieurs plugins dans le marketplace natif de l'utilisateur).
-     Ajoute un bouton sur la timeline d'un ticket pour partager un mot de passe via un lien à usage
-     unique et durée de vie configurable (service onetimesecret.com ou instance auto-hébergée),
-     plutôt que d'écrire le mot de passe en clair dans le ticket.
-
-   Confirmé aussi (2026-08-13) : l'API marketplace réelle (`services.glpi-network.com/api/marketplace/`)
-   exige une authentification serveur (`X-Glpi-Network-Uid`/`X-Registration-Key`) même pour lister
-   les plugins publics — impossible à interroger sans un enregistrement GLPI Network valide, ce qui
-   explique pourquoi le marketplace de test de ce projet (sans clé) affiche une liste vide alors que
-   celui de l'utilisateur (avec une clé, même gratuite) affiche les 122 plugins normalement. Reste à
-   faire avant de construire : vérifier le mécanisme d'installation réel (le marketplace natif
-   installe-t-il un plugin tiers directement depuis le wizard, ou faut-il rediriger l'admin vers
-   Configuration > Marketplace pour l'installer lui-même en un clic ?) et confirmer la clé exacte de
-   chaque plugin dans le catalogue marketplace lui-même (pas juste son dépôt GitHub) avant de cadrer
-   un plan de construction — même méthode que les audits précédents.
+     centralisation des documents associés dans GLPI. **Absent du marketplace natif** (recherche
+     "remise" → aucun résultat) — pas encore publié, une installation recommandée par ce plugin
+     devrait donc pointer vers le dépôt GitHub plutôt que déclencher une installation marketplace.
+   - **Escalade** — clé confirmée `escalade` (attribut `data-key` du marketplace lui-même, pas juste
+     le nom du dépôt GitHub), licence GPL v2+, auteurs Alexandre Delaunay/TECLIB', v2.10.6, 3,5★,
+     gratuit (aucun badge "GLPI Network"/offre payante). Description native : « simplifie l'escalade
+     de ticket vers des groupes différents ».
+   - **One-Time Secret** — clé confirmée `onetimesecret` (sans tiret, contrairement au nom du dépôt
+     `ticgal/one-timesecret` — bien vérifié en direct plutôt que déduit), licence AGPL v3+, auteur
+     TICgal, v3.0.0, 4,5★, gratuit. Description native : « Share your passwords securely on GLPI ».
+   - Mécanisme d'installation confirmé pour les deux : un simple bouton
+     `<button data-action="download_plugin">` sur la fiche du plugin déclenche le téléchargement +
+     l'installation directement depuis GLPI (pas de redirection externe, pas d'étape manuelle) — le
+     marketplace natif peut donc en théorie être piloté par script pour automatiser l'installation
+     d'Escalade/One-Time Secret depuis le wizard, contrairement à remise-glpi qui resterait un lien
+     externe.
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
