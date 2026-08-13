@@ -1090,6 +1090,24 @@ msgstr "Rückmeldungen, Freigaben & Vorlagen"
 msgid "Optionnel : associez une adresse (ou plus) à une entité de l'arborescence — rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, aucun lieu créé, comme sur une installation GLPI neuve."
 msgstr "Optional: einer Entität der Struktur eine oder mehrere Adressen zuordnen — Straße, Ort, GPS-Koordinaten, Alias, Telefon... Keine Adresse eingegeben, kein Standort erstellt, genau wie bei einer neuen GLPI-Installation."
 
+msgid "Marketplace & plugins recommandés"
+msgstr "Marketplace & empfohlene Plugins"
+
+msgid "Clé d'enregistrement GLPI Network"
+msgstr "GLPI-Network-Registrierungsschlüssel"
+
+msgid "Clé d'enregistrement GLPI Network enregistrée."
+msgstr "GLPI-Network-Registrierungsschlüssel gespeichert."
+
+msgid "Optionnel : une clé d'enregistrement GLPI Network (au moins gratuite) débloque le marketplace natif de GLPI (Configuration > Plugins > Marketplace) — sans elle, la liste des plugins y reste vide."
+msgstr "Optional: Ein GLPI-Network-Registrierungsschlüssel (mindestens ein kostenloser) schaltet den nativen Marketplace von GLPI frei (Konfiguration > Plugins > Marketplace) — ohne ihn bleibt die Plugin-Liste dort leer."
+
+msgid "S'obtient gratuitement sur"
+msgstr "Kostenlos erhältlich unter"
+
+msgid "Une fois le marketplace débloqué, ces plugins sont installables en un clic depuis Configuration > Plugins > Marketplace — non installés automatiquement par cet assistant."
+msgstr "Sobald der Marketplace freigeschaltet ist, lassen sich diese Plugins mit einem Klick unter Konfiguration > Plugins > Marketplace installieren — nicht automatisch von diesem Assistenten installiert."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Konfigurationsprofil"

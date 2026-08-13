@@ -39,6 +39,12 @@
     </authors>
     <versions>
         <version>
+            <num>0.48.0</num>
+            <compatibility>=11.0.0</compatibility>
+            <php-version>=8.2</php-version>
+            <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.48.0/configuration-glpi-auto-0.48.0.zip</download_url>
+        </version>
+        <version>
             <num>0.47.0</num>
             <compatibility>=11.0.0</compatibility>
             <php-version>=8.2</php-version>
