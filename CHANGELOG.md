@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.37.0] - 2026-08-13
+
+### Changed
+- Manifeste (`configurationglpiauto.xml`) : `<state>` passe de `dev` à `stable` — décision
+  utilisateur, dernier prérequis marketplace pour ce dépôt (36 versions livrées, suite qualité
+  verte à chaque livraison, vérifié en réel sur GLPI 11.0.8 à chaque fonctionnalité).
+
 ### Documentation
 - ROADMAP.md : idée « actifs personnalisés » (`Glpi\Asset\AssetDefinition`) confirmée et débloquée
   après vérification directe dans le code source de GLPI 11.0.8 réel — aucun changement de code.

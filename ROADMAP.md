@@ -626,8 +626,10 @@ complet dans `CHANGELOG.md` `[0.36.0]`.
   pas avant.
 - Traductions `.po`/`.mo` de l'interface du wizard en en_GB/de_DE/it_IT/es_ES — **fait (v0.30.0,
   2026-08-12)**. 318 chaînes traduites, vérifié en réel dans les 4 langues (aucune régression,
-  aucun problème d'encodage). Dernier prérequis marketplace pour ce dépôt, avec le choix de
-  `<state>` (dev → stable) qui reste à trancher avec l'utilisateur.
+  aucun problème d'encodage).
+- `<state>` du manifeste (`dev` → `stable`) — **fait (2026-08-13)**, décision utilisateur : 36
+  versions livrées, suite qualité verte à chaque livraison, vérifié en réel sur GLPI 11.0.8 à
+  chaque fonctionnalité. Dernier prérequis marketplace pour ce dépôt — tous cochés.
 
 ---
 
