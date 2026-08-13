@@ -886,6 +886,27 @@
         <ul class="list-group mb-3" style="max-width: 560px;">
           <li class="list-group-item">{{ __('Ajouter une étape de validation « Comité (2/3) » pour les décisions collégiales', 'configurationglpiauto') }}</li>
         </ul>
+
+        <hr class="my-3">
+        <h4 class="mb-1">{{ __('Marketplace & plugins recommandés', 'configurationglpiauto') }}</h4>
+        <p class="text-muted small mb-2">{{ __('Optionnel : une clé d\'enregistrement GLPI Network (au moins gratuite) débloque le marketplace natif de GLPI (Configuration > Plugins > Marketplace) — sans elle, la liste des plugins y reste vide.', 'configurationglpiauto') }}</p>
+        <div class="mb-3" style="max-width: 560px;">
+          <label class="form-label mb-1" for="cga-glpi-network-registration-key">{{ __('Clé d\'enregistrement GLPI Network', 'configurationglpiauto') }}</label>
+          <input type="text" name="glpi_network_registration_key" id="cga-glpi-network-registration-key" class="form-control" value="{{ glpi_network_registration_key|default('') }}" autocomplete="off">
+          <p class="text-muted small mb-0">{{ __('S\'obtient gratuitement sur', 'configurationglpiauto') }} <a href="https://services.glpi-network.com/" target="_blank" rel="noopener">services.glpi-network.com</a>.</p>
+        </div>
+
+        <p class="text-muted small mb-2">{{ __('Une fois le marketplace débloqué, ces plugins sont installables en un clic depuis Configuration > Plugins > Marketplace — non installés automatiquement par cet assistant.', 'configurationglpiauto') }}</p>
+        <div class="d-flex flex-wrap gap-2 mb-2">
+          {% for plugin in marketplace_recommended_plugins %}
+            <div class="card card-body p-2" style="max-width: 320px;">
+              <strong>{{ plugin.name }}</strong>
+              <p class="text-muted small mb-1">{{ plugin.description }}</p>
+              <p class="text-muted small mb-1"><em>{{ plugin.note }}</em></p>
+              <a href="{{ plugin.url }}" target="_blank" rel="noopener" class="small">{{ plugin.url }}</a>
+            </div>
+          {% endfor %}
+        </div>
       </div>
 
       {# ---------------------------------------------------------------- Étape 15 : Général & Outils #}

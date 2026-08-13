@@ -783,28 +783,26 @@ en dur ici. Scope volontairement limité à ce seul flux (pas un mécanisme gén
 n'importe quel flux") — France-spécifique mais assumé, même logique que les jours fériés déjà
 France-first ailleurs dans ce plugin.
 
-**Étape "Marketplace & plugins recommandés" — pas encore cadrée, capturée telle quelle sur demande
-explicite ("ajoute donc ça à la roadmap des chantiers à mener"), 2026-08-13. Mise à jour le même
-jour : l'utilisateur a renseigné une vraie clé d'enregistrement GLPI Network sur l'instance Docker
-de test, débloquant le marketplace natif — les points ci-dessous sont maintenant vérifiés en
-conditions réelles (recherche live dans Configuration > Plugins > Marketplace > Découvrir), plus
-seulement via GitHub.** Deux idées proposées par l'utilisateur, à trancher avant de construire quoi
-que ce soit :
-1. **Clé API du marketplace GLPI — mécanisme confirmé réel.** `GLPINetwork::getRegistrationKey()`
-   existe bel et bien (`src/Glpi/Marketplace/` du cœur GLPI), stockée chiffrée dans
-   `glpi_configs` (`glpinetwork_registration_key`). Confirmé aussi que l'API réelle
-   (`services.glpi-network.com/api/marketplace/plugins`) exige une authentification serveur même
-   pour lister les plugins publics (`INVALID_GLPI_NETWORK_UID` sans clé) — sans elle, GLPI simule
-   côté client une liste vide plutôt que d'appeler l'API. Reste à définir : où dans le wizard
-   proposer ce champ (probablement l'étape "Réglages généraux GLPI", à côté des autres réglages
-   natifs).
-2. **Liste de plugins recommandés — 3 plugins vérifiés en direct sur le marketplace natif
-   maintenant débloqué (clé, note, licence, auteur, bouton d'installation réel inspectés) :**
+**Étape "Marketplace & plugins recommandés" — fait (v0.48.0, 2026-08-13).** Demandée par
+l'utilisateur, cadrée le même jour après déblocage réel du marketplace natif sur l'instance Docker
+de test (l'utilisateur y a renseigné une vraie clé d'enregistrement GLPI Network) — les faits
+ci-dessous vérifiés en conditions réelles (recherche live dans Configuration > Plugins > Marketplace
+> Découvrir + inspection du DOM), pas juste via GitHub.
+1. **Clé d'enregistrement GLPI Network.** Champ ajouté à l'étape "Réglages généraux GLPI", écrit
+   directement dans la config native GLPI (`\Config::setConfigurationValues('core', [...])`,
+   exactement le mécanisme de la page native "Enregistrement") — jamais dupliqué dans la table de ce
+   plugin, qui n'a aucun chiffrement au niveau champ contrairement au stockage natif via `GLPIKey`.
+   Pré-rempli à chaque chargement depuis `GLPINetwork::getRegistrationKey()` (même comportement que
+   la page native). Vérifié : une resoumission avec le champ inchangé donne un chiffré différent en
+   base (IV aléatoire à chaque chiffrement, normal) mais le marketplace continue de s'authentifier
+   correctement ensuite — pas de corruption.
+2. **Liste de plugins recommandés (informationnelle, pas d'installation automatique)** — 3 plugins
+   vérifiés en direct sur le marketplace natif (clé, note, licence, auteur, bouton d'installation
+   réel inspectés) :
    - **remise-glpi** (https://github.com/parime/remise-glpi, plugin de l'utilisateur — mise en avant
      explicite). Gestion de feuilles de prêt/retour/vente/don de matériel pour la traçabilité,
      centralisation des documents associés dans GLPI. **Absent du marketplace natif** (recherche
-     "remise" → aucun résultat) — pas encore publié, une installation recommandée par ce plugin
-     devrait donc pointer vers le dépôt GitHub plutôt que déclencher une installation marketplace.
+     "remise" → aucun résultat) — lien GitHub direct plutôt qu'un renvoi vers le marketplace.
    - **Escalade** — clé confirmée `escalade` (attribut `data-key` du marketplace lui-même, pas juste
      le nom du dépôt GitHub), licence GPL v2+, auteurs Alexandre Delaunay/TECLIB', v2.10.6, 3,5★,
      gratuit (aucun badge "GLPI Network"/offre payante). Description native : « simplifie l'escalade
@@ -812,12 +810,11 @@ que ce soit :
    - **One-Time Secret** — clé confirmée `onetimesecret` (sans tiret, contrairement au nom du dépôt
      `ticgal/one-timesecret` — bien vérifié en direct plutôt que déduit), licence AGPL v3+, auteur
      TICgal, v3.0.0, 4,5★, gratuit. Description native : « Share your passwords securely on GLPI ».
-   - Mécanisme d'installation confirmé pour les deux : un simple bouton
-     `<button data-action="download_plugin">` sur la fiche du plugin déclenche le téléchargement +
-     l'installation directement depuis GLPI (pas de redirection externe, pas d'étape manuelle) — le
-     marketplace natif peut donc en théorie être piloté par script pour automatiser l'installation
-     d'Escalade/One-Time Secret depuis le wizard, contrairement à remise-glpi qui resterait un lien
-     externe.
+   - Installation volontairement laissée à l'admin (bouton
+     `<button data-action="download_plugin">` du marketplace natif, un clic, aucune redirection
+     externe) plutôt qu'automatisée depuis ce wizard — télécharger/exécuter du code tiers est une
+     catégorie de risque différente du reste de ce plugin (qui ne fait que créer du contenu dans les
+     propres tables de GLPI).
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.

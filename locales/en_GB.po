@@ -1090,6 +1090,24 @@ msgstr "Follow-ups, approvals & templates"
 msgid "Optionnel : associez une adresse (ou plus) à une entité de l'arborescence — rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, aucun lieu créé, comme sur une installation GLPI neuve."
 msgstr "Optional: associate one or more addresses with an entity in the tree — street, town, GPS coordinates, alias, phone... No address entered, no location created, just like on a fresh GLPI install."
 
+msgid "Marketplace & plugins recommandés"
+msgstr "Marketplace & recommended plugins"
+
+msgid "Clé d'enregistrement GLPI Network"
+msgstr "GLPI Network registration key"
+
+msgid "Clé d'enregistrement GLPI Network enregistrée."
+msgstr "GLPI Network registration key saved."
+
+msgid "Optionnel : une clé d'enregistrement GLPI Network (au moins gratuite) débloque le marketplace natif de GLPI (Configuration > Plugins > Marketplace) — sans elle, la liste des plugins y reste vide."
+msgstr "Optional: a GLPI Network registration key (at least a free one) unlocks GLPI's native marketplace (Configuration > Plugins > Marketplace) — without it, the plugin list there stays empty."
+
+msgid "S'obtient gratuitement sur"
+msgstr "Available for free at"
+
+msgid "Une fois le marketplace débloqué, ces plugins sont installables en un clic depuis Configuration > Plugins > Marketplace — non installés automatiquement par cet assistant."
+msgstr "Once the marketplace is unlocked, these plugins can be installed in one click from Configuration > Plugins > Marketplace — not installed automatically by this wizard."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Configuration profile"
