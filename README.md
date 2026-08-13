@@ -23,7 +23,7 @@ Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une insta
 
 ## Fonctionnalites
 
-- Assistant graphique en 17 etapes avec barre de progression et un mode express (application
+- Assistant graphique en 18 etapes avec barre de progression et un mode express (application
   directe des reglages recommandes, sans repasser par chaque etape)
 - 4 profils predefinis (Installation simple, Plusieurs sites ou services, Plusieurs entreprises
   clientes / MSP, Personnalise) qui pre-remplissent les etapes suivantes avec des valeurs adaptees
@@ -74,7 +74,7 @@ installez/activez comme ci-dessus. Un stack Docker de test (GLPI + MariaDB) est 
 ## Utilisation
 
 Une fois le plugin active, l'assistant est accessible depuis **Administration > Profils de
-configuration > Configuration**. Choisissez un profil de depart (etape 1), puis parcourez les 17
+configuration > Configuration**. Choisissez un profil de depart (etape 1), puis parcourez les 18
 etapes en ajustant chaque reglage a vos besoins — rien n'est cree dans GLPI avant la derniere
 etape (Recapitulatif). Le mode express (bouton disponible des l'etape 1) applique directement les
 reglages recommandes du profil choisi, sans repasser par chaque etape. Voir le
@@ -82,7 +82,7 @@ reglages recommandes du profil choisi, sans repasser par chaque etape. Voir le
 
 ## Documentation
 
-- [Tutoriel](docs/TUTORIAL.md) — parcours pas a pas des 17 etapes de l'assistant, avec capture
+- [Tutoriel](docs/TUTORIAL.md) — parcours pas a pas des 18 etapes de l'assistant, avec capture
   d'ecran de chacune.
 - [CHANGELOG.md](CHANGELOG.md) et [ROADMAP.md](ROADMAP.md) pour le detail technique de chaque
   fonctionnalite.

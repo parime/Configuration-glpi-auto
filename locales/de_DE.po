@@ -493,8 +493,8 @@ msgstr "Multi-Entität — IT-Betrieb für mehrere Kundenunternehmen (MSP)"
 msgid "Multi-entité — plusieurs sites ou services d'une même entreprise"
 msgstr "Multi-Entität — mehrere Standorte oder Abteilungen desselben Unternehmens"
 
-msgid "Mêmes thèmes que les catégories de tickets (étape 5), pour que le libre-service et la base de connaissances s'organisent pareil."
-msgstr "Gleiche Themen wie die Ticket-Kategorien (Schritt 5), damit sich Self-Service-Portal und Wissensdatenbank gleich gliedern."
+msgid "Mêmes thèmes que les catégories de tickets (étape 6), pour que le libre-service et la base de connaissances s'organisent pareil."
+msgstr "Gleiche Themen wie die Ticket-Kategorien (Schritt 6), damit sich Self-Service-Portal und Wissensdatenbank gleich gliedern."
 
 msgid "N0 = le libre-service déjà configuré aux étapes Catalogue de services / Formulaire d'accueil — pas un groupe supplémentaire, juste un repère pour situer où commence le support humain."
 msgstr "N0 = der bereits in den Schritten Servicekatalog / Begrüßungsformular konfigurierte Self-Service — keine zusätzliche Gruppe, nur eine Markierung dafür, wo der menschliche Support beginnt."
@@ -607,8 +607,8 @@ msgstr "Profil"
 msgid "Profil attribué"
 msgstr "Zugewiesenes Profil"
 
-msgid "Profil métier — préremplit les branches ci-dessous et le SLA de l'étape 4 (physique/administratif traité plus lentement que l'IT). Toujours ajustable ensuite, dans les deux cas."
-msgstr "Fachprofil — füllt die untenstehenden Zweige und das SLA aus Schritt 4 vor (physisch/administrativ wird langsamer als IT bearbeitet). In beiden Fällen später immer anpassbar."
+msgid "Profil métier — préremplit les branches ci-dessous et le SLA de l'étape 5 (physique/administratif traité plus lentement que l'IT). Toujours ajustable ensuite, dans les deux cas."
+msgstr "Fachprofil — füllt die untenstehenden Zweige und das SLA aus Schritt 5 vor (physisch/administrativ wird langsamer als IT bearbeitet). In beiden Fällen später immer anpassbar."
 
 msgid "Projets"
 msgstr "Projekte"
@@ -766,8 +766,8 @@ msgstr "Ihr Unternehmen (MSP)"
 msgid "Vérification de l'environnement"
 msgstr "Umgebungsprüfung"
 
-msgid "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
-msgstr "wendet sofort die obigen empfohlenen Einstellungen für das ausgewählte Profil an, ohne jeden der 17 Schritte erneut zu durchlaufen. Ideal für eine einfache Installation an einem Standort; bei einer Multi-Standort- oder MSP-Struktur muss die eigentliche Struktur (Schritt 2) danach noch aufgebaut werden, sonst gilt alles nur für die Stammentität."
+msgid "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 18 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
+msgstr "wendet sofort die obigen empfohlenen Einstellungen für das ausgewählte Profil an, ohne jeden der 18 Schritte erneut zu durchlaufen. Ideal für eine einfache Installation an einem Standort; bei einer Multi-Standort- oder MSP-Struktur muss die eigentliche Struktur (Schritt 2) danach noch aufgebaut werden, sonst gilt alles nur für die Stammentität."
 
 msgid "astreinte 24h/24, 7j/7"
 msgstr "Bereitschaftsdienst 24/7"
@@ -832,8 +832,8 @@ msgstr "Änderungs-/Problemvorlagen"
 msgid "nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s"
 msgstr "erforderlich für den allgemein reibungslosen Betrieb von GLPI — prüfen Sie die Rechte für %s"
 
-msgid "nécessaire à la palette personnalisée (étape 9) — vérifiez les droits sur %s"
-msgstr "erforderlich für die benutzerdefinierte Palette (Schritt 9) — prüfen Sie die Rechte für %s"
+msgid "nécessaire à la palette personnalisée (étape 17) — vérifiez les droits sur %s"
+msgstr "erforderlich für die benutzerdefinierte Palette (Schritt 17) — prüfen Sie die Rechte für %s"
 
 msgid "raisons d'attente"
 msgstr "Wartegründe"
@@ -871,8 +871,8 @@ msgstr "Projekt-/Aufgabentypen"
 msgid "types/gabarits de solution"
 msgstr "Lösungstypen/-vorlagen"
 
-msgid "utile pour valider les logos uploadés (étape 9) — ni l'une ni l'autre n'est chargée"
-msgstr "nützlich zur Validierung hochgeladener Logos (Schritt 9) — keine der beiden ist geladen"
+msgid "utile pour valider les logos uploadés (étape 17) — ni l'une ni l'autre n'est chargée"
+msgstr "nützlich zur Validierung hochgeladener Logos (Schritt 17) — keine der beiden ist geladen"
 
 msgid "{ENTITY} est remplacé par le nom du site (espaces convertis en _)."
 msgstr "{ENTITY} wird durch den Standortnamen ersetzt (Leerzeichen werden zu _)."
@@ -882,57 +882,6 @@ msgstr "„Admin\" (Standard) deckt das Tagesgeschäft ab, ohne das Risiko der S
 
 msgid "Étape"
 msgstr "Schritt"
-
-msgid "Étape 1 : Profil"
-msgstr "Schritt 1: Profil"
-
-msgid "Étape 10 : Réglages généraux GLPI"
-msgstr "Schritt 10: Allgemeine GLPI-Einstellungen"
-
-msgid "Étape 11 : Modèles de tickets"
-msgstr "Schritt 11: Ticket-Vorlagen"
-
-msgid "Étape 12 : Droits LDAP par entité"
-msgstr "Schritt 12: LDAP-Rechte pro Entität"
-
-msgid "Étape 13 : Tâches & solutions"
-msgstr "Schritt 13: Aufgaben & Lösungen"
-
-msgid "Étape 14 : Suivis, validations & modèles"
-msgstr "Schritt 14: Verläufe, Freigaben & Vorlagen"
-
-msgid "Étape 15 : Général & Outils"
-msgstr "Schritt 15: Allgemein & Werkzeuge"
-
-msgid "Étape 16 : Projets"
-msgstr "Schritt 16: Projekte"
-
-msgid "Étape 17 : Récapitulatif"
-msgstr "Schritt 17: Zusammenfassung"
-
-msgid "Étape 2 : Structure des entités"
-msgstr "Schritt 2: Entitätsstruktur"
-
-msgid "Étape 3 : Calendrier"
-msgstr "Schritt 3: Kalender"
-
-msgid "Étape 4 : Niveaux de service (SLA)"
-msgstr "Schritt 4: Servicelevel (SLA)"
-
-msgid "Étape 5 : Catégories de tickets"
-msgstr "Schritt 5: Ticket-Kategorien"
-
-msgid "Étape 6 : Catalogue de services"
-msgstr "Schritt 6: Servicekatalog"
-
-msgid "Étape 7 : Statuts des éléments"
-msgstr "Schritt 7: Elementstatus"
-
-msgid "Étape 8 : Raisons d'attente"
-msgstr "Schritt 8: Wartegründe"
-
-msgid "Étape 9 : Personnalisation graphique"
-msgstr "Schritt 9: Grafische Anpassung"
 
 msgid "Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l'interface complète pour le support."
 msgstr "Optional: teilt das Ticket-Erstellungsformular in zwei — das Minimum für einen einfachen Benutzer, die vollständige Oberfläche für den Support."
@@ -1095,6 +1044,33 @@ msgstr "Eine von Profilen/Rechten unabhängige Klassifizierung — wer die Perso
 
 msgid "Créer des catégories d'utilisateur courantes"
 msgstr "Gängige Benutzerkategorien erstellen"
+
+msgid "Catégories de tickets"
+msgstr "Ticket-Kategorien"
+
+msgid "Droits LDAP par entité"
+msgstr "LDAP-Rechte je Entität"
+
+msgid "Lieux"
+msgstr "Standorte"
+
+msgid "Niveaux de service (SLA)"
+msgstr "Service-Level (SLA)"
+
+msgid "Personnalisation graphique"
+msgstr "Grafische Anpassung"
+
+msgid "Réglages généraux GLPI"
+msgstr "Allgemeine GLPI-Einstellungen"
+
+msgid "Structure des entités"
+msgstr "Entitätsstruktur"
+
+msgid "Suivis, validations & modèles"
+msgstr "Rückmeldungen, Freigaben & Vorlagen"
+
+msgid "Optionnel : associez une adresse (ou plus) à une entité de l'arborescence — rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, aucun lieu créé, comme sur une installation GLPI neuve."
+msgstr "Optional: einer Entität der Struktur eine oder mehrere Adressen zuordnen — Straße, Ort, GPS-Koordinaten, Alias, Telefon... Keine Adresse eingegeben, kein Standort erstellt, genau wie bei einer neuen GLPI-Installation."
 
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"

@@ -493,8 +493,8 @@ msgstr "Multi-entité — infogérance de plusieurs entreprises clientes (MSP)"
 msgid "Multi-entité — plusieurs sites ou services d'une même entreprise"
 msgstr "Multi-entité — plusieurs sites ou services d'une même entreprise"
 
-msgid "Mêmes thèmes que les catégories de tickets (étape 5), pour que le libre-service et la base de connaissances s'organisent pareil."
-msgstr "Mêmes thèmes que les catégories de tickets (étape 5), pour que le libre-service et la base de connaissances s'organisent pareil."
+msgid "Mêmes thèmes que les catégories de tickets (étape 6), pour que le libre-service et la base de connaissances s'organisent pareil."
+msgstr "Mêmes thèmes que les catégories de tickets (étape 6), pour que le libre-service et la base de connaissances s'organisent pareil."
 
 msgid "N0 = le libre-service déjà configuré aux étapes Catalogue de services / Formulaire d'accueil — pas un groupe supplémentaire, juste un repère pour situer où commence le support humain."
 msgstr "N0 = le libre-service déjà configuré aux étapes Catalogue de services / Formulaire d'accueil — pas un groupe supplémentaire, juste un repère pour situer où commence le support humain."
@@ -607,8 +607,8 @@ msgstr "Profil"
 msgid "Profil attribué"
 msgstr "Profil attribué"
 
-msgid "Profil métier — préremplit les branches ci-dessous et le SLA de l'étape 4 (physique/administratif traité plus lentement que l'IT). Toujours ajustable ensuite, dans les deux cas."
-msgstr "Profil métier — préremplit les branches ci-dessous et le SLA de l'étape 4 (physique/administratif traité plus lentement que l'IT). Toujours ajustable ensuite, dans les deux cas."
+msgid "Profil métier — préremplit les branches ci-dessous et le SLA de l'étape 5 (physique/administratif traité plus lentement que l'IT). Toujours ajustable ensuite, dans les deux cas."
+msgstr "Profil métier — préremplit les branches ci-dessous et le SLA de l'étape 5 (physique/administratif traité plus lentement que l'IT). Toujours ajustable ensuite, dans les deux cas."
 
 msgid "Projets"
 msgstr "Projets"
@@ -766,8 +766,8 @@ msgstr "Votre société (MSP)"
 msgid "Vérification de l'environnement"
 msgstr "Vérification de l'environnement"
 
-msgid "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
-msgstr "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
+msgid "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 18 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
+msgstr "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 18 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
 
 msgid "astreinte 24h/24, 7j/7"
 msgstr "astreinte 24h/24, 7j/7"
@@ -832,8 +832,8 @@ msgstr "modèles changement/problème"
 msgid "nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s"
 msgstr "nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s"
 
-msgid "nécessaire à la palette personnalisée (étape 9) — vérifiez les droits sur %s"
-msgstr "nécessaire à la palette personnalisée (étape 9) — vérifiez les droits sur %s"
+msgid "nécessaire à la palette personnalisée (étape 17) — vérifiez les droits sur %s"
+msgstr "nécessaire à la palette personnalisée (étape 17) — vérifiez les droits sur %s"
 
 msgid "raisons d'attente"
 msgstr "raisons d'attente"
@@ -871,8 +871,8 @@ msgstr "types de projet/tâche"
 msgid "types/gabarits de solution"
 msgstr "types/gabarits de solution"
 
-msgid "utile pour valider les logos uploadés (étape 9) — ni l'une ni l'autre n'est chargée"
-msgstr "utile pour valider les logos uploadés (étape 9) — ni l'une ni l'autre n'est chargée"
+msgid "utile pour valider les logos uploadés (étape 17) — ni l'une ni l'autre n'est chargée"
+msgstr "utile pour valider les logos uploadés (étape 17) — ni l'une ni l'autre n'est chargée"
 
 msgid "{ENTITY} est remplacé par le nom du site (espaces convertis en _)."
 msgstr "{ENTITY} est remplacé par le nom du site (espaces convertis en _)."
@@ -882,57 +882,6 @@ msgstr "« Admin » (par défaut) couvre la gestion quotidienne sans le risque d
 
 msgid "Étape"
 msgstr "Étape"
-
-msgid "Étape 1 : Profil"
-msgstr "Étape 1 : Profil"
-
-msgid "Étape 10 : Réglages généraux GLPI"
-msgstr "Étape 10 : Réglages généraux GLPI"
-
-msgid "Étape 11 : Modèles de tickets"
-msgstr "Étape 11 : Modèles de tickets"
-
-msgid "Étape 12 : Droits LDAP par entité"
-msgstr "Étape 12 : Droits LDAP par entité"
-
-msgid "Étape 13 : Tâches & solutions"
-msgstr "Étape 13 : Tâches & solutions"
-
-msgid "Étape 14 : Suivis, validations & modèles"
-msgstr "Étape 14 : Suivis, validations & modèles"
-
-msgid "Étape 15 : Général & Outils"
-msgstr "Étape 15 : Général & Outils"
-
-msgid "Étape 16 : Projets"
-msgstr "Étape 16 : Projets"
-
-msgid "Étape 17 : Récapitulatif"
-msgstr "Étape 17 : Récapitulatif"
-
-msgid "Étape 2 : Structure des entités"
-msgstr "Étape 2 : Structure des entités"
-
-msgid "Étape 3 : Calendrier"
-msgstr "Étape 3 : Calendrier"
-
-msgid "Étape 4 : Niveaux de service (SLA)"
-msgstr "Étape 4 : Niveaux de service (SLA)"
-
-msgid "Étape 5 : Catégories de tickets"
-msgstr "Étape 5 : Catégories de tickets"
-
-msgid "Étape 6 : Catalogue de services"
-msgstr "Étape 6 : Catalogue de services"
-
-msgid "Étape 7 : Statuts des éléments"
-msgstr "Étape 7 : Statuts des éléments"
-
-msgid "Étape 8 : Raisons d'attente"
-msgstr "Étape 8 : Raisons d'attente"
-
-msgid "Étape 9 : Personnalisation graphique"
-msgstr "Étape 9 : Personnalisation graphique"
 
 msgid "Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l'interface complète pour le support."
 msgstr "Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l'interface complète pour le support."
@@ -1095,6 +1044,33 @@ msgstr "Classification indépendante des profils/droits — qui est la personne 
 
 msgid "Créer des catégories d'utilisateur courantes"
 msgstr "Créer des catégories d'utilisateur courantes"
+
+msgid "Catégories de tickets"
+msgstr "Catégories de tickets"
+
+msgid "Droits LDAP par entité"
+msgstr "Droits LDAP par entité"
+
+msgid "Lieux"
+msgstr "Lieux"
+
+msgid "Niveaux de service (SLA)"
+msgstr "Niveaux de service (SLA)"
+
+msgid "Personnalisation graphique"
+msgstr "Personnalisation graphique"
+
+msgid "Réglages généraux GLPI"
+msgstr "Réglages généraux GLPI"
+
+msgid "Structure des entités"
+msgstr "Structure des entités"
+
+msgid "Suivis, validations & modèles"
+msgstr "Suivis, validations & modèles"
+
+msgid "Optionnel : associez une adresse (ou plus) à une entité de l'arborescence — rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, aucun lieu créé, comme sur une installation GLPI neuve."
+msgstr "Optionnel : associez une adresse (ou plus) à une entité de l'arborescence — rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, aucun lieu créé, comme sur une installation GLPI neuve."
 
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
