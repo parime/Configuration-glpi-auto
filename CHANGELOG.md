@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+- ROADMAP.md : idée « actifs personnalisés » (`Glpi\Asset\AssetDefinition`) confirmée et débloquée
+  après vérification directe dans le code source de GLPI 11.0.8 réel — aucun changement de code.
+
 ## [0.36.0] - 2026-08-13
 
 Refonte de l'étape Lieux suite à un retour utilisateur direct sur v0.33.0/v0.35.0 en usage réel
