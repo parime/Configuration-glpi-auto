@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.40.0] - 2026-08-13
+
+### Added
+- `EntityAddressBuilder` (nouveau) : complète aussi l'adresse native de chaque entité
+  (`glpi_entities` — onglet "Adresse" natif, propre carte Leaflet), un mécanisme entièrement
+  distinct de `Location`. Réutilise l'adresse déjà saisie dans le panneau "Lieux" de chaque entité
+  (pas de double saisie) ; ajoute seulement téléphone/fax/site web/e-mail, des champs propres à la
+  fiche entité sans équivalent sur `Location`. Toggle dédié (`entity_native_address_enabled`),
+  désactivé par défaut.
+
 ## [0.39.0] - 2026-08-13
 
 ### Added
