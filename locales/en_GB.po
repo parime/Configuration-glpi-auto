@@ -61,6 +61,9 @@ msgstr "%d LDAP rights rule(s) created."
 msgid "%d règle(s) de droits par fonction créées."
 msgstr "%d role-based rights rule(s) created."
 
+msgid "%d règle(s) d'unicité de numéro de série créées."
+msgstr "%d serial number uniqueness rule(s) created."
+
 msgid "%d services créés dans le catalogue."
 msgstr "%d services created in the catalog."
 
@@ -1044,6 +1047,12 @@ msgstr "A classification independent of profiles/rights — who the person is to
 
 msgid "Créer des catégories d'utilisateur courantes"
 msgstr "Create common user categories"
+
+msgid "Interdire les numéros de série en double"
+msgstr "Forbid duplicate serial numbers"
+
+msgid "Bloque la création ou la modification d'un élément si son numéro de série existe déjà sur un autre élément du même type — évite les doublons issus d'une saisie manuelle ou d'un import incohérent. Un numéro de série vide n'est jamais considéré comme un doublon."
+msgstr "Blocks creating or editing an item if its serial number already exists on another item of the same type — prevents duplicates from manual entry or an inconsistent import. An empty serial number is never treated as a duplicate."
 
 msgid "Catégories de tickets"
 msgstr "Ticket categories"
