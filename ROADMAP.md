@@ -609,6 +609,83 @@ donnée ne produit aucun Lieu, une sous-entité avec adresse+alias+tous les cham
 `Location` correctement scopé et rattaché à la racine (son parent n'ayant pas de Lieu). Détail
 complet dans `CHANGELOG.md` `[0.36.0]`.
 
+**Sources des demandes (`RequestType`) — traduction, fait (v0.38.0, 2026-08-13).** Revient sur la
+conclusion "déjà suffisant" d'un audit précédent — cette conclusion portait sur le *contenu* (6
+valeurs natives couvrent les cas d'usage), pas sur la *traduction*, une question orthogonale jamais
+vérifiée à l'époque. Confirmé un vrai manque en lisant `install/empty_data.php` de GLPI : ces 6
+valeurs sont des chaînes anglaises codées en dur, sans ligne `DropdownTranslation` (absence
+confirmée en base) — toute session non anglaise les voit telles quelles. `RequestTypeTranslationBuilder`
+(nouveau) traduit les 6 valeurs existantes dans les 5 langues du plugin, sans jamais les créer.
+
+---
+
+## 📋 Chantiers identifiés en marge d'une revue d'écran par l'utilisateur (2026-08-13, pas encore
+cadrés — capturés tels quels, à trancher un par un avant de construire quoi que ce soit, même
+méthode que les audits précédents)
+
+L'utilisateur a parcouru plusieurs écrans natifs de GLPI (Intitulés, Entités) en configurant une
+instance réelle et a soulevé sept pistes d'un coup. Consignées ici sans construire, sur sa propre
+demande explicite ("ajout tout ce que je viens de te dire dans la liste des chantier a faire").
+
+1. **Lieux — lieux enfants arbitraires avec arborescence éditable, comme les entités.** Le
+   `LocationBuilder` actuel (v0.36.0) crée au plus un `Location` par nœud de l'arborescence
+   d'entités, avec un rattachement 1:1 forcé. `glpi_locations` a pourtant son propre arbre
+   indépendant (`locations_id` auto-référencé) — un même site peut avoir plusieurs lieux imbriqués
+   (Bâtiment > Étage > Salle) sans rapport avec la structure d'entités. Demandé : dans le panneau
+   "Ajouter une adresse" de chaque entité, pouvoir ajouter des lieux enfants librement (nom + tous
+   les champs déjà supportés), à profondeur arbitraire, avec un éditeur récursif identique à celui
+   de l'arborescence d'entités (`_entity_structure_fields.html.twig` : nœuds `{name, children}`
+   sérialisés en JSON, boutons `+`/`x` par nœud, aperçu en direct). Nécessite un second canal de
+   données par entité (JSON, comme l'arbre d'entités lui-même) en plus des champs plats déjà en
+   place pour le lieu propre de l'entité — les champs plats existants ne changent pas.
+2. **Catégories d'utilisateur (`UserCategory`)** — vide nativement, l'utilisateur demande à quoi ça
+   sert. Vérifié dans le code de GLPI : champ réel sur `User` (`usercategories_id`), importable
+   depuis un attribut LDAP (`AuthLDAP::category_field`), utilisé comme critère de ciblage de
+   notification (`NotificationTargetCommonITILObject`) et comme axe de statistiques (`Stat.php`).
+   Un axe de classification RH générique (Employé/Prestataire/Stagiaire/Alternant/Consultant...),
+   indépendant des profils/droits GLPI — candidat solide pour un contenu générique universel, du
+   même type que `PendingReason`/`State`.
+3. **Opérateurs téléphoniques (`LineOperator`) et types de fibre
+   (`NetworkPortFiberchannelType`)** — tous deux vides nativement. Attention : ce ne sont pas les
+   mêmes natures de liste. `LineOperator` = noms de marque d'opérateurs télécom, propres à chaque
+   *pays* (Orange/SFR/Bouygues/Free en France, tout autre ailleurs) — moins universel qu'un
+   fabricant matériel mondial (`ManufacturerBuilder`), à cadrer explicitement (poser un défaut
+   France, comme les jours fériés, ou laisser vide). `NetworkPortFiberchannelType`, malgré son nom
+   FR ("Types de fibre"), concerne en réalité le protocole de stockage SAN Fibre Channel (débits
+   1/2/4/8/16/32 Gb, FCoE...) — rien à voir avec la fibre internet résidentielle/entreprise — une
+   liste technique stable et universelle, candidat plus solide que les opérateurs.
+4. **Grande liste de dropdowns "Types" natifs vides** — repérée en parcourant l'écran Intitulés >
+   Types. Vérifié par requête sur `information_schema` : ~25 tables natives à 0 ligne, parmi
+   lesquelles des candidats plausibles à un contenu générique (types d'ordinateurs, de moniteurs,
+   de matériels réseau, d'imprimantes, de périphériques, de téléphones, de boîtiers, de contrats,
+   de contact, de fournisseurs, de certificats, de budgets, de baies, de PDU, de cartouches, de
+   consommables, de câbles, de lignes, de capteurs, de batteries, de disques durs, de clusters,
+   d'instances de base de données, de machines virtuelles, de licences logicielles) et d'autres
+   probablement auto-gérées par GLPI lui-même plutôt qu'à seeder manuellement (types d'agent
+   d'inventaire, types d'actifs liés au nouveau système `AssetDefinition`) — à vérifier au cas par
+   cas avant de construire, trop volumineux pour être traité d'un bloc sans prioriser.
+5. **Jours fériés par pays, selon le pays saisi sur un Lieu.** `CalendarBuilder` n'applique
+   aujourd'hui que les jours fériés français, en dur. Demandé : dès qu'une adresse avec un pays est
+   saisie sur un Lieu (assistant d'adresse v0.33.0+), proposer d'appliquer automatiquement les
+   jours fériés propres à ce pays — mais explicitement **seulement pour les pays où on dispose
+   réellement de la donnée** (pas de case à cocher qui ne ferait rien pour un pays non couvert).
+   Nécessite une vraie source de données par pays (calendrier des jours fériés), pas encore
+   identifiée/vérifiée.
+6. **Unicité des champs (`FieldUnicity`)** — écran natif repéré (Configuration > Intitulés >
+   Unicité des champs, avec une sous-liste "Valeurs ignorées pour l'unicité"). Portée pas encore
+   étudiée : contrairement aux dropdowns de contenu, `FieldUnicity` définit des *règles* de
+   contrainte (ex. "le numéro de série doit être unique sur les Ordinateurs") — plus proche des
+   règles métier déjà volontairement laissées de côté ailleurs dans ce plugin (`RuleTicket`...)
+   qu'un simple contenu à préremplir. À auditer avant de se prononcer sur la faisabilité générique.
+7. **Adresse native de l'Entité (`Entity`), distincte du Lieu.** Repéré sur l'onglet "Adresse" natif
+   d'une entité (`front/entity.form.php`) : `glpi_entities` a ses propres champs
+   téléphone/fax/site web/e-mail/code postal/ville/état/pays/adresse/latitude/longitude/altitude,
+   avec sa propre carte Leaflet — un mécanisme entièrement distinct de `glpi_locations` (que ce
+   plugin remplit déjà). Demandé : pouvoir aussi compléter ces champs-là, directement sur
+   l'entité elle-même. Recoupe potentiellement l'assistant d'adresse déjà construit pour les Lieux
+   (même genre de champs, même autocomplétion Nominatim envisageable) — à clarifier si c'est un
+   canal supplémentaire indépendant ou une extension du même assistant.
+
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
 1. **Fait.** Tests réels des gabarits (suivi/tâche/solution) appliqués sur un vrai ticket via l'UI.
 2. **Fait (v0.29.0, 2026-08-12).** Documentation GitHub avec captures d'écran de chaque étape,

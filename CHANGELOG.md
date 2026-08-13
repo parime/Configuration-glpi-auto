@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.38.0] - 2026-08-13
+
+### Added
+- `RequestTypeTranslationBuilder` (nouveau) : traduit les 6 « Sources des demandes » natives de
+  GLPI (`RequestType`) dans les 5 langues du plugin. Confirmé un vrai manque en lisant l'installeur
+  de GLPI lui-même (`install/empty_data.php`) : ces 6 valeurs (`Helpdesk`/`E-Mail`/`Phone`/`Direct`/
+  `Written`/`Other`) sont des chaînes anglaises codées en dur, jamais passées par `__()`, identiques
+  quelle que soit la langue choisie à l'installation — et sans ligne `DropdownTranslation`
+  (confirmée absente), toute session non anglaise les voit telles quelles. Ne crée jamais ces 6
+  lignes (déjà natives, confirmées suffisantes dans un audit précédent) — traduit uniquement ce qui
+  existe déjà, trouvé par recherche de nom.
+
 ## [0.37.0] - 2026-08-13
 
 ### Changed

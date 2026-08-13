@@ -36,6 +36,7 @@ use GlpiPlugin\Configurationglpiauto\PlanningEventBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaxonomyBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTemplateBuilder;
+use GlpiPlugin\Configurationglpiauto\RequestTypeTranslationBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
@@ -309,6 +310,7 @@ if (isset($_POST['finish'])) {
     $projectTaskTemplatesCreated = (new ProjectTaskTemplateBuilder())->build($config);
     // Runs after ProjectTaxonomyBuilder: resolves project/task types by name lookup.
     $projectTemplatesCreated = (new ProjectTemplateBuilder())->build($config);
+    $requestTypeTranslationsCreated = (new RequestTypeTranslationBuilder())->build($config);
 
     // The login screen (no active session yet) falls back to the *root* entity's custom CSS
     // (confirmed in GLPI core: Glpi\Application\View\Extension\FrontEndAssetsExtension::customCss()
@@ -486,6 +488,9 @@ if (isset($_POST['finish'])) {
     if ($projectTemplatesCreated > 0) {
         $messages[] = sprintf(__('%d modèle(s) de projet créés, structure de tâches incluse.', 'configurationglpiauto'), $projectTemplatesCreated);
     }
+    if ($requestTypeTranslationsCreated > 0) {
+        $messages[] = sprintf(__('%d source(s) de demande traduites.', 'configurationglpiauto'), $requestTypeTranslationsCreated);
+    }
     Session::addMessageAfterRedirect(implode(' ', $messages));
 
     Html::redirect(ConfigurationProfile::getSearchURL());
@@ -542,6 +547,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'project_taxonomy_preview' => ProjectTaxonomyBuilder::getPreview(),
     'project_task_templates_preview' => ProjectTaskTemplateBuilder::getLibraryPreview(),
     'project_templates_preview' => ProjectTemplateBuilder::getPreview(),
+    'request_type_translations_preview' => RequestTypeTranslationBuilder::getPreview(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
