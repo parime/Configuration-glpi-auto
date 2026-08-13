@@ -53,7 +53,7 @@
 
       {# ---------------------------------------------------------------- Étape 1 : Profil #}
       <div class="cga-wizard-step" data-step="1">
-        <h3 class="mb-1">{{ __('Étape 1 : Profil', 'configurationglpiauto') }}</h3>
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 1 : {{ __('Profil', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Quel profil correspond le mieux à votre organisation ? Ce choix pré-remplit la structure d\'entités, le calendrier et les SLA des étapes suivantes avec des valeurs adaptées — vous pourrez tout ajuster ensuite.', 'configurationglpiauto') }}</p>
 
         {% for id, profile in profiles %}
@@ -76,7 +76,7 @@
         <div class="alert alert-light border mt-3 mb-0" id="cga-express-panel">
           <p class="mb-2">
             <strong>⚡ {{ __('Configuration express', 'configurationglpiauto') }}</strong> —
-            {{ __('applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 17 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l\'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s\'applique à l\'entité racine seule.', 'configurationglpiauto') }}
+            {{ __('applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 18 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l\'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s\'applique à l\'entité racine seule.', 'configurationglpiauto') }}
           </p>
           <button
             type="submit"
@@ -90,17 +90,54 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 2 : Entités #}
+      {# ---------------------------------------------------------------- Étape 2 : Structure des entités #}
       <div class="cga-wizard-step" data-step="2" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 2 : Structure des entités', 'configurationglpiauto') }}</h3>
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 2 : {{ __('Structure des entités', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Choisissez la structure d\'entités à mettre en place — l\'aperçu à droite se met à jour en direct.', 'configurationglpiauto') }}</p>
 
         {% include '@configurationglpiauto/_entity_structure_fields.html.twig' %}
       </div>
 
-      {# ---------------------------------------------------------------- Étape 3 : Calendrier #}
+      {# ---------------------------------------------------------------- Étape 3 : Lieux #}
       <div class="cga-wizard-step" data-step="3" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 3 : Calendrier', 'configurationglpiauto') }}</h3>
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 3 : {{ __('Lieux', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : associez une adresse (ou plus) à une entité de l\'arborescence — rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, aucun lieu créé, comme sur une installation GLPI neuve.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="locations_enabled" value="0">
+          <input type="checkbox" name="locations_enabled" value="1" class="form-check-input" id="cga-locations-enabled" {{ config.locations_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-locations-enabled">{{ __('Associer une adresse à des entités de l\'arborescence', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-locations-fields" style="display: none;" class="mb-3">
+          <p class="text-muted small mb-2">{{ __('Parcourez l\'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur les entités qui en ont une (site, agence...) — les autres n\'auront aucun lieu créé, comme sur une installation GLPI neuve.', 'configurationglpiauto') }}</p>
+
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="location_geocoding_enabled" value="0">
+            <input type="checkbox" name="location_geocoding_enabled" value="1" class="form-check-input" id="cga-location-geocoding-enabled" {{ config.location_geocoding_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-location-geocoding-enabled">{{ __('Assistant d\'adresse (suggestions de rue pendant la saisie, ville/région/pays pré-remplis)', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-2">{{ __('Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement.', 'configurationglpiauto') }}</p>
+
+          <div id="cga-location-geocoding-fields" style="display: none;" class="mb-3">
+            <label class="form-label" for="cga-location-geocoding-endpoint">{{ __('Service de géocodage (avancé)', 'configurationglpiauto') }}</label>
+            <input type="text" name="location_geocoding_endpoint" id="cga-location-geocoding-endpoint" class="form-control" style="max-width: 480px;" value="{{ config.location_geocoding_endpoint|default('https://nominatim.openstreetmap.org') }}">
+            <p class="text-muted small mb-0">{{ __('Instance Nominatim/Photon auto-hébergée ou compatible, pour un usage réel au-delà d\'un essai ponctuel.', 'configurationglpiauto') }}</p>
+          </div>
+
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="entity_native_address_enabled" value="0">
+            <input type="checkbox" name="entity_native_address_enabled" value="1" class="form-check-input" id="cga-entity-native-address-enabled" {{ config.entity_native_address_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-entity-native-address-enabled">{{ __('Compléter aussi la fiche adresse native de chaque entité (GLPI > Entités > Adresse)', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-2">{{ __('Reprend l\'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper — ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité.', 'configurationglpiauto') }}</p>
+
+          <div id="cga-locations-tree"></div>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 4 : Calendrier #}
+      <div class="cga-wizard-step" data-step="4" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 4 : {{ __('Calendrier', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Configurez, si besoin, les horaires d\'ouverture appliqués aux entités créées.', 'configurationglpiauto') }}</p>
 
         <div id="cga-calendar-per-client-toggle-wrap" style="display: none;" class="mb-3 pb-3 border-bottom">
@@ -165,9 +202,9 @@
         <div id="cga-calendar-per-client-panels" style="display: none;"></div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 4 : SLA #}
-      <div class="cga-wizard-step" data-step="4" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 4 : Niveaux de service (SLA)', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 5 : Niveaux de service (SLA) #}
+      <div class="cga-wizard-step" data-step="5" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 5 : {{ __('Niveaux de service (SLA)', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : délais standards de prise en charge et de résolution des tickets, appliqués aux entités créées.', 'configurationglpiauto') }}</p>
 
         <div id="cga-sla-per-client-toggle-wrap" style="display: none;" class="mb-3 pb-3 border-bottom">
@@ -332,9 +369,9 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 5 : Catégories #}
-      <div class="cga-wizard-step" data-step="5" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 5 : Catégories de tickets', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 6 : Catégories de tickets #}
+      <div class="cga-wizard-step" data-step="6" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 6 : {{ __('Catégories de tickets', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : une arborescence de catégories thématiques (IT, Bâtiment, Flotte, RH...), pas une par type ITIL — le type (Incident/Demande) est déjà géré nativement par GLPI. Décochez les branches qui ne s\'appliquent pas à votre organisation.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -353,7 +390,7 @@
         <div id="cga-category-fields" style="display: none;">
           <div class="card mb-3" style="max-width: 640px;">
             <div class="card-body py-2">
-              <p class="text-muted small mb-2">{{ __('Profil métier — préremplit les branches ci-dessous et le SLA de l\'étape 4 (physique/administratif traité plus lentement que l\'IT). Toujours ajustable ensuite, dans les deux cas.', 'configurationglpiauto') }}</p>
+              <p class="text-muted small mb-2">{{ __('Profil métier — préremplit les branches ci-dessous et le SLA de l\'étape 5 (physique/administratif traité plus lentement que l\'IT). Toujours ajustable ensuite, dans les deux cas.', 'configurationglpiauto') }}</p>
               <div class="d-flex gap-2 flex-wrap">
                 <button type="button" class="btn btn-sm btn-outline-secondary cga-business-profile-btn" data-business-profile="it">{{ __('💻 IT pur', 'configurationglpiauto') }}</button>
                 <button type="button" class="btn btn-sm btn-outline-secondary cga-business-profile-btn" data-business-profile="rh">{{ __('👤 RH & Support interne', 'configurationglpiauto') }}</button>
@@ -406,9 +443,9 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 6 : Catalogue de services #}
-      <div class="cga-wizard-step" data-step="6" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 6 : Catalogue de services', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 7 : Catalogue de services #}
+      <div class="cga-wizard-step" data-step="7" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 7 : {{ __('Catalogue de services', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : des formulaires prêts à l\'emploi dans le portail libre-service — l\'utilisateur choisit un service précis, jamais une catégorie ; le ticket est automatiquement routé vers la bonne catégorie.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -444,9 +481,9 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 7 : Statuts des éléments #}
-      <div class="cga-wizard-step" data-step="7" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 7 : Statuts des éléments', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 8 : Statuts des éléments #}
+      <div class="cga-wizard-step" data-step="8" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 8 : {{ __('Statuts des éléments', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : un jeu de statuts standards pour le parc (ordinateurs, moniteurs, téléphones...) — aucun n\'existe par défaut dans GLPI.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -503,9 +540,9 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 8 : Raisons d'attente #}
-      <div class="cga-wizard-step" data-step="8" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 8 : Raisons d\'attente', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 9 : Raisons d'attente #}
+      <div class="cga-wizard-step" data-step="9" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 9 : {{ __('Raisons d\'attente', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : des raisons de mise en attente avec relance et clôture automatiques — évite les tickets qui traînent indéfiniment. Le moteur d\'automatisation de GLPI est déjà actif par défaut, seules les raisons manquent.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -543,9 +580,538 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 9 : Branding #}
-      <div class="cga-wizard-step" data-step="9" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 9 : Personnalisation graphique', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 10 : Modèles de tickets #}
+      <div class="cga-wizard-step" data-step="10" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 10 : {{ __('Modèles de tickets', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l\'interface complète pour le support.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="ticket_template_enabled" value="0">
+          <input
+            type="checkbox"
+            name="ticket_template_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-ticket-template-enabled"
+            {{ config.ticket_template_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-ticket-template-enabled">{{ __('Créer deux modèles de tickets et les assigner aux profils', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-ticket-template-fields" style="display: none;">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="ticket_template_icons_enabled" value="0">
+            <input type="checkbox" name="ticket_template_icons_enabled" value="1" class="form-check-input" id="cga-ticket-template-icons-enabled" {{ config.ticket_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-ticket-template-icons-enabled">{{ __('Ajouter des icônes sur les modèles', 'configurationglpiauto') }}</label>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <ul class="list-group mb-3">
+                <li class="list-group-item list-group-item-secondary"><span class="cga-ticket-template-icon" style="display: none;">📝</span> {{ __('Simplifié — Self-Service, Read-Only', 'configurationglpiauto') }}</li>
+                <li class="list-group-item">{{ __('Titre + description uniquement', 'configurationglpiauto') }}</li>
+                <li class="list-group-item">{{ __('Catégorie visible mais limitée aux 11 branches parentes', 'configurationglpiauto') }}</li>
+                <li class="list-group-item">{{ __('Urgence, impact, statut, lieu, attribution, niveaux de service (SLA/OLA) : masqués', 'configurationglpiauto') }}</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-group mb-3">
+                <li class="list-group-item list-group-item-secondary"><span class="cga-ticket-template-icon" style="display: none;">🛠️</span> {{ __('Complet — tous les autres profils', 'configurationglpiauto') }}</li>
+                <li class="list-group-item">{{ __('Interface complète (aucun champ masqué)', 'configurationglpiauto') }}</li>
+                <li class="list-group-item">{{ __('Catégorie et urgence obligatoires', 'configurationglpiauto') }}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-check form-switch mb-3">
+            <input type="hidden" name="helpdesk_form_hide_fields" value="0">
+            <input
+              type="checkbox"
+              name="helpdesk_form_hide_fields"
+              value="1"
+              class="form-check-input"
+              id="cga-helpdesk-form-hide-fields"
+              {{ config.helpdesk_form_hide_fields|default(0) ? 'checked' : '' }}
+            >
+            <label class="form-check-label" for="cga-helpdesk-form-hide-fields">{{ __('Masquer Urgence, Observateurs et Lieu sur les formulaires natifs « Signaler un incident » / « Faire une demande »', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small">{{ __('Ces formulaires du portail libre-service sont un système distinct des modèles de tickets ci-dessus (nouveau moteur de formulaires GLPI 11) — un utilisateur de base n\'a pas la visibilité nécessaire pour juger de l\'urgence réelle de sa demande, c\'est au support de la qualifier.', 'configurationglpiauto') }}</p>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 11 : Tâches & solutions #}
+      <div class="cga-wizard-step" data-step="11" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 11 : {{ __('Tâches & solutions', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : des intitulés prêts à l\'emploi pour qualifier le travail technique et clôturer les tickets, aucun n\'existe par défaut dans GLPI.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="task_categories_enabled" value="0">
+          <input type="checkbox" name="task_categories_enabled" value="1" class="form-check-input" id="cga-task-categories-enabled" {{ config.task_categories_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-task-categories-enabled">{{ __('Créer les catégories de tâches', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-task-categories-fields" style="display: none;" class="mb-3">
+          <ul class="list-group" style="max-width: 480px;">
+            {% for cat in task_categories_preview %}
+              <li class="list-group-item">{{ cat.icon }} {{ cat.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="task_templates_enabled" value="0">
+          <input type="checkbox" name="task_templates_enabled" value="1" class="form-check-input" id="cga-task-templates-enabled" {{ config.task_templates_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-task-templates-enabled">{{ __('Créer les gabarits de tâche (checklists réutilisables)', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-task-templates-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="task_template_icons_enabled" value="0">
+            <input type="checkbox" name="task_template_icons_enabled" value="1" class="form-check-input" id="cga-task-template-icons-enabled" {{ config.task_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-task-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <ul class="list-group" style="max-width: 560px;">
+            {% for tpl in task_templates_preview %}
+              <li class="list-group-item"><span class="cga-task-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="solution_library_enabled" value="0">
+          <input type="checkbox" name="solution_library_enabled" value="1" class="form-check-input" id="cga-solution-library-enabled" {{ config.solution_library_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-solution-library-enabled">{{ __('Créer les types et gabarits de solution', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-solution-library-fields" style="display: none;">
+          <p class="text-muted small mb-1">{{ __('Une taxonomie de clôture standard (assistance, résolution technique, sécurité, informationnel, gestion des accès), chacune visible seulement sur les types de ticket ITIL pertinents.', 'configurationglpiauto') }}</p>
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="solution_type_icons_enabled" value="0">
+            <input type="checkbox" name="solution_type_icons_enabled" value="1" class="form-check-input" id="cga-solution-type-icons-enabled" {{ config.solution_type_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-solution-type-icons-enabled">{{ __('Ajouter des icônes sur les types de solution', 'configurationglpiauto') }}</label>
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="solution_template_icons_enabled" value="0">
+            <input type="checkbox" name="solution_template_icons_enabled" value="1" class="form-check-input" id="cga-solution-template-icons-enabled" {{ config.solution_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-solution-template-icons-enabled">{{ __('Ajouter des icônes sur les gabarits de solution', 'configurationglpiauto') }}</label>
+          </div>
+          {% for type in solution_library_preview %}
+            <div class="mb-2">
+              <span class="cga-solution-type-icon" style="display: none;">{{ type.icon }}</span>
+              <strong>{{ type.name }}</strong>
+              <ul class="mb-0">
+                {% for tpl in type.templates %}
+                  <li><span class="cga-solution-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 12 : Suivis, validations & modèles #}
+      <div class="cga-wizard-step" data-step="12" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 12 : {{ __('Suivis, validations & modèles', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : des messages types pour garder le demandeur informé, des gabarits de demande de validation, et un modèle par défaut pour les changements et les problèmes.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="followup_library_enabled" value="0">
+          <input type="checkbox" name="followup_library_enabled" value="1" class="form-check-input" id="cga-followup-library-enabled" {{ config.followup_library_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-followup-library-enabled">{{ __('Créer les gabarits de suivis', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-followup-library-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="followup_library_icons_enabled" value="0">
+            <input type="checkbox" name="followup_library_icons_enabled" value="1" class="form-check-input" id="cga-followup-library-icons-enabled" {{ config.followup_library_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-followup-library-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <ul class="list-group" style="max-width: 560px;">
+            {% for tpl in followup_library_preview %}
+              <li class="list-group-item"><span class="cga-followup-library-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="validation_templates_enabled" value="0">
+          <input type="checkbox" name="validation_templates_enabled" value="1" class="form-check-input" id="cga-validation-templates-enabled" {{ config.validation_templates_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-validation-templates-enabled">{{ __('Créer les gabarits de validation', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-validation-templates-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="validation_template_icons_enabled" value="0">
+            <input type="checkbox" name="validation_template_icons_enabled" value="1" class="form-check-input" id="cga-validation-template-icons-enabled" {{ config.validation_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-validation-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <ul class="list-group" style="max-width: 560px;">
+            {% for tpl in validation_templates_preview %}
+              <li class="list-group-item"><span class="cga-validation-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="change_problem_templates_enabled" value="0">
+          <input type="checkbox" name="change_problem_templates_enabled" value="1" class="form-check-input" id="cga-change-problem-templates-enabled" {{ config.change_problem_templates_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-change-problem-templates-enabled">{{ __('Créer un modèle de changement et de problème par défaut', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-change-problem-templates-fields" style="display: none;" class="mb-2">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="change_problem_template_icons_enabled" value="0">
+            <input type="checkbox" name="change_problem_template_icons_enabled" value="1" class="form-check-input" id="cga-change-problem-template-icons-enabled" {{ config.change_problem_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-change-problem-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <ul class="list-group" style="max-width: 400px;">
+            <li class="list-group-item"><span class="cga-change-problem-template-icon" style="display: none;">🔄</span> {{ __('Changement standard', 'configurationglpiauto') }}</li>
+            <li class="list-group-item"><span class="cga-change-problem-template-icon" style="display: none;">🧩</span> {{ __('Problème standard', 'configurationglpiauto') }}</li>
+          </ul>
+        </div>
+        <p class="text-muted small">{{ __('Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service n\'a aucun droit sur les changements/problèmes, la distinction base/support ne s\'applique pas.', 'configurationglpiauto') }}</p>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 13 : Droits LDAP par entité #}
+      <div class="cga-wizard-step" data-step="13" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 13 : {{ __('Droits LDAP par entité', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : une règle d\'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l\'utilisateur lors de la synchronisation — ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n\'y a rien à générer.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="ldap_rights_enabled" value="0">
+          <input
+            type="checkbox"
+            name="ldap_rights_enabled"
+            value="1"
+            class="form-check-input"
+            id="cga-ldap-rights-enabled"
+            {{ config.ldap_rights_enabled|default(0) ? 'checked' : '' }}
+          >
+          <label class="form-check-label" for="cga-ldap-rights-enabled">{{ __('Générer une règle de droits par site', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-ldap-rights-fields" style="display: none;">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label" for="cga-ldap-rights-template">{{ __('Gabarit de nom de groupe AD/LDAP', 'configurationglpiauto') }}</label>
+              <input
+                type="text"
+                name="ldap_rights_group_template"
+                id="cga-ldap-rights-template"
+                class="form-control"
+                value="{{ config.ldap_rights_group_template|default('GLPI_{ENTITY}') }}"
+              >
+              <div class="form-text">{{ __('{ENTITY} est remplacé par le nom du site (espaces convertis en _).', 'configurationglpiauto') }}</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="cga-ldap-rights-profile">{{ __('Profil attribué', 'configurationglpiauto') }}</label>
+              <select name="ldap_rights_profile" id="cga-ldap-rights-profile" class="form-select">
+                {% for profile_name in native_profile_names %}
+                  <option value="{{ profile_name }}" {{ config.ldap_rights_profile|default('Admin') == profile_name ? 'selected' : '' }}>{{ profile_name }}</option>
+                {% endfor %}
+              </select>
+              <div class="form-text">{{ __('« Admin » (par défaut) couvre la gestion quotidienne sans le risque d\'auto-élévation de « Super-Admin » : contrairement à Super-Admin, Admin ne peut ni éditer les profils GLPI (donc pas s\'en attribuer plus), ni modifier les règles LDAP/import qui gèrent justement cette synchronisation.', 'configurationglpiauto') }}</div>
+            </div>
+          </div>
+
+          <p class="text-muted small mb-1">{{ __('Une règle par site (feuille de l\'arborescence) — aperçu en fonction de l\'arborescence construite à l\'étape 2 :', 'configurationglpiauto') }}</p>
+          <ul class="list-group" id="cga-ldap-rights-preview" style="max-width: 560px;"></ul>
+
+          <hr class="my-3">
+          <label class="form-label mb-1">{{ __('Règles par fonction/département (optionnel)', 'configurationglpiauto') }}</label>
+          <p class="text-muted small mb-2">{{ __('En complément de la règle par site ci-dessus, indépendant du site de l\'utilisateur — ex. le groupe AD "Finance" reçoit toujours tel profil, quel que soit son site. Chaque ligne devient une règle GLPI distincte, qui n\'affecte que le profil (pas l\'entité).', 'configurationglpiauto') }}</p>
+          <div id="cga-ldap-function-rights-rows" class="mb-2"></div>
+          <button type="button" class="btn btn-sm btn-outline-secondary" id="cga-ldap-function-rights-add">{{ __('+ Ajouter une règle', 'configurationglpiauto') }}</button>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 14 : Réglages généraux GLPI #}
+      <div class="cga-wizard-step" data-step="14" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 14 : {{ __('Réglages généraux GLPI', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l\'usage — activez chaque groupe indépendamment selon vos besoins.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check mb-3">
+          <input type="checkbox" class="form-check-input" id="cga-general-settings-select-all">
+          <label class="form-check-label" for="cga-general-settings-select-all"><em>{{ __('Tout sélectionner', 'configurationglpiauto') }}</em></label>
+        </div>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="general_ui_enabled" value="0">
+          <input type="checkbox" name="general_ui_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-general-ui-enabled" {{ config.general_ui_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-general-ui-enabled">{{ __('Interface & ergonomie', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
+          <li class="list-group-item">{{ __('Agencement des boutons d\'action divisé (Répondre / Observation / Solution séparés)', 'configurationglpiauto') }}</li>
+          <li class="list-group-item">{{ __('Afficher le moteur de recherche au-dessus des résultats', 'configurationglpiauto') }}</li>
+          <li class="list-group-item">{{ __('Afficher la pagination au-dessus des résultats', 'configurationglpiauto') }}</li>
+          <li class="list-group-item">{{ __('Montrer les nouveaux tickets sur la page d\'accueil', 'configurationglpiauto') }}</li>
+        </ul>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="notifications_enabled" value="0">
+          <input type="checkbox" name="notifications_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-notifications-enabled" {{ config.notifications_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-notifications-enabled">{{ __('Notifications', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
+          <li class="list-group-item">{{ __('Activer les notifications (par e-mail et dans le navigateur)', 'configurationglpiauto') }}</li>
+          <li class="list-group-item">{{ __('Activer les notifications de mise à jour, pièce jointe et relance automatique de ticket', 'configurationglpiauto') }}</li>
+          <li class="list-group-item">{{ __('Activer les tâches automatiques d\'alerte cartouches, consommables et expiration de licences (désactivées par défaut, alors que les notifications correspondantes le sont déjà)', 'configurationglpiauto') }}</li>
+        </ul>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="financial_info_enabled" value="0">
+          <input type="checkbox" name="financial_info_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-financial-info-enabled" {{ config.financial_info_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-financial-info-enabled">{{ __('Informations financières', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
+          <li class="list-group-item">{{ __('Activer les informations financières et administratives par défaut', 'configurationglpiauto') }}</li>
+        </ul>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="project_task_states_enabled" value="0">
+          <input type="checkbox" name="project_task_states_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-project-task-states-enabled" {{ config.project_task_states_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-project-task-states-enabled">{{ __('Statuts des tâches de projet', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
+          <li class="list-group-item">{{ __('Configurer les statuts des tâches de projet (non démarré / en cours / terminé)', 'configurationglpiauto') }}</li>
+        </ul>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="satisfaction_survey_enabled" value="0">
+          <input type="checkbox" name="satisfaction_survey_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-satisfaction-survey-enabled" {{ config.satisfaction_survey_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-satisfaction-survey-enabled">{{ __('Enquête de satisfaction', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
+          <li class="list-group-item">{{ __('Activer l\'enquête de satisfaction native (1 à 5 étoiles, sur chaque ticket clos)', 'configurationglpiauto') }}</li>
+        </ul>
+
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="committee_validation_enabled" value="0">
+          <input type="checkbox" name="committee_validation_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-committee-validation-enabled" {{ config.committee_validation_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-committee-validation-enabled">{{ __('Validation comité', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
+          <li class="list-group-item">{{ __('Ajouter une étape de validation « Comité (2/3) » pour les décisions collégiales', 'configurationglpiauto') }}</li>
+        </ul>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 15 : Général & Outils #}
+      <div class="cga-wizard-step" data-step="15" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 15 : {{ __('Général & Outils', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : des intitulés que GLPI ne propose pas par défaut, hors périmètre Assistance direct mais utiles dès la mise en service.', 'configurationglpiauto') }}</p>
+
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="manufacturers_enabled" value="0">
+          <input type="checkbox" name="manufacturers_enabled" value="1" class="form-check-input" id="cga-manufacturers-enabled" {{ config.manufacturers_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-manufacturers-enabled">{{ __('Créer une liste de fabricants courants', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-manufacturers-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="manufacturer_icons_enabled" value="0">
+            <input type="checkbox" name="manufacturer_icons_enabled" value="1" class="form-check-input" id="cga-manufacturer-icons-enabled" {{ config.manufacturer_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-manufacturer-icons-enabled">{{ __('Ajouter des icônes (par catégorie de fabricant)', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted">
+            {% for manufacturer in manufacturers_preview %}<span class="cga-manufacturer-icon" style="display: none;">{{ manufacturer.icon }}</span> {{ manufacturer.name }}{% if not loop.last %}, {% endif %}{% endfor %}
+          </p>
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="manufacturer_dictionary_enabled" value="0">
+            <input type="checkbox" name="manufacturer_dictionary_enabled" value="1" class="form-check-input" id="cga-manufacturer-dictionary-enabled" {{ config.manufacturer_dictionary_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-manufacturer-dictionary-enabled">{{ __('Créer un dictionnaire pour normaliser les variantes de nom (ex. Hewlett-Packard, HP Inc. → HP)', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-0">{{ __('Sans filtrage possible par type de produit (limite native de GLPI, vérifiée) — mais un fabricant remonté par l\'inventaire sous un nom légèrement différent (« Hewlett-Packard » au lieu de « HP ») sera automatiquement rattaché à la même fiche fabricant plutôt que d\'en créer une nouvelle en double.', 'configurationglpiauto') }}</p>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="request_type_translations_enabled" value="0">
+          <input type="checkbox" name="request_type_translations_enabled" value="1" class="form-check-input" id="cga-request-type-translations-enabled" {{ config.request_type_translations_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-request-type-translations-enabled">{{ __('Traduire les sources de demande natives de GLPI', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-request-type-translations-fields" style="display: none;" class="mb-3">
+          <p class="text-muted small mb-1">{{ __('GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, sans traduction — une session française (ou allemande, italienne, espagnole) les voit telles quelles tant qu\'aucune traduction n\'existe.', 'configurationglpiauto') }}</p>
+          <ul class="mb-0">
+            {% for name, translations in request_type_translations_preview %}
+              <li>{{ name }} → {{ translations.fr_FR }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="user_categories_enabled" value="0">
+          <input type="checkbox" name="user_categories_enabled" value="1" class="form-check-input" id="cga-user-categories-enabled" {{ config.user_categories_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-user-categories-enabled">{{ __('Créer des catégories d\'utilisateur courantes', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-user-categories-fields" style="display: none;" class="mb-3">
+          <p class="text-muted small mb-1">{{ __('Classification indépendante des profils/droits — qui est la personne pour l\'organisation (salarié, prestataire...), pas ce qu\'elle peut faire dans GLPI. Importable depuis un attribut LDAP, utilisable en critère de ciblage de notification et en statistiques.', 'configurationglpiauto') }}</p>
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="user_category_icons_enabled" value="0">
+            <input type="checkbox" name="user_category_icons_enabled" value="1" class="form-check-input" id="cga-user-category-icons-enabled" {{ config.user_category_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-user-category-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <ul class="mb-0">
+            {% for category in user_categories_preview %}
+              <li><span class="cga-user-category-icon" style="display: none;">{{ category.icon }}</span> {{ category.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="kb_categories_enabled" value="0">
+          <input type="checkbox" name="kb_categories_enabled" value="1" class="form-check-input" id="cga-kb-categories-enabled" {{ config.kb_categories_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-kb-categories-enabled">{{ __('Créer les catégories de la base de connaissances', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-kb-categories-fields" style="display: none;">
+          <p class="text-muted small mb-1">{{ __('Mêmes thèmes que les catégories de tickets (étape 6), pour que le libre-service et la base de connaissances s\'organisent pareil.', 'configurationglpiauto') }}</p>
+          <div class="row">
+            {% for branch in categories_preview %}
+              <div class="col-6 cga-kb-branch-preview" data-branch="{{ branch.key }}">{{ branch.icon }} {{ branch.name }}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="document_management_enabled" value="0">
+          <input type="checkbox" name="document_management_enabled" value="1" class="form-check-input" id="cga-document-management-enabled" {{ config.document_management_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-document-management-enabled">{{ __('Créer les rubriques de documents et les niveaux de criticité', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-document-management-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="document_management_icons_enabled" value="0">
+            <input type="checkbox" name="document_management_icons_enabled" value="1" class="form-check-input" id="cga-document-management-icons-enabled" {{ config.document_management_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-document-management-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <strong>{{ __('Rubriques des documents', 'configurationglpiauto') }}</strong>
+              <p class="text-muted small mb-1">{{ __('Classification de sensibilité (norme ISO 27001, à affiner selon vos besoins).', 'configurationglpiauto') }}</p>
+              <ul class="mb-0">
+                {% for cat in document_management_preview.document_categories %}
+                  <li><span class="cga-document-management-icon" style="display: none;">{{ cat.icon }}</span> {{ cat.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <strong>{{ __('Criticités', 'configurationglpiauto') }}</strong>
+              <p class="text-muted small mb-1">{{ __('Impact métier d\'un actif (matériel, logiciel...), utilisé dans ses informations financières.', 'configurationglpiauto') }}</p>
+              <ul class="mb-0">
+                {% for crit in document_management_preview.business_criticities %}
+                  <li><span class="cga-document-management-icon" style="display: none;">{{ crit.icon }}</span> {{ crit.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="planning_events_enabled" value="0">
+          <input type="checkbox" name="planning_events_enabled" value="1" class="form-check-input" id="cga-planning-events-enabled" {{ config.planning_events_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-planning-events-enabled">{{ __('Créer les catégories et gabarits d\'évènements de planning', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-planning-events-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="planning_events_icons_enabled" value="0">
+            <input type="checkbox" name="planning_events_icons_enabled" value="1" class="form-check-input" id="cga-planning-events-icons-enabled" {{ config.planning_events_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-planning-events-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <strong>{{ __('Catégories d\'évènements', 'configurationglpiauto') }}</strong>
+              <p class="text-muted small mb-1">{{ __('Chacune avec une couleur distincte dans le planning GLPI.', 'configurationglpiauto') }}</p>
+              <ul class="mb-0">
+                {% for cat in planning_events_preview.categories %}
+                  <li>
+                    <span class="cga-planning-events-icon" style="display: none;">{{ cat.icon }}</span>
+                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 2px; background-color: {{ cat.color }};"></span>
+                    {{ cat.name }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <strong>{{ __('Gabarits d\'évènements externes', 'configurationglpiauto') }}</strong>
+              <ul class="mb-0">
+                {% for tpl in planning_events_preview.templates %}
+                  <li><span class="cga-planning-events-icon" style="display: none;"></span>{{ tpl.name }} <span class="text-muted small">— {{ tpl.category }}</span></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 16 : Projets #}
+      <div class="cga-wizard-step" data-step="16" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 16 : {{ __('Projets', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : des intitulés pour le module Projets, aucun n\'existe par défaut dans GLPI (hors les 3 statuts natifs, déjà suffisants — non modifiés dans l\'export de production audité).', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="project_taxonomy_enabled" value="0">
+          <input type="checkbox" name="project_taxonomy_enabled" value="1" class="form-check-input" id="cga-project-taxonomy-enabled" {{ config.project_taxonomy_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-project-taxonomy-enabled">{{ __('Créer les types de projet et de tâche de projet', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-project-taxonomy-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="project_taxonomy_icons_enabled" value="0">
+            <input type="checkbox" name="project_taxonomy_icons_enabled" value="1" class="form-check-input" id="cga-project-taxonomy-icons-enabled" {{ config.project_taxonomy_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-project-taxonomy-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <strong>{{ __('Types de projet', 'configurationglpiauto') }}</strong>
+              <ul class="mb-0">
+                {% for type in project_taxonomy_preview.project_types %}
+                  <li><span class="cga-project-taxonomy-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <strong>{{ __('Types de tâche de projet', 'configurationglpiauto') }}</strong>
+              <ul class="mb-0">
+                {% for type in project_taxonomy_preview.task_types %}
+                  <li><span class="cga-project-taxonomy-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="project_task_templates_enabled" value="0">
+          <input type="checkbox" name="project_task_templates_enabled" value="1" class="form-check-input" id="cga-project-task-templates-enabled" {{ config.project_task_templates_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-project-task-templates-enabled">{{ __('Créer les gabarits de tâches de projets', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-project-task-templates-fields" style="display: none;">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="project_task_template_icons_enabled" value="0">
+            <input type="checkbox" name="project_task_template_icons_enabled" value="1" class="form-check-input" id="cga-project-task-template-icons-enabled" {{ config.project_task_template_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-project-task-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <ul class="list-group" style="max-width: 560px;">
+            {% for tpl in project_task_templates_preview %}
+              <li class="list-group-item"><span class="cga-project-task-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="project_templates_enabled" value="0">
+          <input type="checkbox" name="project_templates_enabled" value="1" class="form-check-input" id="cga-project-templates-enabled" {{ config.project_templates_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-project-templates-enabled">{{ __('Créer des modèles de projet pré-structurés (tâches déjà liées)', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-project-templates-fields" style="display: none;">
+          <p class="text-muted small mb-2">{{ __('Un vrai projet marqué comme modèle, avec ses tâches déjà rattachées — "+ Nouveau" sur Projets propose ensuite de démarrer depuis ce modèle, tâches incluses.', 'configurationglpiauto') }}</p>
+          <div class="row">
+            {% for tpl in project_templates_preview %}
+              <div class="col-md-6 mb-2">
+                <strong>{{ tpl.icon }} {{ tpl.name }}</strong>
+                <ul class="mb-0">
+                  {% for task in tpl.tasks %}
+                    <li>{{ task.name }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 17 : Personnalisation graphique #}
+      <div class="cga-wizard-step" data-step="17" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 17 : {{ __('Personnalisation graphique', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : une couleur principale appliquée à l\'interface des entités créées.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -653,568 +1219,9 @@
         <p class="text-muted small mb-0">{{ __('Remplace le modèle de notification GLPI par défaut de ces 4 évènements par une version HTML reprenant la couleur et le logo ci-dessus — un e-mail modifié à la main ensuite n\'est plus jamais réécrit par une réexécution de l\'assistant.', 'configurationglpiauto') }}</p>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 10 : Réglages généraux #}
-      <div class="cga-wizard-step" data-step="10" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 10 : Réglages généraux GLPI', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l\'usage — activez chaque groupe indépendamment selon vos besoins.', 'configurationglpiauto') }}</p>
-
-        <div class="form-check mb-3">
-          <input type="checkbox" class="form-check-input" id="cga-general-settings-select-all">
-          <label class="form-check-label" for="cga-general-settings-select-all"><em>{{ __('Tout sélectionner', 'configurationglpiauto') }}</em></label>
-        </div>
-
-        <div class="form-check form-switch mb-1">
-          <input type="hidden" name="general_ui_enabled" value="0">
-          <input type="checkbox" name="general_ui_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-general-ui-enabled" {{ config.general_ui_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-general-ui-enabled">{{ __('Interface & ergonomie', 'configurationglpiauto') }}</label>
-        </div>
-        <ul class="list-group mb-3" style="max-width: 560px;">
-          <li class="list-group-item">{{ __('Agencement des boutons d\'action divisé (Répondre / Observation / Solution séparés)', 'configurationglpiauto') }}</li>
-          <li class="list-group-item">{{ __('Afficher le moteur de recherche au-dessus des résultats', 'configurationglpiauto') }}</li>
-          <li class="list-group-item">{{ __('Afficher la pagination au-dessus des résultats', 'configurationglpiauto') }}</li>
-          <li class="list-group-item">{{ __('Montrer les nouveaux tickets sur la page d\'accueil', 'configurationglpiauto') }}</li>
-        </ul>
-
-        <div class="form-check form-switch mb-1">
-          <input type="hidden" name="notifications_enabled" value="0">
-          <input type="checkbox" name="notifications_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-notifications-enabled" {{ config.notifications_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-notifications-enabled">{{ __('Notifications', 'configurationglpiauto') }}</label>
-        </div>
-        <ul class="list-group mb-3" style="max-width: 560px;">
-          <li class="list-group-item">{{ __('Activer les notifications (par e-mail et dans le navigateur)', 'configurationglpiauto') }}</li>
-          <li class="list-group-item">{{ __('Activer les notifications de mise à jour, pièce jointe et relance automatique de ticket', 'configurationglpiauto') }}</li>
-          <li class="list-group-item">{{ __('Activer les tâches automatiques d\'alerte cartouches, consommables et expiration de licences (désactivées par défaut, alors que les notifications correspondantes le sont déjà)', 'configurationglpiauto') }}</li>
-        </ul>
-
-        <div class="form-check form-switch mb-1">
-          <input type="hidden" name="financial_info_enabled" value="0">
-          <input type="checkbox" name="financial_info_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-financial-info-enabled" {{ config.financial_info_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-financial-info-enabled">{{ __('Informations financières', 'configurationglpiauto') }}</label>
-        </div>
-        <ul class="list-group mb-3" style="max-width: 560px;">
-          <li class="list-group-item">{{ __('Activer les informations financières et administratives par défaut', 'configurationglpiauto') }}</li>
-        </ul>
-
-        <div class="form-check form-switch mb-1">
-          <input type="hidden" name="project_task_states_enabled" value="0">
-          <input type="checkbox" name="project_task_states_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-project-task-states-enabled" {{ config.project_task_states_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-project-task-states-enabled">{{ __('Statuts des tâches de projet', 'configurationglpiauto') }}</label>
-        </div>
-        <ul class="list-group mb-3" style="max-width: 560px;">
-          <li class="list-group-item">{{ __('Configurer les statuts des tâches de projet (non démarré / en cours / terminé)', 'configurationglpiauto') }}</li>
-        </ul>
-
-        <div class="form-check form-switch mb-1">
-          <input type="hidden" name="satisfaction_survey_enabled" value="0">
-          <input type="checkbox" name="satisfaction_survey_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-satisfaction-survey-enabled" {{ config.satisfaction_survey_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-satisfaction-survey-enabled">{{ __('Enquête de satisfaction', 'configurationglpiauto') }}</label>
-        </div>
-        <ul class="list-group mb-3" style="max-width: 560px;">
-          <li class="list-group-item">{{ __('Activer l\'enquête de satisfaction native (1 à 5 étoiles, sur chaque ticket clos)', 'configurationglpiauto') }}</li>
-        </ul>
-
-        <div class="form-check form-switch mb-1">
-          <input type="hidden" name="committee_validation_enabled" value="0">
-          <input type="checkbox" name="committee_validation_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-committee-validation-enabled" {{ config.committee_validation_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-committee-validation-enabled">{{ __('Validation comité', 'configurationglpiauto') }}</label>
-        </div>
-        <ul class="list-group mb-3" style="max-width: 560px;">
-          <li class="list-group-item">{{ __('Ajouter une étape de validation « Comité (2/3) » pour les décisions collégiales', 'configurationglpiauto') }}</li>
-        </ul>
-      </div>
-
-      {# ---------------------------------------------------------------- Étape 11 : Modèles de tickets #}
-      <div class="cga-wizard-step" data-step="11" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 11 : Modèles de tickets', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l\'interface complète pour le support.', 'configurationglpiauto') }}</p>
-
-        <div class="form-check form-switch mb-3">
-          <input type="hidden" name="ticket_template_enabled" value="0">
-          <input
-            type="checkbox"
-            name="ticket_template_enabled"
-            value="1"
-            class="form-check-input"
-            id="cga-ticket-template-enabled"
-            {{ config.ticket_template_enabled|default(0) ? 'checked' : '' }}
-          >
-          <label class="form-check-label" for="cga-ticket-template-enabled">{{ __('Créer deux modèles de tickets et les assigner aux profils', 'configurationglpiauto') }}</label>
-        </div>
-
-        <div id="cga-ticket-template-fields" style="display: none;">
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="ticket_template_icons_enabled" value="0">
-            <input type="checkbox" name="ticket_template_icons_enabled" value="1" class="form-check-input" id="cga-ticket-template-icons-enabled" {{ config.ticket_template_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-ticket-template-icons-enabled">{{ __('Ajouter des icônes sur les modèles', 'configurationglpiauto') }}</label>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <ul class="list-group mb-3">
-                <li class="list-group-item list-group-item-secondary"><span class="cga-ticket-template-icon" style="display: none;">📝</span> {{ __('Simplifié — Self-Service, Read-Only', 'configurationglpiauto') }}</li>
-                <li class="list-group-item">{{ __('Titre + description uniquement', 'configurationglpiauto') }}</li>
-                <li class="list-group-item">{{ __('Catégorie visible mais limitée aux 11 branches parentes', 'configurationglpiauto') }}</li>
-                <li class="list-group-item">{{ __('Urgence, impact, statut, lieu, attribution, niveaux de service (SLA/OLA) : masqués', 'configurationglpiauto') }}</li>
-              </ul>
-            </div>
-            <div class="col-md-6">
-              <ul class="list-group mb-3">
-                <li class="list-group-item list-group-item-secondary"><span class="cga-ticket-template-icon" style="display: none;">🛠️</span> {{ __('Complet — tous les autres profils', 'configurationglpiauto') }}</li>
-                <li class="list-group-item">{{ __('Interface complète (aucun champ masqué)', 'configurationglpiauto') }}</li>
-                <li class="list-group-item">{{ __('Catégorie et urgence obligatoires', 'configurationglpiauto') }}</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="form-check form-switch mb-3">
-            <input type="hidden" name="helpdesk_form_hide_fields" value="0">
-            <input
-              type="checkbox"
-              name="helpdesk_form_hide_fields"
-              value="1"
-              class="form-check-input"
-              id="cga-helpdesk-form-hide-fields"
-              {{ config.helpdesk_form_hide_fields|default(0) ? 'checked' : '' }}
-            >
-            <label class="form-check-label" for="cga-helpdesk-form-hide-fields">{{ __('Masquer Urgence, Observateurs et Lieu sur les formulaires natifs « Signaler un incident » / « Faire une demande »', 'configurationglpiauto') }}</label>
-          </div>
-          <p class="text-muted small">{{ __('Ces formulaires du portail libre-service sont un système distinct des modèles de tickets ci-dessus (nouveau moteur de formulaires GLPI 11) — un utilisateur de base n\'a pas la visibilité nécessaire pour juger de l\'urgence réelle de sa demande, c\'est au support de la qualifier.', 'configurationglpiauto') }}</p>
-        </div>
-      </div>
-
-      {# ---------------------------------------------------------------- Étape 12 : Droits LDAP #}
-      <div class="cga-wizard-step" data-step="12" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 12 : Droits LDAP par entité', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : une règle d\'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l\'utilisateur lors de la synchronisation — ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n\'y a rien à générer.', 'configurationglpiauto') }}</p>
-
-        <div class="form-check form-switch mb-3">
-          <input type="hidden" name="ldap_rights_enabled" value="0">
-          <input
-            type="checkbox"
-            name="ldap_rights_enabled"
-            value="1"
-            class="form-check-input"
-            id="cga-ldap-rights-enabled"
-            {{ config.ldap_rights_enabled|default(0) ? 'checked' : '' }}
-          >
-          <label class="form-check-label" for="cga-ldap-rights-enabled">{{ __('Générer une règle de droits par site', 'configurationglpiauto') }}</label>
-        </div>
-
-        <div id="cga-ldap-rights-fields" style="display: none;">
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label class="form-label" for="cga-ldap-rights-template">{{ __('Gabarit de nom de groupe AD/LDAP', 'configurationglpiauto') }}</label>
-              <input
-                type="text"
-                name="ldap_rights_group_template"
-                id="cga-ldap-rights-template"
-                class="form-control"
-                value="{{ config.ldap_rights_group_template|default('GLPI_{ENTITY}') }}"
-              >
-              <div class="form-text">{{ __('{ENTITY} est remplacé par le nom du site (espaces convertis en _).', 'configurationglpiauto') }}</div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label" for="cga-ldap-rights-profile">{{ __('Profil attribué', 'configurationglpiauto') }}</label>
-              <select name="ldap_rights_profile" id="cga-ldap-rights-profile" class="form-select">
-                {% for profile_name in native_profile_names %}
-                  <option value="{{ profile_name }}" {{ config.ldap_rights_profile|default('Admin') == profile_name ? 'selected' : '' }}>{{ profile_name }}</option>
-                {% endfor %}
-              </select>
-              <div class="form-text">{{ __('« Admin » (par défaut) couvre la gestion quotidienne sans le risque d\'auto-élévation de « Super-Admin » : contrairement à Super-Admin, Admin ne peut ni éditer les profils GLPI (donc pas s\'en attribuer plus), ni modifier les règles LDAP/import qui gèrent justement cette synchronisation.', 'configurationglpiauto') }}</div>
-            </div>
-          </div>
-
-          <p class="text-muted small mb-1">{{ __('Une règle par site (feuille de l\'arborescence) — aperçu en fonction de l\'arborescence construite à l\'étape 2 :', 'configurationglpiauto') }}</p>
-          <ul class="list-group" id="cga-ldap-rights-preview" style="max-width: 560px;"></ul>
-
-          <hr class="my-3">
-          <label class="form-label mb-1">{{ __('Règles par fonction/département (optionnel)', 'configurationglpiauto') }}</label>
-          <p class="text-muted small mb-2">{{ __('En complément de la règle par site ci-dessus, indépendant du site de l\'utilisateur — ex. le groupe AD "Finance" reçoit toujours tel profil, quel que soit son site. Chaque ligne devient une règle GLPI distincte, qui n\'affecte que le profil (pas l\'entité).', 'configurationglpiauto') }}</p>
-          <div id="cga-ldap-function-rights-rows" class="mb-2"></div>
-          <button type="button" class="btn btn-sm btn-outline-secondary" id="cga-ldap-function-rights-add">{{ __('+ Ajouter une règle', 'configurationglpiauto') }}</button>
-        </div>
-      </div>
-
-      {# ---------------------------------------------------------------- Étape 13 : Tâches & solutions #}
-      <div class="cga-wizard-step" data-step="13" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 13 : Tâches & solutions', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : des intitulés prêts à l\'emploi pour qualifier le travail technique et clôturer les tickets, aucun n\'existe par défaut dans GLPI.', 'configurationglpiauto') }}</p>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="task_categories_enabled" value="0">
-          <input type="checkbox" name="task_categories_enabled" value="1" class="form-check-input" id="cga-task-categories-enabled" {{ config.task_categories_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-task-categories-enabled">{{ __('Créer les catégories de tâches', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-task-categories-fields" style="display: none;" class="mb-3">
-          <ul class="list-group" style="max-width: 480px;">
-            {% for cat in task_categories_preview %}
-              <li class="list-group-item">{{ cat.icon }} {{ cat.name }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="task_templates_enabled" value="0">
-          <input type="checkbox" name="task_templates_enabled" value="1" class="form-check-input" id="cga-task-templates-enabled" {{ config.task_templates_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-task-templates-enabled">{{ __('Créer les gabarits de tâche (checklists réutilisables)', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-task-templates-fields" style="display: none;" class="mb-3">
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="task_template_icons_enabled" value="0">
-            <input type="checkbox" name="task_template_icons_enabled" value="1" class="form-check-input" id="cga-task-template-icons-enabled" {{ config.task_template_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-task-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
-          </div>
-          <ul class="list-group" style="max-width: 560px;">
-            {% for tpl in task_templates_preview %}
-              <li class="list-group-item"><span class="cga-task-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="solution_library_enabled" value="0">
-          <input type="checkbox" name="solution_library_enabled" value="1" class="form-check-input" id="cga-solution-library-enabled" {{ config.solution_library_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-solution-library-enabled">{{ __('Créer les types et gabarits de solution', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-solution-library-fields" style="display: none;">
-          <p class="text-muted small mb-1">{{ __('Une taxonomie de clôture standard (assistance, résolution technique, sécurité, informationnel, gestion des accès), chacune visible seulement sur les types de ticket ITIL pertinents.', 'configurationglpiauto') }}</p>
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="solution_type_icons_enabled" value="0">
-            <input type="checkbox" name="solution_type_icons_enabled" value="1" class="form-check-input" id="cga-solution-type-icons-enabled" {{ config.solution_type_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-solution-type-icons-enabled">{{ __('Ajouter des icônes sur les types de solution', 'configurationglpiauto') }}</label>
-          </div>
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="solution_template_icons_enabled" value="0">
-            <input type="checkbox" name="solution_template_icons_enabled" value="1" class="form-check-input" id="cga-solution-template-icons-enabled" {{ config.solution_template_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-solution-template-icons-enabled">{{ __('Ajouter des icônes sur les gabarits de solution', 'configurationglpiauto') }}</label>
-          </div>
-          {% for type in solution_library_preview %}
-            <div class="mb-2">
-              <span class="cga-solution-type-icon" style="display: none;">{{ type.icon }}</span>
-              <strong>{{ type.name }}</strong>
-              <ul class="mb-0">
-                {% for tpl in type.templates %}
-                  <li><span class="cga-solution-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-
-      {# ---------------------------------------------------------------- Étape 14 : Suivis & validations #}
-      <div class="cga-wizard-step" data-step="14" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 14 : Suivis, validations & modèles', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : des messages types pour garder le demandeur informé, des gabarits de demande de validation, et un modèle par défaut pour les changements et les problèmes.', 'configurationglpiauto') }}</p>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="followup_library_enabled" value="0">
-          <input type="checkbox" name="followup_library_enabled" value="1" class="form-check-input" id="cga-followup-library-enabled" {{ config.followup_library_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-followup-library-enabled">{{ __('Créer les gabarits de suivis', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-followup-library-fields" style="display: none;" class="mb-3">
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="followup_library_icons_enabled" value="0">
-            <input type="checkbox" name="followup_library_icons_enabled" value="1" class="form-check-input" id="cga-followup-library-icons-enabled" {{ config.followup_library_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-followup-library-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
-          </div>
-          <ul class="list-group" style="max-width: 560px;">
-            {% for tpl in followup_library_preview %}
-              <li class="list-group-item"><span class="cga-followup-library-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="validation_templates_enabled" value="0">
-          <input type="checkbox" name="validation_templates_enabled" value="1" class="form-check-input" id="cga-validation-templates-enabled" {{ config.validation_templates_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-validation-templates-enabled">{{ __('Créer les gabarits de validation', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-validation-templates-fields" style="display: none;" class="mb-3">
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="validation_template_icons_enabled" value="0">
-            <input type="checkbox" name="validation_template_icons_enabled" value="1" class="form-check-input" id="cga-validation-template-icons-enabled" {{ config.validation_template_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-validation-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
-          </div>
-          <ul class="list-group" style="max-width: 560px;">
-            {% for tpl in validation_templates_preview %}
-              <li class="list-group-item"><span class="cga-validation-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="change_problem_templates_enabled" value="0">
-          <input type="checkbox" name="change_problem_templates_enabled" value="1" class="form-check-input" id="cga-change-problem-templates-enabled" {{ config.change_problem_templates_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-change-problem-templates-enabled">{{ __('Créer un modèle de changement et de problème par défaut', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-change-problem-templates-fields" style="display: none;" class="mb-2">
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="change_problem_template_icons_enabled" value="0">
-            <input type="checkbox" name="change_problem_template_icons_enabled" value="1" class="form-check-input" id="cga-change-problem-template-icons-enabled" {{ config.change_problem_template_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-change-problem-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
-          </div>
-          <ul class="list-group" style="max-width: 400px;">
-            <li class="list-group-item"><span class="cga-change-problem-template-icon" style="display: none;">🔄</span> {{ __('Changement standard', 'configurationglpiauto') }}</li>
-            <li class="list-group-item"><span class="cga-change-problem-template-icon" style="display: none;">🧩</span> {{ __('Problème standard', 'configurationglpiauto') }}</li>
-          </ul>
-        </div>
-        <p class="text-muted small">{{ __('Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service n\'a aucun droit sur les changements/problèmes, la distinction base/support ne s\'applique pas.', 'configurationglpiauto') }}</p>
-      </div>
-
-      {# ---------------------------------------------------------------- Étape 15 : Général & Outils #}
-      <div class="cga-wizard-step" data-step="15" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 15 : Général & Outils', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : des intitulés que GLPI ne propose pas par défaut, hors périmètre Assistance direct mais utiles dès la mise en service.', 'configurationglpiauto') }}</p>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="locations_enabled" value="0">
-          <input type="checkbox" name="locations_enabled" value="1" class="form-check-input" id="cga-locations-enabled" {{ config.locations_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-locations-enabled">{{ __('Associer une adresse à des entités de l\'arborescence', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-locations-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-2">{{ __('Parcourez l\'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur les entités qui en ont une (site, agence...) — les autres n\'auront aucun lieu créé, comme sur une installation GLPI neuve.', 'configurationglpiauto') }}</p>
-
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="location_geocoding_enabled" value="0">
-            <input type="checkbox" name="location_geocoding_enabled" value="1" class="form-check-input" id="cga-location-geocoding-enabled" {{ config.location_geocoding_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-location-geocoding-enabled">{{ __('Assistant d\'adresse (suggestions de rue pendant la saisie, ville/région/pays pré-remplis)', 'configurationglpiauto') }}</label>
-          </div>
-          <p class="text-muted small mb-2">{{ __('Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — désactivé par défaut, à activer volontairement.', 'configurationglpiauto') }}</p>
-
-          <div id="cga-location-geocoding-fields" style="display: none;" class="mb-3">
-            <label class="form-label" for="cga-location-geocoding-endpoint">{{ __('Service de géocodage (avancé)', 'configurationglpiauto') }}</label>
-            <input type="text" name="location_geocoding_endpoint" id="cga-location-geocoding-endpoint" class="form-control" style="max-width: 480px;" value="{{ config.location_geocoding_endpoint|default('https://nominatim.openstreetmap.org') }}">
-            <p class="text-muted small mb-0">{{ __('Instance Nominatim/Photon auto-hébergée ou compatible, pour un usage réel au-delà d\'un essai ponctuel.', 'configurationglpiauto') }}</p>
-          </div>
-
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="entity_native_address_enabled" value="0">
-            <input type="checkbox" name="entity_native_address_enabled" value="1" class="form-check-input" id="cga-entity-native-address-enabled" {{ config.entity_native_address_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-entity-native-address-enabled">{{ __('Compléter aussi la fiche adresse native de chaque entité (GLPI > Entités > Adresse)', 'configurationglpiauto') }}</label>
-          </div>
-          <p class="text-muted small mb-2">{{ __('Reprend l\'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper — ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité.', 'configurationglpiauto') }}</p>
-
-          <div id="cga-locations-tree"></div>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="manufacturers_enabled" value="0">
-          <input type="checkbox" name="manufacturers_enabled" value="1" class="form-check-input" id="cga-manufacturers-enabled" {{ config.manufacturers_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-manufacturers-enabled">{{ __('Créer une liste de fabricants courants', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-manufacturers-fields" style="display: none;" class="mb-3">
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="manufacturer_icons_enabled" value="0">
-            <input type="checkbox" name="manufacturer_icons_enabled" value="1" class="form-check-input" id="cga-manufacturer-icons-enabled" {{ config.manufacturer_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-manufacturer-icons-enabled">{{ __('Ajouter des icônes (par catégorie de fabricant)', 'configurationglpiauto') }}</label>
-          </div>
-          <p class="text-muted">
-            {% for manufacturer in manufacturers_preview %}<span class="cga-manufacturer-icon" style="display: none;">{{ manufacturer.icon }}</span> {{ manufacturer.name }}{% if not loop.last %}, {% endif %}{% endfor %}
-          </p>
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="manufacturer_dictionary_enabled" value="0">
-            <input type="checkbox" name="manufacturer_dictionary_enabled" value="1" class="form-check-input" id="cga-manufacturer-dictionary-enabled" {{ config.manufacturer_dictionary_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-manufacturer-dictionary-enabled">{{ __('Créer un dictionnaire pour normaliser les variantes de nom (ex. Hewlett-Packard, HP Inc. → HP)', 'configurationglpiauto') }}</label>
-          </div>
-          <p class="text-muted small mb-0">{{ __('Sans filtrage possible par type de produit (limite native de GLPI, vérifiée) — mais un fabricant remonté par l\'inventaire sous un nom légèrement différent (« Hewlett-Packard » au lieu de « HP ») sera automatiquement rattaché à la même fiche fabricant plutôt que d\'en créer une nouvelle en double.', 'configurationglpiauto') }}</p>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="request_type_translations_enabled" value="0">
-          <input type="checkbox" name="request_type_translations_enabled" value="1" class="form-check-input" id="cga-request-type-translations-enabled" {{ config.request_type_translations_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-request-type-translations-enabled">{{ __('Traduire les sources de demande natives de GLPI', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-request-type-translations-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-1">{{ __('GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, sans traduction — une session française (ou allemande, italienne, espagnole) les voit telles quelles tant qu\'aucune traduction n\'existe.', 'configurationglpiauto') }}</p>
-          <ul class="mb-0">
-            {% for name, translations in request_type_translations_preview %}
-              <li>{{ name }} → {{ translations.fr_FR }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="user_categories_enabled" value="0">
-          <input type="checkbox" name="user_categories_enabled" value="1" class="form-check-input" id="cga-user-categories-enabled" {{ config.user_categories_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-user-categories-enabled">{{ __('Créer des catégories d\'utilisateur courantes', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-user-categories-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-1">{{ __('Classification indépendante des profils/droits — qui est la personne pour l\'organisation (salarié, prestataire...), pas ce qu\'elle peut faire dans GLPI. Importable depuis un attribut LDAP, utilisable en critère de ciblage de notification et en statistiques.', 'configurationglpiauto') }}</p>
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="user_category_icons_enabled" value="0">
-            <input type="checkbox" name="user_category_icons_enabled" value="1" class="form-check-input" id="cga-user-category-icons-enabled" {{ config.user_category_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-user-category-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
-          </div>
-          <ul class="mb-0">
-            {% for category in user_categories_preview %}
-              <li><span class="cga-user-category-icon" style="display: none;">{{ category.icon }}</span> {{ category.name }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="kb_categories_enabled" value="0">
-          <input type="checkbox" name="kb_categories_enabled" value="1" class="form-check-input" id="cga-kb-categories-enabled" {{ config.kb_categories_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-kb-categories-enabled">{{ __('Créer les catégories de la base de connaissances', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-kb-categories-fields" style="display: none;">
-          <p class="text-muted small mb-1">{{ __('Mêmes thèmes que les catégories de tickets (étape 5), pour que le libre-service et la base de connaissances s\'organisent pareil.', 'configurationglpiauto') }}</p>
-          <div class="row">
-            {% for branch in categories_preview %}
-              <div class="col-6 cga-kb-branch-preview" data-branch="{{ branch.key }}">{{ branch.icon }} {{ branch.name }}</div>
-            {% endfor %}
-          </div>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="document_management_enabled" value="0">
-          <input type="checkbox" name="document_management_enabled" value="1" class="form-check-input" id="cga-document-management-enabled" {{ config.document_management_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-document-management-enabled">{{ __('Créer les rubriques de documents et les niveaux de criticité', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-document-management-fields" style="display: none;" class="mb-3">
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="document_management_icons_enabled" value="0">
-            <input type="checkbox" name="document_management_icons_enabled" value="1" class="form-check-input" id="cga-document-management-icons-enabled" {{ config.document_management_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-document-management-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <strong>{{ __('Rubriques des documents', 'configurationglpiauto') }}</strong>
-              <p class="text-muted small mb-1">{{ __('Classification de sensibilité (norme ISO 27001, à affiner selon vos besoins).', 'configurationglpiauto') }}</p>
-              <ul class="mb-0">
-                {% for cat in document_management_preview.document_categories %}
-                  <li><span class="cga-document-management-icon" style="display: none;">{{ cat.icon }}</span> {{ cat.name }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div class="col-md-6">
-              <strong>{{ __('Criticités', 'configurationglpiauto') }}</strong>
-              <p class="text-muted small mb-1">{{ __('Impact métier d\'un actif (matériel, logiciel...), utilisé dans ses informations financières.', 'configurationglpiauto') }}</p>
-              <ul class="mb-0">
-                {% for crit in document_management_preview.business_criticities %}
-                  <li><span class="cga-document-management-icon" style="display: none;">{{ crit.icon }}</span> {{ crit.name }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="planning_events_enabled" value="0">
-          <input type="checkbox" name="planning_events_enabled" value="1" class="form-check-input" id="cga-planning-events-enabled" {{ config.planning_events_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-planning-events-enabled">{{ __('Créer les catégories et gabarits d\'évènements de planning', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-planning-events-fields" style="display: none;" class="mb-3">
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="planning_events_icons_enabled" value="0">
-            <input type="checkbox" name="planning_events_icons_enabled" value="1" class="form-check-input" id="cga-planning-events-icons-enabled" {{ config.planning_events_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-planning-events-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <strong>{{ __('Catégories d\'évènements', 'configurationglpiauto') }}</strong>
-              <p class="text-muted small mb-1">{{ __('Chacune avec une couleur distincte dans le planning GLPI.', 'configurationglpiauto') }}</p>
-              <ul class="mb-0">
-                {% for cat in planning_events_preview.categories %}
-                  <li>
-                    <span class="cga-planning-events-icon" style="display: none;">{{ cat.icon }}</span>
-                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 2px; background-color: {{ cat.color }};"></span>
-                    {{ cat.name }}
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div class="col-md-6">
-              <strong>{{ __('Gabarits d\'évènements externes', 'configurationglpiauto') }}</strong>
-              <ul class="mb-0">
-                {% for tpl in planning_events_preview.templates %}
-                  <li><span class="cga-planning-events-icon" style="display: none;"></span>{{ tpl.name }} <span class="text-muted small">— {{ tpl.category }}</span></li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {# ---------------------------------------------------------------- Étape 16 : Projets #}
-      <div class="cga-wizard-step" data-step="16" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 16 : Projets', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : des intitulés pour le module Projets, aucun n\'existe par défaut dans GLPI (hors les 3 statuts natifs, déjà suffisants — non modifiés dans l\'export de production audité).', 'configurationglpiauto') }}</p>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="project_taxonomy_enabled" value="0">
-          <input type="checkbox" name="project_taxonomy_enabled" value="1" class="form-check-input" id="cga-project-taxonomy-enabled" {{ config.project_taxonomy_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-project-taxonomy-enabled">{{ __('Créer les types de projet et de tâche de projet', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-project-taxonomy-fields" style="display: none;" class="mb-3">
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="project_taxonomy_icons_enabled" value="0">
-            <input type="checkbox" name="project_taxonomy_icons_enabled" value="1" class="form-check-input" id="cga-project-taxonomy-icons-enabled" {{ config.project_taxonomy_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-project-taxonomy-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <strong>{{ __('Types de projet', 'configurationglpiauto') }}</strong>
-              <ul class="mb-0">
-                {% for type in project_taxonomy_preview.project_types %}
-                  <li><span class="cga-project-taxonomy-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div class="col-md-6">
-              <strong>{{ __('Types de tâche de projet', 'configurationglpiauto') }}</strong>
-              <ul class="mb-0">
-                {% for type in project_taxonomy_preview.task_types %}
-                  <li><span class="cga-project-taxonomy-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="project_task_templates_enabled" value="0">
-          <input type="checkbox" name="project_task_templates_enabled" value="1" class="form-check-input" id="cga-project-task-templates-enabled" {{ config.project_task_templates_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-project-task-templates-enabled">{{ __('Créer les gabarits de tâches de projets', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-project-task-templates-fields" style="display: none;">
-          <div class="form-check form-switch mb-2">
-            <input type="hidden" name="project_task_template_icons_enabled" value="0">
-            <input type="checkbox" name="project_task_template_icons_enabled" value="1" class="form-check-input" id="cga-project-task-template-icons-enabled" {{ config.project_task_template_icons_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-project-task-template-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
-          </div>
-          <ul class="list-group" style="max-width: 560px;">
-            {% for tpl in project_task_templates_preview %}
-              <li class="list-group-item"><span class="cga-project-task-template-icon" style="display: none;">{{ tpl.icon }}</span> {{ tpl.name }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="form-check form-switch mb-2">
-          <input type="hidden" name="project_templates_enabled" value="0">
-          <input type="checkbox" name="project_templates_enabled" value="1" class="form-check-input" id="cga-project-templates-enabled" {{ config.project_templates_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-project-templates-enabled">{{ __('Créer des modèles de projet pré-structurés (tâches déjà liées)', 'configurationglpiauto') }}</label>
-        </div>
-        <div id="cga-project-templates-fields" style="display: none;">
-          <p class="text-muted small mb-2">{{ __('Un vrai projet marqué comme modèle, avec ses tâches déjà rattachées — "+ Nouveau" sur Projets propose ensuite de démarrer depuis ce modèle, tâches incluses.', 'configurationglpiauto') }}</p>
-          <div class="row">
-            {% for tpl in project_templates_preview %}
-              <div class="col-md-6 mb-2">
-                <strong>{{ tpl.icon }} {{ tpl.name }}</strong>
-                <ul class="mb-0">
-                  {% for task in tpl.tasks %}
-                    <li>{{ task.name }}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-
-      {# ---------------------------------------------------------------- Étape 17 : Récapitulatif #}
-      <div class="cga-wizard-step" data-step="17" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape 17 : Récapitulatif', 'configurationglpiauto') }}</h3>
+      {# ---------------------------------------------------------------- Étape 18 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="18" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 18 : {{ __('Récapitulatif', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits/modèles de projet.', 'configurationglpiauto') }}</p>
 
         <ul class="list-group mb-3">
@@ -1293,7 +1300,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 17;
+  var STEP_COUNT = 18;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -1341,20 +1348,21 @@
   var stepLabels = [
     "{{ __('Profil', 'configurationglpiauto')|e('js') }}",
     "{{ __('Entités', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Lieux', 'configurationglpiauto')|e('js') }}",
     "{{ __('Calendrier', 'configurationglpiauto')|e('js') }}",
     "{{ __('SLA', 'configurationglpiauto')|e('js') }}",
     "{{ __('Catégories', 'configurationglpiauto')|e('js') }}",
     "{{ __('Catalogue de services', 'configurationglpiauto')|e('js') }}",
     "{{ __('Statuts', 'configurationglpiauto')|e('js') }}",
     "{{ __('Raisons d\'attente', 'configurationglpiauto')|e('js') }}",
-    "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
-    "{{ __('Réglages généraux', 'configurationglpiauto')|e('js') }}",
     "{{ __('Modèles de tickets', 'configurationglpiauto')|e('js') }}",
-    "{{ __('Droits LDAP', 'configurationglpiauto')|e('js') }}",
     "{{ __('Tâches & solutions', 'configurationglpiauto')|e('js') }}",
     "{{ __('Suivis & validations', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Droits LDAP', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Réglages généraux', 'configurationglpiauto')|e('js') }}",
     "{{ __('Général & Outils', 'configurationglpiauto')|e('js') }}",
     "{{ __('Projets', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
 
@@ -3004,14 +3012,14 @@
       fillSummary();
     }
     updateLdapRightsPreview();
-    if (currentStep === 9) {
+    if (currentStep === 17) {
       // Re-rendered only when actually entering this step (not on every navigation elsewhere) —
       // a native <input type="file">'s selection can't survive a re-render, so this only refreshes
       // when it matters (the tree may have changed since last time) rather than on every click.
       renderEntityLogoPanels();
       renderBrandingPerClientPanels();
     }
-    if (currentStep === 15) {
+    if (currentStep === 3) {
       renderLocationsTree();
     }
   }
