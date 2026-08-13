@@ -1689,8 +1689,12 @@
       addressInput.className = 'form-control form-control-sm';
       addressInput.placeholder = "{{ __('Rue, numéro...', 'configurationglpiauto')|e('js') }}";
       addressInput.autocomplete = 'off';
+      // `dropdown-menu` (Bootstrap/Tabler component) rather than `list-group`: comes with its own
+      // opaque, theme-aware background/border/shadow built in — a plain `list-group` here rendered
+      // see-through over the fields/toggles underneath it (confirmed from a real screenshot),
+      // since nothing gave the floating list itself a solid background.
       var suggestions = document.createElement('ul');
-      suggestions.className = 'list-group position-absolute w-100';
+      suggestions.className = 'dropdown-menu position-absolute w-100';
       suggestions.style.zIndex = '20';
       suggestions.style.display = 'none';
       suggestions.style.maxHeight = '220px';
@@ -1717,9 +1721,28 @@
       var countryInput = document.createElement('input');
       countryInput.type = 'text';
       countryInput.name = 'location_country_' + i;
-      countryInput.className = 'form-control form-control-sm';
+      countryInput.className = 'form-control form-control-sm mb-1';
       countryInput.placeholder = "{{ __('Pays', 'configurationglpiauto')|e('js') }}";
       wrapper.appendChild(countryInput);
+
+      // Coordonnées GPS (glpi_locations.latitude/longitude, jamais renseignées ailleurs dans le
+      // plugin) : remplies automatiquement depuis Nominatim, éditables à la main sinon (un admin
+      // peut coller des coordonnées récupérées ailleurs sans passer par l'autocomplétion).
+      var gpsRow = document.createElement('div');
+      gpsRow.className = 'd-flex gap-1';
+      var latInput = document.createElement('input');
+      latInput.type = 'text';
+      latInput.name = 'location_latitude_' + i;
+      latInput.className = 'form-control form-control-sm';
+      latInput.placeholder = "{{ __('Latitude', 'configurationglpiauto')|e('js') }}";
+      var lonInput = document.createElement('input');
+      lonInput.type = 'text';
+      lonInput.name = 'location_longitude_' + i;
+      lonInput.className = 'form-control form-control-sm';
+      lonInput.placeholder = "{{ __('Longitude', 'configurationglpiauto')|e('js') }}";
+      gpsRow.appendChild(latInput);
+      gpsRow.appendChild(lonInput);
+      wrapper.appendChild(gpsRow);
 
       function clearSuggestions() {
         suggestions.innerHTML = '';
@@ -1731,11 +1754,23 @@
         if (item.postcode) { postcodeInput.value = item.postcode; }
         if (item.town) { townInput.value = item.town; }
         if (item.country) { countryInput.value = item.country; }
+        // Toujours écrasées (contrairement à ville/pays plus bas) : choisir une suggestion est un
+        // geste explicite et précis, contrairement au remplissage code postal → ville plus large.
+        if (item.latitude) { latInput.value = item.latitude; }
+        if (item.longitude) { lonInput.value = item.longitude; }
         clearSuggestions();
       }
 
       var fetchAddressSuggestions = cgaDebounce(function (query) {
-        fetch(CGA_GEOCODE_URL + '?q=' + encodeURIComponent(query))
+        // Sans ça, une recherche comme "avenue" seule remonte des résultats partout en France —
+        // en repassant la ville/pays déjà saisis (s'ils le sont), ajax/geocode.php restreint la
+        // recherche Nominatim à cette zone au lieu de chercher "avenue" sur tout le pays.
+        var townHint = townInput.value.trim();
+        var countryHint = countryInput.value.trim();
+        var addressUrl = CGA_GEOCODE_URL + '?q=' + encodeURIComponent(query)
+          + (townHint !== '' ? '&town=' + encodeURIComponent(townHint) : '')
+          + (countryHint !== '' ? '&country=' + encodeURIComponent(countryHint) : '');
+        fetch(addressUrl)
           .then(function (res) { return res.ok ? res.json() : []; })
           .then(function (results) {
             clearSuggestions();
@@ -1744,13 +1779,19 @@
             }
             results.forEach(function (item) {
               var li = document.createElement('li');
-              li.className = 'list-group-item list-group-item-action py-1 px-2 small';
-              li.style.cursor = 'pointer';
-              li.textContent = item.label;
-              li.addEventListener('click', function () { fillFromSuggestion(item); });
+              var button = document.createElement('button');
+              button.type = 'button';
+              button.className = 'dropdown-item small text-wrap';
+              button.textContent = item.label;
+              button.addEventListener('click', function () { fillFromSuggestion(item); });
+              li.appendChild(button);
               suggestions.appendChild(li);
             });
-            suggestions.style.display = '';
+            // `.dropdown-menu` (Bootstrap/Tabler) is `display: none` by its own CSS rule, only
+            // ever shown via a `.show` class Bootstrap's own JS toggles — since that JS component
+            // isn't wired up here, an empty inline style falls back to that CSS rule and stays
+            // hidden. `'block'` overrides it directly instead.
+            suggestions.style.display = 'block';
           })
           .catch(function () { clearSuggestions(); });
       }, 400);
@@ -1795,6 +1836,10 @@
             if (Array.isArray(results) && results.length > 0 && results[0].town) {
               townInput.value = results[0].town;
               if (results[0].country && countryInput.value.trim() === '') { countryInput.value = results[0].country; }
+              // Centroïde du code postal, moins précis qu'une suggestion de rue choisie
+              // explicitement — ne remplit que si rien n'a déjà été saisi.
+              if (results[0].latitude && latInput.value.trim() === '') { latInput.value = results[0].latitude; }
+              if (results[0].longitude && lonInput.value.trim() === '') { lonInput.value = results[0].longitude; }
             }
           })
           .catch(function () {});

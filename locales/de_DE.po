@@ -1018,6 +1018,12 @@ msgstr "Überprüfen Sie Ihre Auswahl, bevor Sie abschließen — dieser Schritt
 msgid "modèles de projet"
 msgstr "Projektvorlagen"
 
+msgid "Latitude"
+msgstr "Breitengrad"
+
+msgid "Longitude"
+msgstr "Längengrad"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Konfigurationsprofil"

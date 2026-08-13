@@ -1018,6 +1018,12 @@ msgstr "Vérifiez vos choix avant de terminer — cette étape crée réellement
 msgid "modèles de projet"
 msgstr "modèles de projet"
 
+msgid "Latitude"
+msgstr "Latitude"
+
+msgid "Longitude"
+msgstr "Longitude"
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Profil de configuration"
