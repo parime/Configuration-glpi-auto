@@ -950,6 +950,18 @@
         </div>
 
         <div class="form-check form-switch mb-2">
+          <input type="hidden" name="field_unicity_enabled" value="0">
+          <input type="checkbox" name="field_unicity_enabled" value="1" class="form-check-input" id="cga-field-unicity-enabled" {{ config.field_unicity_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-field-unicity-enabled">{{ __('Interdire les numéros de série en double', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-field-unicity-fields" style="display: none;" class="mb-3">
+          <p class="text-muted small mb-1">{{ __('Bloque la création ou la modification d\'un élément si son numéro de série existe déjà sur un autre élément du même type — évite les doublons issus d\'une saisie manuelle ou d\'un import incohérent. Un numéro de série vide n\'est jamais considéré comme un doublon.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-0">
+            {% for rule in field_unicity_rules_preview %}{{ rule.label }}{% if not loop.last %}, {% endif %}{% endfor %}
+          </p>
+        </div>
+
+        <div class="form-check form-switch mb-2">
           <input type="hidden" name="kb_categories_enabled" value="0">
           <input type="checkbox" name="kb_categories_enabled" value="1" class="form-check-input" id="cga-kb-categories-enabled" {{ config.kb_categories_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-kb-categories-enabled">{{ __('Créer les catégories de la base de connaissances', 'configurationglpiauto') }}</label>
@@ -2303,6 +2315,7 @@
   var requestTypeTranslationsEnabledInput = wireSimpleToggle('cga-request-type-translations-enabled', 'cga-request-type-translations-fields');
   var userCategoriesEnabledInput = wireSimpleToggle('cga-user-categories-enabled', 'cga-user-categories-fields');
   wireIconsToggle('cga-user-category-icons-enabled', '.cga-user-category-icon');
+  var fieldUnicityEnabledInput = wireSimpleToggle('cga-field-unicity-enabled', 'cga-field-unicity-fields');
   var kbCategoriesEnabledInput = document.getElementById('cga-kb-categories-enabled');
   var kbCategoriesFields = document.getElementById('cga-kb-categories-fields');
   function toggleKbCategoriesFields() {

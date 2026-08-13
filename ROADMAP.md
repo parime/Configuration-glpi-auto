@@ -673,12 +673,19 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    réellement de la donnée** (pas de case à cocher qui ne ferait rien pour un pays non couvert).
    Nécessite une vraie source de données par pays (calendrier des jours fériés), pas encore
    identifiée/vérifiée.
-6. **Unicité des champs (`FieldUnicity`)** — écran natif repéré (Configuration > Intitulés >
-   Unicité des champs, avec une sous-liste "Valeurs ignorées pour l'unicité"). Portée pas encore
-   étudiée : contrairement aux dropdowns de contenu, `FieldUnicity` définit des *règles* de
-   contrainte (ex. "le numéro de série doit être unique sur les Ordinateurs") — plus proche des
-   règles métier déjà volontairement laissées de côté ailleurs dans ce plugin (`RuleTicket`...)
-   qu'un simple contenu à préremplir. À auditer avant de se prononcer sur la faisabilité générique.
+6. ✅ **Unicité des champs (`FieldUnicity`) — fait (v0.43.0, 2026-08-13), scope réduit au cas
+   universel.** Audité avant construction (`src/FieldUnicity.php` du cœur GLPI) : contrairement aux
+   dropdowns de contenu, `FieldUnicity` définit bien des *règles* de contrainte, plus proche des
+   règles métier volontairement laissées de côté ailleurs dans ce plugin (`RuleTicket`...) —
+   mais parmi les 20 itemtypes éligibles (`$CFG_GLPI['unicity_types']`), un seul cas est
+   suffisamment universel pour un défaut sans jugement métier par organisation : le numéro de série
+   ne doit pas être dupliqué sur les six types d'actifs matériel sérialisables (Ordinateurs, Écrans,
+   Matériel réseau, Périphériques, Téléphones, Imprimantes) — recommandation ITAM standard,
+   indépendante du secteur. `action_refuse` (bloque) plutôt que `action_notify` (nécessiterait un
+   gabarit de notification lié, même écueil que les gabarits liés de `WaitReasonBuilder`). Vérifié
+   dans `CommonDBTM::checkUnicity()` : un numéro de série vide n'est jamais traité comme un
+   doublon, donc aucun risque de bloquer la création de plusieurs actifs sans série renseignée.
+   Vérifié en réel : les 6 règles créées avec les bons champs, resoumission sans doublon.
 7. ✅ **Adresse native de l'Entité (`Entity`), distincte du Lieu — fait (v0.40.0, 2026-08-13).**
    Repéré sur l'onglet "Adresse" natif d'une entité (`front/entity.form.php`) : `glpi_entities` a
    ses propres champs téléphone/fax/site web/e-mail/code postal/ville/état/pays/adresse/latitude/
