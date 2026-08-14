@@ -895,6 +895,13 @@
         </ul>
 
         <hr class="my-3">
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="validation_supervisor_routing_enabled" value="0">
+          <input type="checkbox" name="validation_supervisor_routing_enabled" value="1" class="form-check-input" id="cga-validation-supervisor-routing-enabled" {{ config.validation_supervisor_routing_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-validation-supervisor-routing-enabled">{{ __('Validation automatique par le supérieur hiérarchique du demandeur (« N+1 »)', 'configurationglpiauto') }}</label>
+        </div>
+        <p class="text-muted small mb-3">{{ __('Envoie automatiquement une demande d\'approbation au supérieur hiérarchique du demandeur (champ natif GLPI « Superviseur ») pour chaque ticket de type Demande. Décochée par défaut, contrairement au reste de cette page : ceci change un vrai comportement (approbation obligatoire), pas juste du contenu — et ne fait quelque chose que si le champ Superviseur des utilisateurs est renseigné (import LDAP ou saisie manuelle). Sans supérieur renseigné, aucune validation n\'est créée.', 'configurationglpiauto') }}</p>
+
         <h4 class="mb-1">{{ __('Marketplace & plugins recommandés', 'configurationglpiauto') }}</h4>
         <p class="text-muted small mb-2">{{ __('Optionnel : une clé d\'enregistrement GLPI Network (au moins gratuite) débloque le marketplace natif de GLPI (Configuration > Plugins > Marketplace) — sans elle, la liste des plugins y reste vide.', 'configurationglpiauto') }}</p>
         <div class="mb-3" style="max-width: 560px;">

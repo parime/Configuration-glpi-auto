@@ -56,6 +56,7 @@ use GlpiPlugin\Configurationglpiauto\TaskCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\TaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\UserCategoryBuilder;
+use GlpiPlugin\Configurationglpiauto\ValidationRoutingBuilder;
 use GlpiPlugin\Configurationglpiauto\ValidationTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\VipBuilder;
 use GlpiPlugin\Configurationglpiauto\WaitReasonBuilder;
@@ -406,6 +407,7 @@ if (isset($_POST['finish'])) {
     $satisfactionSurveyCreated = (new SatisfactionSurveyBuilder())->build($config);
     $vipGroupCreated = (new VipBuilder())->build($config);
     $tagsCreated = (new TagBuilder())->build($config);
+    $validationRoutingCreated = (new ValidationRoutingBuilder())->build($config);
     // Reuses $locationDataByPath (same physical address, no reason to type it twice) plus its own
     // phonenumber/fax/website/email fields, with no Location equivalent.
     $entityCommsByPath = !empty($config->fields['entity_native_address_enabled']) ? collectEntityCommsFromPost() : [];
@@ -629,6 +631,9 @@ if (isset($_POST['finish'])) {
     }
     if ($tagsCreated > 0) {
         $messages[] = sprintf(__('%d tag(s) créé(s) (plugin Tag).', 'configurationglpiauto'), $tagsCreated);
+    }
+    if ($validationRoutingCreated > 0) {
+        $messages[] = __('Règle de validation automatique (supérieur hiérarchique) créée.', 'configurationglpiauto');
     }
     if ($userCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories d\'utilisateur créées.', 'configurationglpiauto'), $userCategoriesCreated);

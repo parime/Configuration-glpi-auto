@@ -174,10 +174,14 @@ basique, profils de démarrage.
    relances automatiques du Sprint 24 (bug réel corrigé au passage : les relances étaient créées
    mais jamais notifiées au demandeur).
 
-8. **Workflow de validation (approbation) — fait partiellement (Sprint 25, 2026-08-11).** Ajout
+8. **Workflow de validation (approbation) — fait (Sprint 25 puis v0.56.0, 2026-08-14).** Ajout
    d'une étape "Validation comité (2/3)" en plus de la "Validation" (100%) native, pour les
-   décisions collégiales. Le routage automatique vers un valideur (ex : manager N+1) reste hors
-   périmètre — dépend d'une hiérarchie LDAP/organisationnelle propre à chaque instance.
+   décisions collégiales. ✅ **Routage automatique vers le supérieur hiérarchique (N+1) — fait
+   (v0.56.0, 2026-08-14), sur demande explicite de l'utilisateur.** `ValidationRoutingBuilder`
+   (nouveau) : mécanisme 100% natif GLPI (`RuleTicket` + action `responsible_id_validate`, lit
+   `glpi_users.users_id_supervisor`), voir CHANGELOG pour le détail technique. Dépend toujours de
+   ce champ étant renseigné par organisation (LDAP ou saisie manuelle) — vérifié en réel que
+   l'absence de superviseur ne casse rien (aucune validation créée plutôt qu'une ligne invalide).
 
 9. **ISO 27001 — journalisation et piste d'audit.** La norme exige que les logs de sécurité
    couvrent qui/quoi/quand/où/comment (authentification, changements de droits, changements de
