@@ -127,14 +127,6 @@ class ManufacturerDictionaryBuilder
     }
 
     /**
-     * @return array<string, array<int, string>>
-     */
-    public static function getPreview(): array
-    {
-        return self::VARIANTS;
-    }
-
-    /**
      * @param array<int, string> $variants
      */
     private function createRule(string $canonical, array $variants): void
