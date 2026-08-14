@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.55.1] - 2026-08-14
+
+### Removed
+- Nettoyage du dépôt demandé explicitement par l'utilisateur, chantier resté ouvert depuis
+  2026-08-14 (première tentative peu fiable, abandonnée). Audit refait avec une méthode fiable :
+  `git grep` par nom de classe sur tout le dépôt pour les 45 classes `src/*.php` (aucune morte),
+  audit des méthodes privées (aucune morte), audit des méthodes statiques publiques (plusieurs faux
+  positifs — dispatchées par le cœur GLPI, écartés après vérification — un vrai cas trouvé).
+  Supprimés : `ROADMAP_original.md` (doublon figé du 2026-08-07, supplanté depuis longtemps par
+  `ROADMAP.md`), `.tx/config` (config Transifex vestige de la même infrastructure jamais
+  fonctionnelle que `.github/workflows/locales-sync.yml`, déjà supprimé en v0.30.0),
+  `ManufacturerDictionaryBuilder::getPreview()` (méthode publique jamais câblée dans le wizard,
+  contrairement à ses équivalents sur d'autres builders). `logo.png`/`misc/logos/logo.png` et
+  `tools/HEADER` vérifiés et confirmés légitimes malgré une apparence de doublon/fichier isolé — non
+  touchés.
+
 ## [0.55.0] - 2026-08-14
 
 ### Added
