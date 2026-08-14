@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.55.0] - 2026-08-14
+
+### Added
+- `TagBuilder` (nouveau) — troisième intégration cross-plugin, même schéma que
+  `SatisfactionSurveyBuilder`/`VipBuilder` : quand le plugin tiers "Tag" (`tag`) est installé et
+  activé, l'étape "Réglages généraux GLPI" propose de créer une bibliothèque de 6 tags génériques
+  (Prioritaire, Urgent, À vérifier, Obsolète, Garantie active, Confidentiel), chacun avec une couleur
+  distincte, utilisables sur tout objet GLPI (`type_menu` laissé vide = tag global, confirmé via
+  `PluginTagTag::canItemtype()`). Section absente du formulaire si le plugin n'est pas installé.
+  Vérifié dans remise-glpi (README/ARCHITECTURE via `gh api`) qu'aucune fonctionnalité de tag
+  n'existe déjà là-bas — pas de doublon avec le plugin sœur de l'utilisateur. Écrit directement dans
+  `glpi_plugin_tag_tags` via `$DB` (pas de dépendance dure vers les classes PHP du plugin tiers).
+  Volontairement pas d'automatisation sur l'affectation réelle des tags aux tickets/matériels
+  (`glpi_plugin_tag_tagitems`) — seules les définitions de tags sont généralisables, leur usage
+  réel dépend de chaque organisation. Vérifié en réel : section absente si le plugin est désactivé,
+  6 tags créés à la soumission, resoumission idempotente (pas de doublon).
+
 ## [0.54.1] - 2026-08-14
 
 ### Fixed

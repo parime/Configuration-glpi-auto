@@ -51,6 +51,7 @@ use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\SolutionLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use GlpiPlugin\Configurationglpiauto\SupportTierBuilder;
+use GlpiPlugin\Configurationglpiauto\TagBuilder;
 use GlpiPlugin\Configurationglpiauto\TaskCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\TaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
@@ -404,6 +405,7 @@ if (isset($_POST['finish'])) {
     $countryHolidaysCreated = (new CountryHolidayBuilder())->build($config, array_column($locationDataByPath, 'country'));
     $satisfactionSurveyCreated = (new SatisfactionSurveyBuilder())->build($config);
     $vipGroupCreated = (new VipBuilder())->build($config);
+    $tagsCreated = (new TagBuilder())->build($config);
     // Reuses $locationDataByPath (same physical address, no reason to type it twice) plus its own
     // phonenumber/fax/website/email fields, with no Location equivalent.
     $entityCommsByPath = !empty($config->fields['entity_native_address_enabled']) ? collectEntityCommsFromPost() : [];
@@ -625,6 +627,9 @@ if (isset($_POST['finish'])) {
     if ($vipGroupCreated > 0) {
         $messages[] = __('Groupe "VIP" créé et activé (plugin VIP).', 'configurationglpiauto');
     }
+    if ($tagsCreated > 0) {
+        $messages[] = sprintf(__('%d tag(s) créé(s) (plugin Tag).', 'configurationglpiauto'), $tagsCreated);
+    }
     if ($userCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories d\'utilisateur créées.', 'configurationglpiauto'), $userCategoriesCreated);
     }
@@ -705,6 +710,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'glpi_network_registration_key' => \GLPINetwork::getRegistrationKey(),
     'satisfaction_plugin_active' => SatisfactionSurveyBuilder::isThirdPartyPluginActive(),
     'vip_plugin_active' => VipBuilder::isThirdPartyPluginActive(),
+    'tag_plugin_active' => TagBuilder::isThirdPartyPluginActive(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
