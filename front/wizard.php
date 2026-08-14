@@ -58,6 +58,7 @@ use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\UserCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\ValidationRoutingBuilder;
 use GlpiPlugin\Configurationglpiauto\ValidationTemplateBuilder;
+use GlpiPlugin\Configurationglpiauto\VehicleAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\VipBuilder;
 use GlpiPlugin\Configurationglpiauto\WaitReasonBuilder;
 
@@ -384,6 +385,9 @@ if (isset($_POST['finish'])) {
     }
 
     $categoriesCreated = (new CategoryBuilder())->build($config);
+    // Runs right after CategoryBuilder: triggered by the same "Flotte Automobile" branch checkbox,
+    // no dedicated toggle of its own.
+    $vehicleAssetCreated = (new VehicleAssetBuilder())->build($config);
     $servicesCreated = (new ServiceCatalogBuilder())->build($config);
     $statesCreated = (new StateBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
@@ -521,6 +525,9 @@ if (isset($_POST['finish'])) {
     }
     if ($categoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de tickets créées.', 'configurationglpiauto'), $categoriesCreated);
+    }
+    if ($vehicleAssetCreated > 0) {
+        $messages[] = __('Actif personnalisé "Véhicule" créé (branche Flotte Automobile).', 'configurationglpiauto');
     }
     if ($servicesCreated > 0) {
         $messages[] = sprintf(__('%d services créés dans le catalogue.', 'configurationglpiauto'), $servicesCreated);
