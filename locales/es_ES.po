@@ -1180,6 +1180,9 @@ msgstr "horarios variables según el día"
 msgid "coupure déjeuner"
 msgstr "pausa para comer"
 
+msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
+msgstr "Activo personalizado \"Vehículo\" creado (rama Flota de Vehículos)."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Perfil de configuración"
