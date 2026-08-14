@@ -17,20 +17,32 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use ApplianceType;
+use BudgetType;
 use CableType;
 use CartridgeItemType;
 use CertificateType;
+use ClusterType;
 use ComputerType;
+use ConsumableItemType;
+use ContactType;
+use ContractType;
 use DeviceBatteryType;
 use DeviceCaseType;
 use DeviceHardDriveType;
+use DeviceSensorType;
+use DomainType;
+use LineType;
 use MonitorType;
 use NetworkEquipmentType;
+use PassiveDCEquipmentType;
 use PDUType;
 use PeripheralType;
 use PhoneType;
 use PrinterType;
 use RackType;
+use SupplierType;
+use VirtualMachineType;
 
 /**
  * Turns on `asset_types_enabled` into real `*Type` rows (`glpi_computertypes`,
@@ -63,15 +75,37 @@ use RackType;
  * `Assets_AssetType` (tied to a specific `AssetDefinition` a plugin/admin has to create first, not
  * a standalone global dropdown).
  *
- * All 14 `*Type` classes extend `CommonDropdown` (directly or via `CommonType`/`CommonDeviceType`)
+ * Third pass added 12 more, closing out every remaining table from the original ~30-table audit
+ * except `SoftwareLicenseType` (tree, still deferred) and the two already-excluded ones above:
+ * `Appliance`/`Budget`/`Cluster`/`ConsumableItem`/`Contact`/`Contract`/`Domain`/`Line`/
+ * `PassiveDCEquipment`/`Supplier`/`VirtualMachine`/`DeviceSensor`. `DeviceGeneric` and
+ * `DatabaseInstance`, also from the original audit, are deliberately still excluded — the first is
+ * too generic a bucket for meaningful standard content, the second risks drifting into a DBMS
+ * product list (Manufacturer-territory) rather than a real categorisation. `ConsumableItemType`'s
+ * content deliberately doesn't repeat `CartridgeItemType`'s toner/ink/drum entries — `Consumable`
+ * and `CartridgeItem` are distinct GLPI objects (general consumables vs. printer-supply tracking
+ * with its own stock mechanism), so the two type lists stay complementary, not duplicated.
+ * `VirtualMachineType` is unrelated to `ServerAssetBuilder`'s own free-text "hyperviseur" custom
+ * field — this dropdown feeds GLPI's native, inventory-populated `VirtualMachine` component objects
+ * (via `HasVirtualMachineCapacity`), not the custom asset's own field.
+ *
+ * All 26 `*Type` classes extend `CommonDropdown` (directly or via `CommonType`/`CommonDeviceType`)
  * with no `$can_be_translated` override, so the inherited default (`true`) applies — same icon
- * mechanism as `ManufacturerBuilder`. Three (`RackType`/`PDUType`/`CertificateType`) also carry
- * `entities_id`/`is_recursive` columns (confirmed via `DESCRIBE`) — scoped to the root entity,
- * recursive, same as every other entity-scoped dropdown this plugin creates.
+ * mechanism as `ManufacturerBuilder`. Six (`RackType`/`PDUType`/`CertificateType`/`ApplianceType`/
+ * `DomainType`/`ClusterType`) also carry `entities_id`/`is_recursive` columns (confirmed via
+ * `DESCRIBE`) — scoped to the root entity, recursive, same as every other entity-scoped dropdown
+ * this plugin creates.
  */
 class AssetTypeBuilder
 {
-    private const ENTITY_SCOPED_ITEMTYPES = [RackType::class, PDUType::class, CertificateType::class];
+    private const ENTITY_SCOPED_ITEMTYPES = [
+        RackType::class,
+        PDUType::class,
+        CertificateType::class,
+        ApplianceType::class,
+        DomainType::class,
+        ClusterType::class,
+    ];
     /**
      * @var array<string, array<int, array{name: string, icon: string}>>
      */
@@ -164,6 +198,99 @@ class AssetTypeBuilder
             ['name' => 'Cartouche d\'encre', 'icon' => '🖋️'],
             ['name' => 'Tambour (drum)', 'icon' => '🥁'],
             ['name' => 'Kit de maintenance', 'icon' => '🧰'],
+        ],
+        ApplianceType::class => [
+            ['name' => 'Pare-feu', 'icon' => '🛡️'],
+            ['name' => 'Répartiteur de charge', 'icon' => '⚖️'],
+            ['name' => 'Sauvegarde', 'icon' => '💾'],
+            ['name' => 'Supervision', 'icon' => '📊'],
+            ['name' => 'Stockage (NAS/SAN)', 'icon' => '🗄️'],
+            ['name' => 'VPN', 'icon' => '🔐'],
+            ['name' => 'Proxy', 'icon' => '🔀'],
+        ],
+        BudgetType::class => [
+            ['name' => 'Investissement (CAPEX)', 'icon' => '💰'],
+            ['name' => 'Fonctionnement (OPEX)', 'icon' => '🔄'],
+            ['name' => 'Exceptionnel', 'icon' => '⚡'],
+            ['name' => 'Projet', 'icon' => '📁'],
+        ],
+        ClusterType::class => [
+            ['name' => 'Haute disponibilité', 'icon' => '🛡️'],
+            ['name' => 'Répartition de charge', 'icon' => '⚖️'],
+            ['name' => 'Calcul distribué', 'icon' => '🖥️'],
+            ['name' => 'Stockage', 'icon' => '💾'],
+        ],
+        ConsumableItemType::class => [
+            ['name' => 'Papier', 'icon' => '📄'],
+            ['name' => 'Pile / Batterie', 'icon' => '🔋'],
+            ['name' => 'Câble', 'icon' => '🔌'],
+            ['name' => 'Support de stockage (CD/DVD/USB)', 'icon' => '💿'],
+            ['name' => 'Badge d\'accès', 'icon' => '🪪'],
+            ['name' => 'Fourniture de bureau', 'icon' => '📎'],
+        ],
+        ContactType::class => [
+            ['name' => 'Commercial', 'icon' => '💼'],
+            ['name' => 'Technique', 'icon' => '🔧'],
+            ['name' => 'Support', 'icon' => '🎧'],
+            ['name' => 'Direction', 'icon' => '👔'],
+            ['name' => 'Comptabilité', 'icon' => '💰'],
+            ['name' => 'Juridique', 'icon' => '⚖️'],
+        ],
+        ContractType::class => [
+            ['name' => 'Maintenance', 'icon' => '🔧'],
+            ['name' => 'Location', 'icon' => '📋'],
+            ['name' => 'Assurance', 'icon' => '🛡️'],
+            ['name' => 'Support', 'icon' => '☎️'],
+            ['name' => 'Garantie', 'icon' => '✅'],
+            ['name' => 'Prestation de services', 'icon' => '🤝'],
+            ['name' => 'Abonnement', 'icon' => '🔄'],
+        ],
+        DomainType::class => [
+            ['name' => 'Nom de domaine internet', 'icon' => '🌐'],
+            ['name' => 'Sous-domaine', 'icon' => '🔗'],
+            ['name' => 'Domaine interne (annuaire)', 'icon' => '🏢'],
+            ['name' => 'Domaine technique (DNS/certificat)', 'icon' => '🔒'],
+        ],
+        LineType::class => [
+            ['name' => 'Fixe', 'icon' => '☎️'],
+            ['name' => 'Mobile', 'icon' => '📱'],
+            ['name' => 'Internet', 'icon' => '🌐'],
+            ['name' => 'VoIP', 'icon' => '💬'],
+            ['name' => 'Satellite', 'icon' => '📡'],
+        ],
+        PassiveDCEquipmentType::class => [
+            ['name' => 'Panneau de brassage', 'icon' => '🔌'],
+            ['name' => 'Baie de brassage', 'icon' => '🗄️'],
+            ['name' => 'Goulotte', 'icon' => '📏'],
+            ['name' => 'Chemin de câbles', 'icon' => '🛤️'],
+            ['name' => 'Armoire technique', 'icon' => '🚪'],
+        ],
+        SupplierType::class => [
+            ['name' => 'Fournisseur matériel', 'icon' => '📦'],
+            ['name' => 'Prestataire de services', 'icon' => '🤝'],
+            ['name' => 'Opérateur télécom', 'icon' => '📡'],
+            ['name' => 'Revendeur', 'icon' => '🏪'],
+            ['name' => 'Éditeur logiciel', 'icon' => '💿'],
+            ['name' => 'Intégrateur', 'icon' => '🔧'],
+        ],
+        VirtualMachineType::class => [
+            ['name' => 'VMware ESXi', 'icon' => '🖥️'],
+            ['name' => 'Microsoft Hyper-V', 'icon' => '🖥️'],
+            ['name' => 'Proxmox VE', 'icon' => '🖥️'],
+            ['name' => 'KVM', 'icon' => '🖥️'],
+            ['name' => 'Citrix XenServer', 'icon' => '🖥️'],
+            ['name' => 'VirtualBox', 'icon' => '📦'],
+            ['name' => 'Docker', 'icon' => '🐳'],
+            ['name' => 'LXC', 'icon' => '📦'],
+        ],
+        DeviceSensorType::class => [
+            ['name' => 'Température', 'icon' => '🌡️'],
+            ['name' => 'Humidité', 'icon' => '💧'],
+            ['name' => 'Fumée', 'icon' => '🔥'],
+            ['name' => 'Mouvement', 'icon' => '🚶'],
+            ['name' => 'Ouverture de porte', 'icon' => '🚪'],
+            ['name' => 'Fuite d\'eau', 'icon' => '💧'],
+            ['name' => 'Vibration', 'icon' => '📳'],
         ],
     ];
 
