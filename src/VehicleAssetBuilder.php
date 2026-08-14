@@ -28,6 +28,7 @@ use Glpi\Asset\Capacity\HasNotepadCapacity;
 use Glpi\Asset\Capacity\IsReservableCapacity;
 use Glpi\Asset\CustomFieldDefinition;
 use Glpi\Asset\CustomFieldType\DateType;
+use Glpi\Asset\CustomFieldType\DropdownType;
 use Glpi\Asset\CustomFieldType\StringType;
 
 /**
@@ -60,9 +61,20 @@ use Glpi\Asset\CustomFieldType\StringType;
  *
  * Custom fields cover exactly what the original idea named (immatriculation, type de carburant,
  * date de contrôle technique) plus the two other pieces of information a real vehicle record is
- * incomplete without (mise en circulation, expiration assurance) — all free-text/date, no invented
- * dropdown list (e.g. for fuel types) requiring its own native table this plugin would have to
- * maintain.
+ * incomplete without (mise en circulation, expiration assurance). "Immatriculation" is marked
+ * `required` (a real, GLPI-native per-field option — `Glpi\Asset\CustomFieldType\AbstractType::
+ * getOptions()` exposes a `BooleanOption('required', 'Mandatory')` on every field type, the exact
+ * checkbox an admin would tick by hand on the "Champs" tab; not a client-side-only hint). "Type de
+ * carburant" is a real dropdown (`FuelType`, this plugin's own `CommonDropdown` — GLPI has no
+ * native fuel-type concept to reuse, unlike every other dropdown this plugin populates) seeded
+ * with common fuel types, extended on every resubmit the same way `ManufacturerDictionaryBuilder`
+ * extends its own list, independently of whether the Vehicule definition itself already exists.
+ * No true database-level uniqueness on immatriculation, deliberately: GLPI's `FieldUnicity`
+ * mechanism (`FieldUnicityBuilder` elsewhere in this plugin) only matches on real database columns
+ * (confirmed in `FieldUnicity::dropdownFields()` — it lists `$DB->listFields($table)`), and this
+ * field lives inside the shared `glpi_assets_assets.custom_fields` JSON blob, invisible to it. The
+ * native `serial` column would have been eligible instead, but the user explicitly chose to keep
+ * the clearer "Immatriculation" label over gaining server-side uniqueness.
  */
 class VehicleAssetBuilder
 {
@@ -81,11 +93,31 @@ class VehicleAssetBuilder
     ];
 
     private const FIELDS = [
-        ['system_name' => 'immatriculation', 'label' => 'Immatriculation', 'type' => StringType::class],
-        ['system_name' => 'type_carburant', 'label' => 'Type de carburant', 'type' => StringType::class],
+        [
+            'system_name' => 'immatriculation',
+            'label' => 'Immatriculation',
+            'type' => StringType::class,
+            'field_options' => ['required' => true],
+        ],
+        [
+            'system_name' => 'type_carburant',
+            'label' => 'Type de carburant',
+            'type' => DropdownType::class,
+            'itemtype' => FuelType::class,
+        ],
         ['system_name' => 'date_mise_circulation', 'label' => 'Date de mise en circulation', 'type' => DateType::class],
         ['system_name' => 'date_controle_technique', 'label' => 'Date du prochain contrôle technique', 'type' => DateType::class],
         ['system_name' => 'date_expiration_assurance', 'label' => "Date d'expiration de l'assurance", 'type' => DateType::class],
+    ];
+
+    private const FUEL_TYPES = [
+        'Essence',
+        'Diesel',
+        'Électrique',
+        'Hybride rechargeable',
+        'Hybride',
+        'GPL',
+        'Hydrogène',
     ];
 
     private const DEFAULT_RIGHTS_PROFILES = ['Super-Admin', 'Admin'];
@@ -95,6 +127,11 @@ class VehicleAssetBuilder
         if (!in_array('flotte', $config->getCategoryBranches(), true)) {
             return 0;
         }
+
+        // Independent of whether the definition below already exists — an upgrade that adds new
+        // fuel types to the const list should still benefit an admin who ran the wizard before,
+        // same reasoning as ManufacturerDictionaryBuilder::addMissingCriteria().
+        $this->seedFuelTypes();
 
         $definition = new AssetDefinition();
         if ($definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME])) {
@@ -113,15 +150,32 @@ class VehicleAssetBuilder
         ]);
 
         foreach (self::FIELDS as $field) {
-            (new CustomFieldDefinition())->add([
+            $input = [
                 'assets_assetdefinitions_id' => $definitionId,
                 'system_name' => $field['system_name'],
                 'label' => $field['label'],
                 'type' => $field['type'],
-            ]);
+            ];
+            if (isset($field['itemtype'])) {
+                $input['itemtype'] = $field['itemtype'];
+            }
+            if (isset($field['field_options'])) {
+                $input['field_options'] = $field['field_options'];
+            }
+            (new CustomFieldDefinition())->add($input);
         }
 
         return 1;
+    }
+
+    private function seedFuelTypes(): void
+    {
+        foreach (self::FUEL_TYPES as $name) {
+            $fuelType = new FuelType();
+            if (!$fuelType->getFromDBByCrit(['name' => $name])) {
+                $fuelType->add(['name' => $name]);
+            }
+        }
     }
 
     /**

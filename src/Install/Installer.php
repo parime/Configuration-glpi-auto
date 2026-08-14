@@ -35,6 +35,8 @@ final class Installer
 
     private const CONFIGS_TABLE = 'glpi_plugin_configurationglpiauto_configs';
 
+    private const FUELTYPES_TABLE = 'glpi_plugin_configurationglpiauto_fueltypes';
+
     public function install(Migration $migration): bool
     {
         global $DB;
@@ -327,6 +329,28 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_end', 'string', ['value' => '13:00']);
         }
 
+        // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape
+        // as glpi_manufacturers (id/name/comment/dates), no entities_id: a fuel type is a universal
+        // reference value, not scoped to any one entity. Target of VehicleAssetBuilder's
+        // "Type de carburant" DropdownType custom field.
+        if (!$DB->tableExists(self::FUELTYPES_TABLE)) {
+            $charset   = DBConnection::getDefaultCharset();
+            $collation = DBConnection::getDefaultCollation();
+            $keySign   = DBConnection::getDefaultPrimaryKeySignOption();
+
+            $query = "CREATE TABLE `" . self::FUELTYPES_TABLE . "` (
+                `id` int {$keySign} NOT NULL AUTO_INCREMENT,
+                `name` varchar(255) DEFAULT NULL,
+                `comment` text,
+                `date_creation` timestamp NULL DEFAULT NULL,
+                `date_mod` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                KEY `name` (`name`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
+
+            $DB->doQuery($query) or die($DB->error());
+        }
+
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
         // pratiques que n'importe quel profil peut suivre — retires de la liste des profils
         // proposes (Sprint 11, voir ConfigurationProfile::getSuggestedDefaults()). Desactivation,
@@ -473,6 +497,7 @@ final class Installer
 
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::PROFILES_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::CONFIGS_TABLE . "`");
+        $DB->doQuery("DROP TABLE IF EXISTS `" . self::FUELTYPES_TABLE . "`");
 
         Profile::uninstall();
 
