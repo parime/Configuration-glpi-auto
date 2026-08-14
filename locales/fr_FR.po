@@ -418,9 +418,6 @@ msgstr "Ex : Paris, Lyon..."
 msgid "Extension GD ou Imagick disponible"
 msgstr "Extension GD ou Imagick disponible"
 
-msgid "Fermeture"
-msgstr "Fermeture"
-
 msgid "Gabarit de nom de groupe AD/LDAP"
 msgstr "Gabarit de nom de groupe AD/LDAP"
 
@@ -463,8 +460,8 @@ msgstr "Interface complète (aucun champ masqué)"
 msgid "Jour de l'An, Fête du Travail, Victoire 1945, Fête nationale, Assomption, Toussaint, Armistice, Noël. Sans ça, les échéances SLA/OLA continuent de courir un jour férié. Les jours mobiles (Pâques, Ascension, Pentecôte) ne sont pas inclus — ils changent de date chaque année, à ajouter à la main."
 msgstr "Jour de l'An, Fête du Travail, Victoire 1945, Fête nationale, Assomption, Toussaint, Armistice, Noël. Sans ça, les échéances SLA/OLA continuent de courir un jour férié. Les jours mobiles (Pâques, Ascension, Pentecôte) ne sont pas inclus — ils changent de date chaque année, à ajouter à la main."
 
-msgid "Jours ouvrés"
-msgstr "Jours ouvrés"
+msgid "Jours ouvrés et horaires"
+msgstr "Jours ouvrés et horaires"
 
 msgid "L'OLA est un engagement interne entre le support et les équipes techniques, plus court que le SLA externe — il doit être tenu pour que le SLA le soit aussi."
 msgstr "L'OLA est un engagement interne entre le support et les équipes techniques, plus court que le SLA externe — il doit être tenu pour que le SLA le soit aussi."
@@ -570,9 +567,6 @@ msgstr "Optionnel : une couleur principale appliquée à l'interface des entité
 
 msgid "Optionnel : une règle d'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l'utilisateur lors de la synchronisation — ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n'y a rien à générer."
 msgstr "Optionnel : une règle d'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l'utilisateur lors de la synchronisation — ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n'y a rien à générer."
-
-msgid "Ouverture"
-msgstr "Ouverture"
 
 msgid "Palette GLPI native définie par défaut."
 msgstr "Palette GLPI native définie par défaut."
@@ -1164,6 +1158,27 @@ msgstr "Envoie automatiquement une demande d'approbation au supérieur hiérarch
 
 msgid "Règle de validation automatique (supérieur hiérarchique) créée."
 msgstr "Règle de validation automatique (supérieur hiérarchique) créée."
+
+msgid "Un horaire par jour coché — modifiez-le librement pour un jour qui diffère des autres (ex. vendredi 9h-12h seulement)."
+msgstr "Un horaire par jour coché — modifiez-le librement pour un jour qui diffère des autres (ex. vendredi 9h-12h seulement)."
+
+msgid "Coupure déjeuner"
+msgstr "Coupure déjeuner"
+
+msgid "Début pause"
+msgstr "Début pause"
+
+msgid "Fin pause"
+msgstr "Fin pause"
+
+msgid "Si activée, tout jour dont les horaires couvrent la pause est scindé en deux plages (matin + après-midi) au lieu d'une plage continue."
+msgstr "Si activée, tout jour dont les horaires couvrent la pause est scindé en deux plages (matin + après-midi) au lieu d'une plage continue."
+
+msgid "horaires variables selon les jours"
+msgstr "horaires variables selon les jours"
+
+msgid "coupure déjeuner"
+msgstr "coupure déjeuner"
 
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"

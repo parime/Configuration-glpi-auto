@@ -175,20 +175,36 @@
             </div>
 
             <div class="mb-3">
-              <label class="form-label">{{ __('Jours ouvrés', 'configurationglpiauto') }}</label>
+              <label class="form-label">{{ __('Jours ouvrés et horaires', 'configurationglpiauto') }}</label>
+              <p class="text-muted small mb-2">{{ __('Un horaire par jour coché — modifiez-le librement pour un jour qui diffère des autres (ex. vendredi 9h-12h seulement).', 'configurationglpiauto') }}</p>
               <div id="cga-calendar-days"></div>
+              <input type="hidden" name="calendar_begin" value="{{ config.calendar_begin|default('08:00') }}">
+              <input type="hidden" name="calendar_end" value="{{ config.calendar_end|default('18:00') }}">
             </div>
 
-            <div class="row" style="max-width: 320px;">
-              <div class="col mb-3">
-                <label class="form-label">{{ __('Ouverture', 'configurationglpiauto') }}</label>
-                <input type="time" name="calendar_begin" class="form-control" value="{{ config.calendar_begin|default('08:00') }}">
+            <div class="form-check form-switch mb-2">
+              <input type="hidden" name="calendar_lunch_break_enabled" value="0">
+              <input
+                type="checkbox"
+                name="calendar_lunch_break_enabled"
+                value="1"
+                class="form-check-input"
+                id="cga-calendar-lunch-break-enabled"
+                {{ config.calendar_lunch_break_enabled|default(0) ? 'checked' : '' }}
+              >
+              <label class="form-check-label" for="cga-calendar-lunch-break-enabled">{{ __('Coupure déjeuner', 'configurationglpiauto') }}</label>
+            </div>
+            <div class="row mb-2" id="cga-calendar-lunch-fields" style="max-width: 320px; display: none;">
+              <div class="col mb-2">
+                <label class="form-label">{{ __('Début pause', 'configurationglpiauto') }}</label>
+                <input type="time" name="calendar_lunch_begin" class="form-control" value="{{ config.calendar_lunch_begin|default('12:00') }}">
               </div>
-              <div class="col mb-3">
-                <label class="form-label">{{ __('Fermeture', 'configurationglpiauto') }}</label>
-                <input type="time" name="calendar_end" class="form-control" value="{{ config.calendar_end|default('18:00') }}">
+              <div class="col mb-2">
+                <label class="form-label">{{ __('Fin pause', 'configurationglpiauto') }}</label>
+                <input type="time" name="calendar_lunch_end" class="form-control" value="{{ config.calendar_lunch_end|default('13:00') }}">
               </div>
             </div>
+            <p class="text-muted small">{{ __('Si activée, tout jour dont les horaires couvrent la pause est scindé en deux plages (matin + après-midi) au lieu d\'une plage continue.', 'configurationglpiauto') }}</p>
 
             <div class="form-check form-switch mb-3">
               <input type="hidden" name="calendar_holidays_enabled" value="0">
@@ -1500,6 +1516,9 @@
     { value: 0, label: "{{ __('Dimanche')|e('js') }}" }
   ];
   var initialCalendarDays = {{ config.calendar_days|default('[1,2,3,4,5]')|raw }};
+  var initialCalendarDayHours = {{ config.calendar_day_hours|default('{}')|raw }};
+  var defaultCalendarBegin = "{{ config.calendar_begin|default('08:00')|e('js') }}";
+  var defaultCalendarEnd = "{{ config.calendar_end|default('18:00')|e('js') }}";
 
   var PRIORITY_LEVELS = {{ priority_levels|json_encode|raw }};
   var PRIORITY_LABELS = {{ priority_labels|json_encode|raw }};
@@ -1508,24 +1527,67 @@
   var calendarFields = document.getElementById('cga-calendar-fields');
   var calendarDaysContainer = document.getElementById('cga-calendar-days');
 
+  // One row per day: checkbox + label, plus a begin/end time pair that only matters (and is
+  // only visible) once that day is checked — lets a single day (e.g. Friday) carry different
+  // hours than the rest without a separate "override" flag to manage.
   DAYS.forEach(function (day) {
+    var dayHours = initialCalendarDayHours[String(day.value)] || initialCalendarDayHours[day.value];
+    var begin = (dayHours && dayHours.begin) || defaultCalendarBegin;
+    var end = (dayHours && dayHours.end) || defaultCalendarEnd;
+    var checked = initialCalendarDays.indexOf(day.value) !== -1;
+
+    var row = document.createElement('div');
+    row.className = 'd-flex align-items-center gap-2 mb-1 flex-wrap';
+
     var wrapper = document.createElement('div');
-    wrapper.className = 'form-check form-check-inline';
+    wrapper.className = 'form-check';
+    wrapper.style.minWidth = '110px';
     var input = document.createElement('input');
     input.type = 'checkbox';
     input.name = 'calendar_day[]';
     input.value = day.value;
     input.className = 'form-check-input';
     input.id = 'cga-calendar-day-' + day.value;
-    input.checked = initialCalendarDays.indexOf(day.value) !== -1;
+    input.checked = checked;
     var label = document.createElement('label');
     label.className = 'form-check-label';
     label.setAttribute('for', input.id);
     label.textContent = day.label;
     wrapper.appendChild(input);
     wrapper.appendChild(label);
-    calendarDaysContainer.appendChild(wrapper);
+    row.appendChild(wrapper);
+
+    var hoursWrap = document.createElement('div');
+    hoursWrap.className = 'd-flex align-items-center gap-1';
+    hoursWrap.style.display = checked ? '' : 'none';
+    var beginInput = document.createElement('input');
+    beginInput.type = 'time';
+    beginInput.className = 'form-control form-control-sm';
+    beginInput.style.width = '110px';
+    beginInput.name = 'calendar_day_hours[' + day.value + '][begin]';
+    beginInput.value = begin;
+    var sep = document.createElement('span');
+    sep.className = 'text-muted small';
+    sep.textContent = '—';
+    var endInput = document.createElement('input');
+    endInput.type = 'time';
+    endInput.className = 'form-control form-control-sm';
+    endInput.style.width = '110px';
+    endInput.name = 'calendar_day_hours[' + day.value + '][end]';
+    endInput.value = end;
+    hoursWrap.appendChild(beginInput);
+    hoursWrap.appendChild(sep);
+    hoursWrap.appendChild(endInput);
+    row.appendChild(hoursWrap);
+
+    input.addEventListener('change', function () {
+      hoursWrap.style.display = input.checked ? '' : 'none';
+    });
+
+    calendarDaysContainer.appendChild(row);
   });
+
+  var calendarLunchBreakInput = wireSimpleToggle('cga-calendar-lunch-break-enabled', 'cga-calendar-lunch-fields');
 
   function toggleCalendarFields() {
     calendarFields.style.display = calendarEnabledInput.checked ? '' : 'none';
@@ -2494,27 +2556,6 @@
     });
   }
 
-  function buildDayCheckboxes(container, selectedDays, idPrefix, onChange) {
-    container.innerHTML = '';
-    DAYS.forEach(function (day) {
-      var wrapper = document.createElement('div');
-      wrapper.className = 'form-check form-check-inline';
-      var input = document.createElement('input');
-      input.type = 'checkbox';
-      input.className = 'form-check-input';
-      input.id = idPrefix + '-day-' + day.value;
-      input.checked = selectedDays.indexOf(day.value) !== -1;
-      input.addEventListener('change', onChange);
-      var label = document.createElement('label');
-      label.className = 'form-check-label';
-      label.setAttribute('for', input.id);
-      label.textContent = day.label;
-      wrapper.appendChild(input);
-      wrapper.appendChild(label);
-      container.appendChild(wrapper);
-    });
-  }
-
   function readSharedTiers(fieldPrefix) {
     var tiers = {};
     PRIORITY_LEVELS.forEach(function (level) {
@@ -2587,7 +2628,8 @@
   function renderCalendarPerClientPanels() {
     calendarPerClientPanels.innerHTML = '';
     (window.cgaTree || []).forEach(function (node, i) {
-      var settings = (node.settings && node.settings.calendar) || { enabled: false, days: [1, 2, 3, 4, 5], begin: '08:00', end: '18:00' };
+      var settings = (node.settings && node.settings.calendar) || { enabled: false, days: [1, 2, 3, 4, 5], begin: '08:00', end: '18:00', dayHours: {}, lunchBreakEnabled: false, lunchBegin: '12:00', lunchEnd: '13:00' };
+      settings.dayHours = settings.dayHours || {};
 
       var card = document.createElement('div');
       card.className = 'card mb-2';
@@ -2626,24 +2668,106 @@
 
       var daysLabel = document.createElement('label');
       daysLabel.className = 'form-label d-block';
-      daysLabel.textContent = "{{ __('Jours ouvrés', 'configurationglpiauto')|e('js') }}";
+      daysLabel.textContent = "{{ __('Jours ouvrés et horaires', 'configurationglpiauto')|e('js') }}";
       fieldsWrap.appendChild(daysLabel);
       var daysContainer = document.createElement('div');
       daysContainer.className = 'mb-2';
       fieldsWrap.appendChild(daysContainer);
-      buildDayCheckboxes(daysContainer, settings.days, 'cga-cal-pc-' + i, function () {
-        settings.days = DAYS.filter(function (d) {
-          return document.getElementById('cga-cal-pc-' + i + '-day-' + d.value).checked;
-        }).map(function (d) { return d.value; });
-        writeBack();
-      });
 
-      var row = document.createElement('div');
-      row.className = 'row';
-      row.style.maxWidth = '320px';
+      function renderDayRows() {
+        daysContainer.innerHTML = '';
+        DAYS.forEach(function (day) {
+          var dayHours = settings.dayHours[day.value] || settings.dayHours[String(day.value)];
+          var begin = (dayHours && dayHours.begin) || settings.begin || '08:00';
+          var end = (dayHours && dayHours.end) || settings.end || '18:00';
+          var checked = settings.days.indexOf(day.value) !== -1;
+
+          var dayRow = document.createElement('div');
+          dayRow.className = 'd-flex align-items-center gap-2 mb-1 flex-wrap';
+
+          var wrapper = document.createElement('div');
+          wrapper.className = 'form-check';
+          wrapper.style.minWidth = '110px';
+          var input = document.createElement('input');
+          input.type = 'checkbox';
+          input.className = 'form-check-input';
+          input.id = 'cga-cal-pc-' + i + '-day-' + day.value;
+          input.checked = checked;
+          var label = document.createElement('label');
+          label.className = 'form-check-label';
+          label.setAttribute('for', input.id);
+          label.textContent = day.label;
+          wrapper.appendChild(input);
+          wrapper.appendChild(label);
+          dayRow.appendChild(wrapper);
+
+          var hoursWrap = document.createElement('div');
+          hoursWrap.className = 'd-flex align-items-center gap-1';
+          hoursWrap.style.display = checked ? '' : 'none';
+          var beginInput = document.createElement('input');
+          beginInput.type = 'time';
+          beginInput.className = 'form-control form-control-sm';
+          beginInput.style.width = '110px';
+          beginInput.value = begin;
+          var sep = document.createElement('span');
+          sep.className = 'text-muted small';
+          sep.textContent = '—';
+          var endInput = document.createElement('input');
+          endInput.type = 'time';
+          endInput.className = 'form-control form-control-sm';
+          endInput.style.width = '110px';
+          endInput.value = end;
+          hoursWrap.appendChild(beginInput);
+          hoursWrap.appendChild(sep);
+          hoursWrap.appendChild(endInput);
+          dayRow.appendChild(hoursWrap);
+
+          function writeDayHours() {
+            settings.dayHours[day.value] = { begin: beginInput.value, end: endInput.value };
+            writeBack();
+          }
+          beginInput.addEventListener('input', writeDayHours);
+          endInput.addEventListener('input', writeDayHours);
+
+          input.addEventListener('change', function () {
+            hoursWrap.style.display = input.checked ? '' : 'none';
+            settings.days = DAYS.filter(function (d) {
+              return document.getElementById('cga-cal-pc-' + i + '-day-' + d.value).checked;
+            }).map(function (d) { return d.value; });
+            if (input.checked) {
+              writeDayHours();
+            } else {
+              writeBack();
+            }
+          });
+
+          daysContainer.appendChild(dayRow);
+        });
+      }
+      renderDayRows();
+
+      var lunchSwitchWrap = document.createElement('div');
+      lunchSwitchWrap.className = 'form-check form-switch mb-2';
+      var lunchInput = document.createElement('input');
+      lunchInput.type = 'checkbox';
+      lunchInput.className = 'form-check-input';
+      lunchInput.id = 'cga-cal-pc-' + i + '-lunch';
+      lunchInput.checked = !!settings.lunchBreakEnabled;
+      var lunchLabel = document.createElement('label');
+      lunchLabel.className = 'form-check-label';
+      lunchLabel.setAttribute('for', lunchInput.id);
+      lunchLabel.textContent = "{{ __('Coupure déjeuner', 'configurationglpiauto')|e('js') }}";
+      lunchSwitchWrap.appendChild(lunchInput);
+      lunchSwitchWrap.appendChild(lunchLabel);
+      fieldsWrap.appendChild(lunchSwitchWrap);
+
+      var lunchRow = document.createElement('div');
+      lunchRow.className = 'row mb-2';
+      lunchRow.style.maxWidth = '320px';
+      lunchRow.style.display = settings.lunchBreakEnabled ? '' : 'none';
       [
-        ["{{ __('Ouverture', 'configurationglpiauto')|e('js') }}", 'begin'],
-        ["{{ __('Fermeture', 'configurationglpiauto')|e('js') }}", 'end'],
+        ["{{ __('Début pause', 'configurationglpiauto')|e('js') }}", 'lunchBegin'],
+        ["{{ __('Fin pause', 'configurationglpiauto')|e('js') }}", 'lunchEnd'],
       ].forEach(function (pair) {
         var col = document.createElement('div');
         col.className = 'col mb-2';
@@ -2660,9 +2784,16 @@
         });
         col.appendChild(lbl);
         col.appendChild(inp);
-        row.appendChild(col);
+        lunchRow.appendChild(col);
       });
-      fieldsWrap.appendChild(row);
+      fieldsWrap.appendChild(lunchRow);
+
+      lunchInput.addEventListener('change', function () {
+        settings.lunchBreakEnabled = lunchInput.checked;
+        lunchRow.style.display = lunchInput.checked ? '' : 'none';
+        writeBack();
+      });
+
       body.appendChild(fieldsWrap);
 
       enabledInput.addEventListener('change', function () {
@@ -3012,13 +3143,22 @@
     } else if (!calendarEnabledInput.checked) {
       calendarSummary = "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
     } else {
-      var checkedDays = DAYS.filter(function (d) {
+      var checkedDayDefs = DAYS.filter(function (d) {
         return document.getElementById('cga-calendar-day-' + d.value).checked;
-      }).map(function (d) { return d.label; });
+      });
+      var checkedDays = checkedDayDefs.map(function (d) { return d.label; });
       var name = document.querySelector('input[name="calendar_name"]').value || "{{ __('Horaires standard', 'configurationglpiauto')|e('js') }}";
-      var begin = document.querySelector('input[name="calendar_begin"]').value;
-      var end = document.querySelector('input[name="calendar_end"]').value;
-      calendarSummary = name + ' — ' + checkedDays.join(', ') + ' — ' + begin + '-' + end
+      var dayHoursTexts = checkedDayDefs.map(function (d) {
+        var b = document.querySelector('input[name="calendar_day_hours[' + d.value + '][begin]"]');
+        var e = document.querySelector('input[name="calendar_day_hours[' + d.value + '][end]"]');
+        return (b ? b.value : '') + '-' + (e ? e.value : '');
+      });
+      var uniformHours = dayHoursTexts.every(function (t) { return t === dayHoursTexts[0]; });
+      var hoursText = dayHoursTexts.length && uniformHours
+        ? dayHoursTexts[0]
+        : "{{ __('horaires variables selon les jours', 'configurationglpiauto')|e('js') }}";
+      var lunchText = calendarLunchBreakInput.checked ? ' + ' + "{{ __('coupure déjeuner', 'configurationglpiauto')|e('js') }}" : '';
+      calendarSummary = name + ' — ' + checkedDays.join(', ') + ' — ' + hoursText + lunchText
         + (document.getElementById('cga-calendar-holidays-enabled').checked ? ' + ' + "{{ __('jours fériés', 'configurationglpiauto')|e('js') }}" : '');
     }
     document.getElementById('cga-summary-calendar').textContent = calendarSummary;
@@ -3185,14 +3325,27 @@
         var cb = document.getElementById('cga-calendar-day-' + d.value);
         if (cb) {
           cb.checked = defaults.calendar_days.indexOf(d.value) !== -1;
+          cb.dispatchEvent(new Event('change', { bubbles: true }));
         }
       });
     }
     if (defaults.calendar_begin) {
       document.querySelector('input[name="calendar_begin"]').value = defaults.calendar_begin;
+      DAYS.forEach(function (d) {
+        var beginInput = document.querySelector('input[name="calendar_day_hours[' + d.value + '][begin]"]');
+        if (beginInput) {
+          beginInput.value = defaults.calendar_begin;
+        }
+      });
     }
     if (defaults.calendar_end) {
       document.querySelector('input[name="calendar_end"]').value = defaults.calendar_end;
+      DAYS.forEach(function (d) {
+        var endInput = document.querySelector('input[name="calendar_day_hours[' + d.value + '][end]"]');
+        if (endInput) {
+          endInput.value = defaults.calendar_end;
+        }
+      });
     }
     if (typeof defaults.calendar_holidays_enabled !== 'undefined') {
       document.getElementById('cga-calendar-holidays-enabled').checked = !!defaults.calendar_holidays_enabled;

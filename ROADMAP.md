@@ -45,12 +45,13 @@ Devenir **la référence Open Source** pour l'initialisation, la standardisation
 **Limites identifiées à corriger (Sprint 11, 2026-08-10)** — remontées en testant le wizard, pas
 encore implémentées :
 
-- **Calendrier — horaires par jour + coupure déjeuner.** `CalendarBuilder` ne construit
-  aujourd'hui qu'une seule plage horaire (`calendar_begin`/`calendar_end`), appliquée
-  uniformément à tous les jours cochés. Impossible d'avoir des horaires différents par jour
-  (ex : vendredi 9h-12h seulement) ou une coupure déjeuner (9h-12h puis 13h-18h) — chaque
-  entreprise a des horaires différents et doit pouvoir les saisir librement. Nécessite de
-  remplacer le couple begin/end unique par un ou plusieurs segments par jour.
+- ✅ **Calendrier — horaires par jour + coupure déjeuner — fait (v0.57.0, 2026-08-14), sur demande
+  explicite de l'utilisateur.** `CalendarBuilder` ne construisait qu'une seule plage horaire
+  uniforme pour tous les jours cochés — `Config::getCalendarDayHours()` (nouveau) permet
+  désormais un horaire propre par jour (ex. vendredi 9h-12h seulement), et une coupure déjeuner
+  optionnelle scinde en deux segments tout jour dont les horaires la couvrent réellement. Même
+  capacité côté calendrier par client/site (mode MSP). Voir CHANGELOG pour le détail technique et
+  la vérification en réel.
 
 - ✅ **Multi-entité "même entreprise" vs "MSP" — plus purement cosmétique, note obsolète mise à
   jour (2026-08-12).** Écrite tôt dans le projet, avant que les sprints suivants n'aient

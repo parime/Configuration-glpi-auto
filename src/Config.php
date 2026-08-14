@@ -136,6 +136,10 @@ class Config extends CommonDBTM
             'calendar_days' => json_encode([1, 2, 3, 4, 5]),
             'calendar_begin' => '08:00',
             'calendar_end' => '18:00',
+            'calendar_day_hours' => '{}',
+            'calendar_lunch_break_enabled' => 0,
+            'calendar_lunch_begin' => '12:00',
+            'calendar_lunch_end' => '13:00',
             'calendar_holidays_enabled' => 1,
             'branding_enabled' => 0,
             'branding_primary_color' => '#206bc4',
@@ -249,6 +253,35 @@ class Config extends CommonDBTM
         $days = json_decode((string) ($this->fields['calendar_days'] ?? '[]'), true);
 
         return is_array($days) ? array_map('intval', $days) : [];
+    }
+
+    /**
+     * Per-day overrides of the shared calendar's opening hours (e.g. "vendredi 9h-12h seulement")
+     * — only days that actually differ from `calendar_begin`/`calendar_end` need an entry here;
+     * CalendarBuilder falls back to the shared begin/end for any day missing from this map, so a
+     * single uniform schedule (the common case) needs no per-day data at all.
+     *
+     * @return array<int, array{begin: string, end: string}>
+     */
+    public function getCalendarDayHours(): array
+    {
+        $raw = json_decode((string) ($this->fields['calendar_day_hours'] ?? '{}'), true);
+        if (!is_array($raw)) {
+            return [];
+        }
+
+        $hours = [];
+        foreach ($raw as $day => $range) {
+            if (!is_array($range)) {
+                continue;
+            }
+            $hours[(int) $day] = [
+                'begin' => (string) ($range['begin'] ?? '08:00'),
+                'end' => (string) ($range['end'] ?? '18:00'),
+            ];
+        }
+
+        return $hours;
     }
 
     /**
@@ -389,6 +422,22 @@ class Config extends CommonDBTM
         if (isset($input['calendar_day'])) {
             $input['calendar_days'] = json_encode(array_values(array_map('intval', (array) $input['calendar_day'])));
             unset($input['calendar_day']);
+        }
+
+        if (isset($input['calendar_day_hours']) && is_array($input['calendar_day_hours'])) {
+            $input['calendar_day_hours'] = json_encode($this->sanitizeDayHours($input['calendar_day_hours']));
+        }
+
+        if (isset($input['calendar_lunch_break_enabled'])) {
+            $input['calendar_lunch_break_enabled'] = !empty($input['calendar_lunch_break_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['calendar_lunch_begin'])) {
+            $input['calendar_lunch_begin'] = $this->sanitizeTimeString((string) $input['calendar_lunch_begin']);
+        }
+
+        if (isset($input['calendar_lunch_end'])) {
+            $input['calendar_lunch_end'] = $this->sanitizeTimeString((string) $input['calendar_lunch_end']);
         }
 
         if (isset($input['branding_enabled'])) {
@@ -657,6 +706,12 @@ class Config extends CommonDBTM
                 : [1, 2, 3, 4, 5],
             'begin' => $this->sanitizeTimeString((string) ($calendar['begin'] ?? '08:00')),
             'end' => $this->sanitizeTimeString((string) ($calendar['end'] ?? '18:00')),
+            'dayHours' => is_array($calendar['dayHours'] ?? null)
+                ? $this->sanitizeDayHours($calendar['dayHours'])
+                : [],
+            'lunchBreakEnabled' => !empty($calendar['lunchBreakEnabled']),
+            'lunchBegin' => $this->sanitizeTimeString((string) ($calendar['lunchBegin'] ?? '12:00')),
+            'lunchEnd' => $this->sanitizeTimeString((string) ($calendar['lunchEnd'] ?? '13:00')),
         ];
     }
 
@@ -706,5 +761,26 @@ class Config extends CommonDBTM
     private function sanitizeTimeString(string $time): string
     {
         return preg_match('/^\d{2}:\d{2}$/', $time) ? $time : '08:00';
+    }
+
+    /**
+     * @param array<mixed, mixed> $dayHours Raw POST shape: {day => {begin, end}}.
+     * @return array<int, array{begin: string, end: string}>
+     */
+    private function sanitizeDayHours(array $dayHours): array
+    {
+        $clean = [];
+        foreach ($dayHours as $day => $range) {
+            $day = (int) $day;
+            if ($day < 0 || $day > 6 || !is_array($range)) {
+                continue;
+            }
+            $clean[$day] = [
+                'begin' => $this->sanitizeTimeString((string) ($range['begin'] ?? '08:00')),
+                'end' => $this->sanitizeTimeString((string) ($range['end'] ?? '18:00')),
+            ];
+        }
+
+        return $clean;
     }
 }
