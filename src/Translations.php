@@ -400,6 +400,94 @@ final class Translations
         'Cartouche d\'encre' => ['en_GB' => 'Ink cartridge', 'de_DE' => 'Tintenpatrone', 'it_IT' => 'Cartuccia d\'inchiostro', 'es_ES' => 'Cartucho de tinta'],
         'Tambour (drum)' => ['en_GB' => 'Drum', 'de_DE' => 'Trommel', 'it_IT' => 'Tamburo', 'es_ES' => 'Tambor'],
         'Kit de maintenance' => ['en_GB' => 'Maintenance kit', 'de_DE' => 'Wartungskit', 'it_IT' => 'Kit di manutenzione', 'es_ES' => 'Kit de mantenimiento'],
+
+        // ---- AssetTypeBuilder (glpi_appliancetypes) ----
+        'Sauvegarde' => ['en_GB' => 'Backup', 'de_DE' => 'Sicherung', 'it_IT' => 'Backup', 'es_ES' => 'Copia de seguridad'],
+        'Supervision' => ['en_GB' => 'Monitoring', 'de_DE' => 'Überwachung', 'it_IT' => 'Monitoraggio', 'es_ES' => 'Supervisión'],
+        'Stockage (NAS/SAN)' => ['en_GB' => 'Storage (NAS/SAN)', 'de_DE' => 'Speicher (NAS/SAN)', 'it_IT' => 'Storage (NAS/SAN)', 'es_ES' => 'Almacenamiento (NAS/SAN)'],
+        'VPN' => ['en_GB' => 'VPN', 'de_DE' => 'VPN', 'it_IT' => 'VPN', 'es_ES' => 'VPN'],
+        'Proxy' => ['en_GB' => 'Proxy', 'de_DE' => 'Proxy', 'it_IT' => 'Proxy', 'es_ES' => 'Proxy'],
+
+        // ---- AssetTypeBuilder (glpi_budgettypes) ----
+        'Investissement (CAPEX)' => ['en_GB' => 'Capital expenditure (CAPEX)', 'de_DE' => 'Investitionsausgaben (CAPEX)', 'it_IT' => 'Spesa in conto capitale (CAPEX)', 'es_ES' => 'Gasto de capital (CAPEX)'],
+        'Fonctionnement (OPEX)' => ['en_GB' => 'Operating expenditure (OPEX)', 'de_DE' => 'Betriebsausgaben (OPEX)', 'it_IT' => 'Spesa operativa (OPEX)', 'es_ES' => 'Gasto operativo (OPEX)'],
+        'Exceptionnel' => ['en_GB' => 'Exceptional', 'de_DE' => 'Außerordentlich', 'it_IT' => 'Eccezionale', 'es_ES' => 'Excepcional'],
+        'Projet' => ['en_GB' => 'Project', 'de_DE' => 'Projekt', 'it_IT' => 'Progetto', 'es_ES' => 'Proyecto'],
+
+        // ---- AssetTypeBuilder (glpi_clustertypes) ----
+        'Haute disponibilité' => ['en_GB' => 'High availability', 'de_DE' => 'Hochverfügbarkeit', 'it_IT' => 'Alta disponibilità', 'es_ES' => 'Alta disponibilidad'],
+        'Répartition de charge' => ['en_GB' => 'Load balancing', 'de_DE' => 'Lastverteilung', 'it_IT' => 'Bilanciamento del carico', 'es_ES' => 'Equilibrio de carga'],
+        'Calcul distribué' => ['en_GB' => 'Distributed computing', 'de_DE' => 'Verteiltes Rechnen', 'it_IT' => 'Calcolo distribuito', 'es_ES' => 'Computación distribuida'],
+        'Stockage' => ['en_GB' => 'Storage', 'de_DE' => 'Speicher', 'it_IT' => 'Storage', 'es_ES' => 'Almacenamiento'],
+
+        // ---- AssetTypeBuilder (glpi_consumableitemtypes) ----
+        'Papier' => ['en_GB' => 'Paper', 'de_DE' => 'Papier', 'it_IT' => 'Carta', 'es_ES' => 'Papel'],
+        'Pile / Batterie' => ['en_GB' => 'Battery', 'de_DE' => 'Batterie', 'it_IT' => 'Batteria', 'es_ES' => 'Pila / Batería'],
+        'Câble' => ['en_GB' => 'Cable', 'de_DE' => 'Kabel', 'it_IT' => 'Cavo', 'es_ES' => 'Cable'],
+        'Support de stockage (CD/DVD/USB)' => ['en_GB' => 'Storage media (CD/DVD/USB)', 'de_DE' => 'Speichermedium (CD/DVD/USB)', 'it_IT' => 'Supporto di archiviazione (CD/DVD/USB)', 'es_ES' => 'Soporte de almacenamiento (CD/DVD/USB)'],
+        'Badge d\'accès' => ['en_GB' => 'Access badge', 'de_DE' => 'Zutrittsausweis', 'it_IT' => 'Badge di accesso', 'es_ES' => 'Tarjeta de acceso'],
+        'Fourniture de bureau' => ['en_GB' => 'Office supplies', 'de_DE' => 'Büromaterial', 'it_IT' => 'Materiale da ufficio', 'es_ES' => 'Material de oficina'],
+
+        // ---- AssetTypeBuilder (glpi_contacttypes) ----
+        'Commercial' => ['en_GB' => 'Sales', 'de_DE' => 'Vertrieb', 'it_IT' => 'Commerciale', 'es_ES' => 'Comercial'],
+        'Technique' => ['en_GB' => 'Technical', 'de_DE' => 'Technisch', 'it_IT' => 'Tecnico', 'es_ES' => 'Técnico'],
+        'Direction' => ['en_GB' => 'Management', 'de_DE' => 'Geschäftsführung', 'it_IT' => 'Direzione', 'es_ES' => 'Dirección'],
+        'Comptabilité' => ['en_GB' => 'Accounting', 'de_DE' => 'Buchhaltung', 'it_IT' => 'Contabilità', 'es_ES' => 'Contabilidad'],
+        'Juridique' => ['en_GB' => 'Legal', 'de_DE' => 'Recht', 'it_IT' => 'Legale', 'es_ES' => 'Jurídico'],
+
+        // ---- AssetTypeBuilder (glpi_contracttypes) ----
+        'Location' => ['en_GB' => 'Lease', 'de_DE' => 'Miete', 'it_IT' => 'Noleggio', 'es_ES' => 'Alquiler'],
+        'Assurance' => ['en_GB' => 'Insurance', 'de_DE' => 'Versicherung', 'it_IT' => 'Assicurazione', 'es_ES' => 'Seguro'],
+        'Garantie' => ['en_GB' => 'Warranty', 'de_DE' => 'Garantie', 'it_IT' => 'Garanzia', 'es_ES' => 'Garantía'],
+        'Prestation de services' => ['en_GB' => 'Service provision', 'de_DE' => 'Dienstleistung', 'it_IT' => 'Prestazione di servizi', 'es_ES' => 'Prestación de servicios'],
+        'Abonnement' => ['en_GB' => 'Subscription', 'de_DE' => 'Abonnement', 'it_IT' => 'Abbonamento', 'es_ES' => 'Suscripción'],
+
+        // ---- AssetTypeBuilder (glpi_domaintypes) ----
+        'Nom de domaine internet' => ['en_GB' => 'Internet domain name', 'de_DE' => 'Internet-Domainname', 'it_IT' => 'Nome di dominio internet', 'es_ES' => 'Nombre de dominio de internet'],
+        'Sous-domaine' => ['en_GB' => 'Subdomain', 'de_DE' => 'Subdomain', 'it_IT' => 'Sottodominio', 'es_ES' => 'Subdominio'],
+        'Domaine interne (annuaire)' => ['en_GB' => 'Internal domain (directory)', 'de_DE' => 'Interne Domäne (Verzeichnis)', 'it_IT' => 'Dominio interno (directory)', 'es_ES' => 'Dominio interno (directorio)'],
+        'Domaine technique (DNS/certificat)' => ['en_GB' => 'Technical domain (DNS/certificate)', 'de_DE' => 'Technische Domäne (DNS/Zertifikat)', 'it_IT' => 'Dominio tecnico (DNS/certificato)', 'es_ES' => 'Dominio técnico (DNS/certificado)'],
+
+        // ---- AssetTypeBuilder (glpi_linetypes) ----
+        'Fixe' => ['en_GB' => 'Landline', 'de_DE' => 'Festnetz', 'it_IT' => 'Fisso', 'es_ES' => 'Fijo'],
+        'Mobile' => ['en_GB' => 'Mobile', 'de_DE' => 'Mobil', 'it_IT' => 'Mobile', 'es_ES' => 'Móvil'],
+        'Internet' => ['en_GB' => 'Internet', 'de_DE' => 'Internet', 'it_IT' => 'Internet', 'es_ES' => 'Internet'],
+        'VoIP' => ['en_GB' => 'VoIP', 'de_DE' => 'VoIP', 'it_IT' => 'VoIP', 'es_ES' => 'VoIP'],
+        'Satellite' => ['en_GB' => 'Satellite', 'de_DE' => 'Satellit', 'it_IT' => 'Satellite', 'es_ES' => 'Satélite'],
+
+        // ---- AssetTypeBuilder (glpi_passivedcequipmenttypes) ----
+        'Panneau de brassage' => ['en_GB' => 'Patch panel', 'de_DE' => 'Patchpanel', 'it_IT' => 'Pannello di permutazione', 'es_ES' => 'Panel de parcheo'],
+        'Baie de brassage' => ['en_GB' => 'Patch bay', 'de_DE' => 'Patchfeld-Rack', 'it_IT' => 'Armadio di permutazione', 'es_ES' => 'Bastidor de parcheo'],
+        'Goulotte' => ['en_GB' => 'Cable trunking', 'de_DE' => 'Kabelkanal', 'it_IT' => 'Canalina', 'es_ES' => 'Canaleta'],
+        'Chemin de câbles' => ['en_GB' => 'Cable tray', 'de_DE' => 'Kabelrinne', 'it_IT' => 'Passerella portacavi', 'es_ES' => 'Bandeja portacables'],
+        'Armoire technique' => ['en_GB' => 'Technical cabinet', 'de_DE' => 'Technikschrank', 'it_IT' => 'Armadio tecnico', 'es_ES' => 'Armario técnico'],
+
+        // ---- AssetTypeBuilder (glpi_suppliertypes) ----
+        'Fournisseur matériel' => ['en_GB' => 'Hardware supplier', 'de_DE' => 'Hardwarelieferant', 'it_IT' => 'Fornitore hardware', 'es_ES' => 'Proveedor de hardware'],
+        'Prestataire de services' => ['en_GB' => 'Service provider', 'de_DE' => 'Dienstleister', 'it_IT' => 'Fornitore di servizi', 'es_ES' => 'Proveedor de servicios'],
+        'Opérateur télécom' => ['en_GB' => 'Telecom operator', 'de_DE' => 'Telekommunikationsanbieter', 'it_IT' => 'Operatore telecom', 'es_ES' => 'Operador de telecomunicaciones'],
+        'Revendeur' => ['en_GB' => 'Reseller', 'de_DE' => 'Wiederverkäufer', 'it_IT' => 'Rivenditore', 'es_ES' => 'Distribuidor'],
+        'Éditeur logiciel' => ['en_GB' => 'Software vendor', 'de_DE' => 'Softwarehersteller', 'it_IT' => 'Produttore di software', 'es_ES' => 'Editor de software'],
+        'Intégrateur' => ['en_GB' => 'Integrator', 'de_DE' => 'Systemintegrator', 'it_IT' => 'Integratore', 'es_ES' => 'Integrador'],
+
+        // ---- AssetTypeBuilder (glpi_virtualmachinetypes) ----
+        'VMware ESXi' => ['en_GB' => 'VMware ESXi', 'de_DE' => 'VMware ESXi', 'it_IT' => 'VMware ESXi', 'es_ES' => 'VMware ESXi'],
+        'Microsoft Hyper-V' => ['en_GB' => 'Microsoft Hyper-V', 'de_DE' => 'Microsoft Hyper-V', 'it_IT' => 'Microsoft Hyper-V', 'es_ES' => 'Microsoft Hyper-V'],
+        'Proxmox VE' => ['en_GB' => 'Proxmox VE', 'de_DE' => 'Proxmox VE', 'it_IT' => 'Proxmox VE', 'es_ES' => 'Proxmox VE'],
+        'KVM' => ['en_GB' => 'KVM', 'de_DE' => 'KVM', 'it_IT' => 'KVM', 'es_ES' => 'KVM'],
+        'Citrix XenServer' => ['en_GB' => 'Citrix XenServer', 'de_DE' => 'Citrix XenServer', 'it_IT' => 'Citrix XenServer', 'es_ES' => 'Citrix XenServer'],
+        'VirtualBox' => ['en_GB' => 'VirtualBox', 'de_DE' => 'VirtualBox', 'it_IT' => 'VirtualBox', 'es_ES' => 'VirtualBox'],
+        'Docker' => ['en_GB' => 'Docker', 'de_DE' => 'Docker', 'it_IT' => 'Docker', 'es_ES' => 'Docker'],
+        'LXC' => ['en_GB' => 'LXC', 'de_DE' => 'LXC', 'it_IT' => 'LXC', 'es_ES' => 'LXC'],
+
+        // ---- AssetTypeBuilder (glpi_devicesensortypes) ----
+        'Température' => ['en_GB' => 'Temperature', 'de_DE' => 'Temperatur', 'it_IT' => 'Temperatura', 'es_ES' => 'Temperatura'],
+        'Humidité' => ['en_GB' => 'Humidity', 'de_DE' => 'Luftfeuchtigkeit', 'it_IT' => 'Umidità', 'es_ES' => 'Humedad'],
+        'Fumée' => ['en_GB' => 'Smoke', 'de_DE' => 'Rauch', 'it_IT' => 'Fumo', 'es_ES' => 'Humo'],
+        'Mouvement' => ['en_GB' => 'Motion', 'de_DE' => 'Bewegung', 'it_IT' => 'Movimento', 'es_ES' => 'Movimiento'],
+        'Ouverture de porte' => ['en_GB' => 'Door opening', 'de_DE' => 'Türöffnung', 'it_IT' => 'Apertura porta', 'es_ES' => 'Apertura de puerta'],
+        'Fuite d\'eau' => ['en_GB' => 'Water leak', 'de_DE' => 'Wasserleck', 'it_IT' => 'Perdita d\'acqua', 'es_ES' => 'Fuga de agua'],
+        'Vibration' => ['en_GB' => 'Vibration', 'de_DE' => 'Vibration', 'it_IT' => 'Vibrazione', 'es_ES' => 'Vibración'],
     ];
 
     /**
