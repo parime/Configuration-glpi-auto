@@ -906,12 +906,42 @@ clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de s
   IMAP/Data Injection/Carbon restent uniquement documentés ci-dessus, aucune demande de construction
   reçue.
 
-**Maintenance du dépôt — pas encore faite, demandé explicitement (2026-08-14) :**
-- **Nettoyage du code mort et des fichiers non utilisés.** Une première tentative de détection
-  automatique (recherche des classes `src/*.php` jamais référencées ailleurs) s'est révélée peu
-  fiable (faux positifs sur des builders pourtant utilisés activement) — nécessite une vraie passe
-  dédiée avec un outillage fiable (ex. recherche exhaustive sur `templates/`/`install/`/`ajax/` en
-  plus de `src/`/`front/`, pas juste un grep rapide) plutôt qu'un résultat bâclé.
+**Maintenance du dépôt — nettoyage fait (2026-08-14).**
+- ✅ **Audit fiable des 45 classes `src/*.php`** : `git grep` par nom de classe sur l'ensemble du
+  dépôt (`*.php`/`*.twig`), en excluant le fichier de définition lui-même, puis vérification manuelle
+  de chaque résultat à faible occurrence (pas juste un comptage brut — la première tentative avait
+  échoué exactement sur ce point, en confondant "peu référencé" et "non référencé"). **Aucune classe
+  morte** : les 45 sont bien instanciées/appelées depuis `front/wizard.php` ou incluses depuis
+  `templates/wizard.html.twig`.
+- ✅ **Audit des méthodes privées** (mêmes 45 fichiers + `Installer.php`) : recherche de chaque
+  `private function` référencée une seule fois dans son propre fichier (sa déclaration) — **aucune
+  méthode privée morte**.
+- ✅ **Audit des méthodes statiques publiques** : plusieurs faux positifs confirmés (`getTable()`,
+  `getTypeName()`, `getIcon()`... — dispatchées par le cœur GLPI via `CommonDBTM`/`CommonGLPI`,
+  jamais appelées par un nom littéral dans ce dépôt, donc invisibles à un grep) — même piège que la
+  première tentative, cette fois identifié et écarté à la main plutôt que rapporté comme un vrai
+  résultat. **Un vrai cas trouvé** : `ManufacturerDictionaryBuilder::getPreview()`, écrite mais
+  jamais câblée dans le wizard (contrairement à ses équivalents `getOperatorsPreview()`/
+  `getTiersPreview()`/`getPreview()` sur d'autres builders, tous bien utilisés) — supprimée.
+- ✅ **Fichiers non suivis par aucune référence** :
+  - `ROADMAP_original.md` (racine) — doublon figé du 2026-08-07 (527 lignes), jamais retouché
+    depuis, totalement supplanté par `ROADMAP.md` (1254 lignes, activement maintenu) — supprimé.
+  - `.tx/config` — configuration Transifex, vestige de la même infrastructure jamais fonctionnelle
+    que `.github/workflows/locales-sync.yml` (supprimé en v0.30.0) : référence le même `hook.php`
+    inexistant, aucun `TRANSIFEX_TOKEN`, zéro mention dans `CONTRIBUTING.md`/`README.md`/CI — la
+    traduction réelle de ce dépôt reste le pipeline manuel `.po`/`.mo` documenté ailleurs. Supprimé
+    (le dossier `.tx/` disparaît de lui-même, vide).
+  - `logo.png` (racine) et `misc/logos/logo.png` : **faux positif vérifié, pas supprimés** — fichiers
+    identiques (même MD5) mais chacun sert un usage distinct et réel (badge liste de plugins via
+    `Glpi\Marketplace\View::getPluginIcon()`, qui exige un `logo.png` littéral à la racine du
+    plugin ; URL `<logo>` du manifeste pour la page marketplace publique) — déjà documenté dans
+    CHANGELOG au moment où le premier avait été retiré par erreur (2026-08-11) puis restauré.
+  - `tools/HEADER` : **faux positif vérifié, pas supprimé** — zéro référence directe dans ce dépôt,
+    mais chargé par convention (chemin `tools/HEADER` en dur) par la commande
+    `licence-headers-check` du paquet dev `glpi-project/tools`, confirmé en lisant son code source
+    dans `vendor/`.
+- ✅ **Captures d'écran** (`docs/screenshots/*.png`) : les 18 sont référencées dans
+  `docs/TUTORIAL.md` — aucune orpheline.
 - **Revue des pull requests en cours** — faite le jour même : 3 PR Dependabot ouvertes (mises à jour
   de SHA d'actions GitHub épinglées, aucun changement fonctionnel vérifié dans chaque diff). PR #39
   (codecov-action) approuvée et mergée. PR #40 (shivammathur/setup-php) et #41
