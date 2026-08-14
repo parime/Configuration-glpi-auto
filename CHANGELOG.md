@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.57.0] - 2026-08-14
+
+### Added
+- `CalendarBuilder` : horaires par jour + coupure déjeuner, demandé explicitement par l'utilisateur
+  (gap documenté depuis longtemps dans ROADMAP.md). `glpi_calendarsegments` n'a jamais eu de
+  limitation ici (plusieurs segments par jour toujours supportés nativement) — seul ce plugin ne
+  créait qu'un seul segment uniforme pour tous les jours cochés. Un horaire par jour coché
+  (`Config::getCalendarDayHours()`, ex. "vendredi 9h-12h seulement" — seuls les jours qui diffèrent
+  du reste ont besoin d'une entrée), plus une coupure déjeuner optionnelle qui scinde en deux
+  segments (matin + après-midi) tout jour dont les horaires couvrent réellement la pause — un jour
+  dont les horaires ne la couvrent pas (ex. vendredi 9h-12h avec une pause 12h-13h) garde un segment
+  unique plutôt qu'un segment de longueur négative ou nulle. Même capacité ajoutée au calendrier par
+  client/site (mode MSP). Vérifié en réel : jours Lun-Jeu scindés en 08h-12h + 13h-18h, Vendredi
+  resté en un seul segment 09h-12h, resoumission idempotente (mêmes 9 lignes, pas de doublon), même
+  vérification faite côté panneau par client (Lundi/Mercredi scindés correctement).
+
 ## [0.56.0] - 2026-08-14
 
 ### Added

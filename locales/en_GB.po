@@ -418,9 +418,6 @@ msgstr "E.g.: London, Manchester..."
 msgid "Extension GD ou Imagick disponible"
 msgstr "GD or Imagick extension available"
 
-msgid "Fermeture"
-msgstr "Closing"
-
 msgid "Gabarit de nom de groupe AD/LDAP"
 msgstr "AD/LDAP group name template"
 
@@ -463,8 +460,8 @@ msgstr "Full interface (no hidden field)"
 msgid "Jour de l'An, Fête du Travail, Victoire 1945, Fête nationale, Assomption, Toussaint, Armistice, Noël. Sans ça, les échéances SLA/OLA continuent de courir un jour férié. Les jours mobiles (Pâques, Ascension, Pentecôte) ne sont pas inclus — ils changent de date chaque année, à ajouter à la main."
 msgstr "New Year's Day, Labour Day, VE Day, Bastille Day, Assumption, All Saints' Day, Armistice Day, Christmas. Without this, SLA/OLA deadlines keep running on a public holiday. Movable dates (Easter, Ascension, Whit Monday) aren't included — they change every year and must be added by hand."
 
-msgid "Jours ouvrés"
-msgstr "Business days"
+msgid "Jours ouvrés et horaires"
+msgstr "Business days and hours"
 
 msgid "L'OLA est un engagement interne entre le support et les équipes techniques, plus court que le SLA externe — il doit être tenu pour que le SLA le soit aussi."
 msgstr "The OLA is an internal commitment between support and technical teams, shorter than the external SLA — it must be met for the SLA to be met too."
@@ -570,9 +567,6 @@ msgstr "Optional: a primary color applied to the interface of the created entiti
 
 msgid "Optionnel : une règle d'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l'utilisateur lors de la synchronisation — ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n'y a rien à générer."
 msgstr "Optional: an automatic assignment rule (entity + profile) per site, triggered by the user's AD/LDAP group during sync — only useful if LDAP sync is planned. Without a multi-site tree (step 2), there's nothing to generate."
-
-msgid "Ouverture"
-msgstr "Opening"
 
 msgid "Palette GLPI native définie par défaut."
 msgstr "Native GLPI palette set as default."
@@ -1164,6 +1158,27 @@ msgstr "Automatically sends an approval request to the requester's supervisor (n
 
 msgid "Règle de validation automatique (supérieur hiérarchique) créée."
 msgstr "Automatic approval rule created (supervisor)."
+
+msgid "Un horaire par jour coché — modifiez-le librement pour un jour qui diffère des autres (ex. vendredi 9h-12h seulement)."
+msgstr "One schedule per checked day — edit it freely for a day that differs from the others (e.g. Friday 9am-noon only)."
+
+msgid "Coupure déjeuner"
+msgstr "Lunch break"
+
+msgid "Début pause"
+msgstr "Break start"
+
+msgid "Fin pause"
+msgstr "Break end"
+
+msgid "Si activée, tout jour dont les horaires couvrent la pause est scindé en deux plages (matin + après-midi) au lieu d'une plage continue."
+msgstr "If enabled, any day whose hours span the break is split into two ranges (morning + afternoon) instead of one continuous range."
+
+msgid "horaires variables selon les jours"
+msgstr "hours vary by day"
+
+msgid "coupure déjeuner"
+msgstr "lunch break"
 
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
