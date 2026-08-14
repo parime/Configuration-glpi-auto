@@ -184,17 +184,11 @@ basique, profils de démarrage.
    ce champ étant renseigné par organisation (LDAP ou saisie manuelle) — vérifié en réel que
    l'absence de superviseur ne casse rien (aucune validation créée plutôt qu'une ligne invalide).
 
-9. **ISO 27001 — journalisation et piste d'audit.** La norme exige que les logs de sécurité
-   couvrent qui/quoi/quand/où/comment (authentification, changements de droits, changements de
-   configuration). GLPI a un module Journaux natif qui couvre une bonne partie de ça
-   automatiquement sans configuration — à vérifier si la rétention/le niveau de détail par défaut
-   suffit, plutôt qu'à reconstruire quoi que ce soit.
-
-10. **Enquêtes de satisfaction post-résolution — fait (Sprint 25, 2026-08-11).** L'enquête native
-    GLPI (1 à 5 étoiles + commentaire) était techniquement "activée" mais avec un taux
-    d'échantillonnage à 0% — traité par GLPI comme entièrement désactivé. Activée à 100%. Une
-    enquête multi-questions plus riche nécessiterait un outil externe (`inquest_config` = externe +
-    URL), hors périmètre car dépendant de l'outil choisi par chaque organisation.
+9. **Enquêtes de satisfaction post-résolution — fait (Sprint 25, 2026-08-11).** L'enquête native
+   GLPI (1 à 5 étoiles + commentaire) était techniquement "activée" mais avec un taux
+   d'échantillonnage à 0% — traité par GLPI comme entièrement désactivé. Activée à 100%. Une
+   enquête multi-questions plus riche nécessiterait un outil externe (`inquest_config` = externe +
+   URL), hors périmètre car dépendant de l'outil choisi par chaque organisation.
 
 ---
 
@@ -388,10 +382,9 @@ Deux choses vérifiées en parcourant l'admin GLPI par Playwright :
   `GeneralSettingsBuilder::applyNotifications()` (même toggle "Notifications" que le reste, cohérent
   avec ce que la case promet). Vérifié en base (`state` 0→1) et dans l'admin réel (« Désactivé » →
   « Programmée »).
-- **Configuration > Authentification** (LDAP/SMTP) et **> Collecteurs** confirmés non couverts —
-  déjà identifiés en recherche web comme le point de friction #1, restent dans les propositions
-  ci-dessous, pas traités dans cette passe (gros chantier, dépend de l'annuaire de chaque
-  organisation).
+- ❌ **Configuration > Authentification** (LDAP/SMTP) et **> Collecteurs** — confirmés non couverts,
+  mais explicitement écartés par l'utilisateur (2026-08-14) : trop dépendant de l'annuaire propre à
+  chaque organisation pour être généralisable, ne sera pas construit.
 
 ### Recherche web — points de friction GLPI réels (résumé, détail complet demandé à l'utilisateur si besoin)
 
