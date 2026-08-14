@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.56.0] - 2026-08-14
+
+### Added
+- `ValidationRoutingBuilder` (nouveau) — routage automatique de validation vers le supérieur
+  hiérarchique du demandeur ("N+1"), demandé explicitement par l'utilisateur. Mécanisme 100% natif
+  GLPI confirmé en lisant le code source (`RuleCommonITILObject::getActions()`) : l'action
+  `responsible_id_validate` ("Send an approval request — Supervisor of the requester") résout via
+  `CommonITILObject::manageValidationAdd()`'s case `requester_responsible`, qui lit directement
+  `glpi_users.users_id_supervisor`. Distinct de l'action au nom trompeusement proche
+  `users_id_validate_requester_supervisor`, qui cible en réalité le manager du *groupe* du
+  demandeur (`Group_User.is_manager`), un mécanisme différent. Une seule `RuleTicket` créée, scopée
+  sur `type = Demande` (pas Incident — les workflows d'approbation concernent les demandes, pas les
+  incidents à traiter en urgence), globale (`is_recursive = 1`). Case décochée par défaut,
+  contrairement au reste de l'étape "Réglages généraux GLPI" — un changement de comportement réel
+  (approbation obligatoire sur chaque ticket concerné), pas juste du contenu, même exception déjà
+  appliquée au branding. Vérifié en réel avec deux utilisateurs de test : demandeur avec superviseur
+  renseigné → validation créée ciblant le bon utilisateur ; demandeur sans superviseur → aucune
+  validation créée, aucune ligne cassée (comportement robuste plutôt que supposé).
+
 ## [0.55.1] - 2026-08-14
 
 ### Removed
