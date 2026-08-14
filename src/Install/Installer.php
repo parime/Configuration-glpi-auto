@@ -164,6 +164,7 @@ final class Installer
                 `asset_types_enabled` tinyint NOT NULL DEFAULT 0,
                 `asset_type_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `country_holidays_enabled` tinyint NOT NULL DEFAULT 0,
+                `satisfaction_plugin_survey_enabled` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -309,6 +310,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'asset_types_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'asset_type_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'country_holidays_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'satisfaction_plugin_survey_enabled', 'bool', ['value' => 0]);
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
