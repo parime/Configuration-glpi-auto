@@ -1147,6 +1147,15 @@ msgstr "Crée un groupe natif \"VIP\" (à ne pas confondre avec un groupe de tec
 msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
 msgstr "Groupe \"VIP\" créé et activé (plugin VIP)."
 
+msgid "Plugin \"Tag\" détecté — créer une bibliothèque de tags courants"
+msgstr "Plugin \"Tag\" détecté — créer une bibliothèque de tags courants"
+
+msgid "6 tags génériques utilisables sur tout objet GLPI (Prioritaire, Urgent, À vérifier, Obsolète, Garantie active, Confidentiel), avec une couleur distincte chacun."
+msgstr "6 tags génériques utilisables sur tout objet GLPI (Prioritaire, Urgent, À vérifier, Obsolète, Garantie active, Confidentiel), avec une couleur distincte chacun."
+
+msgid "%d tag(s) créé(s) (plugin Tag)."
+msgstr "%d tag(s) créé(s) (plugin Tag)."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Profil de configuration"

@@ -938,6 +938,18 @@
           </div>
           <p class="text-muted small mb-0">{{ __('Crée un groupe natif "VIP" (à ne pas confondre avec un groupe de techniciens) et le marque comme groupe VIP auprès du plugin : ajoutez-y les personnes ou groupes prioritaires (direction, actionnaires...) dont les tickets doivent être mis en évidence.', 'configurationglpiauto') }}</p>
         {% endif %}
+
+        {# Visible uniquement si le plugin tiers "Tag" est installé ET activé — aucune trace dans
+           le formulaire sinon. #}
+        {% if tag_plugin_active %}
+          <hr class="my-3">
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="tag_library_enabled" value="0">
+            <input type="checkbox" name="tag_library_enabled" value="1" class="form-check-input" id="cga-tag-library-enabled" {{ config.tag_library_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-tag-library-enabled">{{ __('Plugin "Tag" détecté — créer une bibliothèque de tags courants', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-0">{{ __('6 tags génériques utilisables sur tout objet GLPI (Prioritaire, Urgent, À vérifier, Obsolète, Garantie active, Confidentiel), avec une couleur distincte chacun.', 'configurationglpiauto') }}</p>
+        {% endif %}
       </div>
 
       {# ---------------------------------------------------------------- Étape 15 : Général & Outils #}
