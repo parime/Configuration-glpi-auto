@@ -21,8 +21,10 @@ use Group;
 
 /**
  * Only runs if the third-party "VIP" plugin (pluginsGLPI/vip, marketplace key `vip`) is active —
- * never a hard dependency, same reasoning as SatisfactionSurveyBuilder. Confirmed live on a real
- * install: the plugin extends the native `Group` object with one row per group in its own
+ * never a hard dependency, same reasoning as SatisfactionSurveyBuilder. Not a technician/support
+ * group — the plugin flags priority *requesters* (executives, shareholders, any stakeholder whose
+ * tickets should stand out), badging their tickets for the support team's attention. Confirmed live
+ * on a real install: the plugin extends the native `Group` object with one row per group in its own
  * `glpi_plugin_vip_groups` table (`id` mirrors `glpi_groups.id`, no auto-increment — its own
  * Group::processMassiveActionsForOneItemtype() inserts with an explicit `id`, never lets MySQL
  * generate one), holding an `isvip` flag plus a display `name`/`vip_color`/`vip_icon` used to
@@ -76,7 +78,8 @@ class VipBuilder
             'entities_id' => 0,
             'is_recursive' => 1,
             'comment' => 'Groupe cree automatiquement par Configuration GLPI Auto : ajoutez-y les '
-                . 'utilisateurs a signaler comme VIP dans les tickets.',
+                . 'personnes ou groupes prioritaires (direction, actionnaires...) dont les tickets '
+                . 'doivent etre mis en evidence. Ne remplace pas un groupe de techniciens.',
         ]);
     }
 

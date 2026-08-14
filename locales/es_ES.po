@@ -1141,8 +1141,8 @@ msgstr "Encuesta de satisfacción creada (plugin More satisfaction)."
 msgid "Plugin \"VIP\" détecté — créer le groupe \"VIP\" et l'activer"
 msgstr "Plugin \"VIP\" detectado — crear el grupo \"VIP\" y activarlo"
 
-msgid "Crée un groupe technicien natif nommé \"VIP\" et le marque comme groupe VIP auprès du plugin : ajoutez-y ensuite les utilisateurs à signaler dans les tickets."
-msgstr "Crea un grupo técnico nativo llamado \"VIP\" y lo marca como grupo VIP ante el plugin: añada después los usuarios que se deben destacar en los tickets."
+msgid "Crée un groupe natif \"VIP\" (à ne pas confondre avec un groupe de techniciens) et le marque comme groupe VIP auprès du plugin : ajoutez-y les personnes ou groupes prioritaires (direction, actionnaires...) dont les tickets doivent être mis en évidence."
+msgstr "Crea un grupo nativo \"VIP\" (que no debe confundirse con un grupo de técnicos) y lo marca como grupo VIP ante el plugin: añada las personas o grupos prioritarios (dirección, accionistas...) cuyos tickets deben destacarse."
 
 msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
 msgstr "Grupo \"VIP\" creado y activado (plugin VIP)."
