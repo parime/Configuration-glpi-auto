@@ -881,21 +881,30 @@ clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de s
   l'écosystème GLPI.
 - **Carbon** (`carbon`, TECLIB') — évaluation d'impact environnemental du parc, cohérent avec l'axe
   ISO27001/bonnes pratiques déjà porté par ce plugin.
-- **Correction sur "TAG" demandé par l'utilisateur** : le plugin natif "Tag" (`tag`, TECLIB') est un
-  système de tags génériques sur n'importe quel objet GLPI (mots-clés de classification), **pas**
-  de l'impression d'étiquettes physiques. Le vrai candidat pour ça est **"QR Code Label"**
-  (`qrcodelabel`, Etienne Gaillard) — "Génère des étiquettes d'inventaire avec QR codes pour
-  imprimantes d'étiquettes" — ou **"Barcode"** (`barcode`, David Durieux) pour des codes-barres
-  classiques. **Vérifié dans remise-glpi (README/ARCHITECTURE/CHANGELOG, 2026-08-14) : aucune
-  fonctionnalité d'étiquette/QR code/code-barre là-dedans** — pas de doublon avec le plugin sœur de
-  l'utilisateur, contrairement à sa propre inquiétude initiale.
+- ✅ **Tag** (`tag`, TECLIB') — fait (v0.55.0, 2026-08-14). **Correction sur "TAG" demandé par
+  l'utilisateur** : le plugin natif "Tag" (`tag`, TECLIB') est un système de tags génériques sur
+  n'importe quel objet GLPI (mots-clés de classification), **pas** de l'impression d'étiquettes
+  physiques — confondu un temps avec ça, corrigé après que l'utilisateur a confirmé via une capture
+  d'écran du marketplace qu'il s'agissait bien du plugin `pluginsGLPI/tag` (2.14.6, TECLIB'). Le vrai
+  candidat pour l'impression d'étiquettes est **"QR Code Label"** (`qrcodelabel`, Etienne Gaillard) —
+  explicitement écarté par l'utilisateur ("y a rien a faire pour moi"). **Vérifié dans remise-glpi
+  (README/ARCHITECTURE via `gh api`, 2026-08-14) : aucune fonctionnalité de tag là-dedans** — pas de
+  doublon avec le plugin sœur de l'utilisateur, contrairement à sa propre inquiétude initiale. Schéma
+  de `glpi_plugin_tag_tags` (`PluginTagTag extends CommonDropdown`) lu en direct : table vide sur
+  install fraîche, `type_menu` (JSON d'itemtypes) vide/NULL = tag utilisable sur tout objet
+  (`PluginTagTag::canItemtype()`). `TagBuilder` crée 6 tags génériques (Prioritaire, Urgent, À
+  vérifier, Obsolète, Garantie active, Confidentiel), chacun avec une couleur distincte, écrits
+  directement via `$DB`. Volontairement pas d'automatisation sur l'affectation réelle des tags
+  (`glpi_plugin_tag_tagitems`) — dépend de chaque organisation. Vérifié en réel : section absente
+  si le plugin est désactivé, 6 tags créés à la soumission, resoumission idempotente.
 - **Mécanisme technique confirmé faisable et déjà utilisé** : `Plugin::isPluginActive('clé')`
   (natif GLPI) permet de détecter si un plugin tiers est installé et actif, et donc de n'afficher
   une section du wizard que dans ce cas (sinon rien, on passe à la suite — exactement la demande de
-  l'utilisateur, confirmé en réel sur More Satisfaction et VIP ci-dessus). QR Code Label
-  explicitement écarté par l'utilisateur ("y a rien a faire pour moi") — les deux seuls plugins tiers
-  demandés (More Satisfaction, VIP) sont maintenant traités ; PDF/Used items export/Oauth IMAP/Data
-  Injection/Carbon restent uniquement documentés ci-dessus, aucune demande de construction reçue.
+  l'utilisateur, confirmé en réel sur More Satisfaction, VIP et Tag ci-dessus). QR Code Label
+  explicitement écarté par l'utilisateur ("y a rien a faire pour moi") — les trois plugins tiers
+  demandés (More Satisfaction, VIP, Tag) sont maintenant traités ; PDF/Used items export/Oauth
+  IMAP/Data Injection/Carbon restent uniquement documentés ci-dessus, aucune demande de construction
+  reçue.
 
 **Maintenance du dépôt — pas encore faite, demandé explicitement (2026-08-14) :**
 - **Nettoyage du code mort et des fichiers non utilisés.** Une première tentative de détection
