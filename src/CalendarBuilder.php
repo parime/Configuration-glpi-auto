@@ -38,6 +38,17 @@ use Holiday;
  * a day whose hours don't span the lunch window (e.g. a 9h-12h Friday with a 12h-13h lunch) keeps a
  * single segment rather than producing a zero-length or inverted one.
  *
+ * Each day's existing segments are cleared right before that day's new one(s) are written
+ * (`clearDaySegments()`) — a real bug found live (2026-08-14): the previous "skip if the exact
+ * same segment already exists" check only protects against an *identical* resubmission. Once hours
+ * can change between wizard runs (a different Friday end time, lunch break toggled on/off...), a
+ * new segment can *overlap* an old one with different bounds on the same day, and
+ * `CalendarSegment`'s own core validation (`Impossible d'ajouter une plage chevauchant une plage
+ * existante`) rejects the insert outright — silently, since this class never checked `add()`'s
+ * return value. Clearing the day first makes each resubmission fully replace that day's schedule
+ * rather than merge with whatever was there before, which is also the behavior an admin actually
+ * expects when they go back and change the hours.
+ *
  * Optionally also seeds the 8 fixed-date French public holidays (`calendar_holidays_enabled`) —
  * confirmed `glpi_holidays` ships empty on a fresh install, so without this SLA/OLA due dates keep
  * counting through a public holiday. Only the 8 *fixed*-date ones (1er janvier, 1er mai, 8 mai, 14
@@ -191,6 +202,8 @@ class CalendarBuilder
             $dayBegin = isset($dayHours[$day]) ? $this->normalizeTime($dayHours[$day]['begin']) : $begin;
             $dayEnd = isset($dayHours[$day]) ? $this->normalizeTime($dayHours[$day]['end']) : $end;
 
+            $this->clearDaySegments($calendarId, $day);
+
             if ($lunchBreak && $lunchBegin > $dayBegin && $lunchEnd < $dayEnd && $lunchBegin < $lunchEnd) {
                 $this->addSegment($calendarId, $day, $dayBegin, $lunchBegin);
                 $this->addSegment($calendarId, $day, $lunchEnd, $dayEnd);
@@ -200,6 +213,18 @@ class CalendarBuilder
         }
 
         return $calendarId;
+    }
+
+    /**
+     * Removes every existing segment for this (calendar, day) — called right before writing that
+     * day's segment(s) for the current submission, so a changed schedule always fully replaces the
+     * old one instead of risking an overlap `CalendarSegment` would reject (see class docblock).
+     */
+    private function clearDaySegments(int $calendarId, int $day): void
+    {
+        global $DB;
+
+        $DB->delete('glpi_calendarsegments', ['calendars_id' => $calendarId, 'day' => $day]);
     }
 
     private function addSegment(int $calendarId, int $day, string $begin, string $end): void
