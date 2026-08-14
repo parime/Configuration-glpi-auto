@@ -1138,6 +1138,15 @@ msgstr "3 domande comuni (voto su 5, risolto sì/no, osservazioni libere), attiv
 msgid "Enquête de satisfaction créée (plugin More satisfaction)."
 msgstr "Sondaggio di soddisfazione creato (plugin More satisfaction)."
 
+msgid "Plugin \"VIP\" détecté — créer le groupe \"VIP\" et l'activer"
+msgstr "Plugin \"VIP\" rilevato — crea il gruppo \"VIP\" e attivalo"
+
+msgid "Crée un groupe technicien natif nommé \"VIP\" et le marque comme groupe VIP auprès du plugin : ajoutez-y ensuite les utilisateurs à signaler dans les tickets."
+msgstr "Crea un gruppo tecnico nativo denominato \"VIP\" e lo contrassegna come gruppo VIP presso il plugin: aggiungete poi gli utenti da evidenziare nei ticket."
+
+msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
+msgstr "Gruppo \"VIP\" creato e attivato (plugin VIP)."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Profilo di configurazione"

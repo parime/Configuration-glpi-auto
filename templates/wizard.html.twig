@@ -926,6 +926,18 @@
           </div>
           <p class="text-muted small mb-0">{{ __('3 questions courantes (note sur 5, résolution oui/non, remarques libres), activée sur toute l\'instance. Différent de l\'enquête native ci-dessus — le plugin permet plusieurs questions et un rappel automatique, la case native ne fait qu\'une note sur 5.', 'configurationglpiauto') }}</p>
         {% endif %}
+
+        {# Visible uniquement si le plugin tiers "VIP" est installé ET activé — aucune trace dans
+           le formulaire sinon. #}
+        {% if vip_plugin_active %}
+          <hr class="my-3">
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="vip_group_enabled" value="0">
+            <input type="checkbox" name="vip_group_enabled" value="1" class="form-check-input" id="cga-vip-group-enabled" {{ config.vip_group_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-vip-group-enabled">{{ __('Plugin "VIP" détecté — créer le groupe "VIP" et l\'activer', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-0">{{ __('Crée un groupe technicien natif nommé "VIP" et le marque comme groupe VIP auprès du plugin : ajoutez-y ensuite les utilisateurs à signaler dans les tickets.', 'configurationglpiauto') }}</p>
+        {% endif %}
       </div>
 
       {# ---------------------------------------------------------------- Étape 15 : Général & Outils #}

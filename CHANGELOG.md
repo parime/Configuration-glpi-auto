@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.54.0] - 2026-08-14
+
+### Added
+- `VipBuilder` (nouveau) — deuxième intégration cross-plugin, même schéma que
+  `SatisfactionSurveyBuilder` : quand le plugin tiers "VIP" (`vip`) est installé et activé, l'étape
+  "Réglages généraux GLPI" propose de créer un groupe technicien natif nommé "VIP" et de le marquer
+  comme groupe VIP auprès du plugin (`glpi_plugin_vip_groups.isvip = 1`) — à charge ensuite pour
+  l'administrateur d'y ajouter les vrais utilisateurs à signaler dans les tickets. Section absente du
+  formulaire si le plugin n'est pas installé (`Plugin::isPluginActive('vip')`, vérifié côté serveur).
+  Schéma réel de `glpi_plugin_vip_groups` lu via `DESCRIBE` avant d'écrire le builder : clé primaire
+  `id` qui reflète directement `glpi_groups.id` sans auto-incrément (confirmé dans le code source du
+  plugin tiers, `Group::processMassiveActionsForOneItemtype()`), une ligne singleton `id=0`
+  pré-existante dès l'installation du plugin tiers. Volontairement pas d'automatisation sur son moteur
+  de règles (`RuleVip`, affectation depuis des critères LDAP) — dépend de la structure AD/LDAP propre
+  à chaque organisation, même raisonnement que l'exclusion des diagnostics LDAP de ce plugin. Vérifié
+  en réel : activé/désactivé le plugin tiers pour confirmer l'apparition/disparition de la section,
+  soumission complète créant le groupe natif + la ligne `isvip=1`, resoumission idempotente (pas de
+  doublon).
+
 ## [0.53.0] - 2026-08-14
 
 ### Added

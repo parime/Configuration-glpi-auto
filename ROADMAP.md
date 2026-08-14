@@ -860,8 +860,18 @@ clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de s
   dure vers ses classes PHP, hors du périmètre PHPStan de ce dépôt). Vérifié en réel : section du
   wizard confirmée absente quand le plugin est désactivé, présente et fonctionnelle une fois
   réactivé — exactement le comportement demandé.
-- **VIP** (`vip`, Infotel/PROBESYS et al.) — marque les demandeurs VIP sur les tickets. Même
-  demande de configuration conditionnelle, pas encore auditée.
+- ✅ **VIP** (`vip`, Infotel/PROBESYS et al.) — fait (v0.54.0, 2026-08-14), sur choix explicite de
+  l'utilisateur ("qr code, y a rien a faire pour moi, par contre tu peux faire vip"). Plugin installé
+  et activé en réel sur l'instance de test, schéma de `glpi_plugin_vip_groups` lu directement via
+  `DESCRIBE` avant d'écrire le builder : clé primaire `id` qui reflète directement `glpi_groups.id`
+  sans auto-incrément (confirmé dans le code source du plugin tiers), une ligne singleton `id=0`
+  pré-existante dès l'installation. `VipBuilder` crée un groupe technicien natif "VIP" et le marque
+  `isvip=1`, écrit directement dans les tables du plugin tiers via `$DB` (même raisonnement que
+  `SatisfactionSurveyBuilder`, pas de dépendance dure). Son moteur de règles (`RuleVip`, affectation
+  depuis des critères LDAP) volontairement pas automatisé — dépend de la structure AD/LDAP propre à
+  chaque organisation, même raisonnement que l'exclusion des diagnostics LDAP. Vérifié en réel :
+  section absente quand le plugin est désactivé, groupe natif + ligne `isvip=1` créés à la soumission,
+  resoumission idempotente (pas de doublon).
 - **Oauth IMAP** (`oauthimap`, TECLIB') — authentification OAuth pour les collecteurs de mail
   (Microsoft 365/Google imposent de plus en plus OAuth, l'authentification IMAP simple devient
   obsolète chez ces fournisseurs).
@@ -880,10 +890,10 @@ clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de s
 - **Mécanisme technique confirmé faisable et déjà utilisé** : `Plugin::isPluginActive('clé')`
   (natif GLPI) permet de détecter si un plugin tiers est installé et actif, et donc de n'afficher
   une section du wizard que dans ce cas (sinon rien, on passe à la suite — exactement la demande de
-  l'utilisateur, confirmé en réel sur More Satisfaction ci-dessus). Reste à faire avant de
-  construire VIP/QR Code Label : auditer le schéma de configuration réel de chacun (même méthode
-  que pour More Satisfaction — installer sur l'instance de test, lire les vraies tables via
-  `DESCRIBE`, pas de supposition sur l'API interne d'un plugin tiers avant de l'avoir lue).
+  l'utilisateur, confirmé en réel sur More Satisfaction et VIP ci-dessus). QR Code Label
+  explicitement écarté par l'utilisateur ("y a rien a faire pour moi") — les deux seuls plugins tiers
+  demandés (More Satisfaction, VIP) sont maintenant traités ; PDF/Used items export/Oauth IMAP/Data
+  Injection/Carbon restent uniquement documentés ci-dessus, aucune demande de construction reçue.
 
 **Maintenance du dépôt — pas encore faite, demandé explicitement (2026-08-14) :**
 - **Nettoyage du code mort et des fichiers non utilisés.** Une première tentative de détection
