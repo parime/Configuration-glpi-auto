@@ -844,17 +844,24 @@ ci-dessous vérifiés en conditions réelles (recherche live dans Configuration 
      catégorie de risque différente du reste de ce plugin (qui ne fait que créer du contenu dans les
      propres tables de GLPI).
 
-**Intégration conditionnelle de plugins tiers au wizard — pas encore cadrée, liste proposée par
-l'utilisateur (2026-08-14), vérifiée en direct sur le marketplace natif désormais débloqué (mêmes
+**Intégration conditionnelle de plugins tiers au wizard — liste proposée par l'utilisateur
+(2026-08-14), vérifiée en direct sur le marketplace natif désormais débloqué (mêmes
 clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de supposition) :**
 - **PDF** (`pdf`, Teclib/Remi Collet/Nelly Mahu-Lasson) — export PDF d'une fiche d'inventaire.
 - **Used items export** (`useditemsexport`, TECLIB') — export PDF de la liste du matériel affecté
   à un utilisateur.
-- **More satisfaction** (`satisfaction`, Infotel) — enrichit l'enquête de satisfaction native.
-  Demandé : proposer des enquêtes toutes faites + leur paramétrage, **visible dans le wizard
-  uniquement si le plugin est installé** (sinon la section n'apparaît pas du tout).
+- ✅ **More satisfaction** (`satisfaction`, Infotel) — fait (v0.53.0, 2026-08-14), premier plugin
+  tiers traité, sur choix explicite de l'utilisateur ("le mieux c'est satisfaction"). Plugin
+  installé et activé en réel sur l'instance de test (marketplace débloqué), schéma de
+  `glpi_plugin_satisfaction_surveys`/`surveyquestions` lu directement via `DESCRIBE`. 3 types de
+  question confirmés exhaustifs (`note`/`yesno`/`textarea`, `SurveyQuestion::getQuestionTypeList()`)
+  — `SatisfactionSurveyBuilder` crée une enquête toute faite (note sur 5, résolution oui/non,
+  remarques libres) écrite directement dans les tables du plugin tiers via `$DB` (pas de dépendance
+  dure vers ses classes PHP, hors du périmètre PHPStan de ce dépôt). Vérifié en réel : section du
+  wizard confirmée absente quand le plugin est désactivé, présente et fonctionnelle une fois
+  réactivé — exactement le comportement demandé.
 - **VIP** (`vip`, Infotel/PROBESYS et al.) — marque les demandeurs VIP sur les tickets. Même
-  demande de configuration conditionnelle.
+  demande de configuration conditionnelle, pas encore auditée.
 - **Oauth IMAP** (`oauthimap`, TECLIB') — authentification OAuth pour les collecteurs de mail
   (Microsoft 365/Google imposent de plus en plus OAuth, l'authentification IMAP simple devient
   obsolète chez ces fournisseurs).
@@ -870,14 +877,13 @@ clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de s
   classiques. **Vérifié dans remise-glpi (README/ARCHITECTURE/CHANGELOG, 2026-08-14) : aucune
   fonctionnalité d'étiquette/QR code/code-barre là-dedans** — pas de doublon avec le plugin sœur de
   l'utilisateur, contrairement à sa propre inquiétude initiale.
-- **Mécanisme technique confirmé faisable** : `Plugin::isPluginActive('clé')` (natif GLPI) permet
-  de détecter si un plugin tiers est installé et actif, et donc de n'afficher une section du wizard
-  que dans ce cas (sinon rien, on passe à la suite — exactement la demande de l'utilisateur). Reste
-  à faire avant de construire quoi que ce soit : auditer le schéma de configuration réel de chaque
-  plugin ciblé (More Satisfaction, VIP, QR Code Label en priorité, ce sont les trois où l'utilisateur
-  a explicitement demandé une configuration depuis le wizard) pour savoir quoi proposer concrètement
-  — même méthode que tous les audits précédents, pas de supposition sur l'API interne d'un plugin
-  tiers avant de l'avoir lue.
+- **Mécanisme technique confirmé faisable et déjà utilisé** : `Plugin::isPluginActive('clé')`
+  (natif GLPI) permet de détecter si un plugin tiers est installé et actif, et donc de n'afficher
+  une section du wizard que dans ce cas (sinon rien, on passe à la suite — exactement la demande de
+  l'utilisateur, confirmé en réel sur More Satisfaction ci-dessus). Reste à faire avant de
+  construire VIP/QR Code Label : auditer le schéma de configuration réel de chacun (même méthode
+  que pour More Satisfaction — installer sur l'instance de test, lire les vraies tables via
+  `DESCRIBE`, pas de supposition sur l'API interne d'un plugin tiers avant de l'avoir lue).
 
 **Maintenance du dépôt — pas encore faite, demandé explicitement (2026-08-14) :**
 - **Nettoyage du code mort et des fichiers non utilisés.** Une première tentative de détection

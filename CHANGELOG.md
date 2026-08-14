@@ -9,14 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.53.0] - 2026-08-14
+
+### Added
+- `SatisfactionSurveyBuilder` (nouveau) — première intégration cross-plugin de ce projet : quand le
+  plugin tiers "More satisfaction" (`satisfaction`) est installé et activé, l'étape "Réglages
+  généraux GLPI" propose de créer une enquête toute faite (3 questions : note sur 5, résolution
+  oui/non, remarques libres), activée sur toute l'instance. La section n'apparaît **pas du tout**
+  dans le formulaire si le plugin n'est pas installé (`Plugin::isPluginActive('satisfaction')`,
+  vérifié côté serveur avant même de rendre le template) — pas une case qui ne ferait rien.
+  Plugin installé et activé en réel sur l'instance de test (marketplace débloqué), schéma de ses
+  tables (`glpi_plugin_satisfaction_surveys`/`surveyquestions`) lu directement via `DESCRIBE` avant
+  d'écrire le builder — écrit directement dans ces tables via `$DB` plutôt que d'instancier les
+  classes PHP du plugin tiers (pas de dépendance dure vers un plugin qui peut ne pas être installé,
+  et hors du périmètre couvert par PHPStan). Vérifié en réel : activé/désactivé le plugin tiers pour
+  confirmer que la section apparaît/disparaît correctement, soumission complète créant la bonne
+  enquête + les 3 questions avec les bons types/échelles, resoumission idempotente.
+
 ### Documentation
 - ROADMAP.md : recherche sur 8 plugins tiers proposés par l'utilisateur (PDF, Used items export,
   More satisfaction, VIP, Oauth IMAP, Data Injection, Tag, Carbon), vérifiés en direct sur le
   marketplace natif. Correction : le plugin "Tag" natif est un système de tags génériques, pas de
   l'impression d'étiquettes — le vrai candidat est "QR Code Label". Vérifié que remise-glpi n'a pas
-  déjà de fonctionnalité d'étiquette. Mécanisme `Plugin::isPluginActive()` confirmé pour une
-  intégration conditionnelle au wizard, pas encore construite. Ajout aussi du nettoyage du dépôt
-  (code mort, fichiers inutilisés) à la liste des chantiers.
+  déjà de fonctionnalité d'étiquette. Ajout aussi du nettoyage du dépôt (code mort, fichiers
+  inutilisés) à la liste des chantiers.
 
 ### Fixed
 - 3 PR Dependabot passées en revue (bumps de SHA d'actions GitHub épinglées) : #39 mergée. #40/#41
