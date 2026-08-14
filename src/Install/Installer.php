@@ -84,6 +84,10 @@ final class Installer
                 `calendar_days` text,
                 `calendar_begin` varchar(5) NOT NULL DEFAULT '08:00',
                 `calendar_end` varchar(5) NOT NULL DEFAULT '18:00',
+                `calendar_day_hours` text,
+                `calendar_lunch_break_enabled` tinyint NOT NULL DEFAULT 0,
+                `calendar_lunch_begin` varchar(5) NOT NULL DEFAULT '12:00',
+                `calendar_lunch_end` varchar(5) NOT NULL DEFAULT '13:00',
                 `calendar_holidays_enabled` tinyint NOT NULL DEFAULT 0,
                 `branding_enabled` tinyint NOT NULL DEFAULT 0,
                 `branding_primary_color` varchar(7) NOT NULL DEFAULT '#206bc4',
@@ -317,6 +321,10 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'vip_group_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'tag_library_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'validation_supervisor_routing_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'calendar_day_hours', 'text');
+            $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_break_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_begin', 'string', ['value' => '12:00']);
+            $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_end', 'string', ['value' => '13:00']);
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
