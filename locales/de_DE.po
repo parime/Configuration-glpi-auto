@@ -1183,6 +1183,12 @@ msgstr "Mittagspause"
 msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
 msgstr "Benutzerdefinierter Vermögenswert \"Fahrzeug\" erstellt (Zweig Fuhrpark)."
 
+msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
+msgstr "Benutzerdefinierter Vermögenswert \"Server\" erstellt (Zweig IT & Systeme)."
+
+msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
+msgstr "Benutzerdefinierter Vermögenswert \"Raum\" erstellt (Zweig Gebäude)."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Konfigurationsprofil"

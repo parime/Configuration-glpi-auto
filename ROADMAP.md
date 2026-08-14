@@ -560,10 +560,15 @@ mise en circulation, contrôle technique, assurance), droits par défaut Super-A
 uniquement. Voir CHANGELOG pour le détail complet de la vérification en réel (y compris un vrai
 piège de nettoyage de données de test découvert et corrigé avant l'envoi).
 
-⏳ **Bâtiment/Local et IT & SI/Serveur — pas construits.** Même mécanisme technique disponible,
-mais nécessite de définir un jeu de champs/capacités pertinent pour chacun sans tomber dans le
-sur-mesure par organisation — pas demandé pour l'instant, seule la partie automobile a été
-explicitement demandée.
+✅ **IT & SI/Serveur et Bâtiment/Local — fait (v0.60.0, 2026-08-14), sur demande explicite ("fait
+serveur et batiment").** `ServerAssetBuilder` : actif "Serveur" distinct de l'actif natif
+`Ordinateur`, déclenché par la branche "IT & SI", 17 capacités (proches d'un `Ordinateur` natif plus
+montable en baie/VM hébergées/administration à distance/certificats/instances BDD), 3 champs texte
+libre (position en baie, RAID, hyperviseur). `BuildingAssetBuilder` : actif "Local", déclenché par
+la branche "Bâtiment", pensé comme complément du `Location` natif (qui dit où est un actif, sans
+capacités propres) plutôt qu'un doublon — un "Local" peut avoir un loyer, des contrats, des
+documents, être réservable (salle de réunion). 8 capacités, 3 champs (surface, capacité en
+personnes, type de local). Les deux vérifiés en réel de bout en bout, voir CHANGELOG pour le détail.
 
 **Lieux — assistant d'adresse interactif — fait (v0.33.0, 2026-08-13).** Demandé explicitement par
 l'utilisateur ("les adresse on a dit un truc interractif, comme pour les site internet ou tu

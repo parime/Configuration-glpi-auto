@@ -1183,6 +1183,12 @@ msgstr "lunch break"
 msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
 msgstr "Custom \"Vehicle\" asset created (Vehicle Fleet branch)."
 
+msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
+msgstr "Custom \"Server\" asset created (IT & Systems branch)."
+
+msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
+msgstr "Custom \"Room\" asset created (Building branch)."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Configuration profile"

@@ -9,6 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.60.0] - 2026-08-14
+
+### Added
+- `ServerAssetBuilder` (nouveau) — actif personnalisé GLPI 11 "Serveur", généré automatiquement dès
+  que la branche de catégorie "IT & SI" est sélectionnée, sur demande explicite de l'utilisateur
+  ("fait serveur et batiment"). Même mécanique que `VehicleAssetBuilder` (voir son docblock pour le
+  détail de l'API `AssetDefinition`). Délibérément distinct de l'actif natif `Ordinateur` — un poste
+  de travail n'a aucun usage pour la position en baie, le RAID ou l'hyperviseur. 17 capacités,
+  proches de celles d'un `Ordinateur` natif (inventaire, ports réseau, système d'exploitation,
+  logiciels, composants) plus les capacités propres aux serveurs : montable en baie, machines
+  virtuelles hébergées, administration à distance (iLO/iDRAC/IPMI), certificats, instances de bases
+  de données. 3 champs personnalisés en texte libre (position en baie, configuration RAID,
+  hyperviseur) — pourraient devenir des menus déroulants comme "Type de carburant" si demandé, rien
+  ne l'impose pour l'instant.
+- `BuildingAssetBuilder` (nouveau) — actif personnalisé "Local", généré dès que la branche "Bâtiment
+  & Moyens Généraux" est sélectionnée. Nommé "Local" (pas "Bâtiment") et pensé comme complément — pas
+  doublon — du `Location` natif de GLPI déjà construit par `LocationBuilder` : un `Location` dit *où*
+  se trouve un actif (arbre hiérarchique bâtiment/étage/salle), sans aucune capacité propre ; un
+  actif "Local" permet de suivre une salle/un bureau comme un vrai actif géré (valeur d'achat/loyer,
+  contrats d'entretien ou d'assurance, documents comme les plans, réservable — typiquement une salle
+  de réunion). 8 capacités, aucune capacité d'inventaire matériel (contrairement à Véhicule/Serveur,
+  un local n'a ni ports réseau ni composants). 3 champs personnalisés : surface (m²) et capacité
+  (personnes) en nombre, type de local en texte libre.
+- Les deux vérifiés en réel de bout en bout : branches décochées → rien créé ; cochées → actifs
+  créés avec les bonnes capacités/champs (confirmés en base) ; resoumission idempotente ; formulaires
+  réels testés avec un vrai élément créé pour chacun, valeurs correctement enregistrées dans
+  `glpi_assets_assets.custom_fields`.
+
 ## [0.59.0] - 2026-08-14
 
 ### Added
