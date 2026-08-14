@@ -1180,6 +1180,9 @@ msgstr "horaires variables selon les jours"
 msgid "coupure déjeuner"
 msgstr "coupure déjeuner"
 
+msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
+msgstr "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Profil de configuration"

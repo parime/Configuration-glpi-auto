@@ -1180,6 +1180,9 @@ msgstr "Öffnungszeiten variieren je nach Tag"
 msgid "coupure déjeuner"
 msgstr "Mittagspause"
 
+msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
+msgstr "Benutzerdefinierter Vermögenswert \"Fahrzeug\" erstellt (Zweig Fuhrpark)."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Konfigurationsprofil"

@@ -9,6 +9,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.58.0] - 2026-08-14
+
+### Added
+- `VehicleAssetBuilder` (nouveau) — actif personnalisé GLPI 11 "Véhicule", généré automatiquement
+  dès que la branche de catégorie "Flotte Automobile & Mobilité" (`CategoryBuilder`, clé `flotte`)
+  est sélectionnée — aucune case dédiée, cette sélection est déjà le déclencheur (idée cadrée avec
+  l'utilisateur début de session : "la branche Flotte Automobile activée créerait un type d'actif
+  Véhicule"). Mécanisme 100% natif GLPI 11 (`Glpi\Asset\AssetDefinition`, migré de l'ancien plugin
+  externe "Generic Object") — API vérifiée en créant un vrai actif à la main via l'interface admin
+  réelle et en relisant ce qui atterrit en base, pas supposée depuis le code seul :
+  `capacities` doit être `[{name: FQCN}, ...]`, `profiles` un plan `{profil_id: droits_int}`,
+  `CustomFieldDefinition.type` stocke le FQCN de la classe de type de champ. 8 capacités retenues
+  (financier/garanties, contrats, documents, historique, notes, liens, recherche globale,
+  réservable) — pas les capacités matérielles (ports réseau, OS, logiciels...) qui n'ont aucun sens
+  pour un véhicule. Droits complets accordés par défaut aux profils Super-Admin/Admin uniquement —
+  même raisonnement que le groupe natif de `VipBuilder`. 5 champs personnalisés créés
+  (immatriculation, type de carburant, date de mise en circulation, date de contrôle technique,
+  date d'expiration d'assurance) — texte libre/date uniquement, pas de liste déroulante inventée
+  nécessitant sa propre table native. Vérifié en réel de bout en bout : branche décochée → rien
+  créé ; branche cochée → actif créé avec les 8 capacités et les 5 champs corrects (confirmés en
+  base) ; resoumission idempotente ; formulaire réel du nouvel actif affichant bien les 5 champs
+  sans configuration supplémentaire de `fields_display` ; création d'un vrai véhicule de test avec
+  valeurs sauvegardées correctement (`glpi_assets_assets.custom_fields`), onglets Contrats/Gestion/
+  Documents/Réservations/Liens/Historique tous présents comme attendu. **Un vrai piège de test
+  découvert et corrigé avant tout envoi** : une suppression manuelle antérieure d'un actif de test
+  via `DELETE` SQL brut (plutôt qu'une vraie purge côté objet) avait laissé des lignes
+  `glpi_displaypreferences`/`glpi_dropdownvisibilities` orphelines, provoquant une collision de
+  contrainte d'unicité (erreur 500) au resoumission suivante avec le même `system_name` — pas un bug
+  du builder, mais un rappel que `DELETE FROM` brut sur un objet GLPI ne nettoie jamais les tables
+  liées, contrairement à `purge()`.
+
 ## [0.57.0] - 2026-08-14
 
 ### Added

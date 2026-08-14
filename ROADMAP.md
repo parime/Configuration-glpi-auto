@@ -531,15 +531,13 @@ organisation pour écrire ces règles. `ManufacturerDictionaryBuilder` (nouveau)
 test de règle de GLPI (`front/rule.test.php`) : « Hewlett-Packard » → validé → fabricant assigné
 « HP ».
 
-**Idée cadrée, débloquée, pas encore construite (proposée par l'utilisateur, 2026-08-12 ; API
-confirmée le 2026-08-13 après avoir repéré le sujet dans les vidéos de formation GLPI de Patrice
-Vaillant, https://www.youtube.com/@patricevaillant — chaîne listée par GLPI lui-même dans
-« Ils parlent de nous »)** : générer des « actifs personnalisés » GLPI en fonction des branches de
-catégories sélectionnées à l'étape 5 — ex. la branche « Flotte Automobile » activée créerait un
-type d'actif « Véhicule » avec des champs pertinents (immatriculation, type de carburant, date de
-contrôle technique...), la branche « Bâtiment » un type « Local »/« Salle » ou équivalent, la
-branche « IT & SI » un type « Serveur » distinct de l'actif natif `Computer` (champs propres :
-position en baie, RAID, hyperviseur...).
+**Idée cadrée, débloquée (2026-08-12/13) ; partie automobile construite (v0.58.0, 2026-08-14, sur
+demande explicite "lance la partie automobile")** : générer des « actifs personnalisés » GLPI en
+fonction des branches de catégories sélectionnées à l'étape 5 — ex. la branche « Flotte Automobile »
+activée créerait un type d'actif « Véhicule » avec des champs pertinents (immatriculation, type de
+carburant, date de contrôle technique...), la branche « Bâtiment » un type « Local »/« Salle » ou
+équivalent, la branche « IT & SI » un type « Serveur » distinct de l'actif natif `Computer` (champs
+propres : position en baie, RAID, hyperviseur...).
 
 **Blocage levé** : vérifié directement dans le code source de GLPI 11.0.8 réel (pas supposé) —
 `Glpi\Asset\AssetDefinition` (`src/Glpi/Asset/AssetDefinition.php`) est un vrai `CommonDBTM`
@@ -552,10 +550,20 @@ côté `add()`/`update()` : `system_name` (fige le nom, génère la classe
 25+ disponibles dans `src/Glpi/Asset/Capacity/` : `HasNetworkPortCapacity`,
 `HasVirtualMachineCapacity`, `HasInfocomCapacity`, `IsInventoriableCapacity`... — chaque type
 d'actif active uniquement celles qui le concernent), `profiles`, `translations`, `fields_display`.
-Reste à définir un jeu de champs/capacités par branche sans tomber dans le sur-mesure par
-organisation (même principe généraliste que le reste du plugin). Pas de version cible — l'utilisateur
-a choisi de documenter le déblocage plutôt que de lancer la construction immédiatement
-(2026-08-13).
+
+✅ **Véhicule (Flotte Automobile) — fait (v0.58.0, 2026-08-14).** `VehicleAssetBuilder` : déclenché
+directement par la case de branche "Flotte Automobile & Mobilité" déjà existante (aucune case
+dédiée), API vérifiée en créant un vrai actif à la main via l'interface admin réelle avant d'écrire
+le code (pas supposée depuis la doc). 8 capacités (financier, contrats, documents, historique,
+notes, liens, recherche globale, réservable), 5 champs personnalisés (immatriculation, carburant,
+mise en circulation, contrôle technique, assurance), droits par défaut Super-Admin/Admin
+uniquement. Voir CHANGELOG pour le détail complet de la vérification en réel (y compris un vrai
+piège de nettoyage de données de test découvert et corrigé avant l'envoi).
+
+⏳ **Bâtiment/Local et IT & SI/Serveur — pas construits.** Même mécanisme technique disponible,
+mais nécessite de définir un jeu de champs/capacités pertinent pour chacun sans tomber dans le
+sur-mesure par organisation — pas demandé pour l'instant, seule la partie automobile a été
+explicitement demandée.
 
 **Lieux — assistant d'adresse interactif — fait (v0.33.0, 2026-08-13).** Demandé explicitement par
 l'utilisateur ("les adresse on a dit un truc interractif, comme pour les site internet ou tu
