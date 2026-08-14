@@ -1183,6 +1183,12 @@ msgstr "pausa para comer"
 msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
 msgstr "Activo personalizado \"Vehículo\" creado (rama Flota de Vehículos)."
 
+msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
+msgstr "Activo personalizado \"Servidor\" creado (rama TI y Sistemas)."
+
+msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
+msgstr "Activo personalizado \"Local\" creado (rama Edificio)."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Perfil de configuración"

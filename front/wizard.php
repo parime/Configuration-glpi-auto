@@ -17,6 +17,7 @@
 
 use GlpiPlugin\Configurationglpiauto\AssetTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\BrandingBuilder;
+use GlpiPlugin\Configurationglpiauto\BuildingAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\CalendarBuilder;
 use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\ChangeProblemTemplateBuilder;
@@ -46,6 +47,7 @@ use GlpiPlugin\Configurationglpiauto\RequestTypeTranslationBuilder;
 use GlpiPlugin\Configurationglpiauto\RSSFeedBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
 use GlpiPlugin\Configurationglpiauto\SatisfactionSurveyBuilder;
+use GlpiPlugin\Configurationglpiauto\ServerAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\SolutionLibraryBuilder;
@@ -388,6 +390,8 @@ if (isset($_POST['finish'])) {
     // Runs right after CategoryBuilder: triggered by the same "Flotte Automobile" branch checkbox,
     // no dedicated toggle of its own.
     $vehicleAssetCreated = (new VehicleAssetBuilder())->build($config);
+    $serverAssetCreated = (new ServerAssetBuilder())->build($config);
+    $buildingAssetCreated = (new BuildingAssetBuilder())->build($config);
     $servicesCreated = (new ServiceCatalogBuilder())->build($config);
     $statesCreated = (new StateBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
@@ -528,6 +532,12 @@ if (isset($_POST['finish'])) {
     }
     if ($vehicleAssetCreated > 0) {
         $messages[] = __('Actif personnalisé "Véhicule" créé (branche Flotte Automobile).', 'configurationglpiauto');
+    }
+    if ($serverAssetCreated > 0) {
+        $messages[] = __('Actif personnalisé "Serveur" créé (branche IT & SI).', 'configurationglpiauto');
+    }
+    if ($buildingAssetCreated > 0) {
+        $messages[] = __('Actif personnalisé "Local" créé (branche Bâtiment).', 'configurationglpiauto');
     }
     if ($servicesCreated > 0) {
         $messages[] = sprintf(__('%d services créés dans le catalogue.', 'configurationglpiauto'), $servicesCreated);
