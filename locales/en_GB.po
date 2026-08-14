@@ -1141,8 +1141,8 @@ msgstr "Satisfaction survey created (More satisfaction plugin)."
 msgid "Plugin \"VIP\" détecté — créer le groupe \"VIP\" et l'activer"
 msgstr "\"VIP\" plugin detected — create the \"VIP\" group and enable it"
 
-msgid "Crée un groupe technicien natif nommé \"VIP\" et le marque comme groupe VIP auprès du plugin : ajoutez-y ensuite les utilisateurs à signaler dans les tickets."
-msgstr "Creates a native technician group named \"VIP\" and flags it as a VIP group for the plugin: add the users to highlight on tickets to it afterwards."
+msgid "Crée un groupe natif \"VIP\" (à ne pas confondre avec un groupe de techniciens) et le marque comme groupe VIP auprès du plugin : ajoutez-y les personnes ou groupes prioritaires (direction, actionnaires...) dont les tickets doivent être mis en évidence."
+msgstr "Creates a native \"VIP\" group (not to be confused with a technician group) and flags it as a VIP group for the plugin: add the priority people or groups (executives, shareholders...) whose tickets should stand out."
 
 msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
 msgstr "\"VIP\" group created and enabled (VIP plugin)."

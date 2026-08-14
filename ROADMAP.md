@@ -865,9 +865,11 @@ clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de s
   et activé en réel sur l'instance de test, schéma de `glpi_plugin_vip_groups` lu directement via
   `DESCRIBE` avant d'écrire le builder : clé primaire `id` qui reflète directement `glpi_groups.id`
   sans auto-incrément (confirmé dans le code source du plugin tiers), une ligne singleton `id=0`
-  pré-existante dès l'installation. `VipBuilder` crée un groupe technicien natif "VIP" et le marque
-  `isvip=1`, écrit directement dans les tables du plugin tiers via `$DB` (même raisonnement que
-  `SatisfactionSurveyBuilder`, pas de dépendance dure). Son moteur de règles (`RuleVip`, affectation
+  pré-existante dès l'installation. `VipBuilder` crée un groupe natif "VIP" — **pas** un groupe de
+  techniciens, le plugin sert à signaler des personnes/groupes prioritaires côté demandeur (direction,
+  actionnaires...) — et le marque `isvip=1`, écrit directement dans les tables du plugin tiers via
+  `$DB` (même raisonnement que `SatisfactionSurveyBuilder`, pas de dépendance dure). Son moteur de
+  règles (`RuleVip`, affectation
   depuis des critères LDAP) volontairement pas automatisé — dépend de la structure AD/LDAP propre à
   chaque organisation, même raisonnement que l'exclusion des diagnostics LDAP. Vérifié en réel :
   section absente quand le plugin est désactivé, groupe natif + ligne `isvip=1` créés à la soumission,

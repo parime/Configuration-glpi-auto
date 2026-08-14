@@ -9,14 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.54.1] - 2026-08-14
+
+### Fixed
+- `VipBuilder` : correction d'un contresens signalé par l'utilisateur — le texte du wizard et de la
+  documentation décrivait à tort le groupe natif "VIP" créé comme un « groupe technicien ». Le
+  plugin tiers "VIP" sert en réalité à signaler des personnes ou groupes prioritaires **côté
+  demandeur** (direction, actionnaires, tout interlocuteur dont les tickets doivent être mis en
+  évidence pour le support), pas une équipe de support. Le code lui-même n'avait pas ce défaut (le
+  groupe créé n'a jamais eu `is_assign` forcé), seul le texte affiché à l'administrateur et la
+  documentation étaient trompeurs — corrigés dans `templates/wizard.html.twig`, le commentaire écrit
+  sur le groupe natif créé, `CHANGELOG.md` et `ROADMAP.md`. Traductions EN/DE/IT/ES régénérées.
+  Revérifié en direct sur l'instance de test que le nouveau texte s'affiche correctement.
+
 ## [0.54.0] - 2026-08-14
 
 ### Added
 - `VipBuilder` (nouveau) — deuxième intégration cross-plugin, même schéma que
   `SatisfactionSurveyBuilder` : quand le plugin tiers "VIP" (`vip`) est installé et activé, l'étape
-  "Réglages généraux GLPI" propose de créer un groupe technicien natif nommé "VIP" et de le marquer
-  comme groupe VIP auprès du plugin (`glpi_plugin_vip_groups.isvip = 1`) — à charge ensuite pour
-  l'administrateur d'y ajouter les vrais utilisateurs à signaler dans les tickets. Section absente du
+  "Réglages généraux GLPI" propose de créer un groupe natif nommé "VIP" (pas un groupe de
+  techniciens — le plugin sert à signaler des personnes/groupes prioritaires côté demandeur, ex.
+  direction, actionnaires) et de le marquer comme groupe VIP auprès du plugin
+  (`glpi_plugin_vip_groups.isvip = 1`) — à charge ensuite pour l'administrateur d'y ajouter les
+  vraies personnes à mettre en avant dans les tickets. Section absente du
   formulaire si le plugin n'est pas installé (`Plugin::isPluginActive('vip')`, vérifié côté serveur).
   Schéma réel de `glpi_plugin_vip_groups` lu via `DESCRIBE` avant d'écrire le builder : clé primaire
   `id` qui reflète directement `glpi_groups.id` sans auto-incrément (confirmé dans le code source du
