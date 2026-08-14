@@ -677,30 +677,30 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    de succès. `NetworkPortFiberchannelType` (malgré son nom FR "Types de fibre") concerne en réalité
    le protocole de stockage SAN Fibre Channel (débits 1/2/4/8/16/32 Gb, FCoE...) — rien à voir avec
    la fibre internet résidentielle/entreprise, écarté du périmètre "opérateurs télécom" de ce point.
-4. **Grande liste de dropdowns "Types" natifs vides — deux tranches faites (v0.50.0 puis v0.51.0,
-   2026-08-13/14), le reste toujours à prioriser.** Requête `information_schema` réexécutée :
-   33 tables natives `glpi_*types` à 0 ligne (plus large que l'estimation initiale de ~25).
-   ✅ **Traité, 14 catégories, 61 types au total** : Ordinateurs/Écrans/Matériel réseau/
+4. **Grande liste de dropdowns "Types" natifs vides — trois tranches faites (v0.50.0, v0.51.0,
+   v0.61.0), quasiment clos.** Requête `information_schema` réexécutée : 33 tables natives
+   `glpi_*types` à 0 ligne (plus large que l'estimation initiale de ~25).
+   ✅ **Traité, 26 catégories, 130 types au total** : Ordinateurs/Écrans/Matériel réseau/
    Périphériques/Téléphones/Imprimantes (v0.50.0) puis Racks/PDU/Certificats/Disques durs/
-   Batteries/Boîtiers/Câbles/Cartouches d'impression (v0.51.0) — `AssetTypeBuilder`, types
-   standards du secteur, icônes optionnelles. Racks/PDU/Certificats scopés par entité (confirmé via
-   `DESCRIBE` que ces 3 tables ont `entities_id`/`is_recursive`, contrairement aux 11 autres).
+   Batteries/Boîtiers/Câbles/Cartouches d'impression (v0.51.0) puis Appliances/Budgets/Cluster/
+   Consommables/Contacts/Contrats/Domaines/Lignes/Équipements passifs datacenter/Fournisseurs/
+   Machines virtuelles/Capteurs (v0.61.0, 2026-08-14, poursuite autonome sur "continu") —
+   `AssetTypeBuilder`, types standards du secteur, icônes optionnelles. Racks/PDU/Certificats/
+   Appliances/Domaines/Cluster scopés par entité (confirmé via `DESCRIBE`). Contenu de
+   `ConsumableItemType` délibérément distinct de `CartridgeItemType` (déjà traité) — objets GLPI
+   différents. `VirtualMachineType` sans rapport avec le champ texte libre "hyperviseur" de
+   `ServerAssetBuilder`.
    ❌ **Explicitement écartés** : `AgentType` (auto-créé par `Agent::handleAgent()` à la première
    connexion d'un agent d'inventaire réel — le seeder serait redondant), `Assets_AssetType`
    (dépend d'une définition d'actif personnalisée à créer d'abord, pas un dropdown global autonome),
    `Enclosure`/Châssis (confirmé sans table `Type` du tout dans GLPI —
-   `glpi_enclosuretypes` n'existe pas, écarté du périmètre plutôt que différé). ⏳ **Reste à
-   traiter, chacun nécessitant sa propre recherche de contenu avant construction** (15 tables) :
-   Cluster, Consommables (ConsumableItem — à distinguer de CartridgeItem déjà traité), Contrats
-   (Contract), Contacts (Contact), Fournisseurs (Supplier), Budgets (Budget), Lignes (Line),
-   Domaines (Domain), Appliances (Appliance), Composants génériques (DeviceGeneric — probablement
-   trop générique pour un contenu significatif), Capteurs (DeviceSensor), Instances de base de
-   données (DatabaseInstance — risque de dériver vers une liste de produits DBMS façon fabricants
-   plutôt qu'une vraie catégorisation), Machines virtuelles (VirtualMachine), Licences logicielles
-   (SoftwareLicenseType — **`CommonTreeDropdown`, pas un dropdown plat** comme les 14 déjà traités,
-   nécessite le même soin que la construction de l'arbre de `CategoryBuilder`), Équipements passifs
-   de datacenter (PassiveDCEquipment), Câbles fibre (`NetworkPortFiberchannelType`, protocole SAN
+   `glpi_enclosuretypes` n'existe pas), `DeviceGeneric` (trop générique pour un contenu
+   significatif), `DatabaseInstance` (risque de dériver vers une liste de produits DBMS façon
+   fabricants plutôt qu'une vraie catégorisation), `NetworkPortFiberchannelType` (protocole SAN
    générique et stable, déjà écarté du périmètre "opérateurs télécom" ailleurs dans ce document).
+   ⏳ **Seule table encore différée** : `SoftwareLicenseType` — **`CommonTreeDropdown`, pas un
+   dropdown plat** comme les 26 déjà traités, nécessite le même soin que la construction de l'arbre
+   de `CategoryBuilder`.
 5. ✅ **Jours fériés par pays — fait (v0.52.0, 2026-08-14), sur demande explicite ("fait les jours
    fériés").** `CountryHolidayBuilder` (nouveau), étape "Lieux" : crée les jours fériés natifs GLPI
    des pays saisis sur les adresses (hors France, déjà couverte à l'étape Calendrier), source

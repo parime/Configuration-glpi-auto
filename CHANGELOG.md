@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.61.0] - 2026-08-14
+
+### Added
+- `AssetTypeBuilder` : troisième tranche, sur poursuite autonome ("continu") de l'audit des
+  dropdowns "Types" natifs vides. 12 itemtypes de plus (69 types au total) : Appliance, Budget,
+  Cluster, Consommable, Contact, Contrat, Domaine, Ligne, Équipement passif datacenter,
+  Fournisseur, Machine virtuelle, Capteur — ferme la liste des ~30 tables natives vides identifiées
+  lors de l'audit initial, à l'exception de `SoftwareLicenseType` (arbre, toujours différé) et des
+  deux déjà exclus (`AgentType`/`Assets_AssetType`). `DeviceGeneric` et `DatabaseInstance`
+  volontairement toujours exclus (contenu trop générique ou risque de dériver vers une liste de
+  produits éditeurs). Contenu de `ConsommableItemType` délibérément distinct de
+  `CartridgeItemType` (déjà couvert) — objets GLPI différents (consommables généraux vs.
+  traçabilité des cartouches d'imprimante avec son propre mécanisme de stock), pas de doublon.
+  `VirtualMachineType` sans rapport avec le champ texte libre "hyperviseur" de
+  `ServerAssetBuilder` — ce dropdown alimente les objets natifs `VirtualMachine` remontés par
+  l'agent d'inventaire, pas le champ personnalisé de l'actif Serveur. 3 des 12 (Appliance, Domaine,
+  Cluster) confirmés scopés par entité via `DESCRIBE`. Traductions EN/DE/IT/ES ajoutées pour les
+  icônes des 69 nouvelles entrées. Vérifié en réel : 130 types au total (61 existants + 69
+  nouveaux), comptage exact par table confirmé en base, resoumission idempotente (toujours 130,
+  pas de doublon).
+
 ## [0.60.0] - 2026-08-14
 
 ### Added
