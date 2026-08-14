@@ -1156,6 +1156,15 @@ msgstr "6 generic tags usable on any GLPI object (Priority, Urgent, To check, Ob
 msgid "%d tag(s) créé(s) (plugin Tag)."
 msgstr "%d tag(s) created (Tag plugin)."
 
+msgid "Validation automatique par le supérieur hiérarchique du demandeur (« N+1 »)"
+msgstr "Automatic approval by the requester's supervisor (\"N+1\")"
+
+msgid "Envoie automatiquement une demande d'approbation au supérieur hiérarchique du demandeur (champ natif GLPI « Superviseur ») pour chaque ticket de type Demande. Décochée par défaut, contrairement au reste de cette page : ceci change un vrai comportement (approbation obligatoire), pas juste du contenu — et ne fait quelque chose que si le champ Superviseur des utilisateurs est renseigné (import LDAP ou saisie manuelle). Sans supérieur renseigné, aucune validation n'est créée."
+msgstr "Automatically sends an approval request to the requester's supervisor (native GLPI \"Supervisor\" field) for every Request-type ticket. Unchecked by default, unlike the rest of this page: this changes real behavior (mandatory approval), not just content — and only does something if users' Supervisor field is filled in (LDAP import or manual entry). With no supervisor set, no approval is created."
+
+msgid "Règle de validation automatique (supérieur hiérarchique) créée."
+msgstr "Automatic approval rule created (supervisor)."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Configuration profile"
