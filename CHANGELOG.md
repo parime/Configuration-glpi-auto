@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.61.1] - 2026-08-14
+
+### Fixed
+- `CalendarBuilder` : correction d'un vrai bug remonté par l'utilisateur en conditions réelles
+  (capture d'écran d'une soumission complète du wizard) — erreur GLPI native "Impossible d'ajouter
+  une plage chevauchant une plage existante" apparaissant en toast, en parallèle du message de
+  succès habituel. Cause réelle : le garde-fou existant ("ne recrée pas un segment identique") ne
+  protège que contre une resoumission *identique*. Dès que les horaires changent d'une exécution du
+  wizard à l'autre (un vendredi modifié, la coupure déjeuner activée/désactivée...), un nouveau
+  segment peut recouvrir un ancien aux bornes différentes sur le même jour, et la validation native
+  de `CalendarSegment` refuse l'insertion — silencieusement du point de vue du plugin, qui ne
+  vérifiait jamais la valeur de retour de `add()`. Corrigé en vidant systématiquement les segments
+  existants d'un (calendrier, jour) juste avant d'écrire ceux de la soumission en cours — chaque
+  resoumission remplace intégralement l'horaire du jour au lieu de tenter de fusionner avec ce qui
+  était déjà là, ce qui est aussi le comportement attendu par un admin qui revient modifier les
+  horaires. Reproduit et vérifié en réel avec les données réellement laissées par une session de
+  test antérieure (un vendredi à horaires personnalisés en conflit avec une resoumission aux
+  horaires par défaut) : plus d'erreur, segments remplacés proprement, resoumission toujours
+  idempotente (10 segments stables, pas de doublon).
+
 ## [0.61.0] - 2026-08-14
 
 ### Added
