@@ -1188,3 +1188,8 @@ msgid_plural "Profils de configuration"
 msgstr[0] "Profilo di configurazione"
 msgstr[1] "Profili di configurazione"
 
+msgid "Type de carburant"
+msgid_plural "Types de carburant"
+msgstr[0] "Tipo di carburante"
+msgstr[1] "Tipi di carburante"
+

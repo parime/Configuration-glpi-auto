@@ -9,6 +9,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.59.0] - 2026-08-14
+
+### Added
+- `VehicleAssetBuilder` : champ "Immatriculation" marqué obligatoire, sur demande explicite de
+  l'utilisateur. Correction d'une première recherche erronée (voir section Fixed) : GLPI 11 a bien
+  un mécanisme natif "Obligatoire" par champ personnalisé (`Glpi\Asset\CustomFieldType\
+  AbstractType::getOptions()` expose une vraie `BooleanOption('required', 'Mandatory')` sur chaque
+  type de champ, la case que coche un admin sur l'onglet "Champs") — appliqué via
+  `field_options => ['required' => true]` à la création. Vérifié en réel : attribut HTML `required`
+  bien présent sur le formulaire, soumission vide effectivement bloquée côté formulaire.
+- `FuelType` (nouveau) — premier dropdown propre à ce plugin (GLPI n'a aucun concept natif "type de
+  carburant" à réutiliser, contrairement à tous les autres dropdowns peuplés par ce plugin) : classe
+  `CommonDropdown` minimale, table dédiée, 2 contrôleurs front (`fueltype.php`/`fueltype.form.php`,
+  GLPI route toujours les classes de plugin vers leurs propres fichiers `front/`, jamais vers le
+  contrôleur générique `dropdown.common.php` réservé au cœur). "Type de carburant" bascule de texte
+  libre à un vrai menu déroulant (`Glpi\Asset\CustomFieldType\DropdownType`, `itemtype` pointant
+  vers `FuelType`), peuplé de 7 valeurs courantes (Essence, Diesel, Électrique, Hybride, Hybride
+  rechargeable, GPL, Hydrogène), reseedé à chaque soumission indépendamment de l'existence de
+  l'actif Véhicule lui-même (même logique que `ManufacturerDictionaryBuilder`). Vérifié en réel :
+  champ rendu en vrai `<select>` (select2), valeur "Diesel" sélectionnable et correctement
+  enregistrée comme référence vers la ligne `FuelType` correspondante.
+- **Unicité sur l'immatriculation — explicitement non retenue.** `FieldUnicity` (déjà utilisé par
+  `FieldUnicityBuilder`) ne fonctionne que sur de vraies colonnes de base de données (confirmé dans
+  `FieldUnicity::dropdownFields()` — liste `$DB->listFields()`), pas sur les clés du champ JSON
+  `glpi_assets_assets.custom_fields` où vit "immatriculation". Le champ natif "Numéro de série" —
+  déjà éligible à `FieldUnicityBuilder` (l'actif Véhicule s'enregistre automatiquement dans
+  `$CFG_GLPI['unicity_types']` au démarrage, confirmé dans `AssetDefinitionManager::
+  bootstrapDefinition()`) — aurait permis une vraie unicité en base, mais l'utilisateur a choisi de
+  garder le libellé "Immatriculation" plus clair plutôt que de basculer dessus.
+
+### Fixed
+- Correction d'une recherche erronée dans la session précédente : "GLPI 11 n'a aucun mécanisme
+  natif de champ obligatoire" était faux — la recherche initiale n'avait grep que
+  `CustomFieldDefinition.php`, pas la classe de base `AbstractType.php` où l'option `required` est
+  réellement définie. Corrigé avant toute implémentation erronée.
+- Un vrai piège d'infrastructure GLPI découvert en re-testant : la purge propre d'un
+  `AssetDefinition` (`delete(..., true)`) ne nettoie ni `glpi_dropdownvisibilities` ni les
+  `glpi_assets_customfielddefinitions` orphelines — contrairement à `glpi_displaypreferences`
+  qu'elle nettoie bien. Recréer un actif de même `system_name` après une purge "propre" aurait donc
+  quand même pu re-percuter une collision de contrainte d'unicité sur `dropdownvisibilities`. Pas un
+  bug de ce plugin — noté ici pour toute future recréation d'actif personnalisé sur l'instance de
+  test.
+
 ## [0.58.0] - 2026-08-14
 
 ### Added
