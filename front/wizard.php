@@ -45,6 +45,7 @@ use GlpiPlugin\Configurationglpiauto\ProjectTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\RequestTypeTranslationBuilder;
 use GlpiPlugin\Configurationglpiauto\RSSFeedBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
+use GlpiPlugin\Configurationglpiauto\SatisfactionSurveyBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\SolutionLibraryBuilder;
@@ -400,6 +401,7 @@ if (isset($_POST['finish'])) {
     // Scans only the top-level Location panels' own country field, not child locations' (bâtiment/
     // étage/salle very rarely differ from their parent's country).
     $countryHolidaysCreated = (new CountryHolidayBuilder())->build($config, array_column($locationDataByPath, 'country'));
+    $satisfactionSurveyCreated = (new SatisfactionSurveyBuilder())->build($config);
     // Reuses $locationDataByPath (same physical address, no reason to type it twice) plus its own
     // phonenumber/fax/website/email fields, with no Location equivalent.
     $entityCommsByPath = !empty($config->fields['entity_native_address_enabled']) ? collectEntityCommsFromPost() : [];
@@ -615,6 +617,9 @@ if (isset($_POST['finish'])) {
     if ($countryHolidaysCreated > 0) {
         $messages[] = sprintf(__('%d jour(s) férié(s) étranger(s) créés.', 'configurationglpiauto'), $countryHolidaysCreated);
     }
+    if ($satisfactionSurveyCreated > 0) {
+        $messages[] = __('Enquête de satisfaction créée (plugin More satisfaction).', 'configurationglpiauto');
+    }
     if ($userCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories d\'utilisateur créées.', 'configurationglpiauto'), $userCategoriesCreated);
     }
@@ -693,6 +698,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     // Read straight from GLPI core's own encrypted store, matching the native "Enregistrement"
     // page's own behavior — never mirrored into this plugin's own config table (see MarketplaceBuilder).
     'glpi_network_registration_key' => \GLPINetwork::getRegistrationKey(),
+    'satisfaction_plugin_active' => SatisfactionSurveyBuilder::isThirdPartyPluginActive(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);

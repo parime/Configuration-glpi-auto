@@ -1129,6 +1129,15 @@ msgstr "Añadir los días festivos de los países introducidos a continuación (
 msgid "Uniquement les jours fériés à date fixe (comme pour la France) — un pays non reconnu ou non couvert par le service utilisé est simplement ignoré, sans rien inventer. Les jours fériés créés ne sont pas rattachés automatiquement à un calendrier : à faire vous-même dans Configuration > Calendriers une fois créés."
 msgstr "Solo los días festivos de fecha fija (como para Francia) — un país no reconocido o no cubierto por el servicio utilizado simplemente se omite, sin inventar nada. Los días festivos creados no se vinculan automáticamente a un calendario: hágalo usted mismo en Configuración > Calendarios una vez creados."
 
+msgid "Plugin \"More satisfaction\" détecté — créer une enquête de satisfaction toute faite"
+msgstr "Plugin \"More satisfaction\" detectado — crear una encuesta de satisfacción lista para usar"
+
+msgid "3 questions courantes (note sur 5, résolution oui/non, remarques libres), activée sur toute l'instance. Différent de l'enquête native ci-dessus — le plugin permet plusieurs questions et un rappel automatique, la case native ne fait qu'une note sur 5."
+msgstr "3 preguntas comunes (valoración sobre 5, resuelto sí/no, comentarios libres), activa en toda la instancia. Diferente de la encuesta nativa de arriba — el plugin admite varias preguntas y un recordatorio automático, la casilla nativa solo da una valoración sobre 5."
+
+msgid "Enquête de satisfaction créée (plugin More satisfaction)."
+msgstr "Encuesta de satisfacción creada (plugin More satisfaction)."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Perfil de configuración"

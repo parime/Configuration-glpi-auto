@@ -914,6 +914,18 @@
             </div>
           {% endfor %}
         </div>
+
+        {# Visible uniquement si le plugin tiers "More satisfaction" est installé ET activé —
+           aucune trace dans le formulaire sinon, comme demandé. #}
+        {% if satisfaction_plugin_active %}
+          <hr class="my-3">
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="satisfaction_plugin_survey_enabled" value="0">
+            <input type="checkbox" name="satisfaction_plugin_survey_enabled" value="1" class="form-check-input" id="cga-satisfaction-plugin-survey-enabled" {{ config.satisfaction_plugin_survey_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-satisfaction-plugin-survey-enabled">{{ __('Plugin "More satisfaction" détecté — créer une enquête de satisfaction toute faite', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-0">{{ __('3 questions courantes (note sur 5, résolution oui/non, remarques libres), activée sur toute l\'instance. Différent de l\'enquête native ci-dessus — le plugin permet plusieurs questions et un rappel automatique, la case native ne fait qu\'une note sur 5.', 'configurationglpiauto') }}</p>
+        {% endif %}
       </div>
 
       {# ---------------------------------------------------------------- Étape 15 : Général & Outils #}
