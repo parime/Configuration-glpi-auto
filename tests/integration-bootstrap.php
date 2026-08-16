@@ -62,6 +62,19 @@ require_once dirname(__DIR__, 3) . '/vendor/autoload.php';
 $kernel = new \Glpi\Kernel\Kernel();
 $kernel->boot();
 
+// A real front controller reaches this state via `$kernel->handle($request)`, which pushes the
+// request onto Symfony's `request_stack` service as a side effect of dispatching it — `boot()`
+// alone never does that. Confirmed real bug (2026-08-16, second CI failure on the same PR):
+// GLPI's own `isAPI()` (src/autoload/misc-functions.php) calls
+// `Request::createFromGlobals()->getPathInfo()`, harmless on its own, but on GLPI's official CI
+// image (a newer 11.0.x patch than this plugin's local docker-compose.test.yml image) some code
+// on the `Auth::login()` → `User::prepareInputForUpdate()` path (triggered by the last-login
+// timestamp update) needs `$requestStack->getMainRequest()` to be non-null, and throws "Call to a
+// member function getMainRequest() on null" otherwise. Pushing a synthetic request here — the
+// same thing `Request::createFromGlobals()` would build from PHP's own superglobals — makes any
+// such legacy code find one, matching what a real HTTP request would have provided.
+$kernel->getContainer()->get('request_stack')->push(\Symfony\Component\HttpFoundation\Request::createFromGlobals());
+
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 // Every integration test needs to act with full rights (CommonDBTM::add() etc. check
