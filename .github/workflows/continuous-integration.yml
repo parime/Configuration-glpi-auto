@@ -93,7 +93,13 @@ jobs:
     name: "PHPUnit Tests"
     runs-on: ubuntu-latest
     needs: ci
-
+    # No real GLPI here (plain shivammathur/setup-php) — explicitly pinned to phpunit.xml.dist
+    # (tests/Unit only, pure PHP). tests/Integration/ needs a real, installed-and-activated GLPI
+    # instance to exercise CommonDBTM::add()/real DB writes/rule evaluation against — that suite
+    # runs inside the "ci" job above instead, which GLPI's official plugin-ci-workflows reusable
+    # workflow already provides (auto-detects the bare phpunit.xml at repo root once it exists and
+    # runs it from inside the real, plugin-activated container — confirmed by reading that
+    # workflow's own source, not assumed). Two config files, two execution contexts, on purpose.
     steps:
       - name: "Checkout code"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
@@ -109,9 +115,9 @@ jobs:
         run: |
           composer install --prefer-dist --no-progress --no-interaction
 
-      - name: "Run tests with coverage"
+      - name: "Run unit tests with coverage"
         run: |
-          vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+          vendor/bin/phpunit -c phpunit.xml.dist --coverage-text --coverage-clover=coverage.xml
 
       - name: "Upload coverage to Codecov"
         uses: codecov/codecov-action@a99c28d3f0da835de33ff2feb2e15691c7b9641f # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)

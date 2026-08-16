@@ -9,6 +9,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.62.0] - 2026-08-16
+
+### Added
+- Infrastructure de tests d'intégration, sur demande explicite de l'utilisateur ("augmente les
+  test unitaire, si il faut monter une stack de docker pour les test unitaire fait le") — jusqu'ici
+  `tests/Unit` ne couvrait que deux classes d'assistants purs sans dépendance GLPI
+  (`EntityBuilder`, `RuleRightBuilder`), toute la logique métier réelle (écritures en base, moteur
+  de règles) n'était vérifiée qu'à la main via Docker/Playwright pendant chaque cycle de
+  développement, jamais rejouée automatiquement.
+  - `tests/integration-bootstrap.php` (nouveau) — démarre une vraie instance GLPI via
+    `new \Glpi\Kernel\Kernel('production')` (le mécanisme réellement utilisé par `bin/console`,
+    confirmé en lisant sa propre source) plutôt que le classique `require inc/includes.php` des
+    contrôleurs `front/*.php`, qui n'établit *pas* de connexion DB hors d'une vraie requête HTTP
+    sous GLPI 11. Charge ensuite l'autoload Composer propre au plugin, puis ouvre une vraie session
+    (`Auth::login('glpi', 'glpi')`) pour que les contrôles de droits GLPI (`Session::haveRight()`)
+    fonctionnent normalement dans les tests.
+  - `phpunit.xml` (nouveau, versionné — retiré du `.gitignore` qui l'excluait par une convention
+    générique inadaptée ici) — déclare les suites `unit`/`integration` sous ce nouveau bootstrap.
+    Distinct de `phpunit.xml.dist` (inchangé, `tests/Unit` seul, sans GLPI) : deux fichiers, deux
+    contextes d'exécution. Repéré en lisant le code source du workflow réutilisable officiel de
+    GLPI (`glpi-project/plugin-ci-workflows`) que ce plugin utilise déjà pour sa CI — il exécute
+    `vendor/bin/phpunit` à l'intérieur d'un vrai conteneur GLPI+BDD dès qu'un fichier nommé
+    littéralement `phpunit.xml` (pas `.dist`) existe à la racine, ce qui n'avait jamais été le cas
+    jusqu'ici. La stack Docker demandée par l'utilisateur pour la CI existait donc déjà côté GLPI,
+    il ne restait qu'à la câbler correctement.
+  - `.github/workflows/continuous-integration.yml` : job `phpunit` (sans GLPI) désormais épinglé
+    explicitement sur `-c phpunit.xml.dist`, pour ne pas tenter de charger le nouveau
+    `phpunit.xml` (qui suppose un noyau GLPI démarrable) et échouer.
+  - `tests/Integration/CalendarBuilderTest.php` (nouveau, 6 tests) — couvre notamment un test de
+    non-régression pour le vrai bug corrigé en [0.61.1] (chevauchement de plage lors d'une
+    resoumission aux horaires modifiés), plus construction standard, idempotence, coupure déjeuner
+    et surcharge d'horaires par jour.
+  - `tests/Integration/AssetTypeBuilderTest.php` (nouveau, 3 tests) — construction des 130 types
+    natifs, idempotence (pas de doublon en base sur une deuxième exécution), désactivation.
+  - `tests/Integration/ValidationRoutingBuilderTest.php` (nouveau, 4 tests) — exécute le vrai
+    moteur de règles GLPI de bout en bout (création d'utilisateurs, d'un ticket de type Demande,
+    lecture de `glpi_ticketvalidations`), pas seulement la création de la règle. Découverte en
+    vérifiant en réel avant d'écrire le test : GLPI 11 route la cible résolue via les colonnes
+    `itemtype_target`/`items_id_target` ("User"/<id du superviseur>), la colonne historique
+    `users_id_validate` restant à 0 — comportement confirmé par une exécution réelle plutôt que
+    supposé d'une version antérieure de GLPI.
+  - Suite complète vérifiée en réel dans `docker-compose.test.yml` : 23 tests, 47 assertions, 0
+    échec ; `phpunit.xml.dist` (10 tests, sans GLPI) toujours vert en parallèle ; aucune donnée
+    résiduelle en base après exécution (chaque test nettoie ce qu'il crée).
+
 ## [0.61.1] - 2026-08-14
 
 ### Fixed

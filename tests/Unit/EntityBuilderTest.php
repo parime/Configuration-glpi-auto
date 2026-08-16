@@ -23,9 +23,11 @@ use PHPUnit\Framework\TestCase;
 /**
  * Covers only EntityBuilder's two pure static helpers (describe(), topEntityIds()) — every other
  * class in this plugin extends/instantiates a GLPI core class (CommonDBTM, Entity, Calendar...)
- * that only exists inside a running GLPI instance, so it can't be unit-tested outside one; those
- * are validated manually/with Playwright against the real docker-compose.test.yml stack instead
- * (see CHANGELOG.md for what's been validated that way).
+ * that only exists inside a running GLPI instance, so it can't be unit-tested outside one.
+ * CalendarBuilder/AssetTypeBuilder/ValidationRoutingBuilder now have real coverage instead under
+ * tests/Integration (a live GLPI Kernel boot, see tests/integration-bootstrap.php); everything
+ * else not yet covered there is still validated manually/with Playwright against the real
+ * docker-compose.test.yml stack (see CHANGELOG.md for what's been validated that way).
  */
 final class EntityBuilderTest extends TestCase
 {
