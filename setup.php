@@ -3,7 +3,7 @@
 /**
  * -------------------------------------------------------------------------
  * Configuration GLPI Auto plugin for GLPI
- * Copyright (C) 2026 Parime
+ * Copyright (C) 2026 Vincent GUILLOTTE
  * https://github.com/parime/Configuration-glpi-auto
  * -------------------------------------------------------------------------
  * LICENSE
@@ -69,7 +69,7 @@ function plugin_version_configurationglpiauto(): array
     return [
         'name'         => 'Configuration GLPI Auto',
         'version'      => PLUGIN_CONFIGURATIONGLPIAUTO_VERSION,
-        'author'       => 'Parime',
+        'author'       => 'Vincent GUILLOTTE',
         'license'      => 'GPLv3',
         'homepage'     => 'https://github.com/parime/Configuration-glpi-auto',
         'requirements' => [

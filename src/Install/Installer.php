@@ -3,7 +3,7 @@
 /**
  * -------------------------------------------------------------------------
  * Configuration GLPI Auto plugin for GLPI
- * Copyright (C) 2026 Parime
+ * Copyright (C) 2026 Vincent GUILLOTTE
  * https://github.com/parime/Configuration-glpi-auto
  * -------------------------------------------------------------------------
  * LICENSE
