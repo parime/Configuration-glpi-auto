@@ -53,6 +53,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Suite complète vérifiée en réel dans `docker-compose.test.yml` : 23 tests, 47 assertions, 0
     échec ; `phpunit.xml.dist` (10 tests, sans GLPI) toujours vert en parallèle ; aucune donnée
     résiduelle en base après exécution (chaque test nettoie ce qu'il crée).
+  - **Corrigé après un premier échec réel sur la CI officielle de GLPI** (PR #100) : le bootstrap
+    forçait `new \Glpi\Kernel\Kernel('production')`, ce qui fonctionnait par coïncidence sur
+    `docker-compose.test.yml` (pas de `GLPI_ENVIRONMENT_TYPE` défini localement) mais échouait
+    silencieusement sur l'image CI officielle de GLPI — celle-ci démarre visiblement sous
+    l'environnement `testing`, qui redirige `GLPI_CONFIG_DIR` vers `tests/config/` ; forcer
+    `production` faisait donc chercher la config DB au mauvais endroit, laissant `global $DB` à
+    `null` (pas d'exception immédiate — GLPI tolère une base non configurée pour son propre
+    assistant d'installation) jusqu'à la première vraie requête, plus loin dans `Auth::login()`
+    (`Call to a member function request() on null`). Corrigé en ne forçant plus aucun
+    environnement (`new \Glpi\Kernel\Kernel()`), exactement comme le fait `bin/console` lui-même
+    (`$options['env'] ?? null`) — les commandes `database:install`/`plugin:install`/
+    `plugin:activate` qui préparent l'instance juste avant, dans le même conteneur, résolvent donc
+    le même environnement que le bootstrap PHPUnit qui s'exécute ensuite.
 
 ## [0.61.1] - 2026-08-14
 

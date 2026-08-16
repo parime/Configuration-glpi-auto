@@ -31,9 +31,11 @@
  * relying on it here — `require`-ing `inc/includes.php` alone (the legacy front-controller
  * convention used elsewhere in this plugin, e.g. `front/wizard.php`) does *not* establish a DB
  * connection outside of a real HTTP request/Apache context in GLPI 11's Symfony-based runtime.
- * `new \Glpi\Kernel\Kernel('production')` + `->boot()` (the exact mechanism GLPI's own `bin/console`
- * uses) does — confirmed live: `global $DB` is a real connected `DBmysql` instance immediately after
- * `boot()`, and every native GLPI class (`Calendar`, `CommonDBTM`...) is usable. GLPI's own Kernel
+ * `new \Glpi\Kernel\Kernel()` + `->boot()` (the exact mechanism GLPI's own `bin/console` uses, same
+ * no-argument default) does — confirmed live: `global $DB` is a real connected `DBmysql` instance
+ * immediately after `boot()`, and every native GLPI class (`Calendar`, `CommonDBTM`...) is usable.
+ * Do not hardcode an environment here (e.g. `new Kernel('production')`) — see the comment right
+ * before the `boot()` call below for why that broke GLPI's own official CI image. GLPI's own Kernel
  * boot does *not* autoload this plugin's own `GlpiPlugin\Configurationglpiauto\*` classes by itself
  * (no full HTTP request cycle ran the plugin-init hooks) — this plugin's own Composer autoloader is
  * required explicitly as a second step.
@@ -46,7 +48,18 @@
 
 require_once dirname(__DIR__, 3) . '/vendor/autoload.php';
 
-$kernel = new \Glpi\Kernel\Kernel('production');
+// No environment hardcoded here — `null` mirrors bin/console's own default (`$options['env'] ??
+// null`), letting `Glpi\Application\Environment::get()` resolve it from `GLPI_ENVIRONMENT_TYPE`
+// exactly the same way `bin/console database:install`/`plugin:install`/`plugin:activate` already
+// did in this same container before this bootstrap runs. Confirmed real bug (2026-08-16): an
+// earlier version of this file hardcoded `'production'`, which happened to match on the local
+// docker-compose.test.yml image (no GLPI_ENVIRONMENT_TYPE set there) but silently broke on GLPI's
+// official CI image, which sets `GLPI_ENVIRONMENT_TYPE=testing` — `Environment::TESTING` redirects
+// `GLPI_CONFIG_DIR` to `tests/config/`, so booting under the wrong environment made the Kernel look
+// for `config_db.php` in the wrong directory, leaving `global $DB` null (not an exception — GLPI
+// tolerates an unconfigured DB so its own install wizard can render) until the first real query
+// ("Call to a member function request() on null" deep inside Auth::login()).
+$kernel = new \Glpi\Kernel\Kernel();
 $kernel->boot();
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
