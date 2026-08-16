@@ -8,8 +8,8 @@
 
 Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une installation vierge en une plateforme operationnelle en quelques clics.
 
-> **Etat du projet (2026-08-12)** : `v0.30.1`. Voir [CHANGELOG.md](CHANGELOG.md) et
-> [ROADMAP.md](ROADMAP.md) pour l'etat sprint par sprint.
+> Voir [CHANGELOG.md](CHANGELOG.md) pour l'historique des versions publiées (badge « Latest
+> Release » ci-dessus pour la dernière en date) et [ROADMAP.md](ROADMAP.md) pour ce qui est prévu.
 
 ## Table des matieres
 
