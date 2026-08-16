@@ -66,6 +66,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     (`$options['env'] ?? null`) — les commandes `database:install`/`plugin:install`/
     `plugin:activate` qui préparent l'instance juste avant, dans le même conteneur, résolvent donc
     le même environnement que le bootstrap PHPUnit qui s'exécute ensuite.
+  - **Second échec réel sur la même CI, après correction du premier** : une fois `global $DB`
+    correctement établi, un autre problème est apparu — `Auth::login()` échoue toujours plus loin,
+    dans `User::prepareInputForUpdate()` (mise à jour de la date de dernière connexion) via
+    `isAPI()`, avec « Call to a member function getMainRequest() on null ». Un vrai contrôleur
+    front atteint cet état via `$kernel->handle($request)`, qui pousse la requête sur le service
+    Symfony `request_stack` en la traitant — `boot()` seul ne le fait jamais. Le bootstrap
+    n'échouait pas sur ce point dans `docker-compose.test.yml` (image GLPI 11.0.x légèrement plus
+    ancienne, sans cette dépendance sur ce chemin de code) — confirmé en poussant manuellement une
+    requête synthétique en local et en observant `getMainRequest()` passer de `null` à un vrai
+    objet `Request`. Corrigé en poussant une requête construite depuis les superglobales PHP
+    (`Request::createFromGlobals()`) sur `request_stack` juste après `boot()`.
 
 ## [0.61.1] - 2026-08-14
 
