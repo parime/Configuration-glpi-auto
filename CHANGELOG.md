@@ -67,16 +67,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `plugin:activate` qui préparent l'instance juste avant, dans le même conteneur, résolvent donc
     le même environnement que le bootstrap PHPUnit qui s'exécute ensuite.
   - **Second échec réel sur la même CI, après correction du premier** : une fois `global $DB`
-    correctement établi, un autre problème est apparu — `Auth::login()` échoue toujours plus loin,
-    dans `User::prepareInputForUpdate()` (mise à jour de la date de dernière connexion) via
-    `isAPI()`, avec « Call to a member function getMainRequest() on null ». Un vrai contrôleur
-    front atteint cet état via `$kernel->handle($request)`, qui pousse la requête sur le service
-    Symfony `request_stack` en la traitant — `boot()` seul ne le fait jamais. Le bootstrap
-    n'échouait pas sur ce point dans `docker-compose.test.yml` (image GLPI 11.0.x légèrement plus
-    ancienne, sans cette dépendance sur ce chemin de code) — confirmé en poussant manuellement une
-    requête synthétique en local et en observant `getMainRequest()` passer de `null` à un vrai
-    objet `Request`. Corrigé en poussant une requête construite depuis les superglobales PHP
-    (`Request::createFromGlobals()`) sur `request_stack` juste après `boot()`.
+    correctement établi, `Auth::login()` échouait encore plus loin, dans
+    `User::prepareInputForUpdate()` (mise à jour de la date de dernière connexion) via `isAPI()`,
+    avec « Call to a member function getMainRequest() on null ». Une première tentative de
+    correctif (pousser une requête sur le service Symfony `request_stack`) s'est révélée insuffisante
+    et corrigeait le mauvais diagnostic — vérifié en réel plus tard (voir ci-dessous).
+  - **Troisième échec réel, exactement le même symptôme malgré ce correctif** — a motivé un
+    changement de méthode : plutôt que d'itérer à l'aveugle sur GitHub Actions, l'image utilisée par
+    la CI officielle de GLPI (`ghcr.io/glpi-project/githubactions-glpi-apache:php-8.2-glpi-11.0.x`)
+    a été récupérée et reproduite en local (base MariaDB jetable + conteneur GLPI dédié), pour
+    obtenir le même échec exact hors CI et itérer en quelques secondes plutôt qu'en plusieurs
+    minutes par essai. Deux causes réelles distinctes ont été trouvées :
+    1. Sur cette image, `isAPI()` (src/autoload/misc-functions.php) est codée différemment de
+       l'image `docker-compose.test.yml` locale (patch GLPI 11.0.x plus récent) :
+       `global $kernel; $kernel->getMainRequest()...` au lieu d'un simple
+       `Request::createFromGlobals()`. `public/index.php` et `bin/console` fonctionnent parce que
+       leur `$kernel` est assigné au tout premier niveau du script, ce qui en fait une vraie
+       variable globale PHP — alors que le bootstrap PHPUnit est `include_once` depuis
+       *l'intérieur* d'une méthode (`Application::loadBootstrapScript()`), où un simple
+       `$kernel = ...` reste local à cette méthode et n'atteint jamais `$GLOBALS`. Le correctif
+       précédent (`request_stack`) ne pouvait pas fonctionner : c'est `$kernel` lui-même que
+       `global $kernel` ne trouvait pas, pas la requête (`Kernel::getMainRequest()` sait déjà
+       retourner `Request::createFromGlobals()` seule quand aucune requête HTTP n'est passée par
+       `Kernel::handle()`). Corrigé en assignant explicitement `$GLOBALS['kernel'] = $kernel;`
+       juste après l'instanciation.
+    2. Une fois ce point passé, un tout autre échec est apparu à l'étape suivante de PHPUnit
+       lui-même (construction de la suite de tests, pas notre bootstrap) : « Call to undefined
+       method PHPUnit\TextUI\Configuration\TestDirectory::groups() ». Cause réelle : le cœur GLPI
+       11 embarque désormais PHPUnit **11.5** en dépendance de développement
+       (`ghcr.io/.../vendor/phpunit`), alors que `composer.json` de ce plugin exigeait encore
+       PHPUnit **^10.0** — les deux arborescences `vendor/` finissent chargées dans le même
+       processus PHP (notre bootstrap doit charger l'autoload de GLPI pour démarrer le Kernel), et
+       les classes `PHPUnit\...` du plugin et du cœur GLPI, de générations incompatibles, se
+       mélangent selon l'ordre d'enregistrement des autoloaders. Corrigé en alignant la contrainte
+       du plugin sur celle du cœur GLPI 11 (`phpunit/phpunit: ^11.5`, confirmée en lisant
+       `composer.json` du cœur GLPI directement dans l'image officielle).
+    - Les deux correctifs vérifiés ensemble, en réel, dans une reproduction complète de
+      l'environnement CI officiel (image GLPI + MariaDB jetable, `database:install`/
+      `plugin:install`/`plugin:activate`, puis `vendor/bin/phpunit -c phpunit.xml`) : 23 tests, 47
+      assertions, 0 échec — plus PHPStan et PHP-CS-Fixer toujours verts avec le nouveau PHPUnit 11.
+      Suite complète revérifiée aussi sur `docker-compose.test.yml` (23 + 10 tests, toujours verts).
 
 ## [0.61.1] - 2026-08-14
 

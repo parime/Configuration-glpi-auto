@@ -60,20 +60,24 @@ require_once dirname(__DIR__, 3) . '/vendor/autoload.php';
 // tolerates an unconfigured DB so its own install wizard can render) until the first real query
 // ("Call to a member function request() on null" deep inside Auth::login()).
 $kernel = new \Glpi\Kernel\Kernel();
-$kernel->boot();
 
-// A real front controller reaches this state via `$kernel->handle($request)`, which pushes the
-// request onto Symfony's `request_stack` service as a side effect of dispatching it — `boot()`
-// alone never does that. Confirmed real bug (2026-08-16, second CI failure on the same PR):
-// GLPI's own `isAPI()` (src/autoload/misc-functions.php) calls
-// `Request::createFromGlobals()->getPathInfo()`, harmless on its own, but on GLPI's official CI
-// image (a newer 11.0.x patch than this plugin's local docker-compose.test.yml image) some code
-// on the `Auth::login()` → `User::prepareInputForUpdate()` path (triggered by the last-login
-// timestamp update) needs `$requestStack->getMainRequest()` to be non-null, and throws "Call to a
-// member function getMainRequest() on null" otherwise. Pushing a synthetic request here — the
-// same thing `Request::createFromGlobals()` would build from PHP's own superglobals — makes any
-// such legacy code find one, matching what a real HTTP request would have provided.
-$kernel->getContainer()->get('request_stack')->push(\Symfony\Component\HttpFoundation\Request::createFromGlobals());
+// `public/index.php` and `bin/console` both assign `$kernel` at their own true top-level script
+// scope, which is what makes it a real PHP global — GLPI's own legacy code (e.g. `isAPI()` in
+// src/autoload/misc-functions.php, on the CI image's GLPI patch: `global $kernel; $kernel->
+// getMainRequest()...`) relies on exactly that. PHPUnit's bootstrap script is different: it is
+// `include_once`'d from *inside* a method (`Application::loadBootstrapScript()`), so a plain
+// `$kernel = ...` here is only local to that method's scope and never reaches `$GLOBALS` on its
+// own — `global $kernel` elsewhere then sees nothing and the call blows up on null. Root-caused
+// live (2026-08-16, third CI failure on the same PR) by pulling GLPI's own official CI image
+// (`ghcr.io/glpi-project/githubactions-glpi-apache:php-8.2-glpi-11.0.x`) and reproducing the exact
+// failure locally against a throwaway MariaDB container — confirmed this exact assignment fixes
+// it, and that a previous attempt at fixing this by pushing a request onto the `request_stack`
+// service (harmless, but not the actual cause: `Kernel::getMainRequest()` already falls back to
+// `Request::createFromGlobals()` on its own when no HTTP request went through `Kernel::handle()`)
+// did not, since `$kernel` itself — not the request — was what `global $kernel` couldn't find.
+$GLOBALS['kernel'] = $kernel;
+
+$kernel->boot();
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
