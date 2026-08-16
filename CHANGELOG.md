@@ -9,6 +9,105 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.62.0] - 2026-08-16
+
+### Added
+- Infrastructure de tests d'intégration, sur demande explicite de l'utilisateur ("augmente les
+  test unitaire, si il faut monter une stack de docker pour les test unitaire fait le") — jusqu'ici
+  `tests/Unit` ne couvrait que deux classes d'assistants purs sans dépendance GLPI
+  (`EntityBuilder`, `RuleRightBuilder`), toute la logique métier réelle (écritures en base, moteur
+  de règles) n'était vérifiée qu'à la main via Docker/Playwright pendant chaque cycle de
+  développement, jamais rejouée automatiquement.
+  - `tests/integration-bootstrap.php` (nouveau) — démarre une vraie instance GLPI via
+    `new \Glpi\Kernel\Kernel('production')` (le mécanisme réellement utilisé par `bin/console`,
+    confirmé en lisant sa propre source) plutôt que le classique `require inc/includes.php` des
+    contrôleurs `front/*.php`, qui n'établit *pas* de connexion DB hors d'une vraie requête HTTP
+    sous GLPI 11. Charge ensuite l'autoload Composer propre au plugin, puis ouvre une vraie session
+    (`Auth::login('glpi', 'glpi')`) pour que les contrôles de droits GLPI (`Session::haveRight()`)
+    fonctionnent normalement dans les tests.
+  - `phpunit.xml` (nouveau, versionné — retiré du `.gitignore` qui l'excluait par une convention
+    générique inadaptée ici) — déclare les suites `unit`/`integration` sous ce nouveau bootstrap.
+    Distinct de `phpunit.xml.dist` (inchangé, `tests/Unit` seul, sans GLPI) : deux fichiers, deux
+    contextes d'exécution. Repéré en lisant le code source du workflow réutilisable officiel de
+    GLPI (`glpi-project/plugin-ci-workflows`) que ce plugin utilise déjà pour sa CI — il exécute
+    `vendor/bin/phpunit` à l'intérieur d'un vrai conteneur GLPI+BDD dès qu'un fichier nommé
+    littéralement `phpunit.xml` (pas `.dist`) existe à la racine, ce qui n'avait jamais été le cas
+    jusqu'ici. La stack Docker demandée par l'utilisateur pour la CI existait donc déjà côté GLPI,
+    il ne restait qu'à la câbler correctement.
+  - `.github/workflows/continuous-integration.yml` : job `phpunit` (sans GLPI) désormais épinglé
+    explicitement sur `-c phpunit.xml.dist`, pour ne pas tenter de charger le nouveau
+    `phpunit.xml` (qui suppose un noyau GLPI démarrable) et échouer.
+  - `tests/Integration/CalendarBuilderTest.php` (nouveau, 6 tests) — couvre notamment un test de
+    non-régression pour le vrai bug corrigé en [0.61.1] (chevauchement de plage lors d'une
+    resoumission aux horaires modifiés), plus construction standard, idempotence, coupure déjeuner
+    et surcharge d'horaires par jour.
+  - `tests/Integration/AssetTypeBuilderTest.php` (nouveau, 3 tests) — construction des 130 types
+    natifs, idempotence (pas de doublon en base sur une deuxième exécution), désactivation.
+  - `tests/Integration/ValidationRoutingBuilderTest.php` (nouveau, 4 tests) — exécute le vrai
+    moteur de règles GLPI de bout en bout (création d'utilisateurs, d'un ticket de type Demande,
+    lecture de `glpi_ticketvalidations`), pas seulement la création de la règle. Découverte en
+    vérifiant en réel avant d'écrire le test : GLPI 11 route la cible résolue via les colonnes
+    `itemtype_target`/`items_id_target` ("User"/<id du superviseur>), la colonne historique
+    `users_id_validate` restant à 0 — comportement confirmé par une exécution réelle plutôt que
+    supposé d'une version antérieure de GLPI.
+  - Suite complète vérifiée en réel dans `docker-compose.test.yml` : 23 tests, 47 assertions, 0
+    échec ; `phpunit.xml.dist` (10 tests, sans GLPI) toujours vert en parallèle ; aucune donnée
+    résiduelle en base après exécution (chaque test nettoie ce qu'il crée).
+  - **Corrigé après un premier échec réel sur la CI officielle de GLPI** (PR #100) : le bootstrap
+    forçait `new \Glpi\Kernel\Kernel('production')`, ce qui fonctionnait par coïncidence sur
+    `docker-compose.test.yml` (pas de `GLPI_ENVIRONMENT_TYPE` défini localement) mais échouait
+    silencieusement sur l'image CI officielle de GLPI — celle-ci démarre visiblement sous
+    l'environnement `testing`, qui redirige `GLPI_CONFIG_DIR` vers `tests/config/` ; forcer
+    `production` faisait donc chercher la config DB au mauvais endroit, laissant `global $DB` à
+    `null` (pas d'exception immédiate — GLPI tolère une base non configurée pour son propre
+    assistant d'installation) jusqu'à la première vraie requête, plus loin dans `Auth::login()`
+    (`Call to a member function request() on null`). Corrigé en ne forçant plus aucun
+    environnement (`new \Glpi\Kernel\Kernel()`), exactement comme le fait `bin/console` lui-même
+    (`$options['env'] ?? null`) — les commandes `database:install`/`plugin:install`/
+    `plugin:activate` qui préparent l'instance juste avant, dans le même conteneur, résolvent donc
+    le même environnement que le bootstrap PHPUnit qui s'exécute ensuite.
+  - **Second échec réel sur la même CI, après correction du premier** : une fois `global $DB`
+    correctement établi, `Auth::login()` échouait encore plus loin, dans
+    `User::prepareInputForUpdate()` (mise à jour de la date de dernière connexion) via `isAPI()`,
+    avec « Call to a member function getMainRequest() on null ». Une première tentative de
+    correctif (pousser une requête sur le service Symfony `request_stack`) s'est révélée insuffisante
+    et corrigeait le mauvais diagnostic — vérifié en réel plus tard (voir ci-dessous).
+  - **Troisième échec réel, exactement le même symptôme malgré ce correctif** — a motivé un
+    changement de méthode : plutôt que d'itérer à l'aveugle sur GitHub Actions, l'image utilisée par
+    la CI officielle de GLPI (`ghcr.io/glpi-project/githubactions-glpi-apache:php-8.2-glpi-11.0.x`)
+    a été récupérée et reproduite en local (base MariaDB jetable + conteneur GLPI dédié), pour
+    obtenir le même échec exact hors CI et itérer en quelques secondes plutôt qu'en plusieurs
+    minutes par essai. Deux causes réelles distinctes ont été trouvées :
+    1. Sur cette image, `isAPI()` (src/autoload/misc-functions.php) est codée différemment de
+       l'image `docker-compose.test.yml` locale (patch GLPI 11.0.x plus récent) :
+       `global $kernel; $kernel->getMainRequest()...` au lieu d'un simple
+       `Request::createFromGlobals()`. `public/index.php` et `bin/console` fonctionnent parce que
+       leur `$kernel` est assigné au tout premier niveau du script, ce qui en fait une vraie
+       variable globale PHP — alors que le bootstrap PHPUnit est `include_once` depuis
+       *l'intérieur* d'une méthode (`Application::loadBootstrapScript()`), où un simple
+       `$kernel = ...` reste local à cette méthode et n'atteint jamais `$GLOBALS`. Le correctif
+       précédent (`request_stack`) ne pouvait pas fonctionner : c'est `$kernel` lui-même que
+       `global $kernel` ne trouvait pas, pas la requête (`Kernel::getMainRequest()` sait déjà
+       retourner `Request::createFromGlobals()` seule quand aucune requête HTTP n'est passée par
+       `Kernel::handle()`). Corrigé en assignant explicitement `$GLOBALS['kernel'] = $kernel;`
+       juste après l'instanciation.
+    2. Une fois ce point passé, un tout autre échec est apparu à l'étape suivante de PHPUnit
+       lui-même (construction de la suite de tests, pas notre bootstrap) : « Call to undefined
+       method PHPUnit\TextUI\Configuration\TestDirectory::groups() ». Cause réelle : le cœur GLPI
+       11 embarque désormais PHPUnit **11.5** en dépendance de développement
+       (`ghcr.io/.../vendor/phpunit`), alors que `composer.json` de ce plugin exigeait encore
+       PHPUnit **^10.0** — les deux arborescences `vendor/` finissent chargées dans le même
+       processus PHP (notre bootstrap doit charger l'autoload de GLPI pour démarrer le Kernel), et
+       les classes `PHPUnit\...` du plugin et du cœur GLPI, de générations incompatibles, se
+       mélangent selon l'ordre d'enregistrement des autoloaders. Corrigé en alignant la contrainte
+       du plugin sur celle du cœur GLPI 11 (`phpunit/phpunit: ^11.5`, confirmée en lisant
+       `composer.json` du cœur GLPI directement dans l'image officielle).
+    - Les deux correctifs vérifiés ensemble, en réel, dans une reproduction complète de
+      l'environnement CI officiel (image GLPI + MariaDB jetable, `database:install`/
+      `plugin:install`/`plugin:activate`, puis `vendor/bin/phpunit -c phpunit.xml`) : 23 tests, 47
+      assertions, 0 échec — plus PHPStan et PHP-CS-Fixer toujours verts avec le nouveau PHPUnit 11.
+      Suite complète revérifiée aussi sur `docker-compose.test.yml` (23 + 10 tests, toujours verts).
+
 ## [0.61.1] - 2026-08-14
 
 ### Fixed

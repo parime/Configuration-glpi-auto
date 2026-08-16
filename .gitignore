@@ -33,7 +33,8 @@ Thumbs.db
 # Coverage
 /coverage/
 .phpunit.result.cache
-phpunit.xml
+# phpunit.xml is intentionally tracked (real config for GLPI-backed integration tests,
+# distinct from phpunit.xml.dist used by the plain PHP unit-test CI job)
 
 # Static analysis
 .php-cs-fixer.cache
