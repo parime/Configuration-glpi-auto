@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="tests/integration-bootstrap.php"
+         colors="true"
+         cacheDirectory=".phpunit-cache">
+    <!--
+        Used only inside a real, installed-and-activated GLPI instance (this plugin's own
+        docker-compose.test.yml stack, or GLPI's official plugin-ci-workflows reusable CI job,
+        which auto-detects this exact filename) — see tests/integration-bootstrap.php for why a
+        real GLPI Kernel boot is required and phpunit.xml.dist (no GLPI, pure PHP) is used
+        everywhere else. Runs both suites since a live GLPI can execute pure-logic tests too.
+    -->
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+</phpunit>
