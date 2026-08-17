@@ -134,9 +134,13 @@
           <div class="form-check form-switch mb-2">
             <input type="hidden" name="country_holidays_enabled" value="0">
             <input type="checkbox" name="country_holidays_enabled" value="1" class="form-check-input" id="cga-country-holidays-enabled" {{ config.country_holidays_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-country-holidays-enabled">{{ __('Ajouter les jours fériés des pays saisis ci-dessous (hors France, déjà couverte à l\'étape Calendrier)', 'configurationglpiauto') }}</label>
+            <label class="form-check-label" for="cga-country-holidays-enabled">{{ __('Fermetures automatiques selon le pays (jours fériés)', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small mb-2">{{ __('Uniquement les jours fériés à date fixe (comme pour la France) — un pays non reconnu ou non couvert par le service utilisé est simplement ignoré, sans rien inventer. Les jours fériés créés ne sont pas rattachés automatiquement à un calendrier : à faire vous-même dans Configuration > Calendriers une fois créés.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Ajoute les jours fériés à date fixe du pays saisi ci-dessous, rattachés automatiquement au calendrier du site/client concerné — France par défaut si aucun pays n\'est saisi (y compris en mode mono-site sans adresse). Un pays saisi mais non reconnu est simplement ignoré, sans rien inventer.', 'configurationglpiauto') }}</p>
+          <div class="alert alert-warning py-2 px-3 mb-3" id="cga-country-holidays-warning" style="display: none;">
+            <i class="ti ti-alert-triangle"></i>
+            {{ __('Sans adresse complétée ci-dessous pour un site/client, celui-ci recevra les jours fériés français par défaut — complétez au moins le champ "Pays" de chaque site pour que les sites hors France reçoivent leurs propres jours fériés.', 'configurationglpiauto') }}
+          </div>
 
           <div id="cga-locations-tree"></div>
         </div>
@@ -206,19 +210,10 @@
             </div>
             <p class="text-muted small">{{ __('Si activée, tout jour dont les horaires couvrent la pause est scindé en deux plages (matin + après-midi) au lieu d\'une plage continue.', 'configurationglpiauto') }}</p>
 
-            <div class="form-check form-switch mb-3">
-              <input type="hidden" name="calendar_holidays_enabled" value="0">
-              <input
-                type="checkbox"
-                name="calendar_holidays_enabled"
-                value="1"
-                class="form-check-input"
-                id="cga-calendar-holidays-enabled"
-                {{ config.calendar_holidays_enabled|default(0) ? 'checked' : '' }}
-              >
-              <label class="form-check-label" for="cga-calendar-holidays-enabled">{{ __('Ajouter les jours fériés français (8 jours fixes)', 'configurationglpiauto') }}</label>
-            </div>
-            <p class="text-muted small">{{ __('Jour de l\'An, Fête du Travail, Victoire 1945, Fête nationale, Assomption, Toussaint, Armistice, Noël. Sans ça, les échéances SLA/OLA continuent de courir un jour férié. Les jours mobiles (Pâques, Ascension, Pentecôte) ne sont pas inclus — ils changent de date chaque année, à ajouter à la main.', 'configurationglpiauto') }}</p>
+            <p class="text-muted small mb-0">
+              <i class="ti ti-info-circle"></i>
+              {{ __('Les jours fériés sont désormais ajoutés automatiquement selon le pays saisi à l\'étape "Lieux" (France par défaut si aucun pays n\'est saisi) — voir la case "Fermetures automatiques selon le pays" à cette étape.', 'configurationglpiauto') }}
+            </p>
           </div>
         </div>
 
@@ -1028,6 +1023,22 @@
               {% for type in types %}<span class="cga-asset-type-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}{% if not loop.last %}, {% endif %}{% endfor %}
             </p>
           {% endfor %}
+        </div>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="software_license_types_enabled" value="0">
+          <input type="checkbox" name="software_license_types_enabled" value="1" class="form-check-input" id="cga-software-license-types-enabled" {{ config.software_license_types_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-software-license-types-enabled">{{ __('Créer les types de licence logicielle courants (OEM, volume, abonnement, open source...)', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-software-license-types-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="software_license_type_icons_enabled" value="0">
+            <input type="checkbox" name="software_license_type_icons_enabled" value="1" class="form-check-input" id="cga-software-license-type-icons-enabled" {{ config.software_license_type_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-software-license-type-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-0">
+            {% for type in software_license_types_preview %}<span class="cga-software-license-type-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}{% if not loop.last %}, {% endif %}{% endfor %}
+          </p>
         </div>
 
         <div class="form-check form-switch mb-2">
@@ -2475,6 +2486,7 @@
   wireIconsToggle('cga-change-problem-template-icons-enabled', '.cga-change-problem-template-icon');
   var locationsEnabledInput = wireSimpleToggle('cga-locations-enabled', 'cga-locations-fields');
   var locationGeocodingEnabledInput = wireSimpleToggle('cga-location-geocoding-enabled', 'cga-location-geocoding-fields');
+  var countryHolidaysEnabledInput = wireSimpleToggle('cga-country-holidays-enabled', 'cga-country-holidays-warning');
   // No single "fields" container to toggle (the fields it governs are scattered across every
   // per-node location panel, built lazily) — instead show/hide every `.cga-entity-comms-fields`
   // block on change, same effect as wireSimpleToggle for a single container.
@@ -2488,6 +2500,8 @@
   var lineOperatorsEnabledInput = wireSimpleToggle('cga-line-operators-enabled', 'cga-line-operators-fields');
   var assetTypesEnabledInput = wireSimpleToggle('cga-asset-types-enabled', 'cga-asset-types-fields');
   wireIconsToggle('cga-asset-type-icons-enabled', '.cga-asset-type-icon');
+  var softwareLicenseTypesEnabledInput = wireSimpleToggle('cga-software-license-types-enabled', 'cga-software-license-types-fields');
+  wireIconsToggle('cga-software-license-type-icons-enabled', '.cga-software-license-type-icon');
   wireIconsToggle('cga-manufacturer-icons-enabled', '.cga-manufacturer-icon');
   var requestTypeTranslationsEnabledInput = wireSimpleToggle('cga-request-type-translations-enabled', 'cga-request-type-translations-fields');
   var userCategoriesEnabledInput = wireSimpleToggle('cga-user-categories-enabled', 'cga-user-categories-fields');
@@ -3159,7 +3173,7 @@
         : "{{ __('horaires variables selon les jours', 'configurationglpiauto')|e('js') }}";
       var lunchText = calendarLunchBreakInput.checked ? ' + ' + "{{ __('coupure déjeuner', 'configurationglpiauto')|e('js') }}" : '';
       calendarSummary = name + ' — ' + checkedDays.join(', ') + ' — ' + hoursText + lunchText
-        + (document.getElementById('cga-calendar-holidays-enabled').checked ? ' + ' + "{{ __('jours fériés', 'configurationglpiauto')|e('js') }}" : '');
+        + (document.getElementById('cga-country-holidays-enabled').checked ? ' + ' + "{{ __('jours fériés', 'configurationglpiauto')|e('js') }}" : '');
     }
     document.getElementById('cga-summary-calendar').textContent = calendarSummary;
 
@@ -3347,10 +3361,6 @@
         }
       });
     }
-    if (typeof defaults.calendar_holidays_enabled !== 'undefined') {
-      document.getElementById('cga-calendar-holidays-enabled').checked = !!defaults.calendar_holidays_enabled;
-    }
-
     if (typeof defaults.sla_enabled !== 'undefined') {
       slaEnabledInput.checked = !!defaults.sla_enabled;
       toggleSlaFields();

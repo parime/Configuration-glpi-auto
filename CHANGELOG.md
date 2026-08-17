@@ -9,6 +9,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.64.0] - 2026-08-17
+
+### Added
+
+- **`SoftwareLicenseType` (types de licence logicielle)** (`SoftwareLicenseTypeBuilder`, nouveau) :
+  dernière table native `*Types` encore différée du grand audit des dropdowns vides (voir
+  `AssetTypeBuilder`) — c'est un `CommonTreeDropdown`, pas un dropdown plat comme les 26 déjà
+  traités, nécessitant `add()` shaped comme la construction d'arbre de `CategoryBuilder`.
+  10 catégories réelles de gestion de licences logicielles (OEM, Volume, Boîte, Abonnement SaaS,
+  Open Source, Essai, Site, Concurrente, Nommée, Don/Occasion), en liste plate (le dropdown est un
+  arbre côté GLPI, mais une licence se catégorise sur un seul axe, pas une hiérarchie de sujets).
+- **`DatabaseInstanceType` (types d'instance de base de données)** (`AssetTypeBuilder`) :
+  délibérément différé lors de l'audit initial par crainte de dériver vers une liste de produits
+  DBMS (territoire `Manufacturer`) — résolu en catégorisant par *nature du moteur* (relationnelle,
+  document, clé-valeur...) plutôt que par produit, confirmé distinct de `manufacturers_id` et de
+  `databaseinstancecategories_id` (déjà natifs sur `DatabaseInstance`).
+- **Types natifs pour les actifs personnalisés Véhicule/Serveur/Local** (`VehicleAssetBuilder`,
+  `ServerAssetBuilder`, `BuildingAssetBuilder`) : chaque définition d'actif personnalisé reçoit
+  automatiquement de GLPI son propre dropdown "type" (`Glpi\CustomAsset\<X>AssetType`, confirmé en
+  réel) — jusqu'ici jamais peuplé, laissant "Véhicule types"/"Serveur types"/"Local types" vides
+  dans le menu. Peuplé avec des catégories réelles : type de véhicule (Voiture, Utilitaire léger,
+  Poids lourd, Moto/Scooter, Vélo, Engin de chantier), forme de serveur (Rack, Tour, Lame, Virtuel,
+  NAS, SAN), type de local (Bureau, Salle de réunion, Entrepôt, Atelier, Salle serveur/Datacenter,
+  Site industriel, Boutique). Le libellé de menu généré par GLPI lui-même ("Véhicule types" au lieu
+  de "Types de véhicule") reste en anglais même en session française — confirmé être un manque de
+  traduction du cœur GLPI 11 (`Glpi\Asset\AssetType::getTypeName()`, chaîne core `'%s type'/'%s
+  types'` non traduite en `fr_FR`), hors de portée d'un plugin.
+
+### Changed
+
+- **Fermetures de calendrier automatiques selon le pays, France incluse** (`CountryHolidayBuilder`,
+  `CalendarBuilder`, `front/wizard.php`) : la case "Ajouter les jours fériés français" (calendrier,
+  8 jours codés en dur) était indépendante du pays réellement détecté — cochée, elle attachait des
+  jours fériés *français* même au calendrier d'un site allemand. Remplacée par le même mécanisme
+  déjà utilisé pour les pays étrangers (Nager.Date, confirmé retourner les 8 mêmes jours fixes pour
+  la France que l'ancienne liste codée en dur) : chaque site/client de premier niveau sans pays
+  saisi (ou sans étape "Lieux" utilisée du tout) est par défaut la France, un pays réellement saisi
+  l'emporte toujours. `CalendarBuilder::attachFrenchHolidays()` et `calendar_holidays_enabled`
+  supprimés — la case "Fermetures automatiques selon le pays" (étape Lieux) couvre désormais les
+  deux cas. Vérifié en réel : run par défaut (aucune adresse saisie) → 8 jours fériés français
+  créés et rattachés ; test direct avec la Slovénie → 16 jours fériés récupérés et rattachés au bon
+  calendrier.
+- **Couverture pays étendue à toute l'Europe** (`CountryHolidayBuilder`) : `COUNTRY_CODES` ne
+  reconnaissait qu'une vingtaine de pays ; complété avec les 10 pays européens manquants (Bulgarie,
+  Croatie, Chypre, Estonie, Lettonie, Lituanie, Malte, Slovaquie, Slovénie, Islande) — couvre
+  désormais l'intégralité de l'Union européenne plus Royaume-Uni/Suisse/Norvège/Islande, confirmé
+  un par un contre les 204 pays réels de Nager.Date.
+
 ## [0.63.2] - 2026-08-17
 
 ### Changed

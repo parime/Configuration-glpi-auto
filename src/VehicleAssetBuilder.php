@@ -120,6 +120,19 @@ class VehicleAssetBuilder
         'Hydrogène',
     ];
 
+    // Seeds the *native* "type" dropdown every custom asset definition automatically gets
+    // (`AssetDefinition`'s own standard fields, confirmed in GLPI core — distinct from
+    // `type_carburant` above, which is this class's own extra custom field). Real fleet-management
+    // categories, not vehicle models/brands (that's `Manufacturer`/`AssetModel`'s job).
+    private const TYPES = [
+        'Voiture',
+        'Utilitaire léger',
+        'Poids lourd',
+        'Moto / Scooter',
+        'Vélo / Vélo électrique',
+        'Engin de chantier',
+    ];
+
     private const DEFAULT_RIGHTS_PROFILES = ['Super-Admin', 'Admin'];
 
     public function build(Config $config): int
@@ -134,38 +147,44 @@ class VehicleAssetBuilder
         $this->seedFuelTypes();
 
         $definition = new AssetDefinition();
-        if ($definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME])) {
-            return 0;
+        $isNew = !$definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME]);
+
+        if ($isNew) {
+            $capacities = array_map(static fn (string $class): array => ['name' => $class], self::CAPACITIES);
+
+            $definitionId = (int) $definition->add([
+                'system_name' => self::SYSTEM_NAME,
+                'label' => self::LABEL,
+                'is_active' => 1,
+                'capacities' => $capacities,
+                'profiles' => $this->getDefaultProfileRights(),
+                'comment' => 'Type d\'actif cree automatiquement par Configuration GLPI Auto pour la gestion de flotte automobile.',
+            ]);
+            $definition->getFromDB($definitionId);
+
+            foreach (self::FIELDS as $field) {
+                $input = [
+                    'assets_assetdefinitions_id' => $definitionId,
+                    'system_name' => $field['system_name'],
+                    'label' => $field['label'],
+                    'type' => $field['type'],
+                ];
+                if (isset($field['itemtype'])) {
+                    $input['itemtype'] = $field['itemtype'];
+                }
+                if (isset($field['field_options'])) {
+                    $input['field_options'] = $field['field_options'];
+                }
+                (new CustomFieldDefinition())->add($input);
+            }
         }
 
-        $capacities = array_map(static fn (string $class): array => ['name' => $class], self::CAPACITIES);
+        // Same "independent of whether the definition itself is new" reasoning as
+        // seedFuelTypes() above — an upgrade that adds a new vehicle type to the const list
+        // should still reach an admin who ran the wizard on an earlier version.
+        $this->seedTypes($definition);
 
-        $definitionId = (int) $definition->add([
-            'system_name' => self::SYSTEM_NAME,
-            'label' => self::LABEL,
-            'is_active' => 1,
-            'capacities' => $capacities,
-            'profiles' => $this->getDefaultProfileRights(),
-            'comment' => 'Type d\'actif cree automatiquement par Configuration GLPI Auto pour la gestion de flotte automobile.',
-        ]);
-
-        foreach (self::FIELDS as $field) {
-            $input = [
-                'assets_assetdefinitions_id' => $definitionId,
-                'system_name' => $field['system_name'],
-                'label' => $field['label'],
-                'type' => $field['type'],
-            ];
-            if (isset($field['itemtype'])) {
-                $input['itemtype'] = $field['itemtype'];
-            }
-            if (isset($field['field_options'])) {
-                $input['field_options'] = $field['field_options'];
-            }
-            (new CustomFieldDefinition())->add($input);
-        }
-
-        return 1;
+        return $isNew ? 1 : 0;
     }
 
     private function seedFuelTypes(): void
@@ -174,6 +193,29 @@ class VehicleAssetBuilder
             $fuelType = new FuelType();
             if (!$fuelType->getFromDBByCrit(['name' => $name])) {
                 $fuelType->add(['name' => $name]);
+            }
+        }
+    }
+
+    /**
+     * Seeds `self::TYPES` into the definition's own auto-generated "type" dropdown
+     * (`Glpi\CustomAsset\VehiculeAssetType`, resolved dynamically — GLPI 11 generates one such
+     * class per custom asset definition, sharing the single `glpi_assets_assettypes` table
+     * discriminated by `assets_assetdefinitions_id`, confirmed via `DESCRIBE`). Not the same field
+     * as `type_carburant` (a `FuelType` dropdown custom field further above) — this is the
+     * standard "type" field GLPI attaches to every custom asset definition, independent of
+     * anything this class explicitly declared in `self::FIELDS`.
+     */
+    private function seedTypes(AssetDefinition $definition): void
+    {
+        $itemtype = $definition->getAssetTypeClassName();
+        $definitionId = (int) $definition->getID();
+
+        foreach (self::TYPES as $name) {
+            $item = new $itemtype();
+            $crit = ['name' => $name, 'assets_assetdefinitions_id' => $definitionId];
+            if (!$item->getFromDBByCrit($crit)) {
+                $item->add($crit);
             }
         }
     }

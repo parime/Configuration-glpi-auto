@@ -152,7 +152,9 @@ class ConfigurationProfile extends CommonDBTM
             'calendar_enabled' => true, 'calendar_days' => [1, 2, 3, 4, 5], 'calendar_begin' => '08:00', 'calendar_end' => '18:00',
             // Public holidays affect SLA/OLA due-date math regardless of org size — same universal
             // good-practice reasoning as categories/states, not something that varies per profile.
-            'calendar_holidays_enabled' => true,
+            // Country-driven (France by default when no address is entered), not a France-only
+            // toggle — see CountryHolidayBuilder's docblock.
+            'country_holidays_enabled' => true,
             'sla_enabled' => true, 'sla_tiers' => Config::getDefaultSlaTiers(), 'sla_astreinte' => false,
             'ola_enabled' => true, 'ola_tiers' => Config::getDefaultOlaTiers(),
             // Warning before a deadline is breached (not just recording that it was) is standard

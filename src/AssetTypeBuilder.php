@@ -27,6 +27,7 @@ use ComputerType;
 use ConsumableItemType;
 use ContactType;
 use ContractType;
+use DatabaseInstanceType;
 use DeviceBatteryType;
 use DeviceCaseType;
 use DeviceHardDriveType;
@@ -78,18 +79,26 @@ use VirtualMachineType;
  * Third pass added 12 more, closing out every remaining table from the original ~30-table audit
  * except `SoftwareLicenseType` (tree, still deferred) and the two already-excluded ones above:
  * `Appliance`/`Budget`/`Cluster`/`ConsumableItem`/`Contact`/`Contract`/`Domain`/`Line`/
- * `PassiveDCEquipment`/`Supplier`/`VirtualMachine`/`DeviceSensor`. `DeviceGeneric` and
- * `DatabaseInstance`, also from the original audit, are deliberately still excluded — the first is
- * too generic a bucket for meaningful standard content, the second risks drifting into a DBMS
- * product list (Manufacturer-territory) rather than a real categorisation. `ConsumableItemType`'s
- * content deliberately doesn't repeat `CartridgeItemType`'s toner/ink/drum entries — `Consumable`
- * and `CartridgeItem` are distinct GLPI objects (general consumables vs. printer-supply tracking
- * with its own stock mechanism), so the two type lists stay complementary, not duplicated.
- * `VirtualMachineType` is unrelated to `ServerAssetBuilder`'s own free-text "hyperviseur" custom
- * field — this dropdown feeds GLPI's native, inventory-populated `VirtualMachine` component objects
- * (via `HasVirtualMachineCapacity`), not the custom asset's own field.
+ * `PassiveDCEquipment`/`Supplier`/`VirtualMachine`/`DeviceSensor`. `DeviceGeneric`, also from the
+ * original audit, is deliberately still excluded — too generic a bucket for meaningful standard
+ * content. `ConsumableItemType`'s content deliberately doesn't repeat `CartridgeItemType`'s
+ * toner/ink/drum entries — `Consumable` and `CartridgeItem` are distinct GLPI objects (general
+ * consumables vs. printer-supply tracking with its own stock mechanism), so the two type lists
+ * stay complementary, not duplicated. `VirtualMachineType` is unrelated to `ServerAssetBuilder`'s
+ * own free-text "hyperviseur" custom field — this dropdown feeds GLPI's native,
+ * inventory-populated `VirtualMachine` component objects (via `HasVirtualMachineCapacity`), not the
+ * custom asset's own field.
  *
- * All 26 `*Type` classes extend `CommonDropdown` (directly or via `CommonType`/`CommonDeviceType`)
+ * Fourth pass added `DatabaseInstanceType`, on explicit user request after being deferred in the
+ * original audit over a real risk: a naive content list ("MySQL", "PostgreSQL", "Oracle"...) would
+ * just duplicate `Manufacturer`/vendor-territory, especially since `DatabaseInstance` already has
+ * its own `manufacturers_id` field (confirmed via `DESCRIBE glpi_databaseinstances`) for exactly
+ * that. Avoided by categorizing by *engine kind* instead (relational, document, key-value...) — a
+ * real, standard DBMS taxonomy, not a product list — also confirmed distinct from
+ * `databaseinstancecategories_id` (a separate native dropdown, environment/purpose-scoped:
+ * prod/test/dev, not engine kind).
+ *
+ * All 27 `*Type` classes extend `CommonDropdown` (directly or via `CommonType`/`CommonDeviceType`)
  * with no `$can_be_translated` override, so the inherited default (`true`) applies — same icon
  * mechanism as `ManufacturerBuilder`. Six (`RackType`/`PDUType`/`CertificateType`/`ApplianceType`/
  * `DomainType`/`ClusterType`) also carry `entities_id`/`is_recursive` columns (confirmed via

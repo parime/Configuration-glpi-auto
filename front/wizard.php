@@ -50,6 +50,7 @@ use GlpiPlugin\Configurationglpiauto\SatisfactionSurveyBuilder;
 use GlpiPlugin\Configurationglpiauto\ServerAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
+use GlpiPlugin\Configurationglpiauto\SoftwareLicenseTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\SolutionLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use GlpiPlugin\Configurationglpiauto\SupportTierBuilder;
@@ -339,7 +340,7 @@ if (isset($_POST['finish'])) {
         }
 
         $calendarId = $calendarOverride !== null
-            ? $calendarBuilder->buildFromOverride($result['name'], $calendarOverride, !empty($config->fields['calendar_holidays_enabled']))
+            ? $calendarBuilder->buildFromOverride($result['name'], $calendarOverride)
             : $sharedCalendarId;
         if ($calendarId !== null) {
             $calendarMap[$result['entities_id']] = $calendarId;
@@ -410,8 +411,37 @@ if (isset($_POST['finish'])) {
     $locationChildrenByPath = !empty($config->fields['locations_enabled']) ? collectLocationChildrenFromPost() : [];
     $locationsCreated = (new LocationBuilder())->build($config, $locationDataByPath, $locationChildrenByPath);
     // Scans only the top-level Location panels' own country field, not child locations' (bâtiment/
-    // étage/salle very rarely differ from their parent's country).
-    $countryHolidaysCreated = (new CountryHolidayBuilder())->build($config, array_column($locationDataByPath, 'country'));
+    // étage/salle very rarely differ from their parent's country). Keys preserved (not
+    // array_column(), which would re-index 0..n and lose the path) — CountryHolidayBuilder needs
+    // the path to resolve each country to the right calendar below.
+    $countryByPath = array_filter(array_map(static fn (array $d) => $d['country'] ?? null, $locationDataByPath));
+    // Every top-level client/site with no country typed for its own path (locations disabled
+    // entirely, or the field just left blank) defaults to France — same "automatic per-country
+    // closures" request that removed the old calendar_holidays_enabled checkbox (see
+    // CountryHolidayBuilder's docblock): the common case (no address ever entered) should still
+    // get French public holidays out of the box, not none at all just because Locations wasn't
+    // used. A path that *did* type a real (even if unrecognized) country is left alone — an admin
+    // who explicitly said "Germany" never gets silently defaulted back to France.
+    $topLevelCount = $created !== [] ? count($created) : 1;
+    for ($i = 0; $i < $topLevelCount; $i++) {
+        $path = (string) $i;
+        if (!isset($countryByPath[$path])) {
+            $countryByPath[$path] = 'France';
+        }
+    }
+    // Each path's calendar is its top-level ancestor's (a path is root-to-node indices joined by
+    // "-", e.g. "1-0" — see LocationBuilder's own docblock); sub-entities inherit their calendar
+    // from that ancestor (Entity::CONFIG_PARENT), so resolving down to it is enough regardless of
+    // how deep the location itself is nested. $created is empty in mono-entité/no-tree mode, same
+    // fallback to entity 0 as the calendar-building loop above.
+    $calendarIdByPath = [];
+    foreach (array_keys($countryByPath) as $path) {
+        $topEntityId = $created[(int) explode('-', $path, 2)[0]]['entities_id'] ?? 0;
+        if (isset($calendarMap[$topEntityId])) {
+            $calendarIdByPath[$path] = $calendarMap[$topEntityId];
+        }
+    }
+    $countryHolidaysCreated = (new CountryHolidayBuilder())->build($config, $countryByPath, $calendarIdByPath);
     $satisfactionSurveyCreated = (new SatisfactionSurveyBuilder())->build($config);
     $vipGroupCreated = (new VipBuilder())->build($config);
     $tagsCreated = (new TagBuilder())->build($config);
@@ -430,6 +460,7 @@ if (isset($_POST['finish'])) {
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $lineOperatorsCreated = (new LineOperatorBuilder())->build($config);
     $assetTypesCreated = (new AssetTypeBuilder())->build($config);
+    $softwareLicenseTypesCreated = (new SoftwareLicenseTypeBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
     $documentManagementCreated = (new DocumentManagementBuilder())->build($config);
     $planningEventsCreated = (new PlanningEventBuilder())->build($config);
@@ -511,9 +542,7 @@ if (isset($_POST['finish'])) {
         ? __('Aucune entité à créer (mode mono-entité, ou arborescence vide).', 'configurationglpiauto')
         : sprintf(__('Structure créée : %s.', 'configurationglpiauto'), EntityBuilder::describe($created));
     if ($calendarMap !== []) {
-        $messages[] = !empty($config->fields['calendar_holidays_enabled'])
-            ? __('Calendrier créé et assigné, avec les jours fériés français.', 'configurationglpiauto')
-            : __('Calendrier créé et assigné.', 'configurationglpiauto');
+        $messages[] = __('Calendrier créé et assigné.', 'configurationglpiauto');
     }
     if ($slaMap !== []) {
         $messages[] = __('SLA créés et assignés.', 'configurationglpiauto');
@@ -620,6 +649,9 @@ if (isset($_POST['finish'])) {
     if ($assetTypesCreated > 0) {
         $messages[] = sprintf(__('%d types de matériel créés.', 'configurationglpiauto'), $assetTypesCreated);
     }
+    if ($softwareLicenseTypesCreated > 0) {
+        $messages[] = sprintf(__('%d types de licence logicielle créés.', 'configurationglpiauto'), $softwareLicenseTypesCreated);
+    }
     if ($kbCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de base de connaissances créées.', 'configurationglpiauto'), $kbCategoriesCreated);
     }
@@ -645,7 +677,7 @@ if (isset($_POST['finish'])) {
         $messages[] = sprintf(__('%d fiche(s) d\'entité complétées avec leur adresse.', 'configurationglpiauto'), $entityAddressesApplied);
     }
     if ($countryHolidaysCreated > 0) {
-        $messages[] = sprintf(__('%d jour(s) férié(s) étranger(s) créés.', 'configurationglpiauto'), $countryHolidaysCreated);
+        $messages[] = sprintf(__('%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s).', 'configurationglpiauto'), $countryHolidaysCreated);
     }
     if ($satisfactionSurveyCreated > 0) {
         $messages[] = __('Enquête de satisfaction créée (plugin More satisfaction).', 'configurationglpiauto');
@@ -724,6 +756,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
     'line_operators_preview' => LineOperatorBuilder::getOperatorsPreview(),
     'asset_types_preview' => AssetTypeBuilder::getTypesPreview(),
+    'software_license_types_preview' => SoftwareLicenseTypeBuilder::getTypesPreview(),
     'document_management_preview' => DocumentManagementBuilder::getPreview(),
     'planning_events_preview' => PlanningEventBuilder::getPreview(),
     'project_taxonomy_preview' => ProjectTaxonomyBuilder::getPreview(),
