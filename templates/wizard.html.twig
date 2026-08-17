@@ -137,6 +137,10 @@
             <label class="form-check-label" for="cga-country-holidays-enabled">{{ __('Fermetures automatiques selon le pays (jours fériés)', 'configurationglpiauto') }}</label>
           </div>
           <p class="text-muted small mb-2">{{ __('Ajoute les jours fériés à date fixe du pays saisi ci-dessous, rattachés automatiquement au calendrier du site/client concerné — France par défaut si aucun pays n\'est saisi (y compris en mode mono-site sans adresse). Un pays saisi mais non reconnu est simplement ignoré, sans rien inventer.', 'configurationglpiauto') }}</p>
+          <div class="alert alert-warning py-2 px-3 mb-3" id="cga-country-holidays-warning" style="display: none;">
+            <i class="ti ti-alert-triangle"></i>
+            {{ __('Sans adresse complétée ci-dessous pour un site/client, celui-ci recevra les jours fériés français par défaut — complétez au moins le champ "Pays" de chaque site pour que les sites hors France reçoivent leurs propres jours fériés.', 'configurationglpiauto') }}
+          </div>
 
           <div id="cga-locations-tree"></div>
         </div>
@@ -2482,6 +2486,7 @@
   wireIconsToggle('cga-change-problem-template-icons-enabled', '.cga-change-problem-template-icon');
   var locationsEnabledInput = wireSimpleToggle('cga-locations-enabled', 'cga-locations-fields');
   var locationGeocodingEnabledInput = wireSimpleToggle('cga-location-geocoding-enabled', 'cga-location-geocoding-fields');
+  var countryHolidaysEnabledInput = wireSimpleToggle('cga-country-holidays-enabled', 'cga-country-holidays-warning');
   // No single "fields" container to toggle (the fields it governs are scattered across every
   // per-node location panel, built lazily) — instead show/hide every `.cga-entity-comms-fields`
   // block on change, same effect as wireSimpleToggle for a single container.
