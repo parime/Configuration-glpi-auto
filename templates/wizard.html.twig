@@ -73,15 +73,15 @@
           </div>
         {% endfor %}
 
-        <div class="alert alert-light border mt-3 mb-0" id="cga-express-panel">
-          <p class="mb-2">
+        <div class="alert alert-light border mt-3 mb-0 d-flex flex-wrap align-items-center gap-3" id="cga-express-panel">
+          <p class="mb-0 flex-fill" style="min-width: 260px;">
             <strong>⚡ {{ __('Configuration express', 'configurationglpiauto') }}</strong> —
             {{ __('applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 18 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l\'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s\'applique à l\'entité racine seule.', 'configurationglpiauto') }}
           </p>
           <button
             type="submit"
             name="finish"
-            class="btn btn-outline-primary"
+            class="btn btn-outline-primary flex-shrink-0"
             id="cga-wizard-express-finish"
             onclick="return confirm('{{ __('Ceci va créer/modifier de vraies entités dans GLPI selon les réglages recommandés du profil sélectionné, sans passer en revue chaque étape. Continuer ?', 'configurationglpiauto')|e('js') }}');"
           >
