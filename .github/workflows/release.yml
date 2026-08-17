@@ -10,6 +10,12 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  # Permet a auto-tag.yml de declencher explicitement cette release apres avoir tague : un push de
+  # tag effectue avec le GITHUB_TOKEN (comme le fait auto-tag.yml) ne declenche PAS les autres
+  # workflows par defaut (protection anti-boucle de GitHub Actions) - seul un declenchement
+  # explicite via workflow_dispatch (appele avec --ref sur ce meme tag, cf. auto-tag.yml) contourne
+  # cette limite. github.ref_name vaut alors le tag cible, comme pour un push classique.
+  workflow_dispatch:
 
 env:
   GLPI_IMAGE: glpi/glpi:11.0.8

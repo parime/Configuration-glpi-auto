@@ -1,0 +1,54 @@
+name: Auto-tag de version
+
+# Tague automatiquement `vX.Y.Z` a chaque fusion sur main si
+# PLUGIN_CONFIGURATIONGLPIAUTO_VERSION (setup.php) a change et que ce tag
+# n'existe pas encore. Sans ce workflow, publier une release necessitait de
+# se souvenir de pousser le tag a la main apres coup (ecart deja constate :
+# v0.63.0 et v0.63.1 ont toutes les deux du etre taguees manuellement le
+# meme jour, faute de ce mecanisme). Repris tel quel du meme workflow deja
+# en place sur le plugin jumeau assetsign-glpi (seule la constante de
+# version change) — separation volontaire : ce fichier ne fait QUE decider
+# s'il faut taguer, toute la validation (build, install reelle sur GLPI,
+# publication) reste dans release.yml.
+#
+# Le tag est pousse puis release.yml est explicitement declenche via
+# workflow_dispatch (pas seulement via son trigger `push: tags`) : un push
+# de tag effectue avec le GITHUB_TOKEN (comme ici) ne declenche PAS les
+# autres workflows par defaut (protection anti-boucle de GitHub Actions).
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupère le code du plugin
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
+
+      - name: Tague si PLUGIN_CONFIGURATIONGLPIAUTO_VERSION est une nouvelle version
+        # git ls-remote (pas `git tag -l` local) : le checkout par defaut est
+        # peu profond et ne recupere aucun tag, une verification locale
+        # laisserait toujours passer et re-tenterait de pousser un tag deja
+        # publie (echec, mais bruyant a chaque push sur main).
+        run: |
+          VERSION="$(grep -oP "define\('PLUGIN_CONFIGURATIONGLPIAUTO_VERSION', '\K[^']+" setup.php)"
+          TAG="v${VERSION}"
+
+          if git ls-remote --tags origin "refs/tags/$TAG" | grep -q "refs/tags/$TAG$"; then
+            echo "Le tag $TAG existe deja, rien a publier."
+            exit 0
+          fi
+
+          echo "Nouvelle version detectee : $TAG"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "$TAG"
+          git push origin "$TAG"
+          gh workflow run release.yml --ref "$TAG"
+        env:
+          GH_TOKEN: ${{ github.token }}
