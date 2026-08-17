@@ -99,6 +99,31 @@ class PaletteBuilder
         $fg = $this->contrastingForeground($r, $g, $b);
         $key = self::THEME_KEY;
 
+        // Sidebar submenu hover state — two *different* rules involved, both confirmed live via
+        // getComputedStyle()/CSSOM inspection on a real hovered menu item, neither guessed:
+        //
+        // 1. Tabler's own generic `.dropdown-item:hover` (used by ordinary dropdowns elsewhere in
+        //    the UI) reads `--tblr-dropdown-link-hover-color`/`-bg`, falling through to
+        //    `--tblr-primary` + a semi-transparent black overlay when unset. Pinned explicitly
+        //    below.
+        // 2. GLPI's *own* sidebar-specific override — `.sidebar #navbar-menu .nav-item ...
+        //    .dropdown-item:hover` / `.nav-item:hover .nav-link` (in its compiled
+        //    css_glpi.min.css) — hardcodes `color: var(--tblr-primary)` directly, bypassing (1)
+        //    entirely: an ID selector (`#navbar-menu`) wins over Tabler's plain-class rule
+        //    regardless of source order or the variable pin above, confirmed by finding it via
+        //    `document.styleSheets` when pinning (1) alone had no visible effect.
+        //
+        // Both rules are harmless in stock GLPI, where `--tblr-primary` (bright accent) and
+        // `--glpi-mainmenu-bg` (dark neutral) are different colors, so hovered text reads clearly
+        // against its own slightly-darkened background. Here both are driven by the *same*
+        // admin-chosen brand color, so hovered text converged on nearly the same hue as its own
+        // background — illegible (confirmed: a real screenshot showed unreadable menu labels on
+        // hover). `!important` on override (2) is deliberate, not a shortcut: it targets a specific
+        // color GLPI's own core CSS hardcodes for exactly this element, which no amount of
+        // additional selector nesting on our side can outrank without duplicating GLPI's own
+        // internal markup structure (`#navbar-menu` etc.) as brittle guesswork.
+        $hoverOverlay = $fg === self::LIGHT_FG ? 'rgba(255,255,255,.15)' : 'rgba(0,0,0,.08)';
+
         return <<<SCSS
         /* theme-name: Personnalisée */
         :root[data-glpi-theme="{$key}"] {
@@ -108,6 +133,15 @@ class PaletteBuilder
           --glpi-mainmenu-bg: {$color};
           --glpi-mainmenu-fg: {$fg};
           --glpi-mainmenu-fg-muted: {$fg}99;
+          --tblr-dropdown-link-hover-color: {$fg};
+          --tblr-dropdown-link-hover-bg: {$hoverOverlay};
+        }
+
+        :root[data-glpi-theme="{$key}"] .sidebar #navbar-menu .nav-item .nav-link.active + .dropdown-menu .dropdown-item:hover,
+        :root[data-glpi-theme="{$key}"] .sidebar #navbar-menu .nav-item .nav-link.show + .dropdown-menu .dropdown-item:hover,
+        :root[data-glpi-theme="{$key}"] .sidebar #navbar-menu .nav-item:hover .nav-link {
+          color: {$fg} !important;
+          border-left-color: {$fg} !important;
         }
 
         SCSS;

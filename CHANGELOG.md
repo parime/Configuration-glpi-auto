@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.63.1] - 2026-08-17
+
+### Fixed
+
+- **Texte illisible au survol du menu latéral avec la palette personnalisée** (`PaletteBuilder`) :
+  `--tblr-primary` (couleur du texte au survol) et `--glpi-mainmenu-bg` (fond de la barre latérale)
+  étaient réglés sur la même couleur de marque choisie par l'administrateur — dans GLPI natif ce
+  sont deux couleurs différentes (accent vif sur fond neutre sombre), donc le survol est lisible ;
+  avec une seule couleur pour les deux, le texte survolé devenait presque invisible sur son propre
+  fond. GLPI a en plus sa propre règle CSS pour le sous-menu de la sidebar
+  (`.sidebar #navbar-menu ... .dropdown-item:hover`, dans son CSS compilé) qui code la couleur en
+  dur et ignore les variables génériques — un premier correctif sur les variables seules n'a donc
+  pas suffi, confirmé en inspectant les règles CSS réellement appliquées sur un élément survolé.
+  Corrigé en fixant explicitement la couleur du texte au survol sur la couleur de premier plan déjà
+  calculée pour contraster avec le fond de la sidebar (blanc ou gris foncé selon la luminosité de la
+  couleur choisie), y compris pour la règle spécifique de GLPI. Vérifié en direct avec deux couleurs
+  de marque opposées (bleu clair → texte blanc, jaune clair → texte foncé).
+
 ## [0.63.0] - 2026-08-17
 
 ### Added
