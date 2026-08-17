@@ -34,6 +34,7 @@
     <download>https://github.com/parime/Configuration-glpi-auto/releases</download>
     <issues>https://github.com/parime/Configuration-glpi-auto/issues</issues>
     <readme>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/README.md</readme>
+    <changelog>https://github.com/parime/Configuration-glpi-auto/releases</changelog>
     <authors>
         <author>Vincent GUILLOTTE</author>
     </authors>
@@ -317,16 +318,12 @@
             <tag>ISO27001</tag>
         </en>
     </tags>
-    <requirements>
-        <requirement>glpi >= 11.0.0</requirement>
-        <requirement>php >= 8.2</requirement>
-    </requirements>
     <screenshots>
         <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/01-profil.png</screenshot>
         <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/02-entites.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/06-catalogue-services.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/09-personnalisation.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/12-droits-ldap.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/17-recapitulatif.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/07-catalogue-services.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/17-personnalisation.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/13-droits-ldap.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/18-recapitulatif.png</screenshot>
     </screenshots>
 </root>
