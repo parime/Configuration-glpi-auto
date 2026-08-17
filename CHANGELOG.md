@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.63.0] - 2026-08-17
+
+### Added
+- **Habillage HTML étendu à tous les événements de ticket** : `NotificationBrandingBuilder` ne
+  couvrait que 4 événements (nouveau/mise à jour/résolu/nouveau suivi) sur les 23 exposés par
+  `NotificationTargetTicket`/`NotificationTargetCommonITILObject`. Couvre désormais l'ensemble :
+  clôture, suppression, rappel des tickets non résolus, suivi modifié/supprimé, tâche créée/
+  modifiée/supprimée, nouveau demandeur/groupe demandeur, nouvel observateur/groupe observateur,
+  nouvelle assignation (utilisateur/groupe/fournisseur), utilisateur mentionné, nouveau document,
+  demande de validation et réponse à la validation. Chaque événement affiche les champs qui lui
+  sont propres (auteur, dates, priorité, pièce jointe, commentaire de validation...) — tous des
+  tags GLPI natifs vérifiés un par un dans le code source du cœur, jamais devinés. Le bouton
+  d'action des e-mails de demande de validation pointe vers `##ticket.urlvalidation##` (le lien de
+  traitement direct), tous les autres vers `##ticket.url##` — deux tags résolus par GLPI lui-même
+  depuis `Configuration générale > URL de l'application`, jamais reconstruits à la main ici.
+  Mêmes 5 langues que le reste du gabarit.
+
 ### Fixed
 - `configurationglpiauto.xml` (manifeste de soumission au [Plugin Directory GLPI](https://plugins.glpi-project.org)) :
   4 captures d'écran référençaient encore l'ancienne numérotation des étapes du tutoriel (avant le
