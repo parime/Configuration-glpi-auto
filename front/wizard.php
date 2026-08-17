@@ -554,6 +554,13 @@ if (isset($_POST['finish'])) {
     if ($logosCreated > 0) {
         $messages[] = sprintf(__('%d logo(s) d\'entité appliqué(s).', 'configurationglpiauto'), $logosCreated);
     }
+    $skippedLogoCount = count($brandingBuilder->getSkippedLogoEntityIds());
+    if ($skippedLogoCount > 0) {
+        $messages[] = sprintf(
+            __('%d logo(s) trop volumineux pour être appliqué(s) — utilisez un fichier plus léger (idéalement sous 40 Ko) ou configurez-le manuellement depuis Configuration > Entités > onglet Général.', 'configurationglpiauto'),
+            $skippedLogoCount,
+        );
+    }
     if ($perClientColorsCreated > 0) {
         $messages[] = sprintf(__('%d couleur(s) par client/site appliquée(s).', 'configurationglpiauto'), $perClientColorsCreated);
     }

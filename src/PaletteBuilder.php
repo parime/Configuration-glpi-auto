@@ -122,6 +122,18 @@ class PaletteBuilder
         // color GLPI's own core CSS hardcodes for exactly this element, which no amount of
         // additional selector nesting on our side can outrank without duplicating GLPI's own
         // internal markup structure (`#navbar-menu` etc.) as brittle guesswork.
+        //
+        // 3. A third, *independent* bug in the same family, found afterward on a real screenshot:
+        //    a top-level item whose submenu is expanded (Bootstrap's `.show`/`.active` class on the
+        //    `.nav-link` itself, applied regardless of :hover) is styled by GLPI core as
+        //    `color: color-mix(in srgb, var(--tblr-primary), transparent 10%)` — 90%-opacity
+        //    primary text. In stock GLPI that reads fine against the dark neutral sidebar; here,
+        //    with the sidebar background *equal to* `--tblr-primary`, it renders the label at ~90%
+        //    opacity of its own background color — confirmed via getComputedStyle() showing the
+        //    label's text color and the sidebar's background color are the same hue, and via a
+        //    screenshot showing the "Configuration" label fully invisible the moment its own
+        //    submenu is open (i.e. more visible with the mouse away from the menu than on it,
+        //    exactly backwards from what a user expects of a hover/active state).
         $hoverOverlay = $fg === self::LIGHT_FG ? 'rgba(255,255,255,.15)' : 'rgba(0,0,0,.08)';
 
         return <<<SCSS
@@ -140,6 +152,12 @@ class PaletteBuilder
         :root[data-glpi-theme="{$key}"] .sidebar #navbar-menu .nav-item .nav-link.active + .dropdown-menu .dropdown-item:hover,
         :root[data-glpi-theme="{$key}"] .sidebar #navbar-menu .nav-item .nav-link.show + .dropdown-menu .dropdown-item:hover,
         :root[data-glpi-theme="{$key}"] .sidebar #navbar-menu .nav-item:hover .nav-link {
+          color: {$fg} !important;
+          border-left-color: {$fg} !important;
+        }
+
+        :root[data-glpi-theme="{$key}"] .sidebar #navbar-menu .nav-item .nav-link.show,
+        :root[data-glpi-theme="{$key}"] .sidebar #navbar-menu .nav-item .nav-link.active {
           color: {$fg} !important;
           border-left-color: {$fg} !important;
         }

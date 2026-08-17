@@ -66,6 +66,19 @@ class BrandingBuilder
 
     private const LOGO_BLOCK_KEY = 'branding-logo';
 
+    /**
+     * Both `glpi_entities.custom_css_code` and `mailing_signature` are MySQL `TEXT` columns —
+     * 65 535 bytes max each, confirmed via `SHOW COLUMNS`, not assumed. Margin kept below the hard
+     * limit for two reasons: `mb_strlen(..., '8bit')` below counts the *current* PHP-string byte
+     * length, but MySQL enforces the limit on the byte length *after* charset conversion into the
+     * column's own charset (utf8mb4 here) — normally identical for already-UTF-8 PHP strings, this
+     * margin absorbs any edge-case drift instead of chasing the exact boundary.
+     */
+    private const TEXT_COLUMN_MAX_BYTES = 65000;
+
+    /** @var int[] Entity IDs whose logo was skipped by the last {@see applyLogos()} call (too large to fit). */
+    private array $skippedLogoEntityIds = [];
+
     // GLPI's own default foreground for --tblr-primary-fg (css/includes/_base.scss) — reused here
     // as the "dark text" half of the contrast choice so a custom color close to GLPI's own default
     // still resolves to the exact same foreground GLPI ships, not a slightly different dark tone.
@@ -99,13 +112,29 @@ class BrandingBuilder
     public function applyLogos(array $entityIdToDataUri): int
     {
         $count = 0;
+        $this->skippedLogoEntityIds = [];
         foreach ($entityIdToDataUri as $entityId => $dataUri) {
             $css = $this->buildLogoCss($dataUri);
-            $this->mergeCssBlock((int) $entityId, self::LOGO_BLOCK_KEY, $css);
-            $count++;
+            if ($this->mergeCssBlock((int) $entityId, self::LOGO_BLOCK_KEY, $css)) {
+                $count++;
+            } else {
+                $this->skippedLogoEntityIds[] = (int) $entityId;
+            }
         }
 
         return $count;
+    }
+
+    /**
+     * Entity IDs whose logo the last {@see applyLogos()} call could not apply because the resulting
+     * CSS would not fit in `custom_css_code` (see {@see TEXT_COLUMN_MAX_BYTES}) — the wizard surfaces
+     * this as a clear message instead of the upload silently doing nothing.
+     *
+     * @return int[]
+     */
+    public function getSkippedLogoEntityIds(): array
+    {
+        return $this->skippedLogoEntityIds;
     }
 
     /**
@@ -190,18 +219,27 @@ class BrandingBuilder
     private function buildLogoCss(string $dataUri): string
     {
         $escaped = str_replace('"', '\\"', $dataUri);
-        $url = "url(\"{$escaped}\") !important";
 
+        // The `data:` URI is written ONCE, into its own custom property (`--cga-logo-url`) — every
+        // GLPI logo variable below then *references* it via `var()` instead of repeating the raw
+        // (often tens of KB) URI literally. A real bug caught in production (2026-08-17): the
+        // previous version repeated the escaped URI inline in all 8 declarations, inflating the
+        // stored CSS to ~8x the logo's own base64 size — enough to overflow `custom_css_code`
+        // (a MySQL `TEXT` column, 65 535 bytes max) for almost any real-world logo file, crashing
+        // wizard finalization with an unhandled "Data too long for column" SQL error instead of
+        // just failing to apply the logo. `var()` substitution at used-value time makes this
+        // referencing pattern behave identically to the inline literal, at a fraction of the size.
         return ".page .glpi-logo { background-size: contain !important; }\n"
             . ":root {\n"
-            . "  --glpi-logo: {$url};\n"
-            . "  --glpi-logo-reduced: {$url};\n"
-            . "  --glpi-logo-light: {$url};\n"
-            . "  --glpi-logo-light-reduced: {$url};\n"
-            . "  --glpi-logo-dark: {$url};\n"
-            . "  --glpi-logo-dark-reduced: {$url};\n"
-            . "  --glpi-logo-light-login: {$url};\n"
-            . "  --glpi-logo-dark-login: {$url};\n"
+            . "  --cga-logo-url: url(\"{$escaped}\") !important;\n"
+            . "  --glpi-logo: var(--cga-logo-url) !important;\n"
+            . "  --glpi-logo-reduced: var(--cga-logo-url) !important;\n"
+            . "  --glpi-logo-light: var(--cga-logo-url) !important;\n"
+            . "  --glpi-logo-light-reduced: var(--cga-logo-url) !important;\n"
+            . "  --glpi-logo-dark: var(--cga-logo-url) !important;\n"
+            . "  --glpi-logo-dark-reduced: var(--cga-logo-url) !important;\n"
+            . "  --glpi-logo-light-login: var(--cga-logo-url) !important;\n"
+            . "  --glpi-logo-dark-login: var(--cga-logo-url) !important;\n"
             . '}';
     }
 
@@ -210,11 +248,16 @@ class BrandingBuilder
      * new one — never touches content outside its own markers, so color/logo/any future
      * CSS-writing feature and an admin's own manual additions all coexist safely across reruns.
      */
-    private function mergeCssBlock(int $entityId, string $blockKey, string $css): void
+    /**
+     * @return bool False if the merged block would not fit in `custom_css_code` (see
+     *              {@see TEXT_COLUMN_MAX_BYTES}) — the entity is left untouched in that case, this
+     *              never writes a value MySQL would reject.
+     */
+    private function mergeCssBlock(int $entityId, string $blockKey, string $css): bool
     {
         $entity = new Entity();
         if (!$entity->getFromDB($entityId)) {
-            return;
+            return false;
         }
 
         $existing = (string) ($entity->fields['custom_css_code'] ?? '');
@@ -227,11 +270,22 @@ class BrandingBuilder
         $block = "{$startMarker}\n{$css}\n{$endMarker}";
         $merged = $stripped === '' ? $block : "{$stripped}\n{$block}";
 
+        // Checked BEFORE writing, not caught from a DBmysql exception after the fact: a rejected
+        // UPDATE here previously surfaced as a raw, unhandled MySQL "Data too long for column" error
+        // that took down the *entire* wizard finalization request (confirmed live) rather than just
+        // skipping this one entity's logo — every other builder call after this one in wizard.php
+        // never even ran.
+        if (mb_strlen($merged, '8bit') > self::TEXT_COLUMN_MAX_BYTES) {
+            return false;
+        }
+
         $entity->update([
             'id' => $entityId,
             'enable_custom_css' => 1,
             'custom_css_code' => $merged,
         ]);
+
+        return true;
     }
 
     /**
@@ -271,6 +325,15 @@ class BrandingBuilder
             $color = $entityIdToColor[$entityId] ?? $sharedColor;
             $dataUri = $entityIdToDataUri[$entityId] ?? null;
             $html = $this->buildSignatureHtml((string) $entity->fields['name'], $color, $dataUri);
+
+            // Embedded once here (unlike the 8x-duplicated logo CSS bug fixed above), so this only
+            // matters for an unusually large logo file — kept as a defensive guard rather than
+            // assumed impossible, same reasoning as mergeCssBlock(): degrade to a text-only
+            // signature instead of letting an oversized logo crash this UPDATE with an unhandled
+            // MySQL "Data too long" error.
+            if (mb_strlen($html, '8bit') > self::TEXT_COLUMN_MAX_BYTES) {
+                $html = $this->buildSignatureHtml((string) $entity->fields['name'], $color, null);
+            }
 
             $entity->update([
                 'id' => $entityId,

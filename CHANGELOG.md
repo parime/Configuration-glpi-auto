@@ -9,6 +9,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.63.2] - 2026-08-17
+
+### Changed
+
+- **"Profils de configuration" déplacé du menu "Administration" vers le menu "Configuration"** :
+  ce CRUD ne gère que les modèles de profil propres au plugin (données utilisées par l'étape 1 de
+  l'assistant), rien qui touche Utilisateurs/Groupes/Entités/Règles — le classer dans
+  "Administration" mélangeait un écran propre au plugin avec les réglages natifs de GLPI. Retour
+  utilisateur direct sur ce placement.
+
+### Fixed
+
+- **Plantage SQL à la finalisation de l'assistant quand un logo d'entité était uploadé** (`BrandingBuilder`) :
+  `buildLogoCss()` répétait la donnée `data:` en base64 du logo 8 fois (une par variable CSS de logo GLPI :
+  `--glpi-logo`, `-reduced`, `-light`, `-light-reduced`, `-dark`, `-dark-reduced`, `-light-login`,
+  `-dark-login`), gonflant la valeur stockée à ~8× la taille réelle du logo et dépassant la limite MySQL
+  `TEXT` (65 535 octets) de la colonne `glpi_entities.custom_css_code` pour quasiment n'importe quel logo
+  réaliste — provoquant une erreur SQL non rattrapée qui faisait planter toute la finalisation de
+  l'assistant. Corrigé par déduplication : le `data:` URI n'est désormais stocké qu'une seule fois, dans
+  une unique propriété personnalisée CSS (`--cga-logo-url`), référencée par `var()` depuis les 8 autres
+  déclarations. Un garde-fou de taille a aussi été ajouté (`mergeCssBlock()` retourne `false` et ignore
+  proprement l'entité plutôt que d'écrire une valeur invalide en base si la limite est dépassée malgré
+  tout — même protection ajoutée sur `applyMailingSignatures()`), avec un nouveau message d'avertissement
+  dans l'assistant indiquant combien de logos ont été ignorés et pourquoi. Vérifié en conditions réelles
+  via l'assistant complet : un petit logo s'applique désormais sans erreur, un logo volumineux est ignoré
+  proprement avec message explicite au lieu de faire planter toute la finalisation.
+- **Bouton "Terminer avec les réglages recommandés" non responsive** (`wizard.html.twig`, étape 1) :
+  le panneau de configuration express est une `.alert` (`display: flex` par défaut chez Tabler), et son
+  bouton (`white-space: nowrap`) débordait hors de l'écran à largeur normale au lieu de passer à la ligne.
+  Corrigé avec les utilitaires flex de Tabler (`d-flex flex-wrap align-items-center gap-3` sur le
+  conteneur, `flex-fill` sur le texte, `flex-shrink-0` sur le bouton) — vérifié à 900px, 1536px et 1920px,
+  aucun débordement horizontal à aucune largeur.
+- **Libellé "Configuration" illisible dès que son sous-menu est ouvert, avec une palette personnalisée**
+  (`PaletteBuilder`) : troisième bogue de la même famille que le correctif v0.63.1 (menu latéral au
+  survol), trouvé séparément. GLPI cœur stylise un item de menu actif/ouvert (`.nav-link.show`/`.active`)
+  avec `color: color-mix(in srgb, var(--tblr-primary), transparent 10%)` — dans une palette personnalisée
+  où le fond de la barre latérale *est* `--tblr-primary`, ce texte devient quasi invisible sur son propre
+  fond (confirmé par `getComputedStyle()` : la couleur du texte et le fond partagent la même teinte, et
+  par une capture d'écran montrant le libellé "Configuration" totalement invisible tant que son sous-menu
+  reste ouvert — plus visible avec la souris hors du menu qu'au-dessus, l'inverse de ce qu'on attend d'un
+  état actif). Corrigé par une règle CSS ciblée forçant la couleur de premier plan calculée
+  (`{fg} !important`) sur ce sélecteur précis, vérifiée en réel : le libellé reste lisible en blanc gras
+  que son sous-menu soit ouvert ou non.
+
 ## [0.63.1] - 2026-08-17
 
 ### Fixed
