@@ -157,9 +157,18 @@ class CalendarBuilder
         string $lunchBegin = '12:00',
         string $lunchEnd = '13:00',
     ): int {
+        // `entities_id`/`is_recursive` (confirmed via `DESCRIBE glpi_calendars`) were never set
+        // here, silently defaulting to GLPI's own add() default (root entity, *not* recursive) —
+        // real bug found live: every calendar this plugin ever created was invisible from any
+        // sub-entity's own admin context (Configuration > Calendriers, scoped to the current
+        // entity + recursive children only), even though the entity's own `calendars_id` still
+        // correctly pointed to it (SLA/OLA/holiday behavior was never actually broken, only
+        // browsing/managing the calendar from a site's own context). Root + recursive matches the
+        // same scoping every other global dropdown this plugin creates already uses (Holiday,
+        // ITILCategory...).
         $calendar = new Calendar();
         if (!$calendar->getFromDBByCrit(['name' => $name])) {
-            $id = $calendar->add(['name' => $name]);
+            $id = $calendar->add(['name' => $name, 'entities_id' => 0, 'is_recursive' => 1]);
             $calendar->getFromDB($id);
         }
         $calendarId = (int) $calendar->getID();

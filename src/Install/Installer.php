@@ -490,6 +490,22 @@ final class Installer
             ], ['id' => 1]);
         }
 
+        // Retroactive fix for a real bug found live: CalendarBuilder never set entities_id/
+        // is_recursive when creating a calendar, silently defaulting to root + *not* recursive —
+        // every calendar this plugin ever created was invisible from any sub-entity's own admin
+        // context, even though the entity's calendars_id still correctly pointed to it. Scoped by
+        // name prefix (this plugin's own naming, "Horaires standard"/"Horaires — <name>") rather
+        // than blindly touching every row in glpi_calendars, which could include calendars this
+        // plugin never created (GLPI's own native "Default" among them).
+        $DB->update('glpi_calendars', ['is_recursive' => 1], [
+            'entities_id' => 0,
+            'is_recursive' => 0,
+            ['OR' => [
+                'name' => 'Horaires standard',
+                ['name' => ['LIKE', 'Horaires — %']],
+            ]],
+        ]);
+
         return true;
     }
 

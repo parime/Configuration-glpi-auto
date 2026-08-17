@@ -27,6 +27,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   correctement assignés, chacun avec exactement les jours fériés de son pays (5 pour l'Allemagne,
   11 pour l'Italie, 8 pour la France) — Paris et Lyon (tous deux France) confirmés partager le même
   calendrier.
+- **Calendriers du plugin invisibles depuis un sous-site** (`CalendarBuilder`) : bug plus ancien,
+  remonté en testant le correctif ci-dessus — `Calendar::add()` n'a jamais reçu `entities_id`/
+  `is_recursive` explicites, héritant silencieusement du défaut GLPI (entité racine, **non
+  récursif**). Résultat : tout calendrier créé par ce plugin (depuis les tout premiers sprints, pas
+  seulement les nouveaux calendriers par pays) était invisible dans Configuration > Calendriers
+  depuis le contexte d'un site enfant (ex. "Site Berlin") — bien que l'entité pointe correctement
+  vers le bon calendrier en interne (SLA/OLA/jours fériés fonctionnaient déjà), ça donnait
+  l'impression que rien n'avait été créé. Corrigé : `entities_id => 0, is_recursive => 1` à la
+  création, plus une migration rétroactive (`Installer::install()`) qui corrige les calendriers
+  déjà créés par ce plugin (repérés par préfixe de nom "Horaires standard"/"Horaires — *", jamais
+  les calendriers d'un tiers comme "Default").
 
 ### Changed
 
