@@ -91,6 +91,18 @@ class ServerAssetBuilder
         ['system_name' => 'hyperviseur', 'label' => 'Hyperviseur', 'type' => StringType::class],
     ];
 
+    // Seeds the *native* "type" dropdown every custom asset definition automatically gets (same
+    // mechanism as VehicleAssetBuilder's own TYPES — see that class's seedTypes() docblock).
+    // Server *form factor*, not brand/model (Manufacturer/AssetModel's job).
+    private const TYPES = [
+        'Serveur rack',
+        'Serveur tour',
+        'Lame (blade)',
+        'Serveur virtuel',
+        'NAS',
+        'SAN',
+    ];
+
     private const DEFAULT_RIGHTS_PROFILES = ['Super-Admin', 'Admin'];
 
     public function build(Config $config): int
@@ -100,32 +112,52 @@ class ServerAssetBuilder
         }
 
         $definition = new AssetDefinition();
-        if ($definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME])) {
-            return 0;
-        }
+        $isNew = !$definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME]);
 
-        $capacities = array_map(static fn (string $class): array => ['name' => $class], self::CAPACITIES);
+        if ($isNew) {
+            $capacities = array_map(static fn (string $class): array => ['name' => $class], self::CAPACITIES);
 
-        $definitionId = (int) $definition->add([
-            'system_name' => self::SYSTEM_NAME,
-            'label' => self::LABEL,
-            'is_active' => 1,
-            'capacities' => $capacities,
-            'profiles' => $this->getDefaultProfileRights(),
-            'comment' => 'Type d\'actif cree automatiquement par Configuration GLPI Auto, distinct de '
-                . 'l\'actif natif Ordinateur pour les champs propres aux serveurs.',
-        ]);
-
-        foreach (self::FIELDS as $field) {
-            (new CustomFieldDefinition())->add([
-                'assets_assetdefinitions_id' => $definitionId,
-                'system_name' => $field['system_name'],
-                'label' => $field['label'],
-                'type' => $field['type'],
+            $definitionId = (int) $definition->add([
+                'system_name' => self::SYSTEM_NAME,
+                'label' => self::LABEL,
+                'is_active' => 1,
+                'capacities' => $capacities,
+                'profiles' => $this->getDefaultProfileRights(),
+                'comment' => 'Type d\'actif cree automatiquement par Configuration GLPI Auto, distinct de '
+                    . 'l\'actif natif Ordinateur pour les champs propres aux serveurs.',
             ]);
+            $definition->getFromDB($definitionId);
+
+            foreach (self::FIELDS as $field) {
+                (new CustomFieldDefinition())->add([
+                    'assets_assetdefinitions_id' => $definitionId,
+                    'system_name' => $field['system_name'],
+                    'label' => $field['label'],
+                    'type' => $field['type'],
+                ]);
+            }
         }
 
-        return 1;
+        $this->seedTypes($definition);
+
+        return $isNew ? 1 : 0;
+    }
+
+    /**
+     * Same mechanism as `VehicleAssetBuilder::seedTypes()` — see that class's docblock.
+     */
+    private function seedTypes(AssetDefinition $definition): void
+    {
+        $itemtype = $definition->getAssetTypeClassName();
+        $definitionId = (int) $definition->getID();
+
+        foreach (self::TYPES as $name) {
+            $item = new $itemtype();
+            $crit = ['name' => $name, 'assets_assetdefinitions_id' => $definitionId];
+            if (!$item->getFromDBByCrit($crit)) {
+                $item->add($crit);
+            }
+        }
     }
 
     /**

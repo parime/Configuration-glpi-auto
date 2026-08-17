@@ -23,24 +23,30 @@ Devenir **la référence Open Source** pour l'initialisation, la standardisation
 > plugin n'était pas installable (classes manquantes, `composer.json` invalide). Le Sprint 1 a
 > remis les fondations d'aplomb (installation/désinstallation réelles, catalogue de profils de
 > configuration avec CRUD complet, droits dédiés) et validé le tout contre une vraie instance GLPI
-> 11.0.8. Les cases ci-dessous ne seront cochées qu'au fur et à mesure de leur implémentation
-> réelle — voir CHANGELOG.md pour le détail sprint par sprint.
+> 11.0.8.
+>
+> **Mise à jour (2026-08-17)** : les 10 items ci-dessous sont désormais tous livrés — les cases
+> étaient simplement restées non cochées au fil des sprints suivants (74 versions livrées depuis,
+> voir CHANGELOG.md), pas un signe d'avancement réel. Le plugin a largement dépassé ce périmètre
+> initial (52 fichiers `*Builder` dans `src/`, bien au-delà des 10 items d'origine).
 
-**Premières releases réelles** : `v0.1.0` (2026-08-10, Sprints 1-2) — voir
-[Releases GitHub](https://github.com/parime/Configuration-glpi-auto/releases) et
-[CHANGELOG.md](CHANGELOG.md).
+**Premières releases réelles** : `v0.1.0` (2026-08-10, Sprints 1-2), version actuelle `v0.64.0`
+(2026-08-17) — voir [Releases GitHub](https://github.com/parime/Configuration-glpi-auto/releases)
+et [CHANGELOG.md](CHANGELOG.md).
 
 **Fonctionnalités prévues** :
 - ✅ Catalogue de profils de configuration (CRUD, Sprint 1)
 - ✅ Réglages de structure d'entités — mono/multi/MSP, aperçu en temps réel (Sprint 2)
-- ⬜ Assistant graphique (Wizard)
-- ⬜ Moteur de déploiement (application effective d'un profil sur une instance)
-- ⬜ Calendriers intelligents
-- ⬜ SLA et OLA prédéfinis
-- ⬜ Branding et personnalisation graphique
-- ⬜ Templates pour tickets, problèmes, changements
-- ⬜ Catalogue de services complet
-- ⬜ Gestion des profils utilisateurs
+- ✅ Assistant graphique (Wizard) — 18 étapes, `front/wizard.php`
+- ✅ Moteur de déploiement (application effective d'un profil sur une instance) — `Config.php`
+- ✅ Calendriers intelligents — horaires par jour, coupure déjeuner, jours fériés automatiques
+  selon le pays détecté (France par défaut, v0.64.0)
+- ✅ SLA et OLA prédéfinis — escalade N1/N2/N3
+- ✅ Branding et personnalisation graphique — couleur, logo, palettes natives GLPI (19 au choix),
+  templates de notification habillés
+- ✅ Templates pour tickets, problèmes, changements
+- ✅ Catalogue de services complet — 23 services / 7 branches
+- ✅ Gestion des profils utilisateurs — 37 règles LDAP
 
 **Limites identifiées à corriger (Sprint 11, 2026-08-10)** — remontées en testant le wizard, pas
 encore implémentées :
@@ -418,8 +424,12 @@ variables de portail helpdesk calculées depuis le menu, et surtout un **mécani
 propre que `custom_css_code`** apparu en 11.0 : déposer un `.scss` dans `files/_themes`, auto-
 détecté comme palette sélectionnable — évite les soucis de spécificité (`!important` contre Tabler)
 et couvre nativement le dark mode, deux limites confirmées de l'approche actuelle. GLPI ships aussi
-17 palettes natives (`auror`, `dark`, `midnight`, `teclib`...) que le wizard ne propose pas de
-sélectionner aujourd'hui.
+des palettes natives (`auror`, `dark`, `midnight`, `teclib`...) — **fait entre-temps** (le fichier
+`.scss` déposé dans `files/_themes` mentionné ci-dessus, `PaletteBuilder`/`native_palette`) : le
+wizard propose bien un sélecteur listant dynamiquement toutes les palettes natives de l'instance
+(`Glpi\UI\ThemeManager::getCoreThemes()`, jamais codé en dur), confirmé en réel — 19 options
+(18 palettes + "Aucune") sur cette instance GLPI 11.0.8. Cette note de recherche datait d'avant
+cette implémentation et n'avait jamais été mise à jour.
 
 ---
 
@@ -688,17 +698,40 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    (dépend d'une définition d'actif personnalisée à créer d'abord, pas un dropdown global autonome),
    `Enclosure`/Châssis (confirmé sans table `Type` du tout dans GLPI —
    `glpi_enclosuretypes` n'existe pas), `DeviceGeneric` (trop générique pour un contenu
-   significatif), `DatabaseInstance` (risque de dériver vers une liste de produits DBMS façon
-   fabricants plutôt qu'une vraie catégorisation), `NetworkPortFiberchannelType` (protocole SAN
-   générique et stable, déjà écarté du périmètre "opérateurs télécom" ailleurs dans ce document).
-   ⏳ **Seule table encore différée** : `SoftwareLicenseType` — **`CommonTreeDropdown`, pas un
-   dropdown plat** comme les 26 déjà traités, nécessite le même soin que la construction de l'arbre
-   de `CategoryBuilder`.
-5. ✅ **Jours fériés par pays — fait (v0.52.0, 2026-08-14), sur demande explicite ("fait les jours
-   fériés").** `CountryHolidayBuilder` (nouveau), étape "Lieux" : crée les jours fériés natifs GLPI
-   des pays saisis sur les adresses (hors France, déjà couverte à l'étape Calendrier), source
-   Nager.Date déjà vérifiée en direct. Les trois questions de conception ont été tranchées : (1)
-   table de correspondance nom→code ISO pour ~25 pays européens/courants (français/anglais),
+   significatif), `NetworkPortFiberchannelType` (protocole SAN générique et stable, déjà écarté du
+   périmètre "opérateurs télécom" ailleurs dans ce document).
+   ✅ **`SoftwareLicenseType` — fait (v0.64.0, 2026-08-17), sur demande explicite.** Seule table
+   restée différée (c'est un `CommonTreeDropdown`, pas un dropdown plat comme les 26 autres de
+   `AssetTypeBuilder`, nécessitant le même soin que la construction de l'arbre de
+   `CategoryBuilder`) : `SoftwareLicenseTypeBuilder` (nouveau), 10 catégories réelles de gestion de
+   licences (OEM, Volume, Boîte, Abonnement SaaS, Open Source, Essai, Site, Concurrente, Nommée,
+   Don/Occasion), en liste plate (une licence se catégorise sur un seul axe, pas une hiérarchie).
+   ✅ **`DatabaseInstanceType` — fait (v0.64.0, 2026-08-17), sur demande explicite.** Initialement
+   écarté (risque de dériver vers une liste de produits DBMS façon fabricants plutôt qu'une vraie
+   catégorisation) — résolu en catégorisant par *nature du moteur* (relationnelle, document,
+   clé-valeur...) plutôt que par produit, confirmé distinct de `manufacturers_id` et de
+   `databaseinstancecategories_id` (déjà natifs sur `DatabaseInstance`, `DESCRIBE` à l'appui).
+   ✅ **Types natifs des actifs personnalisés Véhicule/Serveur/Local — fait (v0.64.0, 2026-08-17),
+   sur demande explicite.** Chaque définition d'actif personnalisé reçoit automatiquement de GLPI
+   son propre dropdown "type" (`Glpi\CustomAsset\<X>AssetType`), jusqu'ici jamais peuplé —
+   `VehicleAssetBuilder`/`ServerAssetBuilder`/`BuildingAssetBuilder` le peuplent désormais chacun
+   avec des catégories réelles. Le libellé "Véhicule types" (au lieu de "Types de véhicule") généré
+   par GLPI lui-même reste non traduit en `fr_FR` — confirmé être un manque de traduction du cœur
+   GLPI 11 (`Glpi\Asset\AssetType::getTypeName()`), hors de portée d'un plugin.
+5. ✅ **Jours fériés par pays, France incluse — fait (v0.52.0, étendu v0.64.0, 2026-08-17).**
+   `CountryHolidayBuilder`, étape "Lieux" : crée les jours fériés natifs GLPI des pays saisis sur
+   les adresses, source Nager.Date déjà vérifiée en direct. **Étendu (v0.64.0)** sur demande
+   explicite ("gérer les fermetures de manière automatique selon le pays") : la France, jusqu'ici
+   couverte séparément par une case à cocher indépendante du pays réellement détecté dans
+   `CalendarBuilder` (8 jours codés en dur, attachés même à un site non-français si la case était
+   cochée), passe par ce même mécanisme — chaque site/client sans pays saisi est par défaut la
+   France. `CalendarBuilder::attachFrenchHolidays()`/`calendar_holidays_enabled` supprimés.
+   Couverture pays aussi étendue à l'intégralité de l'Union européenne plus
+   Royaume-Uni/Suisse/Norvège/Islande (10 pays ajoutés : Bulgarie, Croatie, Chypre, Estonie,
+   Lettonie, Lituanie, Malte, Slovaquie, Slovénie, Islande), confirmé un par un contre les 204 pays
+   réels de Nager.Date. Les trois questions de conception d'origine ont été tranchées : (1)
+   table de correspondance nom→code ISO pour désormais l'intégralité de l'UE + voisins européens
+   proches, plus quelques pays hors Europe courants (français/anglais),
    un pays non reconnu est simplement ignoré ; (2) limitation `is_perpetual` de GLPI résolue en
    déterminant empiriquement les jours fériés à date fixe (comparaison de deux années
    consécutives, même simplification que pour la France) plutôt que de gérer un rafraîchissement

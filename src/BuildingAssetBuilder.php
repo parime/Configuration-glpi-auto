@@ -76,6 +76,22 @@ class BuildingAssetBuilder
         ['system_name' => 'type_local', 'label' => 'Type de local', 'type' => StringType::class],
     ];
 
+    // Seeds the *native* "type" dropdown every custom asset definition automatically gets (same
+    // mechanism as VehicleAssetBuilder's own TYPES — see that class's seedTypes() docblock).
+    // Deliberately kept alongside the free-text `type_local` field above rather than replacing it
+    // (added later, on explicit user request, after `type_local` already shipped) — an admin who
+    // already relies on the free-text field keeps it untouched; this just also populates the
+    // native dropdown GLPI attaches to every custom asset regardless of whether this class uses it.
+    private const TYPES = [
+        'Bureau',
+        'Salle de réunion',
+        'Entrepôt',
+        'Atelier',
+        'Salle serveur / Datacenter',
+        'Site industriel',
+        'Boutique / Point de vente',
+    ];
+
     private const DEFAULT_RIGHTS_PROFILES = ['Super-Admin', 'Admin'];
 
     public function build(Config $config): int
@@ -85,32 +101,52 @@ class BuildingAssetBuilder
         }
 
         $definition = new AssetDefinition();
-        if ($definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME])) {
-            return 0;
-        }
+        $isNew = !$definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME]);
 
-        $capacities = array_map(static fn (string $class): array => ['name' => $class], self::CAPACITIES);
+        if ($isNew) {
+            $capacities = array_map(static fn (string $class): array => ['name' => $class], self::CAPACITIES);
 
-        $definitionId = (int) $definition->add([
-            'system_name' => self::SYSTEM_NAME,
-            'label' => self::LABEL,
-            'is_active' => 1,
-            'capacities' => $capacities,
-            'profiles' => $this->getDefaultProfileRights(),
-            'comment' => 'Type d\'actif cree automatiquement par Configuration GLPI Auto pour suivre '
-                . 'un local (bureau, salle...) comme un actif a part entiere : contrats, documents, reservation.',
-        ]);
-
-        foreach (self::FIELDS as $field) {
-            (new CustomFieldDefinition())->add([
-                'assets_assetdefinitions_id' => $definitionId,
-                'system_name' => $field['system_name'],
-                'label' => $field['label'],
-                'type' => $field['type'],
+            $definitionId = (int) $definition->add([
+                'system_name' => self::SYSTEM_NAME,
+                'label' => self::LABEL,
+                'is_active' => 1,
+                'capacities' => $capacities,
+                'profiles' => $this->getDefaultProfileRights(),
+                'comment' => 'Type d\'actif cree automatiquement par Configuration GLPI Auto pour suivre '
+                    . 'un local (bureau, salle...) comme un actif a part entiere : contrats, documents, reservation.',
             ]);
+            $definition->getFromDB($definitionId);
+
+            foreach (self::FIELDS as $field) {
+                (new CustomFieldDefinition())->add([
+                    'assets_assetdefinitions_id' => $definitionId,
+                    'system_name' => $field['system_name'],
+                    'label' => $field['label'],
+                    'type' => $field['type'],
+                ]);
+            }
         }
 
-        return 1;
+        $this->seedTypes($definition);
+
+        return $isNew ? 1 : 0;
+    }
+
+    /**
+     * Same mechanism as `VehicleAssetBuilder::seedTypes()` — see that class's docblock.
+     */
+    private function seedTypes(AssetDefinition $definition): void
+    {
+        $itemtype = $definition->getAssetTypeClassName();
+        $definitionId = (int) $definition->getID();
+
+        foreach (self::TYPES as $name) {
+            $item = new $itemtype();
+            $crit = ['name' => $name, 'assets_assetdefinitions_id' => $definitionId];
+            if (!$item->getFromDBByCrit($crit)) {
+                $item->add($crit);
+            }
+        }
     }
 
     /**

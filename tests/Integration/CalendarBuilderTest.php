@@ -52,7 +52,6 @@ final class CalendarBuilderTest extends TestCase
         $config = new Config();
         $config->fields = array_merge(Config::getDefaults(), [
             'calendar_name' => self::CALENDAR_NAME,
-            'calendar_holidays_enabled' => 0,
         ], $overrides);
 
         return $config;

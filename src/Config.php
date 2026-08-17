@@ -140,7 +140,6 @@ class Config extends CommonDBTM
             'calendar_lunch_break_enabled' => 0,
             'calendar_lunch_begin' => '12:00',
             'calendar_lunch_end' => '13:00',
-            'calendar_holidays_enabled' => 1,
             'branding_enabled' => 0,
             'branding_primary_color' => '#206bc4',
             'custom_palette_enabled' => 0,
@@ -233,6 +232,8 @@ class Config extends CommonDBTM
             'line_operators_enabled' => 1,
             'asset_types_enabled' => 1,
             'asset_type_icons_enabled' => 1,
+            'software_license_types_enabled' => 1,
+            'software_license_type_icons_enabled' => 1,
             'country_holidays_enabled' => 1,
             'satisfaction_plugin_survey_enabled' => 1,
             'vip_group_enabled' => 1,
@@ -415,10 +416,6 @@ class Config extends CommonDBTM
             $input['calendar_enabled'] = !empty($input['calendar_enabled']) ? 1 : 0;
         }
 
-        if (isset($input['calendar_holidays_enabled'])) {
-            $input['calendar_holidays_enabled'] = !empty($input['calendar_holidays_enabled']) ? 1 : 0;
-        }
-
         if (isset($input['calendar_day'])) {
             $input['calendar_days'] = json_encode(array_values(array_map('intval', (array) $input['calendar_day'])));
             unset($input['calendar_day']);
@@ -576,7 +573,7 @@ class Config extends CommonDBTM
             $input['native_palette'] = '';
         }
 
-        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled', 'notification_branding_enabled', 'manufacturer_dictionary_enabled', 'location_geocoding_enabled', 'project_templates_enabled', 'request_type_translations_enabled', 'entity_native_address_enabled', 'user_categories_enabled', 'user_category_icons_enabled', 'field_unicity_enabled', 'rss_feeds_enabled', 'line_operators_enabled', 'asset_types_enabled', 'asset_type_icons_enabled', 'country_holidays_enabled', 'satisfaction_plugin_survey_enabled', 'vip_group_enabled', 'tag_library_enabled', 'validation_supervisor_routing_enabled'] as $field) {
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled', 'notification_branding_enabled', 'manufacturer_dictionary_enabled', 'location_geocoding_enabled', 'project_templates_enabled', 'request_type_translations_enabled', 'entity_native_address_enabled', 'user_categories_enabled', 'user_category_icons_enabled', 'field_unicity_enabled', 'rss_feeds_enabled', 'line_operators_enabled', 'asset_types_enabled', 'asset_type_icons_enabled', 'software_license_types_enabled', 'software_license_type_icons_enabled', 'country_holidays_enabled', 'satisfaction_plugin_survey_enabled', 'vip_group_enabled', 'tag_library_enabled', 'validation_supervisor_routing_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

@@ -327,6 +327,8 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_break_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_begin', 'string', ['value' => '12:00']);
             $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_end', 'string', ['value' => '13:00']);
+            $migration->addField(self::CONFIGS_TABLE, 'software_license_types_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'software_license_type_icons_enabled', 'bool', ['value' => 0]);
         }
 
         // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape
