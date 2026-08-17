@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Lien tutoriel visible dès le haut du README** (`README.md`, `README.en.md`) : le seul lien vers
+  `docs/TUTORIAL.md` était dans la section Documentation, en bas de page — invisible depuis la page
+  d'accueil GitHub sans faire défiler. Le tutoriel lui-même est déjà bilingue FR/EN depuis la
+  v0.64.1 (vérifié en direct sur GitHub : sélecteur de langue, 18 captures d'écran par étape × 2
+  sections).
+- Corrige deux notes ROADMAP.md devenues obsolètes (palettes natives, variables de logo
+  `BrandingBuilder`) — voir commit `0700fdd`.
+
 ## [0.64.1] - 2026-08-17
 
 ### Fixed
