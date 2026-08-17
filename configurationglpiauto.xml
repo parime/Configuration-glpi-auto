@@ -34,6 +34,7 @@
     <download>https://github.com/parime/Configuration-glpi-auto/releases</download>
     <issues>https://github.com/parime/Configuration-glpi-auto/issues</issues>
     <readme>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/README.md</readme>
+    <changelog>https://github.com/parime/Configuration-glpi-auto/releases</changelog>
     <authors>
         <author>Vincent GUILLOTTE</author>
     </authors>
@@ -41,253 +42,211 @@
         <version>
             <num>0.62.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.62.0/configuration-glpi-auto-0.62.0.zip</download_url>
         </version>
         <version>
             <num>0.61.1</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.61.1/configuration-glpi-auto-0.61.1.zip</download_url>
         </version>
         <version>
             <num>0.61.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.61.0/configuration-glpi-auto-0.61.0.zip</download_url>
         </version>
         <version>
             <num>0.60.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.60.0/configuration-glpi-auto-0.60.0.zip</download_url>
         </version>
         <version>
             <num>0.59.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.59.0/configuration-glpi-auto-0.59.0.zip</download_url>
         </version>
         <version>
             <num>0.58.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.58.0/configuration-glpi-auto-0.58.0.zip</download_url>
         </version>
         <version>
             <num>0.57.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.57.0/configuration-glpi-auto-0.57.0.zip</download_url>
         </version>
         <version>
             <num>0.56.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.56.0/configuration-glpi-auto-0.56.0.zip</download_url>
         </version>
         <version>
             <num>0.55.1</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.55.1/configuration-glpi-auto-0.55.1.zip</download_url>
         </version>
         <version>
             <num>0.55.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.55.0/configuration-glpi-auto-0.55.0.zip</download_url>
         </version>
         <version>
             <num>0.54.1</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.54.1/configuration-glpi-auto-0.54.1.zip</download_url>
         </version>
         <version>
             <num>0.54.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.54.0/configuration-glpi-auto-0.54.0.zip</download_url>
         </version>
         <version>
             <num>0.53.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.53.0/configuration-glpi-auto-0.53.0.zip</download_url>
         </version>
         <version>
             <num>0.52.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.52.0/configuration-glpi-auto-0.52.0.zip</download_url>
         </version>
         <version>
             <num>0.51.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.51.0/configuration-glpi-auto-0.51.0.zip</download_url>
         </version>
         <version>
             <num>0.50.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.50.0/configuration-glpi-auto-0.50.0.zip</download_url>
         </version>
         <version>
             <num>0.49.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.49.0/configuration-glpi-auto-0.49.0.zip</download_url>
         </version>
         <version>
             <num>0.48.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.48.0/configuration-glpi-auto-0.48.0.zip</download_url>
         </version>
         <version>
             <num>0.47.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.47.0/configuration-glpi-auto-0.47.0.zip</download_url>
         </version>
         <version>
             <num>0.46.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.46.0/configuration-glpi-auto-0.46.0.zip</download_url>
         </version>
         <version>
             <num>0.45.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.45.0/configuration-glpi-auto-0.45.0.zip</download_url>
         </version>
         <version>
             <num>0.44.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.44.0/configuration-glpi-auto-0.44.0.zip</download_url>
         </version>
         <version>
             <num>0.43.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.43.0/configuration-glpi-auto-0.43.0.zip</download_url>
         </version>
         <version>
             <num>0.42.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.42.0/configuration-glpi-auto-0.42.0.zip</download_url>
         </version>
         <version>
             <num>0.41.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.41.0/configuration-glpi-auto-0.41.0.zip</download_url>
         </version>
         <version>
             <num>0.40.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.40.0/configuration-glpi-auto-0.40.0.zip</download_url>
         </version>
         <version>
             <num>0.39.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.39.0/configuration-glpi-auto-0.39.0.zip</download_url>
         </version>
         <version>
             <num>0.38.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.38.0/configuration-glpi-auto-0.38.0.zip</download_url>
         </version>
         <version>
             <num>0.37.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.37.0/configuration-glpi-auto-0.37.0.zip</download_url>
         </version>
         <version>
             <num>0.36.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.36.0/configuration-glpi-auto-0.36.0.zip</download_url>
         </version>
         <version>
             <num>0.35.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.35.0/configuration-glpi-auto-0.35.0.zip</download_url>
         </version>
         <version>
             <num>0.34.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.34.0/configuration-glpi-auto-0.34.0.zip</download_url>
         </version>
         <version>
             <num>0.33.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.33.0/configuration-glpi-auto-0.33.0.zip</download_url>
         </version>
         <version>
             <num>0.32.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.32.0/configuration-glpi-auto-0.32.0.zip</download_url>
         </version>
         <version>
             <num>0.31.1</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.31.1/configuration-glpi-auto-0.31.1.zip</download_url>
         </version>
         <version>
             <num>0.31.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.31.0/configuration-glpi-auto-0.31.0.zip</download_url>
         </version>
         <version>
             <num>0.30.1</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.30.1/configuration-glpi-auto-0.30.1.zip</download_url>
         </version>
         <version>
             <num>0.30.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.30.0/configuration-glpi-auto-0.30.0.zip</download_url>
         </version>
         <version>
             <num>0.29.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.29.0/configuration-glpi-auto-0.29.0.zip</download_url>
         </version>
         <version>
             <num>0.28.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.28.0/configuration-glpi-auto-0.28.0.zip</download_url>
         </version>
         <version>
             <num>0.27.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.27.0/configuration-glpi-auto-0.27.0.zip</download_url>
         </version>
         <version>
             <num>0.26.0</num>
             <compatibility>=11.0.0</compatibility>
-            <php-version>=8.2</php-version>
             <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.26.0/configuration-glpi-auto-0.26.0.zip</download_url>
         </version>
     </versions>
@@ -317,16 +276,12 @@
             <tag>ISO27001</tag>
         </en>
     </tags>
-    <requirements>
-        <requirement>glpi >= 11.0.0</requirement>
-        <requirement>php >= 8.2</requirement>
-    </requirements>
     <screenshots>
         <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/01-profil.png</screenshot>
         <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/02-entites.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/06-catalogue-services.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/09-personnalisation.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/12-droits-ldap.png</screenshot>
-        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/17-recapitulatif.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/07-catalogue-services.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/17-personnalisation.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/13-droits-ldap.png</screenshot>
+        <screenshot>https://raw.githubusercontent.com/parime/Configuration-glpi-auto/main/docs/screenshots/18-recapitulatif.png</screenshot>
     </screenshots>
 </root>

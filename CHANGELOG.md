@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `configurationglpiauto.xml` (manifeste de soumission au [Plugin Directory GLPI](https://plugins.glpi-project.org)) :
+  4 captures d'écran référençaient encore l'ancienne numérotation des étapes du tutoriel (avant le
+  renommage `01-profil.png`...`18-recapitulatif.png`), ce qui aurait affiché des images cassées sur
+  la fiche du plugin. Balise `<changelog>` manquante ajoutée (requise par le schéma officiel).
+  Balise `<php-version>` (non prévue par le schéma) retirée de chaque `<version>` — confirmé
+  bloquant par le validateur réel du formulaire de soumission
+  (`INVALID_XML: <version> should contain only <num>, <compatibility> and <download_url>`).
+
 ### Changed
 - Documentation bilingue français/anglais sur README.md, CONTRIBUTING.md, SECURITY.md et
   docs/TUTORIAL.md — chaque paragraphe/section/liste en français est immédiatement suivi de sa
