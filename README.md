@@ -6,9 +6,16 @@
 [![Build Status](https://github.com/parime/Configuration-glpi-auto/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/parime/Configuration-glpi-auto/actions)
 [![Latest Release](https://img.shields.io/github/v/release/parime/Configuration-glpi-auto)](https://github.com/parime/Configuration-glpi-auto/releases)
 
+<p align="center"><strong>Une instance GLPI neuve, configurée selon les bonnes pratiques ITIL/ISO 27001, en 18 étapes guidées plutôt qu'en jours de réglages manuels.</strong></p>
+<p align="center"><em>A brand-new GLPI instance, configured to ITIL/ISO 27001 best practices, in 18 guided steps instead of days of manual tweaking.</em></p>
+
 Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une installation vierge en une plateforme operationnelle en quelques clics.
 
 *Configuration GLPI Auto is a GLPI plugin that aims to turn a blank installation into an operational platform in just a few clicks.*
+
+Une installation GLPI neuve est une page blanche : aucune entité, aucun calendrier, aucun SLA, aucune catégorie de ticket, aucun modèle. Tout configurer correctement à la main — en respectant les bonnes pratiques ITIL et les exigences ISO 27001 — prend typiquement plusieurs jours à un administrateur qui découvre GLPI, avec le risque d'oublier un réglage important (escalade SLA, classification documentaire, droits par site...). Ce plugin condense ce travail en un assistant guidé de 18 étapes : vous répondez à des questions sur votre organisation, l'assistant construit la configuration correspondante, et rien n'est créé dans GLPI avant que vous ne validiez le récapitulatif final.
+
+*A fresh GLPI install is a blank page: no entities, no calendar, no SLAs, no ticket categories, no templates. Configuring all of that correctly by hand — while following ITIL best practices and ISO 27001 requirements — typically takes a newcomer administrator several days, with the risk of missing something important (SLA escalation, document classification, per-site rights...). This plugin condenses that work into a guided 18-step wizard: you answer questions about your organization, the wizard builds the matching configuration, and nothing is created in GLPI until you confirm the final summary.*
 
 > Voir [CHANGELOG.md](CHANGELOG.md) pour l'historique des versions publiées (badge « Latest
 > Release » ci-dessus pour la dernière en date) et [ROADMAP.md](ROADMAP.md) pour ce qui est prévu.
@@ -19,6 +26,10 @@ Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une insta
 ## Table des matieres
 *Table of contents*
 
+- [Ce qui le distingue](#ce-qui-le-distingue)
+- *[What sets it apart](#ce-qui-le-distingue)*
+- [Aperçu](#aperçu)
+- *[Screenshots](#aperçu)*
 - [Fonctionnalites](#fonctionnalites)
 - *[Features](#fonctionnalites)*
 - [Prerequis](#prerequis)
@@ -33,6 +44,39 @@ Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une insta
 - *[Contributing](#contribution)*
 - [Licence](#licence)
 - *[License](#licence)*
+
+## Ce qui le distingue
+*What sets it apart*
+
+- **Rien n'est créé avant la fin** : les 18 étapes ne font que composer une configuration en mémoire, avec un aperçu qui se met à jour en direct (voir capture ci-dessous) — vous pouvez revenir en arrière, tout changer, recommencer, sans jamais polluer GLPI avant de valider le récapitulatif final.
+- ***Nothing is created until the end**: the 18 steps only build up a configuration in memory, with a live-updating preview (see screenshot below) — you can go back, change anything, start over, without ever touching GLPI before confirming the final summary.*
+- **Un mode express pour les pressés** : un seul clic à l'étape 1 applique directement les réglages recommandés du profil choisi, sans parcourir les 17 étapes suivantes une à une — pour une installation simple, une instance GLPI opérationnelle en quelques secondes.
+- ***An express mode for the impatient**: a single click at step 1 applies the chosen profile's recommended settings directly, without going through the following 17 steps one by one — for a simple installation, an operational GLPI instance in a few seconds.*
+- **Pensé multi-site et MSP dès le départ** : la même arborescence d'entités, les mêmes SLA et la même personnalisation graphique peuvent être différenciés par site ou par client, sans jongler entre plusieurs installations GLPI séparées.
+- ***Built for multi-site and MSP from the start**: the same entity tree, the same SLAs and the same visual customization can be differentiated per site or per client, without juggling several separate GLPI installations.*
+- **Conformité ISO 27001 intégrée** : rubriques documentaires et niveaux de criticité de la base de connaissances sont proposés dès l'assistant, pas ajoutés après coup en fouillant la documentation GLPI.
+- ***ISO 27001 compliance built in**: knowledge base document topics and criticality levels are offered right in the wizard, not bolted on afterwards by digging through GLPI's documentation.*
+- **Zéro donnée orpheline** : chaque réglage proposé (catégories, statuts, modèles...) est directement utilisable — le catalogue de services généré à l'étape 7 route déjà automatiquement vers la bonne catégorie créée à l'étape 6, par exemple.
+- ***No orphaned data**: every setting the wizard proposes (categories, statuses, templates...) is immediately usable — the service catalog generated in step 7 already routes automatically to the right category created in step 6, for example.*
+
+## Aperçu
+*Screenshots*
+
+**Le choix du profil de départ** — quatre profils prédéfinis pré-remplissent les 17 étapes suivantes avec des valeurs adaptées à votre organisation, ajustables ensuite à volonté ; un mode express applique directement les réglages recommandés sans repasser par chaque étape :
+
+***The starting profile choice** — four predefined profiles pre-fill the following 17 steps with values suited to your organization, freely adjustable afterwards; an express mode applies the recommended settings directly without going through every step:*
+
+![Étape 1 — Choix du profil](docs/screenshots/01-profil.png)
+
+**La structure d'entités, avec aperçu en direct** — mono-site, multi-site ou MSP : l'arborescence se construit à gauche, l'aperçu à droite se met à jour à chaque changement, avant tout enregistrement :
+
+***The entity structure, with a live preview** — single-site, multi-site or MSP: the tree is built on the left, the preview on the right updates with every change, before anything is saved:*
+
+![Étape 2 — Structure des entités](docs/screenshots/02-entites.png)
+
+Toutes les autres captures d'écran (les 18 étapes en détail) sont dans le [tutoriel](docs/TUTORIAL.md).
+
+*All other screenshots (all 18 steps in detail) are in the [tutorial](docs/TUTORIAL.md).*
 
 ## Fonctionnalites
 *Features*
