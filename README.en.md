@@ -17,6 +17,9 @@ A fresh GLPI install is a blank page: no entities, no calendar, no SLAs, no tick
 > See [CHANGELOG.md](CHANGELOG.md) for the release history (the "Latest Release" badge above
 > shows the most recent one) and [ROADMAP.md](ROADMAP.md) for what's planned.
 
+📖 **[See the full tutorial](docs/TUTORIAL.md)** — all 18 wizard steps, one screenshot per step
+(available in French and English).
+
 ## Table of contents
 
 - [What sets it apart](#what-sets-it-apart)

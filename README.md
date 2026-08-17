@@ -17,6 +17,9 @@ Une installation GLPI neuve est une page blanche : aucune entité, aucun calendr
 > Voir [CHANGELOG.md](CHANGELOG.md) pour l'historique des versions publiées (badge « Latest
 > Release » ci-dessus pour la dernière en date) et [ROADMAP.md](ROADMAP.md) pour ce qui est prévu.
 
+📖 **[Voir le tutoriel complet](docs/TUTORIAL.md)** — les 18 étapes de l'assistant, une capture
+d'écran par étape (disponible en français et en anglais).
+
 ## Table des matieres
 
 - [Ce qui le distingue](#ce-qui-le-distingue)
