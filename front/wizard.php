@@ -349,16 +349,18 @@ if (isset($_POST['finish'])) {
             ? $calendarBuilder->buildFromOverride($result['name'], $calendarOverride)
             : $sharedCalendarId;
 
-        // Fork a country-specific calendar whenever this top-level entity's own Location has an
-        // explicitly typed country (not just the implicit France default applied further below for
-        // CountryHolidayBuilder's own purposes) — real bug reported by the user: a shared calendar
-        // used by every entity meant a German site's public holidays landed on the exact same
-        // calendar object as the French sites', invisibly mixed in together, and re-checking the
-        // wrong (GLPI-native "Default") calendar made it look like nothing had been created at all.
-        // Every entity with an explicit country now gets its own clearly-named calendar
-        // ("<nom> — <Pays>"), same hours/segments as whatever it would otherwise have used (its own
-        // override if it has one, else the shared settings) — so "identifier facilement si c'est un
-        // calendrier pour la France, l'Allemagne..." is solved by construction, not just documented.
+        // One calendar *per country* (not per site) whenever this top-level entity's own Location
+        // has an explicitly typed country — real bug reported by the user: a shared calendar used
+        // by every entity meant a German site's public holidays landed on the exact same calendar
+        // object as the French sites', invisibly mixed in together, and re-checking the wrong
+        // (GLPI-native "Default") calendar made it look like nothing had been created at all. Named
+        // by country alone ("Horaires — <Pays>"), not "<site> — <Pays>": every site sharing the same
+        // country reuses the *same* calendar object (buildFromOverride() is idempotent by name), on
+        // explicit user request ("je veux un calendrier par pays") rather than one calendar per
+        // site with the country just appended to its name. Whichever site is processed first for a
+        // given country determines that shared calendar's hours — same "first submission wins,
+        // idempotent on name" convention this class already uses for the plugin-wide shared
+        // calendar, not a new inconsistency.
         $explicitCountry = trim((string) ($locationDataByPath[(string) $i]['country'] ?? ''));
         if ($calendarId !== null && $explicitCountry !== '') {
             $baseSettings = $calendarOverride ?? [
@@ -371,11 +373,7 @@ if (isset($_POST['finish'])) {
                 'lunchBegin' => (string) ($config->fields['calendar_lunch_begin'] ?? '12:00'),
                 'lunchEnd' => (string) ($config->fields['calendar_lunch_end'] ?? '13:00'),
             ];
-            $baseLabel = $result['name'] !== '' ? $result['name'] : __('Horaires standard', 'configurationglpiauto');
-            $countryCalendarId = $calendarBuilder->buildFromOverride(
-                sprintf('%s — %s', $baseLabel, $explicitCountry),
-                $baseSettings
-            );
+            $countryCalendarId = $calendarBuilder->buildFromOverride($explicitCountry, $baseSettings);
             if ($countryCalendarId !== null) {
                 $calendarId = $countryCalendarId;
                 $countryCalendarForkCount++;
@@ -586,7 +584,7 @@ if (isset($_POST['finish'])) {
     }
     if ($countryCalendarForkCount > 0) {
         $messages[] = sprintf(
-            __('%d calendrier(s) dédié(s) créé(s) par pays (nom au format "Site — Pays").', 'configurationglpiauto'),
+            __('%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre sites du même pays).', 'configurationglpiauto'),
             $countryCalendarForkCount
         );
     }
