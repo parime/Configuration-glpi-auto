@@ -9,6 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.64.1] - 2026-08-17
+
+### Fixed
+
+- **Un calendrier dédié par pays, partagé entre tous les sites du même pays** (`front/wizard.php`) :
+  bug réel remonté par l'utilisateur, présent depuis la sortie de v0.64.0 — quand tous les
+  sites/clients partagent le même calendrier (pas de "Calendrier différent par site" activé), les
+  jours fériés d'un site allemand s'attachaient malgré tout au *même* calendrier que les sites
+  français, invisiblement mélangés, et consulter le mauvais calendrier (le calendrier natif GLPI
+  "Default", jamais touché par le plugin) donnait l'impression que rien n'avait été créé. Corrigé :
+  dès qu'un pays est explicitement saisi pour un site, ce site utilise désormais un calendrier
+  nommé d'après le pays ("Horaires — Allemagne", "Horaires — Italie"...) — partagé entre tous les
+  sites du même pays plutôt qu'un calendrier par site ("je veux un calendrier par pays", pas un
+  calendrier par site avec le pays dans le nom). Vérifié en réel avec 4 sites (Paris/Lyon sans
+  pays explicite ou "France", Berlin/Allemagne, Italie/Italie) : 4 calendriers distincts créés et
+  correctement assignés, chacun avec exactement les jours fériés de son pays (5 pour l'Allemagne,
+  11 pour l'Italie, 8 pour la France) — Paris et Lyon (tous deux France) confirmés partager le même
+  calendrier.
+
+### Changed
+
+- **README.md/README.en.md séparés** (sélecteur de langue en haut) ; **CONTRIBUTING.md/SECURITY.md/
+  docs/TUTORIAL.md** restructurés en deux grandes sections FR/EN au lieu de paragraphes entrelacés
+  en italique — remplace un format difficile à lire pour qui ne veut qu'une langue. Référence
+  obsolète corrigée au passage (menu "Administration" au lieu de "Configuration" pour l'accès à
+  l'assistant, depuis le déplacement de ce menu en v0.63.2).
+
 ## [0.64.0] - 2026-08-17
 
 ### Added
@@ -56,18 +83,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Croatie, Chypre, Estonie, Lettonie, Lituanie, Malte, Slovaquie, Slovénie, Islande) — couvre
   désormais l'intégralité de l'Union européenne plus Royaume-Uni/Suisse/Norvège/Islande, confirmé
   un par un contre les 204 pays réels de Nager.Date.
-- **Un calendrier dédié par pays, partagé entre tous les sites du même pays** (`front/wizard.php`) :
-  bug réel remonté par l'utilisateur — quand tous les sites/clients partagent le même calendrier
-  (pas de "Calendrier différent par site" activé), les jours fériés d'un site allemand s'attachaient
-  malgré tout au *même* calendrier que les sites français, invisiblement mélangés, et consulter le
-  mauvais calendrier (le calendrier natif GLPI "Default", jamais touché par le plugin) donnait
-  l'impression que rien n'avait été créé. Corrigé : dès qu'un pays est explicitement saisi pour un
-  site, ce site utilise désormais un calendrier nommé d'après le pays ("Horaires — Allemagne",
-  "Horaires — Italie"...) — partagé entre tous les sites du même pays plutôt qu'un calendrier par
-  site ("je veux un calendrier par pays", pas un calendrier par site avec le pays dans le nom).
-  Vérifié en réel avec 4 sites (Paris/Lyon sans pays explicite ou "France", Berlin/Allemagne,
-  Italie/Italie) : 4 calendriers distincts créés et correctement assignés, chacun avec exactement
-  les jours fériés de son pays (5 pour l'Allemagne, 11 pour l'Italie, 8 pour la France).
 
 ## [0.63.2] - 2026-08-17
 
