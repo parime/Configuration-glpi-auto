@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Documentation bilingue français/anglais sur README.md, CONTRIBUTING.md, SECURITY.md et
+  docs/TUTORIAL.md — chaque paragraphe/section/liste en français est immédiatement suivi de sa
+  traduction anglaise, dans le même fichier. Même traitement que sur les plugins jumeaux
+  assetsign-glpi et glpi-vulnerability-manager.
+- README et docs/TUTORIAL.md enrichis pour donner une vision plus complète et engageante du
+  plugin sans avoir à l'installer : nouvelle section "Ce qui le distingue" et 2 captures d'écran
+  embarquées directement dans le README, explications du "pourquoi" (pas seulement du "quoi") pour
+  chacune des 18 étapes du tutoriel, nouvelle section "Et ensuite ?" décrivant le résultat concret
+  une fois le récapitulatif validé.
+
 ## [0.62.0] - 2026-08-16
 
 ### Added
