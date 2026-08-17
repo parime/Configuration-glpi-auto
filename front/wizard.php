@@ -309,6 +309,11 @@ if (isset($_POST['finish'])) {
     $calendarBuilder = new CalendarBuilder();
     $slaBuilder = new SlaBuilder();
 
+    // Collected here (rather than after this loop, where it used to live) so the calendar-building
+    // loop below can already tell, per top-level path, whether a country was explicitly typed —
+    // see the "Fork a country-specific calendar" block inside that loop.
+    $locationDataByPath = !empty($config->fields['locations_enabled']) ? collectLocationDataFromPost() : [];
+
     // Built once, shared by every client unless overridden below — a client's own
     // settings.escalation only ever changes whether/how escalation applies, never the group
     // identities themselves (see SupportTierBuilder's docblock on that scope choice).
@@ -330,6 +335,7 @@ if (isset($_POST['finish'])) {
     $slaMap = [];
     $entityIdToTierGroupIds = [];
     $perClientCount = 0;
+    $countryCalendarForkCount = 0;
 
     foreach (($created ?: [['name' => '', 'entities_id' => 0]]) as $i => $result) {
         $calendarOverride = $tree[$i]['settings']['calendar'] ?? null;
@@ -342,6 +348,38 @@ if (isset($_POST['finish'])) {
         $calendarId = $calendarOverride !== null
             ? $calendarBuilder->buildFromOverride($result['name'], $calendarOverride)
             : $sharedCalendarId;
+
+        // One calendar *per country* (not per site) whenever this top-level entity's own Location
+        // has an explicitly typed country — real bug reported by the user: a shared calendar used
+        // by every entity meant a German site's public holidays landed on the exact same calendar
+        // object as the French sites', invisibly mixed in together, and re-checking the wrong
+        // (GLPI-native "Default") calendar made it look like nothing had been created at all. Named
+        // by country alone ("Horaires — <Pays>"), not "<site> — <Pays>": every site sharing the same
+        // country reuses the *same* calendar object (buildFromOverride() is idempotent by name), on
+        // explicit user request ("je veux un calendrier par pays") rather than one calendar per
+        // site with the country just appended to its name. Whichever site is processed first for a
+        // given country determines that shared calendar's hours — same "first submission wins,
+        // idempotent on name" convention this class already uses for the plugin-wide shared
+        // calendar, not a new inconsistency.
+        $explicitCountry = trim((string) ($locationDataByPath[(string) $i]['country'] ?? ''));
+        if ($calendarId !== null && $explicitCountry !== '') {
+            $baseSettings = $calendarOverride ?? [
+                'enabled' => true,
+                'days' => $config->getCalendarDays(),
+                'begin' => (string) ($config->fields['calendar_begin'] ?? '08:00'),
+                'end' => (string) ($config->fields['calendar_end'] ?? '18:00'),
+                'dayHours' => $config->getCalendarDayHours(),
+                'lunchBreakEnabled' => !empty($config->fields['calendar_lunch_break_enabled']),
+                'lunchBegin' => (string) ($config->fields['calendar_lunch_begin'] ?? '12:00'),
+                'lunchEnd' => (string) ($config->fields['calendar_lunch_end'] ?? '13:00'),
+            ];
+            $countryCalendarId = $calendarBuilder->buildFromOverride($explicitCountry, $baseSettings);
+            if ($countryCalendarId !== null) {
+                $calendarId = $countryCalendarId;
+                $countryCalendarForkCount++;
+            }
+        }
+
         if ($calendarId !== null) {
             $calendarMap[$result['entities_id']] = $calendarId;
         }
@@ -406,8 +444,8 @@ if (isset($_POST['finish'])) {
     $followupTemplatesCreated = (new FollowupLibraryBuilder())->build($config);
     $validationTemplatesCreated = (new ValidationTemplateBuilder())->build($config);
     // Runs after EntityBuilder: LocationBuilder resolves entities by name lookup to scope each
-    // location it actually creates.
-    $locationDataByPath = !empty($config->fields['locations_enabled']) ? collectLocationDataFromPost() : [];
+    // location it actually creates. $locationDataByPath itself was already collected further above
+    // (needed earlier, by the calendar-building loop's per-country fork).
     $locationChildrenByPath = !empty($config->fields['locations_enabled']) ? collectLocationChildrenFromPost() : [];
     $locationsCreated = (new LocationBuilder())->build($config, $locationDataByPath, $locationChildrenByPath);
     // Scans only the top-level Location panels' own country field, not child locations' (bâtiment/
@@ -543,6 +581,12 @@ if (isset($_POST['finish'])) {
         : sprintf(__('Structure créée : %s.', 'configurationglpiauto'), EntityBuilder::describe($created));
     if ($calendarMap !== []) {
         $messages[] = __('Calendrier créé et assigné.', 'configurationglpiauto');
+    }
+    if ($countryCalendarForkCount > 0) {
+        $messages[] = sprintf(
+            __('%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre sites du même pays).', 'configurationglpiauto'),
+            $countryCalendarForkCount
+        );
     }
     if ($slaMap !== []) {
         $messages[] = __('SLA créés et assignés.', 'configurationglpiauto');

@@ -9,6 +9,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.64.1] - 2026-08-17
+
+### Fixed
+
+- **Un calendrier dédié par pays, partagé entre tous les sites du même pays** (`front/wizard.php`) :
+  bug réel remonté par l'utilisateur, présent depuis la sortie de v0.64.0 — quand tous les
+  sites/clients partagent le même calendrier (pas de "Calendrier différent par site" activé), les
+  jours fériés d'un site allemand s'attachaient malgré tout au *même* calendrier que les sites
+  français, invisiblement mélangés, et consulter le mauvais calendrier (le calendrier natif GLPI
+  "Default", jamais touché par le plugin) donnait l'impression que rien n'avait été créé. Corrigé :
+  dès qu'un pays est explicitement saisi pour un site, ce site utilise désormais un calendrier
+  nommé d'après le pays ("Horaires — Allemagne", "Horaires — Italie"...) — partagé entre tous les
+  sites du même pays plutôt qu'un calendrier par site ("je veux un calendrier par pays", pas un
+  calendrier par site avec le pays dans le nom). Vérifié en réel avec 4 sites (Paris/Lyon sans
+  pays explicite ou "France", Berlin/Allemagne, Italie/Italie) : 4 calendriers distincts créés et
+  correctement assignés, chacun avec exactement les jours fériés de son pays (5 pour l'Allemagne,
+  11 pour l'Italie, 8 pour la France) — Paris et Lyon (tous deux France) confirmés partager le même
+  calendrier.
+- **Calendriers du plugin invisibles depuis un sous-site** (`CalendarBuilder`) : bug plus ancien,
+  remonté en testant le correctif ci-dessus — `Calendar::add()` n'a jamais reçu `entities_id`/
+  `is_recursive` explicites, héritant silencieusement du défaut GLPI (entité racine, **non
+  récursif**). Résultat : tout calendrier créé par ce plugin (depuis les tout premiers sprints, pas
+  seulement les nouveaux calendriers par pays) était invisible dans Configuration > Calendriers
+  depuis le contexte d'un site enfant (ex. "Site Berlin") — bien que l'entité pointe correctement
+  vers le bon calendrier en interne (SLA/OLA/jours fériés fonctionnaient déjà), ça donnait
+  l'impression que rien n'avait été créé. Corrigé : `entities_id => 0, is_recursive => 1` à la
+  création, plus une migration rétroactive (`Installer::install()`) qui corrige les calendriers
+  déjà créés par ce plugin (repérés par préfixe de nom "Horaires standard"/"Horaires — *", jamais
+  les calendriers d'un tiers comme "Default").
+
+### Changed
+
+- **README.md/README.en.md séparés** (sélecteur de langue en haut) ; **CONTRIBUTING.md/SECURITY.md/
+  docs/TUTORIAL.md** restructurés en deux grandes sections FR/EN au lieu de paragraphes entrelacés
+  en italique — remplace un format difficile à lire pour qui ne veut qu'une langue. Référence
+  obsolète corrigée au passage (menu "Administration" au lieu de "Configuration" pour l'accès à
+  l'assistant, depuis le déplacement de ce menu en v0.63.2).
+
 ## [0.64.0] - 2026-08-17
 
 ### Added
