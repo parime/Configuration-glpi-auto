@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.63.2] - 2026-08-17
 
+### Changed
+
+- **"Profils de configuration" déplacé du menu "Administration" vers le menu "Configuration"** :
+  ce CRUD ne gère que les modèles de profil propres au plugin (données utilisées par l'étape 1 de
+  l'assistant), rien qui touche Utilisateurs/Groupes/Entités/Règles — le classer dans
+  "Administration" mélangeait un écran propre au plugin avec les réglages natifs de GLPI. Retour
+  utilisateur direct sur ce placement.
+
 ### Fixed
 
 - **Plantage SQL à la finalisation de l'assistant quand un logo d'entité était uploadé** (`BrandingBuilder`) :
