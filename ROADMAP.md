@@ -415,10 +415,13 @@ parcours).
 
 ### Recherche — variables CSS GLPI 11 pour un branding exhaustif (résumé)
 
-`BrandingBuilder` ne surcharge aujourd'hui que `--glpi-logo` (une seule des 6 variantes réelles :
+`BrandingBuilder` ne surchargeait initialement que `--glpi-logo` (une seule des 6 variantes réelles :
 `--glpi-logo-light/-light-reduced/-dark/-dark-reduced/-light-login/-dark-login` — le mode réduit, le
-mode sombre et l'écran de login gardent donc le logo natif GLPI) et une couleur primaire approximée
-(alors que `--tblr-primary`/`--tblr-primary-fg`/`--tblr-primary-darken` etc. existent, dérivées
+mode sombre et l'écran de login gardaient donc le logo natif GLPI) — **fait entre-temps** (v0.64.0,
+2026-08-17, corrigé au passage du bug de duplication ×8 du logo en base64) : les 8 variables réelles
+sont toutes surchargées via une seule propriété CSS personnalisée partagée (`--cga-logo-url`,
+référencée par `var()`), le mode réduit/sombre/login affichent désormais tous le bon logo. Couleur
+primaire approximée (alors que `--tblr-primary`/`--tblr-primary-fg`/`--tblr-primary-darken` etc. existent, dérivées
 nativement par `color-mix`). GLPI 11 expose aussi `--glpi-mainmenu-*` (menu principal), des
 variables de portail helpdesk calculées depuis le menu, et surtout un **mécanisme officiel plus
 propre que `custom_css_code`** apparu en 11.0 : déposer un `.scss` dans `files/_themes`, auto-
@@ -742,9 +745,10 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    pour l'Allemagne, où "Heilige Drei Könige"/"Mariä Himmelfahrt"/"Weltkindertag" ne sont fériés
    que dans certains Länder, pas dans tout le pays. Sans filtrer sur `global: true`, ces jours
    auraient été créés comme si toute l'Allemagne les observait — corrigé avant la première
-   soumission testée. Volontairement pas rattaché automatiquement à un calendrier (pas de moyen
-   fiable de savoir depuis les données du plugin à quel calendrier un pays donné devrait
-   s'appliquer) — à faire par l'admin une fois les jours fériés créés.
+   soumission testée. **Note obsolète retirée (v0.64.1)** : cette section disait initialement
+   "volontairement pas rattaché automatiquement à un calendrier, à faire par l'admin" — devenu
+   faux depuis l'extension v0.64.1 ci-dessus, qui rattache désormais chaque pays à un calendrier
+   dédié automatiquement.
 6. ✅ **Unicité des champs (`FieldUnicity`) — fait (v0.43.0, 2026-08-13), scope réduit au cas
    universel.** Audité avant construction (`src/FieldUnicity.php` du cœur GLPI) : contrairement aux
    dropdowns de contenu, `FieldUnicity` définit bien des *règles* de contrainte, plus proche des
