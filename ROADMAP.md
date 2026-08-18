@@ -1095,6 +1095,54 @@ priorité unilatérale.
 
 ---
 
+## 💬 Pistes remontées par le forum GLPI officiel (2026-08-18, pas encore tranchées)
+
+Même méthode que les audits précédents : consignées ici après vérification technique, aucune
+décision de priorité unilatérale — sujets soumis par l'utilisateur, à trancher avant de construire
+quoi que ce soit.
+
+1. **ITSM → ESM : actifs personnalisés réglementés (extincteurs, ascenseurs...)** — topic
+   https://forum.glpi-project.org/viewtopic.php?id=293900. Un utilisateur (Perreip) demande si GLPI
+   peut être détourné d'un outil ITSM (parc informatique) vers un usage ESM (Enterprise Service
+   Management) : gérer aussi des actifs non-IT réglementés — ascenseurs, extincteurs, véhicules de
+   service, locaux — avec export filtré (exemple cité : « extincteurs avec dates de validité »).
+   Réponse du modérateur cconard96, vérifiée cohérente avec le code déjà audité dans ce projet
+   (section « actifs personnalisés » plus haut, v0.58.0-v0.60.0) : GLPI 11 permet nativement ce
+   genre de type d'actif via `Glpi\Asset\AssetDefinition` + capacités modulaires (remplaçant
+   l'ancien plugin externe « Generic Object »), et le moteur de recherche natif couvre déjà le
+   filtrage/export (CSV/PDF/ODS/XLSX, recherches sauvegardées, alertes) — rien à construire côté
+   export.
+   **Recoupement direct avec ce plugin** : `VehicleAssetBuilder`/`ServerAssetBuilder`/
+   `BuildingAssetBuilder` utilisent déjà exactement ce mécanisme (`AssetDefinition` + capacités +
+   champ de conformité, ex. le champ « contrôle technique » de `VehicleAssetBuilder`). Étendre à des
+   types d'équipements réglementés supplémentaires suit le même patron, sans changement
+   d'architecture.
+   **Candidats évalués comme suffisamment universels** (même filtre « generalist scope » que le
+   reste du plugin — cf. diagnostic LDAP écarté plus haut pour un cas *non* généralisable) :
+   - Sécurité incendie (extincteurs/RIA/désenfumage) — champ date de vérification périodique,
+     capacités Infocom/Contrats/Documents, déclenchement probable par une nouvelle case dans la
+     branche « Bâtiment » de l'étape 5, aux côtés de celle qui déclenche déjà `BuildingAssetBuilder`.
+   - Équipement de levage (ascenseurs/monte-charges) — champ date de contrôle réglementaire +
+     organisme de contrôle, même déclenchement.
+   **Non tranché** : builders dédiés par verticale (patron actuel du plugin, cohérent avec
+   `VehicleAssetBuilder`/`ServerAssetBuilder`/`BuildingAssetBuilder`) vs. un assistant générique
+   « créer votre propre type d'actif » exposant `AssetDefinition` directement depuis le wizard
+   (changement de nature plus lourd, à ne considérer que si le besoin dépasse les deux candidats
+   ci-dessus). Suivi : issue GitHub #132.
+
+2. **Gabarit de solution « Demande incomplète »** — topic
+   https://forum.glpi-project.org/viewtopic.php?id=294630. Un utilisateur (alecomte) demande un
+   statut/bouton dédié pour rejeter un ticket mal formulé ou incomplet. Réponse du contributeur
+   LaDenrée : pas besoin de toucher au workflow natif, un gabarit de solution avec un texte type
+   « votre demande est incomplète » suffit — mécanisme déjà utilisé par ce plugin
+   (`SolutionLibraryBuilder`, 5 catégories/10 gabarits existants, voir plus haut). Aucun gabarit
+   équivalent dans la catégorie « Informationnel » actuelle (qui couvre « Fonctionnement normal
+   constaté » et « Ticket doublon », pas « informations manquantes »). Ajout simple si retenu : un
+   11e gabarit dans cette même catégorie, aucun changement de mécanisme. Pas encore construit, pas
+   encore d'issue ouverte — à confirmer avec l'utilisateur.
+
+---
+
 ### 🚀 Version 1.1 - **En Développement**
 
 **Prévue** : Q4 2026
