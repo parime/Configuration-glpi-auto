@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: "📖 Documentation"
+    url: https://github.com/parime/Configuration-glpi-auto#readme
+    about: "README, TUTORIAL.md et ROADMAP.md avant d'ouvrir une issue · README, TUTORIAL.md and ROADMAP.md before opening an issue"

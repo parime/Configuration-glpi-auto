@@ -1,0 +1,60 @@
+name: "🐛 Bug / Anomalie"
+description: "Signaler un comportement anormal du plugin · Report a plugin bug"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de vérifier qu'aucune issue existante ne décrit déjà ce problème avant d'en ouvrir une nouvelle.
+        Please check existing issues before opening a new one.
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: "Version du plugin · Plugin version"
+      description: "Configuration > Plugins, ou tag Git installé · Configuration > Plugins, or installed Git tag"
+      placeholder: "v0.65.0"
+    validations:
+      required: true
+
+  - type: input
+    id: glpi-version
+    attributes:
+      label: "Version de GLPI · GLPI version"
+      placeholder: "11.0.8"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Comportement attendu · Expected behavior"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Comportement observé · Actual behavior"
+      description: "Message d'erreur exact, capture d'écran si pertinent · Exact error message, screenshot if relevant"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Étapes de reproduction · Steps to reproduce"
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Contexte additionnel · Additional context"
+      description: "Logs GLPI, configuration spécifique, plugins tiers actifs… · GLPI logs, specific configuration, active third-party plugins…"
+    validations:
+      required: false
