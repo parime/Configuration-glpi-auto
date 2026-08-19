@@ -1189,6 +1189,30 @@ msgstr "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
 msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
 msgstr "Actif personnalisé \"Local\" créé (branche Bâtiment)."
 
+msgid "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche Bâtiment)."
+msgstr "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche Bâtiment)."
+
+msgid "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection des Personnes)."
+msgstr "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection des Personnes)."
+
+msgid "Actif personnalisé ESM (Enterprise Service Management) — en plus de l'actif \"Local\" créé automatiquement pour cette branche."
+msgstr "Actif personnalisé ESM (Enterprise Service Management) — en plus de l'actif \"Local\" créé automatiquement pour cette branche."
+
+msgid "Créer un type d'actif \"Sécurité incendie & premiers secours\" (extincteurs, RIA, désenfumage, DAE...)"
+msgstr "Créer un type d'actif \"Sécurité incendie & premiers secours\" (extincteurs, RIA, désenfumage, DAE...)"
+
+msgid "Champ de conformité : date de vérification périodique. Pas réservable (n'a pas de sens pour ce type d'équipement)."
+msgstr "Champ de conformité : date de vérification périodique. Pas réservable (n'a pas de sens pour ce type d'équipement)."
+
+msgid "Actif personnalisé ESM (Enterprise Service Management), aligné sur ISO/IEC 27001:2022 Annexe A.7 \"Mesures physiques\" (contrôle d'accès, vidéosurveillance, alarme intrusion)."
+msgstr "Actif personnalisé ESM (Enterprise Service Management), aligné sur ISO/IEC 27001:2022 Annexe A.7 \"Mesures physiques\" (contrôle d'accès, vidéosurveillance, alarme intrusion)."
+
+msgid "Créer un type d'actif \"Sécurité physique\" (caméras, alarme intrusion, contrôle d'accès...)"
+msgstr "Créer un type d'actif \"Sécurité physique\" (caméras, alarme intrusion, contrôle d'accès...)"
+
+msgid "Champs : zone couverte, date de dernière maintenance/vérification."
+msgstr "Champs : zone couverte, date de dernière maintenance/vérification."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Profil de configuration"

@@ -242,6 +242,16 @@ class Config extends CommonDBTM
             // change (mandatory approval on every matching ticket), not content scaffolding — same
             // exception already applied to branding.
             'validation_supervisor_routing_enabled' => 0,
+            // ESM custom asset types (forum-sourced, see FireSafetyAssetBuilder/
+            // PhysicalSecurityAssetBuilder docblocks) — opt-out like the rest of this list, but each
+            // ALSO requires its own category branch ("batiment"/"securite" respectively) to be
+            // selected, unlike VehicleAssetBuilder/ServerAssetBuilder/BuildingAssetBuilder which have
+            // no dedicated toggle of their own (see those two builders' docblocks for why this pair
+            // gets one).
+            'fire_safety_assets_enabled' => 1,
+            'fire_safety_asset_icons_enabled' => 1,
+            'physical_security_assets_enabled' => 1,
+            'physical_security_asset_icons_enabled' => 1,
         ];
     }
 
@@ -573,7 +583,7 @@ class Config extends CommonDBTM
             $input['native_palette'] = '';
         }
 
-        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled', 'notification_branding_enabled', 'manufacturer_dictionary_enabled', 'location_geocoding_enabled', 'project_templates_enabled', 'request_type_translations_enabled', 'entity_native_address_enabled', 'user_categories_enabled', 'user_category_icons_enabled', 'field_unicity_enabled', 'rss_feeds_enabled', 'line_operators_enabled', 'asset_types_enabled', 'asset_type_icons_enabled', 'software_license_types_enabled', 'software_license_type_icons_enabled', 'country_holidays_enabled', 'satisfaction_plugin_survey_enabled', 'vip_group_enabled', 'tag_library_enabled', 'validation_supervisor_routing_enabled'] as $field) {
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled', 'notification_branding_enabled', 'manufacturer_dictionary_enabled', 'location_geocoding_enabled', 'project_templates_enabled', 'request_type_translations_enabled', 'entity_native_address_enabled', 'user_categories_enabled', 'user_category_icons_enabled', 'field_unicity_enabled', 'rss_feeds_enabled', 'line_operators_enabled', 'asset_types_enabled', 'asset_type_icons_enabled', 'software_license_types_enabled', 'software_license_type_icons_enabled', 'country_holidays_enabled', 'satisfaction_plugin_survey_enabled', 'vip_group_enabled', 'tag_library_enabled', 'validation_supervisor_routing_enabled', 'fire_safety_assets_enabled', 'fire_safety_asset_icons_enabled', 'physical_security_assets_enabled', 'physical_security_asset_icons_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

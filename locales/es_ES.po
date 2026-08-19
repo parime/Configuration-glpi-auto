@@ -1189,6 +1189,30 @@ msgstr "Activo personalizado \"Servidor\" creado (rama TI y Sistemas)."
 msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
 msgstr "Activo personalizado \"Local\" creado (rama Edificio)."
 
+msgid "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche Bâtiment)."
+msgstr "Activo personalizado \"Seguridad contra incendios y primeros auxilios\" creado (rama Edificio)."
+
+msgid "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection des Personnes)."
+msgstr "Activo personalizado \"Seguridad física\" creado (rama Seguridad)."
+
+msgid "Actif personnalisé ESM (Enterprise Service Management) — en plus de l'actif \"Local\" créé automatiquement pour cette branche."
+msgstr "Activo personalizado ESM (Enterprise Service Management) — además del activo \"Local\" creado automáticamente para esta rama."
+
+msgid "Créer un type d'actif \"Sécurité incendie & premiers secours\" (extincteurs, RIA, désenfumage, DAE...)"
+msgstr "Crear un tipo de activo \"Seguridad contra incendios y primeros auxilios\" (extintores, bocas de incendio, extracción de humos, DEA...)"
+
+msgid "Champ de conformité : date de vérification périodique. Pas réservable (n'a pas de sens pour ce type d'équipement)."
+msgstr "Campo de conformidad: fecha de verificación periódica. No reservable (no tiene sentido para este tipo de equipo)."
+
+msgid "Actif personnalisé ESM (Enterprise Service Management), aligné sur ISO/IEC 27001:2022 Annexe A.7 \"Mesures physiques\" (contrôle d'accès, vidéosurveillance, alarme intrusion)."
+msgstr "Activo personalizado ESM (Enterprise Service Management), alineado con ISO/IEC 27001:2022 Anexo A.7 \"Controles físicos\" (control de acceso, videovigilancia, alarma antiintrusión)."
+
+msgid "Créer un type d'actif \"Sécurité physique\" (caméras, alarme intrusion, contrôle d'accès...)"
+msgstr "Crear un tipo de activo \"Seguridad física\" (cámaras, alarma antiintrusión, control de acceso...)"
+
+msgid "Champs : zone couverte, date de dernière maintenance/vérification."
+msgstr "Campos: zona cubierta, fecha del último mantenimiento/verificación."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Perfil de configuración"

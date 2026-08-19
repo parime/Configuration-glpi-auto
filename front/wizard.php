@@ -28,6 +28,7 @@ use GlpiPlugin\Configurationglpiauto\DocumentManagementBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityAddressBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
 use GlpiPlugin\Configurationglpiauto\FieldUnicityBuilder;
+use GlpiPlugin\Configurationglpiauto\FireSafetyAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\FollowupLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
@@ -39,6 +40,7 @@ use GlpiPlugin\Configurationglpiauto\ManufacturerDictionaryBuilder;
 use GlpiPlugin\Configurationglpiauto\MarketplaceBuilder;
 use GlpiPlugin\Configurationglpiauto\NotificationBrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\PaletteBuilder;
+use GlpiPlugin\Configurationglpiauto\PhysicalSecurityAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\PlanningEventBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaxonomyBuilder;
@@ -431,6 +433,10 @@ if (isset($_POST['finish'])) {
     $vehicleAssetCreated = (new VehicleAssetBuilder())->build($config);
     $serverAssetCreated = (new ServerAssetBuilder())->build($config);
     $buildingAssetCreated = (new BuildingAssetBuilder())->build($config);
+    // Unlike the three builders above, each also needs its own dedicated toggle checked (not just
+    // the branch) — see FireSafetyAssetBuilder/PhysicalSecurityAssetBuilder docblocks for why.
+    $fireSafetyAssetCreated = (new FireSafetyAssetBuilder())->build($config);
+    $physicalSecurityAssetCreated = (new PhysicalSecurityAssetBuilder())->build($config);
     $servicesCreated = (new ServiceCatalogBuilder())->build($config);
     $statesCreated = (new StateBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
@@ -612,6 +618,12 @@ if (isset($_POST['finish'])) {
     if ($buildingAssetCreated > 0) {
         $messages[] = __('Actif personnalisé "Local" créé (branche Bâtiment).', 'configurationglpiauto');
     }
+    if ($fireSafetyAssetCreated > 0) {
+        $messages[] = __('Actif personnalisé "Sécurité incendie & premiers secours" créé (branche Bâtiment).', 'configurationglpiauto');
+    }
+    if ($physicalSecurityAssetCreated > 0) {
+        $messages[] = __('Actif personnalisé "Sécurité physique" créé (branche Sécurité & Protection des Personnes).', 'configurationglpiauto');
+    }
     if ($servicesCreated > 0) {
         $messages[] = sprintf(__('%d services créés dans le catalogue.', 'configurationglpiauto'), $servicesCreated);
     }
@@ -782,6 +794,8 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'priority_labels'  => $priorityLabels,
     'category_branches' => $config->getCategoryBranches(),
     'categories_preview' => CategoryBuilder::getCategoriesPreview(),
+    'fire_safety_assets_preview' => FireSafetyAssetBuilder::getPreview(),
+    'physical_security_assets_preview' => PhysicalSecurityAssetBuilder::getPreview(),
     'services_preview' => ServiceCatalogBuilder::getServicesPreview(),
     'states_preview'   => StateBuilder::getStatesPreview(),
     'state_names'      => $config->getStateNames(),

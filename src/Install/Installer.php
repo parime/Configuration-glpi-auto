@@ -174,6 +174,10 @@ final class Installer
                 `vip_group_enabled` tinyint NOT NULL DEFAULT 0,
                 `tag_library_enabled` tinyint NOT NULL DEFAULT 0,
                 `validation_supervisor_routing_enabled` tinyint NOT NULL DEFAULT 0,
+                `fire_safety_assets_enabled` tinyint NOT NULL DEFAULT 0,
+                `fire_safety_asset_icons_enabled` tinyint NOT NULL DEFAULT 0,
+                `physical_security_assets_enabled` tinyint NOT NULL DEFAULT 0,
+                `physical_security_asset_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -329,6 +333,10 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_end', 'string', ['value' => '13:00']);
             $migration->addField(self::CONFIGS_TABLE, 'software_license_types_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'software_license_type_icons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'fire_safety_assets_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'fire_safety_asset_icons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'physical_security_assets_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'physical_security_asset_icons_enabled', 'bool', ['value' => 0]);
         }
 
         // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape

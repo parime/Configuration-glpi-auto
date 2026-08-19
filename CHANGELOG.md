@@ -9,6 +9,72 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.65.0] - 2026-08-19
+
+### Added
+
+- **Deux nouveaux actifs personnalisés ESM (Enterprise Service Management)**, sujet remonté par le
+  forum GLPI officiel (topic https://forum.glpi-project.org/viewtopic.php?id=293900, "ITSM → ESM",
+  issue GitHub #132) : même mécanisme `Glpi\Asset\AssetDefinition` + capacités modulaires que
+  `VehicleAssetBuilder`/`ServerAssetBuilder`/`BuildingAssetBuilder`, API re-vérifiée en réel contre
+  l'instance de test GLPI 11.0.8 avant d'écrire le code (`AssetDefinition::add()`, format
+  `capacities`/`profiles`, dropdown "type" natif généré par définition) plutôt que supposée.
+  - **`FireSafetyAssetBuilder`** (nouveau) : actif "Sécurité incendie & premiers secours"
+    (`SecuriteIncendieSecours`), 6 sous-types via le dropdown "type" natif (Extincteur, RIA, système
+    de désenfumage, détecteur de fumée/alarme incendie, éclairage de sécurité/issue de secours, et
+    — ajouté en cours de sprint — défibrillateur automatisé externe/DAE, qui partage exactement le
+    même besoin de champ "date de vérification périodique" qu'un extincteur, donc regroupé dans le
+    même type d'actif plutôt qu'un second). Un champ (date de vérification périodique), capacités
+    Infocom/Contrats/Documents/Historique/Notes/Liens/Recherche globale — **pas réservable**
+    (contrairement à `VehicleAssetBuilder`/`BuildingAssetBuilder`, la réservabilité n'a aucun sens
+    pour ce type d'équipement). Déclenché par un nouveau réglage dédié
+    (`fire_safety_assets_enabled`), affiché dans le panneau de la branche "Bâtiment & Moyens
+    Généraux" à l'étape Catégories, en plus de la case de branche elle-même (qui continue de
+    déclencher seule `BuildingAssetBuilder`) — opt-in séparé plutôt qu'automatique : toute
+    organisation qui coche "Bâtiment" ne souhaite pas forcément suivre ses extincteurs comme des
+    actifs GLPI.
+  - **`PhysicalSecurityAssetBuilder`** (nouveau) : actif "Sécurité physique" (`SecuritePhysique`),
+    6 sous-types (caméra de vidéosurveillance, centrale d'alarme intrusion, détecteur de mouvement,
+    contrôle d'accès/lecteur de badge, serrure électronique, interphone/vidéophone), chacun
+    explicitement rattaché à une clause nommée de l'ISO/IEC 27001:2022 Annexe A.7 "Mesures
+    physiques" dans le code (A.7.1 à A.7.5) — ce plugin se positionnant déjà comme aligné
+    ITIL4/ISO27001. Deux champs (zone couverte, date de dernière maintenance/vérification), mêmes
+    capacités non-réservables que `FireSafetyAssetBuilder`, délibérément sans capacité réseau/
+    inventaire matériel (`ServerAssetBuilder` couvre déjà le versant "device réseau managé" du même
+    matériel si besoin). Déclenché par la branche "Sécurité & Protection des Personnes" (`securite`)
+    — pas "Bâtiment" — confirmé en relisant `CategoryBuilder::CATEGORIES` que cette branche a déjà
+    pour enfants "Contrôle d'Accès & Badges" et "Vidéosurveillance & Alarmes", un rattachement
+    thématique direct plutôt qu'un choix arbitraire. Même schéma opt-in dédié
+    (`physical_security_assets_enabled`).
+  - Chaque sous-type traduit dans les 5 langues du plugin via `Translations::applyIcon()`
+    (mécanisme `DropdownTranslation` déjà prouvé sur ~20 autres builders) — contrairement à
+    `VehicleAssetBuilder`/`ServerAssetBuilder`/`BuildingAssetBuilder`, qui ne traduisent pas leurs
+    types seedés (lacune préexistante, non corrigée ici, hors du périmètre demandé). Chaque
+    `getPreview()` bien câblé dans `front/wizard.php`/`templates/wizard.html.twig` (le bug
+    inverse — méthode écrite mais jamais appelée depuis le wizard — déjà rencontré une fois sur
+    `ManufacturerDictionaryBuilder`, voir plus bas dans ce fichier).
+  - Piste "mobilier" (issue #132, item évalué mais non tranché par l'utilisateur) délibérément
+    laissée de côté : pas de champ de conformité réglementaire universel comme la vérification
+    incendie/le contrôle d'accès, valeur essentiellement inventaire générique déjà couverte par les
+    actifs natifs GLPI — voir ROADMAP.md pour le raisonnement complet.
+  - Vérifié de bout en bout contre l'instance Docker réelle : suite d'intégration PHPUnit dédiée
+    (`tests/Integration/FireSafetyAssetBuilderTest.php`,
+    `tests/Integration/PhysicalSecurityAssetBuilderTest.php` — déclenchement par branche+case à
+    cocher, capacités, champs personnalisés, dropdown "type", idempotence) **et** soumission réelle
+    du formulaire du wizard par HTTP (login + CSRF réels, pas de mock) avec les deux nouvelles cases
+    cochées : les deux `AssetDefinition` sont créées avec les bons champs/capacités, les 12
+    sous-types au total sont seedés et traduits (vérifié en base, `glpi_dropdowntranslations`).
+- **11e gabarit de solution "Demande incomplète"** (`SolutionLibraryBuilder`), catégorie
+  "Informationnel" existante (aux côtés de "Fonctionnement normal constaté"/"Ticket doublon") —
+  sujet remonté par le forum GLPI officiel (topic
+  https://forum.glpi-project.org/viewtopic.php?id=294630, réponse du contributeur LaDenrée : pas
+  besoin de toucher au workflow natif, un gabarit de solution type suffit). Demande au demandeur une
+  description précise, une capture d'écran et les étapes de reproduction avant de pouvoir traiter le
+  ticket, mêmes icône/traductions/structure Twig (salutation itemtype-aware) que les 10 gabarits
+  existants. Vérifié en réel : gabarit créé sous le bon type via une vraie soumission du wizard,
+  appliqué à un vrai ticket créé pour l'occasion (`ITILSolution::add()`), salutation Twig rendue
+  correctement ("Bonjour glpi,"), ticket passé au statut Résolu.
+
 ### Changed
 
 - **Lien tutoriel visible dès le haut du README** (`README.md`, `README.en.md`) : le seul lien vers
@@ -18,6 +84,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   sections).
 - Corrige deux notes ROADMAP.md devenues obsolètes (palettes natives, variables de logo
   `BrandingBuilder`) — voir commit `0700fdd`.
+
+### Fixed
+
+- **Dérive de version entre `setup.php` et `composer.json`** (`composer.json` affichait encore
+  `0.62.0` dans `extra.glpi-plugin.version` alors que `setup.php` était déjà à `0.64.1`) — remise en
+  cohérence au passage de cette version, conformément à la vérification prévue par
+  `CONTRIBUTING.md` avant chaque tag.
 
 ## [0.64.1] - 2026-08-17
 

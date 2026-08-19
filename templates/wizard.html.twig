@@ -455,6 +455,60 @@
               <div class="cga-category-branch-preview mb-2" data-branch="{{ branch.key }}">
                 <strong>{{ branch.icon }} {{ branch.name }}</strong>
                 {{ _self.category_tree(branch.children) }}
+
+                {% if branch.key == 'batiment' %}
+                  <div class="card mt-2" style="max-width: 640px;">
+                    <div class="card-body py-2">
+                      <p class="text-muted small mb-2">{{ __('Actif personnalisé ESM (Enterprise Service Management) — en plus de l\'actif "Local" créé automatiquement pour cette branche.', 'configurationglpiauto') }}</p>
+
+                      <div class="form-check form-switch mb-2">
+                        <input type="hidden" name="fire_safety_assets_enabled" value="0">
+                        <input type="checkbox" name="fire_safety_assets_enabled" value="1" class="form-check-input" id="cga-fire-safety-assets-enabled" {{ config.fire_safety_assets_enabled|default(0) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="cga-fire-safety-assets-enabled">{{ __('Créer un type d\'actif "Sécurité incendie & premiers secours" (extincteurs, RIA, désenfumage, DAE...)', 'configurationglpiauto') }}</label>
+                      </div>
+                      <div id="cga-fire-safety-assets-fields" style="display: none;">
+                        <div class="form-check form-switch mb-2">
+                          <input type="hidden" name="fire_safety_asset_icons_enabled" value="0">
+                          <input type="checkbox" name="fire_safety_asset_icons_enabled" value="1" class="form-check-input" id="cga-fire-safety-asset-icons-enabled" {{ config.fire_safety_asset_icons_enabled|default(0) ? 'checked' : '' }}>
+                          <label class="form-check-label" for="cga-fire-safety-asset-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+                        </div>
+                        <p class="text-muted small mb-1">{{ __('Champ de conformité : date de vérification périodique. Pas réservable (n\'a pas de sens pour ce type d\'équipement).', 'configurationglpiauto') }}</p>
+                        <ul class="mb-0 small">
+                          {% for t in fire_safety_assets_preview.types %}
+                            <li><span class="cga-fire-safety-asset-icon" style="display: none;"></span> {{ t }}</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if branch.key == 'securite' %}
+                  <div class="card mt-2" style="max-width: 640px;">
+                    <div class="card-body py-2">
+                      <p class="text-muted small mb-2">{{ __('Actif personnalisé ESM (Enterprise Service Management), aligné sur ISO/IEC 27001:2022 Annexe A.7 "Mesures physiques" (contrôle d\'accès, vidéosurveillance, alarme intrusion).', 'configurationglpiauto') }}</p>
+
+                      <div class="form-check form-switch mb-2">
+                        <input type="hidden" name="physical_security_assets_enabled" value="0">
+                        <input type="checkbox" name="physical_security_assets_enabled" value="1" class="form-check-input" id="cga-physical-security-assets-enabled" {{ config.physical_security_assets_enabled|default(0) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="cga-physical-security-assets-enabled">{{ __('Créer un type d\'actif "Sécurité physique" (caméras, alarme intrusion, contrôle d\'accès...)', 'configurationglpiauto') }}</label>
+                      </div>
+                      <div id="cga-physical-security-assets-fields" style="display: none;">
+                        <div class="form-check form-switch mb-2">
+                          <input type="hidden" name="physical_security_asset_icons_enabled" value="0">
+                          <input type="checkbox" name="physical_security_asset_icons_enabled" value="1" class="form-check-input" id="cga-physical-security-asset-icons-enabled" {{ config.physical_security_asset_icons_enabled|default(0) ? 'checked' : '' }}>
+                          <label class="form-check-label" for="cga-physical-security-asset-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+                        </div>
+                        <p class="text-muted small mb-1">{{ __('Champs : zone couverte, date de dernière maintenance/vérification.', 'configurationglpiauto') }}</p>
+                        <ul class="mb-0 small">
+                          {% for t in physical_security_assets_preview.types %}
+                            <li><span class="cga-physical-security-asset-icon" style="display: none;"></span> {{ t }}</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
               </div>
             {% endfor %}
           </div>
@@ -2516,6 +2570,10 @@
   kbCategoriesEnabledInput.addEventListener('change', toggleKbCategoriesFields);
   toggleKbCategoriesFields();
 
+  var fireSafetyAssetsEnabledInput = wireSimpleToggle('cga-fire-safety-assets-enabled', 'cga-fire-safety-assets-fields');
+  wireIconsToggle('cga-fire-safety-asset-icons-enabled', '.cga-fire-safety-asset-icon');
+  var physicalSecurityAssetsEnabledInput = wireSimpleToggle('cga-physical-security-assets-enabled', 'cga-physical-security-assets-fields');
+  wireIconsToggle('cga-physical-security-asset-icons-enabled', '.cga-physical-security-asset-icon');
   var documentManagementEnabledInput = wireSimpleToggle('cga-document-management-enabled', 'cga-document-management-fields');
   wireIconsToggle('cga-document-management-icons-enabled', '.cga-document-management-icon');
 
