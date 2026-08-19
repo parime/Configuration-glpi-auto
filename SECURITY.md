@@ -6,7 +6,7 @@
 
 ### Versions supportées
 
-Ce projet est en développement actif (pré-1.0) — seule la dernière version publiée sur `main` est
+Ce projet est en développement actif (pré-1.0) : seule la dernière version publiée sur `main` est
 maintenue. Mettez à jour vers la dernière version avant de signaler un problème.
 
 ### Signaler une vulnérabilité
@@ -22,9 +22,9 @@ concernée.
 
 Chaque Pull Request passe par :
 
-- **Trivy** — vulnérabilités connues des dépendances, secrets, mauvaises configurations.
-- **Semgrep** — analyse par motifs (patterns de code dangereux).
-- **Dependabot** — alertes et mises à jour automatiques des dépendances vulnérables.
+- **Trivy** : vulnérabilités connues des dépendances, secrets, mauvaises configurations.
+- **Semgrep** : analyse par motifs (patterns de code dangereux).
+- **Dependabot** : alertes et mises à jour automatiques des dépendances vulnérables.
 
 Voir `.github/workflows/continuous-integration.yml` pour le détail exact des jobs.
 
@@ -34,7 +34,7 @@ Voir `.github/workflows/continuous-integration.yml` pour le détail exact des jo
 
 ### Supported versions
 
-This project is in active development (pre-1.0) — only the latest version published on `main` is
+This project is in active development (pre-1.0): only the latest version published on `main` is
 maintained. Update to the latest version before reporting an issue.
 
 ### Reporting a vulnerability
@@ -50,8 +50,8 @@ version affected.
 
 Every Pull Request goes through:
 
-- **Trivy** — known dependency vulnerabilities, secrets, misconfigurations.
-- **Semgrep** — pattern-based analysis (dangerous code patterns).
-- **Dependabot** — alerts and automatic updates for vulnerable dependencies.
+- **Trivy**: known dependency vulnerabilities, secrets, misconfigurations.
+- **Semgrep**: pattern-based analysis (dangerous code patterns).
+- **Dependabot**: alerts and automatic updates for vulnerable dependencies.
 
 See `.github/workflows/continuous-integration.yml` for the exact job details.

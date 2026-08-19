@@ -8,7 +8,7 @@
 
 ### Vérifications
 
-- [ ] Testé contre une vraie instance GLPI (Docker, voir CONTRIBUTING.md) — pas seulement PHPUnit
+- [ ] Testé contre une vraie instance GLPI (Docker, voir CONTRIBUTING.md), pas seulement PHPUnit
 - [ ] `vendor/bin/phpstan analyse --no-progress` sans erreur
 - [ ] `vendor/bin/php-cs-fixer fix --dry-run --diff --allow-risky=yes` sans diff
 - [ ] `vendor/bin/phpunit -c phpunit.xml.dist` vert
@@ -29,7 +29,7 @@ Cette PR part de `dev` vers `main` (workflow standard du dépôt), sauf mention 
 
 ### Checklist
 
-- [ ] Tested against a real GLPI instance (Docker, see CONTRIBUTING.md) — not just PHPUnit
+- [ ] Tested against a real GLPI instance (Docker, see CONTRIBUTING.md), not just PHPUnit
 - [ ] `vendor/bin/phpstan analyse --no-progress` clean
 - [ ] `vendor/bin/php-cs-fixer fix --dry-run --diff --allow-risky=yes` clean
 - [ ] `vendor/bin/phpunit -c phpunit.xml.dist` green

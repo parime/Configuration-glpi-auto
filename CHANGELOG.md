@@ -22,50 +22,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **`FireSafetyAssetBuilder`** (nouveau) : actif "Sécurité incendie & premiers secours"
     (`SecuriteIncendieSecours`), 6 sous-types via le dropdown "type" natif (Extincteur, RIA, système
     de désenfumage, détecteur de fumée/alarme incendie, éclairage de sécurité/issue de secours, et
-    — ajouté en cours de sprint — défibrillateur automatisé externe/DAE, qui partage exactement le
+    (ajouté en cours de sprint) défibrillateur automatisé externe/DAE, qui partage exactement le
     même besoin de champ "date de vérification périodique" qu'un extincteur, donc regroupé dans le
     même type d'actif plutôt qu'un second). Un champ (date de vérification périodique), capacités
-    Infocom/Contrats/Documents/Historique/Notes/Liens/Recherche globale — **pas réservable**
+    Infocom/Contrats/Documents/Historique/Notes/Liens/Recherche globale ; **pas réservable**
     (contrairement à `VehicleAssetBuilder`/`BuildingAssetBuilder`, la réservabilité n'a aucun sens
     pour ce type d'équipement). Déclenché par un nouveau réglage dédié
     (`fire_safety_assets_enabled`), affiché dans le panneau de la branche "Bâtiment & Moyens
     Généraux" à l'étape Catégories, en plus de la case de branche elle-même (qui continue de
-    déclencher seule `BuildingAssetBuilder`) — opt-in séparé plutôt qu'automatique : toute
+    déclencher seule `BuildingAssetBuilder`) ; opt-in séparé plutôt qu'automatique : toute
     organisation qui coche "Bâtiment" ne souhaite pas forcément suivre ses extincteurs comme des
     actifs GLPI.
   - **`PhysicalSecurityAssetBuilder`** (nouveau) : actif "Sécurité physique" (`SecuritePhysique`),
     6 sous-types (caméra de vidéosurveillance, centrale d'alarme intrusion, détecteur de mouvement,
     contrôle d'accès/lecteur de badge, serrure électronique, interphone/vidéophone), chacun
     explicitement rattaché à une clause nommée de l'ISO/IEC 27001:2022 Annexe A.7 "Mesures
-    physiques" dans le code (A.7.1 à A.7.5) — ce plugin se positionnant déjà comme aligné
+    physiques" dans le code (A.7.1 à A.7.5), ce plugin se positionnant déjà comme aligné
     ITIL4/ISO27001. Deux champs (zone couverte, date de dernière maintenance/vérification), mêmes
     capacités non-réservables que `FireSafetyAssetBuilder`, délibérément sans capacité réseau/
     inventaire matériel (`ServerAssetBuilder` couvre déjà le versant "device réseau managé" du même
-    matériel si besoin). Déclenché par la branche "Sécurité & Protection des Personnes" (`securite`)
-    — pas "Bâtiment" — confirmé en relisant `CategoryBuilder::CATEGORIES` que cette branche a déjà
+    matériel si besoin). Déclenché par la branche "Sécurité & Protection des Personnes" (`securite`),
+    pas "Bâtiment", confirmé en relisant `CategoryBuilder::CATEGORIES` que cette branche a déjà
     pour enfants "Contrôle d'Accès & Badges" et "Vidéosurveillance & Alarmes", un rattachement
     thématique direct plutôt qu'un choix arbitraire. Même schéma opt-in dédié
     (`physical_security_assets_enabled`).
   - Chaque sous-type traduit dans les 5 langues du plugin via `Translations::applyIcon()`
-    (mécanisme `DropdownTranslation` déjà prouvé sur ~20 autres builders) — contrairement à
+    (mécanisme `DropdownTranslation` déjà prouvé sur ~20 autres builders), contrairement à
     `VehicleAssetBuilder`/`ServerAssetBuilder`/`BuildingAssetBuilder`, qui ne traduisent pas leurs
     types seedés (lacune préexistante, non corrigée ici, hors du périmètre demandé). Chaque
     `getPreview()` bien câblé dans `front/wizard.php`/`templates/wizard.html.twig` (le bug
-    inverse — méthode écrite mais jamais appelée depuis le wizard — déjà rencontré une fois sur
+    inverse, méthode écrite mais jamais appelée depuis le wizard, déjà rencontré une fois sur
     `ManufacturerDictionaryBuilder`, voir plus bas dans ce fichier).
   - Piste "mobilier" (issue #132, item évalué mais non tranché par l'utilisateur) délibérément
     laissée de côté : pas de champ de conformité réglementaire universel comme la vérification
     incendie/le contrôle d'accès, valeur essentiellement inventaire générique déjà couverte par les
-    actifs natifs GLPI — voir ROADMAP.md pour le raisonnement complet.
+    actifs natifs GLPI. Voir ROADMAP.md pour le raisonnement complet.
   - Vérifié de bout en bout contre l'instance Docker réelle : suite d'intégration PHPUnit dédiée
     (`tests/Integration/FireSafetyAssetBuilderTest.php`,
-    `tests/Integration/PhysicalSecurityAssetBuilderTest.php` — déclenchement par branche+case à
+    `tests/Integration/PhysicalSecurityAssetBuilderTest.php` : déclenchement par branche+case à
     cocher, capacités, champs personnalisés, dropdown "type", idempotence) **et** soumission réelle
     du formulaire du wizard par HTTP (login + CSRF réels, pas de mock) avec les deux nouvelles cases
     cochées : les deux `AssetDefinition` sont créées avec les bons champs/capacités, les 12
     sous-types au total sont seedés et traduits (vérifié en base, `glpi_dropdowntranslations`).
 - **11e gabarit de solution "Demande incomplète"** (`SolutionLibraryBuilder`), catégorie
-  "Informationnel" existante (aux côtés de "Fonctionnement normal constaté"/"Ticket doublon") —
+  "Informationnel" existante (aux côtés de "Fonctionnement normal constaté"/"Ticket doublon"),
   sujet remonté par le forum GLPI officiel (topic
   https://forum.glpi-project.org/viewtopic.php?id=294630, réponse du contributeur LaDenrée : pas
   besoin de toucher au workflow natif, un gabarit de solution type suffit). Demande au demandeur une
@@ -78,17 +78,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Lien tutoriel visible dès le haut du README** (`README.md`, `README.en.md`) : le seul lien vers
-  `docs/TUTORIAL.md` était dans la section Documentation, en bas de page — invisible depuis la page
+  `docs/TUTORIAL.md` était dans la section Documentation, en bas de page, invisible depuis la page
   d'accueil GitHub sans faire défiler. Le tutoriel lui-même est déjà bilingue FR/EN depuis la
   v0.64.1 (vérifié en direct sur GitHub : sélecteur de langue, 18 captures d'écran par étape × 2
   sections).
 - Corrige deux notes ROADMAP.md devenues obsolètes (palettes natives, variables de logo
-  `BrandingBuilder`) — voir commit `0700fdd`.
+  `BrandingBuilder`) : voir commit `0700fdd`.
 
 ### Fixed
 
 - **Dérive de version entre `setup.php` et `composer.json`** (`composer.json` affichait encore
-  `0.62.0` dans `extra.glpi-plugin.version` alors que `setup.php` était déjà à `0.64.1`) — remise en
+  `0.62.0` dans `extra.glpi-plugin.version` alors que `setup.php` était déjà à `0.64.1`) : remise en
   cohérence au passage de cette version, conformément à la vérification prévue par
   `CONTRIBUTING.md` avant chaque tag.
 
@@ -97,25 +97,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Un calendrier dédié par pays, partagé entre tous les sites du même pays** (`front/wizard.php`) :
-  bug réel remonté par l'utilisateur, présent depuis la sortie de v0.64.0 — quand tous les
+  bug réel remonté par l'utilisateur, présent depuis la sortie de v0.64.0 : quand tous les
   sites/clients partagent le même calendrier (pas de "Calendrier différent par site" activé), les
   jours fériés d'un site allemand s'attachaient malgré tout au *même* calendrier que les sites
   français, invisiblement mélangés, et consulter le mauvais calendrier (le calendrier natif GLPI
   "Default", jamais touché par le plugin) donnait l'impression que rien n'avait été créé. Corrigé :
   dès qu'un pays est explicitement saisi pour un site, ce site utilise désormais un calendrier
-  nommé d'après le pays ("Horaires — Allemagne", "Horaires — Italie"...) — partagé entre tous les
+  nommé d'après le pays ("Horaires — Allemagne", "Horaires — Italie"...), partagé entre tous les
   sites du même pays plutôt qu'un calendrier par site ("je veux un calendrier par pays", pas un
   calendrier par site avec le pays dans le nom). Vérifié en réel avec 4 sites (Paris/Lyon sans
   pays explicite ou "France", Berlin/Allemagne, Italie/Italie) : 4 calendriers distincts créés et
   correctement assignés, chacun avec exactement les jours fériés de son pays (5 pour l'Allemagne,
-  11 pour l'Italie, 8 pour la France) — Paris et Lyon (tous deux France) confirmés partager le même
+  11 pour l'Italie, 8 pour la France), Paris et Lyon (tous deux France) confirmés partager le même
   calendrier.
 - **Calendriers du plugin invisibles depuis un sous-site** (`CalendarBuilder`) : bug plus ancien,
-  remonté en testant le correctif ci-dessus — `Calendar::add()` n'a jamais reçu `entities_id`/
+  remonté en testant le correctif ci-dessus : `Calendar::add()` n'a jamais reçu `entities_id`/
   `is_recursive` explicites, héritant silencieusement du défaut GLPI (entité racine, **non
   récursif**). Résultat : tout calendrier créé par ce plugin (depuis les tout premiers sprints, pas
   seulement les nouveaux calendriers par pays) était invisible dans Configuration > Calendriers
-  depuis le contexte d'un site enfant (ex. "Site Berlin") — bien que l'entité pointe correctement
+  depuis le contexte d'un site enfant (ex. "Site Berlin"), bien que l'entité pointe correctement
   vers le bon calendrier en interne (SLA/OLA/jours fériés fonctionnaient déjà), ça donnait
   l'impression que rien n'avait été créé. Corrigé : `entities_id => 0, is_recursive => 1` à la
   création, plus une migration rétroactive (`Installer::install()`) qui corrige les calendriers
@@ -126,7 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **README.md/README.en.md séparés** (sélecteur de langue en haut) ; **CONTRIBUTING.md/SECURITY.md/
   docs/TUTORIAL.md** restructurés en deux grandes sections FR/EN au lieu de paragraphes entrelacés
-  en italique — remplace un format difficile à lire pour qui ne veut qu'une langue. Référence
+  en italique : remplace un format difficile à lire pour qui ne veut qu'une langue. Référence
   obsolète corrigée au passage (menu "Administration" au lieu de "Configuration" pour l'accès à
   l'assistant, depuis le déplacement de ce menu en v0.63.2).
 
@@ -136,25 +136,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **`SoftwareLicenseType` (types de licence logicielle)** (`SoftwareLicenseTypeBuilder`, nouveau) :
   dernière table native `*Types` encore différée du grand audit des dropdowns vides (voir
-  `AssetTypeBuilder`) — c'est un `CommonTreeDropdown`, pas un dropdown plat comme les 26 déjà
+  `AssetTypeBuilder`) : c'est un `CommonTreeDropdown`, pas un dropdown plat comme les 26 déjà
   traités, nécessitant `add()` shaped comme la construction d'arbre de `CategoryBuilder`.
   10 catégories réelles de gestion de licences logicielles (OEM, Volume, Boîte, Abonnement SaaS,
   Open Source, Essai, Site, Concurrente, Nommée, Don/Occasion), en liste plate (le dropdown est un
   arbre côté GLPI, mais une licence se catégorise sur un seul axe, pas une hiérarchie de sujets).
 - **`DatabaseInstanceType` (types d'instance de base de données)** (`AssetTypeBuilder`) :
   délibérément différé lors de l'audit initial par crainte de dériver vers une liste de produits
-  DBMS (territoire `Manufacturer`) — résolu en catégorisant par *nature du moteur* (relationnelle,
+  DBMS (territoire `Manufacturer`), résolu en catégorisant par *nature du moteur* (relationnelle,
   document, clé-valeur...) plutôt que par produit, confirmé distinct de `manufacturers_id` et de
   `databaseinstancecategories_id` (déjà natifs sur `DatabaseInstance`).
 - **Types natifs pour les actifs personnalisés Véhicule/Serveur/Local** (`VehicleAssetBuilder`,
   `ServerAssetBuilder`, `BuildingAssetBuilder`) : chaque définition d'actif personnalisé reçoit
   automatiquement de GLPI son propre dropdown "type" (`Glpi\CustomAsset\<X>AssetType`, confirmé en
-  réel) — jusqu'ici jamais peuplé, laissant "Véhicule types"/"Serveur types"/"Local types" vides
+  réel), jusqu'ici jamais peuplé, laissant "Véhicule types"/"Serveur types"/"Local types" vides
   dans le menu. Peuplé avec des catégories réelles : type de véhicule (Voiture, Utilitaire léger,
   Poids lourd, Moto/Scooter, Vélo, Engin de chantier), forme de serveur (Rack, Tour, Lame, Virtuel,
   NAS, SAN), type de local (Bureau, Salle de réunion, Entrepôt, Atelier, Salle serveur/Datacenter,
   Site industriel, Boutique). Le libellé de menu généré par GLPI lui-même ("Véhicule types" au lieu
-  de "Types de véhicule") reste en anglais même en session française — confirmé être un manque de
+  de "Types de véhicule") reste en anglais même en session française : confirmé être un manque de
   traduction du cœur GLPI 11 (`Glpi\Asset\AssetType::getTypeName()`, chaîne core `'%s type'/'%s
   types'` non traduite en `fr_FR`), hors de portée d'un plugin.
 
@@ -162,19 +162,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Fermetures de calendrier automatiques selon le pays, France incluse** (`CountryHolidayBuilder`,
   `CalendarBuilder`, `front/wizard.php`) : la case "Ajouter les jours fériés français" (calendrier,
-  8 jours codés en dur) était indépendante du pays réellement détecté — cochée, elle attachait des
+  8 jours codés en dur) était indépendante du pays réellement détecté : cochée, elle attachait des
   jours fériés *français* même au calendrier d'un site allemand. Remplacée par le même mécanisme
   déjà utilisé pour les pays étrangers (Nager.Date, confirmé retourner les 8 mêmes jours fixes pour
   la France que l'ancienne liste codée en dur) : chaque site/client de premier niveau sans pays
   saisi (ou sans étape "Lieux" utilisée du tout) est par défaut la France, un pays réellement saisi
   l'emporte toujours. `CalendarBuilder::attachFrenchHolidays()` et `calendar_holidays_enabled`
-  supprimés — la case "Fermetures automatiques selon le pays" (étape Lieux) couvre désormais les
+  supprimés ; la case "Fermetures automatiques selon le pays" (étape Lieux) couvre désormais les
   deux cas. Vérifié en réel : run par défaut (aucune adresse saisie) → 8 jours fériés français
   créés et rattachés ; test direct avec la Slovénie → 16 jours fériés récupérés et rattachés au bon
   calendrier.
 - **Couverture pays étendue à toute l'Europe** (`CountryHolidayBuilder`) : `COUNTRY_CODES` ne
   reconnaissait qu'une vingtaine de pays ; complété avec les 10 pays européens manquants (Bulgarie,
-  Croatie, Chypre, Estonie, Lettonie, Lituanie, Malte, Slovaquie, Slovénie, Islande) — couvre
+  Croatie, Chypre, Estonie, Lettonie, Lituanie, Malte, Slovaquie, Slovénie, Islande), couvre
   désormais l'intégralité de l'Union européenne plus Royaume-Uni/Suisse/Norvège/Islande, confirmé
   un par un contre les 204 pays réels de Nager.Date.
 
@@ -184,7 +184,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **"Profils de configuration" déplacé du menu "Administration" vers le menu "Configuration"** :
   ce CRUD ne gère que les modèles de profil propres au plugin (données utilisées par l'étape 1 de
-  l'assistant), rien qui touche Utilisateurs/Groupes/Entités/Règles — le classer dans
+  l'assistant), rien qui touche Utilisateurs/Groupes/Entités/Règles ; le classer dans
   "Administration" mélangeait un écran propre au plugin avec les réglages natifs de GLPI. Retour
   utilisateur direct sur ce placement.
 
@@ -195,12 +195,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `--glpi-logo`, `-reduced`, `-light`, `-light-reduced`, `-dark`, `-dark-reduced`, `-light-login`,
   `-dark-login`), gonflant la valeur stockée à ~8× la taille réelle du logo et dépassant la limite MySQL
   `TEXT` (65 535 octets) de la colonne `glpi_entities.custom_css_code` pour quasiment n'importe quel logo
-  réaliste — provoquant une erreur SQL non rattrapée qui faisait planter toute la finalisation de
+  réaliste, provoquant une erreur SQL non rattrapée qui faisait planter toute la finalisation de
   l'assistant. Corrigé par déduplication : le `data:` URI n'est désormais stocké qu'une seule fois, dans
   une unique propriété personnalisée CSS (`--cga-logo-url`), référencée par `var()` depuis les 8 autres
   déclarations. Un garde-fou de taille a aussi été ajouté (`mergeCssBlock()` retourne `false` et ignore
   proprement l'entité plutôt que d'écrire une valeur invalide en base si la limite est dépassée malgré
-  tout — même protection ajoutée sur `applyMailingSignatures()`), avec un nouveau message d'avertissement
+  tout, même protection ajoutée sur `applyMailingSignatures()`), avec un nouveau message d'avertissement
   dans l'assistant indiquant combien de logos ont été ignorés et pourquoi. Vérifié en conditions réelles
   via l'assistant complet : un petit logo s'applique désormais sans erreur, un logo volumineux est ignoré
   proprement avec message explicite au lieu de faire planter toute la finalisation.
@@ -208,16 +208,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   le panneau de configuration express est une `.alert` (`display: flex` par défaut chez Tabler), et son
   bouton (`white-space: nowrap`) débordait hors de l'écran à largeur normale au lieu de passer à la ligne.
   Corrigé avec les utilitaires flex de Tabler (`d-flex flex-wrap align-items-center gap-3` sur le
-  conteneur, `flex-fill` sur le texte, `flex-shrink-0` sur le bouton) — vérifié à 900px, 1536px et 1920px,
+  conteneur, `flex-fill` sur le texte, `flex-shrink-0` sur le bouton) : vérifié à 900px, 1536px et 1920px,
   aucun débordement horizontal à aucune largeur.
 - **Libellé "Configuration" illisible dès que son sous-menu est ouvert, avec une palette personnalisée**
   (`PaletteBuilder`) : troisième bogue de la même famille que le correctif v0.63.1 (menu latéral au
   survol), trouvé séparément. GLPI cœur stylise un item de menu actif/ouvert (`.nav-link.show`/`.active`)
-  avec `color: color-mix(in srgb, var(--tblr-primary), transparent 10%)` — dans une palette personnalisée
+  avec `color: color-mix(in srgb, var(--tblr-primary), transparent 10%)` : dans une palette personnalisée
   où le fond de la barre latérale *est* `--tblr-primary`, ce texte devient quasi invisible sur son propre
   fond (confirmé par `getComputedStyle()` : la couleur du texte et le fond partagent la même teinte, et
   par une capture d'écran montrant le libellé "Configuration" totalement invisible tant que son sous-menu
-  reste ouvert — plus visible avec la souris hors du menu qu'au-dessus, l'inverse de ce qu'on attend d'un
+  reste ouvert, plus visible avec la souris hors du menu qu'au-dessus, l'inverse de ce qu'on attend d'un
   état actif). Corrigé par une règle CSS ciblée forçant la couleur de premier plan calculée
   (`{fg} !important`) sur ce sélecteur précis, vérifiée en réel : le libellé reste lisible en blanc gras
   que son sous-menu soit ouvert ou non.
@@ -228,12 +228,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Texte illisible au survol du menu latéral avec la palette personnalisée** (`PaletteBuilder`) :
   `--tblr-primary` (couleur du texte au survol) et `--glpi-mainmenu-bg` (fond de la barre latérale)
-  étaient réglés sur la même couleur de marque choisie par l'administrateur — dans GLPI natif ce
+  étaient réglés sur la même couleur de marque choisie par l'administrateur : dans GLPI natif ce
   sont deux couleurs différentes (accent vif sur fond neutre sombre), donc le survol est lisible ;
   avec une seule couleur pour les deux, le texte survolé devenait presque invisible sur son propre
   fond. GLPI a en plus sa propre règle CSS pour le sous-menu de la sidebar
   (`.sidebar #navbar-menu ... .dropdown-item:hover`, dans son CSS compilé) qui code la couleur en
-  dur et ignore les variables génériques — un premier correctif sur les variables seules n'a donc
+  dur et ignore les variables génériques ; un premier correctif sur les variables seules n'a donc
   pas suffi, confirmé en inspectant les règles CSS réellement appliquées sur un élément survolé.
   Corrigé en fixant explicitement la couleur du texte au survol sur la couleur de premier plan déjà
   calculée pour contraster avec le fond de la sidebar (blanc ou gris foncé selon la luminosité de la
@@ -250,10 +250,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   modifiée/supprimée, nouveau demandeur/groupe demandeur, nouvel observateur/groupe observateur,
   nouvelle assignation (utilisateur/groupe/fournisseur), utilisateur mentionné, nouveau document,
   demande de validation et réponse à la validation. Chaque événement affiche les champs qui lui
-  sont propres (auteur, dates, priorité, pièce jointe, commentaire de validation...) — tous des
+  sont propres (auteur, dates, priorité, pièce jointe, commentaire de validation...), tous des
   tags GLPI natifs vérifiés un par un dans le code source du cœur, jamais devinés. Le bouton
   d'action des e-mails de demande de validation pointe vers `##ticket.urlvalidation##` (le lien de
-  traitement direct), tous les autres vers `##ticket.url##` — deux tags résolus par GLPI lui-même
+  traitement direct), tous les autres vers `##ticket.url##` : deux tags résolus par GLPI lui-même
   depuis `Configuration générale > URL de l'application`, jamais reconstruits à la main ici.
   Mêmes 5 langues que le reste du gabarit.
 
@@ -262,13 +262,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   4 captures d'écran référençaient encore l'ancienne numérotation des étapes du tutoriel (avant le
   renommage `01-profil.png`...`18-recapitulatif.png`), ce qui aurait affiché des images cassées sur
   la fiche du plugin. Balise `<changelog>` manquante ajoutée (requise par le schéma officiel).
-  Balise `<php-version>` (non prévue par le schéma) retirée de chaque `<version>` — confirmé
+  Balise `<php-version>` (non prévue par le schéma) retirée de chaque `<version>` : confirmé
   bloquant par le validateur réel du formulaire de soumission
   (`INVALID_XML: <version> should contain only <num>, <compatibility> and <download_url>`).
 
 ### Changed
 - Documentation bilingue français/anglais sur README.md, CONTRIBUTING.md, SECURITY.md et
-  docs/TUTORIAL.md — chaque paragraphe/section/liste en français est immédiatement suivi de sa
+  docs/TUTORIAL.md : chaque paragraphe/section/liste en français est immédiatement suivi de sa
   traduction anglaise, dans le même fichier. Même traitement que sur les plugins jumeaux
   assetsign-glpi et glpi-vulnerability-manager.
 - README et docs/TUTORIAL.md enrichis pour donner une vision plus complète et engageante du
@@ -281,23 +281,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Infrastructure de tests d'intégration, sur demande explicite de l'utilisateur ("augmente les
-  test unitaire, si il faut monter une stack de docker pour les test unitaire fait le") — jusqu'ici
+  test unitaire, si il faut monter une stack de docker pour les test unitaire fait le") : jusqu'ici
   `tests/Unit` ne couvrait que deux classes d'assistants purs sans dépendance GLPI
   (`EntityBuilder`, `RuleRightBuilder`), toute la logique métier réelle (écritures en base, moteur
   de règles) n'était vérifiée qu'à la main via Docker/Playwright pendant chaque cycle de
   développement, jamais rejouée automatiquement.
-  - `tests/integration-bootstrap.php` (nouveau) — démarre une vraie instance GLPI via
+  - `tests/integration-bootstrap.php` (nouveau) : démarre une vraie instance GLPI via
     `new \Glpi\Kernel\Kernel('production')` (le mécanisme réellement utilisé par `bin/console`,
     confirmé en lisant sa propre source) plutôt que le classique `require inc/includes.php` des
     contrôleurs `front/*.php`, qui n'établit *pas* de connexion DB hors d'une vraie requête HTTP
     sous GLPI 11. Charge ensuite l'autoload Composer propre au plugin, puis ouvre une vraie session
     (`Auth::login('glpi', 'glpi')`) pour que les contrôles de droits GLPI (`Session::haveRight()`)
     fonctionnent normalement dans les tests.
-  - `phpunit.xml` (nouveau, versionné — retiré du `.gitignore` qui l'excluait par une convention
-    générique inadaptée ici) — déclare les suites `unit`/`integration` sous ce nouveau bootstrap.
+  - `phpunit.xml` (nouveau, versionné, retiré du `.gitignore` qui l'excluait par une convention
+    générique inadaptée ici) : déclare les suites `unit`/`integration` sous ce nouveau bootstrap.
     Distinct de `phpunit.xml.dist` (inchangé, `tests/Unit` seul, sans GLPI) : deux fichiers, deux
     contextes d'exécution. Repéré en lisant le code source du workflow réutilisable officiel de
-    GLPI (`glpi-project/plugin-ci-workflows`) que ce plugin utilise déjà pour sa CI — il exécute
+    GLPI (`glpi-project/plugin-ci-workflows`) que ce plugin utilise déjà pour sa CI : il exécute
     `vendor/bin/phpunit` à l'intérieur d'un vrai conteneur GLPI+BDD dès qu'un fichier nommé
     littéralement `phpunit.xml` (pas `.dist`) existe à la racine, ce qui n'avait jamais été le cas
     jusqu'ici. La stack Docker demandée par l'utilisateur pour la CI existait donc déjà côté GLPI,
@@ -305,18 +305,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `.github/workflows/continuous-integration.yml` : job `phpunit` (sans GLPI) désormais épinglé
     explicitement sur `-c phpunit.xml.dist`, pour ne pas tenter de charger le nouveau
     `phpunit.xml` (qui suppose un noyau GLPI démarrable) et échouer.
-  - `tests/Integration/CalendarBuilderTest.php` (nouveau, 6 tests) — couvre notamment un test de
+  - `tests/Integration/CalendarBuilderTest.php` (nouveau, 6 tests) : couvre notamment un test de
     non-régression pour le vrai bug corrigé en [0.61.1] (chevauchement de plage lors d'une
     resoumission aux horaires modifiés), plus construction standard, idempotence, coupure déjeuner
     et surcharge d'horaires par jour.
-  - `tests/Integration/AssetTypeBuilderTest.php` (nouveau, 3 tests) — construction des 130 types
+  - `tests/Integration/AssetTypeBuilderTest.php` (nouveau, 3 tests) : construction des 130 types
     natifs, idempotence (pas de doublon en base sur une deuxième exécution), désactivation.
-  - `tests/Integration/ValidationRoutingBuilderTest.php` (nouveau, 4 tests) — exécute le vrai
+  - `tests/Integration/ValidationRoutingBuilderTest.php` (nouveau, 4 tests) : exécute le vrai
     moteur de règles GLPI de bout en bout (création d'utilisateurs, d'un ticket de type Demande,
     lecture de `glpi_ticketvalidations`), pas seulement la création de la règle. Découverte en
     vérifiant en réel avant d'écrire le test : GLPI 11 route la cible résolue via les colonnes
     `itemtype_target`/`items_id_target` ("User"/<id du superviseur>), la colonne historique
-    `users_id_validate` restant à 0 — comportement confirmé par une exécution réelle plutôt que
+    `users_id_validate` restant à 0, comportement confirmé par une exécution réelle plutôt que
     supposé d'une version antérieure de GLPI.
   - Suite complète vérifiée en réel dans `docker-compose.test.yml` : 23 tests, 47 assertions, 0
     échec ; `phpunit.xml.dist` (10 tests, sans GLPI) toujours vert en parallèle ; aucune donnée
@@ -324,14 +324,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Corrigé après un premier échec réel sur la CI officielle de GLPI** (PR #100) : le bootstrap
     forçait `new \Glpi\Kernel\Kernel('production')`, ce qui fonctionnait par coïncidence sur
     `docker-compose.test.yml` (pas de `GLPI_ENVIRONMENT_TYPE` défini localement) mais échouait
-    silencieusement sur l'image CI officielle de GLPI — celle-ci démarre visiblement sous
+    silencieusement sur l'image CI officielle de GLPI : celle-ci démarre visiblement sous
     l'environnement `testing`, qui redirige `GLPI_CONFIG_DIR` vers `tests/config/` ; forcer
     `production` faisait donc chercher la config DB au mauvais endroit, laissant `global $DB` à
-    `null` (pas d'exception immédiate — GLPI tolère une base non configurée pour son propre
+    `null` (pas d'exception immédiate, GLPI tolère une base non configurée pour son propre
     assistant d'installation) jusqu'à la première vraie requête, plus loin dans `Auth::login()`
     (`Call to a member function request() on null`). Corrigé en ne forçant plus aucun
     environnement (`new \Glpi\Kernel\Kernel()`), exactement comme le fait `bin/console` lui-même
-    (`$options['env'] ?? null`) — les commandes `database:install`/`plugin:install`/
+    (`$options['env'] ?? null`) : les commandes `database:install`/`plugin:install`/
     `plugin:activate` qui préparent l'instance juste avant, dans le même conteneur, résolvent donc
     le même environnement que le bootstrap PHPUnit qui s'exécute ensuite.
   - **Second échec réel sur la même CI, après correction du premier** : une fois `global $DB`
@@ -339,8 +339,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `User::prepareInputForUpdate()` (mise à jour de la date de dernière connexion) via `isAPI()`,
     avec « Call to a member function getMainRequest() on null ». Une première tentative de
     correctif (pousser une requête sur le service Symfony `request_stack`) s'est révélée insuffisante
-    et corrigeait le mauvais diagnostic — vérifié en réel plus tard (voir ci-dessous).
-  - **Troisième échec réel, exactement le même symptôme malgré ce correctif** — a motivé un
+    et corrigeait le mauvais diagnostic, vérifié en réel plus tard (voir ci-dessous).
+  - **Troisième échec réel, exactement le même symptôme malgré ce correctif**, a motivé un
     changement de méthode : plutôt que d'itérer à l'aveugle sur GitHub Actions, l'image utilisée par
     la CI officielle de GLPI (`ghcr.io/glpi-project/githubactions-glpi-apache:php-8.2-glpi-11.0.x`)
     a été récupérée et reproduite en local (base MariaDB jetable + conteneur GLPI dédié), pour
@@ -351,7 +351,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
        `global $kernel; $kernel->getMainRequest()...` au lieu d'un simple
        `Request::createFromGlobals()`. `public/index.php` et `bin/console` fonctionnent parce que
        leur `$kernel` est assigné au tout premier niveau du script, ce qui en fait une vraie
-       variable globale PHP — alors que le bootstrap PHPUnit est `include_once` depuis
+       variable globale PHP, alors que le bootstrap PHPUnit est `include_once` depuis
        *l'intérieur* d'une méthode (`Application::loadBootstrapScript()`), où un simple
        `$kernel = ...` reste local à cette méthode et n'atteint jamais `$GLOBALS`. Le correctif
        précédent (`request_stack`) ne pouvait pas fonctionner : c'est `$kernel` lui-même que
@@ -364,7 +364,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
        method PHPUnit\TextUI\Configuration\TestDirectory::groups() ». Cause réelle : le cœur GLPI
        11 embarque désormais PHPUnit **11.5** en dépendance de développement
        (`ghcr.io/.../vendor/phpunit`), alors que `composer.json` de ce plugin exigeait encore
-       PHPUnit **^10.0** — les deux arborescences `vendor/` finissent chargées dans le même
+       PHPUnit **^10.0** : les deux arborescences `vendor/` finissent chargées dans le même
        processus PHP (notre bootstrap doit charger l'autoload de GLPI pour démarrer le Kernel), et
        les classes `PHPUnit\...` du plugin et du cœur GLPI, de générations incompatibles, se
        mélangent selon l'ordre d'enregistrement des autoloaders. Corrigé en alignant la contrainte
@@ -373,22 +373,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Les deux correctifs vérifiés ensemble, en réel, dans une reproduction complète de
       l'environnement CI officiel (image GLPI + MariaDB jetable, `database:install`/
       `plugin:install`/`plugin:activate`, puis `vendor/bin/phpunit -c phpunit.xml`) : 23 tests, 47
-      assertions, 0 échec — plus PHPStan et PHP-CS-Fixer toujours verts avec le nouveau PHPUnit 11.
+      assertions, 0 échec, plus PHPStan et PHP-CS-Fixer toujours verts avec le nouveau PHPUnit 11.
       Suite complète revérifiée aussi sur `docker-compose.test.yml` (23 + 10 tests, toujours verts).
 
 ## [0.61.1] - 2026-08-14
 
 ### Fixed
 - `CalendarBuilder` : correction d'un vrai bug remonté par l'utilisateur en conditions réelles
-  (capture d'écran d'une soumission complète du wizard) — erreur GLPI native "Impossible d'ajouter
+  (capture d'écran d'une soumission complète du wizard) : erreur GLPI native "Impossible d'ajouter
   une plage chevauchant une plage existante" apparaissant en toast, en parallèle du message de
   succès habituel. Cause réelle : le garde-fou existant ("ne recrée pas un segment identique") ne
   protège que contre une resoumission *identique*. Dès que les horaires changent d'une exécution du
   wizard à l'autre (un vendredi modifié, la coupure déjeuner activée/désactivée...), un nouveau
   segment peut recouvrir un ancien aux bornes différentes sur le même jour, et la validation native
-  de `CalendarSegment` refuse l'insertion — silencieusement du point de vue du plugin, qui ne
+  de `CalendarSegment` refuse l'insertion, silencieusement du point de vue du plugin, qui ne
   vérifiait jamais la valeur de retour de `add()`. Corrigé en vidant systématiquement les segments
-  existants d'un (calendrier, jour) juste avant d'écrire ceux de la soumission en cours — chaque
+  existants d'un (calendrier, jour) juste avant d'écrire ceux de la soumission en cours : chaque
   resoumission remplace intégralement l'horaire du jour au lieu de tenter de fusionner avec ce qui
   était déjà là, ce qui est aussi le comportement attendu par un admin qui revient modifier les
   horaires. Reproduit et vérifié en réel avec les données réellement laissées par une session de
@@ -402,15 +402,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AssetTypeBuilder` : troisième tranche, sur poursuite autonome ("continu") de l'audit des
   dropdowns "Types" natifs vides. 12 itemtypes de plus (69 types au total) : Appliance, Budget,
   Cluster, Consommable, Contact, Contrat, Domaine, Ligne, Équipement passif datacenter,
-  Fournisseur, Machine virtuelle, Capteur — ferme la liste des ~30 tables natives vides identifiées
+  Fournisseur, Machine virtuelle, Capteur, ferme la liste des ~30 tables natives vides identifiées
   lors de l'audit initial, à l'exception de `SoftwareLicenseType` (arbre, toujours différé) et des
   deux déjà exclus (`AgentType`/`Assets_AssetType`). `DeviceGeneric` et `DatabaseInstance`
   volontairement toujours exclus (contenu trop générique ou risque de dériver vers une liste de
   produits éditeurs). Contenu de `ConsommableItemType` délibérément distinct de
-  `CartridgeItemType` (déjà couvert) — objets GLPI différents (consommables généraux vs.
+  `CartridgeItemType` (déjà couvert) : objets GLPI différents (consommables généraux vs.
   traçabilité des cartouches d'imprimante avec son propre mécanisme de stock), pas de doublon.
   `VirtualMachineType` sans rapport avec le champ texte libre "hyperviseur" de
-  `ServerAssetBuilder` — ce dropdown alimente les objets natifs `VirtualMachine` remontés par
+  `ServerAssetBuilder` : ce dropdown alimente les objets natifs `VirtualMachine` remontés par
   l'agent d'inventaire, pas le champ personnalisé de l'actif Serveur. 3 des 12 (Appliance, Domaine,
   Cluster) confirmés scopés par entité via `DESCRIBE`. Traductions EN/DE/IT/ES ajoutées pour les
   icônes des 69 nouvelles entrées. Vérifié en réel : 130 types au total (61 existants + 69
@@ -420,23 +420,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.60.0] - 2026-08-14
 
 ### Added
-- `ServerAssetBuilder` (nouveau) — actif personnalisé GLPI 11 "Serveur", généré automatiquement dès
+- `ServerAssetBuilder` (nouveau) : actif personnalisé GLPI 11 "Serveur", généré automatiquement dès
   que la branche de catégorie "IT & SI" est sélectionnée, sur demande explicite de l'utilisateur
   ("fait serveur et batiment"). Même mécanique que `VehicleAssetBuilder` (voir son docblock pour le
-  détail de l'API `AssetDefinition`). Délibérément distinct de l'actif natif `Ordinateur` — un poste
+  détail de l'API `AssetDefinition`). Délibérément distinct de l'actif natif `Ordinateur` : un poste
   de travail n'a aucun usage pour la position en baie, le RAID ou l'hyperviseur. 17 capacités,
   proches de celles d'un `Ordinateur` natif (inventaire, ports réseau, système d'exploitation,
   logiciels, composants) plus les capacités propres aux serveurs : montable en baie, machines
   virtuelles hébergées, administration à distance (iLO/iDRAC/IPMI), certificats, instances de bases
   de données. 3 champs personnalisés en texte libre (position en baie, configuration RAID,
-  hyperviseur) — pourraient devenir des menus déroulants comme "Type de carburant" si demandé, rien
+  hyperviseur), pourraient devenir des menus déroulants comme "Type de carburant" si demandé, rien
   ne l'impose pour l'instant.
-- `BuildingAssetBuilder` (nouveau) — actif personnalisé "Local", généré dès que la branche "Bâtiment
-  & Moyens Généraux" est sélectionnée. Nommé "Local" (pas "Bâtiment") et pensé comme complément — pas
-  doublon — du `Location` natif de GLPI déjà construit par `LocationBuilder` : un `Location` dit *où*
+- `BuildingAssetBuilder` (nouveau) : actif personnalisé "Local", généré dès que la branche "Bâtiment
+  & Moyens Généraux" est sélectionnée. Nommé "Local" (pas "Bâtiment") et pensé comme complément
+  (pas doublon) du `Location` natif de GLPI déjà construit par `LocationBuilder` : un `Location` dit *où*
   se trouve un actif (arbre hiérarchique bâtiment/étage/salle), sans aucune capacité propre ; un
   actif "Local" permet de suivre une salle/un bureau comme un vrai actif géré (valeur d'achat/loyer,
-  contrats d'entretien ou d'assurance, documents comme les plans, réservable — typiquement une salle
+  contrats d'entretien ou d'assurance, documents comme les plans, réservable, typiquement une salle
   de réunion). 8 capacités, aucune capacité d'inventaire matériel (contrairement à Véhicule/Serveur,
   un local n'a ni ports réseau ni composants). 3 champs personnalisés : surface (m²) et capacité
   (personnes) en nombre, type de local en texte libre.
@@ -452,10 +452,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   l'utilisateur. Correction d'une première recherche erronée (voir section Fixed) : GLPI 11 a bien
   un mécanisme natif "Obligatoire" par champ personnalisé (`Glpi\Asset\CustomFieldType\
   AbstractType::getOptions()` expose une vraie `BooleanOption('required', 'Mandatory')` sur chaque
-  type de champ, la case que coche un admin sur l'onglet "Champs") — appliqué via
+  type de champ, la case que coche un admin sur l'onglet "Champs"), appliqué via
   `field_options => ['required' => true]` à la création. Vérifié en réel : attribut HTML `required`
   bien présent sur le formulaire, soumission vide effectivement bloquée côté formulaire.
-- `FuelType` (nouveau) — premier dropdown propre à ce plugin (GLPI n'a aucun concept natif "type de
+- `FuelType` (nouveau) : premier dropdown propre à ce plugin (GLPI n'a aucun concept natif "type de
   carburant" à réutiliser, contrairement à tous les autres dropdowns peuplés par ce plugin) : classe
   `CommonDropdown` minimale, table dédiée, 2 contrôleurs front (`fueltype.php`/`fueltype.form.php`,
   GLPI route toujours les classes de plugin vers leurs propres fichiers `front/`, jamais vers le
@@ -466,46 +466,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   l'actif Véhicule lui-même (même logique que `ManufacturerDictionaryBuilder`). Vérifié en réel :
   champ rendu en vrai `<select>` (select2), valeur "Diesel" sélectionnable et correctement
   enregistrée comme référence vers la ligne `FuelType` correspondante.
-- **Unicité sur l'immatriculation — explicitement non retenue.** `FieldUnicity` (déjà utilisé par
+- **Unicité sur l'immatriculation : explicitement non retenue.** `FieldUnicity` (déjà utilisé par
   `FieldUnicityBuilder`) ne fonctionne que sur de vraies colonnes de base de données (confirmé dans
-  `FieldUnicity::dropdownFields()` — liste `$DB->listFields()`), pas sur les clés du champ JSON
-  `glpi_assets_assets.custom_fields` où vit "immatriculation". Le champ natif "Numéro de série" —
+  `FieldUnicity::dropdownFields()`, liste `$DB->listFields()`), pas sur les clés du champ JSON
+  `glpi_assets_assets.custom_fields` où vit "immatriculation". Le champ natif "Numéro de série",
   déjà éligible à `FieldUnicityBuilder` (l'actif Véhicule s'enregistre automatiquement dans
   `$CFG_GLPI['unicity_types']` au démarrage, confirmé dans `AssetDefinitionManager::
-  bootstrapDefinition()`) — aurait permis une vraie unicité en base, mais l'utilisateur a choisi de
+  bootstrapDefinition()`), aurait permis une vraie unicité en base, mais l'utilisateur a choisi de
   garder le libellé "Immatriculation" plus clair plutôt que de basculer dessus.
 
 ### Fixed
 - Correction d'une recherche erronée dans la session précédente : "GLPI 11 n'a aucun mécanisme
-  natif de champ obligatoire" était faux — la recherche initiale n'avait grep que
+  natif de champ obligatoire" était faux : la recherche initiale n'avait grep que
   `CustomFieldDefinition.php`, pas la classe de base `AbstractType.php` où l'option `required` est
   réellement définie. Corrigé avant toute implémentation erronée.
 - Un vrai piège d'infrastructure GLPI découvert en re-testant : la purge propre d'un
   `AssetDefinition` (`delete(..., true)`) ne nettoie ni `glpi_dropdownvisibilities` ni les
-  `glpi_assets_customfielddefinitions` orphelines — contrairement à `glpi_displaypreferences`
+  `glpi_assets_customfielddefinitions` orphelines, contrairement à `glpi_displaypreferences`
   qu'elle nettoie bien. Recréer un actif de même `system_name` après une purge "propre" aurait donc
   quand même pu re-percuter une collision de contrainte d'unicité sur `dropdownvisibilities`. Pas un
-  bug de ce plugin — noté ici pour toute future recréation d'actif personnalisé sur l'instance de
+  bug de ce plugin ; noté ici pour toute future recréation d'actif personnalisé sur l'instance de
   test.
 
 ## [0.58.0] - 2026-08-14
 
 ### Added
-- `VehicleAssetBuilder` (nouveau) — actif personnalisé GLPI 11 "Véhicule", généré automatiquement
+- `VehicleAssetBuilder` (nouveau) : actif personnalisé GLPI 11 "Véhicule", généré automatiquement
   dès que la branche de catégorie "Flotte Automobile & Mobilité" (`CategoryBuilder`, clé `flotte`)
-  est sélectionnée — aucune case dédiée, cette sélection est déjà le déclencheur (idée cadrée avec
+  est sélectionnée : aucune case dédiée, cette sélection est déjà le déclencheur (idée cadrée avec
   l'utilisateur début de session : "la branche Flotte Automobile activée créerait un type d'actif
   Véhicule"). Mécanisme 100% natif GLPI 11 (`Glpi\Asset\AssetDefinition`, migré de l'ancien plugin
-  externe "Generic Object") — API vérifiée en créant un vrai actif à la main via l'interface admin
+  externe "Generic Object") ; API vérifiée en créant un vrai actif à la main via l'interface admin
   réelle et en relisant ce qui atterrit en base, pas supposée depuis le code seul :
   `capacities` doit être `[{name: FQCN}, ...]`, `profiles` un plan `{profil_id: droits_int}`,
   `CustomFieldDefinition.type` stocke le FQCN de la classe de type de champ. 8 capacités retenues
   (financier/garanties, contrats, documents, historique, notes, liens, recherche globale,
-  réservable) — pas les capacités matérielles (ports réseau, OS, logiciels...) qui n'ont aucun sens
-  pour un véhicule. Droits complets accordés par défaut aux profils Super-Admin/Admin uniquement —
+  réservable), pas les capacités matérielles (ports réseau, OS, logiciels...) qui n'ont aucun sens
+  pour un véhicule. Droits complets accordés par défaut aux profils Super-Admin/Admin uniquement,
   même raisonnement que le groupe natif de `VipBuilder`. 5 champs personnalisés créés
   (immatriculation, type de carburant, date de mise en circulation, date de contrôle technique,
-  date d'expiration d'assurance) — texte libre/date uniquement, pas de liste déroulante inventée
+  date d'expiration d'assurance), texte libre/date uniquement, pas de liste déroulante inventée
   nécessitant sa propre table native. Vérifié en réel de bout en bout : branche décochée → rien
   créé ; branche cochée → actif créé avec les 8 capacités et les 5 champs corrects (confirmés en
   base) ; resoumission idempotente ; formulaire réel du nouvel actif affichant bien les 5 champs
@@ -515,7 +515,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   découvert et corrigé avant tout envoi** : une suppression manuelle antérieure d'un actif de test
   via `DELETE` SQL brut (plutôt qu'une vraie purge côté objet) avait laissé des lignes
   `glpi_displaypreferences`/`glpi_dropdownvisibilities` orphelines, provoquant une collision de
-  contrainte d'unicité (erreur 500) au resoumission suivante avec le même `system_name` — pas un bug
+  contrainte d'unicité (erreur 500) au resoumission suivante avec le même `system_name`, pas un bug
   du builder, mais un rappel que `DELETE FROM` brut sur un objet GLPI ne nettoie jamais les tables
   liées, contrairement à `purge()`.
 
@@ -524,11 +524,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `CalendarBuilder` : horaires par jour + coupure déjeuner, demandé explicitement par l'utilisateur
   (gap documenté depuis longtemps dans ROADMAP.md). `glpi_calendarsegments` n'a jamais eu de
-  limitation ici (plusieurs segments par jour toujours supportés nativement) — seul ce plugin ne
+  limitation ici (plusieurs segments par jour toujours supportés nativement), seul ce plugin ne
   créait qu'un seul segment uniforme pour tous les jours cochés. Un horaire par jour coché
-  (`Config::getCalendarDayHours()`, ex. "vendredi 9h-12h seulement" — seuls les jours qui diffèrent
+  (`Config::getCalendarDayHours()`, ex. "vendredi 9h-12h seulement", seuls les jours qui diffèrent
   du reste ont besoin d'une entrée), plus une coupure déjeuner optionnelle qui scinde en deux
-  segments (matin + après-midi) tout jour dont les horaires couvrent réellement la pause — un jour
+  segments (matin + après-midi) tout jour dont les horaires couvrent réellement la pause ; un jour
   dont les horaires ne la couvrent pas (ex. vendredi 9h-12h avec une pause 12h-13h) garde un segment
   unique plutôt qu'un segment de longueur négative ou nulle. Même capacité ajoutée au calendrier par
   client/site (mode MSP). Vérifié en réel : jours Lun-Jeu scindés en 08h-12h + 13h-18h, Vendredi
@@ -538,7 +538,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.56.0] - 2026-08-14
 
 ### Added
-- `ValidationRoutingBuilder` (nouveau) — routage automatique de validation vers le supérieur
+- `ValidationRoutingBuilder` (nouveau) : routage automatique de validation vers le supérieur
   hiérarchique du demandeur ("N+1"), demandé explicitement par l'utilisateur. Mécanisme 100% natif
   GLPI confirmé en lisant le code source (`RuleCommonITILObject::getActions()`) : l'action
   `responsible_id_validate` ("Send an approval request — Supervisor of the requester") résout via
@@ -546,9 +546,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `glpi_users.users_id_supervisor`. Distinct de l'action au nom trompeusement proche
   `users_id_validate_requester_supervisor`, qui cible en réalité le manager du *groupe* du
   demandeur (`Group_User.is_manager`), un mécanisme différent. Une seule `RuleTicket` créée, scopée
-  sur `type = Demande` (pas Incident — les workflows d'approbation concernent les demandes, pas les
+  sur `type = Demande` (pas Incident, les workflows d'approbation concernent les demandes, pas les
   incidents à traiter en urgence), globale (`is_recursive = 1`). Case décochée par défaut,
-  contrairement au reste de l'étape "Réglages généraux GLPI" — un changement de comportement réel
+  contrairement au reste de l'étape "Réglages généraux GLPI" : un changement de comportement réel
   (approbation obligatoire sur chaque ticket concerné), pas juste du contenu, même exception déjà
   appliquée au branding. Vérifié en réel avec deux utilisateurs de test : demandeur avec superviseur
   renseigné → validation créée ciblant le bon utilisateur ; demandeur sans superviseur → aucune
@@ -561,42 +561,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   2026-08-14 (première tentative peu fiable, abandonnée). Audit refait avec une méthode fiable :
   `git grep` par nom de classe sur tout le dépôt pour les 45 classes `src/*.php` (aucune morte),
   audit des méthodes privées (aucune morte), audit des méthodes statiques publiques (plusieurs faux
-  positifs — dispatchées par le cœur GLPI, écartés après vérification — un vrai cas trouvé).
+  positifs, dispatchées par le cœur GLPI, écartés après vérification, un vrai cas trouvé).
   Supprimés : `ROADMAP_original.md` (doublon figé du 2026-08-07, supplanté depuis longtemps par
   `ROADMAP.md`), `.tx/config` (config Transifex vestige de la même infrastructure jamais
   fonctionnelle que `.github/workflows/locales-sync.yml`, déjà supprimé en v0.30.0),
   `ManufacturerDictionaryBuilder::getPreview()` (méthode publique jamais câblée dans le wizard,
   contrairement à ses équivalents sur d'autres builders). `logo.png`/`misc/logos/logo.png` et
-  `tools/HEADER` vérifiés et confirmés légitimes malgré une apparence de doublon/fichier isolé — non
+  `tools/HEADER` vérifiés et confirmés légitimes malgré une apparence de doublon/fichier isolé, non
   touchés.
 
 ## [0.55.0] - 2026-08-14
 
 ### Added
-- `TagBuilder` (nouveau) — troisième intégration cross-plugin, même schéma que
+- `TagBuilder` (nouveau) : troisième intégration cross-plugin, même schéma que
   `SatisfactionSurveyBuilder`/`VipBuilder` : quand le plugin tiers "Tag" (`tag`) est installé et
   activé, l'étape "Réglages généraux GLPI" propose de créer une bibliothèque de 6 tags génériques
   (Prioritaire, Urgent, À vérifier, Obsolète, Garantie active, Confidentiel), chacun avec une couleur
   distincte, utilisables sur tout objet GLPI (`type_menu` laissé vide = tag global, confirmé via
   `PluginTagTag::canItemtype()`). Section absente du formulaire si le plugin n'est pas installé.
   Vérifié dans remise-glpi (README/ARCHITECTURE via `gh api`) qu'aucune fonctionnalité de tag
-  n'existe déjà là-bas — pas de doublon avec le plugin sœur de l'utilisateur. Écrit directement dans
+  n'existe déjà là-bas, pas de doublon avec le plugin sœur de l'utilisateur. Écrit directement dans
   `glpi_plugin_tag_tags` via `$DB` (pas de dépendance dure vers les classes PHP du plugin tiers).
   Volontairement pas d'automatisation sur l'affectation réelle des tags aux tickets/matériels
-  (`glpi_plugin_tag_tagitems`) — seules les définitions de tags sont généralisables, leur usage
+  (`glpi_plugin_tag_tagitems`) : seules les définitions de tags sont généralisables, leur usage
   réel dépend de chaque organisation. Vérifié en réel : section absente si le plugin est désactivé,
   6 tags créés à la soumission, resoumission idempotente (pas de doublon).
 
 ## [0.54.1] - 2026-08-14
 
 ### Fixed
-- `VipBuilder` : correction d'un contresens signalé par l'utilisateur — le texte du wizard et de la
+- `VipBuilder` : correction d'un contresens signalé par l'utilisateur, le texte du wizard et de la
   documentation décrivait à tort le groupe natif "VIP" créé comme un « groupe technicien ». Le
   plugin tiers "VIP" sert en réalité à signaler des personnes ou groupes prioritaires **côté
   demandeur** (direction, actionnaires, tout interlocuteur dont les tickets doivent être mis en
   évidence pour le support), pas une équipe de support. Le code lui-même n'avait pas ce défaut (le
   groupe créé n'a jamais eu `is_assign` forcé), seul le texte affiché à l'administrateur et la
-  documentation étaient trompeurs — corrigés dans `templates/wizard.html.twig`, le commentaire écrit
+  documentation étaient trompeurs, corrigés dans `templates/wizard.html.twig`, le commentaire écrit
   sur le groupe natif créé, `CHANGELOG.md` et `ROADMAP.md`. Traductions EN/DE/IT/ES régénérées.
   Revérifié en direct sur l'instance de test que le nouveau texte s'affiche correctement.
 

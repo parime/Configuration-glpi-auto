@@ -5,8 +5,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Ce plugin ne construit que ce qui généralise à n'importe quelle organisation GLPI (bonnes pratiques ITIL/ISO 27001, pas de personnalisation propre à un métier ou une entreprise) — voir ROADMAP.md pour la philosophie du projet et les pistes déjà envisagées.
-        This plugin only builds what generalizes to any GLPI organization (ITIL/ISO 27001 best practices, not org-specific customization) — see ROADMAP.md for the project's philosophy and already-considered ideas.
+        Ce plugin ne construit que ce qui généralise à n'importe quelle organisation GLPI (bonnes pratiques ITIL/ISO 27001, pas de personnalisation propre à un métier ou une entreprise) : voir ROADMAP.md pour la philosophie du projet et les pistes déjà envisagées.
+        This plugin only builds what generalizes to any GLPI organization (ITIL/ISO 27001 best practices, not org-specific customization): see ROADMAP.md for the project's philosophy and already-considered ideas.
 
   - type: textarea
     id: problem

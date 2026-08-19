@@ -12,12 +12,12 @@
 
 Configuration GLPI Auto is a GLPI plugin that aims to turn a blank installation into an operational platform in just a few clicks.
 
-A fresh GLPI install is a blank page: no entities, no calendar, no SLAs, no ticket categories, no templates. Configuring all of that correctly by hand — while following ITIL best practices and ISO 27001 requirements — typically takes a newcomer administrator several days, with the risk of missing something important (SLA escalation, document classification, per-site rights...). This plugin condenses that work into a guided 18-step wizard: you answer questions about your organization, the wizard builds the matching configuration, and nothing is created in GLPI until you confirm the final summary.
+A fresh GLPI install is a blank page: no entities, no calendar, no SLAs, no ticket categories, no templates. Configuring all of that correctly by hand, while following ITIL best practices and ISO 27001 requirements, typically takes a newcomer administrator several days, with the risk of missing something important (SLA escalation, document classification, per-site rights...). This plugin condenses that work into a guided 18-step wizard: you answer questions about your organization, the wizard builds the matching configuration, and nothing is created in GLPI until you confirm the final summary.
 
 > See [CHANGELOG.md](CHANGELOG.md) for the release history (the "Latest Release" badge above
 > shows the most recent one) and [ROADMAP.md](ROADMAP.md) for what's planned.
 
-📖 **[See the full tutorial](docs/TUTORIAL.md)** — all 18 wizard steps, one screenshot per step
+📖 **[See the full tutorial](docs/TUTORIAL.md)**: all 18 wizard steps, one screenshot per step
 (available in French and English).
 
 ## Table of contents
@@ -34,21 +34,21 @@ A fresh GLPI install is a blank page: no entities, no calendar, no SLAs, no tick
 
 ## What sets it apart
 
-- **Nothing is created until the end**: the 18 steps only build up a configuration in memory, with a live-updating preview (see screenshot below) — you can go back, change anything, start over, without ever touching GLPI before confirming the final summary.
-- **An express mode for the impatient**: a single click at step 1 applies the chosen profile's recommended settings directly, without going through the following 17 steps one by one — for a simple installation, an operational GLPI instance in a few seconds.
+- **Nothing is created until the end**: the 18 steps only build up a configuration in memory, with a live-updating preview (see screenshot below); you can go back, change anything, start over, without ever touching GLPI before confirming the final summary.
+- **An express mode for the impatient**: a single click at step 1 applies the chosen profile's recommended settings directly, without going through the following 17 steps one by one: for a simple installation, an operational GLPI instance in a few seconds.
 - **Built for multi-site and MSP from the start**: the same entity tree, the same SLAs and the same visual customization can be differentiated per site or per client, without juggling several separate GLPI installations.
 - **ISO 27001 compliance built in**: knowledge base document topics and criticality levels are offered right in the wizard, not bolted on afterwards by digging through GLPI's documentation.
-- **No orphaned data**: every setting the wizard proposes (categories, statuses, templates...) is immediately usable — the service catalog generated in step 7 already routes automatically to the right category created in step 6, for example.
+- **No orphaned data**: every setting the wizard proposes (categories, statuses, templates...) is immediately usable: the service catalog generated in step 7 already routes automatically to the right category created in step 6, for example.
 
 ## Screenshots
 
-**The starting profile choice** — four predefined profiles pre-fill the following 17 steps with values suited to your organization, freely adjustable afterwards; an express mode applies the recommended settings directly without going through every step:
+**The starting profile choice**: four predefined profiles pre-fill the following 17 steps with values suited to your organization, freely adjustable afterwards; an express mode applies the recommended settings directly without going through every step:
 
-![Étape 1 — Choix du profil](docs/screenshots/01-profil.png)
+![Étape 1 : Choix du profil](docs/screenshots/01-profil.png)
 
-**The entity structure, with a live preview** — single-site, multi-site or MSP: the tree is built on the left, the preview on the right updates with every change, before anything is saved:
+**The entity structure, with a live preview**: single-site, multi-site or MSP: the tree is built on the left, the preview on the right updates with every change, before anything is saved:
 
-![Étape 2 — Structure des entités](docs/screenshots/02-entites.png)
+![Étape 2 : Structure des entités](docs/screenshots/02-entites.png)
 
 All other screenshots (all 18 steps in detail) are in the [tutorial](docs/TUTORIAL.md).
 
@@ -105,14 +105,14 @@ install/activate it as above. A test Docker stack (GLPI + MariaDB) is provided i
 
 Once the plugin is active, the wizard is available from **Configuration > Configuration
 profiles > Configuration**. Choose a starting profile (step 1), then go through the 18 steps,
-adjusting each setting to your needs — nothing is created in GLPI before the last step (Summary).
+adjusting each setting to your needs; nothing is created in GLPI before the last step (Summary).
 Express mode (a button available from step 1) applies the chosen profile's recommended settings
 directly, without going through every step. See the [tutorial](docs/TUTORIAL.md) for a screenshot
 of each step.
 
 ## Documentation
 
-- [Tutorial](docs/TUTORIAL.md) — a step-by-step walkthrough of the wizard's 18 steps, with a
+- [Tutorial](docs/TUTORIAL.md): a step-by-step walkthrough of the wizard's 18 steps, with a
   screenshot of each.
 - [CHANGELOG.md](CHANGELOG.md) and [ROADMAP.md](ROADMAP.md) for the technical detail of each
   feature.
