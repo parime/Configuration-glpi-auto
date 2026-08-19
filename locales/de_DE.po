@@ -1189,6 +1189,30 @@ msgstr "Benutzerdefinierter Vermögenswert \"Server\" erstellt (Zweig IT & Syste
 msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
 msgstr "Benutzerdefinierter Vermögenswert \"Raum\" erstellt (Zweig Gebäude)."
 
+msgid "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche Bâtiment)."
+msgstr "Benutzerdefinierter Vermögenswert \"Brandschutz & Erste Hilfe\" erstellt (Zweig Gebäude)."
+
+msgid "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection des Personnes)."
+msgstr "Benutzerdefinierter Vermögenswert \"Physische Sicherheit\" erstellt (Zweig Sicherheit)."
+
+msgid "Actif personnalisé ESM (Enterprise Service Management) — en plus de l'actif \"Local\" créé automatiquement pour cette branche."
+msgstr "Benutzerdefinierter ESM-Vermögenswert (Enterprise Service Management) — zusätzlich zum automatisch für diesen Zweig erstellten Vermögenswert \"Raum\"."
+
+msgid "Créer un type d'actif \"Sécurité incendie & premiers secours\" (extincteurs, RIA, désenfumage, DAE...)"
+msgstr "Einen Vermögenswert-Typ \"Brandschutz & Erste Hilfe\" erstellen (Feuerlöscher, Wandhydranten, Rauchabzug, AED...)"
+
+msgid "Champ de conformité : date de vérification périodique. Pas réservable (n'a pas de sens pour ce type d'équipement)."
+msgstr "Compliance-Feld: Datum der regelmäßigen Überprüfung. Nicht reservierbar (für diese Art von Ausrüstung nicht sinnvoll)."
+
+msgid "Actif personnalisé ESM (Enterprise Service Management), aligné sur ISO/IEC 27001:2022 Annexe A.7 \"Mesures physiques\" (contrôle d'accès, vidéosurveillance, alarme intrusion)."
+msgstr "Benutzerdefinierter ESM-Vermögenswert (Enterprise Service Management), ausgerichtet an ISO/IEC 27001:2022 Anhang A.7 \"Physische Maßnahmen\" (Zutrittskontrolle, Videoüberwachung, Einbruchalarm)."
+
+msgid "Créer un type d'actif \"Sécurité physique\" (caméras, alarme intrusion, contrôle d'accès...)"
+msgstr "Einen Vermögenswert-Typ \"Physische Sicherheit\" erstellen (Kameras, Einbruchalarm, Zutrittskontrolle...)"
+
+msgid "Champs : zone couverte, date de dernière maintenance/vérification."
+msgstr "Felder: abgedeckter Bereich, Datum der letzten Wartung/Prüfung."
+
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] "Konfigurationsprofil"

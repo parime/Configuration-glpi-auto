@@ -195,6 +195,23 @@ class SolutionLibraryBuilder
                         'es_ES' => self::GREETING_ES . "\n\nEste ticket es un duplicado de una solicitud que ya está siendo tramitada.\n\nTicket de referencia: \n\nAtentamente,",
                     ],
                 ],
+                // 11e gabarit — forum GLPI officiel (topic 294630, utilisateur alecomte demandant un
+                // statut/bouton dédié pour rejeter un ticket mal formulé ; réponse du contributeur
+                // LaDenrée : pas besoin de toucher au workflow natif, un gabarit de solution type
+                // suffit). Catégorie "Informationnel" : clôturer un ticket faute d'informations
+                // suffisantes n'est pas une résolution technique, exactement le même type de clôture
+                // sans intervention que "Fonctionnement normal constaté"/"Ticket doublon" ci-dessus.
+                [
+                    'name' => 'Demande incomplète',
+                    'icon' => '❓',
+                    'content' => self::GREETING . "\n\nVotre demande ne contient pas suffisamment d'informations pour être traitée. Merci de bien vouloir préciser :\n\n- Description précise du problème ou de la demande\n- Capture d'écran si applicable\n- Étapes pour reproduire le problème\n\nNous reprendrons le traitement dès réception de ces éléments.\n\nCordialement,",
+                    'translations' => [
+                        'en_GB' => self::GREETING_EN . "\n\nYour request does not contain enough information to be processed. Please provide:\n\n- A precise description of the issue or request\n- A screenshot if applicable\n- Steps to reproduce the issue\n\nWe will resume processing as soon as we receive these details.\n\nKind regards,",
+                        'de_DE' => self::GREETING_DE . "\n\nIhre Anfrage enthält nicht genügend Informationen, um bearbeitet zu werden. Bitte teilen Sie uns mit:\n\n- Eine genaue Beschreibung des Problems oder der Anfrage\n- Einen Screenshot, falls zutreffend\n- Schritte zur Reproduktion des Problems\n\nWir setzen die Bearbeitung fort, sobald wir diese Angaben erhalten haben.\n\nMit freundlichen Grüßen,",
+                        'it_IT' => self::GREETING_IT . "\n\nLa vostra richiesta non contiene informazioni sufficienti per essere elaborata. Vi preghiamo di fornire:\n\n- Una descrizione precisa del problema o della richiesta\n- Una schermata, se applicabile\n- I passaggi per riprodurre il problema\n\nRiprenderemo la lavorazione non appena riceveremo questi elementi.\n\nCordiali saluti,",
+                        'es_ES' => self::GREETING_ES . "\n\nSu solicitud no contiene suficiente información para ser tramitada. Le rogamos que nos indique:\n\n- Una descripción precisa del problema o de la solicitud\n- Una captura de pantalla si procede\n- Los pasos para reproducir el problema\n\nReanudaremos la tramitación en cuanto recibamos estos datos.\n\nAtentamente,",
+                    ],
+                ],
             ],
         ],
         [

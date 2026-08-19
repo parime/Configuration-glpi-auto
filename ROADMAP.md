@@ -30,8 +30,8 @@ Devenir **la référence Open Source** pour l'initialisation, la standardisation
 > voir CHANGELOG.md), pas un signe d'avancement réel. Le plugin a largement dépassé ce périmètre
 > initial (52 fichiers `*Builder` dans `src/`, bien au-delà des 10 items d'origine).
 
-**Premières releases réelles** : `v0.1.0` (2026-08-10, Sprints 1-2), version actuelle `v0.64.0`
-(2026-08-17) — voir [Releases GitHub](https://github.com/parime/Configuration-glpi-auto/releases)
+**Premières releases réelles** : `v0.1.0` (2026-08-10, Sprints 1-2), version actuelle `v0.65.0`
+(2026-08-19) — voir [Releases GitHub](https://github.com/parime/Configuration-glpi-auto/releases)
 et [CHANGELOG.md](CHANGELOG.md).
 
 **Fonctionnalités prévues** :
@@ -1095,15 +1095,16 @@ priorité unilatérale.
 
 ---
 
-## 💬 Pistes remontées par le forum GLPI officiel (2026-08-18, pas encore tranchées)
+## 💬 Pistes remontées par le forum GLPI officiel (2026-08-18)
 
 Même méthode que les audits précédents : consignées ici après vérification technique, aucune
 décision de priorité unilatérale — sujets soumis par l'utilisateur, à trancher avant de construire
-quoi que ce soit.
+quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livrés en v0.65.0
+(2026-08-19).
 
-1. **ITSM → ESM : actifs personnalisés réglementés (extincteurs, ascenseurs...)** — topic
-   https://forum.glpi-project.org/viewtopic.php?id=293900. Un utilisateur (Perreip) demande si GLPI
-   peut être détourné d'un outil ITSM (parc informatique) vers un usage ESM (Enterprise Service
+1. ✅ **ITSM → ESM : actifs personnalisés réglementés — fait partiellement (v0.65.0, 2026-08-19).**
+   Topic https://forum.glpi-project.org/viewtopic.php?id=293900. Un utilisateur (Perreip) demande si
+   GLPI peut être détourné d'un outil ITSM (parc informatique) vers un usage ESM (Enterprise Service
    Management) : gérer aussi des actifs non-IT réglementés — ascenseurs, extincteurs, véhicules de
    service, locaux — avec export filtré (exemple cité : « extincteurs avec dates de validité »).
    Réponse du modérateur cconard96, vérifiée cohérente avec le code déjà audité dans ce projet
@@ -1111,35 +1112,70 @@ quoi que ce soit.
    genre de type d'actif via `Glpi\Asset\AssetDefinition` + capacités modulaires (remplaçant
    l'ancien plugin externe « Generic Object »), et le moteur de recherche natif couvre déjà le
    filtrage/export (CSV/PDF/ODS/XLSX, recherches sauvegardées, alertes) — rien à construire côté
-   export.
-   **Recoupement direct avec ce plugin** : `VehicleAssetBuilder`/`ServerAssetBuilder`/
-   `BuildingAssetBuilder` utilisent déjà exactement ce mécanisme (`AssetDefinition` + capacités +
-   champ de conformité, ex. le champ « contrôle technique » de `VehicleAssetBuilder`). Étendre à des
-   types d'équipements réglementés supplémentaires suit le même patron, sans changement
-   d'architecture.
-   **Candidats évalués comme suffisamment universels** (même filtre « generalist scope » que le
-   reste du plugin — cf. diagnostic LDAP écarté plus haut pour un cas *non* généralisable) :
-   - Sécurité incendie (extincteurs/RIA/désenfumage) — champ date de vérification périodique,
-     capacités Infocom/Contrats/Documents, déclenchement probable par une nouvelle case dans la
-     branche « Bâtiment » de l'étape 5, aux côtés de celle qui déclenche déjà `BuildingAssetBuilder`.
-   - Équipement de levage (ascenseurs/monte-charges) — champ date de contrôle réglementaire +
-     organisme de contrôle, même déclenchement.
-   **Non tranché** : builders dédiés par verticale (patron actuel du plugin, cohérent avec
-   `VehicleAssetBuilder`/`ServerAssetBuilder`/`BuildingAssetBuilder`) vs. un assistant générique
-   « créer votre propre type d'actif » exposant `AssetDefinition` directement depuis le wizard
-   (changement de nature plus lourd, à ne considérer que si le besoin dépasse les deux candidats
-   ci-dessus). Suivi : issue GitHub #132.
+   export. Suivi : issue GitHub #132.
 
-2. **Gabarit de solution « Demande incomplète »** — topic
+   **`FireSafetyAssetBuilder`** (nouveau) — « Sécurité incendie & premiers secours » : extincteurs,
+   RIA, désenfumage, détecteur de fumée/alarme incendie, éclairage de sécurité/issue de secours, et
+   défibrillateur automatisé externe (DAE) — ajouté en cours de sprint sur constat que le DAE
+   partage exactement le même besoin (champ « date de vérification périodique ») que les autres,
+   donc regroupé dans le même type d'actif plutôt qu'un second builder dédié. Déclenché par un
+   nouveau réglage dédié (`fire_safety_assets_enabled`), affiché dans le panneau de la branche
+   « Bâtiment & Moyens Généraux » à l'étape Catégories, aux côtés de la case de branche elle-même
+   (comme envisagé ci-dessus) — mais en case à cocher **séparée**, pas automatique : toute
+   organisation qui coche « Bâtiment » ne souhaite pas forcément suivre ses extincteurs comme des
+   actifs GLPI, contrairement à `BuildingAssetBuilder`/« Local » qui reste, lui, purement
+   automatique.
+
+   **`PhysicalSecurityAssetBuilder`** (nouveau) — « Sécurité physique » : caméra de
+   vidéosurveillance, centrale d'alarme intrusion, détecteur de mouvement, contrôle d'accès/lecteur
+   de badge, serrure électronique, interphone/vidéophone. Ajouté en cours de sprint sur demande
+   explicite de l'utilisateur (« tout ce qui touche la sécurité physique du bâtiment, [...] par
+   exemple les caméras »), au-delà des deux candidats initiaux ci-dessus — explicitement grounded
+   dans ISO/IEC 27001:2022 Annexe A.7 « Mesures physiques » (chaque sous-type cite sa clause A.7.x
+   dans le code), cohérent avec le positionnement ITIL4/ISO27001 déjà affiché par ce plugin.
+   Déclenchement revu par rapport à l'idée initiale : pas la branche « Bâtiment », mais « Sécurité &
+   Protection des Personnes » (`securite`) — confirmé en relisant `CategoryBuilder::CATEGORIES` que
+   cette branche a déjà pour enfants « Contrôle d'Accès & Badges » et « Vidéosurveillance & Alarmes »,
+   un rattachement thématique direct plutôt que le choix arbitraire envisagé au départ. Même schéma
+   de case à cocher dédiée (`physical_security_assets_enabled`).
+
+   **Équipement de levage (ascenseurs/monte-charges) — non retenu.** Deuxième candidat évalué
+   ci-dessus, écarté en cours de sprint : ne suit pas le forum ni l'issue #132 (ni l'un ni l'autre ne
+   le mentionnent explicitement, contrairement à la sécurité incendie et aux véhicules/serveurs/
+   locaux déjà couverts) — resterait à construire sur demande explicite si le besoin se confirme,
+   même patron `AssetDefinition` déjà en place pour les deux builders ci-dessus.
+
+   **Mobilier — évalué, non retenu.** Piste complémentaire envisagée en cours de sprint (la branche
+   « Bâtiment » a déjà une catégorie de service « Mobilier & Aménagement »/`ServiceCatalogBuilder`),
+   mais ne passe pas le même filtre « generalist scope » que les deux builders ci-dessus : pas de
+   champ de conformité réglementaire universel comparable à la vérification incendie ou au contrôle
+   d'accès — la valeur serait essentiellement de l'inventaire générique, déjà raisonnablement couvert
+   par les mécanismes natifs GLPI, sans bonne pratique universelle identifiée à préremplir (même
+   conclusion « rien à construire » que `RequestType`/`ProjectState`/`DocumentType` ailleurs dans ce
+   document). Laissé de côté sauf demande explicite de le construire quand même.
+
+   Architecture : builders dédiés par verticale (patron déjà utilisé par
+   `VehicleAssetBuilder`/`ServerAssetBuilder`/`BuildingAssetBuilder`), pas un assistant générique
+   « créer votre propre type d'actif » — confirmé rester le bon niveau de granularité, le besoin n'a
+   pas dépassé ce que quatre builders dédiés couvrent proprement. Chaque sous-type des deux nouveaux
+   builders traduit dans les 5 langues du plugin via `Translations::applyIcon()` (mécanisme
+   `DropdownTranslation` déjà prouvé sur ~20 autres builders) — à la différence des trois builders
+   d'actifs personnalisés précédents (`VehicleAssetBuilder`/`ServerAssetBuilder`/
+   `BuildingAssetBuilder`), qui ne traduisent pas leurs types seedés (lacune préexistante, non
+   corrigée ici, hors du périmètre de ce sprint). Détail complet de la vérification (suite
+   d'intégration PHPUnit dédiée + soumission réelle du wizard par HTTP) dans `CHANGELOG.md` `[0.65.0]`.
+
+2. ✅ **Gabarit de solution « Demande incomplète » — fait (v0.65.0, 2026-08-19).** Topic
    https://forum.glpi-project.org/viewtopic.php?id=294630. Un utilisateur (alecomte) demande un
    statut/bouton dédié pour rejeter un ticket mal formulé ou incomplet. Réponse du contributeur
    LaDenrée : pas besoin de toucher au workflow natif, un gabarit de solution avec un texte type
    « votre demande est incomplète » suffit — mécanisme déjà utilisé par ce plugin
    (`SolutionLibraryBuilder`, 5 catégories/10 gabarits existants, voir plus haut). Aucun gabarit
-   équivalent dans la catégorie « Informationnel » actuelle (qui couvre « Fonctionnement normal
-   constaté » et « Ticket doublon », pas « informations manquantes »). Ajout simple si retenu : un
-   11e gabarit dans cette même catégorie, aucun changement de mécanisme. Pas encore construit, pas
-   encore d'issue ouverte — à confirmer avec l'utilisateur.
+   équivalent n'existait dans la catégorie « Informationnel » (qui couvrait « Fonctionnement normal
+   constaté » et « Ticket doublon », pas « informations manquantes »). 11e gabarit ajouté dans cette
+   même catégorie, aucun changement de mécanisme (même structure Twig itemtype-aware, mêmes 5
+   traductions, même icône). Vérifié en réel : gabarit créé sous le bon type via une vraie
+   soumission du wizard, appliqué à un vrai ticket créé pour l'occasion, rendu Twig correct.
 
 ---
 

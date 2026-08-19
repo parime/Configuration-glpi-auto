@@ -488,6 +488,22 @@ final class Translations
         'Ouverture de porte' => ['en_GB' => 'Door opening', 'de_DE' => 'Türöffnung', 'it_IT' => 'Apertura porta', 'es_ES' => 'Apertura de puerta'],
         'Fuite d\'eau' => ['en_GB' => 'Water leak', 'de_DE' => 'Wasserleck', 'it_IT' => 'Perdita d\'acqua', 'es_ES' => 'Fuga de agua'],
         'Vibration' => ['en_GB' => 'Vibration', 'de_DE' => 'Vibration', 'it_IT' => 'Vibrazione', 'es_ES' => 'Vibración'],
+
+        // ---- FireSafetyAssetBuilder (glpi_assets_assettypes, "SecuriteIncendieSecours" definition) ----
+        'Extincteur' => ['en_GB' => 'Fire extinguisher', 'de_DE' => 'Feuerlöscher', 'it_IT' => 'Estintore', 'es_ES' => 'Extintor'],
+        "Robinet d'incendie armé (RIA)" => ['en_GB' => 'Fire hose reel', 'de_DE' => 'Wandhydrant', 'it_IT' => 'Idrante a muro', 'es_ES' => 'Boca de incendio equipada'],
+        'Système de désenfumage' => ['en_GB' => 'Smoke extraction system', 'de_DE' => 'Rauch- und Wärmeabzugsanlage', 'it_IT' => 'Sistema di evacuazione fumi', 'es_ES' => 'Sistema de extracción de humos'],
+        'Détecteur de fumée / alarme incendie' => ['en_GB' => 'Smoke detector / Fire alarm', 'de_DE' => 'Rauchmelder / Brandalarm', 'it_IT' => 'Rilevatore di fumo / Allarme antincendio', 'es_ES' => 'Detector de humo / Alarma de incendio'],
+        'Éclairage de sécurité / issue de secours' => ['en_GB' => 'Emergency lighting / Fire exit', 'de_DE' => 'Sicherheitsbeleuchtung / Notausgang', 'it_IT' => 'Illuminazione di sicurezza / Uscita di emergenza', 'es_ES' => 'Alumbrado de seguridad / Salida de emergencia'],
+        'Défibrillateur automatisé externe (DAE)' => ['en_GB' => 'Automated external defibrillator (AED)', 'de_DE' => 'Automatisierter externer Defibrillator (AED)', 'it_IT' => 'Defibrillatore semiautomatico esterno (DAE)', 'es_ES' => 'Desfibrilador externo automático (DEA)'],
+
+        // ---- PhysicalSecurityAssetBuilder (glpi_assets_assettypes, "SecuritePhysique" definition) ----
+        'Caméra de vidéosurveillance' => ['en_GB' => 'CCTV camera', 'de_DE' => 'Videoüberwachungskamera', 'it_IT' => 'Telecamera di videosorveglianza', 'es_ES' => 'Cámara de videovigilancia'],
+        "Centrale d'alarme intrusion" => ['en_GB' => 'Intrusion alarm panel', 'de_DE' => 'Einbruchmeldezentrale', 'it_IT' => 'Centrale antintrusione', 'es_ES' => 'Central de alarma antiintrusión'],
+        'Détecteur de mouvement' => ['en_GB' => 'Motion detector', 'de_DE' => 'Bewegungsmelder', 'it_IT' => 'Rilevatore di movimento', 'es_ES' => 'Detector de movimiento'],
+        "Contrôle d'accès (lecteur de badge)" => ['en_GB' => 'Access control (badge reader)', 'de_DE' => 'Zutrittskontrolle (Ausweisleser)', 'it_IT' => 'Controllo accessi (lettore badge)', 'es_ES' => 'Control de acceso (lector de tarjetas)'],
+        'Serrure électronique' => ['en_GB' => 'Electronic lock', 'de_DE' => 'Elektronisches Schloss', 'it_IT' => 'Serratura elettronica', 'es_ES' => 'Cerradura electrónica'],
+        'Interphone / Vidéophone' => ['en_GB' => 'Intercom / Video intercom', 'de_DE' => 'Gegensprechanlage / Video-Gegensprechanlage', 'it_IT' => 'Citofono / Videocitofono', 'es_ES' => 'Portero automático / Videoportero'],
     ];
 
     /**
