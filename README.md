@@ -12,12 +12,12 @@
 
 Configuration GLPI Auto est un plugin pour GLPI qui vise a transformer une installation vierge en une plateforme operationnelle en quelques clics.
 
-Une installation GLPI neuve est une page blanche : aucune entité, aucun calendrier, aucun SLA, aucune catégorie de ticket, aucun modèle. Tout configurer correctement à la main — en respectant les bonnes pratiques ITIL et les exigences ISO 27001 — prend typiquement plusieurs jours à un administrateur qui découvre GLPI, avec le risque d'oublier un réglage important (escalade SLA, classification documentaire, droits par site...). Ce plugin condense ce travail en un assistant guidé de 18 étapes : vous répondez à des questions sur votre organisation, l'assistant construit la configuration correspondante, et rien n'est créé dans GLPI avant que vous ne validiez le récapitulatif final.
+Une installation GLPI neuve est une page blanche : aucune entité, aucun calendrier, aucun SLA, aucune catégorie de ticket, aucun modèle. Tout configurer correctement à la main, en respectant les bonnes pratiques ITIL et les exigences ISO 27001, prend typiquement plusieurs jours à un administrateur qui découvre GLPI, avec le risque d'oublier un réglage important (escalade SLA, classification documentaire, droits par site...). Ce plugin condense ce travail en un assistant guidé de 18 étapes : vous répondez à des questions sur votre organisation, l'assistant construit la configuration correspondante, et rien n'est créé dans GLPI avant que vous ne validiez le récapitulatif final.
 
 > Voir [CHANGELOG.md](CHANGELOG.md) pour l'historique des versions publiées (badge « Latest
 > Release » ci-dessus pour la dernière en date) et [ROADMAP.md](ROADMAP.md) pour ce qui est prévu.
 
-📖 **[Voir le tutoriel complet](docs/TUTORIAL.md)** — les 18 étapes de l'assistant, une capture
+📖 **[Voir le tutoriel complet](docs/TUTORIAL.md)** : les 18 étapes de l'assistant, une capture
 d'écran par étape (disponible en français et en anglais).
 
 ## Table des matieres
@@ -34,21 +34,21 @@ d'écran par étape (disponible en français et en anglais).
 
 ## Ce qui le distingue
 
-- **Rien n'est créé avant la fin** : les 18 étapes ne font que composer une configuration en mémoire, avec un aperçu qui se met à jour en direct (voir capture ci-dessous) — vous pouvez revenir en arrière, tout changer, recommencer, sans jamais polluer GLPI avant de valider le récapitulatif final.
-- **Un mode express pour les pressés** : un seul clic à l'étape 1 applique directement les réglages recommandés du profil choisi, sans parcourir les 17 étapes suivantes une à une — pour une installation simple, une instance GLPI opérationnelle en quelques secondes.
+- **Rien n'est créé avant la fin** : les 18 étapes ne font que composer une configuration en mémoire, avec un aperçu qui se met à jour en direct (voir capture ci-dessous) ; vous pouvez revenir en arrière, tout changer, recommencer, sans jamais polluer GLPI avant de valider le récapitulatif final.
+- **Un mode express pour les pressés** : un seul clic à l'étape 1 applique directement les réglages recommandés du profil choisi, sans parcourir les 17 étapes suivantes une à une : pour une installation simple, une instance GLPI opérationnelle en quelques secondes.
 - **Pensé multi-site et MSP dès le départ** : la même arborescence d'entités, les mêmes SLA et la même personnalisation graphique peuvent être différenciés par site ou par client, sans jongler entre plusieurs installations GLPI séparées.
 - **Conformité ISO 27001 intégrée** : rubriques documentaires et niveaux de criticité de la base de connaissances sont proposés dès l'assistant, pas ajoutés après coup en fouillant la documentation GLPI.
-- **Zéro donnée orpheline** : chaque réglage proposé (catégories, statuts, modèles...) est directement utilisable — le catalogue de services généré à l'étape 7 route déjà automatiquement vers la bonne catégorie créée à l'étape 6, par exemple.
+- **Zéro donnée orpheline** : chaque réglage proposé (catégories, statuts, modèles...) est directement utilisable : le catalogue de services généré à l'étape 7 route déjà automatiquement vers la bonne catégorie créée à l'étape 6, par exemple.
 
 ## Aperçu
 
-**Le choix du profil de départ** — quatre profils prédéfinis pré-remplissent les 17 étapes suivantes avec des valeurs adaptées à votre organisation, ajustables ensuite à volonté ; un mode express applique directement les réglages recommandés sans repasser par chaque étape :
+**Le choix du profil de départ** : quatre profils prédéfinis pré-remplissent les 17 étapes suivantes avec des valeurs adaptées à votre organisation, ajustables ensuite à volonté ; un mode express applique directement les réglages recommandés sans repasser par chaque étape :
 
-![Étape 1 — Choix du profil](docs/screenshots/01-profil.png)
+![Étape 1 : Choix du profil](docs/screenshots/01-profil.png)
 
-**La structure d'entités, avec aperçu en direct** — mono-site, multi-site ou MSP : l'arborescence se construit à gauche, l'aperçu à droite se met à jour à chaque changement, avant tout enregistrement :
+**La structure d'entités, avec aperçu en direct** : mono-site, multi-site ou MSP : l'arborescence se construit à gauche, l'aperçu à droite se met à jour à chaque changement, avant tout enregistrement :
 
-![Étape 2 — Structure des entités](docs/screenshots/02-entites.png)
+![Étape 2 : Structure des entités](docs/screenshots/02-entites.png)
 
 Toutes les autres captures d'écran (les 18 étapes en détail) sont dans le [tutoriel](docs/TUTORIAL.md).
 
@@ -106,14 +106,14 @@ installez/activez comme ci-dessus. Un stack Docker de test (GLPI + MariaDB) est 
 
 Une fois le plugin active, l'assistant est accessible depuis **Configuration > Profils de
 configuration > Configuration**. Choisissez un profil de depart (etape 1), puis parcourez les 18
-etapes en ajustant chaque reglage a vos besoins — rien n'est cree dans GLPI avant la derniere
+etapes en ajustant chaque reglage a vos besoins ; rien n'est cree dans GLPI avant la derniere
 etape (Recapitulatif). Le mode express (bouton disponible des l'etape 1) applique directement les
 reglages recommandes du profil choisi, sans repasser par chaque etape. Voir le
 [tutoriel](docs/TUTORIAL.md) pour une capture d'ecran de chaque etape.
 
 ## Documentation
 
-- [Tutoriel](docs/TUTORIAL.md) — parcours pas a pas des 18 etapes de l'assistant, avec capture
+- [Tutoriel](docs/TUTORIAL.md) : parcours pas a pas des 18 etapes de l'assistant, avec capture
   d'ecran de chacune.
 - [CHANGELOG.md](CHANGELOG.md) et [ROADMAP.md](ROADMAP.md) pour le detail technique de chaque
   fonctionnalite.
