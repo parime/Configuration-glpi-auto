@@ -93,13 +93,14 @@ Pas de package Composer (GLPI n'est pas distribue via Packagist, voir CHANGELOG.
 ### Depuis le code source
 
 ```bash
+cd /chemin/vers/glpi/plugins 
 git clone https://github.com/parime/Configuration-glpi-auto.git
-cd Configuration-glpi-auto
+mv Configuration-glpi-auto  /chemin/vers/glpi/plugins/configurationglpiauto
+cd configurationglpiauto
 composer install --no-dev   # vendor/autoload.php est requis au runtime, voir setup.php
 ```
 
-Puis copiez/liez le dossier dans `plugins/configurationglpiauto` d'une instance GLPI 11, et
-installez/activez comme ci-dessus. Un stack Docker de test (GLPI + MariaDB) est fourni dans
+ Un stack Docker de test (GLPI + MariaDB) est fourni dans
 `docker-compose.test.yml`.
 
 ## Utilisation
