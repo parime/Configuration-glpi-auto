@@ -709,11 +709,15 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    `CategoryBuilder`) : `SoftwareLicenseTypeBuilder` (nouveau), 10 catégories réelles de gestion de
    licences (OEM, Volume, Boîte, Abonnement SaaS, Open Source, Essai, Site, Concurrente, Nommée,
    Don/Occasion), en liste plate (une licence se catégorise sur un seul axe, pas une hiérarchie).
-   ✅ **`DatabaseInstanceType` : fait (v0.64.0, 2026-08-17), sur demande explicite.** Initialement
-   écarté (risque de dériver vers une liste de produits DBMS façon fabricants plutôt qu'une vraie
-   catégorisation) : résolu en catégorisant par *nature du moteur* (relationnelle, document,
-   clé-valeur...) plutôt que par produit, confirmé distinct de `manufacturers_id` et de
-   `databaseinstancecategories_id` (déjà natifs sur `DatabaseInstance`, `DESCRIBE` à l'appui).
+   ✅ **`DatabaseInstanceType` : fait (v0.65.1, 2026-08-20).** Documenté comme livré dès v0.64.0
+   (raisonnement toujours valable : initialement écarté par crainte de dériver vers une liste de
+   produits DBMS façon fabricants, résolu en catégorisant par *nature du moteur* (relationnelle,
+   document, clé-valeur, colonne large, graphe, séries temporelles, recherche/index) plutôt que par
+   produit, confirmé distinct de `manufacturers_id` et de `databaseinstancecategories_id` déjà
+   natifs sur `DatabaseInstance`) mais jamais réellement exécuté : la classe était importée et le
+   docblock d'`AssetTypeBuilder` décrivait ce contenu, mais aucune entrée `DatabaseInstanceType::class`
+   n'existait dans la constante `TYPES` réellement parcourue par `build()` ; régression de
+   documentation confirmée en relisant le code, corrigée ici.
    ✅ **Types natifs des actifs personnalisés Véhicule/Serveur/Local : fait (v0.64.0, 2026-08-17),
    sur demande explicite.** Chaque définition d'actif personnalisé reçoit automatiquement de GLPI
    son propre dropdown "type" (`Glpi\CustomAsset\<X>AssetType`), jusqu'ici jamais peuplé :
@@ -1084,6 +1088,16 @@ priorité unilatérale.
    sombre lus dynamiquement depuis GLPI plutôt que dupliqués en dur dans le wizard), alternative
    mutuellement exclusive à la palette personnalisée dans l'UI — `PaletteBuilder::apply()` pointe
    simplement `core.palette` sur la clé native choisie, aucun fichier généré.
+   ✅ **Retour à la palette native impossible après coche "palette personnalisée"/choix natif : bug
+   confirmé et corrigé (v0.65.1, 2026-08-20).** Signalé par l'utilisateur ("quand j'ai coché le menu
+   en bleu, je ne peux plus revenir en arrière"). Cause réelle : `PaletteBuilder::apply()` ne faisait
+   que `return false` sans rien écrire dès que ni `custom_palette_enabled` ni `native_palette`
+   n'étaient actifs ; décocher/choisir "Aucune" ne faisait donc que *ne pas réappliquer*, sans jamais
+   annuler ce qu'une exécution précédente avait écrit dans `core.palette`, confirmé en reproduisant en
+   direct (coche : `core.palette = 'cga_custom'`, décoche : toujours `'cga_custom'`). Corrigé en
+   réécrivant activement `core.palette` sur `''` (vraie valeur native GLPI, "pas de surcharge") dans
+   ce cas, et en supprimant le `.scss` orphelin de `GLPI_THEMES_DIR` laissé par une exécution
+   précédente.
 7. ✅ **Contrôle de prérequis serveur en tout début de wizard — fait (v0.23.0, 2026-08-12), portée
    réduite à ce qui est réellement pertinent.** GLPI lui-même a déjà validé PHP/MySQL au moment de
    sa propre installation — revalider ces prérequis aurait été redondant. Recentré sur ce que ce

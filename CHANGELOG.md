@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.65.1] - 2026-08-20
+
+### Fixed
+
+- **`DatabaseInstanceType` jamais réellement peuplé malgré la mention "fait" en v0.64.0**
+  (`AssetTypeBuilder`) : la classe était importée et le docblock décrivait déjà le contenu prévu
+  (Relationnelle, Document/NoSQL, Clé-valeur, Colonne large, Graphe, Séries temporelles,
+  Recherche/index), mais aucune entrée `DatabaseInstanceType::class` n'existait dans la constante
+  `TYPES` réellement parcourue par `build()` ; régression de documentation confirmée en relisant le
+  code (pas supposée), corrigée en ajoutant la vraie entrée avec ce contenu.
+- **Impossible de revenir à la palette GLPI native après avoir coché une palette personnalisée ou
+  choisi une palette native dans le wizard** (`PaletteBuilder`), signalé par l'utilisateur.
+  `PaletteBuilder::apply()` faisait `return false` sans rien écrire dès que ni
+  `custom_palette_enabled` ni `native_palette` n'étaient actifs ; décocher/repasser sur "Aucune" ne
+  faisait donc que *ne pas réappliquer*, sans jamais annuler ce qu'une exécution précédente du
+  wizard avait déjà écrit dans `core.palette` (confirmé en reproduisant en direct : coche → écrit
+  `cga_custom` → décoche → reste bloqué sur `cga_custom`). Corrigé en réécrivant activement
+  `core.palette` sur `''` (valeur native GLPI, "aucune surcharge") dans ce cas, et en supprimant le
+  fichier de thème `.scss` orphelin laissé par une exécution précédente dans `GLPI_THEMES_DIR`.
+
 ## [0.65.0] - 2026-08-19
 
 ### Added

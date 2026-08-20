@@ -301,6 +301,15 @@ class AssetTypeBuilder
             ['name' => 'Fuite d\'eau', 'icon' => '💧'],
             ['name' => 'Vibration', 'icon' => '📳'],
         ],
+        DatabaseInstanceType::class => [
+            ['name' => 'Relationnelle', 'icon' => '🗃️'],
+            ['name' => 'Document/NoSQL', 'icon' => '📄'],
+            ['name' => 'Clé-valeur', 'icon' => '🔑'],
+            ['name' => 'Colonne large', 'icon' => '📊'],
+            ['name' => 'Graphe', 'icon' => '🕸️'],
+            ['name' => 'Séries temporelles', 'icon' => '⏱️'],
+            ['name' => 'Recherche/index', 'icon' => '🔎'],
+        ],
     ];
 
     /**

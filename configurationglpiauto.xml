@@ -40,9 +40,9 @@
     </authors>
     <versions>
         <version>
-            <num>0.65.0</num>
+            <num>0.65.1</num>
             <compatibility>=11.0.0</compatibility>
-            <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.65.0/configuration-glpi-auto-0.65.0.zip</download_url>
+            <download_url>https://github.com/parime/Configuration-glpi-auto/releases/download/v0.65.1/configuration-glpi-auto-0.65.1.zip</download_url>
         </version>
         <version>
             <num>0.62.0</num>

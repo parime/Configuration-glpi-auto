@@ -83,14 +83,30 @@ class PaletteBuilder
             return true;
         }
 
+        // Neither toggle is on (custom palette unchecked, or "Aucune" selected in the native
+        // dropdown): confirmed real bug (2026-08-20) — this branch used to just `return false`
+        // without touching `core.palette` at all whenever `$nativePalette === ''`, so re-running
+        // the wizard after having previously checked "menu bleu"/picked a native palette left the
+        // instance-wide default stuck on whatever was applied last run instead of actually
+        // reverting to GLPI's own native default (auror). `core.palette` must be *actively* reset
+        // to '' here — an empty value is what GLPI itself treats as "no override", same value the
+        // "Aucune (garder Auror...)" option already sends — rather than skipped, so unchecking is a
+        // real undo of a previous run, not just a no-op that leaves the old choice in place.
         $nativePalette = (string) ($config->fields['native_palette'] ?? '');
-        if ($nativePalette !== '') {
-            \Config::setConfigurationValues('core', ['palette' => $nativePalette]);
+        \Config::setConfigurationValues('core', ['palette' => $nativePalette]);
 
-            return true;
+        // Also drop the previously-generated custom theme file, if any: leaving it in
+        // `GLPI_THEMES_DIR` after moving away from it serves no purpose (GLPI's `ThemeManager`
+        // keeps listing it as a selectable theme in every user's own "Personnalisation" preference
+        // tab even once it's no longer the instance-wide default) and is real, unnecessary leftover
+        // state from a previous run — same "unchecking must undo, not just stop re-doing" fix as
+        // the config reset above.
+        $path = GLPI_THEMES_DIR . '/' . self::THEME_KEY . '.scss';
+        if (is_file($path)) {
+            unlink($path);
         }
 
-        return false;
+        return $nativePalette !== '';
     }
 
     private function buildThemeFile(string $color): string
