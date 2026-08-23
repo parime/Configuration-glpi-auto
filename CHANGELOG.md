@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- README (FR/EN) : la liste des fonctionnalités mentionne désormais les types de certificat, la
+  bibliothèque de tickets récurrents, l'inventaire natif GLPI, le suivi de version GitHub, les
+  flux RSS et les statuts de projet supplémentaires, absents de la liste bien qu'ajoutés au code
+  depuis plusieurs versions.
+
 ## [0.70.0] - 2026-08-23
 
 ### Added
