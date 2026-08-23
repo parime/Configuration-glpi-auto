@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Message d'information à l'étape "Récapitulatif" de l'assistant**, sur demande explicite de
+  l'utilisateur (#141) : prévient que la création peut prendre plusieurs minutes selon le nombre
+  d'options cochées, pour éviter qu'un admin ferme la page ou clique plusieurs fois sur "Terminer"
+  en pensant que le wizard est bloqué.
 - **Suivi de version en tête de l'assistant** (`Config::getLatestGithubVersion()`), sur demande
   explicite de l'utilisateur (#153) : affiche la version installée à côté de la dernière version
   publiée sur GitHub (badge orange si différentes, vert si identiques), même mécanisme que les
