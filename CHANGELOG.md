@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.70.0] - 2026-08-23
+
 ### Added
 
 - **Traductions complétées dans les 5 langues** (#174) : régénéré `locales/*.pot` via l'outil
