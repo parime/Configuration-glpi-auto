@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **`release.yml` échouait sur `gh release create` si une release existait déjà pour le tag**
+  (ex. v0.65.1, créée manuellement sans archive via l'UI GitHub), ce qui empêchait la publication
+  automatisée du ZIP d'installation. Le step bascule maintenant sur `gh release upload` +
+  `gh release edit` quand la release existe déjà, au lieu d'échouer.
+- README (installation depuis les sources) : le dossier cloné doit être renommé en
+  `configurationglpiauto` (nom attendu par GLPI dans `plugins/`) avant `composer install`, ce que
+  les instructions précédentes omettaient.
+
 ## [0.65.1] - 2026-08-20
 
 ### Fixed
