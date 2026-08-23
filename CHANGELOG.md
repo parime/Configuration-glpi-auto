@@ -29,6 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- README (FR/EN) : retire 6 tirets cadratin introduits par erreur lors de la mise à jour de la
+  section Installation (#175) — régression sur le nettoyage de #136, corrigée avant de se
+  propager. `CHANGELOG.md` et `ROADMAP.md` restent à traiter (fichiers volumineux, déjà signalés
+  comme incomplets par le commit d'origine) — voir #142.
 - README (FR/EN) : ajout de deux fonctionnalités absentes de la liste (actifs personnalisés
   Véhicule/Serveur/Local/Sécurité incendie/Sécurité physique, types de licence logicielle et
   d'instance de base de données), et section Installation étoffée (méthode release ZIP

@@ -101,7 +101,7 @@ Ideal for a production GLPI instance, including a minimal Docker container.
    unzip configuration-glpi-auto-X.Y.Z.zip
    ```
    The archive already contains a `configurationglpiauto/` folder at its root, `vendor/` included
-   (no `composer install` step needed on the target server) — nothing to rename.
+   (no `composer install` step needed on the target server), nothing to rename.
 3. Install and activate it, either from the UI (**Configuration > Plugins**, search for
    "Configuration GLPI Auto") or from the command line:
    ```bash
@@ -113,7 +113,7 @@ Ideal for a production GLPI instance, including a minimal Docker container.
 
 `vendor/autoload.php` is a hard runtime requirement (PSR-4 autoloading for `src/`, see
 `setup.php`), but the plugin has no real production dependency (`composer.json`: `php >= 8.2`
-only) — `composer install --no-dev` is therefore fast, nothing else gets downloaded.
+only), so `composer install --no-dev` is fast, nothing else gets downloaded.
 
 ```bash
 cd /path/to/glpi/plugins
@@ -135,7 +135,7 @@ fetch the new code the same way you installed it (a new release ZIP, or `git pul
 ### Docker test stack
 
 A ready-to-use Docker stack (GLPI + MariaDB) for testing the plugin is provided in
-`docker-compose.test.yml` — see the comments at the top of that file for the full walkthrough
+`docker-compose.test.yml`: see the comments at the top of that file for the full walkthrough
 (installing GLPI, installing the plugin, known permission/cache pitfalls).
 
 ## Usage
