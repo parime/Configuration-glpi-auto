@@ -72,6 +72,11 @@ Toutes les autres captures d'écran (les 18 étapes en détail) sont dans le [tu
   dynamiques (donnees reelles du ticket/demandeur), modeles de changement et de probleme
 - Lieux, fabricants, categories de base de connaissances, rubriques documentaires (classification
   ISO 27001) et niveaux de criticite, intitules du module Projets
+- Actifs personnalises optionnels : Vehicule, Serveur, Local (branches dediees), Securite incendie
+  & premiers secours et Securite physique (alignes ISO/IEC 27001 Annexe A.7), avec leurs propres
+  champs de conformite (dates de verification, garantie...)
+- Types de licence logicielle et types d'instance de base de donnees, en plus des types de materiel
+  standards (ordinateurs, ecrans, reseau, peripheriques, telephones)
 - Interface traduite en 5 langues (francais, anglais, allemand, italien, espagnol)
 
 ## Prerequis
@@ -82,26 +87,58 @@ Toutes les autres captures d'écran (les 18 étapes en détail) sont dans le [tu
 
 ## Installation
 
-Pas de package Composer (GLPI n'est pas distribue via Packagist, voir CHANGELOG.md). Deux options :
+Pas de package Composer (GLPI n'est pas distribue via Packagist). Deux facons de recuperer le
+plugin :
 
-### Depuis une release
+### Methode recommandee : archive de release (aucun Git ni Composer requis)
 
-1. Telechargez l'archive depuis [GitHub Releases](https://github.com/parime/Configuration-glpi-auto/releases)
-2. Extrayez-la dans le dossier `plugins/` de GLPI (elle contient deja `vendor/`, pret a l'emploi)
-3. Installez et activez via l'interface GLPI ou `bin/console plugin:install|activate configurationglpiauto`
+Ideal pour une instance GLPI en production, y compris dans un conteneur Docker minimal.
 
-### Depuis le code source
+1. Telechargez `configuration-glpi-auto-X.Y.Z.zip` depuis les
+   [Releases GitHub](https://github.com/parime/Configuration-glpi-auto/releases) (dernier
+   badge « Latest Release » en haut de cette page).
+2. Extrayez l'archive dans le dossier `plugins/` de votre instance GLPI :
+   ```bash
+   cd /chemin/vers/glpi/plugins
+   unzip configuration-glpi-auto-X.Y.Z.zip
+   ```
+   L'archive contient deja un dossier `configurationglpiauto/` a la racine, avec `vendor/` inclus
+   (aucune etape `composer install` necessaire sur le serveur cible) — pas de renommage a faire.
+3. Installez et activez, depuis l'interface (**Configuration > Plugins**, chercher
+   « Configuration GLPI Auto ») ou en ligne de commande :
+   ```bash
+   php bin/console plugin:install configurationglpiauto
+   php bin/console plugin:activate configurationglpiauto
+   ```
+
+### Depuis le code source (pour contribuer ou developper)
+
+`vendor/autoload.php` est requis au runtime (autoload PSR-4 de `src/`, voir `setup.php`) mais le
+plugin n'a aucune dependance de production reelle (`composer.json` : `php >= 8.2` uniquement) —
+`composer install --no-dev` est donc rapide, sans rien telecharger d'autre.
 
 ```bash
-cd /chemin/vers/glpi/plugins 
+cd /chemin/vers/glpi/plugins
 git clone https://github.com/parime/Configuration-glpi-auto.git
-mv Configuration-glpi-auto  /chemin/vers/glpi/plugins/configurationglpiauto
+mv Configuration-glpi-auto configurationglpiauto
 cd configurationglpiauto
-composer install --no-dev   # vendor/autoload.php est requis au runtime, voir setup.php
+composer install --no-dev
 ```
 
- Un stack Docker de test (GLPI + MariaDB) est fourni dans
-`docker-compose.test.yml`.
+Puis installez/activez comme ci-dessus (UI ou `bin/console`).
+
+### Mettre a jour
+
+Une mise a jour ne se signale jamais automatiquement (plugin hors Marketplace officiel) :
+recuperez le nouveau code par la meme methode qu'a l'installation (nouvelle release ZIP, ou
+`git pull` + `composer install --no-dev` si installe depuis les sources), puis relancez
+`plugin:install --force` (migration de base si necessaire) et `plugin:activate`.
+
+### Stack de test Docker
+
+Un stack Docker (GLPI + MariaDB) pret a l'emploi pour tester le plugin est fourni dans
+`docker-compose.test.yml` — voir les commentaires en tete de fichier pour la marche a suivre
+complete (installation de GLPI, du plugin, pieges de permissions/cache connus).
 
 ## Utilisation
 

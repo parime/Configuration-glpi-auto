@@ -71,6 +71,11 @@ All other screenshots (all 18 steps in detail) are in the [tutorial](docs/TUTORI
   (real ticket/requester data), change and problem templates
 - Locations, manufacturers, knowledge base categories, document topics (ISO 27001 classification)
   and criticality levels, Projects module dropdowns
+- Optional custom assets: Vehicle, Server, Building/Local (dedicated branches), Fire Safety & First
+  Aid and Physical Security (aligned with ISO/IEC 27001 Annex A.7), each with its own compliance
+  fields (verification dates, warranty...)
+- Software license types and database instance types, on top of standard equipment types
+  (computers, monitors, network, peripherals, phones)
 - Interface translated into 5 languages (French, English, German, Italian, Spanish)
 
 ## Requirements
@@ -81,27 +86,57 @@ All other screenshots (all 18 steps in detail) are in the [tutorial](docs/TUTORI
 
 ## Installation
 
-No Composer package (GLPI isn't distributed via Packagist, see CHANGELOG.md). Two options:
+No Composer package (GLPI isn't distributed via Packagist). Two ways to get the plugin:
 
-### From a release
+### Recommended: release archive (no Git or Composer required)
 
-1. Download the archive from [GitHub Releases](https://github.com/parime/Configuration-glpi-auto/releases)
-2. Extract it into GLPI's `plugins/` folder (it already contains `vendor/`, ready to use)
-3. Install and activate it via the GLPI interface or `bin/console plugin:install|activate configurationglpiauto`
+Ideal for a production GLPI instance, including a minimal Docker container.
 
-### From source
+1. Download `configuration-glpi-auto-X.Y.Z.zip` from
+   [GitHub Releases](https://github.com/parime/Configuration-glpi-auto/releases) (the "Latest
+   Release" badge at the top of this page links to the newest one).
+2. Extract the archive into GLPI's `plugins/` folder:
+   ```bash
+   cd /path/to/glpi/plugins
+   unzip configuration-glpi-auto-X.Y.Z.zip
+   ```
+   The archive already contains a `configurationglpiauto/` folder at its root, `vendor/` included
+   (no `composer install` step needed on the target server) — nothing to rename.
+3. Install and activate it, either from the UI (**Configuration > Plugins**, search for
+   "Configuration GLPI Auto") or from the command line:
+   ```bash
+   php bin/console plugin:install configurationglpiauto
+   php bin/console plugin:activate configurationglpiauto
+   ```
+
+### From source (to contribute or develop)
+
+`vendor/autoload.php` is a hard runtime requirement (PSR-4 autoloading for `src/`, see
+`setup.php`), but the plugin has no real production dependency (`composer.json`: `php >= 8.2`
+only) — `composer install --no-dev` is therefore fast, nothing else gets downloaded.
 
 ```bash
 cd /path/to/glpi/plugins
 git clone https://github.com/parime/Configuration-glpi-auto.git
-mv Configuration-glpi-auto  /path/to/glpi/plugins/configurationglpiauto
+mv Configuration-glpi-auto configurationglpiauto
 cd configurationglpiauto
-composer install --no-dev   # vendor/autoload.php est requis au runtime, voir setup.php
+composer install --no-dev
 ```
 
-Then copy/symlink the folder into `plugins/configurationglpiauto` of a GLPI 11 instance, and
-install/activate it as above. A test Docker stack (GLPI + MariaDB) is provided in
-`docker-compose.test.yml`.
+Then install/activate as above (UI or `bin/console`).
+
+### Updating
+
+An update is never signaled automatically (this plugin is outside the official Marketplace):
+fetch the new code the same way you installed it (a new release ZIP, or `git pull` +
+`composer install --no-dev` if installed from source), then re-run `plugin:install --force`
+(database migration if needed) and `plugin:activate`.
+
+### Docker test stack
+
+A ready-to-use Docker stack (GLPI + MariaDB) for testing the plugin is provided in
+`docker-compose.test.yml` — see the comments at the top of that file for the full walkthrough
+(installing GLPI, installing the plugin, known permission/cache pitfalls).
 
 ## Usage
 
