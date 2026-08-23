@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Suivi de version en tête de l'assistant** (`Config::getLatestGithubVersion()`), sur demande
+  explicite de l'utilisateur (#153) : affiche la version installée à côté de la dernière version
+  publiée sur GitHub (badge orange si différentes, vert si identiques), même mécanisme que les
+  plugins jumeaux assetsign-glpi et glpi-vulnerability-manager. Appel `Toolbox::getURLContent()`
+  vers l'API GitHub, mis en cache 24h (`$GLPI_CACHE`, même durée que `RSSFeed` du cœur GLPI) pour
+  rester sous la limite de 60 requêtes/heure de l'API non authentifiée.
+
 ## [0.66.0] - 2026-08-23
 
 ### Added
