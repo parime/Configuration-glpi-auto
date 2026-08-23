@@ -261,14 +261,14 @@ class SolutionLibraryBuilder
         $count = 0;
         foreach (self::TYPES as $type) {
             $typeId = $this->getOrCreateType($type);
-            if ($withIcons) {
-                Translations::applyIcon(SolutionType::class, $typeId, $type['name'], $type['icon']);
-            }
+            // Always called (see StateBuilder::build() for the reasoning) so unchecking icons after
+            // a prior run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(SolutionType::class, $typeId, $type['name'], $withIcons ? $type['icon'] : '');
             foreach ($type['templates'] as $template) {
                 $templateId = $this->getOrCreateTemplate($template['name'], $template['content'], $typeId);
-                if ($withTemplateIcons) {
-                    Translations::applyIcon(SolutionTemplate::class, $templateId, $template['name'], $template['icon']);
-                }
+                // Always called (see StateBuilder::build() for the reasoning) so unchecking icons
+                // after a prior run actually strips them instead of leaving old rows stuck.
+                Translations::applyIcon(SolutionTemplate::class, $templateId, $template['name'], $withTemplateIcons ? $template['icon'] : '');
                 Translations::applyContent(SolutionTemplate::class, $templateId, $template['translations']);
                 $count++;
             }

@@ -92,16 +92,16 @@ class ProjectTaxonomyBuilder
         $count = 0;
         foreach (self::PROJECT_TYPES as $type) {
             $id = $this->getOrCreate(ProjectType::class, $type['name'], $type['comment'] ?? '');
-            if ($withIcons) {
-                Translations::applyIcon(ProjectType::class, $id, $type['name'], $type['icon']);
-            }
+            // Always called (see StateBuilder::build() for the reasoning) so unchecking icons after
+            // a prior run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(ProjectType::class, $id, $type['name'], $withIcons ? $type['icon'] : '');
             $count++;
         }
         foreach (self::TASK_TYPES as $type) {
             $id = $this->getOrCreate(ProjectTaskType::class, $type['name'], $type['comment'] ?? '');
-            if ($withIcons) {
-                Translations::applyIcon(ProjectTaskType::class, $id, $type['name'], $type['icon']);
-            }
+            // Always called (see StateBuilder::build() for the reasoning) so unchecking icons after
+            // a prior run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(ProjectTaskType::class, $id, $type['name'], $withIcons ? $type['icon'] : '');
             $count++;
         }
         foreach (self::PROJECT_STATES as $state) {

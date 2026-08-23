@@ -60,10 +60,11 @@ class ChangeProblemTemplateBuilder
         $problemId = $this->getOrCreateTemplate(ProblemTemplate::class, self::PROBLEM_NAME);
         $this->ensureMandatory(ProblemTemplateMandatoryField::class, 'problemtemplates_id', $problemId, $problemSo['content'] ?? -1);
 
-        if (!empty($config->fields['change_problem_template_icons_enabled'])) {
-            Translations::applyIcon(ChangeTemplate::class, $changeId, self::CHANGE_NAME, '🔄');
-            Translations::applyIcon(ProblemTemplate::class, $problemId, self::PROBLEM_NAME, '🧩');
-        }
+        // Always called (see StateBuilder::build() for the reasoning) so unchecking icons after a
+        // prior run actually strips them instead of leaving old rows stuck.
+        $withIcons = !empty($config->fields['change_problem_template_icons_enabled']);
+        Translations::applyIcon(ChangeTemplate::class, $changeId, self::CHANGE_NAME, $withIcons ? '🔄' : '');
+        Translations::applyIcon(ProblemTemplate::class, $problemId, self::PROBLEM_NAME, $withIcons ? '🧩' : '');
 
         $this->assignToProfiles($changeId, $problemId);
 

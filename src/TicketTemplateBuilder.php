@@ -92,10 +92,11 @@ class TicketTemplateBuilder
             $this->ensureMandatory($completeId, $so[$key] ?? -1);
         }
 
-        if (!empty($config->fields['ticket_template_icons_enabled'])) {
-            Translations::applyIcon(TicketTemplate::class, $simplifiedId, self::SIMPLIFIED_NAME, '📝');
-            Translations::applyIcon(TicketTemplate::class, $completeId, self::COMPLETE_NAME, '🛠️');
-        }
+        // Always called (see StateBuilder::build() for the reasoning) so unchecking icons after a
+        // prior run actually strips them instead of leaving old rows stuck.
+        $withIcons = !empty($config->fields['ticket_template_icons_enabled']);
+        Translations::applyIcon(TicketTemplate::class, $simplifiedId, self::SIMPLIFIED_NAME, $withIcons ? '📝' : '');
+        Translations::applyIcon(TicketTemplate::class, $completeId, self::COMPLETE_NAME, $withIcons ? '🛠️' : '');
 
         $this->assignToProfiles($simplifiedId, $completeId);
 

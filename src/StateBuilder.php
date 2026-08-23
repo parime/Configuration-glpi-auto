@@ -160,9 +160,10 @@ class StateBuilder
                 }
             }
 
-            if ($withIcons) {
-                Translations::applyIcon(State::class, $stateId, $state['name'], $state['icon']);
-            }
+            // Always called (not just when withIcons): an empty icon still refreshes the
+            // DropdownTranslation rows down to the plain translated text, which is how unchecking
+            // the icons box after a prior run actually removes the icon instead of leaving it stuck.
+            Translations::applyIcon(State::class, $stateId, $state['name'], $withIcons ? $state['icon'] : '');
 
             $names[] = $state['name'];
         }

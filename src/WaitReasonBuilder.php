@@ -100,19 +100,22 @@ class WaitReasonBuilder
 
     private function getOrCreateReason(array $reason, bool $withIcons): void
     {
+        // Resolved once and reused below (see StateBuilder::build() for why this is always called,
+        // never skipped, when icons are unchecked) so unchecking icons after a prior run actually
+        // strips them instead of leaving old rows stuck.
+        $icon = $withIcons ? $reason['icon'] : '';
+
         $pendingReason = new PendingReason();
         if ($pendingReason->getFromDBByCrit(['name' => $reason['name'], 'entities_id' => 0])) {
-            if ($withIcons) {
-                Translations::applyIcon(PendingReason::class, (int) $pendingReason->getID(), $reason['name'], $reason['icon']);
-                // The linked follow-up/solution templates were created on a prior run, before this
-                // branch existed to touch them — re-apply here too so re-running the wizard against
-                // an already-configured instance still catches up, not just a fresh install.
-                if ((int) $pendingReason->fields['itilfollowuptemplates_id'] > 0) {
-                    Translations::applyIcon(ITILFollowupTemplate::class, (int) $pendingReason->fields['itilfollowuptemplates_id'], $reason['name'], $reason['icon']);
-                }
-                if ((int) $pendingReason->fields['solutiontemplates_id'] > 0) {
-                    Translations::applyIcon(SolutionTemplate::class, (int) $pendingReason->fields['solutiontemplates_id'], $reason['name'], $reason['icon']);
-                }
+            Translations::applyIcon(PendingReason::class, (int) $pendingReason->getID(), $reason['name'], $icon);
+            // The linked follow-up/solution templates were created on a prior run, before this
+            // branch existed to touch them — re-apply here too so re-running the wizard against
+            // an already-configured instance still catches up, not just a fresh install.
+            if ((int) $pendingReason->fields['itilfollowuptemplates_id'] > 0) {
+                Translations::applyIcon(ITILFollowupTemplate::class, (int) $pendingReason->fields['itilfollowuptemplates_id'], $reason['name'], $icon);
+            }
+            if ((int) $pendingReason->fields['solutiontemplates_id'] > 0) {
+                Translations::applyIcon(SolutionTemplate::class, (int) $pendingReason->fields['solutiontemplates_id'], $reason['name'], $icon);
             }
             return;
         }
@@ -124,13 +127,11 @@ class WaitReasonBuilder
             ? $this->getOrCreateSolutionTemplate($reason['name'], $reason['solution_content'])
             : 0;
 
-        if ($withIcons) {
-            if ($followupTemplateId > 0) {
-                Translations::applyIcon(ITILFollowupTemplate::class, $followupTemplateId, $reason['name'], $reason['icon']);
-            }
-            if ($solutionTemplateId > 0) {
-                Translations::applyIcon(SolutionTemplate::class, $solutionTemplateId, $reason['name'], $reason['icon']);
-            }
+        if ($followupTemplateId > 0) {
+            Translations::applyIcon(ITILFollowupTemplate::class, $followupTemplateId, $reason['name'], $icon);
+        }
+        if ($solutionTemplateId > 0) {
+            Translations::applyIcon(SolutionTemplate::class, $solutionTemplateId, $reason['name'], $icon);
         }
 
         $id = $pendingReason->add([
@@ -150,9 +151,7 @@ class WaitReasonBuilder
             (new ITILFollowupTemplate())->update(['id' => $followupTemplateId, 'pendingreasons_id' => $id]);
         }
 
-        if ($withIcons) {
-            Translations::applyIcon(PendingReason::class, (int) $id, $reason['name'], $reason['icon']);
-        }
+        Translations::applyIcon(PendingReason::class, (int) $id, $reason['name'], $icon);
     }
 
     private function getOrCreateFollowupTemplate(string $name, string $content): int

@@ -104,4 +104,37 @@ final class ProjectTaxonomyBuilderTest extends TestCase
         $count = $DB->request(['COUNT' => 'c', 'FROM' => 'glpi_projectstates', 'WHERE' => ['name' => 'Annulé']])->current()['c'];
         $this->assertSame(1, $count);
     }
+
+    /**
+     * Regression guard for #178: unchecking "Ajouter des icônes" and re-running the wizard used to
+     * never remove icons already written on a prior run — `build()` skipped the `applyIcon()` call
+     * entirely instead of calling it with an empty icon.
+     */
+    public function testTogglingIconsOffRemovesAPreviouslyAppliedIcon(): void
+    {
+        $builder = new ProjectTaxonomyBuilder();
+
+        $withIcons = new Config();
+        $withIcons->fields = array_merge(Config::getDefaults(), [
+            'project_taxonomy_enabled' => 1,
+            'project_taxonomy_icons_enabled' => 1,
+        ]);
+        $builder->build($withIcons);
+
+        $type = new ProjectType();
+        $type->getFromDBByCrit(['name' => 'Interne']);
+        global $DB;
+        $withIcon = $DB->request(['FROM' => 'glpi_dropdowntranslations', 'WHERE' => ['itemtype' => ProjectType::class, 'items_id' => $type->getID(), 'language' => 'fr_FR', 'field' => 'name']])->current();
+        $this->assertSame('🏠 Interne', $withIcon['value']);
+
+        $withoutIcons = new Config();
+        $withoutIcons->fields = array_merge(Config::getDefaults(), [
+            'project_taxonomy_enabled' => 1,
+            'project_taxonomy_icons_enabled' => 0,
+        ]);
+        $builder->build($withoutIcons);
+
+        $withoutIcon = $DB->request(['FROM' => 'glpi_dropdowntranslations', 'WHERE' => ['itemtype' => ProjectType::class, 'items_id' => $type->getID(), 'language' => 'fr_FR', 'field' => 'name']])->current();
+        $this->assertSame('Interne', $withoutIcon['value']);
+    }
 }

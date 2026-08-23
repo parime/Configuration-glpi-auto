@@ -59,9 +59,9 @@ class UserCategoryBuilder
         $count = 0;
         foreach (self::CATEGORIES as $category) {
             $id = $this->getOrCreate($category['name']);
-            if ($withIcons) {
-                Translations::applyIcon(UserCategory::class, $id, $category['name'], $category['icon']);
-            }
+            // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior
+            // run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(UserCategory::class, $id, $category['name'], $withIcons ? $category['icon'] : '');
             $count++;
         }
 

@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Décocher "Ajouter des icônes" retire maintenant vraiment les icônes déjà appliquées lors d'un
+  précédent lancement de l'assistant** (#178), sur les ~20 builders qui passent par
+  `Translations::applyIcon()` (états, catégories tickets/tâches/KB, modèles de tickets/changements/
+  problèmes/tâches/validation/solutions/suivis, fabricants, types de licences logicielles, types
+  d'actifs, événements de planning, motifs d'attente, taxonomie projet). Chaque builder appelait
+  `applyIcon()` uniquement quand sa case était cochée, donc rien ne se passait quand elle était
+  décochée après coup. `applyIcon()` gère déjà le cas d'une icône vide (retombe sur le texte traduit
+  seul) — chaque builder l'appelle désormais systématiquement, avec `''` à la place de l'icône quand
+  la case est décochée, au lieu de sauter l'appel.
+  `FireSafetyAssetBuilder`/`PhysicalSecurityAssetBuilder`/`RequestTypeTranslationBuilder` n'étaient
+  pas concernés (icône déjà bakée dans le nom natif, retrait actif déjà en place) ;
+  `ProjectTemplateBuilder` non plus (pas de bascule icônes : `Project` n'a pas de couche de
+  traduction à activer/désactiver).
+
 ## [0.67.0] - 2026-08-23
 
 ### Added

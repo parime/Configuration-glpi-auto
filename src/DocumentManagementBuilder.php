@@ -80,9 +80,9 @@ class DocumentManagementBuilder
                 $id = $item->add($crit + ['comment' => $node['comment']]);
                 $item->getFromDB($id);
             }
-            if ($withIcons) {
-                Translations::applyIcon(DocumentCategory::class, (int) $item->getID(), $node['name'], $node['icon']);
-            }
+            // Always called (see StateBuilder::build() for the reasoning) so unchecking icons after
+            // a prior run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(DocumentCategory::class, (int) $item->getID(), $node['name'], $withIcons ? $node['icon'] : '');
             $count++;
         }
 
@@ -93,9 +93,9 @@ class DocumentManagementBuilder
                 $id = $item->add($crit + ['comment' => $node['comment'], 'entities_id' => 0, 'is_recursive' => 1]);
                 $item->getFromDB($id);
             }
-            if ($withIcons) {
-                Translations::applyIcon(BusinessCriticity::class, (int) $item->getID(), $node['name'], $node['icon']);
-            }
+            // Always called (see StateBuilder::build() for the reasoning) so unchecking icons after
+            // a prior run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(BusinessCriticity::class, (int) $item->getID(), $node['name'], $withIcons ? $node['icon'] : '');
             $count++;
         }
 

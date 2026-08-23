@@ -237,9 +237,9 @@ class CategoryBuilder
         // given an emoji (Translations::applyIcon() trims a blank icon to just the translated
         // text) — an English/German/Italian/Spanish session shouldn't fall back to French for the
         // ~37 leaf categories just because they have no icon of their own.
-        if ($withIcons) {
-            Translations::applyIcon(ITILCategory::class, $itemId, $node['name'], $node['icon'] ?? '');
-        }
+        // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior run
+        // actually strips them instead of leaving old DropdownTranslation rows stuck.
+        Translations::applyIcon(ITILCategory::class, $itemId, $node['name'], $withIcons ? ($node['icon'] ?? '') : '');
 
         foreach ($node['children'] ?? [] as $child) {
             $count += $this->buildNode($child, $itemId, $withIcons);
