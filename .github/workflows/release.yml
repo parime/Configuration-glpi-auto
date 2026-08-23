@@ -135,6 +135,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "$GITHUB_REF_NAME" "$ARCHIVE_NAME" \
-            --title "$GITHUB_REF_NAME" \
-            --generate-notes
+          # gh release create fails outright if a release already exists for this tag (e.g. one
+          # created manually through the GitHub UI before this workflow ran, as happened for
+          # v0.65.1: an empty release with no archive blocked the automated one). Falling back to
+          # upload/edit keeps this step idempotent instead of leaving the tag stuck without a zip.
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" "$ARCHIVE_NAME" --clobber
+            gh release edit "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
+          else
+            gh release create "$GITHUB_REF_NAME" "$ARCHIVE_NAME" \
+              --title "$GITHUB_REF_NAME" \
+              --generate-notes
+          fi

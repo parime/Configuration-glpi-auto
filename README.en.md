@@ -92,8 +92,10 @@ No Composer package (GLPI isn't distributed via Packagist, see CHANGELOG.md). Tw
 ### From source
 
 ```bash
+cd /path/to/glpi/plugins
 git clone https://github.com/parime/Configuration-glpi-auto.git
-cd Configuration-glpi-auto
+mv Configuration-glpi-auto  /path/to/glpi/plugins/configurationglpiauto
+cd configurationglpiauto
 composer install --no-dev   # vendor/autoload.php est requis au runtime, voir setup.php
 ```
 
