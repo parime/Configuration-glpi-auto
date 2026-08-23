@@ -133,9 +133,9 @@ class FollowupLibraryBuilder
         $count = 0;
         foreach (self::TEMPLATES as $template) {
             $templateId = $this->getOrCreateTemplate($template['name'], $template['content']);
-            if ($withIcons) {
-                Translations::applyIcon(ITILFollowupTemplate::class, $templateId, $template['name'], $template['icon']);
-            }
+            // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior
+            // run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(ITILFollowupTemplate::class, $templateId, $template['name'], $withIcons ? $template['icon'] : '');
             Translations::applyContent(ITILFollowupTemplate::class, $templateId, $template['translations']);
             $count++;
         }

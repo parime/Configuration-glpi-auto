@@ -68,9 +68,9 @@ class ProjectTaskTemplateBuilder
         $count = 0;
         foreach (self::TEMPLATES as $template) {
             $templateId = $this->getOrCreateTemplate($template['name'], $template['description'], $this->findTaskTypeId($template['task_type']));
-            if ($withIcons) {
-                Translations::applyIcon(ProjectTaskTemplate::class, $templateId, $template['name'], $template['icon']);
-            }
+            // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior
+            // run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(ProjectTaskTemplate::class, $templateId, $template['name'], $withIcons ? $template['icon'] : '');
             $count++;
         }
 

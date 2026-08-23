@@ -96,8 +96,8 @@ class SoftwareLicenseTypeBuilder
             $item->getFromDB($id);
         }
 
-        if ($withIcons) {
-            Translations::applyIcon(SoftwareLicenseType::class, (int) $item->getID(), $type['name'], $type['icon']);
-        }
+        // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior run
+        // actually strips them instead of leaving old rows stuck.
+        Translations::applyIcon(SoftwareLicenseType::class, (int) $item->getID(), $type['name'], $withIcons ? $type['icon'] : '');
     }
 }

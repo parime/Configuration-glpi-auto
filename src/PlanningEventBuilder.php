@@ -99,9 +99,9 @@ class PlanningEventBuilder
                 $item->getFromDB($id);
             }
             $categoryIds[$category['name']] = (int) $item->getID();
-            if ($withIcons) {
-                Translations::applyIcon(PlanningEventCategory::class, (int) $item->getID(), $category['name'], $category['icon']);
-            }
+            // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior
+            // run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(PlanningEventCategory::class, (int) $item->getID(), $category['name'], $withIcons ? $category['icon'] : '');
             $count++;
         }
 

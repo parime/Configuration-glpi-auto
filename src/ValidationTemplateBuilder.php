@@ -81,9 +81,9 @@ class ValidationTemplateBuilder
         foreach (self::TEMPLATES as $template) {
             $stepId = (!empty($template['committee']) && $committeeStepId !== null) ? $committeeStepId : 0;
             $templateId = $this->getOrCreateTemplate($template['name'], $template['content'], $stepId);
-            if ($withIcons) {
-                Translations::applyIcon(ITILValidationTemplate::class, $templateId, $template['name'], $template['icon']);
-            }
+            // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior
+            // run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(ITILValidationTemplate::class, $templateId, $template['name'], $withIcons ? $template['icon'] : '');
             $count++;
         }
 

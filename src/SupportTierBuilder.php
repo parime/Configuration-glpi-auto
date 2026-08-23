@@ -67,9 +67,9 @@ class SupportTierBuilder
         $ids = [];
         foreach (self::TIERS as $key => $tier) {
             $id = $this->getOrCreate($tier['name']);
-            if ($withIcons) {
-                Translations::applyIcon(Group::class, $id, $tier['name'], $tier['icon']);
-            }
+            // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior
+            // run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(Group::class, $id, $tier['name'], $withIcons ? $tier['icon'] : '');
             $ids[$key] = $id;
         }
 

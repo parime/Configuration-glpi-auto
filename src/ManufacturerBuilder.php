@@ -63,9 +63,9 @@ class ManufacturerBuilder
         $count = 0;
         foreach (self::MANUFACTURERS as $manufacturer) {
             $id = $this->getOrCreate($manufacturer['name']);
-            if ($withIcons) {
-                Translations::applyIcon(Manufacturer::class, $id, $manufacturer['name'], $manufacturer['icon']);
-            }
+            // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior
+            // run actually strips them instead of leaving old rows stuck.
+            Translations::applyIcon(Manufacturer::class, $id, $manufacturer['name'], $withIcons ? $manufacturer['icon'] : '');
             $count++;
         }
 

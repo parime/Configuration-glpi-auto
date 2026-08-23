@@ -405,9 +405,9 @@ class AssetTypeBuilder
         foreach (self::TYPES as $itemtype => $types) {
             foreach ($types as $type) {
                 $id = $this->getOrCreate($itemtype, $type['name']);
-                if ($withIcons) {
-                    Translations::applyIcon($itemtype, $id, $type['name'], $type['icon']);
-                }
+                // Always called (see StateBuilder for the reasoning) so unchecking icons after a
+                // prior run actually strips them instead of leaving old rows stuck.
+                Translations::applyIcon($itemtype, $id, $type['name'], $withIcons ? $type['icon'] : '');
                 $count++;
             }
         }

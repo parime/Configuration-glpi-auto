@@ -65,4 +65,28 @@ final class TranslationsTest extends TestCase
         $count = $DB->request(['COUNT' => 'c', 'FROM' => 'glpi_dropdowntranslations', 'WHERE' => ['itemtype' => State::class, 'items_id' => $this->stateId, 'language' => 'fr_FR', 'field' => 'name']])->current()['c'];
         $this->assertSame(1, $count);
     }
+
+    /**
+     * Regression guard for #178: unchecking a builder's icon toggle after a prior run used to
+     * leave the icon stuck forever, because every builder only ever called `applyIcon()` when its
+     * toggle was *checked* — nothing ever ran to undo it when unchecked. The fix is this method's
+     * own trim-to-empty-icon behaviour (already used for icon-less leaf nodes): every builder now
+     * always calls `applyIcon()`, passing `''` instead of skipping the call when unchecked.
+     */
+    public function testApplyIconWithEmptyIconStripsAPreviouslyAppliedIcon(): void
+    {
+        $state = new State();
+        $this->stateId = (int) $state->add(['name' => 'TestStateCGA_' . uniqid()]);
+
+        Translations::applyIcon(State::class, $this->stateId, 'Attribué', '🔵');
+        global $DB;
+        $withIcon = $DB->request(['FROM' => 'glpi_dropdowntranslations', 'WHERE' => ['itemtype' => State::class, 'items_id' => $this->stateId, 'language' => 'fr_FR', 'field' => 'name']])->current();
+        $this->assertSame('🔵 Attribué', $withIcon['value']);
+
+        Translations::applyIcon(State::class, $this->stateId, 'Attribué', '');
+        $withoutIcon = $DB->request(['FROM' => 'glpi_dropdowntranslations', 'WHERE' => ['itemtype' => State::class, 'items_id' => $this->stateId, 'language' => 'fr_FR', 'field' => 'name']])->current();
+        $this->assertSame('Attribué', $withoutIcon['value']);
+        // Same row updated in place, not a new one added alongside the old.
+        $this->assertSame($withIcon['id'], $withoutIcon['id']);
+    }
 }

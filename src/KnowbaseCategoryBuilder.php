@@ -67,9 +67,9 @@ class KnowbaseCategoryBuilder
         }
         $itemId = (int) $item->getID();
 
-        if ($withIcon) {
-            Translations::applyIcon(KnowbaseItemCategory::class, $itemId, $name, $icon);
-        }
+        // Always called (see StateBuilder::build() for the reasoning) so unchecking icons after a
+        // prior run actually strips them instead of leaving old rows stuck.
+        Translations::applyIcon(KnowbaseItemCategory::class, $itemId, $name, $withIcon ? $icon : '');
 
         return $itemId;
     }
