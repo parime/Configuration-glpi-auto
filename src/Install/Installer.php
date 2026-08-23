@@ -120,6 +120,7 @@ final class Installer
                 `project_task_states_enabled` tinyint NOT NULL DEFAULT 0,
                 `satisfaction_survey_enabled` tinyint NOT NULL DEFAULT 0,
                 `committee_validation_enabled` tinyint NOT NULL DEFAULT 0,
+                `inventory_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `helpdesk_form_hide_fields` tinyint NOT NULL DEFAULT 0,
@@ -339,6 +340,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'physical_security_assets_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'physical_security_asset_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'request_type_icons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'inventory_enabled', 'bool', ['value' => 0]);
         }
 
         // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape

@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Proposer d'activer l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)** dans
+  l'étape "Réglages généraux" de l'assistant, sur demande explicite de l'utilisateur (#147) :
+  ouvre `Config::enabled_inventory` (contexte `inventory`) via `\Config::setConfigurationValues()`.
+  Décoché par défaut, comme la validation N+1 juste en dessous : ouvre un vrai point d'entrée
+  réseau, pas juste du contenu — à activer seulement si l'organisation compte réellement déployer
+  des agents.
+
 ## [0.66.1] - 2026-08-23
 
 ### Added
