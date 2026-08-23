@@ -65,10 +65,19 @@ use Glpi\Asset\CustomFieldType\StringType;
  * `required` (a real, GLPI-native per-field option — `Glpi\Asset\CustomFieldType\AbstractType::
  * getOptions()` exposes a `BooleanOption('required', 'Mandatory')` on every field type, the exact
  * checkbox an admin would tick by hand on the "Champs" tab; not a client-side-only hint). "Type de
- * carburant" is a real dropdown (`FuelType`, this plugin's own `CommonDropdown` — GLPI has no
- * native fuel-type concept to reuse, unlike every other dropdown this plugin populates) seeded
- * with common fuel types, extended on every resubmit the same way `ManufacturerDictionaryBuilder`
- * extends its own list, independently of whether the Vehicule definition itself already exists.
+ * carburant / motorisation" is a real dropdown (`FuelType`, this plugin's own `CommonDropdown` —
+ * GLPI has no native fuel-type concept to reuse, unlike every other dropdown this plugin
+ * populates) seeded with common fuel types, extended on every resubmit the same way
+ * `ManufacturerDictionaryBuilder` extends its own list, independently of whether the Vehicule
+ * definition itself already exists. Label relabeled from the original "Type de carburant" (#161,
+ * user asked to distinguish électrique/hybride/thermique): `FUEL_TYPES` already lists
+ * Électrique/Hybride/Hybride rechargeable alongside the actual fuels (Essence/Diesel/GPL/
+ * Hydrogène), so the data model already captures the distinction — the old label was just
+ * confusing for an electric vehicle ("fuel type: Électrique" reads oddly). Splitting the vehicle
+ * *type* list itself (Voiture/Poids lourd/...) into per-propulsion variants was considered and
+ * deliberately not done here — would combinatorially explode `TYPES` (Voiture électrique/hybride/
+ * thermique, Utilitaire électrique/hybride/thermique...) for the same information this one field
+ * already carries; left as an open question for the user rather than guessed (see issue #161).
  * No true database-level uniqueness on immatriculation, deliberately: GLPI's `FieldUnicity`
  * mechanism (`FieldUnicityBuilder` elsewhere in this plugin) only matches on real database columns
  * (confirmed in `FieldUnicity::dropdownFields()` — it lists `$DB->listFields($table)`), and this
@@ -101,7 +110,7 @@ class VehicleAssetBuilder
         ],
         [
             'system_name' => 'type_carburant',
-            'label' => 'Type de carburant',
+            'label' => 'Type de carburant / motorisation',
             'type' => DropdownType::class,
             'itemtype' => FuelType::class,
         ],

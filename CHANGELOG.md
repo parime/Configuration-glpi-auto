@@ -18,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   réseau, pas juste du contenu — à activer seulement si l'organisation compte réellement déployer
   des agents.
 
+### Changed
+
+- `VehicleAssetBuilder` : le champ "Type de carburant" est renommé "Type de carburant /
+  motorisation" (#161) — `FUEL_TYPES` liste déjà Électrique/Hybride/Hybride rechargeable à côté
+  des vrais carburants (Essence/Diesel/GPL/Hydrogène), donc la distinction demandée existe déjà
+  dans les données ; seul l'ancien libellé prêtait à confusion pour un véhicule électrique. Scinder
+  la liste des types de véhicule elle-même par motorisation a été envisagé et volontairement pas
+  fait (explosion combinatoire pour la même information déjà portée par ce champ) — laissé en
+  question ouverte sur l'issue.
+
 ## [0.66.1] - 2026-08-23
 
 ### Added
