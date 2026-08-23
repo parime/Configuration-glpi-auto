@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.68.1] - 2026-08-23
+
 ### Added
 
 - **Flux RSS des notes de version de GLPI** en plus du CERT-FR déjà proposé (#148, évaluation des
