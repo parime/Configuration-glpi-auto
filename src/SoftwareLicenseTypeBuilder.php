@@ -38,6 +38,13 @@ use SoftwareLicenseType;
  * No `entities_id`/`is_recursive` distinction to make beyond the usual root-entity, recursive
  * scoping every other global dropdown in this plugin already uses (confirmed via the same
  * `DESCRIBE`: this table does carry those columns, like six of `AssetTypeBuilder`'s types).
+ *
+ * Reviewed for gaps per #146: added "Perpétuelle" (the single most basic SAM distinction —
+ * time-unlimited vs. the "Abonnement (SaaS)" entry already present — oddly missing before) and
+ * "Académique / Éducation" (a genuinely distinct acquisition channel with its own pricing/renewal
+ * terms, not just a variant of an existing entry). `build()` already re-syncs `TYPES` against an
+ * existing installation on every run (no `isNew` gate), so these reach an admin who ran the wizard
+ * before, not just fresh installs.
  */
 class SoftwareLicenseTypeBuilder
 {
@@ -48,12 +55,14 @@ class SoftwareLicenseTypeBuilder
         ['name' => 'OEM', 'icon' => '🏭'],
         ['name' => 'Volume / Contrat entreprise', 'icon' => '📦'],
         ['name' => 'Boîte / Retail', 'icon' => '🛒'],
+        ['name' => 'Perpétuelle', 'icon' => '♾️'],
         ['name' => 'Abonnement (SaaS)', 'icon' => '☁️'],
         ['name' => 'Open Source / Gratuite', 'icon' => '🆓'],
         ['name' => 'Essai / Évaluation', 'icon' => '⏱️'],
         ['name' => 'Site', 'icon' => '🏢'],
         ['name' => 'Concurrente', 'icon' => '🔀'],
         ['name' => 'Nommée', 'icon' => '👤'],
+        ['name' => 'Académique / Éducation', 'icon' => '🎓'],
         ['name' => 'Don / Occasion', 'icon' => '♻️'],
     ];
 
