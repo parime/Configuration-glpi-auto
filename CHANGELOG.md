@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Traductions complétées dans les 5 langues** (#174) : régénéré `locales/*.pot` via l'outil
+  d'extraction officiel (`vendor/bin/extract-locales`, dépendance dev `glpi-project/tools`) plutôt
+  qu'une comparaison manuelle, ce qui a révélé 25 chaînes ajoutées au fil des dernières
+  fonctionnalités (suivi de version, inventaire natif, types de licence/certificat, tickets
+  récurrents, flux RSS, statuts de projet, jours fériés par pays...) jamais traduites en
+  anglais/allemand/espagnol/italien. Traduites dans les 4 langues, `fr_FR.po` complété (langue
+  source, chaîne identique). 9 chaînes devenues obsolètes par des changements de libellé antérieurs
+  dans cette même session marquées comme telles (`#~`), pas supprimées.
+- **Vérification CI de complétude des traductions** (#174, demande explicite de l'issue) : nouveau
+  job "Locale Completeness" qui régénère le `.pot` à chaque run et échoue si une chaîne du code
+  n'a pas de traduction dans une des 5 langues, pour éviter que ce manque se reproduise à chaque
+  nouvelle fonctionnalité.
+
 ### Fixed
 
 - **CI cassée sur chaque push vers `main`** : le job Semgrep SAST scanne tout le dépôt sur un
