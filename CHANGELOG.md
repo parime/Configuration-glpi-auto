@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Deux types de licence logicielle supplémentaires** (#146, revue de la liste introduite en
+  v0.64.0) : "Perpétuelle" (la distinction SAM la plus basique — licence non limitée dans le temps,
+  à l'opposé de l'entrée "Abonnement (SaaS)" déjà présente — curieusement absente) et "Académique /
+  Éducation" (un canal d'acquisition à part entière, avec ses propres conditions tarifaires/de
+  renouvellement, pas juste une variante d'une entrée existante). Rattrape aussi les installations
+  déjà configurées avant cet ajout, pas seulement les nouvelles.
+
 ## [0.67.1] - 2026-08-23
 
 ### Fixed
