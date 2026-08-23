@@ -20,6 +20,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   3 statuts (Nouveau/En cours/Fermé, confirmé par lecture directe de la table), sans notion de
   pause ni d'annulation. Couleurs distinctes des 3 natifs pour rester lisibles sur un même Kanban ;
   "Annulé" marqué `is_finished` comme "Fermé".
+- **4 nouveaux référentiels natifs GLPI** (`AssetTypeBuilder`), sur demande explicite de
+  l'utilisateur, chacun vérifié réel via `DESCRIBE`/recherche de classe avant d'être codé (pas
+  supposé) : `Glpi\SocketModel` (type et modèle de prise/connectique — RJ45, fibre LC/SC, USB-A/C,
+  HDMI, DisplayPort, secteur — même table GLPI pour les deux), `UserTitle` (intitulés de poste),
+  `SoftwareCategory` (catégories de logiciel, seul `CommonTreeDropdown` de cette classe, seedé en
+  racine uniquement), `ApplianceEnvironment` (Production/Pré-production/Test/Développement).
+  Aucun référentiel natif GLPI équivalent pour "toron de câble" ou "modèle d'applicatif"
+  (confirmé par recherche de table/classe) — voir les issues correspondantes.
+- `CableType` : Ethernet Cat3/Cat7, Coaxial, fibre monomode (OS2) et multimode (OM3/OM4) en plus
+  des entrées existantes.
+- `RackType` : Baie murale, Micro-baie (mini-rack).
+- `DatabaseInstanceType` : Cache en mémoire, Base vectorielle (IA/RAG).
 
 ### Fixed
 
