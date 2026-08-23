@@ -167,13 +167,17 @@ class FireSafetyAssetBuilder
     }
 
     /**
-     * Same mechanism as `VehicleAssetBuilder::seedTypes()` — see that class's docblock. Also applies
-     * icon+translation (`Translations::applyIcon()`) when enabled: unlike `VehicleAssetBuilder`/
-     * `ServerAssetBuilder`/`BuildingAssetBuilder` (which leave their seeded types untranslated, a
-     * pre-existing gap in those three, out of scope here), this plugin's proven `DropdownTranslation`
-     * mechanism applies cleanly to these rows — confirmed live against the real test instance that
-     * the generated `Glpi\CustomAsset\<SystemName>AssetType` class is a genuine `CommonDropdown`,
-     * exactly what `Translations::applyIcon()` already targets across ~20 other builders.
+     * Same mechanism as `VehicleAssetBuilder::seedTypes()` — see that class's docblock. Icons are
+     * baked directly into `name` rather than via `Translations::applyIcon()`/`DropdownTranslation`
+     * (unlike ~20 other builders, e.g. `CategoryBuilder`): confirmed live that this dropdown's real
+     * table (`glpi_assets_assettypes`) is *shared* across every `AssetDefinition` in the instance
+     * (scoped by `assets_assetdefinitions_id`), not a dedicated table of its own like
+     * `glpi_itilcategories` — a `DropdownTranslation` row on it made GLPI's own `Search`/
+     * `SQLProvider` emit a `glpi_assets_assettypes_trans_name` column with no matching JOIN,
+     * breaking with "Unknown column" on *every* view of the resulting asset list, not just this
+     * dropdown — reproduced and root-caused this way rather than assumed. Looked up by definition +
+     * either the bare or icon-prefixed name so toggling the icon option on/off later stays
+     * idempotent instead of creating a duplicate row.
      */
     private function seedTypes(AssetDefinition $definition, bool $withIcons): void
     {
@@ -181,13 +185,19 @@ class FireSafetyAssetBuilder
         $definitionId = (int) $definition->getID();
 
         foreach (self::TYPES as $name) {
+            $iconVariant = !empty(self::TYPE_ICONS[$name]) ? trim(self::TYPE_ICONS[$name] . ' ' . $name) : $name;
+            $displayName = $withIcons ? $iconVariant : $name;
+
+            // Matches either the bare or icon-prefixed name regardless of *this* run's own
+            // withIcons value — otherwise toggling the option off after a prior run left an
+            // icon-prefixed row behind would miss it here and create a bare-name duplicate instead
+            // of updating it (reproduced live before adding this).
             $item = new $itemtype();
-            $crit = ['name' => $name, 'assets_assetdefinitions_id' => $definitionId];
+            $crit = ['assets_assetdefinitions_id' => $definitionId, 'name' => [$name, $iconVariant]];
             if (!$item->getFromDBByCrit($crit)) {
-                $item->add($crit);
-            }
-            if ($withIcons) {
-                Translations::applyIcon($itemtype, (int) $item->getID(), $name, self::TYPE_ICONS[$name] ?? '');
+                $item->add(['assets_assetdefinitions_id' => $definitionId, 'name' => $displayName]);
+            } elseif ($item->fields['name'] !== $displayName) {
+                $item->update(['id' => $item->getID(), 'name' => $displayName]);
             }
         }
     }

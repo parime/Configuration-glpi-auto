@@ -18,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README (installation depuis les sources) : le dossier cloné doit être renommé en
   `configurationglpiauto` (nom attendu par GLPI dans `plugins/`) avant `composer install`, ce que
   les instructions précédentes omettaient.
+- **Erreur SQL ("Unknown column ..._trans_name") en listant les actifs "Sécurité incendie &
+  premiers secours" ou "Sécurité physique" dès que l'option "Ajouter des icônes" était cochée dans
+  l'assistant**, signalé par l'utilisateur. `Translations::applyIcon()` créait une ligne
+  `DropdownTranslation` sur la classe dynamiquement générée `Glpi\CustomAsset\<...>AssetType`, dont
+  la table réelle (`glpi_assets_assettypes`) est partagée par tous les actifs personnalisés de
+  l'instance — pas une table dédiée comme pour les ~20 autres référentiels où ce mécanisme est déjà
+  utilisé. Le générateur de requêtes de recherche de GLPI émettait alors une jointure de traduction
+  manquante, cassant l'affichage de la liste. Corrigé en intégrant directement l'icône dans le champ
+  `name` de l'entrée plutôt que via `DropdownTranslation`. Reproduit et vérifié en conditions
+  réelles (assistant → activation des icônes → liste de l'actif), avec test de non-régression ajouté.
 
 ## [0.65.1] - 2026-08-20
 
