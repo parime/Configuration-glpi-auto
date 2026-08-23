@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.67.1] - 2026-08-23
+
 ### Fixed
 
 - **Décocher "Ajouter des icônes" retire maintenant vraiment les icônes déjà appliquées lors d'un
