@@ -46,7 +46,7 @@ et [CHANGELOG.md](CHANGELOG.md).
   templates de notification habillés
 - ✅ Templates pour tickets, problèmes, changements
 - ✅ Catalogue de services complet : 23 services / 7 branches
-- ✅ Gestion des profils utilisateurs — 37 règles LDAP
+- ✅ Gestion des profils utilisateurs, 37 règles LDAP
 
 **Limites identifiées à corriger (Sprint 11, 2026-08-10)**, remontées en testant le wizard, pas
 encore implémentées :
@@ -133,7 +133,7 @@ basique, profils de démarrage.
    nativement `ITILCategory` et un champ `type` sur les tickets. `CategoryBuilder` construit une
    arborescence thématique réelle (IT, Bâtiment, Flotte, RH...) plutôt qu'une catégorie par type
    ITIL (le type Incident/Demande est déjà géré nativement par GLPI, une catégorie par type
-   n'apportait rien — voir Sprint 17 dans le CHANGELOG).
+   n'apportait rien, voir Sprint 17 dans le CHANGELOG).
 
 3. **Templates de tickets : fait (Sprint 19, 2026-08-10).** Pas un template par catégorie au
    final (`TicketTemplateBuilder`) : la pratique ITSM courante réserve ça au catalogue de services
@@ -272,7 +272,7 @@ référencés `#0`, `#1`... dans le champ de remplacement) si le sujet revient a
 exemples à traiter.
 
 **Décision utilisateur (2026-08-11)** : traiter tout le bloc Assistance + Général/Outils listés
-comme "pas fait" ci-dessus. Découpé en plusieurs sprints vu le volume — voir CHANGELOG.md pour
+comme "pas fait" ci-dessus. Découpé en plusieurs sprints vu le volume, voir CHANGELOG.md pour
 l'avancement réel sprint par sprint (ce document décrit l'état au moment de l'audit, pas l'état
 courant). Sprint 29 (cycle de vie ticket/tâche/changement/problème), Sprint 31 (Général/Outils)
 et Sprint 30 (Projets) sont faits : **la troisième vague d'audit est close**. Restent en attente,
@@ -280,7 +280,7 @@ non cadrés techniquement : les intitulés basse-priorité explicitement laissé
 (gabarits/catégories d'évènements planning), et le logo par entité (voir plus bas).
 
 **Bug corrigé au passage (Sprint 31, 2026-08-11)** : `Config::prepareInput()`'s traitement de
-`category_branches` castait `(array)` une chaîne JSON au lieu de la décoder — sur une instance
+`category_branches` castait `(array)` une chaîne JSON au lieu de la décoder, sur une instance
 vraiment neuve (jamais soumise via le formulaire), `getDefaults()` fournit `category_branches`
 sous forme de chaîne JSON, pas de tableau PHP, donc chaque nouvelle installation démarrait
 silencieusement avec 0 branche sélectionnée à l'étape 5 au lieu des 11 documentées. Resté invisible
@@ -392,7 +392,7 @@ Deux choses vérifiées en parcourant l'admin GLPI par Playwright :
   mais explicitement écartés par l'utilisateur (2026-08-14) : trop dépendant de l'annuaire propre à
   chaque organisation pour être généralisable, ne sera pas construit.
 
-### Recherche web — points de friction GLPI réels (résumé, détail complet demandé à l'utilisateur si besoin)
+### Recherche web : points de friction GLPI réels (résumé, détail complet demandé à l'utilisateur si besoin)
 
 Recherché sur le forum GLPI officiel, les issues GitHub `glpi-project/glpi`, et le web général :
 structure d'entités mal comprise dès le départ (aucune vue d'impact avant de choisir) ; confusion
@@ -404,7 +404,7 @@ traité) ; notifications email désactivées par défaut + pièges SMTP (très f
 couvert) ; prérequis serveur mal anticipés avant même d'atteindre la configuration applicative (hors
 périmètre wizard, mais un contrôle de prérequis en tout début de parcours serait utile).
 
-### Recherche web — patterns d'onboarding des concurrents ITSM (résumé)
+### Recherche web : patterns d'onboarding des concurrents ITSM (résumé)
 
 ServiceNow (Guided Setup séquencé par dépendances, étapes verrouillées tant qu'un prérequis n'est
 pas actif) ; Freshservice (onboarding minimal 3 étapes, approfondissement plus tard, idée de "mode
@@ -413,7 +413,7 @@ pré-configurés en un clic : IT/RH/Facilities avec workflows+SLA assortis, fort
 transposition) ; Zendesk (préparation du contenu self-service en amont plutôt qu'en fin de
 parcours).
 
-### Recherche — variables CSS GLPI 11 pour un branding exhaustif (résumé)
+### Recherche : variables CSS GLPI 11 pour un branding exhaustif (résumé)
 
 `BrandingBuilder` ne surchargeait initialement que `--glpi-logo` (une seule des 6 variantes réelles :
 `--glpi-logo-light/-light-reduced/-dark/-dark-reduced/-light-login/-dark-login`, le mode réduit, le
@@ -436,7 +436,7 @@ cette implémentation et n'avait jamais été mise à jour.
 
 ---
 
-### Sixième audit — module Projets + points transverses (fait, 2026-08-12, v0.26.0)
+### Sixième audit : module Projets + points transverses (fait, 2026-08-12, v0.26.0)
 
 Audit réel (code source GLPI + base de données, pas de suppositions) centré sur le module Projets à
 la demande de l'utilisateur, plus quelques questions transverses posées dans la foulée.
@@ -498,7 +498,7 @@ balises correctement substituées. **Corrigé en v0.31.1** : régression trouvé
 un œil critique : une seule ligne `language=''` par gabarit aurait montré des libellés français à
 tout destinataire, quelle que soit sa langue GLPI. Une ligne par langue désormais (5 langues).
 
-**Contenu des gabarits de suivi/tâche/solution traduit — fait (v0.32.0, 2026-08-13).** Trouvé lors
+**Contenu des gabarits de suivi/tâche/solution traduit, fait (v0.32.0, 2026-08-13).** Trouvé lors
 de l'analyse critique post-v0.31.1 : même type de limite que le bug des notifications, contenu
 traduisible en théorie (`AbstractITILChildTemplate::getRenderedContent()` appelle
 `DropdownTranslation::getTranslatedValue(..., $_SESSION['glpilanguage'], ...)`) mais aucune ligne
@@ -519,14 +519,14 @@ séparé recommandé plutôt qu'ajout ici.
 L'utilisateur a fait remarquer qu'un fabricant comme Jabra (casques/audio) ne devrait pas apparaître
 dans la liste déroulante fabricant lors de la création d'un ordinateur. Vérifié en base
 (`DESCRIBE glpi_manufacturers`) : la table n'a aucun champ de portée par type d'actif (juste
-`id`/`name`/`comment`/dates) — c'est une liste plate partagée par tous les types d'actifs GLPI
+`id`/`name`/`comment`/dates), c'est une liste plate partagée par tous les types d'actifs GLPI
 nativement, sans mécanisme de filtrage. Implémenter ce filtrage demanderait un moteur de règles
 JS personnalisé (chantier non trivial, pas juste un champ à cocher). Laissé de côté sauf demande
 explicite de le construire quand même.
 
 **Fabricants : dictionnaire de normalisation, fait (v0.32.0, 2026-08-13).** Suite à la remarque
 ci-dessus, l'utilisateur a proposé une piste différente et réellement construite : un dictionnaire
-GLPI natif (`RuleDictionnaryManufacturer`, confirmé dans le code source — `getActions()` supporte
+GLPI natif (`RuleDictionnaryManufacturer`, confirmé dans le code source, `getActions()` supporte
 `assign` sur le champ `name`) pour normaliser les variantes de nom qu'un vrai inventaire remonte
 (« Hewlett-Packard », « HP Inc. »… → « HP »). Contrairement aux dictionnaires logiciel/matériel
 étudiés et rejetés plus tôt (variantes propres à l'inventaire réel de chaque organisation,
@@ -606,7 +606,7 @@ ville correctement résolue depuis le code postal, données persistées sur le b
 **Suite (v0.35.0, 2026-08-13)** : deux vrais problèmes remontés par l'utilisateur en testant la
 fonctionnalité (capture d'écran à l'appui) : la recherche de rue en texte libre n'était pas non
 plus restreinte à la ville/pays déjà saisis (même défaut que le code postal seul, pas encore
-corrigé ici — même correctif étendu, recherche structurée Nominatim `street`+`city`+`country`), et
+corrigé ici, même correctif étendu, recherche structurée Nominatim `street`+`city`+`country`), et
 la liste de suggestions se superposait visuellement aux champs en dessous (`list-group` sans fond
 opaque propre → `dropdown-menu` Bootstrap/Tabler). Un second bug latent trouvé pendant cette
 correction, avant mise en ligne : `dropdown-menu` est masqué par sa propre règle CSS, jamais levée
@@ -634,7 +634,7 @@ donnée ne produit aucun Lieu, une sous-entité avec adresse+alias+tous les cham
 complet dans `CHANGELOG.md` `[0.36.0]`.
 
 **Sources des demandes (`RequestType`) : traduction, fait (v0.38.0, 2026-08-13).** Revient sur la
-conclusion "déjà suffisant" d'un audit précédent — cette conclusion portait sur le *contenu* (6
+conclusion "déjà suffisant" d'un audit précédent, cette conclusion portait sur le *contenu* (6
 valeurs natives couvrent les cas d'usage), pas sur la *traduction*, une question orthogonale jamais
 vérifiée à l'époque. Confirmé un vrai manque en lisant `install/empty_data.php` de GLPI : ces 6
 valeurs sont des chaînes anglaises codées en dur, sans ligne `DropdownTranslation` (absence
@@ -676,12 +676,12 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    français (Orange, SFR, Bouygues Telecom, Free), avec MCC/MNC réels recoupés sur 3 sources
    indépendantes pour éviter d'inventer un numéro. **Bug réel trouvé pendant la vérification** :
    `glpi_lineoperators` a un index `UNIQUE(mcc, mnc)`, et GLPI met `0` par défaut (pas `NULL`) sur
-   ces champs entiers non fournis — sans MCC/MNC explicites et distincts, seul le premier opérateur
+   ces champs entiers non fournis, sans MCC/MNC explicites et distincts, seul le premier opérateur
    se créait, les 3 suivants étaient silencieusement rejetés par la contrainte d'unicité, sans
    aucune erreur visible ni dans le message de succès du wizard ni dans les logs GLPI. Repéré
-   uniquement en comptant les lignes en base après soumission — pas en faisant confiance au message
+   uniquement en comptant les lignes en base après soumission, pas en faisant confiance au message
    de succès. `NetworkPortFiberchannelType` (malgré son nom FR "Types de fibre") concerne en réalité
-   le protocole de stockage SAN Fibre Channel (débits 1/2/4/8/16/32 Gb, FCoE...) — rien à voir avec
+   le protocole de stockage SAN Fibre Channel (débits 1/2/4/8/16/32 Gb, FCoE...), rien à voir avec
    la fibre internet résidentielle/entreprise, écarté du périmètre "opérateurs télécom" de ce point.
 4. **Grande liste de dropdowns "Types" natifs vides : trois tranches faites (v0.50.0, v0.51.0,
    v0.61.0), quasiment clos.** Requête `information_schema` réexécutée : 33 tables natives
@@ -697,7 +697,7 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    différents. `VirtualMachineType` sans rapport avec le champ texte libre "hyperviseur" de
    `ServerAssetBuilder`.
    ❌ **Explicitement écartés** : `AgentType` (auto-créé par `Agent::handleAgent()` à la première
-   connexion d'un agent d'inventaire réel — le seeder serait redondant), `Assets_AssetType`
+   connexion d'un agent d'inventaire réel, le seeder serait redondant), `Assets_AssetType`
    (dépend d'une définition d'actif personnalisée à créer d'abord, pas un dropdown global autonome),
    `Enclosure`/Châssis (confirmé sans table `Type` du tout dans GLPI :
    `glpi_enclosuretypes` n'existe pas), `DeviceGeneric` (trop générique pour un contenu
@@ -723,7 +723,7 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    son propre dropdown "type" (`Glpi\CustomAsset\<X>AssetType`), jusqu'ici jamais peuplé :
    `VehicleAssetBuilder`/`ServerAssetBuilder`/`BuildingAssetBuilder` le peuplent désormais chacun
    avec des catégories réelles. Le libellé "Véhicule types" (au lieu de "Types de véhicule") généré
-   par GLPI lui-même reste non traduit en `fr_FR` — confirmé être un manque de traduction du cœur
+   par GLPI lui-même reste non traduit en `fr_FR`, confirmé être un manque de traduction du cœur
    GLPI 11 (`Glpi\Asset\AssetType::getTypeName()`), hors de portée d'un plugin.
 5. ✅ **Jours fériés par pays, France incluse : fait (v0.52.0, étendu v0.64.0, 2026-08-17).**
    `CountryHolidayBuilder`, étape "Lieux" : crée les jours fériés natifs GLPI des pays saisis sur
@@ -731,7 +731,7 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    explicite ("gérer les fermetures de manière automatique selon le pays") : la France, jusqu'ici
    couverte séparément par une case à cocher indépendante du pays réellement détecté dans
    `CalendarBuilder` (8 jours codés en dur, attachés même à un site non-français si la case était
-   cochée), passe par ce même mécanisme — chaque site/client sans pays saisi est par défaut la
+   cochée), passe par ce même mécanisme, chaque site/client sans pays saisi est par défaut la
    France. `CalendarBuilder::attachFrenchHolidays()`/`calendar_holidays_enabled` supprimés.
    Couverture pays aussi étendue à l'intégralité de l'Union européenne plus
    Royaume-Uni/Suisse/Norvège/Islande (10 pays ajoutés : Bulgarie, Croatie, Chypre, Estonie,
@@ -742,7 +742,7 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    un pays non reconnu est simplement ignoré ; (2) limitation `is_perpetual` de GLPI résolue en
    déterminant empiriquement les jours fériés à date fixe (comparaison de deux années
    consécutives, même simplification que pour la France) plutôt que de gérer un rafraîchissement
-   annuel — pas de jours mobiles créés ; (3) nouvelle dépendance externe acceptée (même
+   annuel, pas de jours mobiles créés ; (3) nouvelle dépendance externe acceptée (même
    raisonnement que Nominatim pour l'assistant d'adresse). **Bug de qualité réel trouvé et corrigé
    pendant la vérification, avant tout envoi** : Nager.Date retourne aussi des jours fériés
    *régionaux* mélangés aux jours fériés nationaux (champ `global` de l'API) : confirmé en direct
@@ -772,7 +772,7 @@ demande explicite ("ajout tout ce que je viens de te dire dans la liste des chan
    (colonne `serial` réellement présente, confirmé par `information_schema` sur une instance réelle,
    `Cluster` en est dépourvu malgré son éligibilité). Six candidats supplémentaires passaient le
    même test d'universalité que les six premiers : Racks/Châssis/PDU (infrastructure physique, même
-   raisonnement), Licences logicielles (le `serial` y est la clé de licence — un doublon signifie
+   raisonnement), Licences logicielles (le `serial` y est la clé de licence, un doublon signifie
    presque toujours une double saisie), Certificats (numéro de série X.509), Cartes SIM (ICCID).
    `User` écarté explicitement : pas de colonne e-mail directe sur `glpi_users` (l'e-mail vit dans
    `glpi_useremails`, relation 1-N), donc pas exploitable par ce mécanisme sans le détourner.
@@ -828,10 +828,10 @@ l'utilisateur après les deux points ci-dessus ("il faudrait limite tout activé
 l'utilisateur choisis ce qu'il ne veut pas"). Étendu `Config::getDefaults()` (le point de départ
 brut, utilisé par le profil "Personnalisé") pour qu'il corresponde à ce que
 `ConfigurationProfile::getSuggestedDefaults()` considérait déjà comme "bonne pratique universelle"
-pour les profils préréglés — pas une nouvelle liste inventée, juste le même socle déjà validé
+pour les profils préréglés, pas une nouvelle liste inventée, juste le même socle déjà validé
 appliqué aussi au point de départ brut. `FieldUnicityBuilder` (v0.43.0, pas encore dans ce socle)
 inclus aussi. Seule exception délibérée conservée : la personnalisation graphique (couleur/logo/
-palette/e-mails, étape 17/18) — recolorer toute l'instance sans qu'un admin ait choisi une couleur
+palette/e-mails, étape 17/18), recolorer toute l'instance sans qu'un admin ait choisi une couleur
 reste différent d'ajouter du contenu à des listes vides, et cette étape est déjà explicitement
 dépriorisée depuis le réordonnancement (v0.42.0). Vérifié en réel : soumission complète sur le
 profil "Personnalisé" (le cas le plus strict, sans préréglage de profil), tout le contenu attendu
@@ -842,7 +842,7 @@ utilisateur de vérifier les variantes manquantes, confirmées via un vrai expor
 instance GLPI réelle peuplée par glpi-agent (pas une recherche générique) : 3 fabricants déjà
 couverts avaient des variantes réelles manquantes (Acer, Cisco, Samsung), et 9 des 29 fabricants
 canoniques n'avaient encore aucune règle du tout (Fortinet, Logitech, Oracle, Red Hat, HPE Aruba,
-Ubiquiti, Netgear, Canon, Brother, QNAP, Jabra, Poly, APC, Eaton) — les 29 ont maintenant une règle.
+Ubiquiti, Netgear, Canon, Brother, QNAP, Jabra, Poly, APC, Eaton), les 29 ont maintenant une règle.
 `createRule()` ajoute aussi désormais les critères manquants à une règle déjà existante au lieu de
 l'ignorer entièrement, pour qu'un admin qui remet à jour le plugin en bénéficie aussi. Non traité,
 noté pour un chantier séparé (changement de portée, pas juste une correction de variantes) : le
@@ -879,7 +879,7 @@ ci-dessous vérifiés en conditions réelles (recherche live dans Configuration 
 2. **Liste de plugins recommandés (informationnelle, pas d'installation automatique)** : 3 plugins
    vérifiés en direct sur le marketplace natif (clé, note, licence, auteur, bouton d'installation
    réel inspectés) :
-   - **remise-glpi** (https://github.com/parime/remise-glpi, plugin de l'utilisateur — mise en avant
+   - **remise-glpi** (https://github.com/parime/remise-glpi, plugin de l'utilisateur, mise en avant
      explicite). Gestion de feuilles de prêt/retour/vente/don de matériel pour la traçabilité,
      centralisation des documents associés dans GLPI. **Absent du marketplace natif** (recherche
      "remise" → aucun résultat) : lien GitHub direct plutôt qu'un renvoi vers le marketplace.
@@ -892,7 +892,7 @@ ci-dessous vérifiés en conditions réelles (recherche live dans Configuration 
      TICgal, v3.0.0, 4,5★, gratuit. Description native : « Share your passwords securely on GLPI ».
    - Installation volontairement laissée à l'admin (bouton
      `<button data-action="download_plugin">` du marketplace natif, un clic, aucune redirection
-     externe) plutôt qu'automatisée depuis ce wizard — télécharger/exécuter du code tiers est une
+     externe) plutôt qu'automatisée depuis ce wizard, télécharger/exécuter du code tiers est une
      catégorie de risque différente du reste de ce plugin (qui ne fait que créer du contenu dans les
      propres tables de GLPI).
 
@@ -922,21 +922,21 @@ clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de s
   actionnaires...), et le marque `isvip=1`, écrit directement dans les tables du plugin tiers via
   `$DB` (même raisonnement que `SatisfactionSurveyBuilder`, pas de dépendance dure). Son moteur de
   règles (`RuleVip`, affectation
-  depuis des critères LDAP) volontairement pas automatisé — dépend de la structure AD/LDAP propre à
+  depuis des critères LDAP) volontairement pas automatisé, dépend de la structure AD/LDAP propre à
   chaque organisation, même raisonnement que l'exclusion des diagnostics LDAP. Vérifié en réel :
   section absente quand le plugin est désactivé, groupe natif + ligne `isvip=1` créés à la soumission,
   resoumission idempotente (pas de doublon).
-- **Oauth IMAP** (`oauthimap`, TECLIB') — authentification OAuth pour les collecteurs de mail
+- **Oauth IMAP** (`oauthimap`, TECLIB'), authentification OAuth pour les collecteurs de mail
   (Microsoft 365/Google imposent de plus en plus OAuth, l'authentification IMAP simple devient
   obsolète chez ces fournisseurs).
-- **Data Injection** (`datainjection`) — import CSV en masse, plugin de référence bien établi dans
+- **Data Injection** (`datainjection`), import CSV en masse, plugin de référence bien établi dans
   l'écosystème GLPI.
-- **Carbon** (`carbon`, TECLIB') — évaluation d'impact environnemental du parc, cohérent avec l'axe
+- **Carbon** (`carbon`, TECLIB'), évaluation d'impact environnemental du parc, cohérent avec l'axe
   ISO27001/bonnes pratiques déjà porté par ce plugin.
 - ✅ **Tag** (`tag`, TECLIB') : fait (v0.55.0, 2026-08-14). **Correction sur "TAG" demandé par
   l'utilisateur** : le plugin natif "Tag" (`tag`, TECLIB') est un système de tags génériques sur
   n'importe quel objet GLPI (mots-clés de classification), **pas** de l'impression d'étiquettes
-  physiques — confondu un temps avec ça, corrigé après que l'utilisateur a confirmé via une capture
+  physiques, confondu un temps avec ça, corrigé après que l'utilisateur a confirmé via une capture
   d'écran du marketplace qu'il s'agissait bien du plugin `pluginsGLPI/tag` (2.14.6, TECLIB'). Le vrai
   candidat pour l'impression d'étiquettes est **"QR Code Label"** (`qrcodelabel`, Etienne Gaillard) :
   explicitement écarté par l'utilisateur ("y a rien a faire pour moi"). **Vérifié dans remise-glpi
@@ -999,7 +999,7 @@ clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de s
   (codecov-action) approuvée et mergée. PR #40 (shivammathur/setup-php) et #41
   (aquasecurity/trivy-action) approuvées mais **pas mergées** : le jeton `gh` utilisé dans cette
   session n'a pas le scope OAuth `workflow` requis par GitHub pour merger une PR qui modifie
-  `.github/workflows/*.yml` — à merger manuellement par l'utilisateur, ou réautoriser `gh auth
+  `.github/workflows/*.yml`, à merger manuellement par l'utilisateur, ou réautoriser `gh auth
   login` avec ce scope.
 
 **Plan retenu avec l'utilisateur pour la suite immédiate (par ordre de priorité)** :
@@ -1014,7 +1014,7 @@ clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de s
 - Variables Twig dans les gabarits : **fait (v0.27.0)**.
 - Prérequis de publication marketplace pour les deux dépôts sœurs, **fait** : `remise-glpi`
   corrigé (PR #66 : manifeste déplacé à la racine, langue `<fr_FR>`→`<fr>`, version obsolète mise à
-  jour) ; `glpi-vulnerability-manager` audité mais volontairement pas touché — le plugin est encore
+  jour) ; `glpi-vulnerability-manager` audité mais volontairement pas touché, le plugin est encore
   en 0.8.0, le fichier `plugin.json` documente lui-même que la publication est prévue à la v1.0,
   pas avant.
 - Traductions `.po`/`.mo` de l'interface du wizard en en_GB/de_DE/it_IT/es_ES : **fait (v0.30.0,
@@ -1028,7 +1028,7 @@ clés/descriptions/auteurs/licences confirmés qu'au point précédent, pas de s
 
 ## 📮 Propositions issues du quatrième audit : à trancher avec l'utilisateur
 
-Aucune de ces pistes n'est implémentée — même méthode que les audits précédents, pas de décision de
+Aucune de ces pistes n'est implémentée, même méthode que les audits précédents, pas de décision de
 priorité unilatérale.
 
 1. ✅ **Séparation stricte des droits par défaut (axe sécurité/ISO 27001) : fait (v0.22.0,
@@ -1038,7 +1038,7 @@ priorité unilatérale.
    synchronisation), ni `config` : exactement les vecteurs d'auto-élévation identifiés en recherche,
    sans inventer un nouveau jeu de droits sur mesure. `ldap_rights_profile` (réglage "Profil
    attribué" de `RuleRightBuilder`/étape 12) passe de `Technician` à `Admin` par défaut, avec
-   l'explication affichée dans le wizard — reste un simple menu déroulant, n'importe quel profil
+   l'explication affichée dans le wizard, reste un simple menu déroulant, n'importe quel profil
    natif reste sélectionnable.
 2. ❌ **Diagnostic LDAP pas-à-pas : écarté (décision utilisateur, 2026-08-12).** Le point de
    friction le plus fréquent trouvé en recherche, mais chaque annuaire d'entreprise a ses propres
@@ -1056,37 +1056,37 @@ priorité unilatérale.
    getSuggestedDefaults()`. Le seul vrai manque était la navigation : rien ne permettait de terminer
    sans cliquer "Suivant" 16 fois pour relire chaque écran déjà rempli. Ajouté un second bouton
    "Terminer avec les réglages recommandés" directement sous les choix de profil (étape 1), qui
-   soumet le même formulaire unique avec `name="finish"` — aucune nouvelle logique serveur, aucun
+   soumet le même formulaire unique avec `name="finish"`, aucune nouvelle logique serveur, aucun
    nouveau champ de config, juste un raccourci de navigation. Le plus pertinent en mode mono-entité
    (rien d'autre à décider) ; en mode multi-site/MSP, l'arborescence réelle (étape 2) reste à
-   construire séparément ensuite, sans quoi tout s'applique à l'entité racine seule — précisé dans
+   construire séparément ensuite, sans quoi tout s'applique à l'entité racine seule, précisé dans
    le texte du bouton et la confirmation.
-5. ✅ **Bibliothèque de "profils métier" prêts à l'emploi — fait (v0.22.0, 2026-08-12), portée
+5. ✅ **Bibliothèque de "profils métier" prêts à l'emploi, fait (v0.22.0, 2026-08-12), portée
    réduite par rapport à la piste initiale.** Contrairement au SLA IT (`Config::DEFAULT_SLA_TIERS`,
    sourcé sur une vraie pratique ITIL), il n'existe aucune pratique RH/Facilities équivalente à citer
-   — inventer des gabarits/contenus complets par verticale aurait été le même risque que les règles
+  , inventer des gabarits/contenus complets par verticale aurait été le même risque que les règles
    métier GLPI volontairement laissées de côté ("inventer serait pire que rien", cf. section
    "Règles" plus haut). Implémenté à la place comme un préréglage 1-clic purement client (JS), sans
    nouveau champ serveur : 4 boutons (IT pur / RH & Support interne / Bâtiment & Moyens généraux /
    Multi-services) qui précochent les branches de catégories déjà conçues (étape 5) et remplissent
    le tableau SLA (étape 4) avec le rythme IT existant ×2 (Bâtiment, intervention physique) ou ×4
-   (RH, rarement classe "panne"), plutôt que des valeurs indépendamment inventées — cohérent avec le
+   (RH, rarement classe "panne"), plutôt que des valeurs indépendamment inventées, cohérent avec le
    fait que ces multiplicateurs sont assumés comme un point de départ, pas une norme.
-6. ✅ **`BrandingBuilder` — couvrir les 6 variables de logo et la vraie palette de couleurs Tabler —
+6. ✅ **`BrandingBuilder`, couvrir les 6 variables de logo et la vraie palette de couleurs Tabler ,
    fait (v0.21.0, 2026-08-12).** Voir CHANGELOG.md.
-   ✅ **Palette `.scss` custom — fait (v0.23.0, 2026-08-12), nouveau `PaletteBuilder`.** Mécanisme
+   ✅ **Palette `.scss` custom, fait (v0.23.0, 2026-08-12), nouveau `PaletteBuilder`.** Mécanisme
    distinct et complémentaire de `BrandingBuilder` (confirmé dans `Glpi\UI\ThemeManager` : un fichier
    dans `files/_themes/` devient une palette sélectionnable par tout utilisateur dans ses propres
    préférences, `\Config::setConfigurationValues('core', ['palette' => ...])` en fait le choix par
-   défaut — pas un forçage par entité comme `custom_css_code`). **Piège GLPI core trouvé en testant** :
+   défaut, pas un forçage par entité comme `custom_css_code`). **Piège GLPI core trouvé en testant** :
    `Theme::getPath()` suppose toujours l'extension `.scss`, même pour un fichier `.css` pourtant
-   accepté par la détection — un fichier `.css` fait planter *tout* le site (500 partout, y compris
+   accepté par la détection, un fichier `.css` fait planter *tout* le site (500 partout, y compris
    la page de login) car `ThemeManager::getCustomThemesPaths()` tourne sur chaque requête. Réutilise
    la même couleur que la case au-dessus, pas un second sélecteur.
-   ✅ **Palettes natives GLPI sélectionnables dans le wizard — fait (v0.25.0, 2026-08-12).** Menu
+   ✅ **Palettes natives GLPI sélectionnables dans le wizard, fait (v0.25.0, 2026-08-12).** Menu
    déroulant listant les 18 palettes natives (`Glpi\UI\ThemeManager::getCoreThemes()`, noms/état
    sombre lus dynamiquement depuis GLPI plutôt que dupliqués en dur dans le wizard), alternative
-   mutuellement exclusive à la palette personnalisée dans l'UI — `PaletteBuilder::apply()` pointe
+   mutuellement exclusive à la palette personnalisée dans l'UI, `PaletteBuilder::apply()` pointe
    simplement `core.palette` sur la clé native choisie, aucun fichier généré.
    ✅ **Retour à la palette native impossible après coche "palette personnalisée"/choix natif : bug
    confirmé et corrigé (v0.65.1, 2026-08-20).** Signalé par l'utilisateur ("quand j'ai coché le menu
@@ -1098,11 +1098,11 @@ priorité unilatérale.
    réécrivant activement `core.palette` sur `''` (vraie valeur native GLPI, "pas de surcharge") dans
    ce cas, et en supprimant le `.scss` orphelin de `GLPI_THEMES_DIR` laissé par une exécution
    précédente.
-7. ✅ **Contrôle de prérequis serveur en tout début de wizard — fait (v0.23.0, 2026-08-12), portée
+7. ✅ **Contrôle de prérequis serveur en tout début de wizard, fait (v0.23.0, 2026-08-12), portée
    réduite à ce qui est réellement pertinent.** GLPI lui-même a déjà validé PHP/MySQL au moment de
-   sa propre installation — revalider ces prérequis aurait été redondant. Recentré sur ce que ce
+   sa propre installation, revalider ces prérequis aurait été redondant. Recentré sur ce que ce
    plugin a spécifiquement besoin (droits d'écriture sur `files/_themes` pour la palette custom,
-   sur `GLPI_CACHE_DIR` pour GLPI en général — un vrai souci de permissions rencontré cette session
+   sur `GLPI_CACHE_DIR` pour GLPI en général, un vrai souci de permissions rencontré cette session
    après une manipulation hors wizard, confirmant la pertinence du contrôle) : bandeau
    informatif au-dessus de l'étape 1, jamais bloquant, visible seulement s'il y a un point
    d'attention réel.
@@ -1112,78 +1112,78 @@ priorité unilatérale.
 ## 💬 Pistes remontées par le forum GLPI officiel (2026-08-18)
 
 Même méthode que les audits précédents : consignées ici après vérification technique, aucune
-décision de priorité unilatérale — sujets soumis par l'utilisateur, à trancher avant de construire
+décision de priorité unilatérale, sujets soumis par l'utilisateur, à trancher avant de construire
 quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livrés en v0.65.0
 (2026-08-19).
 
-1. ✅ **ITSM → ESM : actifs personnalisés réglementés — fait partiellement (v0.65.0, 2026-08-19).**
+1. ✅ **ITSM → ESM : actifs personnalisés réglementés, fait partiellement (v0.65.0, 2026-08-19).**
    Topic https://forum.glpi-project.org/viewtopic.php?id=293900. Un utilisateur (Perreip) demande si
    GLPI peut être détourné d'un outil ITSM (parc informatique) vers un usage ESM (Enterprise Service
-   Management) : gérer aussi des actifs non-IT réglementés — ascenseurs, extincteurs, véhicules de
-   service, locaux — avec export filtré (exemple cité : « extincteurs avec dates de validité »).
+   Management) : gérer aussi des actifs non-IT réglementés, ascenseurs, extincteurs, véhicules de
+   service, locaux, avec export filtré (exemple cité : « extincteurs avec dates de validité »).
    Réponse du modérateur cconard96, vérifiée cohérente avec le code déjà audité dans ce projet
    (section « actifs personnalisés » plus haut, v0.58.0-v0.60.0) : GLPI 11 permet nativement ce
    genre de type d'actif via `Glpi\Asset\AssetDefinition` + capacités modulaires (remplaçant
    l'ancien plugin externe « Generic Object »), et le moteur de recherche natif couvre déjà le
-   filtrage/export (CSV/PDF/ODS/XLSX, recherches sauvegardées, alertes) — rien à construire côté
+   filtrage/export (CSV/PDF/ODS/XLSX, recherches sauvegardées, alertes), rien à construire côté
    export. Suivi : issue GitHub #132.
 
-   **`FireSafetyAssetBuilder`** (nouveau) — « Sécurité incendie & premiers secours » : extincteurs,
+   **`FireSafetyAssetBuilder`** (nouveau), « Sécurité incendie & premiers secours » : extincteurs,
    RIA, désenfumage, détecteur de fumée/alarme incendie, éclairage de sécurité/issue de secours, et
-   défibrillateur automatisé externe (DAE) — ajouté en cours de sprint sur constat que le DAE
+   défibrillateur automatisé externe (DAE), ajouté en cours de sprint sur constat que le DAE
    partage exactement le même besoin (champ « date de vérification périodique ») que les autres,
    donc regroupé dans le même type d'actif plutôt qu'un second builder dédié. Déclenché par un
    nouveau réglage dédié (`fire_safety_assets_enabled`), affiché dans le panneau de la branche
    « Bâtiment & Moyens Généraux » à l'étape Catégories, aux côtés de la case de branche elle-même
-   (comme envisagé ci-dessus) — mais en case à cocher **séparée**, pas automatique : toute
+   (comme envisagé ci-dessus), mais en case à cocher **séparée**, pas automatique : toute
    organisation qui coche « Bâtiment » ne souhaite pas forcément suivre ses extincteurs comme des
    actifs GLPI, contrairement à `BuildingAssetBuilder`/« Local » qui reste, lui, purement
    automatique.
 
-   **`PhysicalSecurityAssetBuilder`** (nouveau) — « Sécurité physique » : caméra de
+   **`PhysicalSecurityAssetBuilder`** (nouveau), « Sécurité physique » : caméra de
    vidéosurveillance, centrale d'alarme intrusion, détecteur de mouvement, contrôle d'accès/lecteur
    de badge, serrure électronique, interphone/vidéophone. Ajouté en cours de sprint sur demande
    explicite de l'utilisateur (« tout ce qui touche la sécurité physique du bâtiment, [...] par
-   exemple les caméras »), au-delà des deux candidats initiaux ci-dessus — explicitement grounded
+   exemple les caméras »), au-delà des deux candidats initiaux ci-dessus, explicitement grounded
    dans ISO/IEC 27001:2022 Annexe A.7 « Mesures physiques » (chaque sous-type cite sa clause A.7.x
    dans le code), cohérent avec le positionnement ITIL4/ISO27001 déjà affiché par ce plugin.
    Déclenchement revu par rapport à l'idée initiale : pas la branche « Bâtiment », mais « Sécurité &
-   Protection des Personnes » (`securite`) — confirmé en relisant `CategoryBuilder::CATEGORIES` que
+   Protection des Personnes » (`securite`), confirmé en relisant `CategoryBuilder::CATEGORIES` que
    cette branche a déjà pour enfants « Contrôle d'Accès & Badges » et « Vidéosurveillance & Alarmes »,
    un rattachement thématique direct plutôt que le choix arbitraire envisagé au départ. Même schéma
    de case à cocher dédiée (`physical_security_assets_enabled`).
 
-   **Équipement de levage (ascenseurs/monte-charges) — non retenu.** Deuxième candidat évalué
+   **Équipement de levage (ascenseurs/monte-charges), non retenu.** Deuxième candidat évalué
    ci-dessus, écarté en cours de sprint : ne suit pas le forum ni l'issue #132 (ni l'un ni l'autre ne
    le mentionnent explicitement, contrairement à la sécurité incendie et aux véhicules/serveurs/
-   locaux déjà couverts) — resterait à construire sur demande explicite si le besoin se confirme,
+   locaux déjà couverts), resterait à construire sur demande explicite si le besoin se confirme,
    même patron `AssetDefinition` déjà en place pour les deux builders ci-dessus.
 
-   **Mobilier — évalué, non retenu.** Piste complémentaire envisagée en cours de sprint (la branche
+   **Mobilier, évalué, non retenu.** Piste complémentaire envisagée en cours de sprint (la branche
    « Bâtiment » a déjà une catégorie de service « Mobilier & Aménagement »/`ServiceCatalogBuilder`),
    mais ne passe pas le même filtre « generalist scope » que les deux builders ci-dessus : pas de
    champ de conformité réglementaire universel comparable à la vérification incendie ou au contrôle
-   d'accès — la valeur serait essentiellement de l'inventaire générique, déjà raisonnablement couvert
+   d'accès, la valeur serait essentiellement de l'inventaire générique, déjà raisonnablement couvert
    par les mécanismes natifs GLPI, sans bonne pratique universelle identifiée à préremplir (même
    conclusion « rien à construire » que `RequestType`/`ProjectState`/`DocumentType` ailleurs dans ce
    document). Laissé de côté sauf demande explicite de le construire quand même.
 
    Architecture : builders dédiés par verticale (patron déjà utilisé par
    `VehicleAssetBuilder`/`ServerAssetBuilder`/`BuildingAssetBuilder`), pas un assistant générique
-   « créer votre propre type d'actif » — confirmé rester le bon niveau de granularité, le besoin n'a
+   « créer votre propre type d'actif », confirmé rester le bon niveau de granularité, le besoin n'a
    pas dépassé ce que quatre builders dédiés couvrent proprement. Chaque sous-type des deux nouveaux
    builders traduit dans les 5 langues du plugin via `Translations::applyIcon()` (mécanisme
-   `DropdownTranslation` déjà prouvé sur ~20 autres builders) — à la différence des trois builders
+   `DropdownTranslation` déjà prouvé sur ~20 autres builders), à la différence des trois builders
    d'actifs personnalisés précédents (`VehicleAssetBuilder`/`ServerAssetBuilder`/
    `BuildingAssetBuilder`), qui ne traduisent pas leurs types seedés (lacune préexistante, non
    corrigée ici, hors du périmètre de ce sprint). Détail complet de la vérification (suite
    d'intégration PHPUnit dédiée + soumission réelle du wizard par HTTP) dans `CHANGELOG.md` `[0.65.0]`.
 
-2. ✅ **Gabarit de solution « Demande incomplète » — fait (v0.65.0, 2026-08-19).** Topic
+2. ✅ **Gabarit de solution « Demande incomplète », fait (v0.65.0, 2026-08-19).** Topic
    https://forum.glpi-project.org/viewtopic.php?id=294630. Un utilisateur (alecomte) demande un
    statut/bouton dédié pour rejeter un ticket mal formulé ou incomplet. Réponse du contributeur
    LaDenrée : pas besoin de toucher au workflow natif, un gabarit de solution avec un texte type
-   « votre demande est incomplète » suffit — mécanisme déjà utilisé par ce plugin
+   « votre demande est incomplète » suffit, mécanisme déjà utilisé par ce plugin
    (`SolutionLibraryBuilder`, 5 catégories/10 gabarits existants, voir plus haut). Aucun gabarit
    équivalent n'existait dans la catégorie « Informationnel » (qui couvrait « Fonctionnement normal
    constaté » et « Ticket doublon », pas « informations manquantes »). 11e gabarit ajouté dans cette
