@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.69.0] - 2026-08-23
+
 ### Added
 
 - **Bibliothèque de modèles de tickets pour les tâches récurrentes courantes** (#149) : "Revue
