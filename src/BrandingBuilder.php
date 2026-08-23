@@ -92,6 +92,15 @@ class BrandingBuilder
     public function apply(Config $config, array $entityIds): bool
     {
         if (empty($config->fields['branding_enabled'])) {
+            // Active undo, same bug class already fixed on PaletteBuilder (real bug, 2026-08-20):
+            // unchecking "Personnaliser la couleur principale" must remove a color block a previous
+            // run already wrote into custom_css_code, not just stop re-writing it — the CSS itself
+            // is otherwise never retired and stays visually applied forever, reported live by the
+            // user re-running the wizard after unchecking this exact toggle.
+            foreach ($entityIds as $entityId) {
+                $this->removeCssBlock($entityId, self::COLOR_BLOCK_KEY);
+            }
+
             return false;
         }
 
@@ -103,6 +112,27 @@ class BrandingBuilder
         }
 
         return true;
+    }
+
+    /**
+     * Same "active undo" fix as {@see apply()}, for the logo side: `entity_logos_enabled` being
+     * unchecked skips calling {@see applyLogos()} entirely in `front/wizard.php`, which left a
+     * previously-applied logo block stuck in `custom_css_code` forever — same bug, same fix.
+     *
+     * @param int[] $entityIds
+     * @return int Number of entities whose logo block was actually removed (already-empty entities
+     *         don't count, matching {@see applyLogos()}'s own "count what actually changed" style).
+     */
+    public function removeLogos(array $entityIds): int
+    {
+        $count = 0;
+        foreach ($entityIds as $entityId) {
+            if ($this->removeCssBlock($entityId, self::LOGO_BLOCK_KEY)) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
     /**
@@ -260,13 +290,10 @@ class BrandingBuilder
             return false;
         }
 
-        $existing = (string) ($entity->fields['custom_css_code'] ?? '');
+        $stripped = $this->stripCssBlock((string) ($entity->fields['custom_css_code'] ?? ''), $blockKey);
+
         $startMarker = "/* configurationglpiauto:{$blockKey}:start */";
         $endMarker = "/* configurationglpiauto:{$blockKey}:end */";
-
-        $pattern = '/' . preg_quote($startMarker, '/') . '.*?' . preg_quote($endMarker, '/') . '/s';
-        $stripped = trim((string) preg_replace($pattern, '', $existing));
-
         $block = "{$startMarker}\n{$css}\n{$endMarker}";
         $merged = $stripped === '' ? $block : "{$stripped}\n{$block}";
 
@@ -284,6 +311,48 @@ class BrandingBuilder
             'enable_custom_css' => 1,
             'custom_css_code' => $merged,
         ]);
+
+        return true;
+    }
+
+    /**
+     * Shared by {@see mergeCssBlock()} and {@see removeCssBlock()}: strips this plugin's own
+     * previously-written block for `$blockKey` (if any) out of `$existing`, leaving everything else
+     * — the other block, any CSS an admin added by hand outside the markers — untouched.
+     */
+    private function stripCssBlock(string $existing, string $blockKey): string
+    {
+        $startMarker = "/* configurationglpiauto:{$blockKey}:start */";
+        $endMarker = "/* configurationglpiauto:{$blockKey}:end */";
+        $pattern = '/' . preg_quote($startMarker, '/') . '.*?' . preg_quote($endMarker, '/') . '/s';
+
+        return trim((string) preg_replace($pattern, '', $existing));
+    }
+
+    /**
+     * Active-undo counterpart of {@see mergeCssBlock()}: removes this plugin's own block for
+     * `$blockKey`, if present, instead of writing a new one. `enable_custom_css` is deliberately left
+     * alone even once nothing plugin-written remains — it's a general "use custom CSS at all" toggle
+     * that may also cover CSS an admin added by hand outside these markers, not something this
+     * builder ever turned on for reasons unrelated to `$blockKey`'s own content, so it's not this
+     * builder's place to turn it back off either.
+     *
+     * @return bool True if a block was actually found and removed (i.e. the field changed).
+     */
+    private function removeCssBlock(int $entityId, string $blockKey): bool
+    {
+        $entity = new Entity();
+        if (!$entity->getFromDB($entityId)) {
+            return false;
+        }
+
+        $existing = (string) ($entity->fields['custom_css_code'] ?? '');
+        $stripped = $this->stripCssBlock($existing, $blockKey);
+        if ($stripped === $existing) {
+            return false;
+        }
+
+        $entity->update(['id' => $entityId, 'custom_css_code' => $stripped]);
 
         return true;
     }

@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Décocher "Personnaliser la couleur principale" (ou "Ajouter un logo par entité") dans
+  l'assistant ne retirait jamais la couleur/le logo déjà appliqués**, signalé par l'utilisateur :
+  `BrandingBuilder::apply()` faisait `return false` sans rien retirer dès que `branding_enabled`
+  était désactivé, laissant le bloc CSS déjà écrit dans `custom_css_code` appliqué indéfiniment
+  (même bug que celui déjà corrigé sur `PaletteBuilder` en v0.65.1, mais pas ici). `entity_logos_enabled`
+  avait le même défaut côté logo (`applyLogos()` n'était simplement jamais rappelé). Corrigé en
+  retirant activement le bloc CSS concerné (couleur ou logo, indépendamment l'un de l'autre) quand
+  la case correspondante est décochée.
 - **`release.yml` échouait sur `gh release create` si une release existait déjà pour le tag**
   (ex. v0.65.1, créée manuellement sans archive via l'UI GitHub), ce qui empêchait la publication
   automatisée du ZIP d'installation. Le step bascule maintenant sur `gh release upload` +

@@ -553,8 +553,8 @@ if (isset($_POST['finish'])) {
     }
 
     $logosCreated = 0;
+    $entityIdToLogoDataUri = [];
     if (!empty($config->fields['entity_logos_enabled'])) {
-        $entityIdToLogoDataUri = [];
         foreach ($entityIds as $i => $entityId) {
             $dataUri = buildEntityLogoDataUri((array) ($_FILES['entity_logo_' . $i] ?? []));
             if ($dataUri !== null) {
@@ -562,6 +562,11 @@ if (isset($_POST['finish'])) {
             }
         }
         $logosCreated = $brandingBuilder->applyLogos($entityIdToLogoDataUri);
+    } else {
+        // Active undo, same bug class as BrandingBuilder::apply()'s own fix: unchecking "Ajouter un
+        // logo par entité" must remove a logo block a previous run already wrote, not just stop
+        // re-writing it.
+        $brandingBuilder->removeLogos($entityIds);
     }
 
     // Reuses whatever color/logo were already collected above for the UI — root entity's own logo
