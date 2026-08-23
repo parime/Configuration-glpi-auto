@@ -723,7 +723,7 @@ if (isset($_POST['finish'])) {
         $messages[] = sprintf(__('%d catégories/gabarits d\'évènements de planning créés.', 'configurationglpiauto'), $planningEventsCreated);
     }
     if ($projectTaxonomyCreated > 0) {
-        $messages[] = sprintf(__('%d types de projet/tâche de projet créés.', 'configurationglpiauto'), $projectTaxonomyCreated);
+        $messages[] = sprintf(__('%d types de projet/tâche de projet/statuts de projet créés.', 'configurationglpiauto'), $projectTaxonomyCreated);
     }
     if ($projectTaskTemplatesCreated > 0) {
         $messages[] = sprintf(__('%d gabarits de tâches de projets créés.', 'configurationglpiauto'), $projectTaskTemplatesCreated);

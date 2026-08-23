@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use ProjectState;
 use ProjectTaskType;
 use ProjectType;
 
@@ -34,6 +35,14 @@ use ProjectType;
  * export (its own "statut de projet" export only had GLPI's 3 native `ProjectState` rows,
  * unmodified — no project type/task type customization to draw from), so this is generalized from
  * standard PM practice rather than real org data — a starting point, same as everywhere else.
+ *
+ * `ProjectState` (added on explicit user request, #155): the 3 native rows have no "on hold" or
+ * "cancelled" concept at all (confirmed via `DESCRIBE` + reading the actual 3 rows, not assumed) —
+ * both common in real project tracking. Colors chosen distinct from the native 3 (green/orange/red)
+ * so all 6 stay visually distinguishable on the same Kanban board; "Annulé" gets `is_finished = 1`
+ * like "Closed" (both stop counting as active work). No icon applied here (unlike `ProjectType`/
+ * `ProjectTaskType`): `ProjectState` renders as a colored badge in GLPI's UI, not next to an emoji
+ * slot the way a plain dropdown does.
  */
 class ProjectTaxonomyBuilder
 {
@@ -43,6 +52,20 @@ class ProjectTaxonomyBuilder
         ['name' => 'Infrastructure', 'icon' => '🖥️', 'comment' => 'Datacenter, réseau, serveurs, systèmes'],
         ['name' => 'Déploiement / Migration', 'icon' => '🚀', 'comment' => 'Mise en place ou bascule d\'un outil, d\'un système'],
         ['name' => 'R&D / Innovation', 'icon' => '💡'],
+    ];
+
+    // GLPI ships only 3 native ProjectState rows (New/Processing/Closed, confirmed via DESCRIBE +
+    // direct row read — not assumed): no "on hold" or "cancelled" concept at all, both extremely
+    // common in real project tracking (a project genuinely paused vs. actively progressing is a
+    // different state a Kanban/report needs to distinguish, same for a project stopped before
+    // completion vs. one that finished). Added on explicit user request (#155). Colors deliberately
+    // distinct from the 3 native ones (green/orange/red) so all 6 stay visually distinguishable on
+    // the same Kanban board. `is_finished` marks "Annulé" the same way "Closed" already is (both
+    // stop counting as active work), confirmed real by DESCRIBE (`glpi_projectstates.is_finished`).
+    private const PROJECT_STATES = [
+        ['name' => 'En pause', 'color' => '#9e9e9e', 'is_finished' => 0],
+        ['name' => 'En attente de validation', 'color' => '#9c27b0', 'is_finished' => 0],
+        ['name' => 'Annulé', 'color' => '#424242', 'is_finished' => 1],
     ];
 
     private const TASK_TYPES = [
@@ -81,16 +104,24 @@ class ProjectTaxonomyBuilder
             }
             $count++;
         }
+        foreach (self::PROJECT_STATES as $state) {
+            $this->getOrCreateProjectState($state['name'], $state['color'], $state['is_finished']);
+            $count++;
+        }
 
         return $count;
     }
 
     /**
-     * @return array{project_types: array<int, array{name: string, icon: string, comment?: string}>, task_types: array<int, array{name: string, icon: string, comment?: string}>}
+     * @return array{project_types: array<int, array{name: string, icon: string, comment?: string}>, task_types: array<int, array{name: string, icon: string, comment?: string}>, project_states: array<int, array{name: string, color: string, is_finished: int}>}
      */
     public static function getPreview(): array
     {
-        return ['project_types' => self::PROJECT_TYPES, 'task_types' => self::TASK_TYPES];
+        return [
+            'project_types' => self::PROJECT_TYPES,
+            'task_types' => self::TASK_TYPES,
+            'project_states' => self::PROJECT_STATES,
+        ];
     }
 
     /**
@@ -104,5 +135,15 @@ class ProjectTaxonomyBuilder
         }
 
         return (int) $item->add(['name' => $name, 'comment' => $comment]);
+    }
+
+    private function getOrCreateProjectState(string $name, string $color, int $isFinished): int
+    {
+        $item = new ProjectState();
+        if ($item->getFromDBByCrit(['name' => $name])) {
+            return (int) $item->getID();
+        }
+
+        return (int) $item->add(['name' => $name, 'color' => $color, 'is_finished' => $isFinished]);
     }
 }

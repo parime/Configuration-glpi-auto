@@ -1260,7 +1260,7 @@
             <label class="form-check-label" for="cga-project-taxonomy-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
           </div>
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <strong>{{ __('Types de projet', 'configurationglpiauto') }}</strong>
               <ul class="mb-0">
                 {% for type in project_taxonomy_preview.project_types %}
@@ -1268,11 +1268,20 @@
                 {% endfor %}
               </ul>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <strong>{{ __('Types de tâche de projet', 'configurationglpiauto') }}</strong>
               <ul class="mb-0">
                 {% for type in project_taxonomy_preview.task_types %}
                   <li><span class="cga-project-taxonomy-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <strong>{{ __('Statuts de projet supplémentaires', 'configurationglpiauto') }}</strong>
+              <p class="text-muted small mb-1">{{ __('En plus des 3 statuts natifs GLPI (Nouveau, En cours, Fermé)', 'configurationglpiauto') }}</p>
+              <ul class="mb-0">
+                {% for state in project_taxonomy_preview.project_states %}
+                  <li><span style="display: inline-block; width: .7em; height: .7em; border-radius: 50%; background-color: {{ state.color }};"></span> {{ state.name }}</li>
                 {% endfor %}
               </ul>
             </div>

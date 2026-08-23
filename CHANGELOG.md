@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   nouvelle case "Ajouter des icônes"), sur demande explicite de l'utilisateur (#154) : même
   mécanisme d'icône que les autres référentiels du plugin, appliqué à la fois au nom natif anglais
   et aux 4 traductions déjà en place.
+- **3 statuts de projet supplémentaires** (`ProjectTaxonomyBuilder`) : En pause, En attente de
+  validation, Annulé — sur demande explicite de l'utilisateur (#155). GLPI ne livre nativement que
+  3 statuts (Nouveau/En cours/Fermé, confirmé par lecture directe de la table), sans notion de
+  pause ni d'annulation. Couleurs distinctes des 3 natifs pour rester lisibles sur un même Kanban ;
+  "Annulé" marqué `is_finished` comme "Fermé".
 
 ### Fixed
 
