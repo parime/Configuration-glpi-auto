@@ -1102,9 +1102,14 @@
         </div>
         <div id="cga-request-type-translations-fields" style="display: none;" class="mb-3">
           <p class="text-muted small mb-1">{{ __('GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, sans traduction — une session française (ou allemande, italienne, espagnole) les voit telles quelles tant qu\'aucune traduction n\'existe.', 'configurationglpiauto') }}</p>
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="request_type_icons_enabled" value="0">
+            <input type="checkbox" name="request_type_icons_enabled" value="1" class="form-check-input" id="cga-request-type-icons-enabled" {{ config.request_type_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-request-type-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
           <ul class="mb-0">
             {% for name, translations in request_type_translations_preview %}
-              <li>{{ name }} → {{ translations.fr_FR }}</li>
+              <li><span class="cga-request-type-icon" style="display: none;">{{ translations.icon }}</span> {{ name }} → {{ translations.fr_FR }}</li>
             {% endfor %}
           </ul>
         </div>
@@ -2558,6 +2563,7 @@
   wireIconsToggle('cga-software-license-type-icons-enabled', '.cga-software-license-type-icon');
   wireIconsToggle('cga-manufacturer-icons-enabled', '.cga-manufacturer-icon');
   var requestTypeTranslationsEnabledInput = wireSimpleToggle('cga-request-type-translations-enabled', 'cga-request-type-translations-fields');
+  wireIconsToggle('cga-request-type-icons-enabled', '.cga-request-type-icon');
   var userCategoriesEnabledInput = wireSimpleToggle('cga-user-categories-enabled', 'cga-user-categories-fields');
   wireIconsToggle('cga-user-category-icons-enabled', '.cga-user-category-icon');
   var fieldUnicityEnabledInput = wireSimpleToggle('cga-field-unicity-enabled', 'cga-field-unicity-fields');

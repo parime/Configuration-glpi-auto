@@ -161,6 +161,7 @@ final class Installer
                 `location_geocoding_endpoint` varchar(255) NOT NULL DEFAULT 'https://nominatim.openstreetmap.org',
                 `project_templates_enabled` tinyint NOT NULL DEFAULT 0,
                 `request_type_translations_enabled` tinyint NOT NULL DEFAULT 0,
+                `request_type_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `entity_native_address_enabled` tinyint NOT NULL DEFAULT 0,
                 `user_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `user_category_icons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -337,6 +338,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'fire_safety_asset_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'physical_security_assets_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'physical_security_asset_icons_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'request_type_icons_enabled', 'bool', ['value' => 0]);
         }
 
         // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape
