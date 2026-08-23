@@ -525,13 +525,23 @@ final class Translations
         ];
 
         foreach ($byLanguage as $language => $text) {
+            // trim(): callers with no icon of their own (e.g. CategoryBuilder's leaf nodes, which
+            // were never given an emoji) pass '' here — still want the translated text alone, not
+            // a stray leading space from the empty icon slot.
+            $value = trim(sprintf('%s %s', $icon, $text));
+
             $translation = new DropdownTranslation();
             $crit = ['itemtype' => $itemtype, 'items_id' => $id, 'language' => $language, 'field' => 'name'];
             if (!$translation->getFromDBByCrit($crit)) {
-                // trim(): callers with no icon of their own (e.g. CategoryBuilder's leaf nodes,
-                // which were never given an emoji) pass '' here — still want the translated text
-                // alone, not a stray leading space from the empty icon slot.
-                $translation->add($crit + ['value' => trim(sprintf('%s %s', $icon, $text))]);
+                $translation->add($crit + ['value' => $value]);
+            } elseif ($translation->fields['value'] !== $value) {
+                // Real bug found live (2026-08-23): this used to only ever add(), never update() —
+                // a name/icon change between versions (or re-running after this MAP itself changed)
+                // left the old value stuck forever, no error anywhere. DropdownTranslation's own
+                // prepareInputForUpdate() re-derives whether the update is legal from
+                // itemtype/items_id/field/language on $input (not from the loaded item), so those
+                // must be resent alongside id/value or it silently rejects the update.
+                $translation->update($crit + ['id' => (int) $translation->getID(), 'value' => $value]);
             }
         }
     }
@@ -560,6 +570,9 @@ final class Translations
             $crit = ['itemtype' => $itemtype, 'items_id' => $id, 'language' => $language, 'field' => 'content'];
             if (!$translation->getFromDBByCrit($crit)) {
                 $translation->add($crit + ['value' => $content]);
+            } elseif ($translation->fields['value'] !== $content) {
+                // Same add-only bug already fixed on applyIcon() — see that method's comment.
+                $translation->update($crit + ['id' => (int) $translation->getID(), 'value' => $content]);
             }
         }
     }
