@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Types de certificat courants** (#151, revue des recommandations ITIL/ISO 27001 en matière de
+  gestion d'actifs) : SSL/TLS, signature de code, S/MIME, authentification client (VPN/mTLS),
+  autorité de certification, signature de document. `Certificate` et son suivi d'expiration
+  (`NotificationTargetCertificate`) sont natifs à GLPI depuis la version 10, mais `CertificateType`
+  n'a aucune valeur par défaut sur une installation neuve — même lacune que ce plugin comble déjà
+  pour les fabricants et les types de licence logicielle. Aucun nouveau type d'actif personnalisé
+  créé : `Certificate` existe déjà nativement, contrairement aux véhicules/sécurité incendie/
+  sécurité physique qui n'avaient aucune table GLPI à réutiliser.
+
 - **Deux types de licence logicielle supplémentaires** (#146, revue de la liste introduite en
   v0.64.0) : "Perpétuelle" (la distinction SAM la plus basique — licence non limitée dans le temps,
   à l'opposé de l'entrée "Abonnement (SaaS)" déjà présente — curieusement absente) et "Académique /
