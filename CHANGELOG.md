@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- README (FR/EN) : ajout de deux fonctionnalités absentes de la liste (actifs personnalisés
+  Véhicule/Serveur/Local/Sécurité incendie/Sécurité physique, types de licence logicielle et
+  d'instance de base de données), et section Installation étoffée (méthode release ZIP
+  recommandée en premier, sans Git ni Composer, section Mise à jour ajoutée).
+
 ### Fixed
 
 - **Décocher "Personnaliser la couleur principale" (ou "Ajouter un logo par entité") dans
