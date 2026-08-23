@@ -1191,10 +1191,10 @@
         <div class="form-check form-switch mb-2">
           <input type="hidden" name="rss_feeds_enabled" value="0">
           <input type="checkbox" name="rss_feeds_enabled" value="1" class="form-check-input" id="cga-rss-feeds-enabled" {{ config.rss_feeds_enabled|default(0) ? 'checked' : '' }}>
-          <label class="form-check-label" for="cga-rss-feeds-enabled">{{ __('Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)', 'configurationglpiauto') }}</label>
+          <label class="form-check-label" for="cga-rss-feeds-enabled">{{ __('Ajouter des flux RSS utiles (sécurité CERT-FR, notes de version GLPI)', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-rss-feeds-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-1">{{ __('Visible dans Outils > Flux RSS pour toute l\'instance — utile pour suivre les vulnérabilités affectant le parc sans quitter GLPI.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-1">{{ __('Visible dans Outils > Flux RSS pour toute l\'instance — utile pour suivre les vulnérabilités affectant le parc et les nouvelles versions de GLPI sans quitter l\'outil.', 'configurationglpiauto') }}</p>
           <ul class="mb-0">
             {% for feed in rss_feeds_preview %}
               <li>{{ feed.name }}</li>
