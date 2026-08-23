@@ -59,23 +59,30 @@ All other screenshots (all 18 steps in detail) are in the [tutorial](docs/TUTORI
 - 4 predefined profiles (Simple install, Multiple sites or departments, Multiple client companies
   / MSP, Custom) that pre-fill the following steps with values suited to each
 - Entity structure (single-site, multi-site, or MSP) with a real-time preview
-- Calendar, SLA/OLA with automatic escalation between support tiers (L1 -> L2 -> L3)
+- Calendar, SLA/OLA with automatic escalation between support tiers (L1 -> L2 -> L3), fixed-date
+  public holidays per country (dedicated calendar per country, France by default)
 - Topic-based ticket categories (11 selectable branches, up to 3 levels) and a self-service
   catalog (native GLPI 11 forms, automatic routing to the right category)
-- Asset statuses and pending reasons with automatic follow-up/closure
+- Asset statuses, additional project statuses and pending reasons with automatic follow-up/closure
 - Visual customization: color and logo, native or custom GLPI palette, settings differentiated
   per client/site in MSP mode
 - Ticket templates (simplified / full) automatically assigned based on the user's GLPI profile,
   LDAP rights (per site and per role/department)
 - Libraries of task, solution, follow-up and validation templates, with dynamic Twig variables
   (real ticket/requester data), change and problem templates
+- A library of ticket templates for common recurring tasks (user review, maintenance, updates) -
+  ready-to-use content only, no automatic scheduling imposed
 - Locations, manufacturers, knowledge base categories, document topics (ISO 27001 classification)
   and criticality levels, Projects module dropdowns
 - Optional custom assets: Vehicle, Server, Building/Local (dedicated branches), Fire Safety & First
   Aid and Physical Security (aligned with ISO/IEC 27001 Annex A.7), each with its own compliance
   fields (verification dates, warranty...)
-- Software license types and database instance types, on top of standard equipment types
-  (computers, monitors, network, peripherals, phones)
+- Software license types, certificate types (SSL/TLS, code signing, S/MIME...) and database
+  instance types, on top of standard equipment types (computers, monitors, network, peripherals,
+  phones)
+- Optional activation of GLPI's native inventory (FusionInventory/GLPI Agent)
+- Useful RSS feeds (CERT-FR security advisories, GLPI release notes) and plugin version tracking
+  against the latest GitHub release
 - Interface translated into 5 languages (French, English, German, Italian, Spanish)
 
 ## Requirements

@@ -59,24 +59,32 @@ Toutes les autres captures d'écran (les 18 étapes en détail) sont dans le [tu
 - 4 profils predefinis (Installation simple, Plusieurs sites ou services, Plusieurs entreprises
   clientes / MSP, Personnalise) qui pre-remplissent les etapes suivantes avec des valeurs adaptees
 - Structure d'entites (mono-site, multi-site, ou MSP) avec apercu en temps reel
-- Calendrier, SLA/OLA avec escalade automatique entre niveaux de support (N1 -> N2 -> N3)
+- Calendrier, SLA/OLA avec escalade automatique entre niveaux de support (N1 -> N2 -> N3), jours
+  feries a date fixe par pays (calendrier dedie par pays, France par defaut)
 - Categories de tickets thematiques (11 branches selectionnables, jusqu'a 3 niveaux) et catalogue
   de services en libre-service (formulaires natifs GLPI 11, routage automatique vers la bonne
   categorie)
-- Statuts d'elements et raisons d'attente avec relance/cloture automatiques
+- Statuts d'elements, statuts de projet supplementaires et raisons d'attente avec relance/cloture
+  automatiques
 - Personnalisation graphique : couleur et logo, palette GLPI native ou personnalisee, reglages
   differencies par client/site en mode MSP
 - Modeles de tickets (simplifie / complet) assignes automatiquement selon le profil GLPI de
   l'utilisateur, droits LDAP (par site et par fonction/departement)
 - Bibliotheques de gabarits de taches, solutions, suivis et validations, avec variables Twig
   dynamiques (donnees reelles du ticket/demandeur), modeles de changement et de probleme
+- Bibliotheque de modeles de tickets pour les taches recurrentes courantes (revue utilisateurs,
+  maintenance, mises a jour) - contenu pret a l'emploi, aucune planification automatique imposee
 - Lieux, fabricants, categories de base de connaissances, rubriques documentaires (classification
   ISO 27001) et niveaux de criticite, intitules du module Projets
 - Actifs personnalises optionnels : Vehicule, Serveur, Local (branches dediees), Securite incendie
   & premiers secours et Securite physique (alignes ISO/IEC 27001 Annexe A.7), avec leurs propres
   champs de conformite (dates de verification, garantie...)
-- Types de licence logicielle et types d'instance de base de donnees, en plus des types de materiel
-  standards (ordinateurs, ecrans, reseau, peripheriques, telephones)
+- Types de licence logicielle, types de certificat (SSL/TLS, signature de code, S/MIME...) et types
+  d'instance de base de donnees, en plus des types de materiel standards (ordinateurs, ecrans,
+  reseau, peripheriques, telephones)
+- Activation optionnelle de l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)
+- Flux RSS utiles (avis de securite CERT-FR, notes de version GLPI) et suivi de la version du
+  plugin par rapport a la derniere release GitHub
 - Interface traduite en 5 langues (francais, anglais, allemand, italien, espagnol)
 
 ## Prerequis
