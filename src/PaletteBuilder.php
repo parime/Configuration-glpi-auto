@@ -101,9 +101,12 @@ class PaletteBuilder
         // tab even once it's no longer the instance-wide default) and is real, unnecessary leftover
         // state from a previous run — same "unchecking must undo, not just stop re-doing" fix as
         // the config reset above.
+        // No user input in $path: GLPI_THEMES_DIR is a GLPI-defined installation constant and
+        // THEME_KEY is this class's own hardcoded 'cga_custom' literal, never derived from request
+        // data — the generic rule below can't see that through the string concatenation.
         $path = GLPI_THEMES_DIR . '/' . self::THEME_KEY . '.scss';
         if (is_file($path)) {
-            unlink($path);
+            unlink($path); // nosemgrep: php.lang.security.unlink-use.unlink-use
         }
 
         return $nativePalette !== '';

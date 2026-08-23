@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **CI cassée sur chaque push vers `main`** : le job Semgrep SAST scanne tout le dépôt sur un
+  événement `push` (contrairement aux PR, où il ne scanne que le diff), et signalait depuis
+  plusieurs merges déjà un faux positif préexistant dans `PaletteBuilder.php` (`unlink($path)`,
+  règle `php.lang.security.unlink-use.unlink-use`) — invisible sur les PR car ce fichier n'était
+  touché par aucune d'entre elles. `$path` n'a jamais contenu d'entrée utilisateur (constante
+  d'installation GLPI + littéral codé en dur), confirmé en lisant le code et en rejouant le scan
+  Semgrep en local avant/après le correctif. Supprimé via `// nosemgrep` ciblé sur la ligne, avec
+  justification en commentaire — pas une modification du comportement.
+
 ## [0.69.0] - 2026-08-23
 
 ### Added
