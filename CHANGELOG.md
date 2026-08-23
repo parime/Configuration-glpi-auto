@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.66.0] - 2026-08-23
+
 ### Added
 
 - **Icônes sur les sources de demandes natives de GLPI** (`RequestTypeTranslationBuilder`,
@@ -33,17 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `RackType` : Baie murale, Micro-baie (mini-rack).
 - `DatabaseInstanceType` : Cache en mémoire, Base vectorielle (IA/RAG).
 
-### Fixed
-
-- **`Translations::applyIcon()`/`applyContent()` ne faisaient jamais que `add()`, jamais `update()`**
-  — trouvé en développant l'icône des sources de demande (#154) : appeler ces méthodes une seconde
-  fois avec une valeur différente laissait l'ancienne traduction figée indéfiniment, sans erreur
-  nulle part. Cause : `DropdownTranslation::update()` rejette silencieusement un input qui ne
-  contient que `id`/`value` (sa validation interne redérive `itemtype`/`items_id`/`field`/
-  `language` depuis l'input, pas depuis la ligne chargée). Corrigé pour les deux méthodes, avec un
-  test de non-régression. Ne corrige pas le cas plus large "décocher les icônes ne les retire pas"
-  sur les ~20 builders qui utilisent ce mécanisme — voir #178.
-
 ### Changed
 
 - README (FR/EN) : retire 6 tirets cadratin introduits par erreur lors de la mise à jour de la
@@ -57,6 +48,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **`Translations::applyIcon()`/`applyContent()` ne faisaient jamais que `add()`, jamais `update()`**
+  — trouvé en développant l'icône des sources de demande (#154) : appeler ces méthodes une seconde
+  fois avec une valeur différente laissait l'ancienne traduction figée indéfiniment, sans erreur
+  nulle part. Cause : `DropdownTranslation::update()` rejette silencieusement un input qui ne
+  contient que `id`/`value` (sa validation interne redérive `itemtype`/`items_id`/`field`/
+  `language` depuis l'input, pas depuis la ligne chargée). Corrigé pour les deux méthodes, avec un
+  test de non-régression. Ne corrige pas le cas plus large "décocher les icônes ne les retire pas"
+  sur les ~20 builders qui utilisent ce mécanisme — voir #178.
 - **Décocher "Personnaliser la couleur principale" (ou "Ajouter un logo par entité") dans
   l'assistant ne retirait jamais la couleur/le logo déjà appliqués**, signalé par l'utilisateur :
   `BrandingBuilder::apply()` faisait `return false` sans rien retirer dès que `branding_enabled`
