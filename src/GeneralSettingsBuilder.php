@@ -34,11 +34,19 @@ use ValidationStep;
  * `GlpiPlugin\Configurationglpiauto\Config` class in the current namespace, so a bare `Config::`
  * call here would resolve to the wrong class.
  *
- * Split into 6 independently-gated groups (Sprint 26) rather than one `apply()` behind a single
+ * Split into independently-gated groups (Sprint 26) rather than one `apply()` behind a single
  * toggle — the earlier all-or-nothing design (everything from Sprint 18 through Sprint 25 folded
  * into one `general_settings_enabled` flag) meant an admin who wanted the satisfaction survey but
  * not, say, the committee validation step had no way to say so. Each group below matches one
  * checkbox in the wizard's "Réglages généraux" step.
+ *
+ * `inventory_enabled` (added on explicit user request, #147) is the one group targeting the
+ * `inventory` config context instead of `core` — confirmed both are legal contexts for
+ * `\Config::setConfigurationValues()` by reading `\Config::update()`'s own `$allowed_context`
+ * list, not assumed. Defaults to unchecked, same reasoning already applied to
+ * `validation_supervisor_routing_enabled` in the wizard template: this opens a real network entry
+ * point (the inventory endpoint agents post to), not just content generation, so it shouldn't be
+ * silently turned on for an org that has no agents to deploy.
  */
 class GeneralSettingsBuilder
 {
@@ -103,6 +111,11 @@ class GeneralSettingsBuilder
 
         if (!empty($config->fields['committee_validation_enabled'])) {
             $this->ensureCommitteeValidationStep();
+            $applied = true;
+        }
+
+        if (!empty($config->fields['inventory_enabled'])) {
+            \Config::setConfigurationValues('inventory', ['enabled_inventory' => 1]);
             $applied = true;
         }
 
