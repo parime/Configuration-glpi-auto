@@ -53,6 +53,7 @@ use GlpiPlugin\Configurationglpiauto\ServerAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareLicenseTypeBuilder;
+use GlpiPlugin\Configurationglpiauto\CertificateTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\SolutionLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use GlpiPlugin\Configurationglpiauto\SupportTierBuilder;
@@ -505,6 +506,7 @@ if (isset($_POST['finish'])) {
     $lineOperatorsCreated = (new LineOperatorBuilder())->build($config);
     $assetTypesCreated = (new AssetTypeBuilder())->build($config);
     $softwareLicenseTypesCreated = (new SoftwareLicenseTypeBuilder())->build($config);
+    $certificateTypesCreated = (new CertificateTypeBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
     $documentManagementCreated = (new DocumentManagementBuilder())->build($config);
     $planningEventsCreated = (new PlanningEventBuilder())->build($config);
@@ -713,6 +715,9 @@ if (isset($_POST['finish'])) {
     if ($softwareLicenseTypesCreated > 0) {
         $messages[] = sprintf(__('%d types de licence logicielle créés.', 'configurationglpiauto'), $softwareLicenseTypesCreated);
     }
+    if ($certificateTypesCreated > 0) {
+        $messages[] = sprintf(__('%d types de certificat créés.', 'configurationglpiauto'), $certificateTypesCreated);
+    }
     if ($kbCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de base de connaissances créées.', 'configurationglpiauto'), $kbCategoriesCreated);
     }
@@ -820,6 +825,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'line_operators_preview' => LineOperatorBuilder::getOperatorsPreview(),
     'asset_types_preview' => AssetTypeBuilder::getTypesPreview(),
     'software_license_types_preview' => SoftwareLicenseTypeBuilder::getTypesPreview(),
+    'certificate_types_preview' => CertificateTypeBuilder::getTypesPreview(),
     'document_management_preview' => DocumentManagementBuilder::getPreview(),
     'planning_events_preview' => PlanningEventBuilder::getPreview(),
     'project_taxonomy_preview' => ProjectTaxonomyBuilder::getPreview(),

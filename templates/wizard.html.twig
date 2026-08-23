@@ -1123,6 +1123,22 @@
         </div>
 
         <div class="form-check form-switch mb-2">
+          <input type="hidden" name="certificate_types_enabled" value="0">
+          <input type="checkbox" name="certificate_types_enabled" value="1" class="form-check-input" id="cga-certificate-types-enabled" {{ config.certificate_types_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-certificate-types-enabled">{{ __('Créer les types de certificat courants (SSL/TLS, signature de code, S/MIME...)', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-certificate-types-fields" style="display: none;" class="mb-3">
+          <div class="form-check form-switch mb-2">
+            <input type="hidden" name="certificate_type_icons_enabled" value="0">
+            <input type="checkbox" name="certificate_type_icons_enabled" value="1" class="form-check-input" id="cga-certificate-type-icons-enabled" {{ config.certificate_type_icons_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-certificate-type-icons-enabled">{{ __('Ajouter des icônes', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-0">
+            {% for type in certificate_types_preview %}<span class="cga-certificate-type-icon" style="display: none;">{{ type.icon }}</span> {{ type.name }}{% if not loop.last %}, {% endif %}{% endfor %}
+          </p>
+        </div>
+
+        <div class="form-check form-switch mb-2">
           <input type="hidden" name="request_type_translations_enabled" value="0">
           <input type="checkbox" name="request_type_translations_enabled" value="1" class="form-check-input" id="cga-request-type-translations-enabled" {{ config.request_type_translations_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-request-type-translations-enabled">{{ __('Traduire les sources de demande natives de GLPI', 'configurationglpiauto') }}</label>
@@ -2602,6 +2618,8 @@
   wireIconsToggle('cga-asset-type-icons-enabled', '.cga-asset-type-icon');
   var softwareLicenseTypesEnabledInput = wireSimpleToggle('cga-software-license-types-enabled', 'cga-software-license-types-fields');
   wireIconsToggle('cga-software-license-type-icons-enabled', '.cga-software-license-type-icon');
+  var certificateTypesEnabledInput = wireSimpleToggle('cga-certificate-types-enabled', 'cga-certificate-types-fields');
+  wireIconsToggle('cga-certificate-type-icons-enabled', '.cga-certificate-type-icon');
   wireIconsToggle('cga-manufacturer-icons-enabled', '.cga-manufacturer-icon');
   var requestTypeTranslationsEnabledInput = wireSimpleToggle('cga-request-type-translations-enabled', 'cga-request-type-translations-fields');
   wireIconsToggle('cga-request-type-icons-enabled', '.cga-request-type-icon');

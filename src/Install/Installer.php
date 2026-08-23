@@ -180,6 +180,8 @@ final class Installer
                 `fire_safety_asset_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `physical_security_assets_enabled` tinyint NOT NULL DEFAULT 0,
                 `physical_security_asset_icons_enabled` tinyint NOT NULL DEFAULT 0,
+                `certificate_types_enabled` tinyint NOT NULL DEFAULT 0,
+                `certificate_type_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
@@ -341,6 +343,8 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'physical_security_asset_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'request_type_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'inventory_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'certificate_types_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'certificate_type_icons_enabled', 'bool', ['value' => 0]);
         }
 
         // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape
