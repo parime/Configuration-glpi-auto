@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Flux RSS des notes de version de GLPI** en plus du CERT-FR déjà proposé (#148, évaluation des
+  flux souvent utiles sur une instance GLPI) : `https://github.com/glpi-project/glpi/releases.atom`
+  (flux Atom natif GitHub), confirmé réel et pertinent (inclut les correctifs de sécurité, ex.
+  11.0.8 et ses CVE). `SimplePie` (utilisé nativement par `RSSFeed` dans GLPI) parse l'Atom comme le
+  RSS sans traitement particulier. `RSSFeedBuilder` passe d'un flux unique codé en dur à une liste,
+  même bascule "Ajouter des flux RSS utiles" pour les deux.
+
 ## [0.68.0] - 2026-08-23
 
 ### Added
