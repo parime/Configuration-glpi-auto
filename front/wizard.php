@@ -46,6 +46,7 @@ use GlpiPlugin\Configurationglpiauto\PlanningEventBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaxonomyBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTemplateBuilder;
+use GlpiPlugin\Configurationglpiauto\RecurringTicketLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\RequestTypeTranslationBuilder;
 use GlpiPlugin\Configurationglpiauto\RSSFeedBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
@@ -507,6 +508,7 @@ if (isset($_POST['finish'])) {
     $assetTypesCreated = (new AssetTypeBuilder())->build($config);
     $softwareLicenseTypesCreated = (new SoftwareLicenseTypeBuilder())->build($config);
     $certificateTypesCreated = (new CertificateTypeBuilder())->build($config);
+    $recurringTicketLibraryCreated = (new RecurringTicketLibraryBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
     $documentManagementCreated = (new DocumentManagementBuilder())->build($config);
     $planningEventsCreated = (new PlanningEventBuilder())->build($config);
@@ -718,6 +720,9 @@ if (isset($_POST['finish'])) {
     if ($certificateTypesCreated > 0) {
         $messages[] = sprintf(__('%d types de certificat créés.', 'configurationglpiauto'), $certificateTypesCreated);
     }
+    if ($recurringTicketLibraryCreated > 0) {
+        $messages[] = sprintf(__('%d modèles de tickets récurrents créés.', 'configurationglpiauto'), $recurringTicketLibraryCreated);
+    }
     if ($kbCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de base de connaissances créées.', 'configurationglpiauto'), $kbCategoriesCreated);
     }
@@ -826,6 +831,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'asset_types_preview' => AssetTypeBuilder::getTypesPreview(),
     'software_license_types_preview' => SoftwareLicenseTypeBuilder::getTypesPreview(),
     'certificate_types_preview' => CertificateTypeBuilder::getTypesPreview(),
+    'recurring_ticket_library_preview' => RecurringTicketLibraryBuilder::getLibraryPreview(),
     'document_management_preview' => DocumentManagementBuilder::getPreview(),
     'planning_events_preview' => PlanningEventBuilder::getPreview(),
     'project_taxonomy_preview' => ProjectTaxonomyBuilder::getPreview(),

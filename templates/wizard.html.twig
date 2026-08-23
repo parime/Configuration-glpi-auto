@@ -1139,6 +1139,20 @@
         </div>
 
         <div class="form-check form-switch mb-2">
+          <input type="hidden" name="recurring_ticket_library_enabled" value="0">
+          <input type="checkbox" name="recurring_ticket_library_enabled" value="1" class="form-check-input" id="cga-recurring-ticket-library-enabled" {{ config.recurring_ticket_library_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-recurring-ticket-library-enabled">{{ __('Créer des modèles de tickets pour les tâches récurrentes courantes (revue utilisateurs, maintenance, mises à jour)', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-recurring-ticket-library-fields" style="display: none;" class="mb-3">
+          <p class="text-muted small mb-1">{{ __('Contenu prêt à l\'emploi uniquement — aucune planification automatique créée : à sélectionner vous-même dans Configuration > Intitulés > Assistance > Tickets récurrents une fois le groupe et la fréquence décidés.', 'configurationglpiauto') }}</p>
+          <ul class="mb-0">
+            {% for tpl in recurring_ticket_library_preview %}
+              <li>{{ tpl.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
           <input type="hidden" name="request_type_translations_enabled" value="0">
           <input type="checkbox" name="request_type_translations_enabled" value="1" class="form-check-input" id="cga-request-type-translations-enabled" {{ config.request_type_translations_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-request-type-translations-enabled">{{ __('Traduire les sources de demande natives de GLPI', 'configurationglpiauto') }}</label>
@@ -2620,6 +2634,7 @@
   wireIconsToggle('cga-software-license-type-icons-enabled', '.cga-software-license-type-icon');
   var certificateTypesEnabledInput = wireSimpleToggle('cga-certificate-types-enabled', 'cga-certificate-types-fields');
   wireIconsToggle('cga-certificate-type-icons-enabled', '.cga-certificate-type-icon');
+  var recurringTicketLibraryEnabledInput = wireSimpleToggle('cga-recurring-ticket-library-enabled', 'cga-recurring-ticket-library-fields');
   wireIconsToggle('cga-manufacturer-icons-enabled', '.cga-manufacturer-icon');
   var requestTypeTranslationsEnabledInput = wireSimpleToggle('cga-request-type-translations-enabled', 'cga-request-type-translations-fields');
   wireIconsToggle('cga-request-type-icons-enabled', '.cga-request-type-icon');

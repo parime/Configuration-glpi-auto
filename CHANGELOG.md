@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Bibliothèque de modèles de tickets pour les tâches récurrentes courantes** (#149) : "Revue
+  mensuelle des comptes utilisateurs inactifs", "Maintenance planifiée du parc informatique",
+  "Vérification des mises à jour système" — contenu (titre + checklist) prêt à l'emploi uniquement.
+  Décision délibérée de **ne pas** activer la planification native `TicketRecurrent` de GLPI
+  automatiquement : elle exige un groupe responsable, une fréquence et une date de début que seul
+  l'admin peut décider — les deviner créerait de vrais tickets sans personne pour les traiter.
+  L'admin sélectionne lui-même un de ces modèles dans Configuration > Intitulés > Assistance >
+  Tickets récurrents une fois ces choix faits.
+
 ## [0.68.1] - 2026-08-23
 
 ### Added
