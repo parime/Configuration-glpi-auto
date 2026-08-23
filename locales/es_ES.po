@@ -7,1219 +7,2338 @@ msgstr ""
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-msgid "%d catégories de base de connaissances créées."
-msgstr "%d categorías de base de conocimiento creadas."
-
-msgid "%d catégories de tickets créées."
-msgstr "%d categorías de tickets creadas."
-
-msgid "%d catégories de tâches créées."
-msgstr "%d categorías de tareas creadas."
-
-msgid "%d catégories/gabarits d'évènements de planning créés."
-msgstr "%d categorías/plantillas de eventos de planificación creadas."
-
-msgid "%d client(s) avec des réglages personnalisés."
-msgstr "%d cliente(s) con ajustes personalizados."
-
-msgid "%d couleur(s) par client/site appliquée(s)."
-msgstr "%d color(es) por cliente/sede aplicados."
-
-msgid "%d fabricants créés."
-msgstr "%d fabricantes creados."
-
-msgid "%d gabarits de solution créés."
-msgstr "%d plantillas de solución creadas."
-
-msgid "%d gabarits de suivis créés."
-msgstr "%d plantillas de seguimiento creadas."
-
-msgid "%d gabarits de tâche créés."
-msgstr "%d plantillas de tarea creadas."
-
-msgid "%d gabarits de tâches de projets créés."
-msgstr "%d plantillas de tareas de proyecto creadas."
-
-msgid "%d gabarits de validation créés."
-msgstr "%d plantillas de aprobación creadas."
-
-msgid "%d lieux créés."
-msgstr "%d ubicaciones creadas."
-
-msgid "%d logo(s) d'entité appliqué(s)."
-msgstr "%d logo(s) de entidad aplicados."
-
-msgid "%d raisons d'attente créées."
-msgstr "%d motivos de espera creados."
-
-msgid "%d rubriques de documents/criticités créées."
-msgstr "%d categorías de documentos/criticidades creadas."
-
-msgid "%d règle(s) de droits LDAP créées."
-msgstr "%d regla(s) de derechos LDAP creadas."
-
-msgid "%d règle(s) de droits par fonction créées."
-msgstr "%d regla(s) de derechos por función creadas."
-
-msgid "%d règle(s) d'unicité de numéro de série créées."
-msgstr "%d regla(s) de unicidad de número de serie creadas."
-
-msgid "%d flux RSS ajouté(s)."
-msgstr "%d feed(s) RSS añadidos."
-
-msgid "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"
-msgstr "Añadir el feed RSS de avisos de seguridad CERT-FR (ANSSI)"
-
-msgid "Visible dans Outils > Flux RSS pour toute l'instance — utile pour suivre les vulnérabilités affectant le parc sans quitter GLPI."
-msgstr "Visible en Herramientas > Feeds RSS para toda la instancia — útil para seguir las vulnerabilidades que afectan al parque sin salir de GLPI."
-
-msgid "%d services créés dans le catalogue."
-msgstr "%d servicios creados en el catálogo."
-
-msgid "%d statuts d'éléments créés."
-msgstr "%d estados de elementos creados."
-
-msgid "%d types de projet/tâche de projet créés."
-msgstr "%d tipos de proyecto/tarea de proyecto creados."
-
-msgid "(+ formulaires libre-service allégés)"
-msgstr "(+ formularios de autoservicio simplificados)"
-
-msgid "(avec icônes)"
-msgstr "(con iconos)"
-
-msgid "(sans nom)"
-msgstr "(sin nombre)"
-
-msgid "+ Ajouter une règle"
-msgstr "+ Añadir una regla"
-
-msgid "+ OLA (engagements internes)"
-msgstr "+ OLA (compromisos internos)"
-
-msgid "...ou choisir une des palettes GLPI existantes comme choix par défaut"
-msgstr "...o elegir una de las paletas GLPI existentes como predeterminada"
-
-msgid "Activer l'enquête de satisfaction native (1 à 5 étoiles, sur chaque ticket clos)"
-msgstr "Activar la encuesta de satisfacción nativa (de 1 a 5 estrellas, en cada ticket cerrado)"
-
-msgid "Activer l'escalade entre niveaux de support (N1 → N2 → N3)"
-msgstr "Activar la escalada entre niveles de soporte (N1 → N2 → N3)"
-
-msgid "Activer l'escalade pour cette entité"
-msgstr "Activar la escalada para esta entidad"
-
-msgid "Activer les informations financières et administratives par défaut"
-msgstr "Activar por defecto la información financiera y administrativa"
-
-msgid "Activer les notifications (par e-mail et dans le navigateur)"
-msgstr "Activar las notificaciones (por correo electrónico y en el navegador)"
-
-msgid "Activer les notifications de mise à jour, pièce jointe et relance automatique de ticket"
-msgstr "Activar las notificaciones de actualización, adjunto y recordatorio automático de ticket"
-
-msgid "Activer les tâches automatiques d'alerte cartouches, consommables et expiration de licences (désactivées par défaut, alors que les notifications correspondantes le sont déjà)"
-msgstr "Activar las tareas automáticas de alerta de cartuchos, consumibles y caducidad de licencias (desactivadas por defecto, aunque las notificaciones correspondientes ya no lo están)"
-
-msgid "Afficher la pagination au-dessus des résultats"
-msgstr "Mostrar la paginación encima de los resultados"
-
-msgid "Afficher le moteur de recherche au-dessus des résultats"
-msgstr "Mostrar el motor de búsqueda encima de los resultados"
-
-msgid "Agencement des boutons d'action divisé (Répondre / Observation / Solution séparés)"
-msgstr "Diseño de botones de acción dividido (Responder / Observación / Solución separados)"
-
-msgid "Ajouter des engagements internes (OLA)"
-msgstr "Añadir compromisos internos (OLA)"
-
-msgid "Ajouter des icônes"
-msgstr "Añadir iconos"
-
-msgid "Ajouter des icônes (par catégorie de fabricant)"
-msgstr "Añadir iconos (por categoría de fabricante)"
-
-msgid "Ajouter des icônes (repérage rapide dans les listes d'affectation)"
-msgstr "Añadir iconos (identificación rápida en las listas de asignación)"
-
-msgid "Ajouter des icônes (visibles dans la liste, le nom lui-même reste sans icône)"
-msgstr "Añadir iconos (visibles en la lista, el nombre en sí queda sin icono)"
-
-msgid "Ajouter des icônes sur les gabarits de solution"
-msgstr "Añadir iconos a las plantillas de solución"
-
-msgid "Ajouter des icônes sur les modèles"
-msgstr "Añadir iconos a las plantillas"
-
-msgid "Ajouter des icônes sur les types de solution"
-msgstr "Añadir iconos a los tipos de solución"
-
-msgid "Ajouter les jours fériés français (8 jours fixes)"
-msgstr "Añadir los días festivos franceses (8 fechas fijas)"
-
-msgid "Ajouter un client"
-msgstr "Añadir un cliente"
-
-msgid "Ajouter un logo par entité"
-msgstr "Añadir un logo por entidad"
-
-msgid "Ajouter une entité"
-msgstr "Añadir una entidad"
-
-msgid "Ajouter une sous-entité"
-msgstr "Añadir una subentidad"
-
-msgid "Ajouter une étape de validation « Comité (2/3) » pour les décisions collégiales"
-msgstr "Añadir un paso de aprobación \"Comité (2/3)\" para las decisiones colegiadas"
-
-msgid "Aperçu"
-msgstr "Vista previa"
-
-msgid "Aperçu :"
-msgstr "Vista previa:"
-
-msgid "Aperçu en direct de l'en-tête GLPI"
-msgstr "Vista previa en directo de la cabecera de GLPI"
-
-msgid "Arborescence"
-msgstr "Estructura de árbol"
-
-msgid "Assistant de configuration"
-msgstr "Asistente de configuración"
-
-msgid "Astreinte (24h/24, 7j/7)"
-msgstr "Guardia (24/7)"
-
-msgid "Astreinte (couverture 24h/24, 7j/7 — le délai continue de courir en dehors des horaires ouvrés)"
-msgstr "Guardia (cobertura 24/7 — el plazo sigue corriendo fuera del horario laboral)"
-
-msgid "Aucun"
-msgstr "Ninguno"
-
-msgid "Aucun site dans l'arborescence (étape 2) — rien à générer."
-msgstr "Ningún sitio en el árbol (paso 2) — nada que generar."
-
-msgid "Aucune"
-msgstr "Ninguna"
-
-msgid "Aucune (garder Auror, le thème GLPI par défaut)"
-msgstr "Ninguna (mantener Auror, el tema predeterminado de GLPI)"
-
-msgid "Aucune entité ajoutée pour l'instant."
-msgstr "Ninguna entidad añadida todavía."
-
-msgid "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
-msgstr "Ninguna entidad que crear (modo de entidad única, o árbol vacío)."
-
-msgid "Calendrier"
-msgstr "Calendario"
-
-msgid "Calendrier créé et assigné, avec les jours fériés français."
-msgstr "Calendario creado y asignado, con los días festivos franceses."
-
-msgid "Calendrier créé et assigné."
-msgstr "Calendario creado y asignado."
-
-msgid "Calendrier différent par site ou client"
-msgstr "Calendario diferente por sitio o cliente"
-
-msgid "Catalogue de services"
-msgstr "Catálogo de servicios"
-
-msgid "Catégorie et urgence obligatoires"
-msgstr "Categoría y urgencia obligatorias"
-
-msgid "Catégorie visible mais limitée aux 11 branches parentes"
-msgstr "Categoría visible pero limitada a las 11 ramas principales"
-
-msgid "Catégories"
-msgstr "Categorías"
-
-msgid "Catégories d'évènements"
-msgstr "Categorías de eventos"
-
-msgid "Ceci va créer/modifier de vraies entités dans GLPI (et, si activés, un calendrier et une personnalisation graphique) selon les choix faits. Continuer ?"
-msgstr "Esto creará/modificará entidades reales en GLPI (y, si están activados, un calendario y una personalización gráfica) según las opciones elegidas. ¿Continuar?"
-
-msgid "Ceci va créer/modifier de vraies entités dans GLPI selon les réglages recommandés du profil sélectionné, sans passer en revue chaque étape. Continuer ?"
-msgstr "Esto creará/modificará entidades reales en GLPI según los ajustes recomendados del perfil seleccionado, sin repasar cada paso. ¿Continuar?"
-
-msgid "Ces formulaires du portail libre-service sont un système distinct des modèles de tickets ci-dessus (nouveau moteur de formulaires GLPI 11) — un utilisateur de base n'a pas la visibilité nécessaire pour juger de l'urgence réelle de sa demande, c'est au support de la qualifier."
-msgstr "Estos formularios del portal de autoservicio son un sistema distinto de las plantillas de tickets anteriores (nuevo motor de formularios de GLPI 11) — un usuario base no tiene la visibilidad necesaria para juzgar la urgencia real de su solicitud, corresponde al soporte cualificarla."
-
-msgid "Chacune avec une couleur distincte dans le planning GLPI."
-msgstr "Cada una con un color distinto en la planificación de GLPI."
-
-msgid "Champs masqués sur les formulaires de création en libre-service."
-msgstr "Campos ocultos en los formularios de creación de autoservicio."
-
-msgid "Changement standard"
-msgstr "Cambio estándar"
-
-msgid "Choisissez la structure d'entités à mettre en place — l'aperçu à droite se met à jour en direct."
-msgstr "Elija la estructura de entidades a configurar — la vista previa a la derecha se actualiza en directo."
-
-msgid "Classification de sensibilité (norme ISO 27001, à affiner selon vos besoins)."
-msgstr "Clasificación de sensibilidad (norma ISO 27001, a ajustar según sus necesidades)."
-
-msgid "Complet — tous les autres profils"
-msgstr "Completo — todos los demás perfiles"
-
-msgid "Configuration"
-msgstr "Configuración"
-
-msgid "Configuration express"
-msgstr "Configuración exprés"
-
-msgid "Configurer les statuts des tâches de projet (non démarré / en cours / terminé)"
-msgstr "Configurar los estados de las tareas de proyecto (no iniciado / en curso / finalizado)"
-
-msgid "Configurez, si besoin, les horaires d'ouverture appliqués aux entités créées."
-msgstr "Configure, si es necesario, el horario laboral aplicado a las entidades creadas."
-
-msgid "Couleur différente par client/site (au lieu d'une seule couleur partagée)"
-msgstr "Color diferente por cliente/sede (en lugar de un único color compartido)"
-
-msgid "Couleur principale"
-msgstr "Color principal"
-
-msgid "Criticités"
-msgstr "Criticidades"
-
-msgid "Création en cours..."
-msgstr "Creando..."
-
-msgid "Crée 3 groupes techniciens (Support N1/N2/N3 — convention ITSM la plus répandue). Tout ticket créé démarre au N1 ; l'escalade automatique (ci-dessous) le réaffecte au niveau suivant si le SLA de résolution approche ou dépasse son échéance."
-msgstr "Crea 3 grupos de técnicos (Soporte N1/N2/N3 — la convención ITSM más extendida). Todo ticket creado empieza en N1; la escalada automática (abajo) lo reasigna al siguiente nivel si el SLA de resolución se acerca o supera su vencimiento."
-
-msgid "Créer des SLA standards"
-msgstr "Crear SLA estándar"
-
-msgid "Créer deux modèles de tickets et les assigner aux profils"
-msgstr "Crear dos plantillas de tickets y asignarlas a los perfiles"
-
-msgid "Créer le catalogue de services"
-msgstr "Crear el catálogo de servicios"
-
-msgid "Créer les catégories de la base de connaissances"
-msgstr "Crear las categorías de la base de conocimiento"
-
-msgid "Créer les catégories de tickets"
-msgstr "Crear las categorías de tickets"
-
-msgid "Créer les catégories de tâches"
-msgstr "Crear las categorías de tareas"
-
-msgid "Créer les catégories et gabarits d'évènements de planning"
-msgstr "Crear las categorías y plantillas de eventos de planificación"
-
-msgid "Créer les gabarits de suivis"
-msgstr "Crear las plantillas de seguimiento"
-
-msgid "Créer les gabarits de tâche (checklists réutilisables)"
-msgstr "Crear plantillas de tareas (listas de verificación reutilizables)"
-
-msgid "Créer les gabarits de tâches de projets"
-msgstr "Crear las plantillas de tareas de proyecto"
-
-msgid "Créer les gabarits de validation"
-msgstr "Crear las plantillas de aprobación"
-
-msgid "Créer les raisons d'attente standards"
-msgstr "Crear los motivos de espera estándar"
-
-msgid "Créer les rubriques de documents et les niveaux de criticité"
-msgstr "Crear las categorías de documentos y los niveles de criticidad"
-
-msgid "Créer les statuts d'éléments standards"
-msgstr "Crear los estados de elementos estándar"
-
-msgid "Créer les types de projet et de tâche de projet"
-msgstr "Crear los tipos de proyecto y de tarea de proyecto"
-
-msgid "Créer les types et gabarits de solution"
-msgstr "Crear los tipos y plantillas de solución"
-
-msgid "Créer un SLA pour cette entité"
-msgstr "Crear un SLA para esta entidad"
-
-msgid "Créer un calendrier d'horaires d'ouverture"
-msgstr "Crear un calendario de horario laboral"
-
-msgid "Créer un calendrier pour cette entité"
-msgstr "Crear un calendario para esta entidad"
-
-msgid "Créer un modèle de changement et de problème par défaut"
-msgstr "Crear una plantilla predeterminada de cambio y problema"
-
-msgid "Créer une liste de fabricants courants"
-msgstr "Crear una lista de fabricantes comunes"
-
-msgid "Créer une palette GLPI personnalisée avec cette couleur (sélectionnable par tous, appliquée par défaut)"
-msgstr "Crear una paleta GLPI personalizada con este color (seleccionable por todos, aplicada por defecto)"
-
-msgid "Description"
-msgstr "Descripción"
-
-msgid "Différent de la case ci-dessus : celle-ci force la couleur sur toutes les entités créées ; celle-ci ajoute une palette GLPI native (Configuration > Générale > Apparence) que chaque utilisateur peut choisir dans ses propres préférences, définie ici comme choix par défaut."
-msgstr "A diferencia de la casilla de arriba: esa fuerza el color en todas las entidades creadas; esta añade una paleta GLPI nativa (Configuración > General > Apariencia) que cada usuario puede elegir en sus propias preferencias, definida aquí como opción predeterminada."
-
-msgid "Dossier de cache GLPI inscriptible"
-msgstr "Carpeta de caché de GLPI con permisos de escritura"
-
-msgid "Dossier des palettes personnalisées inscriptible"
-msgstr "Carpeta de paletas personalizadas con permisos de escritura"
-
-msgid "Droits LDAP"
-msgstr "Derechos LDAP"
-
-msgid "Déclenchement à"
-msgstr "Activación a"
-
-msgid "En complément de la règle par site ci-dessus, indépendant du site de l'utilisateur — ex. le groupe AD \"Finance\" reçoit toujours tel profil, quel que soit son site. Chaque ligne devient une règle GLPI distincte, qui n'affecte que le profil (pas l'entité)."
-msgstr "Además de la regla por sitio de arriba, independiente del sitio del usuario — ej. el grupo AD \"Finance\" recibe siempre tal perfil, sea cual sea su sitio. Cada línea se convierte en una regla GLPI distinta, que solo afecta al perfil (no a la entidad)."
-
-msgid "Enquête de satisfaction"
-msgstr "Encuesta de satisfacción"
-
-msgid "Entité racine"
-msgstr "Entidad raíz"
-
-msgid "Entités"
-msgstr "Entidades"
-
-msgid "Escalade N3 — %s"
-msgstr "Escalada N3 — %s"
-
-msgid "Escalade automatique N1 → N2"
-msgstr "Escalada automática N1 → N2"
-
-msgid "Escalade automatique N1 → N2 (au seuil ci-dessus)"
-msgstr "Escalada automática N1 → N2 (en el umbral de arriba)"
-
-msgid "Escalade automatique N2 → N3"
-msgstr "Escalada automática N2 → N3"
-
-msgid "Escalade automatique N2 → N3 (à l'échéance du SLA)"
-msgstr "Escalada automática N2 → N3 (al vencimiento del SLA)"
-
-msgid "Escalade automatique avant échéance"
-msgstr "Escalada automática antes del vencimiento"
-
-msgid "Escalade — %s"
-msgstr "Escalada — %s"
-
-msgid "Ex : Entreprise Dupont"
-msgstr "Ej.: Empresa García"
-
-msgid "Ex : Paris, Lyon..."
-msgstr "Ej.: Madrid, Barcelona..."
-
-msgid "Extension GD ou Imagick disponible"
-msgstr "Extensión GD o Imagick disponible"
-
-msgid "Gabarit de nom de groupe AD/LDAP"
-msgstr "Plantilla de nombre de grupo AD/LDAP"
-
-msgid "Gabarits d'évènements externes"
-msgstr "Plantillas de eventos externos"
-
-msgid "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
-msgstr "Grupos de soporte N1/N2/N3 creados, escalada automática configurada."
-
-msgid "Général & Outils"
-msgstr "General y Herramientas"
-
-msgid "Générer une règle de droits par site"
-msgstr "Generar una regla de derechos por sitio"
-
-msgid "Horaires standard"
-msgstr "Horario estándar"
-
-msgid "Horaires — %s"
-msgstr "Horario — %s"
-
-msgid "Impact métier d'un actif (matériel, logiciel...), utilisé dans ses informations financières."
-msgstr "Impacto empresarial de un activo (hardware, software...), utilizado en su información financiera."
-
-msgid "Inclure le niveau N0 (portail libre-service) dans le récapitulatif"
-msgstr "Incluir el nivel N0 (portal de autoservicio) en el resumen"
-
-msgid "Informations financières"
-msgstr "Información financiera"
-
-msgid "Installation simple"
-msgstr "Instalación simple"
-
-msgid "Interface & ergonomie"
-msgstr "Interfaz y ergonomía"
-
-msgid "Interface complète (aucun champ masqué)"
-msgstr "Interfaz completa (ningún campo oculto)"
-
-msgid "Jour de l'An, Fête du Travail, Victoire 1945, Fête nationale, Assomption, Toussaint, Armistice, Noël. Sans ça, les échéances SLA/OLA continuent de courir un jour férié. Les jours mobiles (Pâques, Ascension, Pentecôte) ne sont pas inclus — ils changent de date chaque année, à ajouter à la main."
-msgstr "Año Nuevo, Día del Trabajo, Victoria de 1945, Fiesta Nacional, Asunción, Todos los Santos, Armisticio, Navidad. Sin esto, los plazos SLA/OLA siguen corriendo en un día festivo. Las fechas móviles (Pascua, Ascensión, Pentecostés) no están incluidas — cambian de fecha cada año y hay que añadirlas a mano."
-
-msgid "Jours ouvrés et horaires"
-msgstr "Días laborables y horarios"
-
-msgid "L'OLA est un engagement interne entre le support et les équipes techniques, plus court que le SLA externe — il doit être tenu pour que le SLA le soit aussi."
-msgstr "El OLA es un compromiso interno entre el soporte y los equipos técnicos, más corto que el SLA externo — debe cumplirse para que el SLA también se cumpla."
-
-msgid "Lancer l'assistant de configuration"
-msgstr "Iniciar el asistente de configuración"
-
-msgid "Le gabarit doit contenir {ENTITY}."
-msgstr "La plantilla debe contener {ENTITY}."
-
-msgid "Le statut décrit la situation d'un équipement dans son cycle de vie (en stock, attribué, en panne...) — il sert à filtrer et suivre le parc, indépendamment de sa localisation ou de son entité. Ne cochez que les statuts qui correspondent à des situations réelles chez vous ; chacun peut être appliqué aux ordinateurs, téléphones, moniteurs, licences, etc."
-msgstr "El estado describe la situación de un equipo en su ciclo de vida (en stock, asignado, averiado...) — sirve para filtrar y seguir el parque, independientemente de su ubicación o entidad. Marque solo los estados que correspondan a situaciones reales en su organización; cada uno puede aplicarse a ordenadores, teléfonos, monitores, licencias, etc."
-
-msgid "Les statuts marqués « recommandé » sont ceux utilisés par remise-glpi (déclenchement automatique remise/don/vente/restitution) — les décocher n'empêche rien de fonctionner mais réduit l'interopérabilité entre les deux plugins si vous utilisez remise-glpi."
-msgstr "Los estados marcados como \"recomendado\" son los que utiliza remise-glpi (activación automática de entrega/donación/venta/devolución) — desmarcarlos no impide que nada funcione, pero reduce la interoperabilidad entre los dos plugins si usa remise-glpi."
-
-msgid "Masquer Urgence, Observateurs et Lieu sur les formulaires natifs « Signaler un incident » / « Faire une demande »"
-msgstr "Ocultar Urgencia, Observadores y Ubicación en los formularios nativos \"Reportar un incidente\" / \"Hacer una solicitud\""
-
-msgid "Modèles de changement et de problème créés et assignés aux profils."
-msgstr "Plantillas de cambio y problema creadas y asignadas a los perfiles."
-
-msgid "Modèles de tickets"
-msgstr "Plantillas de tickets"
-
-msgid "Modèles de tickets créés et assignés aux profils."
-msgstr "Plantillas de tickets creadas y asignadas a los perfiles."
-
-msgid "Mono-entité — une seule structure, pas de sous-entités"
-msgstr "Entidad única — una sola estructura, sin subentidades"
-
-msgid "Montrer les nouveaux tickets sur la page d'accueil"
-msgstr "Mostrar los nuevos tickets en la página de inicio"
-
-msgid "Multi-entité — infogérance de plusieurs entreprises clientes (MSP)"
-msgstr "Multientidad — gestión de TI de varias empresas clientes (MSP)"
-
-msgid "Multi-entité — plusieurs sites ou services d'une même entreprise"
-msgstr "Multientidad — varios sitios o departamentos de la misma empresa"
-
-msgid "Mêmes thèmes que les catégories de tickets (étape 6), pour que le libre-service et la base de connaissances s'organisent pareil."
-msgstr "Mismos temas que las categorías de tickets (paso 6), para que el autoservicio y la base de conocimiento se organicen del mismo modo."
-
-msgid "N0 = le libre-service déjà configuré aux étapes Catalogue de services / Formulaire d'accueil — pas un groupe supplémentaire, juste un repère pour situer où commence le support humain."
-msgstr "N0 = el autoservicio ya configurado en los pasos Catálogo de servicios / Formulario de bienvenida — no es un grupo adicional, solo una referencia para situar dónde empieza el soporte humano."
-
-msgid "Nom de la sous-entité"
-msgstr "Nombre de la subentidad"
-
-msgid "Nom du calendrier"
-msgstr "Nombre del calendario"
-
-msgid "Nom du groupe AD/LDAP"
-msgstr "Nombre del grupo AD/LDAP"
-
-msgid "Notifications"
-msgstr "Notificaciones"
-
-msgid "Nouveau ticket"
-msgstr "Nuevo ticket"
-
-msgid "OLA (engagements internes) créés et assignés."
-msgstr "OLA (compromisos internos) creados y asignados."
-
-msgid "OLA prise en charge — %s"
-msgstr "OLA de atención — %s"
-
-msgid "OLA résolution — %s"
-msgstr "OLA de resolución — %s"
-
-msgid "Optionnel : des formulaires prêts à l'emploi dans le portail libre-service — l'utilisateur choisit un service précis, jamais une catégorie ; le ticket est automatiquement routé vers la bonne catégorie."
-msgstr "Opcional: formularios listos para usar en el portal de autoservicio — el usuario elige un servicio concreto, nunca una categoría; el ticket se enruta automáticamente a la categoría correcta."
-
-msgid "Optionnel : des intitulés pour le module Projets, aucun n'existe par défaut dans GLPI (hors les 3 statuts natifs, déjà suffisants — non modifiés dans l'export de production audité)."
-msgstr "Opcional: etiquetas para el módulo Proyectos, ninguna existe por defecto en GLPI (aparte de los 3 estados nativos, ya suficientes — sin modificar en la exportación de producción auditada)."
-
-msgid "Optionnel : des intitulés prêts à l'emploi pour qualifier le travail technique et clôturer les tickets, aucun n'existe par défaut dans GLPI."
-msgstr "Opcional: etiquetas listas para usar para calificar el trabajo técnico y cerrar los tickets, ninguna existe por defecto en GLPI."
-
-msgid "Optionnel : des intitulés que GLPI ne propose pas par défaut, hors périmètre Assistance direct mais utiles dès la mise en service."
-msgstr "Opcional: etiquetas que GLPI no ofrece por defecto, fuera del ámbito directo de Asistencia pero útiles desde la puesta en marcha."
-
-msgid "Optionnel : des messages types pour garder le demandeur informé, des gabarits de demande de validation, et un modèle par défaut pour les changements et les problèmes."
-msgstr "Opcional: mensajes tipo para mantener informado al solicitante, plantillas de solicitud de aprobación y una plantilla predeterminada para cambios y problemas."
-
-msgid "Optionnel : des raisons de mise en attente avec relance et clôture automatiques — évite les tickets qui traînent indéfiniment. Le moteur d'automatisation de GLPI est déjà actif par défaut, seules les raisons manquent."
-msgstr "Opcional: motivos de espera con recordatorio y cierre automáticos — evita que los tickets se eternicen. El motor de automatización de GLPI ya está activo por defecto, solo faltan los motivos."
-
-msgid "Optionnel : délais standards de prise en charge et de résolution des tickets, appliqués aux entités créées."
-msgstr "Opcional: plazos estándar de atención y resolución de tickets, aplicados a las entidades creadas."
-
-msgid "Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l'usage — activez chaque groupe indépendamment selon vos besoins."
-msgstr "Opcional: algunos ajustes generales de GLPI tienen valores predeterminados poco prácticos en el uso — active cada grupo de forma independiente según sus necesidades."
-
-msgid "Optionnel : un jeu de statuts standards pour le parc (ordinateurs, moniteurs, téléphones...) — aucun n'existe par défaut dans GLPI."
-msgstr "Opcional: un conjunto de estados estándar para el parque (ordenadores, monitores, teléfonos...) — ninguno existe por defecto en GLPI."
-
-msgid "Optionnel : une arborescence de catégories thématiques (IT, Bâtiment, Flotte, RH...), pas une par type ITIL — le type (Incident/Demande) est déjà géré nativement par GLPI. Décochez les branches qui ne s'appliquent pas à votre organisation."
-msgstr "Opcional: un árbol de categorías temáticas (TI, Edificios, Flota, RRHH...), no una por tipo ITIL — el tipo (Incidencia/Solicitud) ya lo gestiona GLPI de forma nativa. Desmarque las ramas que no se apliquen a su organización."
-
-msgid "Optionnel : une couleur principale appliquée à l'interface des entités créées."
-msgstr "Opcional: un color principal aplicado a la interfaz de las entidades creadas."
-
-msgid "Optionnel : une règle d'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l'utilisateur lors de la synchronisation — ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n'y a rien à générer."
-msgstr "Opcional: una regla de asignación automática (entidad + perfil) por sitio, activada por el grupo AD/LDAP del usuario durante la sincronización — solo útil si se prevé una sincronización LDAP. Sin un árbol multisitio (paso 2), no hay nada que generar."
-
-msgid "Palette GLPI native définie par défaut."
-msgstr "Paleta GLPI nativa definida como predeterminada."
-
-msgid "Palette GLPI personnalisée créée et définie par défaut."
-msgstr "Paleta GLPI personalizada creada y definida como predeterminada."
-
-msgid "Pas de relance automatique — catégorisation uniquement"
-msgstr "Sin recordatorio automático — solo categorización"
-
-msgid "Personnalisation"
-msgstr "Personalización"
-
-msgid "Personnalisation graphique appliquée."
-msgstr "Personalización gráfica aplicada."
-
-msgid "Personnaliser la couleur principale"
-msgstr "Personalizar el color principal"
-
-msgid "Personnalisé"
-msgstr "Personalizado"
-
-msgid "Plusieurs entreprises clientes (infogérance)"
-msgstr "Varias empresas clientes (gestión de TI)"
-
-msgid "Plusieurs sites ou services (une seule entreprise)"
-msgstr "Varios sitios o departamentos (una sola empresa)"
-
-msgid "Priorité"
-msgstr "Prioridad"
-
-msgid "Prise en charge (h)"
-msgstr "Atención (h)"
-
-msgid "Prise en charge — %s"
-msgstr "Atención — %s"
-
-msgid "Problème standard"
-msgstr "Problema estándar"
-
-msgid "Profil"
-msgstr "Perfil"
-
-msgid "Profil attribué"
-msgstr "Perfil asignado"
-
-msgid "Profil métier — préremplit les branches ci-dessous et le SLA de l'étape 5 (physique/administratif traité plus lentement que l'IT). Toujours ajustable ensuite, dans les deux cas."
-msgstr "Perfil de negocio — rellena previamente las ramas de abajo y el SLA del paso 5 (físico/administrativo tratado más lento que TI). Siempre ajustable después, en ambos casos."
-
-msgid "Projets"
-msgstr "Proyectos"
-
-msgid "Précédent"
-msgstr "Anterior"
-
-msgid "Quel profil correspond le mieux à votre organisation ? Ce choix pré-remplit la structure d'entités, le calendrier et les SLA des étapes suivantes avec des valeurs adaptées — vous pourrez tout ajuster ensuite."
-msgstr "¿Qué perfil se ajusta mejor a su organización? Esta elección rellena previamente la estructura de entidades, el calendario y los SLA de los siguientes pasos con valores adecuados — podrá ajustarlo todo después."
-
-msgid "Raisons d'attente"
-msgstr "Motivos de espera"
-
-msgid "Relance toutes les"
-msgstr "Recordatorio cada"
-
-msgid "Retirer"
-msgstr "Quitar"
-
-msgid "Rubriques des documents"
-msgstr "Categorías de documentos"
-
-msgid "Règles par fonction/département (optionnel)"
-msgstr "Reglas por función/departamento (opcional)"
-
-msgid "Récapitulatif"
-msgstr "Resumen"
-
-msgid "Réglages généraux"
-msgstr "Ajustes generales"
-
-msgid "Réglages généraux GLPI appliqués."
-msgstr "Ajustes generales de GLPI aplicados."
-
-msgid "Résolution (h)"
-msgstr "Resolución (h)"
-
-msgid "Résolution — %s"
-msgstr "Resolución — %s"
-
-msgid "S'applique à tout SLA/OLA créé sur cette étape — partagé ou par site/client."
-msgstr "Se aplica a todo SLA/OLA creado en este paso — compartido o por sitio/cliente."
-
-msgid "SLA"
-msgstr "SLA"
-
-msgid "SLA créés et assignés."
-msgstr "SLA creados y asignados."
-
-msgid "SLA différent par site ou client"
-msgstr "SLA diferente por sitio o cliente"
-
-msgid "SLA — %s"
-msgstr "SLA — %s"
-
-msgid "Se met à jour en direct pendant que vous réglez les options à gauche — rien n'est enregistré tant que vous ne validez pas."
-msgstr "Se actualiza en directo mientras ajusta las opciones de la izquierda — nada se guarda hasta que confirme."
-
-msgid "Simplifié + Complet, assignés aux profils"
-msgstr "Simplificado + Completo, asignados a los perfiles"
-
-msgid "Simplifié — Self-Service, Read-Only"
-msgstr "Simplificado — Autoservicio, Solo lectura"
-
-msgid "Statuts"
-msgstr "Estados"
-
-msgid "Statuts des tâches de projet"
-msgstr "Estados de tareas de proyecto"
-
-msgid "Statuts des éléments"
-msgstr "Estados de elementos"
-
-msgid "Structure"
-msgstr "Estructura"
-
-msgid "Structure créée : %s."
-msgstr "Estructura creada: %s."
-
-msgid "Suivant"
-msgstr "Siguiente"
-
-msgid "Suivis & validations"
-msgstr "Seguimientos y aprobaciones"
-
-msgid "Suivis, validations & modèles CP"
-msgstr "Seguimientos, aprobaciones y plantillas de cambio/problema"
-
-msgid "Terminer"
-msgstr "Finalizar"
-
-msgid "Terminer avec les réglages recommandés"
-msgstr "Finalizar con los ajustes recomendados"
-
-msgid "Titre"
-msgstr "Título"
-
-msgid "Titre + description uniquement"
-msgstr "Solo título + descripción"
-
-msgid "Tous les groupes appliqués"
-msgstr "Todos los grupos aplicados"
-
-msgid "Tout sélectionner"
-msgstr "Seleccionar todo"
-
-msgid "Type"
-msgstr "Tipo"
-
-msgid "Types de projet"
-msgstr "Tipos de proyecto"
-
-msgid "Types de tâche de projet"
-msgstr "Tipos de tarea de proyecto"
-
-msgid "Tâches & solutions"
-msgstr "Tareas y soluciones"
-
-msgid "Un logo par site/client de l'arborescence (étape 2) — remplace le logo GLPI dans l'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 Mo maximum. L'emplacement dans l'en-tête GLPI est petit (environ 100×55 px) : une image large ou carrée sera automatiquement réduite pour y tenir sans déformation, un format proche de ce ratio donnera le meilleur rendu. Choisissez un fichier pour le voir dans l'aperçu ci-dessus."
-msgstr "Un logo por sitio/cliente del árbol (paso 2) — sustituye el logo de GLPI en la cabecera para los usuarios de esa entidad. PNG/JPEG/WebP/GIF, 1 MB como máximo. El espacio en la cabecera de GLPI es pequeño (unos 100×55 px): una imagen ancha o cuadrada se reducirá automáticamente para encajar sin deformarse, un formato cercano a esta proporción dará el mejor resultado. Elija un archivo para verlo en la vista previa de arriba."
-
-msgid "Un nœud par client. Chaque client peut avoir un nombre différent de sous-entités, à sa propre profondeur."
-msgstr "Un nodo por cliente. Cada cliente puede tener un número diferente de subentidades, a su propia profundidad."
-
-msgid "Un nœud par site/service de premier niveau. Chacun peut avoir un nombre différent de sous-entités, à sa propre profondeur."
-msgstr "Un nodo por sitio/departamento de primer nivel. Cada uno puede tener un número diferente de subentidades, a su propia profundidad."
-
-msgid "Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service n'a aucun droit sur les changements/problèmes, la distinction base/support ne s'applique pas."
-msgstr "Una sola plantilla cada uno (a diferencia de los tickets): por defecto, Autoservicio no tiene ningún derecho sobre cambios/problemas, la distinción base/soporte no se aplica."
-
-msgid "Une couleur par nœud de premier niveau de l'arborescence (étape 2) — préremplie avec la couleur ci-dessus, ajustable individuellement."
-msgstr "Un color por nodo de primer nivel del árbol (paso 2) — rellenado previamente con el color de arriba, ajustable individualmente."
-
-msgid "Une règle par site (feuille de l'arborescence) — aperçu en fonction de l'arborescence construite à l'étape 2 :"
-msgstr "Una regla por sitio (hoja del árbol) — vista previa según el árbol construido en el paso 2:"
-
-msgid "Une taxonomie de clôture standard (assistance, résolution technique, sécurité, informationnel, gestion des accès), chacune visible seulement sur les types de ticket ITIL pertinents."
-msgstr "Una taxonomía de cierre estándar (asistencia, resolución técnica, seguridad, informativo, gestión de accesos), cada una visible solo en los tipos de ticket ITIL pertinentes."
-
-msgid "Urgence, impact, statut, lieu, attribution, niveaux de service (SLA/OLA) : masqués"
-msgstr "Urgencia, impacto, estado, ubicación, asignación, niveles de servicio (SLA/OLA): ocultos"
-
-msgid "Utiliser le SLA par défaut"
-msgstr "Usar el SLA predeterminado"
-
-msgid "Utiliser le réglage d'escalade par défaut"
-msgstr "Usar el ajuste de escalada predeterminado"
-
-msgid "Validation comité"
-msgstr "Aprobación del comité"
-
-msgid "Votre société (MSP)"
-msgstr "Su empresa (MSP)"
-
+msgid "Version du plugin"
+msgstr "Versión del plugin"
+
+msgid "Version installée"
+msgstr "Versión instalada"
+
+msgid "Dernière version sur GitHub"
+msgstr "Última versión en GitHub"
+
+msgid "Fermetures automatiques selon le pays (jours fériés)"
+msgstr "Cierres automáticos según el país (días festivos)"
+
+msgid ""
+"Ajoute les jours fériés à date fixe du pays saisi ci-dessous, rattachés "
+"automatiquement au calendrier du site/client concerné — France par défaut si "
+"aucun pays n'est saisi (y compris en mode mono-site sans adresse). Un pays "
+"saisi mais non reconnu est simplement ignoré, sans rien inventer."
+msgstr ""
+"Añade los días festivos de fecha fija del país indicado a continuación, "
+"vinculados automáticamente al calendario del sitio/cliente correspondiente — "
+"Francia por defecto si no se indica ningún país (incluso en modo de sitio "
+"único sin dirección). Un país indicado pero no reconocido simplemente se "
+"ignora, sin inventar nada."
+
+msgid ""
+"Sans adresse complétée ci-dessous pour un site/client, celui-ci recevra les "
+"jours fériés français par défaut — complétez au moins le champ \"Pays\" de "
+"chaque site pour que les sites hors France reçoivent leurs propres jours "
+"fériés."
+msgstr ""
+"Sin una dirección completada a continuación para un sitio/cliente, este "
+"recibirá los días festivos franceses por defecto — complete al menos el "
+"campo \"País\" de cada sitio para que los sitios fuera de Francia reciban "
+"sus propios días festivos."
+
+msgid ""
+"Les jours fériés sont désormais ajoutés automatiquement selon le pays saisi "
+"à l'étape \"Lieux\" (France par défaut si aucun pays n'est saisi) — voir la "
+"case \"Fermetures automatiques selon le pays\" à cette étape."
+msgstr ""
+"Los días festivos ahora se añaden automáticamente según el país indicado en "
+"el paso \"Ubicaciones\" (Francia por defecto si no se indica ningún país) — "
+"vea la casilla \"Cierres automáticos según el país\" en ese paso."
+
+msgid "Activer l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)"
+msgstr ""
+"Activar el inventario nativo de GLPI (agentes FusionInventory/GLPI Agent)"
+
+msgid ""
+"Ouvre l'endpoint d'inventaire de GLPI (Configuration > Inventaire) pour que "
+"les agents installés sur le parc puissent remonter leurs données "
+"automatiquement. Décochée par défaut, comme la validation N+1 ci-dessous : "
+"ceci ouvre un vrai point d'entrée réseau, pas juste du contenu — à activer "
+"seulement si vous comptez réellement déployer des agents."
+msgstr ""
+"Abre el punto de entrada de inventario de GLPI (Configuración > Inventario) "
+"para que los agentes instalados en el parque puedan enviar sus datos "
+"automáticamente. Desmarcada por defecto, como la validación del superior "
+"jerárquico de abajo: esto abre un punto de entrada de red real, no solo "
+"contenido — actívela solo si realmente va a desplegar agentes."
+
+msgid ""
+"Créer les types de licence logicielle courants (OEM, volume, abonnement, "
+"open source...)"
+msgstr ""
+"Crear los tipos de licencia de software habituales (OEM, volumen, "
+"suscripción, código abierto...)"
+
+msgid ""
+"Créer les types de certificat courants (SSL/TLS, signature de code, S/"
+"MIME...)"
+msgstr ""
+"Crear los tipos de certificado habituales (SSL/TLS, firma de código, S/"
+"MIME...)"
+
+msgid ""
+"Créer des modèles de tickets pour les tâches récurrentes courantes (revue "
+"utilisateurs, maintenance, mises à jour)"
+msgstr ""
+"Crear plantillas de tickets para tareas recurrentes habituales (revisión de "
+"usuarios, mantenimiento, actualizaciones)"
+
+msgid ""
+"Contenu prêt à l'emploi uniquement — aucune planification automatique "
+"créée : à sélectionner vous-même dans Configuration > Intitulés > Assistance "
+"> Tickets récurrents une fois le groupe et la fréquence décidés."
+msgstr ""
+"Solo contenido listo para usar — no se crea ninguna planificación "
+"automática: seleccione usted mismo una de estas plantillas en Configuración "
+"> Valores predefinidos > Asistencia > Tickets recurrentes una vez decididos "
+"el grupo y la frecuencia."
+
+msgid "Ajouter des flux RSS utiles (sécurité CERT-FR, notes de version GLPI)"
+msgstr ""
+"Añadir fuentes RSS útiles (avisos de seguridad CERT-FR, notas de versión de "
+"GLPI)"
+
+msgid ""
+"Visible dans Outils > Flux RSS pour toute l'instance — utile pour suivre les "
+"vulnérabilités affectant le parc et les nouvelles versions de GLPI sans "
+"quitter l'outil."
+msgstr ""
+"Visible en Herramientas > Fuentes RSS para toda la instancia — útil para "
+"seguir las vulnerabilidades que afectan al parque y las nuevas versiones de "
+"GLPI sin salir de la herramienta."
+
+msgid "Statuts de projet supplémentaires"
+msgstr "Estados de proyecto adicionales"
+
+msgid "En plus des 3 statuts natifs GLPI (Nouveau, En cours, Fermé)"
+msgstr "Además de los 3 estados nativos de GLPI (Nuevo, En curso, Cerrado)"
+
+msgid ""
+"Selon le nombre d'options cochées (arborescence multi-site, actifs "
+"personnalisés, bibliothèques de gabarits...), la création peut prendre "
+"plusieurs minutes — ne fermez pas cette page et ne cliquez qu'une seule fois "
+"sur \"Terminer\"."
+msgstr ""
+"Según el número de opciones marcadas (estructura multi-sitio, activos "
+"personalizados, bibliotecas de plantillas...), la creación puede tardar "
+"varios minutos — no cierre esta página y haga clic solo una vez en "
+"\"Finalizar\"."
+
+msgid ""
+"%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre "
+"sites du même pays)."
+msgstr ""
+"%d sitio(s) vinculado(s) a un calendario dedicado a su país (compartido "
+"entre sitios del mismo país)."
+
+msgid ""
+"%d logo(s) trop volumineux pour être appliqué(s) — utilisez un fichier plus "
+"léger (idéalement sous 40 Ko) ou configurez-le manuellement depuis "
+"Configuration > Entités > onglet Général."
+msgstr ""
+"%d logo(s) demasiado pesado(s) para aplicarse — utilice un archivo más "
+"ligero (idealmente por debajo de 40 KB) o configúrelo manualmente desde "
+"Configuración > Entidades > pestaña General."
+
+msgid "%d types de licence logicielle créés."
+msgstr "%d tipos de licencia de software creados."
+
+msgid "%d types de certificat créés."
+msgstr "%d tipos de certificado creados."
+
+msgid "%d modèles de tickets récurrents créés."
+msgstr "%d plantillas de tickets recurrentes creadas."
+
+msgid "%d types de projet/tâche de projet/statuts de projet créés."
+msgstr "%d tipos de proyecto/tarea de proyecto/estados de proyecto creados."
+
+msgid "%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s)."
+msgstr ""
+"%d día(s) festivo(s) creado(s) y vinculado(s) al(los) calendario(s) "
+"correspondiente(s)."
+
+#: templates/wizard.html.twig
 msgid "Vérification de l'environnement"
 msgstr "Verificación del entorno"
 
-msgid "applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 18 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s'applique à l'entité racine seule."
-msgstr "aplica de inmediato los ajustes recomendados de arriba para el perfil seleccionado, sin repasar cada uno de los 18 pasos. Ideal para una instalación simple/de un solo sitio; para una estructura multisitio o MSP, el árbol real (paso 2) todavía queda por construir después, de lo contrario todo se aplica solo a la entidad raíz."
+#: templates/wizard.html.twig
+msgid ""
+"certains points ci-dessous peuvent limiter des fonctionnalités du wizard. "
+"Cela n'empêche pas de continuer, mais corrigez-les si la fonctionnalité "
+"concernée vous intéresse."
+msgstr ""
+"algunos puntos de abajo pueden limitar funciones del asistente. Esto no "
+"impide continuar, pero corríjalos si la función en cuestión le interesa."
 
-msgid "astreinte 24h/24, 7j/7"
-msgstr "guardia 24/7"
-
-msgid "branches"
-msgstr "ramas"
-
-msgid "branches avec services"
-msgstr "ramas con servicios"
-
-msgid "catégories base de connaissances"
-msgstr "categorías de base de conocimiento"
-
-msgid "catégories de tâches"
-msgstr "categorías de tareas"
-
-msgid "certains points ci-dessous peuvent limiter des fonctionnalités du wizard. Cela n'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée vous intéresse."
-msgstr "algunos puntos de abajo pueden limitar funciones del asistente. Esto no impide continuar, pero corríjalos si la función en cuestión le interesa."
-
-msgid "clôture automatique après"
-msgstr "cierre automático tras"
-
-msgid "du délai écoulé → priorité relevée d'un cran (résolution, et engagement interne si activé)"
-msgstr "del tiempo transcurrido → prioridad elevada un nivel (resolución, y compromiso interno si está activado)"
-
-msgid "escalade N1→N2→N3"
-msgstr "escalada N1→N2→N3"
-
-msgid "escalade à"
-msgstr "escalada a"
-
-msgid "fabricants"
-msgstr "fabricantes"
-
-msgid "gabarits de suivis"
-msgstr "plantillas de seguimiento"
-
-msgid "gabarits de tâche"
-msgstr "plantillas de tarea"
-
-msgid "gabarits de tâches de projets"
-msgstr "plantillas de tareas de proyecto"
-
-msgid "gabarits de validation"
-msgstr "plantillas de aprobación"
-
-msgid "groupe(s) appliqué(s)"
-msgstr "grupo(s) aplicados"
-
-msgid "jours fériés"
-msgstr "días festivos"
-
-msgid "lieux"
-msgstr "ubicaciones"
-
-msgid "logo(s) par entité"
-msgstr "logo(s) por entidad"
-
-msgid "modèles changement/problème"
-msgstr "plantillas de cambio/problema"
-
-msgid "nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s"
-msgstr "necesario para el buen funcionamiento general de GLPI — compruebe los permisos en %s"
-
-msgid "nécessaire à la palette personnalisée (étape 17) — vérifiez les droits sur %s"
-msgstr "necesario para la paleta personalizada (paso 17) — compruebe los permisos en %s"
-
-msgid "raisons d'attente"
-msgstr "motivos de espera"
-
-msgid "recommandé"
-msgstr "recomendado"
-
-msgid "relances sans réponse"
-msgstr "recordatorios sin respuesta"
-
-msgid "règle(s)"
-msgstr "regla(s)"
-
-msgid "semaine"
-msgstr "semana"
-
-msgid "semaines"
-msgstr "semanas"
-
-msgid "site(s)/client(s) avec un SLA propre"
-msgstr "sitio(s)/cliente(s) con SLA propio"
-
-msgid "site(s)/client(s) avec un calendrier propre"
-msgstr "sitio(s)/cliente(s) con calendario propio"
-
-msgid "sombre"
-msgstr "oscuro"
-
-msgid "statuts"
-msgstr "estados"
-
-msgid "types de projet/tâche"
-msgstr "tipos de proyecto/tarea"
-
-msgid "types/gabarits de solution"
-msgstr "tipos/plantillas de solución"
-
-msgid "utile pour valider les logos uploadés (étape 17) — ni l'une ni l'autre n'est chargée"
-msgstr "útil para validar los logos subidos (paso 17) — ninguna de las dos está cargada"
-
-msgid "{ENTITY} est remplacé par le nom du site (espaces convertis en _)."
-msgstr "{ENTITY} se sustituye por el nombre del sitio (espacios convertidos en _)."
-
-msgid "« Admin » (par défaut) couvre la gestion quotidienne sans le risque d'auto-élévation de « Super-Admin » : contrairement à Super-Admin, Admin ne peut ni éditer les profils GLPI (donc pas s'en attribuer plus), ni modifier les règles LDAP/import qui gèrent justement cette synchronisation."
-msgstr "\"Admin\" (por defecto) cubre la gestión diaria sin el riesgo de autoelevación de \"Super-Admin\": a diferencia de Super-Admin, Admin no puede ni editar los perfiles de GLPI (por lo que no puede atribuirse más), ni modificar las reglas LDAP/importación que gestionan precisamente esta sincronización."
-
+#: templates/wizard.html.twig
 msgid "Étape"
 msgstr "Paso"
 
-msgid "Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l'interface complète pour le support."
-msgstr "Opcional: divide el formulario de creación de tickets en dos — el mínimo para un usuario base, la interfaz completa para el soporte."
+#: templates/wizard.html.twig
+msgid "Profil"
+msgstr "Perfil"
 
-msgid "Un service par ligne, groupé par branche cochée à l'étape Catégories — décocher une branche là-bas retire aussi ses services ici."
-msgstr "Un servicio por línea, agrupado por rama marcada en el paso Categorías — desmarcar una rama allí también elimina sus servicios aquí."
+#: templates/wizard.html.twig
+msgid ""
+"Quel profil correspond le mieux à votre organisation ? Ce choix pré-remplit "
+"la structure d'entités, le calendrier et les SLA des étapes suivantes avec "
+"des valeurs adaptées — vous pourrez tout ajuster ensuite."
+msgstr ""
+"¿Qué perfil se ajusta mejor a su organización? Esta elección rellena "
+"previamente la estructura de entidades, el calendario y los SLA de los "
+"siguientes pasos con valores adecuados — podrá ajustarlo todo después."
 
-msgid "Habiller les e-mails de notification (Nouveau ticket, Mise à jour, Résolution, Suivi)"
-msgstr "Personalizar los correos de notificación (Nuevo ticket, Actualización, Resolución, Seguimiento)"
+#: templates/wizard.html.twig
+msgid "Configuration express"
+msgstr "Configuración exprés"
 
-msgid "Remplace le modèle de notification GLPI par défaut de ces 4 évènements par une version HTML reprenant la couleur et le logo ci-dessus — un e-mail modifié à la main ensuite n'est plus jamais réécrit par une réexécution de l'assistant."
-msgstr "Sustituye la plantilla de notificación predeterminada de GLPI para estos 4 eventos por una versión HTML con el color y el logo de arriba — una vez editado el correo a mano, una nueva ejecución del asistente ya no lo sobrescribe."
+#: templates/wizard.html.twig
+msgid ""
+"applique tout de suite les réglages recommandés ci-dessus pour le profil "
+"sélectionné, sans repasser par chacune des 18 étapes. Idéal pour une "
+"installation simple/mono-site ; pour une structure multi-site ou MSP, "
+"l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout "
+"s'applique à l'entité racine seule."
+msgstr ""
+"aplica de inmediato los ajustes recomendados de arriba para el perfil "
+"seleccionado, sin repasar cada uno de los 18 pasos. Ideal para una "
+"instalación simple/de un solo sitio; para una estructura multisitio o MSP, "
+"el árbol real (paso 2) todavía queda por construir después, de lo contrario "
+"todo se aplica solo a la entidad raíz."
 
-msgid "%d modèle(s) de notification personnalisés."
-msgstr "%d plantilla(s) de notificación personalizadas."
+#: templates/wizard.html.twig
+msgid ""
+"Ceci va créer/modifier de vraies entités dans GLPI selon les réglages "
+"recommandés du profil sélectionné, sans passer en revue chaque étape. "
+"Continuer ?"
+msgstr ""
+"Esto creará/modificará entidades reales en GLPI según los ajustes "
+"recomendados del perfil seleccionado, sin repasar cada paso. ¿Continuar?"
 
-msgid "Créer un dictionnaire pour normaliser les variantes de nom (ex. Hewlett-Packard, HP Inc. → HP)"
-msgstr "Crear un diccionario para normalizar las variantes del nombre (ej. Hewlett-Packard, HP Inc. → HP)"
+#: templates/wizard.html.twig
+msgid "Terminer avec les réglages recommandés"
+msgstr "Finalizar con los ajustes recomendados"
 
-msgid "Sans filtrage possible par type de produit (limite native de GLPI, vérifiée) — mais un fabricant remonté par l'inventaire sous un nom légèrement différent (« Hewlett-Packard » au lieu de « HP ») sera automatiquement rattaché à la même fiche fabricant plutôt que d'en créer une nouvelle en double."
-msgstr "No es posible filtrar por tipo de producto (limitación nativa de GLPI, verificada) — pero un fabricante notificado por el inventario con un nombre ligeramente diferente (\"Hewlett-Packard\" en lugar de \"HP\") se vinculará automáticamente a la misma ficha de fabricante en lugar de crear una nueva duplicada."
-
-msgid "%d règle(s) de dictionnaire fabricant créées."
-msgstr "%d regla(s) de diccionario de fabricante creadas."
-
-msgid "🏢 Bâtiment & Moyens généraux"
-msgstr "🏢 Edificios y Servicios Generales"
-
-msgid "👤 RH & Support interne"
-msgstr "👤 RRHH y Soporte Interno"
-
-msgid "💻 IT pur"
-msgstr "💻 TI puro"
-
-msgid "🧩 Multi-services (toutes verticales)"
-msgstr "🧩 Multiservicio (todos los sectores)"
-
-msgid "Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — activé par défaut, désactivable ci-dessus si l'envoi de l'adresse en cours de saisie à ce service pose problème."
-msgstr "Envía cada pulsación a un servicio externo (OpenStreetMap Nominatim por defecto) para proponer sugerencias — activado por defecto, se puede desactivar arriba si el envío de la dirección en curso de escritura a este servicio es un problema."
-
-msgid "Service de géocodage (avancé)"
-msgstr "Servicio de geocodificación (avanzado)"
-
-msgid "Instance Nominatim/Photon auto-hébergée ou compatible, pour un usage réel au-delà d'un essai ponctuel."
-msgstr "Instancia autoalojada de Nominatim/Photon o servicio compatible, para un uso real más allá de una prueba puntual."
-
-msgid "Rue, numéro..."
-msgstr "Calle, número..."
-
-msgid "Code postal"
-msgstr "Código postal"
-
-msgid "Ville"
-msgstr "Ciudad"
-
-msgid "Pays"
-msgstr "País"
-
-msgid "%d modèle(s) de projet créés, structure de tâches incluse."
-msgstr "%d plantilla(s) de proyecto creadas, estructura de tareas incluida."
-
-msgid "Créer des modèles de projet pré-structurés (tâches déjà liées)"
-msgstr "Crear plantillas de proyecto preestructuradas (tareas ya vinculadas)"
-
-msgid "Un vrai projet marqué comme modèle, avec ses tâches déjà rattachées — \"+ Nouveau\" sur Projets propose ensuite de démarrer depuis ce modèle, tâches incluses."
-msgstr "Un proyecto real marcado como plantilla, con sus tareas ya vinculadas — \"+ Nuevo\" en Proyectos propone luego partir de esta plantilla, tareas incluidas."
-
-msgid "Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits/modèles de projet."
-msgstr "Revise sus elecciones antes de finalizar — este paso crea realmente las entidades, el calendario, los SLA, las categorías, el catálogo de servicios, los estados, los motivos de espera, la personalización de marca, la configuración general, las plantillas de tickets, los derechos LDAP, las etiquetas de tareas/soluciones/validaciones, las ubicaciones/fabricantes/categorías de la base de conocimiento, y los tipos/plantillas de proyecto."
-
-msgid "modèles de projet"
-msgstr "plantillas de proyecto"
-
-msgid "Latitude"
-msgstr "Latitud"
-
-msgid "Longitude"
-msgstr "Longitud"
-
-msgid "+ Ajouter une adresse"
-msgstr "+ Añadir una dirección"
-
-msgid "Alias"
-msgstr "Alias"
-
-msgid "Altitude"
-msgstr "Altitud"
-
-msgid "Assistant d'adresse (suggestions de rue pendant la saisie, ville/région/pays pré-remplis)"
-msgstr "Asistente de dirección (sugerencias de calle mientras se escribe, ciudad/región/país autocompletados)"
-
-msgid "Associer une adresse à des entités de l'arborescence"
-msgstr "Asociar una dirección a entidades del árbol"
-
-msgid "Bâtiment"
-msgstr "Edificio"
-
-msgid "Code"
-msgstr "Código"
-
-msgid "Commentaire"
-msgstr "Comentario"
-
-msgid "Parcourez l'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur les entités qui en ont une (site, agence...) — les autres n'auront aucun lieu créé, comme sur une installation GLPI neuve."
-msgstr "Recorra el árbol de abajo y abra \"Añadir una dirección\" en las entidades que tengan una (sede, sucursal...) — las demás no tendrán ninguna ubicación creada, igual que en una instalación GLPI nueva."
-
-msgid "Pièce"
-msgstr "Habitación"
-
-msgid "Réduire"
-msgstr "Contraer"
-
-msgid "Région / État"
-msgstr "Región / Estado"
-
-msgid "%d source(s) de demande traduites."
-msgstr "%d fuente(s) de solicitud traducidas."
-
-msgid "GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, sans traduction — une session française (ou allemande, italienne, espagnole) les voit telles quelles tant qu'aucune traduction n'existe."
-msgstr "GLPI instala estos 6 valores en inglés independientemente del idioma elegido, sin traducción — una sesión francesa (o alemana, italiana, española) los ve tal cual hasta que exista una traducción."
-
-msgid "Traduire les sources de demande natives de GLPI"
-msgstr "Traducir las fuentes de solicitud nativas de GLPI"
-
-msgid "Ajouter un lieu enfant"
-msgstr "Añadir una ubicación hija"
-
-msgid "Lieux enfants (bâtiment, étage, salle...)"
-msgstr "Ubicaciones hijas (edificio, planta, sala...)"
-
-msgid "Nom du lieu enfant (ex. Bâtiment A)"
-msgstr "Nombre de la ubicación hija (ej. Edificio A)"
-
-msgid "%d fiche(s) d'entité complétées avec leur adresse."
-msgstr "%d ficha(s) de entidad completadas con su dirección."
-
-msgid "Compléter aussi la fiche adresse native de chaque entité (GLPI > Entités > Adresse)"
-msgstr "Completar también la ficha de dirección nativa de cada entidad (GLPI > Entidades > Dirección)"
-
-msgid "E-mail"
-msgstr "Correo electrónico"
-
-msgid "Fax"
-msgstr "Fax"
-
-msgid "Reprend l'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper — ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité."
-msgstr "Reutiliza la dirección ya introducida abajo para cada entidad, sin volver a escribirla — solo añade teléfono/fax/sitio web/correo electrónico, propios de la ficha de entidad."
-
-msgid "Site web"
-msgstr "Sitio web"
-
-msgid "Téléphone"
-msgstr "Teléfono"
-
-msgid "%d catégories d'utilisateur créées."
-msgstr "%d categorías de usuario creadas."
-
-msgid "Classification indépendante des profils/droits — qui est la personne pour l'organisation (salarié, prestataire...), pas ce qu'elle peut faire dans GLPI. Importable depuis un attribut LDAP, utilisable en critère de ciblage de notification et en statistiques."
-msgstr "Una clasificación independiente de perfiles/derechos — quién es la persona para la organización (empleado, proveedor...), no lo que puede hacer en GLPI. Importable desde un atributo LDAP, utilizable como criterio de segmentación de notificaciones y en estadísticas."
-
-msgid "Créer des catégories d'utilisateur courantes"
-msgstr "Crear categorías de usuario comunes"
-
-msgid "Interdire les numéros de série en double"
-msgstr "Prohibir números de serie duplicados"
-
-msgid "Bloque la création ou la modification d'un élément si son numéro de série existe déjà sur un autre élément du même type — évite les doublons issus d'une saisie manuelle ou d'un import incohérent. Un numéro de série vide n'est jamais considéré comme un doublon."
-msgstr "Bloquea la creación o modificación de un elemento si su número de serie ya existe en otro elemento del mismo tipo — evita duplicados por una entrada manual o una importación inconsistente. Un número de serie vacío nunca se considera un duplicado."
-
-msgid "Catégories de tickets"
-msgstr "Categorías de tickets"
-
-msgid "Droits LDAP par entité"
-msgstr "Derechos LDAP por entidad"
-
-msgid "Lieux"
-msgstr "Ubicaciones"
-
-msgid "Niveaux de service (SLA)"
-msgstr "Niveles de servicio (SLA)"
-
-msgid "Personnalisation graphique"
-msgstr "Personalización gráfica"
-
-msgid "Réglages généraux GLPI"
-msgstr "Configuración general de GLPI"
-
+#: templates/wizard.html.twig
 msgid "Structure des entités"
 msgstr "Estructura de entidades"
 
-msgid "Suivis, validations & modèles"
-msgstr "Seguimientos, aprobaciones y plantillas"
+#: templates/wizard.html.twig
+msgid ""
+"Choisissez la structure d'entités à mettre en place — l'aperçu à droite se "
+"met à jour en direct."
+msgstr ""
+"Elija la estructura de entidades a configurar — la vista previa a la derecha "
+"se actualiza en directo."
 
-msgid "Optionnel : associez une adresse (ou plus) à une entité de l'arborescence — rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, aucun lieu créé, comme sur une installation GLPI neuve."
-msgstr "Opcional: asocie una o más direcciones a una entidad del árbol — calle, ciudad, coordenadas GPS, alias, teléfono... Ninguna dirección introducida, ninguna ubicación creada, igual que en una instalación GLPI nueva."
+#: templates/wizard.html.twig
+msgid "Lieux"
+msgstr "Ubicaciones"
 
-msgid "Marketplace & plugins recommandés"
-msgstr "Marketplace y plugins recomendados"
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : associez une adresse (ou plus) à une entité de l'arborescence — "
+"rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, "
+"aucun lieu créé, comme sur une installation GLPI neuve."
+msgstr ""
+"Opcional: asocie una o más direcciones a una entidad del árbol — calle, "
+"ciudad, coordenadas GPS, alias, teléfono... Ninguna dirección introducida, "
+"ninguna ubicación creada, igual que en una instalación GLPI nueva."
 
-msgid "Clé d'enregistrement GLPI Network"
-msgstr "Clave de registro de GLPI Network"
+#: templates/wizard.html.twig
+msgid "Associer une adresse à des entités de l'arborescence"
+msgstr "Asociar una dirección a entidades del árbol"
 
-msgid "Clé d'enregistrement GLPI Network enregistrée."
-msgstr "Clave de registro de GLPI Network guardada."
+#: templates/wizard.html.twig
+msgid ""
+"Parcourez l'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur "
+"les entités qui en ont une (site, agence...) — les autres n'auront aucun "
+"lieu créé, comme sur une installation GLPI neuve."
+msgstr ""
+"Recorra el árbol de abajo y abra \"Añadir una dirección\" en las entidades "
+"que tengan una (sede, sucursal...) — las demás no tendrán ninguna ubicación "
+"creada, igual que en una instalación GLPI nueva."
 
-msgid "Optionnel : une clé d'enregistrement GLPI Network (au moins gratuite) débloque le marketplace natif de GLPI (Configuration > Plugins > Marketplace) — sans elle, la liste des plugins y reste vide."
-msgstr "Opcional: una clave de registro de GLPI Network (al menos gratuita) desbloquea el marketplace nativo de GLPI (Configuración > Plugins > Marketplace) — sin ella, la lista de plugins permanece vacía."
+#: templates/wizard.html.twig
+msgid ""
+"Assistant d'adresse (suggestions de rue pendant la saisie, ville/région/pays "
+"pré-remplis)"
+msgstr ""
+"Asistente de dirección (sugerencias de calle mientras se escribe, ciudad/"
+"región/país autocompletados)"
 
-msgid "S'obtient gratuitement sur"
-msgstr "Disponible gratis en"
+#: templates/wizard.html.twig
+msgid ""
+"Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par "
+"défaut) pour proposer des suggestions — activé par défaut, désactivable ci-"
+"dessus si l'envoi de l'adresse en cours de saisie à ce service pose problème."
+msgstr ""
+"Envía cada pulsación a un servicio externo (OpenStreetMap Nominatim por "
+"defecto) para proponer sugerencias — activado por defecto, se puede "
+"desactivar arriba si el envío de la dirección en curso de escritura a este "
+"servicio es un problema."
 
-msgid "Une fois le marketplace débloqué, ces plugins sont installables en un clic depuis Configuration > Plugins > Marketplace — non installés automatiquement par cet assistant."
-msgstr "Una vez desbloqueado el marketplace, estos plugins se pueden instalar con un clic desde Configuración > Plugins > Marketplace — no instalados automáticamente por este asistente."
+#: templates/wizard.html.twig
+msgid "Service de géocodage (avancé)"
+msgstr "Servicio de geocodificación (avanzado)"
 
-msgid "%d opérateurs téléphoniques créés."
-msgstr "%d operadores telefónicos creados."
+#: templates/wizard.html.twig
+msgid ""
+"Instance Nominatim/Photon auto-hébergée ou compatible, pour un usage réel au-"
+"delà d'un essai ponctuel."
+msgstr ""
+"Instancia autoalojada de Nominatim/Photon o servicio compatible, para un uso "
+"real más allá de una prueba puntual."
 
-msgid "Créer les opérateurs téléphoniques français courants"
-msgstr "Crear los operadores telefónicos franceses comunes"
+#: templates/wizard.html.twig
+msgid ""
+"Compléter aussi la fiche adresse native de chaque entité (GLPI > Entités > "
+"Adresse)"
+msgstr ""
+"Completar también la ficha de dirección nativa de cada entidad (GLPI > "
+"Entidades > Dirección)"
 
-msgid "%d types de matériel créés."
-msgstr "%d tipos de dispositivo creados."
+#: templates/wizard.html.twig
+msgid ""
+"Reprend l'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper "
+"— ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité."
+msgstr ""
+"Reutiliza la dirección ya introducida abajo para cada entidad, sin volver a "
+"escribirla — solo añade teléfono/fax/sitio web/correo electrónico, propios "
+"de la ficha de entidad."
 
-msgid "Créer les types courants de matériel (ordinateurs, écrans, réseau, racks, câbles, disques durs...)"
-msgstr "Crear los tipos comunes de hardware (ordenadores, monitores, red, racks, cables, discos duros...)"
+#: templates/wizard.html.twig
+msgid "Calendrier"
+msgstr "Calendario"
 
-msgid "%d jour(s) férié(s) étranger(s) créés."
-msgstr "%d día(s) festivo(s) extranjero(s) creados."
+#: templates/wizard.html.twig
+msgid ""
+"Configurez, si besoin, les horaires d'ouverture appliqués aux entités créées."
+msgstr ""
+"Configure, si es necesario, el horario laboral aplicado a las entidades "
+"creadas."
 
-msgid "Ajouter les jours fériés des pays saisis ci-dessous (hors France, déjà couverte à l'étape Calendrier)"
-msgstr "Añadir los días festivos de los países introducidos a continuación (excepto Francia, ya cubierta en el paso Calendario)"
+#: templates/wizard.html.twig
+msgid "Calendrier différent par site ou client"
+msgstr "Calendario diferente por sitio o cliente"
 
-msgid "Uniquement les jours fériés à date fixe (comme pour la France) — un pays non reconnu ou non couvert par le service utilisé est simplement ignoré, sans rien inventer. Les jours fériés créés ne sont pas rattachés automatiquement à un calendrier : à faire vous-même dans Configuration > Calendriers une fois créés."
-msgstr "Solo los días festivos de fecha fija (como para Francia) — un país no reconocido o no cubierto por el servicio utilizado simplemente se omite, sin inventar nada. Los días festivos creados no se vinculan automáticamente a un calendario: hágalo usted mismo en Configuración > Calendarios una vez creados."
+#: templates/wizard.html.twig
+msgid "Créer un calendrier d'horaires d'ouverture"
+msgstr "Crear un calendario de horario laboral"
 
-msgid "Plugin \"More satisfaction\" détecté — créer une enquête de satisfaction toute faite"
-msgstr "Plugin \"More satisfaction\" detectado — crear una encuesta de satisfacción lista para usar"
+#: templates/wizard.html.twig
+msgid "Nom du calendrier"
+msgstr "Nombre del calendario"
 
-msgid "3 questions courantes (note sur 5, résolution oui/non, remarques libres), activée sur toute l'instance. Différent de l'enquête native ci-dessus — le plugin permet plusieurs questions et un rappel automatique, la case native ne fait qu'une note sur 5."
-msgstr "3 preguntas comunes (valoración sobre 5, resuelto sí/no, comentarios libres), activa en toda la instancia. Diferente de la encuesta nativa de arriba — el plugin admite varias preguntas y un recordatorio automático, la casilla nativa solo da una valoración sobre 5."
+#: templates/wizard.html.twig
+msgid "Jours ouvrés et horaires"
+msgstr "Días laborables y horarios"
 
-msgid "Enquête de satisfaction créée (plugin More satisfaction)."
-msgstr "Encuesta de satisfacción creada (plugin More satisfaction)."
+#: templates/wizard.html.twig
+msgid ""
+"Un horaire par jour coché — modifiez-le librement pour un jour qui diffère "
+"des autres (ex. vendredi 9h-12h seulement)."
+msgstr ""
+"Un horario por cada día marcado — edítelo libremente para un día que difiera "
+"de los demás (p. ej. solo viernes de 9 a 12)."
 
-msgid "Plugin \"VIP\" détecté — créer le groupe \"VIP\" et l'activer"
-msgstr "Plugin \"VIP\" detectado — crear el grupo \"VIP\" y activarlo"
-
-msgid "Crée un groupe natif \"VIP\" (à ne pas confondre avec un groupe de techniciens) et le marque comme groupe VIP auprès du plugin : ajoutez-y les personnes ou groupes prioritaires (direction, actionnaires...) dont les tickets doivent être mis en évidence."
-msgstr "Crea un grupo nativo \"VIP\" (que no debe confundirse con un grupo de técnicos) y lo marca como grupo VIP ante el plugin: añada las personas o grupos prioritarios (dirección, accionistas...) cuyos tickets deben destacarse."
-
-msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
-msgstr "Grupo \"VIP\" creado y activado (plugin VIP)."
-
-msgid "Plugin \"Tag\" détecté — créer une bibliothèque de tags courants"
-msgstr "Plugin \"Tag\" detectado — crear una biblioteca de etiquetas comunes"
-
-msgid "6 tags génériques utilisables sur tout objet GLPI (Prioritaire, Urgent, À vérifier, Obsolète, Garantie active, Confidentiel), avec une couleur distincte chacun."
-msgstr "6 etiquetas genéricas utilizables en cualquier objeto de GLPI (Prioritario, Urgente, Por verificar, Obsoleto, Garantía activa, Confidencial), cada una con un color distinto."
-
-msgid "%d tag(s) créé(s) (plugin Tag)."
-msgstr "%d etiqueta(s) creada(s) (plugin Tag)."
-
-msgid "Validation automatique par le supérieur hiérarchique du demandeur (« N+1 »)"
-msgstr "Aprobación automática por el superior jerárquico del solicitante (\"N+1\")"
-
-msgid "Envoie automatiquement une demande d'approbation au supérieur hiérarchique du demandeur (champ natif GLPI « Superviseur ») pour chaque ticket de type Demande. Décochée par défaut, contrairement au reste de cette page : ceci change un vrai comportement (approbation obligatoire), pas juste du contenu — et ne fait quelque chose que si le champ Superviseur des utilisateurs est renseigné (import LDAP ou saisie manuelle). Sans supérieur renseigné, aucune validation n'est créée."
-msgstr "Envía automáticamente una solicitud de aprobación al superior jerárquico del solicitante (campo nativo de GLPI \"Superior\") para cada ticket de tipo Solicitud. Desmarcada de forma predeterminada, a diferencia del resto de esta página: esto cambia un comportamiento real (aprobación obligatoria), no solo contenido — y solo actúa si el campo Superior de los usuarios está completado (importación LDAP o entrada manual). Sin un superior establecido, no se crea ninguna aprobación."
-
-msgid "Règle de validation automatique (supérieur hiérarchique) créée."
-msgstr "Regla de aprobación automática creada (superior)."
-
-msgid "Un horaire par jour coché — modifiez-le librement pour un jour qui diffère des autres (ex. vendredi 9h-12h seulement)."
-msgstr "Un horario por cada día marcado — edítelo libremente para un día que difiera de los demás (p. ej. solo viernes de 9 a 12)."
-
+#: templates/wizard.html.twig
 msgid "Coupure déjeuner"
 msgstr "Pausa para comer"
 
+#: templates/wizard.html.twig
 msgid "Début pause"
 msgstr "Inicio de la pausa"
 
+#: templates/wizard.html.twig
 msgid "Fin pause"
 msgstr "Fin de la pausa"
 
-msgid "Si activée, tout jour dont les horaires couvrent la pause est scindé en deux plages (matin + après-midi) au lieu d'une plage continue."
-msgstr "Si está activada, cualquier día cuyo horario abarque la pausa se divide en dos franjas (mañana + tarde) en lugar de una franja continua."
+#: templates/wizard.html.twig
+msgid ""
+"Si activée, tout jour dont les horaires couvrent la pause est scindé en deux "
+"plages (matin + après-midi) au lieu d'une plage continue."
+msgstr ""
+"Si está activada, cualquier día cuyo horario abarque la pausa se divide en "
+"dos franjas (mañana + tarde) en lugar de una franja continua."
 
-msgid "horaires variables selon les jours"
-msgstr "horarios variables según el día"
+#: templates/wizard.html.twig
+msgid "Niveaux de service (SLA)"
+msgstr "Niveles de servicio (SLA)"
 
-msgid "coupure déjeuner"
-msgstr "pausa para comer"
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : délais standards de prise en charge et de résolution des "
+"tickets, appliqués aux entités créées."
+msgstr ""
+"Opcional: plazos estándar de atención y resolución de tickets, aplicados a "
+"las entidades creadas."
 
-msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
-msgstr "Activo personalizado \"Vehículo\" creado (rama Flota de Vehículos)."
+#: templates/wizard.html.twig
+msgid "SLA différent par site ou client"
+msgstr "SLA diferente por sitio o cliente"
 
-msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
-msgstr "Activo personalizado \"Servidor\" creado (rama TI y Sistemas)."
+#: templates/wizard.html.twig
+msgid "Créer des SLA standards"
+msgstr "Crear SLA estándar"
 
-msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
-msgstr "Activo personalizado \"Local\" creado (rama Edificio)."
+#: templates/wizard.html.twig
+msgid "Priorité"
+msgstr "Prioridad"
 
-msgid "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche Bâtiment)."
-msgstr "Activo personalizado \"Seguridad contra incendios y primeros auxilios\" creado (rama Edificio)."
+#: templates/wizard.html.twig
+msgid "Prise en charge (h)"
+msgstr "Atención (h)"
 
-msgid "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection des Personnes)."
-msgstr "Activo personalizado \"Seguridad física\" creado (rama Seguridad)."
+#: templates/wizard.html.twig
+msgid "Résolution (h)"
+msgstr "Resolución (h)"
 
-msgid "Actif personnalisé ESM (Enterprise Service Management) — en plus de l'actif \"Local\" créé automatiquement pour cette branche."
-msgstr "Activo personalizado ESM (Enterprise Service Management) — además del activo \"Local\" creado automáticamente para esta rama."
+#: templates/wizard.html.twig
+msgid ""
+"Astreinte (couverture 24h/24, 7j/7 — le délai continue de courir en dehors "
+"des horaires ouvrés)"
+msgstr ""
+"Guardia (cobertura 24/7 — el plazo sigue corriendo fuera del horario laboral)"
 
-msgid "Créer un type d'actif \"Sécurité incendie & premiers secours\" (extincteurs, RIA, désenfumage, DAE...)"
-msgstr "Crear un tipo de activo \"Seguridad contra incendios y primeros auxilios\" (extintores, bocas de incendio, extracción de humos, DEA...)"
+#: templates/wizard.html.twig
+msgid "Ajouter des engagements internes (OLA)"
+msgstr "Añadir compromisos internos (OLA)"
 
-msgid "Champ de conformité : date de vérification périodique. Pas réservable (n'a pas de sens pour ce type d'équipement)."
-msgstr "Campo de conformidad: fecha de verificación periódica. No reservable (no tiene sentido para este tipo de equipo)."
+#: templates/wizard.html.twig
+msgid ""
+"L'OLA est un engagement interne entre le support et les équipes techniques, "
+"plus court que le SLA externe — il doit être tenu pour que le SLA le soit "
+"aussi."
+msgstr ""
+"El OLA es un compromiso interno entre el soporte y los equipos técnicos, más "
+"corto que el SLA externo — debe cumplirse para que el SLA también se cumpla."
 
-msgid "Actif personnalisé ESM (Enterprise Service Management), aligné sur ISO/IEC 27001:2022 Annexe A.7 \"Mesures physiques\" (contrôle d'accès, vidéosurveillance, alarme intrusion)."
-msgstr "Activo personalizado ESM (Enterprise Service Management), alineado con ISO/IEC 27001:2022 Anexo A.7 \"Controles físicos\" (control de acceso, videovigilancia, alarma antiintrusión)."
+#: templates/wizard.html.twig
+msgid "Escalade automatique avant échéance"
+msgstr "Escalada automática antes del vencimiento"
 
-msgid "Créer un type d'actif \"Sécurité physique\" (caméras, alarme intrusion, contrôle d'accès...)"
-msgstr "Crear un tipo de activo \"Seguridad física\" (cámaras, alarma antiintrusión, control de acceso...)"
+#: templates/wizard.html.twig
+msgid "Déclenchement à"
+msgstr "Activación a"
 
+#: templates/wizard.html.twig
+msgid ""
+"du délai écoulé → priorité relevée d'un cran (résolution, et engagement "
+"interne si activé)"
+msgstr ""
+"del tiempo transcurrido → prioridad elevada un nivel (resolución, y "
+"compromiso interno si está activado)"
+
+#: templates/wizard.html.twig
+msgid ""
+"S'applique à tout SLA/OLA créé sur cette étape — partagé ou par site/client."
+msgstr ""
+"Se aplica a todo SLA/OLA creado en este paso — compartido o por sitio/"
+"cliente."
+
+#: templates/wizard.html.twig
+msgid "Activer l'escalade entre niveaux de support (N1 → N2 → N3)"
+msgstr "Activar la escalada entre niveles de soporte (N1 → N2 → N3)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Crée 3 groupes techniciens (Support N1/N2/N3 — convention ITSM la plus "
+"répandue). Tout ticket créé démarre au N1 ; l'escalade automatique (ci-"
+"dessous) le réaffecte au niveau suivant si le SLA de résolution approche ou "
+"dépasse son échéance."
+msgstr ""
+"Crea 3 grupos de técnicos (Soporte N1/N2/N3 — la convención ITSM más "
+"extendida). Todo ticket creado empieza en N1; la escalada automática (abajo) "
+"lo reasigna al siguiente nivel si el SLA de resolución se acerca o supera su "
+"vencimiento."
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes (repérage rapide dans les listes d'affectation)"
+msgstr "Añadir iconos (identificación rápida en las listas de asignación)"
+
+#: templates/wizard.html.twig
+msgid "Inclure le niveau N0 (portail libre-service) dans le récapitulatif"
+msgstr "Incluir el nivel N0 (portal de autoservicio) en el resumen"
+
+#: templates/wizard.html.twig
+msgid ""
+"N0 = le libre-service déjà configuré aux étapes Catalogue de services / "
+"Formulaire d'accueil — pas un groupe supplémentaire, juste un repère pour "
+"situer où commence le support humain."
+msgstr ""
+"N0 = el autoservicio ya configurado en los pasos Catálogo de servicios / "
+"Formulario de bienvenida — no es un grupo adicional, solo una referencia "
+"para situar dónde empieza el soporte humano."
+
+#: templates/wizard.html.twig
+msgid "Escalade automatique N1 → N2 (au seuil ci-dessus)"
+msgstr "Escalada automática N1 → N2 (en el umbral de arriba)"
+
+#: templates/wizard.html.twig
+msgid "Escalade automatique N2 → N3 (à l'échéance du SLA)"
+msgstr "Escalada automática N2 → N3 (al vencimiento del SLA)"
+
+#: templates/wizard.html.twig
+msgid "Catégories de tickets"
+msgstr "Categorías de tickets"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : une arborescence de catégories thématiques (IT, Bâtiment, "
+"Flotte, RH...), pas une par type ITIL — le type (Incident/Demande) est déjà "
+"géré nativement par GLPI. Décochez les branches qui ne s'appliquent pas à "
+"votre organisation."
+msgstr ""
+"Opcional: un árbol de categorías temáticas (TI, Edificios, Flota, RRHH...), "
+"no una por tipo ITIL — el tipo (Incidencia/Solicitud) ya lo gestiona GLPI de "
+"forma nativa. Desmarque las ramas que no se apliquen a su organización."
+
+#: templates/wizard.html.twig
+msgid "Créer les catégories de tickets"
+msgstr "Crear las categorías de tickets"
+
+#: templates/wizard.html.twig
+msgid ""
+"Profil métier — préremplit les branches ci-dessous et le SLA de l'étape 5 "
+"(physique/administratif traité plus lentement que l'IT). Toujours ajustable "
+"ensuite, dans les deux cas."
+msgstr ""
+"Perfil de negocio — rellena previamente las ramas de abajo y el SLA del paso "
+"5 (físico/administrativo tratado más lento que TI). Siempre ajustable "
+"después, en ambos casos."
+
+#: templates/wizard.html.twig
+msgid "💻 IT pur"
+msgstr "💻 TI puro"
+
+#: templates/wizard.html.twig
+msgid "👤 RH & Support interne"
+msgstr "👤 RRHH y Soporte Interno"
+
+#: templates/wizard.html.twig
+msgid "🏢 Bâtiment & Moyens généraux"
+msgstr "🏢 Edificios y Servicios Generales"
+
+#: templates/wizard.html.twig
+msgid "🧩 Multi-services (toutes verticales)"
+msgstr "🧩 Multiservicio (todos los sectores)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Ajouter des icônes (visibles dans la liste, le nom lui-même reste sans icône)"
+msgstr "Añadir iconos (visibles en la lista, el nombre en sí queda sin icono)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Actif personnalisé ESM (Enterprise Service Management) — en plus de l'actif "
+"\"Local\" créé automatiquement pour cette branche."
+msgstr ""
+"Activo personalizado ESM (Enterprise Service Management) — además del activo "
+"\"Local\" creado automáticamente para esta rama."
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer un type d'actif \"Sécurité incendie & premiers secours\" (extincteurs, "
+"RIA, désenfumage, DAE...)"
+msgstr ""
+"Crear un tipo de activo \"Seguridad contra incendios y primeros "
+"auxilios\" (extintores, bocas de incendio, extracción de humos, DEA...)"
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes"
+msgstr "Añadir iconos"
+
+#: templates/wizard.html.twig
+msgid ""
+"Champ de conformité : date de vérification périodique. Pas réservable (n'a "
+"pas de sens pour ce type d'équipement)."
+msgstr ""
+"Campo de conformidad: fecha de verificación periódica. No reservable (no "
+"tiene sentido para este tipo de equipo)."
+
+#: templates/wizard.html.twig
+msgid ""
+"Actif personnalisé ESM (Enterprise Service Management), aligné sur ISO/IEC "
+"27001:2022 Annexe A.7 \"Mesures physiques\" (contrôle d'accès, "
+"vidéosurveillance, alarme intrusion)."
+msgstr ""
+"Activo personalizado ESM (Enterprise Service Management), alineado con ISO/"
+"IEC 27001:2022 Anexo A.7 \"Controles físicos\" (control de acceso, "
+"videovigilancia, alarma antiintrusión)."
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer un type d'actif \"Sécurité physique\" (caméras, alarme intrusion, "
+"contrôle d'accès...)"
+msgstr ""
+"Crear un tipo de activo \"Seguridad física\" (cámaras, alarma antiintrusión, "
+"control de acceso...)"
+
+#: templates/wizard.html.twig
 msgid "Champs : zone couverte, date de dernière maintenance/vérification."
 msgstr "Campos: zona cubierta, fecha del último mantenimiento/verificación."
 
-msgid "Profil de configuration"
-msgid_plural "Profils de configuration"
-msgstr[0] "Perfil de configuración"
-msgstr[1] "Perfiles de configuración"
+#: templates/wizard.html.twig
+msgid "Catalogue de services"
+msgstr "Catálogo de servicios"
 
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des formulaires prêts à l'emploi dans le portail libre-service — "
+"l'utilisateur choisit un service précis, jamais une catégorie ; le ticket "
+"est automatiquement routé vers la bonne catégorie."
+msgstr ""
+"Opcional: formularios listos para usar en el portal de autoservicio — el "
+"usuario elige un servicio concreto, nunca una categoría; el ticket se enruta "
+"automáticamente a la categoría correcta."
+
+#: templates/wizard.html.twig
+msgid "Créer le catalogue de services"
+msgstr "Crear el catálogo de servicios"
+
+#: templates/wizard.html.twig
+msgid ""
+"Un service par ligne, groupé par branche cochée à l'étape Catégories — "
+"décocher une branche là-bas retire aussi ses services ici."
+msgstr ""
+"Un servicio por línea, agrupado por rama marcada en el paso Categorías — "
+"desmarcar una rama allí también elimina sus servicios aquí."
+
+#: templates/wizard.html.twig
+msgid "Statuts des éléments"
+msgstr "Estados de elementos"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : un jeu de statuts standards pour le parc (ordinateurs, "
+"moniteurs, téléphones...) — aucun n'existe par défaut dans GLPI."
+msgstr ""
+"Opcional: un conjunto de estados estándar para el parque (ordenadores, "
+"monitores, teléfonos...) — ninguno existe por defecto en GLPI."
+
+#: templates/wizard.html.twig
+msgid "Créer les statuts d'éléments standards"
+msgstr "Crear los estados de elementos estándar"
+
+#: templates/wizard.html.twig
+msgid ""
+"Le statut décrit la situation d'un équipement dans son cycle de vie (en "
+"stock, attribué, en panne...) — il sert à filtrer et suivre le parc, "
+"indépendamment de sa localisation ou de son entité. Ne cochez que les "
+"statuts qui correspondent à des situations réelles chez vous ; chacun peut "
+"être appliqué aux ordinateurs, téléphones, moniteurs, licences, etc."
+msgstr ""
+"El estado describe la situación de un equipo en su ciclo de vida (en stock, "
+"asignado, averiado...) — sirve para filtrar y seguir el parque, "
+"independientemente de su ubicación o entidad. Marque solo los estados que "
+"correspondan a situaciones reales en su organización; cada uno puede "
+"aplicarse a ordenadores, teléfonos, monitores, licencias, etc."
+
+#: templates/wizard.html.twig
+msgid ""
+"Les statuts marqués « recommandé » sont ceux utilisés par remise-glpi "
+"(déclenchement automatique remise/don/vente/restitution) — les décocher "
+"n'empêche rien de fonctionner mais réduit l'interopérabilité entre les deux "
+"plugins si vous utilisez remise-glpi."
+msgstr ""
+"Los estados marcados como \"recomendado\" son los que utiliza remise-glpi "
+"(activación automática de entrega/donación/venta/devolución) — desmarcarlos "
+"no impide que nada funcione, pero reduce la interoperabilidad entre los dos "
+"plugins si usa remise-glpi."
+
+#: templates/wizard.html.twig
+msgid "recommandé"
+msgstr "recomendado"
+
+#: templates/wizard.html.twig
+msgid "Raisons d'attente"
+msgstr "Motivos de espera"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des raisons de mise en attente avec relance et clôture "
+"automatiques — évite les tickets qui traînent indéfiniment. Le moteur "
+"d'automatisation de GLPI est déjà actif par défaut, seules les raisons "
+"manquent."
+msgstr ""
+"Opcional: motivos de espera con recordatorio y cierre automáticos — evita "
+"que los tickets se eternicen. El motor de automatización de GLPI ya está "
+"activo por defecto, solo faltan los motivos."
+
+#: templates/wizard.html.twig
+msgid "Créer les raisons d'attente standards"
+msgstr "Crear los motivos de espera estándar"
+
+#: templates/wizard.html.twig
+msgid "Relance toutes les"
+msgstr "Recordatorio cada"
+
+#: templates/wizard.html.twig
+msgid "semaines"
+msgstr "semanas"
+
+#: templates/wizard.html.twig
+msgid "semaine"
+msgstr "semana"
+
+#: templates/wizard.html.twig
+msgid "clôture automatique après"
+msgstr "cierre automático tras"
+
+#: templates/wizard.html.twig
+msgid "relances sans réponse"
+msgstr "recordatorios sin respuesta"
+
+#: templates/wizard.html.twig
+msgid "Pas de relance automatique — catégorisation uniquement"
+msgstr "Sin recordatorio automático — solo categorización"
+
+#: templates/wizard.html.twig
+msgid "Modèles de tickets"
+msgstr "Plantillas de tickets"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : sépare le formulaire de création de ticket en deux — le minimum "
+"pour un utilisateur de base, l'interface complète pour le support."
+msgstr ""
+"Opcional: divide el formulario de creación de tickets en dos — el mínimo "
+"para un usuario base, la interfaz completa para el soporte."
+
+#: templates/wizard.html.twig
+msgid "Créer deux modèles de tickets et les assigner aux profils"
+msgstr "Crear dos plantillas de tickets y asignarlas a los perfiles"
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes sur les modèles"
+msgstr "Añadir iconos a las plantillas"
+
+#: templates/wizard.html.twig
+msgid "Simplifié — Self-Service, Read-Only"
+msgstr "Simplificado — Autoservicio, Solo lectura"
+
+#: templates/wizard.html.twig
+msgid "Titre + description uniquement"
+msgstr "Solo título + descripción"
+
+#: templates/wizard.html.twig
+msgid "Catégorie visible mais limitée aux 11 branches parentes"
+msgstr "Categoría visible pero limitada a las 11 ramas principales"
+
+#: templates/wizard.html.twig
+msgid ""
+"Urgence, impact, statut, lieu, attribution, niveaux de service (SLA/OLA) : "
+"masqués"
+msgstr ""
+"Urgencia, impacto, estado, ubicación, asignación, niveles de servicio (SLA/"
+"OLA): ocultos"
+
+#: templates/wizard.html.twig
+msgid "Complet — tous les autres profils"
+msgstr "Completo — todos los demás perfiles"
+
+#: templates/wizard.html.twig
+msgid "Interface complète (aucun champ masqué)"
+msgstr "Interfaz completa (ningún campo oculto)"
+
+#: templates/wizard.html.twig
+msgid "Catégorie et urgence obligatoires"
+msgstr "Categoría y urgencia obligatorias"
+
+#: templates/wizard.html.twig
+msgid ""
+"Masquer Urgence, Observateurs et Lieu sur les formulaires natifs « Signaler "
+"un incident » / « Faire une demande »"
+msgstr ""
+"Ocultar Urgencia, Observadores y Ubicación en los formularios nativos "
+"\"Reportar un incidente\" / \"Hacer una solicitud\""
+
+#: templates/wizard.html.twig
+msgid ""
+"Ces formulaires du portail libre-service sont un système distinct des "
+"modèles de tickets ci-dessus (nouveau moteur de formulaires GLPI 11) — un "
+"utilisateur de base n'a pas la visibilité nécessaire pour juger de l'urgence "
+"réelle de sa demande, c'est au support de la qualifier."
+msgstr ""
+"Estos formularios del portal de autoservicio son un sistema distinto de las "
+"plantillas de tickets anteriores (nuevo motor de formularios de GLPI 11) — "
+"un usuario base no tiene la visibilidad necesaria para juzgar la urgencia "
+"real de su solicitud, corresponde al soporte cualificarla."
+
+#: templates/wizard.html.twig
+msgid "Tâches & solutions"
+msgstr "Tareas y soluciones"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des intitulés prêts à l'emploi pour qualifier le travail "
+"technique et clôturer les tickets, aucun n'existe par défaut dans GLPI."
+msgstr ""
+"Opcional: etiquetas listas para usar para calificar el trabajo técnico y "
+"cerrar los tickets, ninguna existe por defecto en GLPI."
+
+#: templates/wizard.html.twig
+msgid "Créer les catégories de tâches"
+msgstr "Crear las categorías de tareas"
+
+#: templates/wizard.html.twig
+msgid "Créer les gabarits de tâche (checklists réutilisables)"
+msgstr "Crear plantillas de tareas (listas de verificación reutilizables)"
+
+#: templates/wizard.html.twig
+msgid "Créer les types et gabarits de solution"
+msgstr "Crear los tipos y plantillas de solución"
+
+#: templates/wizard.html.twig
+msgid ""
+"Une taxonomie de clôture standard (assistance, résolution technique, "
+"sécurité, informationnel, gestion des accès), chacune visible seulement sur "
+"les types de ticket ITIL pertinents."
+msgstr ""
+"Una taxonomía de cierre estándar (asistencia, resolución técnica, seguridad, "
+"informativo, gestión de accesos), cada una visible solo en los tipos de "
+"ticket ITIL pertinentes."
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes sur les types de solution"
+msgstr "Añadir iconos a los tipos de solución"
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes sur les gabarits de solution"
+msgstr "Añadir iconos a las plantillas de solución"
+
+#: templates/wizard.html.twig
+msgid "Suivis, validations & modèles"
+msgstr "Seguimientos, aprobaciones y plantillas"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des messages types pour garder le demandeur informé, des "
+"gabarits de demande de validation, et un modèle par défaut pour les "
+"changements et les problèmes."
+msgstr ""
+"Opcional: mensajes tipo para mantener informado al solicitante, plantillas "
+"de solicitud de aprobación y una plantilla predeterminada para cambios y "
+"problemas."
+
+#: templates/wizard.html.twig
+msgid "Créer les gabarits de suivis"
+msgstr "Crear las plantillas de seguimiento"
+
+#: templates/wizard.html.twig
+msgid "Créer les gabarits de validation"
+msgstr "Crear las plantillas de aprobación"
+
+#: templates/wizard.html.twig
+msgid "Créer un modèle de changement et de problème par défaut"
+msgstr "Crear una plantilla predeterminada de cambio y problema"
+
+#: templates/wizard.html.twig
+msgid "Changement standard"
+msgstr "Cambio estándar"
+
+#: templates/wizard.html.twig
+msgid "Problème standard"
+msgstr "Problema estándar"
+
+#: templates/wizard.html.twig
+msgid ""
+"Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service "
+"n'a aucun droit sur les changements/problèmes, la distinction base/support "
+"ne s'applique pas."
+msgstr ""
+"Una sola plantilla cada uno (a diferencia de los tickets): por defecto, "
+"Autoservicio no tiene ningún derecho sobre cambios/problemas, la distinción "
+"base/soporte no se aplica."
+
+#: templates/wizard.html.twig
+msgid "Droits LDAP par entité"
+msgstr "Derechos LDAP por entidad"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : une règle d'affectation automatique (entité + profil) par site, "
+"déclenchée par le groupe AD/LDAP de l'utilisateur lors de la synchronisation "
+"— ne sert que si une synchronisation LDAP est prévue. Sans arborescence "
+"multi-site (étape 2), il n'y a rien à générer."
+msgstr ""
+"Opcional: una regla de asignación automática (entidad + perfil) por sitio, "
+"activada por el grupo AD/LDAP del usuario durante la sincronización — solo "
+"útil si se prevé una sincronización LDAP. Sin un árbol multisitio (paso 2), "
+"no hay nada que generar."
+
+#: templates/wizard.html.twig
+msgid "Générer une règle de droits par site"
+msgstr "Generar una regla de derechos por sitio"
+
+#: templates/wizard.html.twig
+msgid "Gabarit de nom de groupe AD/LDAP"
+msgstr "Plantilla de nombre de grupo AD/LDAP"
+
+#: templates/wizard.html.twig
+msgid "{ENTITY} est remplacé par le nom du site (espaces convertis en _)."
+msgstr ""
+"{ENTITY} se sustituye por el nombre del sitio (espacios convertidos en _)."
+
+#: templates/wizard.html.twig
+msgid "Profil attribué"
+msgstr "Perfil asignado"
+
+#: templates/wizard.html.twig
+msgid ""
+"« Admin » (par défaut) couvre la gestion quotidienne sans le risque d'auto-"
+"élévation de « Super-Admin » : contrairement à Super-Admin, Admin ne peut ni "
+"éditer les profils GLPI (donc pas s'en attribuer plus), ni modifier les "
+"règles LDAP/import qui gèrent justement cette synchronisation."
+msgstr ""
+"\"Admin\" (por defecto) cubre la gestión diaria sin el riesgo de "
+"autoelevación de \"Super-Admin\": a diferencia de Super-Admin, Admin no "
+"puede ni editar los perfiles de GLPI (por lo que no puede atribuirse más), "
+"ni modificar las reglas LDAP/importación que gestionan precisamente esta "
+"sincronización."
+
+#: templates/wizard.html.twig
+msgid ""
+"Une règle par site (feuille de l'arborescence) — aperçu en fonction de "
+"l'arborescence construite à l'étape 2 :"
+msgstr ""
+"Una regla por sitio (hoja del árbol) — vista previa según el árbol "
+"construido en el paso 2:"
+
+#: templates/wizard.html.twig
+msgid "Règles par fonction/département (optionnel)"
+msgstr "Reglas por función/departamento (opcional)"
+
+#: templates/wizard.html.twig
+msgid ""
+"En complément de la règle par site ci-dessus, indépendant du site de "
+"l'utilisateur — ex. le groupe AD \"Finance\" reçoit toujours tel profil, "
+"quel que soit son site. Chaque ligne devient une règle GLPI distincte, qui "
+"n'affecte que le profil (pas l'entité)."
+msgstr ""
+"Además de la regla por sitio de arriba, independiente del sitio del usuario "
+"— ej. el grupo AD \"Finance\" recibe siempre tal perfil, sea cual sea su "
+"sitio. Cada línea se convierte en una regla GLPI distinta, que solo afecta "
+"al perfil (no a la entidad)."
+
+#: templates/wizard.html.twig
+msgid "+ Ajouter une règle"
+msgstr "+ Añadir una regla"
+
+#: templates/wizard.html.twig
+msgid "Réglages généraux GLPI"
+msgstr "Configuración general de GLPI"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut "
+"peu pratiques à l'usage — activez chaque groupe indépendamment selon vos "
+"besoins."
+msgstr ""
+"Opcional: algunos ajustes generales de GLPI tienen valores predeterminados "
+"poco prácticos en el uso — active cada grupo de forma independiente según "
+"sus necesidades."
+
+#: templates/wizard.html.twig
+msgid "Tout sélectionner"
+msgstr "Seleccionar todo"
+
+#: templates/wizard.html.twig
+msgid "Interface & ergonomie"
+msgstr "Interfaz y ergonomía"
+
+#: templates/wizard.html.twig
+msgid ""
+"Agencement des boutons d'action divisé (Répondre / Observation / Solution "
+"séparés)"
+msgstr ""
+"Diseño de botones de acción dividido (Responder / Observación / Solución "
+"separados)"
+
+#: templates/wizard.html.twig
+msgid "Afficher le moteur de recherche au-dessus des résultats"
+msgstr "Mostrar el motor de búsqueda encima de los resultados"
+
+#: templates/wizard.html.twig
+msgid "Afficher la pagination au-dessus des résultats"
+msgstr "Mostrar la paginación encima de los resultados"
+
+#: templates/wizard.html.twig
+msgid "Montrer les nouveaux tickets sur la page d'accueil"
+msgstr "Mostrar los nuevos tickets en la página de inicio"
+
+#: templates/wizard.html.twig
+msgid "Notifications"
+msgstr "Notificaciones"
+
+#: templates/wizard.html.twig
+msgid "Activer les notifications (par e-mail et dans le navigateur)"
+msgstr "Activar las notificaciones (por correo electrónico y en el navegador)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Activer les notifications de mise à jour, pièce jointe et relance "
+"automatique de ticket"
+msgstr ""
+"Activar las notificaciones de actualización, adjunto y recordatorio "
+"automático de ticket"
+
+#: templates/wizard.html.twig
+msgid ""
+"Activer les tâches automatiques d'alerte cartouches, consommables et "
+"expiration de licences (désactivées par défaut, alors que les notifications "
+"correspondantes le sont déjà)"
+msgstr ""
+"Activar las tareas automáticas de alerta de cartuchos, consumibles y "
+"caducidad de licencias (desactivadas por defecto, aunque las notificaciones "
+"correspondientes ya no lo están)"
+
+#: templates/wizard.html.twig
+msgid "Informations financières"
+msgstr "Información financiera"
+
+#: templates/wizard.html.twig
+msgid "Activer les informations financières et administratives par défaut"
+msgstr "Activar por defecto la información financiera y administrativa"
+
+#: templates/wizard.html.twig
+msgid "Statuts des tâches de projet"
+msgstr "Estados de tareas de proyecto"
+
+#: templates/wizard.html.twig
+msgid ""
+"Configurer les statuts des tâches de projet (non démarré / en cours / "
+"terminé)"
+msgstr ""
+"Configurar los estados de las tareas de proyecto (no iniciado / en curso / "
+"finalizado)"
+
+#: templates/wizard.html.twig
+msgid "Enquête de satisfaction"
+msgstr "Encuesta de satisfacción"
+
+#: templates/wizard.html.twig
+msgid ""
+"Activer l'enquête de satisfaction native (1 à 5 étoiles, sur chaque ticket "
+"clos)"
+msgstr ""
+"Activar la encuesta de satisfacción nativa (de 1 a 5 estrellas, en cada "
+"ticket cerrado)"
+
+#: templates/wizard.html.twig
+msgid "Validation comité"
+msgstr "Aprobación del comité"
+
+#: templates/wizard.html.twig
+msgid ""
+"Ajouter une étape de validation « Comité (2/3) » pour les décisions "
+"collégiales"
+msgstr ""
+"Añadir un paso de aprobación \"Comité (2/3)\" para las decisiones colegiadas"
+
+#: templates/wizard.html.twig
+msgid ""
+"Validation automatique par le supérieur hiérarchique du demandeur (« N+1 »)"
+msgstr ""
+"Aprobación automática por el superior jerárquico del solicitante (\"N+1\")"
+
+#: templates/wizard.html.twig
+msgid ""
+"Envoie automatiquement une demande d'approbation au supérieur hiérarchique "
+"du demandeur (champ natif GLPI « Superviseur ») pour chaque ticket de type "
+"Demande. Décochée par défaut, contrairement au reste de cette page : ceci "
+"change un vrai comportement (approbation obligatoire), pas juste du contenu "
+"— et ne fait quelque chose que si le champ Superviseur des utilisateurs est "
+"renseigné (import LDAP ou saisie manuelle). Sans supérieur renseigné, aucune "
+"validation n'est créée."
+msgstr ""
+"Envía automáticamente una solicitud de aprobación al superior jerárquico del "
+"solicitante (campo nativo de GLPI \"Superior\") para cada ticket de tipo "
+"Solicitud. Desmarcada de forma predeterminada, a diferencia del resto de "
+"esta página: esto cambia un comportamiento real (aprobación obligatoria), no "
+"solo contenido — y solo actúa si el campo Superior de los usuarios está "
+"completado (importación LDAP o entrada manual). Sin un superior establecido, "
+"no se crea ninguna aprobación."
+
+#: templates/wizard.html.twig
+msgid "Marketplace & plugins recommandés"
+msgstr "Marketplace y plugins recomendados"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : une clé d'enregistrement GLPI Network (au moins gratuite) "
+"débloque le marketplace natif de GLPI (Configuration > Plugins > "
+"Marketplace) — sans elle, la liste des plugins y reste vide."
+msgstr ""
+"Opcional: una clave de registro de GLPI Network (al menos gratuita) "
+"desbloquea el marketplace nativo de GLPI (Configuración > Plugins > "
+"Marketplace) — sin ella, la lista de plugins permanece vacía."
+
+#: templates/wizard.html.twig
+msgid "Clé d'enregistrement GLPI Network"
+msgstr "Clave de registro de GLPI Network"
+
+#: templates/wizard.html.twig
+msgid "S'obtient gratuitement sur"
+msgstr "Disponible gratis en"
+
+#: templates/wizard.html.twig
+msgid ""
+"Une fois le marketplace débloqué, ces plugins sont installables en un clic "
+"depuis Configuration > Plugins > Marketplace — non installés automatiquement "
+"par cet assistant."
+msgstr ""
+"Una vez desbloqueado el marketplace, estos plugins se pueden instalar con un "
+"clic desde Configuración > Plugins > Marketplace — no instalados "
+"automáticamente por este asistente."
+
+#: templates/wizard.html.twig
+msgid ""
+"Plugin \"More satisfaction\" détecté — créer une enquête de satisfaction "
+"toute faite"
+msgstr ""
+"Plugin \"More satisfaction\" detectado — crear una encuesta de satisfacción "
+"lista para usar"
+
+#: templates/wizard.html.twig
+msgid ""
+"3 questions courantes (note sur 5, résolution oui/non, remarques libres), "
+"activée sur toute l'instance. Différent de l'enquête native ci-dessus — le "
+"plugin permet plusieurs questions et un rappel automatique, la case native "
+"ne fait qu'une note sur 5."
+msgstr ""
+"3 preguntas comunes (valoración sobre 5, resuelto sí/no, comentarios "
+"libres), activa en toda la instancia. Diferente de la encuesta nativa de "
+"arriba — el plugin admite varias preguntas y un recordatorio automático, la "
+"casilla nativa solo da una valoración sobre 5."
+
+#: templates/wizard.html.twig
+msgid "Plugin \"VIP\" détecté — créer le groupe \"VIP\" et l'activer"
+msgstr "Plugin \"VIP\" detectado — crear el grupo \"VIP\" y activarlo"
+
+#: templates/wizard.html.twig
+msgid ""
+"Crée un groupe natif \"VIP\" (à ne pas confondre avec un groupe de "
+"techniciens) et le marque comme groupe VIP auprès du plugin : ajoutez-y les "
+"personnes ou groupes prioritaires (direction, actionnaires...) dont les "
+"tickets doivent être mis en évidence."
+msgstr ""
+"Crea un grupo nativo \"VIP\" (que no debe confundirse con un grupo de "
+"técnicos) y lo marca como grupo VIP ante el plugin: añada las personas o "
+"grupos prioritarios (dirección, accionistas...) cuyos tickets deben "
+"destacarse."
+
+#: templates/wizard.html.twig
+msgid "Plugin \"Tag\" détecté — créer une bibliothèque de tags courants"
+msgstr "Plugin \"Tag\" detectado — crear una biblioteca de etiquetas comunes"
+
+#: templates/wizard.html.twig
+msgid ""
+"6 tags génériques utilisables sur tout objet GLPI (Prioritaire, Urgent, À "
+"vérifier, Obsolète, Garantie active, Confidentiel), avec une couleur "
+"distincte chacun."
+msgstr ""
+"6 etiquetas genéricas utilizables en cualquier objeto de GLPI (Prioritario, "
+"Urgente, Por verificar, Obsoleto, Garantía activa, Confidencial), cada una "
+"con un color distinto."
+
+#: templates/wizard.html.twig
+msgid "Général & Outils"
+msgstr "General y Herramientas"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des intitulés que GLPI ne propose pas par défaut, hors périmètre "
+"Assistance direct mais utiles dès la mise en service."
+msgstr ""
+"Opcional: etiquetas que GLPI no ofrece por defecto, fuera del ámbito directo "
+"de Asistencia pero útiles desde la puesta en marcha."
+
+#: templates/wizard.html.twig
+msgid "Créer une liste de fabricants courants"
+msgstr "Crear una lista de fabricantes comunes"
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes (par catégorie de fabricant)"
+msgstr "Añadir iconos (por categoría de fabricante)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer un dictionnaire pour normaliser les variantes de nom (ex. Hewlett-"
+"Packard, HP Inc. → HP)"
+msgstr ""
+"Crear un diccionario para normalizar las variantes del nombre (ej. Hewlett-"
+"Packard, HP Inc. → HP)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Sans filtrage possible par type de produit (limite native de GLPI, vérifiée) "
+"— mais un fabricant remonté par l'inventaire sous un nom légèrement "
+"différent (« Hewlett-Packard » au lieu de « HP ») sera automatiquement "
+"rattaché à la même fiche fabricant plutôt que d'en créer une nouvelle en "
+"double."
+msgstr ""
+"No es posible filtrar por tipo de producto (limitación nativa de GLPI, "
+"verificada) — pero un fabricante notificado por el inventario con un nombre "
+"ligeramente diferente (\"Hewlett-Packard\" en lugar de \"HP\") se vinculará "
+"automáticamente a la misma ficha de fabricante en lugar de crear una nueva "
+"duplicada."
+
+#: templates/wizard.html.twig
+msgid "Créer les opérateurs téléphoniques français courants"
+msgstr "Crear los operadores telefónicos franceses comunes"
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer les types courants de matériel (ordinateurs, écrans, réseau, racks, "
+"câbles, disques durs...)"
+msgstr ""
+"Crear los tipos comunes de hardware (ordenadores, monitores, red, racks, "
+"cables, discos duros...)"
+
+#: templates/wizard.html.twig
+msgid "Traduire les sources de demande natives de GLPI"
+msgstr "Traducir las fuentes de solicitud nativas de GLPI"
+
+#: templates/wizard.html.twig
+msgid ""
+"GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, "
+"sans traduction — une session française (ou allemande, italienne, espagnole) "
+"les voit telles quelles tant qu'aucune traduction n'existe."
+msgstr ""
+"GLPI instala estos 6 valores en inglés independientemente del idioma "
+"elegido, sin traducción — una sesión francesa (o alemana, italiana, "
+"española) los ve tal cual hasta que exista una traducción."
+
+#: templates/wizard.html.twig
+msgid "Créer des catégories d'utilisateur courantes"
+msgstr "Crear categorías de usuario comunes"
+
+#: templates/wizard.html.twig
+msgid ""
+"Classification indépendante des profils/droits — qui est la personne pour "
+"l'organisation (salarié, prestataire...), pas ce qu'elle peut faire dans "
+"GLPI. Importable depuis un attribut LDAP, utilisable en critère de ciblage "
+"de notification et en statistiques."
+msgstr ""
+"Una clasificación independiente de perfiles/derechos — quién es la persona "
+"para la organización (empleado, proveedor...), no lo que puede hacer en "
+"GLPI. Importable desde un atributo LDAP, utilizable como criterio de "
+"segmentación de notificaciones y en estadísticas."
+
+#: templates/wizard.html.twig
+msgid "Interdire les numéros de série en double"
+msgstr "Prohibir números de serie duplicados"
+
+#: templates/wizard.html.twig
+msgid ""
+"Bloque la création ou la modification d'un élément si son numéro de série "
+"existe déjà sur un autre élément du même type — évite les doublons issus "
+"d'une saisie manuelle ou d'un import incohérent. Un numéro de série vide "
+"n'est jamais considéré comme un doublon."
+msgstr ""
+"Bloquea la creación o modificación de un elemento si su número de serie ya "
+"existe en otro elemento del mismo tipo — evita duplicados por una entrada "
+"manual o una importación inconsistente. Un número de serie vacío nunca se "
+"considera un duplicado."
+
+#: templates/wizard.html.twig
+msgid "Créer les catégories de la base de connaissances"
+msgstr "Crear las categorías de la base de conocimiento"
+
+#: templates/wizard.html.twig
+msgid ""
+"Mêmes thèmes que les catégories de tickets (étape 6), pour que le libre-"
+"service et la base de connaissances s'organisent pareil."
+msgstr ""
+"Mismos temas que las categorías de tickets (paso 6), para que el "
+"autoservicio y la base de conocimiento se organicen del mismo modo."
+
+#: templates/wizard.html.twig
+msgid "Créer les rubriques de documents et les niveaux de criticité"
+msgstr "Crear las categorías de documentos y los niveles de criticidad"
+
+#: templates/wizard.html.twig
+msgid "Rubriques des documents"
+msgstr "Categorías de documentos"
+
+#: templates/wizard.html.twig
+msgid ""
+"Classification de sensibilité (norme ISO 27001, à affiner selon vos besoins)."
+msgstr ""
+"Clasificación de sensibilidad (norma ISO 27001, a ajustar según sus "
+"necesidades)."
+
+#: templates/wizard.html.twig
+msgid "Criticités"
+msgstr "Criticidades"
+
+#: templates/wizard.html.twig
+msgid ""
+"Impact métier d'un actif (matériel, logiciel...), utilisé dans ses "
+"informations financières."
+msgstr ""
+"Impacto empresarial de un activo (hardware, software...), utilizado en su "
+"información financiera."
+
+#: templates/wizard.html.twig
+msgid "Créer les catégories et gabarits d'évènements de planning"
+msgstr "Crear las categorías y plantillas de eventos de planificación"
+
+#: templates/wizard.html.twig
+msgid "Catégories d'évènements"
+msgstr "Categorías de eventos"
+
+#: templates/wizard.html.twig
+msgid "Chacune avec une couleur distincte dans le planning GLPI."
+msgstr "Cada una con un color distinto en la planificación de GLPI."
+
+#: templates/wizard.html.twig
+msgid "Gabarits d'évènements externes"
+msgstr "Plantillas de eventos externos"
+
+#: templates/wizard.html.twig
+msgid "Projets"
+msgstr "Proyectos"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des intitulés pour le module Projets, aucun n'existe par défaut "
+"dans GLPI (hors les 3 statuts natifs, déjà suffisants — non modifiés dans "
+"l'export de production audité)."
+msgstr ""
+"Opcional: etiquetas para el módulo Proyectos, ninguna existe por defecto en "
+"GLPI (aparte de los 3 estados nativos, ya suficientes — sin modificar en la "
+"exportación de producción auditada)."
+
+#: templates/wizard.html.twig
+msgid "Créer les types de projet et de tâche de projet"
+msgstr "Crear los tipos de proyecto y de tarea de proyecto"
+
+#: templates/wizard.html.twig
+msgid "Types de projet"
+msgstr "Tipos de proyecto"
+
+#: templates/wizard.html.twig
+msgid "Types de tâche de projet"
+msgstr "Tipos de tarea de proyecto"
+
+#: templates/wizard.html.twig
+msgid "Créer les gabarits de tâches de projets"
+msgstr "Crear las plantillas de tareas de proyecto"
+
+#: templates/wizard.html.twig
+msgid "Créer des modèles de projet pré-structurés (tâches déjà liées)"
+msgstr "Crear plantillas de proyecto preestructuradas (tareas ya vinculadas)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Un vrai projet marqué comme modèle, avec ses tâches déjà rattachées — \"+ "
+"Nouveau\" sur Projets propose ensuite de démarrer depuis ce modèle, tâches "
+"incluses."
+msgstr ""
+"Un proyecto real marcado como plantilla, con sus tareas ya vinculadas — \"+ "
+"Nuevo\" en Proyectos propone luego partir de esta plantilla, tareas "
+"incluidas."
+
+#: templates/wizard.html.twig
+msgid "Personnalisation graphique"
+msgstr "Personalización gráfica"
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : une couleur principale appliquée à l'interface des entités "
+"créées."
+msgstr ""
+"Opcional: un color principal aplicado a la interfaz de las entidades creadas."
+
+#: templates/wizard.html.twig
+msgid "Personnaliser la couleur principale"
+msgstr "Personalizar el color principal"
+
+#: templates/wizard.html.twig
+msgid "Couleur principale"
+msgstr "Color principal"
+
+#: templates/wizard.html.twig
+msgid "Aperçu en direct de l'en-tête GLPI"
+msgstr "Vista previa en directo de la cabecera de GLPI"
+
+#: templates/wizard.html.twig
+msgid "Nouveau ticket"
+msgstr "Nuevo ticket"
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer une palette GLPI personnalisée avec cette couleur (sélectionnable par "
+"tous, appliquée par défaut)"
+msgstr ""
+"Crear una paleta GLPI personalizada con este color (seleccionable por todos, "
+"aplicada por defecto)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Différent de la case ci-dessus : celle-ci force la couleur sur toutes les "
+"entités créées ; celle-ci ajoute une palette GLPI native (Configuration > "
+"Générale > Apparence) que chaque utilisateur peut choisir dans ses propres "
+"préférences, définie ici comme choix par défaut."
+msgstr ""
+"A diferencia de la casilla de arriba: esa fuerza el color en todas las "
+"entidades creadas; esta añade una paleta GLPI nativa (Configuración > "
+"General > Apariencia) que cada usuario puede elegir en sus propias "
+"preferencias, definida aquí como opción predeterminada."
+
+#: templates/wizard.html.twig
+msgid "...ou choisir une des palettes GLPI existantes comme choix par défaut"
+msgstr "...o elegir una de las paletas GLPI existentes como predeterminada"
+
+#: templates/wizard.html.twig
+msgid "Aucune (garder Auror, le thème GLPI par défaut)"
+msgstr "Ninguna (mantener Auror, el tema predeterminado de GLPI)"
+
+#: templates/wizard.html.twig
+msgid "sombre"
+msgstr "oscuro"
+
+#: templates/wizard.html.twig
+msgid ""
+"Couleur différente par client/site (au lieu d'une seule couleur partagée)"
+msgstr ""
+"Color diferente por cliente/sede (en lugar de un único color compartido)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Une couleur par nœud de premier niveau de l'arborescence (étape 2) — "
+"préremplie avec la couleur ci-dessus, ajustable individuellement."
+msgstr ""
+"Un color por nodo de primer nivel del árbol (paso 2) — rellenado previamente "
+"con el color de arriba, ajustable individualmente."
+
+#: templates/wizard.html.twig
+msgid "Ajouter un logo par entité"
+msgstr "Añadir un logo por entidad"
+
+#: templates/wizard.html.twig
+msgid ""
+"Un logo par site/client de l'arborescence (étape 2) — remplace le logo GLPI "
+"dans l'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 "
+"Mo maximum. L'emplacement dans l'en-tête GLPI est petit (environ 100×55 "
+"px) : une image large ou carrée sera automatiquement réduite pour y tenir "
+"sans déformation, un format proche de ce ratio donnera le meilleur rendu. "
+"Choisissez un fichier pour le voir dans l'aperçu ci-dessus."
+msgstr ""
+"Un logo por sitio/cliente del árbol (paso 2) — sustituye el logo de GLPI en "
+"la cabecera para los usuarios de esa entidad. PNG/JPEG/WebP/GIF, 1 MB como "
+"máximo. El espacio en la cabecera de GLPI es pequeño (unos 100×55 px): una "
+"imagen ancha o cuadrada se reducirá automáticamente para encajar sin "
+"deformarse, un formato cercano a esta proporción dará el mejor resultado. "
+"Elija un archivo para verlo en la vista previa de arriba."
+
+#: templates/wizard.html.twig
+msgid ""
+"Habiller les e-mails de notification (Nouveau ticket, Mise à jour, "
+"Résolution, Suivi)"
+msgstr ""
+"Personalizar los correos de notificación (Nuevo ticket, Actualización, "
+"Resolución, Seguimiento)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Remplace le modèle de notification GLPI par défaut de ces 4 évènements par "
+"une version HTML reprenant la couleur et le logo ci-dessus — un e-mail "
+"modifié à la main ensuite n'est plus jamais réécrit par une réexécution de "
+"l'assistant."
+msgstr ""
+"Sustituye la plantilla de notificación predeterminada de GLPI para estos 4 "
+"eventos por una versión HTML con el color y el logo de arriba — una vez "
+"editado el correo a mano, una nueva ejecución del asistente ya no lo "
+"sobrescribe."
+
+#: templates/wizard.html.twig
+msgid "Récapitulatif"
+msgstr "Resumen"
+
+#: templates/wizard.html.twig
+msgid ""
+"Vérifiez vos choix avant de terminer — cette étape crée réellement les "
+"entités, le calendrier, les SLA, les catégories, le catalogue de services, "
+"les statuts, les raisons d'attente, la personnalisation graphique, les "
+"réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de "
+"tâches/solutions/validations, les lieux/fabricants/catégories de base de "
+"connaissances, et les types/gabarits/modèles de projet."
+msgstr ""
+"Revise sus elecciones antes de finalizar — este paso crea realmente las "
+"entidades, el calendario, los SLA, las categorías, el catálogo de servicios, "
+"los estados, los motivos de espera, la personalización de marca, la "
+"configuración general, las plantillas de tickets, los derechos LDAP, las "
+"etiquetas de tareas/soluciones/validaciones, las ubicaciones/fabricantes/"
+"categorías de la base de conocimiento, y los tipos/plantillas de proyecto."
+
+#: templates/wizard.html.twig
+msgid "Structure"
+msgstr "Estructura"
+
+#: templates/wizard.html.twig templates/_entity_structure_fields.html.twig
+msgid "Arborescence"
+msgstr "Estructura de árbol"
+
+#: templates/wizard.html.twig
+msgid "SLA"
+msgstr "SLA"
+
+#: templates/wizard.html.twig
+msgid "Catégories"
+msgstr "Categorías"
+
+#: templates/wizard.html.twig
+msgid "Personnalisation"
+msgstr "Personalización"
+
+#: templates/wizard.html.twig
+msgid "Réglages généraux"
+msgstr "Ajustes generales"
+
+#: templates/wizard.html.twig
+msgid "Droits LDAP"
+msgstr "Derechos LDAP"
+
+#: templates/wizard.html.twig
+msgid "Suivis, validations & modèles CP"
+msgstr "Seguimientos, aprobaciones y plantillas de cambio/problema"
+
+#: templates/wizard.html.twig
+msgid "Précédent"
+msgstr "Anterior"
+
+#: templates/wizard.html.twig
+msgid "Suivant"
+msgstr "Siguiente"
+
+#: templates/wizard.html.twig
+msgid ""
+"Ceci va créer/modifier de vraies entités dans GLPI (et, si activés, un "
+"calendrier et une personnalisation graphique) selon les choix faits. "
+"Continuer ?"
+msgstr ""
+"Esto creará/modificará entidades reales en GLPI (y, si están activados, un "
+"calendario y una personalización gráfica) según las opciones elegidas. "
+"¿Continuar?"
+
+#: templates/wizard.html.twig
+msgid "Terminer"
+msgstr "Finalizar"
+
+#: templates/wizard.html.twig
+msgid "Création en cours..."
+msgstr "Creando..."
+
+#: templates/wizard.html.twig
+msgid "Entités"
+msgstr "Entidades"
+
+#: templates/wizard.html.twig
+msgid "Statuts"
+msgstr "Estados"
+
+#: templates/wizard.html.twig
+msgid "Suivis & validations"
+msgstr "Seguimientos y aprobaciones"
+
+#: templates/wizard.html.twig templates/_entity_structure_fields.html.twig
+msgid "Entité racine"
+msgstr "Entidad raíz"
+
+#: templates/wizard.html.twig
+msgid "(sans nom)"
+msgstr "(sin nombre)"
+
+#: templates/wizard.html.twig
+msgid "Aperçu :"
+msgstr "Vista previa:"
+
+#: templates/wizard.html.twig
+msgid "Rue, numéro..."
+msgstr "Calle, número..."
+
+#: templates/wizard.html.twig
+msgid "Code postal"
+msgstr "Código postal"
+
+#: templates/wizard.html.twig
+msgid "Ville"
+msgstr "Ciudad"
+
+#: templates/wizard.html.twig
+msgid "Région / État"
+msgstr "Región / Estado"
+
+#: templates/wizard.html.twig
+msgid "Pays"
+msgstr "País"
+
+#: templates/wizard.html.twig
+msgid "Bâtiment"
+msgstr "Edificio"
+
+#: templates/wizard.html.twig
+msgid "Pièce"
+msgstr "Habitación"
+
+#: templates/wizard.html.twig
+msgid "Code"
+msgstr "Código"
+
+#: templates/wizard.html.twig
+msgid "Alias"
+msgstr "Alias"
+
+#: templates/wizard.html.twig
+msgid "Commentaire"
+msgstr "Comentario"
+
+#: templates/wizard.html.twig
+msgid "Latitude"
+msgstr "Latitud"
+
+#: templates/wizard.html.twig
+msgid "Longitude"
+msgstr "Longitud"
+
+#: templates/wizard.html.twig
+msgid "Altitude"
+msgstr "Altitud"
+
+#: templates/wizard.html.twig
+msgid "Téléphone"
+msgstr "Teléfono"
+
+#: templates/wizard.html.twig
+msgid "Fax"
+msgstr "Fax"
+
+#: templates/wizard.html.twig
+msgid "Site web"
+msgstr "Sitio web"
+
+#: templates/wizard.html.twig
+msgid "E-mail"
+msgstr "Correo electrónico"
+
+#: templates/wizard.html.twig
+msgid "Lieux enfants (bâtiment, étage, salle...)"
+msgstr "Ubicaciones hijas (edificio, planta, sala...)"
+
+#: templates/wizard.html.twig
+msgid "Ajouter un lieu enfant"
+msgstr "Añadir una ubicación hija"
+
+#: templates/wizard.html.twig
+msgid "Nom du lieu enfant (ex. Bâtiment A)"
+msgstr "Nombre de la ubicación hija (ej. Edificio A)"
+
+#: templates/wizard.html.twig templates/_entity_structure_fields.html.twig
+msgid "Retirer"
+msgstr "Quitar"
+
+#: templates/wizard.html.twig
+msgid "+ Ajouter une adresse"
+msgstr "+ Añadir una dirección"
+
+#: templates/wizard.html.twig
+msgid "Réduire"
+msgstr "Contraer"
+
+#: templates/wizard.html.twig
+msgid "Aucun site dans l'arborescence (étape 2) — rien à générer."
+msgstr "Ningún sitio en el árbol (paso 2) — nada que generar."
+
+#: templates/wizard.html.twig
+msgid "Le gabarit doit contenir {ENTITY}."
+msgstr "La plantilla debe contener {ENTITY}."
+
+#: templates/wizard.html.twig
+msgid "Nom du groupe AD/LDAP"
+msgstr "Nombre del grupo AD/LDAP"
+
+#: templates/wizard.html.twig
+msgid "Créer un calendrier pour cette entité"
+msgstr "Crear un calendario para esta entidad"
+
+#: templates/wizard.html.twig
+msgid "Utiliser le SLA par défaut"
+msgstr "Usar el SLA predeterminado"
+
+#: templates/wizard.html.twig
+msgid "Créer un SLA pour cette entité"
+msgstr "Crear un SLA para esta entidad"
+
+#: templates/wizard.html.twig
+msgid "Astreinte (24h/24, 7j/7)"
+msgstr "Guardia (24/7)"
+
+#: templates/wizard.html.twig
+msgid "Utiliser le réglage d'escalade par défaut"
+msgstr "Usar el ajuste de escalada predeterminado"
+
+#: templates/wizard.html.twig
+msgid "Activer l'escalade pour cette entité"
+msgstr "Activar la escalada para esta entidad"
+
+#: templates/wizard.html.twig
+msgid "Escalade automatique N1 → N2"
+msgstr "Escalada automática N1 → N2"
+
+#: templates/wizard.html.twig
+msgid "Escalade automatique N2 → N3"
+msgstr "Escalada automática N2 → N3"
+
+#: templates/wizard.html.twig
+msgid "Aucun"
+msgstr "Ninguno"
+
+#: templates/wizard.html.twig
+msgid "site(s)/client(s) avec un calendrier propre"
+msgstr "sitio(s)/cliente(s) con calendario propio"
+
+#: templates/wizard.html.twig src/CalendarBuilder.php:69 src/Config.php:135
+msgid "Horaires standard"
+msgstr "Horario estándar"
+
+#: templates/wizard.html.twig
+msgid "horaires variables selon les jours"
+msgstr "horarios variables según el día"
+
+#: templates/wizard.html.twig
+msgid "coupure déjeuner"
+msgstr "pausa para comer"
+
+#: templates/wizard.html.twig
+msgid "jours fériés"
+msgstr "días festivos"
+
+#: templates/wizard.html.twig
+msgid "escalade à"
+msgstr "escalada a"
+
+#: templates/wizard.html.twig
+msgid "escalade N1→N2→N3"
+msgstr "escalada N1→N2→N3"
+
+#: templates/wizard.html.twig
+msgid "site(s)/client(s) avec un SLA propre"
+msgstr "sitio(s)/cliente(s) con SLA propio"
+
+#: templates/wizard.html.twig
+msgid "astreinte 24h/24, 7j/7"
+msgstr "guardia 24/7"
+
+#: templates/wizard.html.twig
+msgid "+ OLA (engagements internes)"
+msgstr "+ OLA (compromisos internos)"
+
+#: templates/wizard.html.twig
+msgid "Aucune"
+msgstr "Ninguna"
+
+#: templates/wizard.html.twig
+msgid "branches"
+msgstr "ramas"
+
+#: templates/wizard.html.twig
+msgid "(avec icônes)"
+msgstr "(con iconos)"
+
+#: templates/wizard.html.twig
+msgid "branches avec services"
+msgstr "ramas con servicios"
+
+#: templates/wizard.html.twig
+msgid "statuts"
+msgstr "estados"
+
+#: templates/wizard.html.twig
+msgid "raisons d'attente"
+msgstr "motivos de espera"
+
+#: templates/wizard.html.twig
+msgid "logo(s) par entité"
+msgstr "logo(s) por entidad"
+
+#: templates/wizard.html.twig
+msgid "Tous les groupes appliqués"
+msgstr "Todos los grupos aplicados"
+
+#: templates/wizard.html.twig
+msgid "groupe(s) appliqué(s)"
+msgstr "grupo(s) aplicados"
+
+#: templates/wizard.html.twig
+msgid "Simplifié + Complet, assignés aux profils"
+msgstr "Simplificado + Completo, asignados a los perfiles"
+
+#: templates/wizard.html.twig
+msgid "(+ formulaires libre-service allégés)"
+msgstr "(+ formularios de autoservicio simplificados)"
+
+#: templates/wizard.html.twig
+msgid "règle(s)"
+msgstr "regla(s)"
+
+#: templates/wizard.html.twig
+msgid "catégories de tâches"
+msgstr "categorías de tareas"
+
+#: templates/wizard.html.twig
+msgid "gabarits de tâche"
+msgstr "plantillas de tarea"
+
+#: templates/wizard.html.twig
+msgid "types/gabarits de solution"
+msgstr "tipos/plantillas de solución"
+
+#: templates/wizard.html.twig
+msgid "gabarits de suivis"
+msgstr "plantillas de seguimiento"
+
+#: templates/wizard.html.twig
+msgid "gabarits de validation"
+msgstr "plantillas de aprobación"
+
+#: templates/wizard.html.twig
+msgid "modèles changement/problème"
+msgstr "plantillas de cambio/problema"
+
+#: templates/wizard.html.twig
+msgid "lieux"
+msgstr "ubicaciones"
+
+#: templates/wizard.html.twig
+msgid "fabricants"
+msgstr "fabricantes"
+
+#: templates/wizard.html.twig
+msgid "catégories base de connaissances"
+msgstr "categorías de base de conocimiento"
+
+#: templates/wizard.html.twig
+msgid "types de projet/tâche"
+msgstr "tipos de proyecto/tarea"
+
+#: templates/wizard.html.twig
+msgid "gabarits de tâches de projets"
+msgstr "plantillas de tareas de proyecto"
+
+#: templates/wizard.html.twig
+msgid "modèles de projet"
+msgstr "plantillas de proyecto"
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Aperçu"
+msgstr "Vista previa"
+
+#: templates/_entity_structure_fields.html.twig
+msgid ""
+"Se met à jour en direct pendant que vous réglez les options à gauche — rien "
+"n'est enregistré tant que vous ne validez pas."
+msgstr ""
+"Se actualiza en directo mientras ajusta las opciones de la izquierda — nada "
+"se guarda hasta que confirme."
+
+#: templates/_entity_structure_fields.html.twig
+msgid ""
+"Un nœud par client. Chaque client peut avoir un nombre différent de sous-"
+"entités, à sa propre profondeur."
+msgstr ""
+"Un nodo por cliente. Cada cliente puede tener un número diferente de "
+"subentidades, a su propia profundidad."
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Ajouter un client"
+msgstr "Añadir un cliente"
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Ex : Entreprise Dupont"
+msgstr "Ej.: Empresa García"
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Votre société (MSP)"
+msgstr "Su empresa (MSP)"
+
+#: templates/_entity_structure_fields.html.twig
+msgid ""
+"Un nœud par site/service de premier niveau. Chacun peut avoir un nombre "
+"différent de sous-entités, à sa propre profondeur."
+msgstr ""
+"Un nodo por sitio/departamento de primer nivel. Cada uno puede tener un "
+"número diferente de subentidades, a su propia profundidad."
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Ajouter une entité"
+msgstr "Añadir una entidad"
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Ex : Paris, Lyon..."
+msgstr "Ej.: Madrid, Barcelona..."
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Nom de la sous-entité"
+msgstr "Nombre de la subentidad"
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Ajouter une sous-entité"
+msgstr "Añadir una subentidad"
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Aucune entité ajoutée pour l'instant."
+msgstr "Ninguna entidad añadida todavía."
+
+#: front/profile.php:28
+msgid "Lancer l'assistant de configuration"
+msgstr "Iniciar el asistente de configuración"
+
+#: front/wizard.php:278
+msgid "Dossier des palettes personnalisées inscriptible"
+msgstr "Carpeta de paletas personalizadas con permisos de escritura"
+
+#: front/wizard.php:280
+#, php-format
+msgid ""
+"nécessaire à la palette personnalisée (étape 17) — vérifiez les droits sur %s"
+msgstr ""
+"necesario para la paleta personalizada (paso 17) — compruebe los permisos en "
+"%s"
+
+#: front/wizard.php:283
+msgid "Dossier de cache GLPI inscriptible"
+msgstr "Carpeta de caché de GLPI con permisos de escritura"
+
+#: front/wizard.php:285
+#, php-format
+msgid ""
+"nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s"
+msgstr ""
+"necesario para el buen funcionamiento general de GLPI — compruebe los "
+"permisos en %s"
+
+#: front/wizard.php:288
+msgid "Extension GD ou Imagick disponible"
+msgstr "Extensión GD o Imagick disponible"
+
+#: front/wizard.php:290
+msgid ""
+"utile pour valider les logos uploadés (étape 17) — ni l'une ni l'autre n'est "
+"chargée"
+msgstr ""
+"útil para validar los logos subidos (paso 17) — ninguna de las dos está "
+"cargada"
+
+#: front/wizard.php:595
+msgid "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
+msgstr "Ninguna entidad que crear (modo de entidad única, o árbol vacío)."
+
+#: front/wizard.php:596
+#, php-format
+msgid "Structure créée : %s."
+msgstr "Estructura creada: %s."
+
+#: front/wizard.php:598
+msgid "Calendrier créé et assigné."
+msgstr "Calendario creado y asignado."
+
+#: front/wizard.php:607
+msgid "SLA créés et assignés."
+msgstr "SLA creados y asignados."
+
+#: front/wizard.php:610
+msgid "OLA (engagements internes) créés et assignés."
+msgstr "OLA (compromisos internos) creados y asignados."
+
+#: front/wizard.php:613
+msgid "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
+msgstr "Grupos de soporte N1/N2/N3 creados, escalada automática configurada."
+
+#: front/wizard.php:616
+#, php-format
+msgid "%d client(s) avec des réglages personnalisés."
+msgstr "%d cliente(s) con ajustes personalizados."
+
+#: front/wizard.php:619
+#, php-format
+msgid "%d catégories de tickets créées."
+msgstr "%d categorías de tickets creadas."
+
+#: front/wizard.php:622
+msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
+msgstr "Activo personalizado \"Vehículo\" creado (rama Flota de Vehículos)."
+
+#: front/wizard.php:625
+msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
+msgstr "Activo personalizado \"Servidor\" creado (rama TI y Sistemas)."
+
+#: front/wizard.php:628
+msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
+msgstr "Activo personalizado \"Local\" creado (rama Edificio)."
+
+#: front/wizard.php:631
+msgid ""
+"Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche "
+"Bâtiment)."
+msgstr ""
+"Activo personalizado \"Seguridad contra incendios y primeros auxilios\" "
+"creado (rama Edificio)."
+
+#: front/wizard.php:634
+msgid ""
+"Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection "
+"des Personnes)."
+msgstr "Activo personalizado \"Seguridad física\" creado (rama Seguridad)."
+
+#: front/wizard.php:637
+#, php-format
+msgid "%d services créés dans le catalogue."
+msgstr "%d servicios creados en el catálogo."
+
+#: front/wizard.php:640
+#, php-format
+msgid "%d statuts d'éléments créés."
+msgstr "%d estados de elementos creados."
+
+#: front/wizard.php:643
+#, php-format
+msgid "%d raisons d'attente créées."
+msgstr "%d motivos de espera creados."
+
+#: front/wizard.php:646
+msgid "Personnalisation graphique appliquée."
+msgstr "Personalización gráfica aplicada."
+
+#: front/wizard.php:649
+#, php-format
+msgid "%d logo(s) d'entité appliqué(s)."
+msgstr "%d logo(s) de entidad aplicados."
+
+#: front/wizard.php:659
+#, php-format
+msgid "%d couleur(s) par client/site appliquée(s)."
+msgstr "%d color(es) por cliente/sede aplicados."
+
+#: front/wizard.php:662
+#, php-format
+msgid "%d modèle(s) de notification personnalisés."
+msgstr "%d plantilla(s) de notificación personalizadas."
+
+#: front/wizard.php:666
+msgid "Palette GLPI personnalisée créée et définie par défaut."
+msgstr "Paleta GLPI personalizada creada y definida como predeterminada."
+
+#: front/wizard.php:667
+msgid "Palette GLPI native définie par défaut."
+msgstr "Paleta GLPI nativa definida como predeterminada."
+
+#: front/wizard.php:670
+msgid "Réglages généraux GLPI appliqués."
+msgstr "Ajustes generales de GLPI aplicados."
+
+#: front/wizard.php:673
+msgid "Modèles de tickets créés et assignés aux profils."
+msgstr "Plantillas de tickets creadas y asignadas a los perfiles."
+
+#: front/wizard.php:676
+msgid "Champs masqués sur les formulaires de création en libre-service."
+msgstr "Campos ocultos en los formularios de creación de autoservicio."
+
+#: front/wizard.php:679
+#, php-format
+msgid "%d règle(s) de droits LDAP créées."
+msgstr "%d regla(s) de derechos LDAP creadas."
+
+#: front/wizard.php:682
+#, php-format
+msgid "%d règle(s) de droits par fonction créées."
+msgstr "%d regla(s) de derechos por función creadas."
+
+#: front/wizard.php:685
+#, php-format
+msgid "%d catégories de tâches créées."
+msgstr "%d categorías de tareas creadas."
+
+#: front/wizard.php:688
+#, php-format
+msgid "%d gabarits de tâche créés."
+msgstr "%d plantillas de tarea creadas."
+
+#: front/wizard.php:691
+#, php-format
+msgid "%d gabarits de solution créés."
+msgstr "%d plantillas de solución creadas."
+
+#: front/wizard.php:694
+#, php-format
+msgid "%d gabarits de suivis créés."
+msgstr "%d plantillas de seguimiento creadas."
+
+#: front/wizard.php:697
+#, php-format
+msgid "%d gabarits de validation créés."
+msgstr "%d plantillas de aprobación creadas."
+
+#: front/wizard.php:700
+msgid "Modèles de changement et de problème créés et assignés aux profils."
+msgstr "Plantillas de cambio y problema creadas y asignadas a los perfiles."
+
+#: front/wizard.php:703
+#, php-format
+msgid "%d lieux créés."
+msgstr "%d ubicaciones creadas."
+
+#: front/wizard.php:706
+#, php-format
+msgid "%d fabricants créés."
+msgstr "%d fabricantes creados."
+
+#: front/wizard.php:709
+#, php-format
+msgid "%d règle(s) de dictionnaire fabricant créées."
+msgstr "%d regla(s) de diccionario de fabricante creadas."
+
+#: front/wizard.php:712
+#, php-format
+msgid "%d opérateurs téléphoniques créés."
+msgstr "%d operadores telefónicos creados."
+
+#: front/wizard.php:715
+#, php-format
+msgid "%d types de matériel créés."
+msgstr "%d tipos de dispositivo creados."
+
+#: front/wizard.php:727
+#, php-format
+msgid "%d catégories de base de connaissances créées."
+msgstr "%d categorías de base de conocimiento creadas."
+
+#: front/wizard.php:730
+#, php-format
+msgid "%d rubriques de documents/criticités créées."
+msgstr "%d categorías de documentos/criticidades creadas."
+
+#: front/wizard.php:733
+#, php-format
+msgid "%d catégories/gabarits d'évènements de planning créés."
+msgstr "%d categorías/plantillas de eventos de planificación creadas."
+
+#: front/wizard.php:739
+#, php-format
+msgid "%d gabarits de tâches de projets créés."
+msgstr "%d plantillas de tareas de proyecto creadas."
+
+#: front/wizard.php:742
+#, php-format
+msgid "%d modèle(s) de projet créés, structure de tâches incluse."
+msgstr "%d plantilla(s) de proyecto creadas, estructura de tareas incluida."
+
+#: front/wizard.php:745
+#, php-format
+msgid "%d source(s) de demande traduites."
+msgstr "%d fuente(s) de solicitud traducidas."
+
+#: front/wizard.php:748
+#, php-format
+msgid "%d fiche(s) d'entité complétées avec leur adresse."
+msgstr "%d ficha(s) de entidad completadas con su dirección."
+
+#: front/wizard.php:754
+msgid "Enquête de satisfaction créée (plugin More satisfaction)."
+msgstr "Encuesta de satisfacción creada (plugin More satisfaction)."
+
+#: front/wizard.php:757
+msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
+msgstr "Grupo \"VIP\" creado y activado (plugin VIP)."
+
+#: front/wizard.php:760
+#, php-format
+msgid "%d tag(s) créé(s) (plugin Tag)."
+msgstr "%d etiqueta(s) creada(s) (plugin Tag)."
+
+#: front/wizard.php:763
+msgid "Règle de validation automatique (supérieur hiérarchique) créée."
+msgstr "Regla de aprobación automática creada (superior)."
+
+#: front/wizard.php:766
+#, php-format
+msgid "%d catégories d'utilisateur créées."
+msgstr "%d categorías de usuario creadas."
+
+#: front/wizard.php:769
+#, php-format
+msgid "%d règle(s) d'unicité de numéro de série créées."
+msgstr "%d regla(s) de unicidad de número de serie creadas."
+
+#: front/wizard.php:772
+#, php-format
+msgid "%d flux RSS ajouté(s)."
+msgstr "%d feed(s) RSS añadidos."
+
+#: front/wizard.php:775
+msgid "Clé d'enregistrement GLPI Network enregistrée."
+msgstr "Clave de registro de GLPI Network guardada."
+
+#: front/wizard.php:782
+msgid "Assistant de configuration"
+msgstr "Asistente de configuración"
+
+#: src/CalendarBuilder.php:95
+#, php-format
+msgid "Horaires — %s"
+msgstr "Horario — %s"
+
+#: src/FuelType.php:42
 msgid "Type de carburant"
 msgid_plural "Types de carburant"
 msgstr[0] "Tipo de combustible"
 msgstr[1] "Tipos de combustible"
 
+#: src/ConfigurationProfile.php:59
+msgid "Profil de configuration"
+msgid_plural "Profils de configuration"
+msgstr[0] "Perfil de configuración"
+msgstr[1] "Perfiles de configuración"
+
+#: src/ConfigurationProfile.php:70
+msgid "Installation simple"
+msgstr "Instalación simple"
+
+#: src/ConfigurationProfile.php:71
+msgid "Plusieurs sites ou services (une seule entreprise)"
+msgstr "Varios sitios o departamentos (una sola empresa)"
+
+#: src/ConfigurationProfile.php:72
+msgid "Plusieurs entreprises clientes (infogérance)"
+msgstr "Varias empresas clientes (gestión de TI)"
+
+#: src/ConfigurationProfile.php:73
+msgid "Personnalisé"
+msgstr "Personalizado"
+
+#: src/ConfigurationProfile.php:86
+msgid "Type"
+msgstr "Tipo"
+
+#: src/Config.php:100
+msgid "Configuration"
+msgstr "Configuración"
+
+#: src/Config.php:106
+msgid "Mono-entité — une seule structure, pas de sous-entités"
+msgstr "Entidad única — una sola estructura, sin subentidades"
+
+#: src/Config.php:107
+msgid "Multi-entité — plusieurs sites ou services d'une même entreprise"
+msgstr "Multientidad — varios sitios o departamentos de la misma empresa"
+
+#: src/Config.php:108
+msgid "Multi-entité — infogérance de plusieurs entreprises clientes (MSP)"
+msgstr "Multientidad — gestión de TI de varias empresas clientes (MSP)"
+
+#: src/ServiceCatalogBuilder.php:254
+msgid "Titre"
+msgstr "Título"
+
+#: src/ServiceCatalogBuilder.php:263
+msgid "Description"
+msgstr "Descripción"
+
+#: src/SlaBuilder.php:141
+#, php-format
+msgid "SLA — %s"
+msgstr "SLA — %s"
+
+#: src/SlaBuilder.php:313
+#, php-format
+msgid "Prise en charge — %s"
+msgstr "Atención — %s"
+
+#: src/SlaBuilder.php:314
+#, php-format
+msgid "Résolution — %s"
+msgstr "Resolución — %s"
+
+#: src/SlaBuilder.php:320
+#, php-format
+msgid "OLA prise en charge — %s"
+msgstr "OLA de atención — %s"
+
+#: src/SlaBuilder.php:321
+#, php-format
+msgid "OLA résolution — %s"
+msgstr "OLA de resolución — %s"
+
+#: src/SlaBuilder.php:374
+#, php-format
+msgid "Escalade — %s"
+msgstr "Escalada — %s"
+
+#: src/SlaBuilder.php:385
+#, php-format
+msgid "Escalade N3 — %s"
+msgstr "Escalada N3 — %s"
+
+#~ msgid "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"
+#~ msgstr "Añadir el feed RSS de avisos de seguridad CERT-FR (ANSSI)"
+
+#~ msgid ""
+#~ "Visible dans Outils > Flux RSS pour toute l'instance — utile pour suivre "
+#~ "les vulnérabilités affectant le parc sans quitter GLPI."
+#~ msgstr ""
+#~ "Visible en Herramientas > Feeds RSS para toda la instancia — útil para "
+#~ "seguir las vulnerabilidades que afectan al parque sin salir de GLPI."
+
+#~ msgid "%d types de projet/tâche de projet créés."
+#~ msgstr "%d tipos de proyecto/tarea de proyecto creados."
+
+#~ msgid "Ajouter les jours fériés français (8 jours fixes)"
+#~ msgstr "Añadir los días festivos franceses (8 fechas fijas)"
+
+#~ msgid "Calendrier créé et assigné, avec les jours fériés français."
+#~ msgstr "Calendario creado y asignado, con los días festivos franceses."
+
+#~ msgid ""
+#~ "Jour de l'An, Fête du Travail, Victoire 1945, Fête nationale, Assomption, "
+#~ "Toussaint, Armistice, Noël. Sans ça, les échéances SLA/OLA continuent de "
+#~ "courir un jour férié. Les jours mobiles (Pâques, Ascension, Pentecôte) ne "
+#~ "sont pas inclus — ils changent de date chaque année, à ajouter à la main."
+#~ msgstr ""
+#~ "Año Nuevo, Día del Trabajo, Victoria de 1945, Fiesta Nacional, Asunción, "
+#~ "Todos los Santos, Armisticio, Navidad. Sin esto, los plazos SLA/OLA "
+#~ "siguen corriendo en un día festivo. Las fechas móviles (Pascua, "
+#~ "Ascensión, Pentecostés) no están incluidas — cambian de fecha cada año y "
+#~ "hay que añadirlas a mano."
+
+#~ msgid "%d jour(s) férié(s) étranger(s) créés."
+#~ msgstr "%d día(s) festivo(s) extranjero(s) creados."
+
+#~ msgid ""
+#~ "Ajouter les jours fériés des pays saisis ci-dessous (hors France, déjà "
+#~ "couverte à l'étape Calendrier)"
+#~ msgstr ""
+#~ "Añadir los días festivos de los países introducidos a continuación "
+#~ "(excepto Francia, ya cubierta en el paso Calendario)"
+
+#~ msgid ""
+#~ "Uniquement les jours fériés à date fixe (comme pour la France) — un pays "
+#~ "non reconnu ou non couvert par le service utilisé est simplement ignoré, "
+#~ "sans rien inventer. Les jours fériés créés ne sont pas rattachés "
+#~ "automatiquement à un calendrier : à faire vous-même dans Configuration > "
+#~ "Calendriers une fois créés."
+#~ msgstr ""
+#~ "Solo los días festivos de fecha fija (como para Francia) — un país no "
+#~ "reconocido o no cubierto por el servicio utilizado simplemente se omite, "
+#~ "sin inventar nada. Los días festivos creados no se vinculan "
+#~ "automáticamente a un calendario: hágalo usted mismo en Configuración > "
+#~ "Calendarios una vez creados."
