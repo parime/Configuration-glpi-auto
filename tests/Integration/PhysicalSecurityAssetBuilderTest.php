@@ -123,4 +123,51 @@ final class PhysicalSecurityAssetBuilderTest extends TestCase
         $matches = $DB->request(['FROM' => 'glpi_assets_assetdefinitions', 'WHERE' => ['system_name' => 'SecuritePhysique']])->count();
         $this->assertSame(1, $matches);
     }
+
+    /**
+     * Regression guard for a real bug (found manually against a live instance, not by this suite,
+     * which is exactly why it's added here): a `DropdownTranslation` row on the generated "type"
+     * dropdown class made GLPI's own `Search`/`SQLProvider` emit a `..._trans_name` column with no
+     * matching JOIN — `glpi_assets_assettypes` is one table shared by every `AssetDefinition`, not a
+     * dedicated one, unlike the ~20 other builders this plugin applies `Translations::applyIcon()`
+     * to. Fixed by baking the icon into `name` directly instead. This test both confirms that (the
+     * icon prefix, no duplicate row when the option is later toggled off) and that `Search::show()`
+     * on the resulting asset class no longer throws — the actual observable symptom.
+     */
+    public function testIconsEnabledPrefixesNameAndSearchStillWorks(): void
+    {
+        $builder = new PhysicalSecurityAssetBuilder();
+        $config = $this->buildConfig(['securite'], true);
+        $config->fields['physical_security_asset_icons_enabled'] = 1;
+        $builder->build($config);
+
+        $definition = new AssetDefinition();
+        $definition->getFromDBByCrit(['system_name' => 'SecuritePhysique']);
+        $typeClass = $definition->getAssetTypeClassName();
+
+        $item = new $typeClass();
+        $this->assertTrue($item->getFromDBByCrit([
+            'name' => "🪪 Contrôle d'accès (lecteur de badge)",
+            'assets_assetdefinitions_id' => $definition->getID(),
+        ]));
+
+        // Toggling the option back off must update the existing row, not leave a stray duplicate.
+        $configNoIcons = $this->buildConfig(['securite'], true);
+        $builder->build($configNoIcons);
+        global $DB;
+        $count = $DB->request([
+            'COUNT' => 'c',
+            'FROM' => 'glpi_assets_assettypes',
+            'WHERE' => ['assets_assetdefinitions_id' => $definition->getID()],
+        ])->current()['c'];
+        $this->assertSame(6, $count, 'Toggling icons off must update existing rows, not duplicate them.');
+
+        // The actual observable symptom: Search::show() threw a RuntimeException ("Unknown column
+        // ..._trans_name") on the broken code, it doesn't just embed an error string in its output —
+        // letting it throw here is the regression guard, no assertion needed beyond that.
+        $assetClass = $definition->getAssetClassName();
+        ob_start();
+        \Search::show($assetClass);
+        ob_end_clean();
+    }
 }

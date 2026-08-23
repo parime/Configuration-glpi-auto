@@ -178,8 +178,10 @@ class PhysicalSecurityAssetBuilder
 
     /**
      * Same mechanism as `VehicleAssetBuilder::seedTypes()` — see that class's docblock, and
-     * `FireSafetyAssetBuilder::seedTypes()` for why icon+translation is applied here (unlike the
-     * three pre-existing sibling builders).
+     * `FireSafetyAssetBuilder::seedTypes()` for why the icon is baked directly into `name` here
+     * instead of via `Translations::applyIcon()`/`DropdownTranslation` (breaks GLPI's own `Search`
+     * on the resulting asset list — root-caused live against `glpi_assets_assettypes` being a table
+     * shared across every `AssetDefinition`, not a dedicated one).
      */
     private function seedTypes(AssetDefinition $definition, bool $withIcons): void
     {
@@ -187,13 +189,19 @@ class PhysicalSecurityAssetBuilder
         $definitionId = (int) $definition->getID();
 
         foreach (self::TYPES as $name) {
+            $iconVariant = !empty(self::TYPE_ICONS[$name]) ? trim(self::TYPE_ICONS[$name] . ' ' . $name) : $name;
+            $displayName = $withIcons ? $iconVariant : $name;
+
+            // Matches either the bare or icon-prefixed name regardless of *this* run's own
+            // withIcons value — otherwise toggling the option off after a prior run left an
+            // icon-prefixed row behind would miss it here and create a bare-name duplicate instead
+            // of updating it (reproduced live before adding this).
             $item = new $itemtype();
-            $crit = ['name' => $name, 'assets_assetdefinitions_id' => $definitionId];
+            $crit = ['assets_assetdefinitions_id' => $definitionId, 'name' => [$name, $iconVariant]];
             if (!$item->getFromDBByCrit($crit)) {
-                $item->add($crit);
-            }
-            if ($withIcons) {
-                Translations::applyIcon($itemtype, (int) $item->getID(), $name, self::TYPE_ICONS[$name] ?? '');
+                $item->add(['assets_assetdefinitions_id' => $definitionId, 'name' => $displayName]);
+            } elseif ($item->fields['name'] !== $displayName) {
+                $item->update(['id' => $item->getID(), 'name' => $displayName]);
             }
         }
     }
