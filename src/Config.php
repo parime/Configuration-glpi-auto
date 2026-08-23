@@ -791,4 +791,48 @@ class Config extends CommonDBTM
 
         return $clean;
     }
+
+    /**
+     * Dernière version publiée sur GitHub (release la plus récente, hors pre-release), pour
+     * affichage à côté de la version installée en tête de l'assistant — permet de détecter
+     * immédiatement qu'un environnement tourne sur une version antérieure à celle publiée, sans
+     * comparer des fichiers un par un. Sur demande explicite de l'utilisateur (#153), même
+     * mécanisme que les plugins jumeaux assetsign-glpi et glpi-vulnerability-manager (confirmé en
+     * lisant directement `Config::getLatestGithubVersion()` d'assetsign-glpi avant d'écrire
+     * celle-ci, pas réinventé).
+     *
+     * Mise en cache 24h (même durée/mécanisme que `RSSFeed::getRSSFeed()` du cœur GLPI,
+     * `$GLPI_CACHE`) : l'API GitHub non authentifiée est limitée à 60 requêtes/heure par IP,
+     * largement insuffisant si appelée à chaque affichage de la page. `Toolbox::getURLContent()`
+     * (pas un appel HTTP direct) : réutilise la gestion de proxy/timeout/erreurs déjà établie par
+     * le cœur GLPI pour ce type d'appel — même fonction que `Toolbox::checkNewVersionAvailable()`,
+     * qui fait exactement ceci pour GLPI lui-même.
+     *
+     * @return string|null Numéro de version (sans le "v" du tag), ou null si l'appel a échoué
+     *         (pas de connexion, API GitHub indisponible...).
+     */
+    public static function getLatestGithubVersion(): ?string
+    {
+        global $GLPI_CACHE;
+
+        $cacheKey = 'plugin_configurationglpiauto_latest_github_version';
+        $cached = $GLPI_CACHE->get($cacheKey);
+        if ($cached !== null) {
+            return $cached === '' ? null : $cached;
+        }
+
+        $error = '';
+        $json = \Toolbox::getURLContent('https://api.github.com/repos/parime/Configuration-glpi-auto/releases/latest', $error);
+        $version = null;
+        if (!empty($json)) {
+            $data = json_decode($json, true);
+            if (is_array($data) && !empty($data['tag_name']) && is_string($data['tag_name'])) {
+                $version = ltrim($data['tag_name'], 'v');
+            }
+        }
+
+        $GLPI_CACHE->set($cacheKey, $version ?? '', DAY_TIMESTAMP);
+
+        return $version;
+    }
 }

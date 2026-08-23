@@ -837,6 +837,8 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'vip_plugin_active' => VipBuilder::isThirdPartyPluginActive(),
     'tag_plugin_active' => TagBuilder::isThirdPartyPluginActive(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
+    'installed_version'     => PLUGIN_CONFIGURATIONGLPIAUTO_VERSION,
+    'latest_github_version' => Config::getLatestGithubVersion(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 

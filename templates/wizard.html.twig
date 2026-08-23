@@ -31,6 +31,25 @@
 <div class="card">
   <div class="card-body">
 
+    {% if installed_version is defined %}
+      <div class="card card-sm mb-3">
+        <div class="card-body d-flex align-items-center gap-3">
+          <i class="ti ti-brand-github fs-1 text-muted"></i>
+          <div>
+            <div class="fw-bold">{{ __('Version du plugin', 'configurationglpiauto') }}</div>
+            <div class="text-muted small">
+              {{ __('Version installée', 'configurationglpiauto') }}
+              <span class="badge bg-blue-lt">v{{ installed_version }}</span>
+              {% if latest_github_version %}
+                {{ __('Dernière version sur GitHub', 'configurationglpiauto') }}
+                <span class="badge {{ latest_github_version != installed_version ? 'bg-orange-lt' : 'bg-green-lt' }}">v{{ latest_github_version }}</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
     {% if prereq_checks is defined and prereq_checks|filter(c => not c.ok)|length > 0 %}
       <div class="alert alert-warning mb-3">
         <strong>{{ __('Vérification de l\'environnement', 'configurationglpiauto') }}</strong> —
