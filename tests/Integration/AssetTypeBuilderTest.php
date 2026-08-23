@@ -92,4 +92,31 @@ final class AssetTypeBuilderTest extends TestCase
 
         $this->assertSame(0, $count);
     }
+
+    /**
+     * `SoftwareCategory` is the one `CommonTreeDropdown` this builder seeds (every other itemtype
+     * here is a plain `CommonDropdown`) — regression guard for the exact bug found live on
+     * `FireSafetyAssetBuilder`/`PhysicalSecurityAssetBuilder` (a `DropdownTranslation` row breaking
+     * `Search::show()` on a table with unusual structure): confirms icons + a tree dropdown don't
+     * hit the same class of issue, by actually calling `Search::show()`, not just checking the row
+     * was created.
+     */
+    public function testTreeDropdownWithIconsDoesNotBreakSearch(): void
+    {
+        $config = new Config();
+        $config->fields = array_merge(Config::getDefaults(), [
+            'asset_types_enabled' => 1,
+            'asset_type_icons_enabled' => 1,
+        ]);
+
+        (new AssetTypeBuilder())->build($config);
+
+        $item = new \SoftwareCategory();
+        $this->assertTrue($item->getFromDBByCrit(['name' => 'Bureautique']));
+        $this->assertSame(1, (int) $item->fields['level'], 'Seeded as a root node, not nested.');
+
+        ob_start();
+        \Search::show(\SoftwareCategory::class);
+        ob_end_clean();
+    }
 }

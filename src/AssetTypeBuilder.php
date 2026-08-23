@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use ApplianceEnvironment;
 use ApplianceType;
 use BudgetType;
 use CableType;
@@ -33,6 +34,7 @@ use DeviceCaseType;
 use DeviceHardDriveType;
 use DeviceSensorType;
 use DomainType;
+use Glpi\SocketModel;
 use LineType;
 use MonitorType;
 use NetworkEquipmentType;
@@ -42,7 +44,9 @@ use PeripheralType;
 use PhoneType;
 use PrinterType;
 use RackType;
+use SoftwareCategory;
 use SupplierType;
+use UserTitle;
 use VirtualMachineType;
 
 /**
@@ -97,6 +101,18 @@ use VirtualMachineType;
  * real, standard DBMS taxonomy, not a product list — also confirmed distinct from
  * `databaseinstancecategories_id` (a separate native dropdown, environment/purpose-scoped:
  * prod/test/dev, not engine kind).
+ *
+ * Fifth pass added `SocketModel` (`Glpi\SocketModel`, confirmed the FQCN via `find` — not
+ * top-level like the others), `UserTitle`, `SoftwareCategory` and `ApplianceEnvironment`, on
+ * explicit user request after a real GLPI 11 instance was checked table-by-table (`DESCRIBE`) for
+ * each candidate rather than guessing which ones exist: `SocketModel` backs *both* "type" and
+ * "modèle" of prise/connectique in GLPI (one table, not two), `UserTitle` is job title
+ * ("Titre d'utilisateur" per `getTypeName()`), distinct from `UserCategoryBuilder`'s own
+ * contract-type classification. `SoftwareCategory` is the one `CommonTreeDropdown` in this batch
+ * (confirmed via `is_subclass_of()`) — `getOrCreate()` handles it as a root-only insert rather than
+ * duplicating `CategoryBuilder`'s branch-building logic for a flat list. No native "cable harness"
+ * or "application model" dropdown exists in GLPI core (confirmed by table/class search, not
+ * assumed) — out of scope for this pass, see the corresponding GitHub issues for why.
  *
  * All 27 `*Type` classes extend `CommonDropdown` (directly or via `CommonType`/`CommonDeviceType`)
  * with no `$can_be_translated` override, so the inherited default (`true`) applies — same icon
@@ -163,6 +179,8 @@ class AssetTypeBuilder
             ['name' => 'Rack serveur 19″', 'icon' => '🗄️'],
             ['name' => 'Rack réseau', 'icon' => '🔀'],
             ['name' => 'Rack ouvert', 'icon' => '📐'],
+            ['name' => 'Baie murale', 'icon' => '🧱'],
+            ['name' => 'Micro-baie (mini-rack)', 'icon' => '📦'],
         ],
         PDUType::class => [
             ['name' => 'Basique', 'icon' => '🔌'],
@@ -195,10 +213,15 @@ class AssetTypeBuilder
             ['name' => 'Tout-en-un (AIO)', 'icon' => '🖥️'],
         ],
         CableType::class => [
+            ['name' => 'Ethernet Cat3', 'icon' => '🔌'],
             ['name' => 'Ethernet Cat5e', 'icon' => '🔌'],
             ['name' => 'Ethernet Cat6', 'icon' => '🔌'],
             ['name' => 'Ethernet Cat6a', 'icon' => '🔌'],
-            ['name' => 'Fibre optique', 'icon' => '💡'],
+            ['name' => 'Ethernet Cat7', 'icon' => '🔌'],
+            ['name' => 'Coaxial', 'icon' => '🔌'],
+            ['name' => 'Fibre optique monomode (OS2)', 'icon' => '💡'],
+            ['name' => 'Fibre optique multimode OM3', 'icon' => '💡'],
+            ['name' => 'Fibre optique multimode OM4', 'icon' => '💡'],
             ['name' => 'Alimentation', 'icon' => '⚡'],
             ['name' => 'USB', 'icon' => '🔌'],
         ],
@@ -309,6 +332,62 @@ class AssetTypeBuilder
             ['name' => 'Graphe', 'icon' => '🕸️'],
             ['name' => 'Séries temporelles', 'icon' => '⏱️'],
             ['name' => 'Recherche/index', 'icon' => '🔎'],
+            ['name' => 'Cache en mémoire', 'icon' => '⚡'],
+            ['name' => 'Base vectorielle (IA/RAG)', 'icon' => '🧠'],
+        ],
+
+        // Prise/connectique physique (RJ45, fibre, USB, alimentation...) — même table
+        // `glpi_socketmodels` derriere le "type" et le "modele" de prise dans GLPI (pas deux
+        // referentiels distincts), confirmee via DESCRIBE avant d'ecrire ce contenu.
+        SocketModel::class => [
+            ['name' => 'RJ45', 'icon' => '🔌'],
+            ['name' => 'Fibre LC', 'icon' => '💡'],
+            ['name' => 'Fibre SC', 'icon' => '💡'],
+            ['name' => 'USB-A', 'icon' => '🔌'],
+            ['name' => 'USB-C', 'icon' => '🔌'],
+            ['name' => 'Prise électrique (secteur)', 'icon' => '⚡'],
+            ['name' => 'HDMI', 'icon' => '📺'],
+            ['name' => 'DisplayPort', 'icon' => '📺'],
+            ['name' => 'Jack audio', 'icon' => '🎧'],
+        ],
+
+        // "Titre" = intitule de poste (confirme via getTypeName() : "Titre d'utilisateur"),
+        // distinct de UserCategoryBuilder (type de contrat : stagiaire/prestataire/alternant...).
+        UserTitle::class => [
+            ['name' => 'Directeur / Directrice', 'icon' => '👔'],
+            ['name' => 'Responsable', 'icon' => '📋'],
+            ['name' => 'Chef de projet', 'icon' => '🗂️'],
+            ['name' => 'Ingénieur', 'icon' => '⚙️'],
+            ['name' => 'Technicien / Technicienne', 'icon' => '🔧'],
+            ['name' => 'Assistant(e)', 'icon' => '📝'],
+            ['name' => 'Consultant(e)', 'icon' => '💼'],
+        ],
+
+        // Categorie de logiciel — CommonTreeDropdown (confirme via is_subclass_of), pas juste un
+        // CommonDropdown comme le reste de cette classe : getOrCreate() gere ce cas a part (racine
+        // uniquement, pas de sous-arbre) en detectant CommonTreeDropdown au lieu de dupliquer ici la
+        // logique de construction d'arbre deja propre a CategoryBuilder.
+        SoftwareCategory::class => [
+            ['name' => 'Bureautique', 'icon' => '📄'],
+            ['name' => 'Sécurité', 'icon' => '🔒'],
+            ['name' => 'Développement', 'icon' => '💻'],
+            ['name' => 'Conception / CAO', 'icon' => '📐'],
+            ['name' => 'Communication / Collaboration', 'icon' => '💬'],
+            ['name' => 'Gestion / ERP', 'icon' => '📊'],
+            ['name' => 'Navigateur', 'icon' => '🌐'],
+            ['name' => 'Utilitaire système', 'icon' => '🛠️'],
+            ['name' => 'Multimédia', 'icon' => '🎬'],
+            ['name' => 'Métier', 'icon' => '🏢'],
+        ],
+
+        // Environnement d'execution (Production/Test/Dev...) — seul referentiel natif GLPI portant
+        // cette semantique (rattache aux Appliances), reutilise ici au sens large plutot que
+        // d'inventer un nouveau referentiel hors GLPI pour un besoin equivalent.
+        ApplianceEnvironment::class => [
+            ['name' => 'Production', 'icon' => '🟢'],
+            ['name' => 'Pré-production', 'icon' => '🟠'],
+            ['name' => 'Test / Recette', 'icon' => '🧪'],
+            ['name' => 'Développement', 'icon' => '💻'],
         ],
     ];
 
@@ -347,6 +426,11 @@ class AssetTypeBuilder
     private function getOrCreate(string $itemtype, string $name): int
     {
         $isEntityScoped = in_array($itemtype, self::ENTITY_SCOPED_ITEMTYPES, true);
+        // SoftwareCategory is the one CommonTreeDropdown in this class (confirmed via
+        // is_subclass_of() before writing this) — every entry here is seeded as a root node (no
+        // sub-tree), so the only extra requirement is its own foreign key set to 0 on add(), same
+        // "root parent" convention CommonTreeDropdown itself expects.
+        $isTreeDropdown = is_subclass_of($itemtype, \CommonTreeDropdown::class);
 
         $item = new $itemtype();
         $crit = $isEntityScoped ? ['name' => $name, 'entities_id' => 0] : ['name' => $name];
@@ -358,6 +442,9 @@ class AssetTypeBuilder
         if ($isEntityScoped) {
             $input['entities_id'] = 0;
             $input['is_recursive'] = 1;
+        }
+        if ($isTreeDropdown) {
+            $input[$itemtype::getForeignKeyField()] = 0;
         }
 
         return (int) $item->add($input);
