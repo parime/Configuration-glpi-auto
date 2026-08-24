@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fil d'Ariane incorrect sur les 5 écrans du plugin (Types de carburant, Profil de configuration,
+  Assistant) : `Html::header()` déclarait la catégorie `'admin'` (Administration) alors que le
+  plugin est enregistré sous `'config'` (Configuration) dans `Hooks::MENU_TOADD`, confirmé en
+  direct (fil d'Ariane affichait "Administration" au lieu de "Configuration"). Corrigé partout.
+
 ## [0.71.0] - 2026-08-24
 
 ### Changed
