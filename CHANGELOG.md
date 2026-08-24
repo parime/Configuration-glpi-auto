@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Catégorie ITIL « Certificats SSL & Vulnérabilités » (branche Informatique > Sécurité SI)
+  scindée en deux catégories distinctes, « Certificats SSL » et « Vulnérabilités » : ce sont deux
+  sujets différents, et le plugin glpi-vulnerability-manager cherche désormais une catégorie
+  nommée « Vulnérabilités » à cet emplacement pour y rattacher ses tickets de remédiation au lieu
+  de créer la sienne, si ce plugin est installé (voir son propre CHANGELOG). Ce constructeur ne
+  supprime ni ne renomme jamais une catégorie déjà créée sur une instance existante (comme les
+  autres constructeurs de ce plugin) : l'ancienne catégorie combinée reste en place si elle
+  existait déjà, seules les deux nouvelles catégories sont ajoutées.
+
 - README (FR/EN) : la liste des fonctionnalités mentionne désormais les types de certificat, la
   bibliothèque de tickets récurrents, l'inventaire natif GLPI, le suivi de version GitHub, les
   flux RSS et les statuts de projet supplémentaires, absents de la liste bien qu'ajoutés au code

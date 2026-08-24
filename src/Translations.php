@@ -214,7 +214,8 @@ final class Translations
         'Phishing & Mails suspects' => ['en_GB' => 'Phishing & Suspicious emails', 'de_DE' => 'Phishing & Verdächtige E-Mails', 'it_IT' => 'Phishing e Email sospette', 'es_ES' => 'Phishing y Correos sospechosos'],
         'Indisponibilité / Malware / Ransomware' => ['en_GB' => 'Outage / Malware / Ransomware', 'de_DE' => 'Ausfall / Malware / Ransomware', 'it_IT' => 'Interruzione / Malware / Ransomware', 'es_ES' => 'Interrupción / Malware / Ransomware'],
         'Compte compromis / Fuite de données' => ['en_GB' => 'Compromised account / Data leak', 'de_DE' => 'Kompromittiertes Konto / Datenleck', 'it_IT' => 'Account compromesso / Fuga di dati', 'es_ES' => 'Cuenta comprometida / Fuga de datos'],
-        'Certificats SSL & Vulnérabilités' => ['en_GB' => 'SSL certificates & Vulnerabilities', 'de_DE' => 'SSL-Zertifikate & Schwachstellen', 'it_IT' => 'Certificati SSL e Vulnerabilità', 'es_ES' => 'Certificados SSL y Vulnerabilidades'],
+        'Certificats SSL' => ['en_GB' => 'SSL certificates', 'de_DE' => 'SSL-Zertifikate', 'it_IT' => 'Certificati SSL', 'es_ES' => 'Certificados SSL'],
+        'Vulnérabilités' => ['en_GB' => 'Vulnerabilities', 'de_DE' => 'Schwachstellen', 'it_IT' => 'Vulnerabilità', 'es_ES' => 'Vulnerabilidades'],
 
         // ---- Bâtiment & Moyens Généraux branch ----
         'CVC' => ['en_GB' => 'HVAC', 'de_DE' => 'HLK', 'it_IT' => 'HVAC', 'es_ES' => 'Climatización (HVAC)'],

@@ -102,7 +102,8 @@ class CategoryBuilder
                 ['name' => 'Phishing & Mails suspects'],
                 ['name' => 'Indisponibilité / Malware / Ransomware'],
                 ['name' => 'Compte compromis / Fuite de données'],
-                ['name' => 'Certificats SSL & Vulnérabilités'],
+                ['name' => 'Certificats SSL'],
+                ['name' => 'Vulnérabilités', 'comment' => 'Suivi CVE et remédiation, cf. plugin glpi-vulnerability-manager s\'il est actif'],
             ]],
         ]],
         ['key' => 'batiment', 'icon' => '🏢', 'name' => 'Bâtiment & Moyens Généraux', 'children' => [
