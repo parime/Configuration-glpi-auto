@@ -2289,6 +2289,54 @@ msgstr "Escalada — %s"
 msgid "Escalade N3 — %s"
 msgstr "Escalada N3 — %s"
 
+#: src/AbroadMissionFormBuilder.php
+msgid "Votre demande"
+msgstr "Su solicitud"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Pays de destination"
+msgstr "País de destino"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Date de début"
+msgstr "Fecha de inicio"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Date de fin"
+msgstr "Fecha de fin"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Motif / précisions"
+msgstr "Motivo / precisiones"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "du"
+msgstr "del"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "au"
+msgstr "al"
+
+#: front/wizard.php
+msgid "Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de ticket calculé automatiquement)."
+msgstr "Servicio \"Solicitud de derecho de acceso / misión al extranjero\" creado (título de ticket calculado automáticamente)."
+
+#: templates/wizard.html.twig
+msgid "Pilote : un formulaire plus avancé que les autres services ci-dessus, avec de vraies questions (pays, dates) et un titre de ticket calculé automatiquement à partir des réponses (nouveau moteur de formulaires GLPI 11)."
+msgstr "Piloto: un formulario más avanzado que los demás servicios anteriores, con preguntas reales (país, fechas) y un título de ticket calculado automáticamente a partir de las respuestas (nuevo motor de formularios de GLPI 11)."
+
+#: templates/wizard.html.twig
+msgid "Créer le service \"Demande de droit d'accès / mission à l'étranger\" (branche Ressources Humaines)"
+msgstr "Crear el servicio \"Solicitud de derecho de acceso / misión al extranjero\" (rama Recursos Humanos)"
+
+#: templates/wizard.html.twig
+msgid "Questions : pays de destination, date de début, date de fin, motif / précisions"
+msgstr "Preguntas: país de destino, fecha de inicio, fecha de fin, motivo / precisiones"
+
+#: templates/wizard.html.twig
+msgid "Titre du ticket calculé automatiquement : nom du formulaire + dates de début/fin + pays"
+msgstr "Título del ticket calculado automáticamente: nombre del formulario + fechas de inicio/fin + país"
+
 #~ msgid "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"
 #~ msgstr "Añadir el feed RSS de avisos de seguridad CERT-FR (ANSSI)"
 

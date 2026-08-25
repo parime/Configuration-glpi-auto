@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Pilote de formulaire de catalogue de services « intelligent » (issue #208, premier exemple concret
+  pour #207) : nouveau service « Demande de droit d'accès / mission à l'étranger » (branche
+  Ressources Humaines), avec de vraies questions typées (pays de destination, date de début, date
+  de fin, motif) au lieu du simple couple Titre/Description des autres services du catalogue, et un
+  titre de ticket calculé automatiquement à partir des réponses (nom du formulaire + dates + pays),
+  via le système natif de balises de formulaire de GLPI 11
+  (`Glpi\Form\Destination\CommonITILField\TitleField` + `Glpi\Form\Tag\FormTagsManager`). Contenu du
+  ticket en configuration automatique (récapitulatif Question/Réponse généré par GLPI). Nouveau
+  constructeur `AbroadMissionFormBuilder`, nouvelle case à cocher dans l'étape « Catalogue de
+  services » de l'assistant (`abroad_mission_form_enabled`, activée par défaut).
+
 ### Fixed
 
 - Fil d'Ariane incorrect sur les 5 écrans du plugin (Types de carburant, Profil de configuration,

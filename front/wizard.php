@@ -15,6 +15,7 @@
  * -------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Configurationglpiauto\AbroadMissionFormBuilder;
 use GlpiPlugin\Configurationglpiauto\AssetTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\BrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\BuildingAssetBuilder;
@@ -440,6 +441,10 @@ if (isset($_POST['finish'])) {
     $fireSafetyAssetCreated = (new FireSafetyAssetBuilder())->build($config);
     $physicalSecurityAssetCreated = (new PhysicalSecurityAssetBuilder())->build($config);
     $servicesCreated = (new ServiceCatalogBuilder())->build($config);
+    // Runs right after ServiceCatalogBuilder: same self-service catalog, one dedicated pilot
+    // service with real typed questions and a computed ticket title instead of the generic
+    // Title/Description-only shape (issue #208, pilot for #207).
+    $abroadMissionFormCreated = (new AbroadMissionFormBuilder())->build($config);
     $statesCreated = (new StateBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
     $ruleRightBuilder = new RuleRightBuilder();
@@ -635,6 +640,9 @@ if (isset($_POST['finish'])) {
     }
     if ($servicesCreated > 0) {
         $messages[] = sprintf(__('%d services créés dans le catalogue.', 'configurationglpiauto'), $servicesCreated);
+    }
+    if ($abroadMissionFormCreated) {
+        $messages[] = __('Service "Demande de droit d\'accès / mission à l\'étranger" créé (titre de ticket calculé automatiquement).', 'configurationglpiauto');
     }
     if ($statesCreated !== []) {
         $messages[] = sprintf(__('%d statuts d\'éléments créés.', 'configurationglpiauto'), count($statesCreated));

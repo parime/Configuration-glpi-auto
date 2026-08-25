@@ -183,6 +183,7 @@ class Config extends CommonDBTM
             'ticket_template_icons_enabled' => 1,
             'helpdesk_form_hide_fields' => 1,
             'service_catalog_enabled' => 1,
+            'abroad_mission_form_enabled' => 1,
             'wait_reasons_enabled' => 1,
             'ldap_rights_enabled' => 1,
             'ldap_rights_group_template' => 'GLPI_{ENTITY}',
@@ -553,6 +554,10 @@ class Config extends CommonDBTM
 
         if (isset($input['service_catalog_enabled'])) {
             $input['service_catalog_enabled'] = !empty($input['service_catalog_enabled']) ? 1 : 0;
+        }
+
+        if (isset($input['abroad_mission_form_enabled'])) {
+            $input['abroad_mission_form_enabled'] = !empty($input['abroad_mission_form_enabled']) ? 1 : 0;
         }
 
         if (isset($input['wait_reasons_enabled'])) {
