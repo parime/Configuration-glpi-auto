@@ -2293,6 +2293,54 @@ msgstr "Escalation — %s"
 msgid "Escalade N3 — %s"
 msgstr "Escalation N3 — %s"
 
+#: src/AbroadMissionFormBuilder.php
+msgid "Votre demande"
+msgstr "La tua richiesta"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Pays de destination"
+msgstr "Paese di destinazione"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Date de début"
+msgstr "Data di inizio"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Date de fin"
+msgstr "Data di fine"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Motif / précisions"
+msgstr "Motivo / precisazioni"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "du"
+msgstr "dal"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "au"
+msgstr "al"
+
+#: front/wizard.php
+msgid "Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de ticket calculé automatiquement)."
+msgstr "Servizio \"Richiesta di diritto di accesso / missione all'estero\" creato (titolo del ticket calcolato automaticamente)."
+
+#: templates/wizard.html.twig
+msgid "Pilote : un formulaire plus avancé que les autres services ci-dessus, avec de vraies questions (pays, dates) et un titre de ticket calculé automatiquement à partir des réponses (nouveau moteur de formulaires GLPI 11)."
+msgstr "Pilota: un modulo più avanzato degli altri servizi sopra, con domande reali (paese, date) e un titolo del ticket calcolato automaticamente dalle risposte (nuovo motore di moduli di GLPI 11)."
+
+#: templates/wizard.html.twig
+msgid "Créer le service \"Demande de droit d'accès / mission à l'étranger\" (branche Ressources Humaines)"
+msgstr "Creare il servizio \"Richiesta di diritto di accesso / missione all'estero\" (ramo Risorse Umane)"
+
+#: templates/wizard.html.twig
+msgid "Questions : pays de destination, date de début, date de fin, motif / précisions"
+msgstr "Domande: paese di destinazione, data di inizio, data di fine, motivo / precisazioni"
+
+#: templates/wizard.html.twig
+msgid "Titre du ticket calculé automatiquement : nom du formulaire + dates de début/fin + pays"
+msgstr "Titolo del ticket calcolato automaticamente: nome del modulo + date di inizio/fine + paese"
+
 #~ msgid "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"
 #~ msgstr "Aggiungi il feed RSS degli avvisi di sicurezza CERT-FR (ANSSI)"
 

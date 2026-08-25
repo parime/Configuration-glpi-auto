@@ -2305,6 +2305,54 @@ msgstr "Eskalation — %s"
 msgid "Escalade N3 — %s"
 msgstr "Eskalation N3 — %s"
 
+#: src/AbroadMissionFormBuilder.php
+msgid "Votre demande"
+msgstr "Ihr Antrag"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Pays de destination"
+msgstr "Zielland"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Date de début"
+msgstr "Startdatum"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Date de fin"
+msgstr "Enddatum"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "Motif / précisions"
+msgstr "Grund / Anmerkungen"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "du"
+msgstr "vom"
+
+#: src/AbroadMissionFormBuilder.php
+msgid "au"
+msgstr "bis"
+
+#: front/wizard.php
+msgid "Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de ticket calculé automatiquement)."
+msgstr "Dienst \"Antrag auf Zugangsrecht / Dienstreise ins Ausland\" erstellt (Ticket-Titel automatisch berechnet)."
+
+#: templates/wizard.html.twig
+msgid "Pilote : un formulaire plus avancé que les autres services ci-dessus, avec de vraies questions (pays, dates) et un titre de ticket calculé automatiquement à partir des réponses (nouveau moteur de formulaires GLPI 11)."
+msgstr "Pilot: ein fortschrittlicheres Formular als die anderen Dienste oben, mit echten Fragen (Land, Daten) und einem automatisch aus den Antworten berechneten Ticket-Titel (neue GLPI-11-Formular-Engine)."
+
+#: templates/wizard.html.twig
+msgid "Créer le service \"Demande de droit d'accès / mission à l'étranger\" (branche Ressources Humaines)"
+msgstr "Dienst \"Antrag auf Zugangsrecht / Dienstreise ins Ausland\" erstellen (Bereich Personalwesen)"
+
+#: templates/wizard.html.twig
+msgid "Questions : pays de destination, date de début, date de fin, motif / précisions"
+msgstr "Fragen: Zielland, Startdatum, Enddatum, Grund / Anmerkungen"
+
+#: templates/wizard.html.twig
+msgid "Titre du ticket calculé automatiquement : nom du formulaire + dates de début/fin + pays"
+msgstr "Ticket-Titel automatisch berechnet: Formularname + Start-/Enddatum + Land"
+
 #~ msgid "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"
 #~ msgstr "CERT-FR (ANSSI) Sicherheitswarnungs-RSS-Feed hinzufügen"
 

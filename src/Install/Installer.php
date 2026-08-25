@@ -125,6 +125,7 @@ final class Installer
                 `ticket_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `helpdesk_form_hide_fields` tinyint NOT NULL DEFAULT 0,
                 `service_catalog_enabled` tinyint NOT NULL DEFAULT 0,
+                `abroad_mission_form_enabled` tinyint NOT NULL DEFAULT 0,
                 `wait_reasons_enabled` tinyint NOT NULL DEFAULT 0,
                 `ldap_rights_enabled` tinyint NOT NULL DEFAULT 0,
                 `ldap_rights_group_template` varchar(255) NOT NULL DEFAULT 'GLPI_{ENTITY}',
@@ -347,6 +348,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'certificate_types_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'certificate_type_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'recurring_ticket_library_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'abroad_mission_form_enabled', 'bool', ['value' => 0]);
         }
 
         // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape

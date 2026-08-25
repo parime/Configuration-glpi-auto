@@ -1191,6 +1191,24 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
    traductions, même icône). Vérifié en réel : gabarit créé sous le bon type via une vraie
    soumission du wizard, appliqué à un vrai ticket créé pour l'occasion, rendu Twig correct.
 
+3. ✅ **Formulaires de catalogue de services « intelligents », pilote (issues #207/#208).** #207
+   demande deux capacités natives à GLPI 11 (questions conditionnelles + titre de ticket calculé)
+   pour rendre les ~50 services de `ServiceCatalogBuilder` plus riches qu'un simple couple
+   nom/catégorie ; #208 en propose un premier exemple concret pilote à valider avant généralisation.
+   Pilote livré : nouveau constructeur `AbroadMissionFormBuilder`, service « Demande de droit
+   d'accès / mission à l'étranger » (branche Ressources Humaines) avec de vraies questions typées
+   (pays, date de début, date de fin, motif) et un titre de ticket calculé à la soumission via le
+   système natif de balises de formulaire (`Glpi\Form\Destination\CommonITILField\TitleField` +
+   `Glpi\Form\Tag\FormTagsManager`), confirmé en lisant directement le cœur GLPI 11 (pas supposé) et
+   vérifié en réel par une vraie soumission de formulaire donnant un vrai ticket au titre calculé
+   correct. Pas de question conditionnelle dans ce pilote (les 3 champs sont toujours pertinents
+   ensemble, comme dans l'exemple réel du porteur du plugin) : `HelpdeskFormBuilder` reste la seule
+   utilisation actuelle de `Question::visibility_strategy`/`conditions` dans ce dépôt.
+   **Reste pour la généralisation complète de #207** (issue laissée ouverte) : identifier, parmi les
+   ~50 autres services existants, lesquels bénéficieraient réellement d'un titre calculé et/ou de
+   questions conditionnelles (VISIBLE_IF), et étendre au cas par cas plutôt que d'appliquer ça
+   partout par principe.
+
 ---
 
 ### 🚀 Version 1.1 - **En Développement**
