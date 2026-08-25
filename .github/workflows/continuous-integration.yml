@@ -21,6 +21,13 @@ concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
   cancel-in-progress: true
 
+# Principe du moindre privilege (alerte CodeQL actions/missing-workflow-permissions) : sans bloc
+# explicite, GITHUB_TOKEN recoit les permissions par defaut du depot (souvent plus large que
+# necessaire). Aucun job de ce workflow n'ecrit quoi que ce soit (checkout, analyse, tests), un
+# seul bloc en lecture seule au niveau du workflow suffit pour tous.
+permissions:
+  contents: read
+
 jobs:
   generate-ci-matrix:
     name: "Generate CI matrix"
