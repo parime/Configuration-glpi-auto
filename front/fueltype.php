@@ -19,7 +19,7 @@ use GlpiPlugin\Configurationglpiauto\FuelType;
 
 Session::checkRight(FuelType::$rightname, READ);
 
-Html::header(FuelType::getTypeName(2), $_SERVER['PHP_SELF'], 'admin', FuelType::class);
+Html::header(FuelType::getTypeName(2), $_SERVER['PHP_SELF'], 'config', FuelType::class);
 
 Search::show(FuelType::class);
 

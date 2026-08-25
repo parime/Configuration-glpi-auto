@@ -19,7 +19,7 @@ use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
 Session::checkRight(ConfigurationProfile::$rightname, READ);
 
-Html::header(ConfigurationProfile::getTypeName(2), $_SERVER['PHP_SELF'], 'admin', ConfigurationProfile::class);
+Html::header(ConfigurationProfile::getTypeName(2), $_SERVER['PHP_SELF'], 'config', ConfigurationProfile::class);
 
 // Search::show() alone generates no create link (same pitfall documented on remise-glpi).
 global $CFG_GLPI;

@@ -33,7 +33,7 @@ if (isset($_POST['add'])) {
     Html::redirect(FuelType::getSearchURL());
 } else {
     Session::checkRight(FuelType::$rightname, READ);
-    Html::header(FuelType::getTypeName(1), $_SERVER['PHP_SELF'], 'admin', FuelType::class);
+    Html::header(FuelType::getTypeName(1), $_SERVER['PHP_SELF'], 'config', FuelType::class);
     $id = (int) ($_GET['id'] ?? 0);
     if ($id > 0) {
         $item->getFromDB($id);

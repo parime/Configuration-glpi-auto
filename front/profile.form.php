@@ -33,7 +33,7 @@ if (isset($_POST['add'])) {
     Html::redirect(ConfigurationProfile::getSearchURL());
 } else {
     Session::checkRight(ConfigurationProfile::$rightname, READ);
-    Html::header(ConfigurationProfile::getTypeName(1), $_SERVER['PHP_SELF'], 'admin', ConfigurationProfile::class);
+    Html::header(ConfigurationProfile::getTypeName(1), $_SERVER['PHP_SELF'], 'config', ConfigurationProfile::class);
     $id = (int) ($_GET['id'] ?? 0);
     if ($id > 0) {
         $item->getFromDB($id);
