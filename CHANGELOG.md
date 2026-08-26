@@ -11,6 +11,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Généralisation des formulaires de catalogue de services « intelligents » (issue #207, suite du
+  pilote #208) : sur les ~50 services de `ServiceCatalogBuilder`, 6 identifiés comme bénéficiant
+  réellement d'un titre de ticket calculé et/ou de questions conditionnelles (les ~44 autres restent
+  volontairement inchangés, un champ structuré n'y apporterait pas de valeur par rapport au simple
+  texte libre) : « Demande de licence logicielle » (titre calculé), « Demande d'accès VPN » (question
+  conditionnelle : date de fin masquée si accès permanent, titre calculé), « Demande de badge
+  d'accès » (titre calculé), « Demande de congé ou absence » (question conditionnelle : justificatif
+  médical affiché seulement pour une absence maladie, titre calculé), « Déclarer une arrivée, un
+  départ ou une mutation » (question conditionnelle avec `OR` : poste concerné affiché pour une
+  arrivée ou une mutation, pas un départ, titre calculé), « Réservation ou problème d'équipement de
+  salle de réunion » (question conditionnelle à deux branches selon le type de demande). Chaque
+  service a son propre constructeur dédié (`SoftwareLicenseFormBuilder`, `VpnAccessFormBuilder`,
+  `AccessBadgeFormBuilder`, `LeaveRequestFormBuilder`, `StaffMovementFormBuilder`,
+  `MeetingRoomFormBuilder`), même mécanisme natif GLPI 11 que le pilote (`Glpi\Form\Question`
+  `visibility_strategy`/`conditions`, `Glpi\Form\Tag\AnswerTagProvider`/`FormTagProvider` pour les
+  titres calculés). L'entrée correspondante dans `ServiceCatalogBuilder::SERVICES` reste présente
+  (aperçu de l'assistant) mais n'est plus construite par cette classe. Étape « Catalogue de services »
+  de l'assistant mise à jour avec des badges (« titre calculé » / « question conditionnelle ») sur
+  les services concernés. Vérifié en réel : les 6 formulaires soumis avec de vraies réponses,
+  bascule de visibilité des questions conditionnelles observée dans le DOM rendu, ticket créé pour
+  chacun avec le titre calculé et la catégorie ITIL attendus.
+
 - Pilote de formulaire de catalogue de services « intelligent » (issue #208, premier exemple concret
   pour #207) : nouveau service « Demande de droit d'accès / mission à l'étranger » (branche
   Ressources Humaines), avec de vraies questions typées (pays de destination, date de début, date

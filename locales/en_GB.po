@@ -2265,9 +2265,137 @@ msgstr "from"
 msgid "au"
 msgstr "to"
 
+#: src/LeaveRequestFormBuilder.php
+msgid "Type de congé"
+msgstr "Leave type"
+
+#: src/LeaveRequestFormBuilder.php
+msgid "Date de réception du justificatif médical"
+msgstr "Date the medical certificate was received"
+
+#: src/VpnAccessFormBuilder.php
+msgid "Réseau ou ressource à atteindre"
+msgstr "Network or resource to reach"
+
+#: src/VpnAccessFormBuilder.php
+msgid "Durée d'accès"
+msgstr "Access duration"
+
+#: src/VpnAccessFormBuilder.php
+msgid "Date de fin d'accès souhaitée"
+msgstr "Requested access end date"
+
+#: src/AccessBadgeFormBuilder.php
+msgid "Zone ou local concerné"
+msgstr "Zone or room concerned"
+
+#: src/AccessBadgeFormBuilder.php
+msgid "Date de début d'accès"
+msgstr "Access start date"
+
+#: src/AccessBadgeFormBuilder.php
+msgid "Date de fin d'accès"
+msgstr "Access end date"
+
+#: src/SoftwareLicenseFormBuilder.php
+msgid "Logiciel concerné"
+msgstr "Software concerned"
+
+#: src/SoftwareLicenseFormBuilder.php
+msgid "Quantité de licences"
+msgstr "Number of licences"
+
+#: src/SoftwareLicenseFormBuilder.php
+msgid "Précisions"
+msgstr "Details"
+
+#: src/MeetingRoomFormBuilder.php
+msgid "Type de demande"
+msgstr "Request type"
+
+#: src/MeetingRoomFormBuilder.php
+msgid "Salle souhaitée"
+msgstr "Requested room"
+
+#: src/MeetingRoomFormBuilder.php
+msgid "Date souhaitée"
+msgstr "Requested date"
+
+#: src/MeetingRoomFormBuilder.php
+msgid "Équipement concerné"
+msgstr "Equipment concerned"
+
+#: src/MeetingRoomFormBuilder.php
+msgid "Description du problème"
+msgstr "Problem description"
+
+#: src/StaffMovementFormBuilder.php
+msgid "Nom du salarié concerné"
+msgstr "Name of the employee concerned"
+
+#: src/StaffMovementFormBuilder.php
+msgid "Type de mouvement"
+msgstr "Movement type"
+
+#: src/StaffMovementFormBuilder.php
+msgid "Poste concerné"
+msgstr "Position concerned"
+
+#: src/StaffMovementFormBuilder.php
+msgid "Date d'effet"
+msgstr "Effective date"
+
+#: src/StaffMovementFormBuilder.php
+msgid "le"
+msgstr "on"
+
 #: front/wizard.php
 msgid "Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de ticket calculé automatiquement)."
 msgstr "Service \"Foreign access request / business trip\" created (ticket title computed automatically)."
+
+#: front/wizard.php
+msgid "Service \"Demande de licence logicielle\" enrichi (titre de ticket calculé automatiquement)."
+msgstr "Service \"Software licence request\" enhanced (ticket title computed automatically)."
+
+#: front/wizard.php
+msgid "Service \"Demande d'accès VPN\" enrichi (question conditionnelle, titre de ticket calculé automatiquement)."
+msgstr "Service \"VPN access request\" enhanced (conditional question, ticket title computed automatically)."
+
+#: front/wizard.php
+msgid "Service \"Demande de badge d'accès\" enrichi (titre de ticket calculé automatiquement)."
+msgstr "Service \"Access badge request\" enhanced (ticket title computed automatically)."
+
+#: front/wizard.php
+msgid "Service \"Demande de congé ou absence\" enrichi (question conditionnelle, titre de ticket calculé automatiquement)."
+msgstr "Service \"Leave or absence request\" enhanced (conditional question, ticket title computed automatically)."
+
+#: front/wizard.php
+msgid "Service \"Déclarer une arrivée, un départ ou une mutation\" enrichi (question conditionnelle, titre de ticket calculé automatiquement)."
+msgstr "Service \"Report an arrival, departure or transfer\" enhanced (conditional question, ticket title computed automatically)."
+
+#: front/wizard.php
+msgid "Service \"Réservation ou problème d'équipement de salle de réunion\" enrichi (question conditionnelle)."
+msgstr "Service \"Meeting room booking or equipment issue\" enhanced (conditional question)."
+
+#: templates/wizard.html.twig
+msgid "Quelques services vont plus loin avec de vraies questions (dates, quantités...) : le titre du ticket est alors calculé automatiquement, et/ou certaines questions ne s'affichent que selon une réponse précédente (voir les badges ci-dessous)."
+msgstr "A few services go further with real questions (dates, quantities...): the ticket title is then computed automatically, and/or some questions only appear depending on a previous answer (see the badges below)."
+
+#: templates/wizard.html.twig
+msgid "titre calculé"
+msgstr "computed title"
+
+#: templates/wizard.html.twig
+msgid "Titre de ticket calculé automatiquement à partir des réponses"
+msgstr "Ticket title computed automatically from the answers"
+
+#: templates/wizard.html.twig
+msgid "question conditionnelle"
+msgstr "conditional question"
+
+#: templates/wizard.html.twig
+msgid "Certaines questions ne s'affichent que selon la réponse donnée à une question précédente"
+msgstr "Some questions only appear depending on the answer given to a previous question"
 
 #: templates/wizard.html.twig
 msgid "Pilote : un formulaire plus avancé que les autres services ci-dessus, avec de vraies questions (pays, dates) et un titre de ticket calculé automatiquement à partir des réponses (nouveau moteur de formulaires GLPI 11)."

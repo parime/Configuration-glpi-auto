@@ -538,6 +538,7 @@
       <div class="cga-wizard-step" data-step="7" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 7 : {{ __('Catalogue de services', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : des formulaires prêts à l\'emploi dans le portail libre-service — l\'utilisateur choisit un service précis, jamais une catégorie ; le ticket est automatiquement routé vers la bonne catégorie.', 'configurationglpiauto') }}</p>
+        <p class="text-muted small">{{ __('Quelques services vont plus loin avec de vraies questions (dates, quantités...) : le titre du ticket est alors calculé automatiquement, et/ou certaines questions ne s\'affichent que selon une réponse précédente (voir les badges ci-dessous).', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
           <input type="hidden" name="service_catalog_enabled" value="0">
@@ -562,7 +563,15 @@
                   <strong>{{ branch.icon }} {{ branch.name }}</strong>
                   <ul class="mb-0">
                     {% for service in branch_services %}
-                      <li>{{ service.name }}</li>
+                      <li>
+                        {{ service.name }}
+                        {% if service.smart_title %}
+                          <span class="badge bg-azure-lt" title="{{ __('Titre de ticket calculé automatiquement à partir des réponses', 'configurationglpiauto') }}">{{ __('titre calculé', 'configurationglpiauto') }}</span>
+                        {% endif %}
+                        {% if service.smart_conditional %}
+                          <span class="badge bg-purple-lt" title="{{ __('Certaines questions ne s\'affichent que selon la réponse donnée à une question précédente', 'configurationglpiauto') }}">{{ __('question conditionnelle', 'configurationglpiauto') }}</span>
+                        {% endif %}
+                      </li>
                     {% endfor %}
                   </ul>
                 </div>
