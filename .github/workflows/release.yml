@@ -25,6 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
+      actions: write
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
@@ -147,3 +149,41 @@ jobs:
               --title "$GITHUB_REF_NAME" \
               --generate-notes
           fi
+
+      - name: Open a PR updating the marketplace catalogue
+        # The marketplace listing (configurationglpiauto.xml) drifted silently for months before
+        # a reviewer reported it (issue #105 on the sibling assetsign-glpi repo, same bug here):
+        # nothing kept it in sync with new releases, so the catalogue kept advertising an old
+        # version. This step closes that gap for good by opening a ready-to-merge PR on every
+        # release instead of relying on someone remembering to edit the file by hand.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          python3 .github/scripts/update_marketplace_xml.py \
+            configurationglpiauto.xml "$VERSION" "=11.0.0" \
+            "https://github.com/parime/Configuration-glpi-auto/releases/download/${GITHUB_REF_NAME}/${ARCHIVE_NAME}" \
+            "        " "            "
+
+          if git diff --quiet -- configurationglpiauto.xml; then
+            echo "Catalogue already up to date, nothing to do."
+            exit 0
+          fi
+
+          BRANCH="chore/marketplace-xml-${VERSION}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add configurationglpiauto.xml
+          git commit -m "chore: add version ${VERSION} to the marketplace catalogue"
+          git push origin "$BRANCH"
+
+          gh pr create --title "chore: add version ${VERSION} to the marketplace catalogue" \
+            --body "Automatic update after release ${GITHUB_REF_NAME}. Merge once CI is green." \
+            --base main --head "$BRANCH"
+
+          # A PR/push made with the default GITHUB_TOKEN does not trigger pull_request workflows
+          # (GitHub Actions anti-recursion guard -- same limitation already documented in
+          # auto-tag.yml for release.yml itself) -- explicitly re-trigger CI so the PR's required
+          # check actually runs instead of sitting pending forever.
+          gh workflow run continuous-integration.yml --ref "$BRANCH"
