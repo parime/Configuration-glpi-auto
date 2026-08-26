@@ -16,6 +16,7 @@
  */
 
 use GlpiPlugin\Configurationglpiauto\AbroadMissionFormBuilder;
+use GlpiPlugin\Configurationglpiauto\AccessBadgeFormBuilder;
 use GlpiPlugin\Configurationglpiauto\AssetTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\BrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\BuildingAssetBuilder;
@@ -35,11 +36,13 @@ use GlpiPlugin\Configurationglpiauto\FollowupLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
+use GlpiPlugin\Configurationglpiauto\LeaveRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\LineOperatorBuilder;
 use GlpiPlugin\Configurationglpiauto\LocationBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerDictionaryBuilder;
 use GlpiPlugin\Configurationglpiauto\MarketplaceBuilder;
+use GlpiPlugin\Configurationglpiauto\MeetingRoomFormBuilder;
 use GlpiPlugin\Configurationglpiauto\NotificationBrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\PaletteBuilder;
 use GlpiPlugin\Configurationglpiauto\PhysicalSecurityAssetBuilder;
@@ -55,8 +58,10 @@ use GlpiPlugin\Configurationglpiauto\SatisfactionSurveyBuilder;
 use GlpiPlugin\Configurationglpiauto\ServerAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
+use GlpiPlugin\Configurationglpiauto\SoftwareLicenseFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareLicenseTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\SolutionLibraryBuilder;
+use GlpiPlugin\Configurationglpiauto\StaffMovementFormBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use GlpiPlugin\Configurationglpiauto\SupportTierBuilder;
 use GlpiPlugin\Configurationglpiauto\TagBuilder;
@@ -68,6 +73,7 @@ use GlpiPlugin\Configurationglpiauto\ValidationRoutingBuilder;
 use GlpiPlugin\Configurationglpiauto\ValidationTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\VehicleAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\VipBuilder;
+use GlpiPlugin\Configurationglpiauto\VpnAccessFormBuilder;
 use GlpiPlugin\Configurationglpiauto\WaitReasonBuilder;
 
 /**
@@ -445,6 +451,18 @@ if (isset($_POST['finish'])) {
     // service with real typed questions and a computed ticket title instead of the generic
     // Title/Description-only shape (issue #208, pilot for #207).
     $abroadMissionFormCreated = (new AbroadMissionFormBuilder())->build($config);
+    // Issue #207 : the 6 SERVICES entries flagged 'smart' in ServiceCatalogBuilder are built here
+    // instead, each by its own dedicated builder (same pilot pattern as AbroadMissionFormBuilder
+    // just above) with real question fields, a computed ticket title and/or conditional questions
+    // where that genuinely adds value, see ServiceCatalogBuilder's own docblock for the full
+    // triage. Gated the same way the plain entry they replace was (service_catalog_enabled + the
+    // branch checkbox), no extra toggle of their own.
+    $softwareLicenseFormCreated = (new SoftwareLicenseFormBuilder())->build($config);
+    $vpnAccessFormCreated = (new VpnAccessFormBuilder())->build($config);
+    $accessBadgeFormCreated = (new AccessBadgeFormBuilder())->build($config);
+    $leaveRequestFormCreated = (new LeaveRequestFormBuilder())->build($config);
+    $staffMovementFormCreated = (new StaffMovementFormBuilder())->build($config);
+    $meetingRoomFormCreated = (new MeetingRoomFormBuilder())->build($config);
     $statesCreated = (new StateBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
     $ruleRightBuilder = new RuleRightBuilder();
@@ -643,6 +661,24 @@ if (isset($_POST['finish'])) {
     }
     if ($abroadMissionFormCreated) {
         $messages[] = __('Service "Demande de droit d\'accès / mission à l\'étranger" créé (titre de ticket calculé automatiquement).', 'configurationglpiauto');
+    }
+    if ($softwareLicenseFormCreated) {
+        $messages[] = __('Service "Demande de licence logicielle" enrichi (titre de ticket calculé automatiquement).', 'configurationglpiauto');
+    }
+    if ($vpnAccessFormCreated) {
+        $messages[] = __('Service "Demande d\'accès VPN" enrichi (question conditionnelle, titre de ticket calculé automatiquement).', 'configurationglpiauto');
+    }
+    if ($accessBadgeFormCreated) {
+        $messages[] = __('Service "Demande de badge d\'accès" enrichi (titre de ticket calculé automatiquement).', 'configurationglpiauto');
+    }
+    if ($leaveRequestFormCreated) {
+        $messages[] = __('Service "Demande de congé ou absence" enrichi (question conditionnelle, titre de ticket calculé automatiquement).', 'configurationglpiauto');
+    }
+    if ($staffMovementFormCreated) {
+        $messages[] = __('Service "Déclarer une arrivée, un départ ou une mutation" enrichi (question conditionnelle, titre de ticket calculé automatiquement).', 'configurationglpiauto');
+    }
+    if ($meetingRoomFormCreated) {
+        $messages[] = __('Service "Réservation ou problème d\'équipement de salle de réunion" enrichi (question conditionnelle).', 'configurationglpiauto');
     }
     if ($statesCreated !== []) {
         $messages[] = sprintf(__('%d statuts d\'éléments créés.', 'configurationglpiauto'), count($statesCreated));

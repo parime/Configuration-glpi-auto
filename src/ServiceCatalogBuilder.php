@@ -46,6 +46,21 @@ use ITILCategory;
  * `Form::add()` already creates a first `Section` and a default `FormDestination` on its own
  * (`Form::post_addItem()` → `createFirstSection()` / `addDefaultDestinations()`) — reused here
  * instead of creating them by hand.
+ *
+ * **Issue #207 triage** : entries flagged `'smart' => true` below are deliberately *not* built by
+ * this class's own loop (see the `smart` check in `build()`) : after auditing all ~50 entries, six
+ * genuinely benefit from real question fields, a computed ticket title and/or conditional
+ * questions (not applied on principle, the plugin owner's explicit instruction), and each gets its
+ * own dedicated builder matching the pilot's pattern (`AbroadMissionFormBuilder`, issue #208)
+ * instead of this class's generic Title+Description shape: `SoftwareLicenseFormBuilder`,
+ * `VpnAccessFormBuilder`, `AccessBadgeFormBuilder`, `LeaveRequestFormBuilder`,
+ * `StaffMovementFormBuilder`, `MeetingRoomFormBuilder`. The entry stays in `SERVICES` (rather than
+ * being deleted) purely so the wizard's per-branch preview list keeps mentioning the service by
+ * name; `smart_title`/`smart_conditional` flag which of the two mechanisms it actually got, for
+ * that same preview to badge accordingly. The remaining ~44 stayed plain on purpose: most of the
+ * catalog is "signaler/demander X" report-style tickets where a free-text description already says
+ * everything a structured field would, and forcing questions onto those would add friction without
+ * making the resulting ticket meaningfully more informative.
  */
 class ServiceCatalogBuilder
 {
@@ -58,12 +73,12 @@ class ServiceCatalogBuilder
     private const SERVICES = [
         // IT & SI
         ['branch' => 'it', 'name' => "Installation ou mise à jour d'un logiciel", 'path' => ['Logiciels & Applications', 'Installation / Désinstallation']],
-        ['branch' => 'it', 'name' => 'Demande de licence logicielle', 'path' => ['Logiciels & Applications', 'Licences & Clés']],
+        ['branch' => 'it', 'name' => 'Demande de licence logicielle', 'path' => ['Logiciels & Applications', 'Licences & Clés'], 'smart' => true, 'smart_title' => true],
         ['branch' => 'it', 'name' => 'Signaler un bug ou dysfonctionnement logiciel', 'path' => ['Logiciels & Applications', 'Bug / Dysfonctionnement']],
         ['branch' => 'it', 'name' => "Création d'un compte utilisateur", 'path' => ['Comptes & Identités', 'Onboarding / Création de compte']],
         ['branch' => 'it', 'name' => 'Réinitialisation de mot de passe', 'path' => ['Comptes & Identités', 'Mot de passe & Réinitialisation']],
         ['branch' => 'it', 'name' => "Désactivation d'un compte utilisateur", 'path' => ['Comptes & Identités', 'Offboarding / Suppression']],
-        ['branch' => 'it', 'name' => "Demande d'accès VPN", 'path' => ['Réseau & Connectivité', 'Accès Distant']],
+        ['branch' => 'it', 'name' => "Demande d'accès VPN", 'path' => ['Réseau & Connectivité', 'Accès Distant'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
         ['branch' => 'it', 'name' => "Demande d'accès Wifi", 'path' => ['Réseau & Connectivité', 'Wifi']],
         ['branch' => 'it', 'name' => "Demande d'un nouvel écran", 'path' => ['Poste de travail', 'Écran & Affichage']],
         ['branch' => 'it', 'name' => "Demande d'un ordinateur portable", 'path' => ['Poste de travail', 'Portable']],
@@ -76,7 +91,7 @@ class ServiceCatalogBuilder
         ['branch' => 'batiment', 'name' => "Demande de mobilier ou d'aménagement de poste", 'path' => ['Mobilier & Aménagement']],
         ['branch' => 'batiment', 'name' => "Signaler une fuite d'eau ou un problème sanitaire", 'path' => ['Plomberie & Sanitaires']],
         ['branch' => 'batiment', 'name' => 'Problème de porte, serrure ou badge de local', 'path' => ['Serrurerie, Portes & Fenêtres']],
-        ['branch' => 'batiment', 'name' => "Réservation ou problème d'équipement de salle de réunion", 'path' => ['Salles de réunion & Équipements']],
+        ['branch' => 'batiment', 'name' => "Réservation ou problème d'équipement de salle de réunion", 'path' => ['Salles de réunion & Équipements'], 'smart' => true, 'smart_conditional' => true],
         ['branch' => 'batiment', 'name' => 'Signaler un problème de propreté ou demander un nettoyage', 'path' => ['Prestations & Hygiène', 'Propreté & Nettoyage']],
         // Flotte Automobile & Mobilité
         ['branch' => 'flotte', 'name' => "Demande d'entretien véhicule", 'path' => ['Entretien & Réparation']],
@@ -84,8 +99,8 @@ class ServiceCatalogBuilder
         ['branch' => 'flotte', 'name' => 'Demande de carte carburant ou badge de recharge', 'path' => ['Carburant & Recharge']],
         // Ressources Humaines
         ['branch' => 'rh', 'name' => 'Demande de formation', 'path' => ['Formation & Montée en compétences']],
-        ['branch' => 'rh', 'name' => 'Demande de congé ou absence', 'path' => ['Absences & Congés']],
-        ['branch' => 'rh', 'name' => "Déclarer une arrivée, un départ ou une mutation", 'path' => ['Mouvements de personnel']],
+        ['branch' => 'rh', 'name' => 'Demande de congé ou absence', 'path' => ['Absences & Congés'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        ['branch' => 'rh', 'name' => "Déclarer une arrivée, un départ ou une mutation", 'path' => ['Mouvements de personnel'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
         ['branch' => 'rh', 'name' => "Demande de télétravail ou d'aménagement du temps de travail", 'path' => ['Organisation du travail']],
         ['branch' => 'rh', 'name' => 'Demande administrative RH', 'path' => ['Administration RH']],
         // Achats & Logistique
@@ -94,7 +109,7 @@ class ServiceCatalogBuilder
         ['branch' => 'achats', 'name' => 'Suivi de réception ou de livraison', 'path' => ['Réception, Livraison & Expédition']],
         ['branch' => 'achats', 'name' => "Demande de déménagement ou d'archivage", 'path' => ['Déménagement & Archivage']],
         // Sécurité & Protection des Personnes
-        ['branch' => 'securite', 'name' => "Demande de badge d'accès", 'path' => ["Contrôle d'Accès & Badges"]],
+        ['branch' => 'securite', 'name' => "Demande de badge d'accès", 'path' => ["Contrôle d'Accès & Badges"], 'smart' => true, 'smart_title' => true],
         ['branch' => 'securite', 'name' => 'Signaler un dysfonctionnement vidéosurveillance ou alarme', 'path' => ['Vidéosurveillance & Alarmes']],
         ['branch' => 'securite', 'name' => 'Signaler un incident ou une urgence sécurité', 'path' => ['Gestion des Incidents & Urgences']],
         ['branch' => 'securite', 'name' => 'Demande liée à la santé et sécurité au travail', 'path' => ['Santé & Sécurité au Travail']],
@@ -161,6 +176,11 @@ class ServiceCatalogBuilder
 
         $count = 0;
         foreach (self::SERVICES as $service) {
+            if (!empty($service['smart'])) {
+                // Built by its own dedicated builder instead (see class docblock), kept in this
+                // list only so the wizard preview still mentions it.
+                continue;
+            }
             if (!isset($formCategoryIds[$service['branch']])) {
                 continue;
             }

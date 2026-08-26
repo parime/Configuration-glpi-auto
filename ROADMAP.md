@@ -1204,10 +1204,27 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
    correct. Pas de question conditionnelle dans ce pilote (les 3 champs sont toujours pertinents
    ensemble, comme dans l'exemple réel du porteur du plugin) : `HelpdeskFormBuilder` reste la seule
    utilisation actuelle de `Question::visibility_strategy`/`conditions` dans ce dépôt.
-   **Reste pour la généralisation complète de #207** (issue laissée ouverte) : identifier, parmi les
-   ~50 autres services existants, lesquels bénéficieraient réellement d'un titre calculé et/ou de
-   questions conditionnelles (VISIBLE_IF), et étendre au cas par cas plutôt que d'appliquer ça
-   partout par principe.
+   **Généralisation faite (v0.72.0 à venir, même issue #207).** Audit des ~50 autres services :
+   6 identifiés comme bénéficiant réellement d'un titre calculé et/ou de questions conditionnelles,
+   chacun avec son propre constructeur dédié (même pattern que le pilote) :
+   - `SoftwareLicenseFormBuilder` (« Demande de licence logicielle », titre calculé uniquement) ;
+   - `VpnAccessFormBuilder` (« Demande d'accès VPN », question conditionnelle : date de fin masquée
+     si accès permanent, titre calculé) ;
+   - `AccessBadgeFormBuilder` (« Demande de badge d'accès », titre calculé uniquement) ;
+   - `LeaveRequestFormBuilder` (« Demande de congé ou absence », question conditionnelle :
+     justificatif médical affiché seulement pour une absence maladie, titre calculé) ;
+   - `StaffMovementFormBuilder` (« Déclarer une arrivée, un départ ou une mutation », question
+     conditionnelle avec `LogicOperator::OR` : poste concerné affiché pour une arrivée OU une
+     mutation, pas un départ, titre calculé) ;
+   - `MeetingRoomFormBuilder` (« Réservation ou problème d'équipement de salle de réunion »,
+     question conditionnelle à deux branches selon le type de demande, pas de titre calculé pour
+     éviter des tags vides selon la branche choisie).
+   Les ~44 services restants gardés volontairement inchangés : type "signaler/demander X" ou une
+   description libre dit déjà tout ce qu'un champ structuré apporterait, ajouter des questions
+   forcerait de la friction sans rendre le ticket plus informatif. Vérifié en réel : les 6
+   formulaires soumis avec de vraies réponses (Playwright, navigation réelle), bascule de visibilité
+   des questions conditionnelles observée dans le DOM rendu (pas seulement dans le JSON stocké),
+   ticket créé pour chacun avec le titre calculé et la catégorie ITIL attendus. Issue #207 fermée.
 
 ---
 
