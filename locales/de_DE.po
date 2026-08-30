@@ -2481,6 +2481,18 @@ msgstr "Fragen: Zielland, Startdatum, Enddatum, Grund / Anmerkungen"
 msgid "Titre du ticket calculé automatiquement : nom du formulaire + dates de début/fin + pays"
 msgstr "Ticket-Titel automatisch berechnet: Formularname + Start-/Enddatum + Land"
 
+msgid "Ajouter des articles de FAQ pour les utilisateurs finaux"
+msgstr "FAQ-Artikel für Endbenutzer hinzufügen"
+
+msgid "Visibles dans la FAQ du portail libre-service : comment utiliser le catalogue de services, et comment signaler un incident ou faire une demande."
+msgstr "Sichtbar in der FAQ des Self-Service-Portals: wie man den Servicekatalog nutzt und wie man einen Vorfall meldet oder eine Anfrage stellt."
+
+msgid "articles de FAQ"
+msgstr "FAQ-Artikel"
+
+msgid "%d articles de FAQ créés."
+msgstr "%d FAQ-Artikel erstellt."
+
 #~ msgid "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"
 #~ msgstr "CERT-FR (ANSSI) Sicherheitswarnungs-RSS-Feed hinzufügen"
 
