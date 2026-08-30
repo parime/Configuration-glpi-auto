@@ -11,6 +11,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Deux articles de FAQ pour les utilisateurs finaux (issues #143 et #144) : « Comment utiliser le
+  catalogue de services pour faire une demande » et « Signaler un incident ou faire une demande :
+  quelle différence et comment s'y prendre », rédigés en langage simple pour un employé non
+  technique (aucun terme interne au plugin), et vérifiés mot pour mot contre le vrai portail
+  libre-service (`/Helpdesk`, `/ServiceCatalog`, `/front/helpdesk.faq.php`) pour reprendre les
+  intitulés réels des menus. Nouveau `FaqBuilder`, gardé par une nouvelle case à cocher « Ajouter
+  des articles de FAQ pour les utilisateurs finaux » (étape 15, cochée par défaut) : contrairement
+  à une documentation statique dans ce dépôt, les deux articles sont de vrais `KnowbaseItem`
+  (`is_faq=1`) créés à l'exécution de l'assistant, donc visibles immédiatement dans la FAQ native
+  de l'instance configurée — même logique que `KnowbaseCategoryBuilder`/`SolutionLibraryBuilder`
+  plutôt qu'un fichier markdown que personne n'ouvrirait depuis l'instance déployée. Visibilité
+  vérifiée en lisant `KnowbaseItem::getVisibilityCriteriaKB()` (GLPI 11.0.8) : `is_faq=1` seul ne
+  suffit pas, une ligne `Entity_KnowbaseItem` (entité 0, récursive) est nécessaire, comme pour
+  toute visibilité globale ailleurs dans ce plugin. Contenu traduit dans les 5 langues via
+  `KnowbaseItemTranslation` (mécanisme natif dédié à la base de connaissances, distinct de
+  `DropdownTranslation`), même principe que `SolutionLibraryBuilder` pour son propre contenu
+  long — les deux articles ne passent pas par `__()`/`locales/*.po`, réservé aux textes d'interface
+  courts, pas à la prose longue. Vérifié en réel : les deux articles apparaissent, lisibles et bien
+  mis en forme, dans `/front/helpdesk.faq.php` avec le compte de démonstration `post-only`.
+
 - Généralisation des formulaires de catalogue de services « intelligents » (issue #207, suite du
   pilote #208) : sur les ~50 services de `ServiceCatalogBuilder`, 6 identifiés comme bénéficiant
   réellement d'un titre de ticket calculé et/ou de questions conditionnelles (les ~44 autres restent
