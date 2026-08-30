@@ -213,6 +213,9 @@ class ConfigurationProfile extends CommonDBTM
             // admin trims/extends it once real assets get entered.
             'manufacturers_enabled' => true,
             'kb_categories_enabled' => true,
+            // Two ready-to-read FAQ articles (catalogue de services, incident vs. demande) beat an
+            // empty FAQ regardless of org size — same reasoning as kb_categories_enabled above.
+            'kb_faq_enabled' => true,
             // Project types/task types are useful scaffolding independent of org size, same
             // reasoning as the rest of this baseline — the admin trims what doesn't apply.
             'project_taxonomy_enabled' => true,

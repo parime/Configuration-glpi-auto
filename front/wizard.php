@@ -30,6 +30,7 @@ use GlpiPlugin\Configurationglpiauto\CountryHolidayBuilder;
 use GlpiPlugin\Configurationglpiauto\DocumentManagementBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityAddressBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
+use GlpiPlugin\Configurationglpiauto\FaqBuilder;
 use GlpiPlugin\Configurationglpiauto\FieldUnicityBuilder;
 use GlpiPlugin\Configurationglpiauto\FireSafetyAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\FollowupLibraryBuilder;
@@ -533,6 +534,7 @@ if (isset($_POST['finish'])) {
     $certificateTypesCreated = (new CertificateTypeBuilder())->build($config);
     $recurringTicketLibraryCreated = (new RecurringTicketLibraryBuilder())->build($config);
     $kbCategoriesCreated = (new KnowbaseCategoryBuilder())->build($config);
+    $faqArticlesCreated = (new FaqBuilder())->build($config);
     $documentManagementCreated = (new DocumentManagementBuilder())->build($config);
     $planningEventsCreated = (new PlanningEventBuilder())->build($config);
     $projectTaxonomyCreated = (new ProjectTaxonomyBuilder())->build($config);
@@ -770,6 +772,9 @@ if (isset($_POST['finish'])) {
     if ($kbCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d catégories de base de connaissances créées.', 'configurationglpiauto'), $kbCategoriesCreated);
     }
+    if ($faqArticlesCreated > 0) {
+        $messages[] = sprintf(__('%d articles de FAQ créés.', 'configurationglpiauto'), $faqArticlesCreated);
+    }
     if ($documentManagementCreated > 0) {
         $messages[] = sprintf(__('%d rubriques de documents/criticités créées.', 'configurationglpiauto'), $documentManagementCreated);
     }
@@ -885,6 +890,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'user_categories_preview' => UserCategoryBuilder::getCategoriesPreview(),
     'field_unicity_rules_preview' => FieldUnicityBuilder::getRulesPreview(),
     'rss_feeds_preview' => RSSFeedBuilder::getFeedsPreview(),
+    'faq_articles_preview' => FaqBuilder::getArticlesPreview(),
     'marketplace_recommended_plugins' => MarketplaceBuilder::getRecommendedPluginsPreview(),
     // Read straight from GLPI core's own encrypted store, matching the native "Enregistrement"
     // page's own behavior — never mirrored into this plugin's own config table (see MarketplaceBuilder).

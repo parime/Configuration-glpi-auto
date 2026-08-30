@@ -148,6 +148,7 @@ final class Installer
                 `manufacturer_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `manufacturer_dictionary_enabled` tinyint NOT NULL DEFAULT 0,
                 `kb_categories_enabled` tinyint NOT NULL DEFAULT 0,
+                `kb_faq_enabled` tinyint NOT NULL DEFAULT 0,
                 `document_management_enabled` tinyint NOT NULL DEFAULT 0,
                 `document_management_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `planning_events_enabled` tinyint NOT NULL DEFAULT 0,
@@ -304,6 +305,11 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'manufacturer_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'manufacturer_dictionary_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'kb_categories_enabled', 'bool', ['value' => 0]);
+            // #143/#144: explicit default 1 (unlike the plain addField()-with-no-value precedent
+            // above) — this seeds two ready-to-read FAQ articles, not an empty structure an admin
+            // still has to fill in themselves, so an upgrading instance gets them the same as a
+            // fresh install unless the admin actively unchecks the wizard's new checkbox.
+            $migration->addField(self::CONFIGS_TABLE, 'kb_faq_enabled', 'bool', ['value' => 1]);
             $migration->addField(self::CONFIGS_TABLE, 'document_management_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'document_management_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'planning_events_enabled', 'bool', ['value' => 0]);

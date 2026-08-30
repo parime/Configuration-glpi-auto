@@ -1263,6 +1263,20 @@
         </div>
 
         <div class="form-check form-switch mb-2">
+          <input type="hidden" name="kb_faq_enabled" value="0">
+          <input type="checkbox" name="kb_faq_enabled" value="1" class="form-check-input" id="cga-kb-faq-enabled" {{ config.kb_faq_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-kb-faq-enabled">{{ __('Ajouter des articles de FAQ pour les utilisateurs finaux', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-kb-faq-fields" style="display: none;" class="mb-3">
+          <p class="text-muted small mb-1">{{ __('Visibles dans la FAQ du portail libre-service : comment utiliser le catalogue de services, et comment signaler un incident ou faire une demande.', 'configurationglpiauto') }}</p>
+          <ul class="mb-0">
+            {% for article in faq_articles_preview %}
+              <li>{{ article.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="form-check form-switch mb-2">
           <input type="hidden" name="document_management_enabled" value="0">
           <input type="checkbox" name="document_management_enabled" value="1" class="form-check-input" id="cga-document-management-enabled" {{ config.document_management_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-document-management-enabled">{{ __('Créer les rubriques de documents et les niveaux de criticité', 'configurationglpiauto') }}</label>
@@ -2684,6 +2698,8 @@
   kbCategoriesEnabledInput.addEventListener('change', toggleKbCategoriesFields);
   toggleKbCategoriesFields();
 
+  var kbFaqEnabledInput = wireSimpleToggle('cga-kb-faq-enabled', 'cga-kb-faq-fields');
+
   var fireSafetyAssetsEnabledInput = wireSimpleToggle('cga-fire-safety-assets-enabled', 'cga-fire-safety-assets-fields');
   wireIconsToggle('cga-fire-safety-asset-icons-enabled', '.cga-fire-safety-asset-icon');
   var physicalSecurityAssetsEnabledInput = wireSimpleToggle('cga-physical-security-assets-enabled', 'cga-physical-security-assets-fields');
@@ -3439,6 +3455,7 @@
     if (locationsEnabledInput.checked) { generalToolsParts.push("{{ __('lieux', 'configurationglpiauto')|e('js') }}"); }
     if (manufacturersEnabledInput.checked) { generalToolsParts.push("{{ __('fabricants', 'configurationglpiauto')|e('js') }}"); }
     if (kbCategoriesEnabledInput.checked) { generalToolsParts.push("{{ __('catégories base de connaissances', 'configurationglpiauto')|e('js') }}"); }
+    if (kbFaqEnabledInput.checked) { generalToolsParts.push("{{ __('articles de FAQ', 'configurationglpiauto')|e('js') }}"); }
     document.getElementById('cga-summary-general-tools').textContent = generalToolsParts.length
       ? generalToolsParts.join(', ')
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
@@ -3602,7 +3619,7 @@
     });
     syncGeneralSettingsSelectAll();
 
-    ['task_categories_enabled', 'task_templates_enabled', 'task_template_icons_enabled', 'solution_library_enabled', 'solution_template_icons_enabled', 'followup_library_enabled', 'followup_library_icons_enabled', 'validation_templates_enabled', 'validation_template_icons_enabled', 'change_problem_templates_enabled', 'change_problem_template_icons_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled', 'project_taxonomy_enabled', 'project_task_templates_enabled', 'project_task_template_icons_enabled'].forEach(function (field) {
+    ['task_categories_enabled', 'task_templates_enabled', 'task_template_icons_enabled', 'solution_library_enabled', 'solution_template_icons_enabled', 'followup_library_enabled', 'followup_library_icons_enabled', 'validation_templates_enabled', 'validation_template_icons_enabled', 'change_problem_templates_enabled', 'change_problem_template_icons_enabled', 'locations_enabled', 'manufacturers_enabled', 'kb_categories_enabled', 'kb_faq_enabled', 'project_taxonomy_enabled', 'project_task_templates_enabled', 'project_task_template_icons_enabled'].forEach(function (field) {
       if (typeof defaults[field] !== 'undefined') {
         var input = document.getElementById('cga-' + field.replace(/_/g, '-'));
         input.checked = !!defaults[field];
