@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-09-03
+
+Premier jalon de version majeure : le plugin est considéré stable au sens de
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html) — engagement de ne plus introduire de
+changement cassant hors bump majeur. Ce n'est pas un aboutissement fonctionnel nouveau (voir
+ROADMAP.md : le périmètre initial de la v1.0 était déjà entièrement livré depuis plusieurs dizaines
+de versions 0.x, cf. les audits de complétude ITIL/ISO 27001 successifs), mais une reconnaissance
+de la maturité déjà atteinte après 75 releases incrémentales validées en réel.
+
 ### Added
 
 - Deux articles de FAQ pour les utilisateurs finaux (issues #143 et #144) : « Comment utiliser le
