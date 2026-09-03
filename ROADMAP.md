@@ -15,7 +15,7 @@ Devenir **la référence Open Source** pour l'initialisation, la standardisation
 
 ## 📅 Versions et Calendrier
 
-### 🚧 Version 1.0 - **En développement**
+### ✅ Version 1.0 - **Publiée (2026-09-03)**
 
 > Le contenu ci-dessous décrivait initialement la v1.0 comme "disponible" avec l'ensemble de ces
 > fonctionnalités cochées. En réalité, jusqu'au Sprint 1 (2026-08-10), le dépôt ne contenait qu'un
@@ -30,9 +30,10 @@ Devenir **la référence Open Source** pour l'initialisation, la standardisation
 > voir CHANGELOG.md), pas un signe d'avancement réel. Le plugin a largement dépassé ce périmètre
 > initial (52 fichiers `*Builder` dans `src/`, bien au-delà des 10 items d'origine).
 
-**Premières releases réelles** : `v0.1.0` (2026-08-10, Sprints 1-2), version actuelle `v0.65.0`
-(2026-08-19), voir [Releases GitHub](https://github.com/parime/Configuration-glpi-auto/releases)
-et [CHANGELOG.md](CHANGELOG.md).
+**Premières releases réelles** : `v0.1.0` (2026-08-10, Sprints 1-2) → `v1.0.0` (2026-09-03, premier
+jalon de version majeure, voir CHANGELOG.md), voir
+[Releases GitHub](https://github.com/parime/Configuration-glpi-auto/releases) et
+[CHANGELOG.md](CHANGELOG.md).
 
 **Fonctionnalités prévues** :
 - ✅ Catalogue de profils de configuration (CRUD, Sprint 1)
