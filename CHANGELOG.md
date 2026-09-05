@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-05
+
 ### Added
 
 - Traduction complète en portugais du Brésil (pt-BR), issue #215 — proposée à l'origine par
