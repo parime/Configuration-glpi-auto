@@ -18,10 +18,16 @@
 namespace GlpiPlugin\Configurationglpiauto;
 
 use Glpi\Form\Category as FormCategory;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsField;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldConfig;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
@@ -32,10 +38,13 @@ use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
 use Glpi\Form\QuestionType\QuestionTypeShortText;
+use Glpi\Form\QuestionType\QuestionTypeUserDevice;
+use Glpi\Form\QuestionType\QuestionTypeUserDevicesConfig;
 use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
 
 /**
  * Part of the generalization of issue #207's smart-form pattern to the full catalog, per explicit
@@ -49,6 +58,15 @@ use ITILCategory;
  * `is_mandatory => 0` used elsewhere for non-essential fields. A final free-text "Précisions
  * complémentaires" field is added on every class in this generalization pass, replacing the generic
  * Description field these smart forms no longer have.
+ *
+ * **Second pass (advanced question types)** : adds an optional `QuestionTypeUserDevice` ("Poste
+ * auquel connecter l'écran") — unlike the replace-a-known-device flow in `LaptopRequestFormBuilder`/
+ * `ProfessionalPhoneFormBuilder`, this service never previously asked which workstation the screen is
+ * for at all, so it's a genuinely new, optional field rather than a text-to-device conversion (a
+ * first-equipment request may not have an existing workstation yet). Wired to `AssociatedItemsField`
+ * (`LAST_VALID_ANSWER`) so IT gets a real linked asset when it is answered. `RequestTypeField` pinned
+ * to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked) — an equipment request is
+ * unambiguously a request, not an incident.
  */
 class NewScreenFormBuilder
 {
@@ -167,7 +185,7 @@ class NewScreenFormBuilder
     }
 
     /**
-     * @return array{nombre: Question, taille: Question, motif: Question}|null
+     * @return array{nombre: Question, taille: Question, motif: Question, poste: Question}|null
      */
     private function addQuestions(Form $form): ?array
     {
@@ -223,15 +241,32 @@ class NewScreenFormBuilder
             'vertical_rank' => 3,
         ]);
 
-        if (!$nombre->getID() || !$taille->getID() || !$motif->getID() || !$precisions->getID()) {
+        // Optional: this service never asked which workstation the screen is for before — see
+        // class docblock.
+        $poste = new Question();
+        $poste->add([
+            'forms_sections_id' => $sectionId,
+            'name' => __("Poste auquel connecter l'écran (si déjà connu)", 'configurationglpiauto'),
+            'type' => QuestionTypeUserDevice::class,
+            'is_mandatory' => 0,
+            'vertical_rank' => 4,
+            'extra_data' => json_encode((new QuestionTypeUserDevicesConfig(
+                is_multiple_devices: false,
+            ))->jsonSerialize()),
+        ]);
+
+        if (
+            !$nombre->getID() || !$taille->getID() || !$motif->getID()
+            || !$precisions->getID() || !$poste->getID()
+        ) {
             return null;
         }
 
-        return ['nombre' => $nombre, 'taille' => $taille, 'motif' => $motif];
+        return ['nombre' => $nombre, 'taille' => $taille, 'motif' => $motif, 'poste' => $poste];
     }
 
     /**
-     * @param array{nombre: Question, taille: Question, motif: Question} $questions
+     * @param array{nombre: Question, taille: Question, motif: Question, poste: Question} $questions
      */
     private function configureDestination(Form $form, int $itilCategoryId, array $questions): void
     {
@@ -254,6 +289,13 @@ class NewScreenFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
+                strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],
+            ))->jsonSerialize(),
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::DEMAND_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

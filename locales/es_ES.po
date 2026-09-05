@@ -2790,3 +2790,39 @@ msgstr "Vehículo en cuestión (matrícula)"
 #: src/CurativeMaintenanceFormBuilder.php src/PreventiveMaintenanceFormBuilder.php
 msgid "Équipement ou installation concerné"
 msgstr "Equipo o instalación afectada"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Poste ou appareil concerné (si le bug est lié à un poste précis)"
+msgstr "Puesto o dispositivo afectado (si el error está vinculado a un equipo concreto)"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Capture d'écran de l'erreur"
+msgstr "Captura de pantalla del error"
+
+#: src/LaptopRequestFormBuilder.php
+msgid "Poste actuel à remplacer"
+msgstr "Puesto actual a sustituir"
+
+#: src/NewScreenFormBuilder.php
+msgid "Poste auquel connecter l'écran (si déjà connu)"
+msgstr "Puesto al que se conectará la pantalla (si ya se conoce)"
+
+#: src/ItemReturnFormBuilder.php
+msgid "Photo du défaut ou preuve d'achat"
+msgstr "Foto del defecto o justificante de compra"
+
+#: src/PasswordResetFormBuilder.php
+msgid "Compte utilisateur concerné"
+msgstr "Cuenta de usuario afectada"
+
+#: src/VehicleIncidentFormBuilder.php src/VehicleMaintenanceFormBuilder.php src/FuelCardFormBuilder.php
+msgid "Véhicule concerné"
+msgstr "Vehículo afectado"
+
+#: src/VideoSurveillanceFormBuilder.php src/DoorLockBadgeFormBuilder.php
+msgid "Équipement concerné (si déjà référencé)"
+msgstr "Equipo afectado (si ya está registrado)"
+
+#: src/NonConformityFormBuilder.php
+msgid "Photo ou preuve documentaire"
+msgstr "Foto o justificante documental"

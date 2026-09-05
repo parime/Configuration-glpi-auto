@@ -19,9 +19,12 @@ namespace GlpiPlugin\Configurationglpiauto;
 
 use Glpi\Form\Category as FormCategory;
 use Glpi\Form\Destination\CommonITILField\ContentField;
+use Glpi\Form\Destination\CommonITILField\ITILActorFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\ObserverField;
+use Glpi\Form\Destination\CommonITILField\ObserverFieldConfig;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
@@ -89,6 +92,20 @@ use ITILCategory;
  * already defaults to `true` when the key is simply absent (`isAutoConfigurated()`). Set explicitly
  * here rather than relying on that silent default, so this stays correct even if that default ever
  * changes in a future GLPI release.
+ *
+ * **Second pass (advanced question types, per explicit maintainer request that the first pass's
+ * basic-types-only treatment was insufficient)** : no new question here — instead, wires
+ * `ObserverField` to `ITILActorFieldStrategy::FORM_FILLER_SUPERVISOR`, a destination-level mechanism
+ * that reads the requester's `users_id_supervisor` and adds them as an Observer automatically, no
+ * question needed at all. Bridges with the exact same native column `ValidationRoutingBuilder`
+ * already uses for its own instance-wide approval rule (see that class's docblock) — a mission abroad
+ * is a textbook case for the requester's manager to be looped in automatically. Deliberately an
+ * Observer, not an approval step : `ValidationField` (the mechanism that would add a real blocking
+ * approval) has no equivalent "supervisor of requester" strategy of its own — its `SPECIFIC_ANSWER`/
+ * `SPECIFIC_ACTORS` strategies need either a real actor-picking question (friction this plugin's own
+ * "automatic" mandate explicitly wants to avoid) or a fixed actor set at admin time (wrong per
+ * requester). An org that also wants a hard approval gate already has `ValidationRoutingBuilder`'s own
+ * opt-in instance-wide rule for exactly that, orthogonal to and compatible with this per-form CC.
  */
 class AbroadMissionFormBuilder
 {
@@ -311,6 +328,17 @@ class AbroadMissionFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            // No question asked : ITILActorFieldStrategy::FORM_FILLER_SUPERVISOR reads the
+            // requester's own `users_id_supervisor` directly (confirmed real, same native GLPI
+            // column `ValidationRoutingBuilder` already relies on for its own instance-wide
+            // approval rule — see that class's docblock) and CCs them as an Observer on the
+            // resulting ticket automatically, with nothing for the requester to fill in or forget.
+            // A mission abroad is exactly the kind of request a manager should see land, without
+            // this plugin having to ask "who is your manager?" (a question the requester might not
+            // even answer correctly, and one this mechanism makes entirely unnecessary).
+            ObserverField::getKey() => (new ObserverFieldConfig(
+                strategies: [ITILActorFieldStrategy::FORM_FILLER_SUPERVISOR],
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

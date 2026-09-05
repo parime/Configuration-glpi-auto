@@ -2794,3 +2794,39 @@ msgstr "Veicolo interessato (targa)"
 #: src/CurativeMaintenanceFormBuilder.php src/PreventiveMaintenanceFormBuilder.php
 msgid "Équipement ou installation concerné"
 msgstr "Apparecchiatura o impianto interessato"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Poste ou appareil concerné (si le bug est lié à un poste précis)"
+msgstr "Postazione o dispositivo interessato (se il bug è legato a una macchina specifica)"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Capture d'écran de l'erreur"
+msgstr "Screenshot dell'errore"
+
+#: src/LaptopRequestFormBuilder.php
+msgid "Poste actuel à remplacer"
+msgstr "Postazione attuale da sostituire"
+
+#: src/NewScreenFormBuilder.php
+msgid "Poste auquel connecter l'écran (si déjà connu)"
+msgstr "Postazione a cui collegare lo schermo (se già nota)"
+
+#: src/ItemReturnFormBuilder.php
+msgid "Photo du défaut ou preuve d'achat"
+msgstr "Foto del difetto o prova d'acquisto"
+
+#: src/PasswordResetFormBuilder.php
+msgid "Compte utilisateur concerné"
+msgstr "Account utente interessato"
+
+#: src/VehicleIncidentFormBuilder.php src/VehicleMaintenanceFormBuilder.php src/FuelCardFormBuilder.php
+msgid "Véhicule concerné"
+msgstr "Veicolo interessato"
+
+#: src/VideoSurveillanceFormBuilder.php src/DoorLockBadgeFormBuilder.php
+msgid "Équipement concerné (si déjà référencé)"
+msgstr "Apparecchiatura interessata (se già censita)"
+
+#: src/NonConformityFormBuilder.php
+msgid "Photo ou preuve documentaire"
+msgstr "Foto o prova documentale"

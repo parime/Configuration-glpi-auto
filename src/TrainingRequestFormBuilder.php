@@ -19,9 +19,12 @@ namespace GlpiPlugin\Configurationglpiauto;
 
 use Glpi\Form\Category as FormCategory;
 use Glpi\Form\Destination\CommonITILField\ContentField;
+use Glpi\Form\Destination\CommonITILField\ITILActorFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\ObserverField;
+use Glpi\Form\Destination\CommonITILField\ObserverFieldConfig;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
@@ -47,6 +50,11 @@ use ITILCategory;
  * when they'd like it, same "all fields answered every time" shape as `AccessBadgeFormBuilder`. Also
  * carries the "Précisions complémentaires" free-text field every class in this generalization batch
  * adds last, replacing the generic Description field these smart forms no longer have.
+ *
+ * **Second pass (advanced question types)** : same `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring
+ * as `AbroadMissionFormBuilder`/`RemoteWorkFormBuilder`/`LeaveRequestFormBuilder` — see the first's
+ * docblock for the full reasoning. A training request is a budget/planning decision managers
+ * routinely need visibility into, without this plugin having to ask who that manager is.
  */
 class TrainingRequestFormBuilder
 {
@@ -231,6 +239,9 @@ class TrainingRequestFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            ObserverField::getKey() => (new ObserverFieldConfig(
+                strategies: [ITILActorFieldStrategy::FORM_FILLER_SUPERVISOR],
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

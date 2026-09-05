@@ -17,15 +17,22 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use Glpi\Asset\AssetDefinition;
 use Glpi\Form\Category as FormCategory;
 use Glpi\Form\Condition\ConditionData;
 use Glpi\Form\Condition\Type as ConditionType;
 use Glpi\Form\Condition\ValueOperator;
 use Glpi\Form\Condition\VisibilityStrategy;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsField;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldConfig;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
@@ -35,6 +42,8 @@ use Glpi\Form\Question;
 use Glpi\Form\QuestionType\QuestionTypeDateTime;
 use Glpi\Form\QuestionType\QuestionTypeDateTimeExtraDataConfig;
 use Glpi\Form\QuestionType\QuestionTypeFile;
+use Glpi\Form\QuestionType\QuestionTypeItem;
+use Glpi\Form\QuestionType\QuestionTypeItemExtraDataConfig;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
@@ -43,6 +52,7 @@ use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
 
 /**
  * One of the service-catalog upgrades generalizing issue #207's pattern (pioneered by
@@ -69,6 +79,20 @@ use ITILCategory;
  * field is empty whenever its branch wasn't taken, so folding it into the title would render blank
  * half the time. "<form name> - <vehicule> - <dateSinistre>", tag-built via
  * `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
+ *
+ * **Second pass (advanced question types)** : "Véhicule concerné (immatriculation)" used to be free
+ * ShortText — this plugin's own `VehicleAssetBuilder` already turns every selected "flotte" branch
+ * into a real custom GLPI asset (`AssetDefinition` system_name `Vehicule`, unconditionally, no
+ * separate toggle — exactly the same single `flotte`-branch gate this form itself already requires),
+ * so the plate number the requester used to type by hand is now a `QuestionTypeItem` pointing at that
+ * *real* vehicle record. Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`) so the incident ticket
+ * carries a genuine linked asset, not a string. `resolveVehicleItemtype()` still defensively falls
+ * back to the original ShortText if the `Vehicule` definition can't be found (belt-and-braces only —
+ * both gates are identical so this should never actually happen once the wizard has run once, same
+ * "never assume, always check `getFromDBByCrit()`" discipline as the rest of this codebase).
+ *
+ * `RequestTypeField` pinned to `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no question asked) : an
+ * accident/damage declaration is unambiguously an incident.
  */
 class VehicleIncidentFormBuilder
 {
@@ -77,6 +101,11 @@ class VehicleIncidentFormBuilder
     private const BRANCH_KEY = 'flotte';
 
     private const CATEGORY_PATH = ['Sinistres & Carrosserie'];
+
+    // Matches `VehicleAssetBuilder::SYSTEM_NAME` — resolved by name rather than shared code, same
+    // "each builder resolves a sibling's output independently" convention as e.g.
+    // `AbroadMissionFormBuilder` resolving `CategoryBuilder`'s own output.
+    private const VEHICLE_ASSET_SYSTEM_NAME = 'Vehicule';
 
     // Same icon `ServiceCatalogBuilder::BRANCH_ILLUSTRATIONS['flotte']` already gave this branch's
     // other forms.
@@ -183,6 +212,26 @@ class VehicleIncidentFormBuilder
     }
 
     /**
+     * Resolves `VehicleAssetBuilder`'s own custom asset class by its stable `system_name`. Uses
+     * `AssetDefinition::getAssetClassName()` — confirmed by reading GLPI 11 core
+     * (`Glpi\Asset\AssetDefinition`) that this, not `getAssetTypeClassName()` (which is the
+     * definition's own native "Type" *dropdown* class, `getAssetClassName() . 'Type'` — the one
+     * `VehicleAssetBuilder::seedTypes()` itself uses, for a different purpose), is the definition's
+     * actual concrete asset item class : `getAssetClassName()`'s own docblock reads "Get the
+     * definition's concrete asset class name." Returns null if the definition doesn't exist yet —
+     * defensive only, see class docblock.
+     */
+    private function resolveVehicleItemtype(): ?string
+    {
+        $definition = new AssetDefinition();
+        if (!$definition->getFromDBByCrit(['system_name' => self::VEHICLE_ASSET_SYSTEM_NAME])) {
+            return null;
+        }
+
+        return $definition->getAssetClassName();
+    }
+
+    /**
      * @return array{vehicule: Question, dateSinistre: Question}|null
      */
     private function addQuestions(Form $form): ?array
@@ -197,8 +246,23 @@ class VehicleIncidentFormBuilder
         ]);
         $sectionId = (int) $section->getID();
 
+        $vehicleItemtype = $this->resolveVehicleItemtype();
+
         $vehicule = new Question();
-        $vehicule->add([
+        $vehicule->add($vehicleItemtype !== null ? [
+            'forms_sections_id' => $sectionId,
+            'name' => __('Véhicule concerné', 'configurationglpiauto'),
+            'type' => QuestionTypeItem::class,
+            'is_mandatory' => 1,
+            'vertical_rank' => 0,
+            'extra_data' => json_encode((new QuestionTypeItemExtraDataConfig(
+                itemtype: $vehicleItemtype,
+                root_items_id: 0,
+                subtree_depth: 0,
+                selectable_tree_root: false,
+            ))->jsonSerialize()),
+        ] : [
+            // Fallback if VehicleAssetBuilder's definition can't be found — see class docblock.
             'forms_sections_id' => $sectionId,
             'name' => __('Véhicule concerné (immatriculation)', 'configurationglpiauto'),
             'type' => QuestionTypeShortText::class,
@@ -308,6 +372,16 @@ class VehicleIncidentFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            // "vehicule" is the only QuestionTypeItem/QuestionTypeUserDevice question on this form
+            // (when the AssetDefinition lookup succeeded) — LAST_VALID_ANSWER unambiguously means
+            // that answer; a no-op (no associated item set) on the ShortText fallback path.
+            AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
+                strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],
+            ))->jsonSerialize(),
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::INCIDENT_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

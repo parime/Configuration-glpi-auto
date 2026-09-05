@@ -2806,3 +2806,39 @@ msgstr "Betroffenes Fahrzeug (Kennzeichen)"
 #: src/CurativeMaintenanceFormBuilder.php src/PreventiveMaintenanceFormBuilder.php
 msgid "Équipement ou installation concerné"
 msgstr "Betroffene Anlage oder Einrichtung"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Poste ou appareil concerné (si le bug est lié à un poste précis)"
+msgstr "Betroffener Arbeitsplatz oder betroffenes Gerät (falls der Fehler an ein bestimmtes Gerät gebunden ist)"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Capture d'écran de l'erreur"
+msgstr "Screenshot des Fehlers"
+
+#: src/LaptopRequestFormBuilder.php
+msgid "Poste actuel à remplacer"
+msgstr "Zu ersetzender aktueller Arbeitsplatz"
+
+#: src/NewScreenFormBuilder.php
+msgid "Poste auquel connecter l'écran (si déjà connu)"
+msgstr "Arbeitsplatz, an den der Bildschirm angeschlossen wird (falls bereits bekannt)"
+
+#: src/ItemReturnFormBuilder.php
+msgid "Photo du défaut ou preuve d'achat"
+msgstr "Foto des Mangels oder Kaufbeleg"
+
+#: src/PasswordResetFormBuilder.php
+msgid "Compte utilisateur concerné"
+msgstr "Betroffenes Benutzerkonto"
+
+#: src/VehicleIncidentFormBuilder.php src/VehicleMaintenanceFormBuilder.php src/FuelCardFormBuilder.php
+msgid "Véhicule concerné"
+msgstr "Betroffenes Fahrzeug"
+
+#: src/VideoSurveillanceFormBuilder.php src/DoorLockBadgeFormBuilder.php
+msgid "Équipement concerné (si déjà référencé)"
+msgstr "Betroffene Ausrüstung (falls bereits erfasst)"
+
+#: src/NonConformityFormBuilder.php
+msgid "Photo ou preuve documentaire"
+msgstr "Foto oder Nachweisdokument"

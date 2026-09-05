@@ -22,10 +22,16 @@ use Glpi\Form\Condition\ConditionData;
 use Glpi\Form\Condition\Type as ConditionType;
 use Glpi\Form\Condition\ValueOperator;
 use Glpi\Form\Condition\VisibilityStrategy;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsField;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldConfig;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
@@ -35,11 +41,13 @@ use Glpi\Form\Question;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
-use Glpi\Form\QuestionType\QuestionTypeShortText;
+use Glpi\Form\QuestionType\QuestionTypeUserDevice;
+use Glpi\Form\QuestionType\QuestionTypeUserDevicesConfig;
 use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
 
 /**
  * Part of the generalization of issue #207's smart-form pattern to the full catalog, per explicit
@@ -55,6 +63,13 @@ use ITILCategory;
  * Computed title only references the always-visible "type d'appareil" answer, not the conditional
  * current-model field : a first-equipment request never answers that field, so folding it into the
  * title would render an empty tag half the time.
+ *
+ * **Second pass (advanced question types)** : same `QuestionTypeUserDevice` swap as
+ * `LaptopRequestFormBuilder` for the "current model to replace" follow-up — the requester picks their
+ * own real GLPI-tracked phone/smartphone instead of typing a model name by hand, wired to
+ * `AssociatedItemsField` (`LAST_VALID_ANSWER`) for a genuine linked asset on the ticket.
+ * `RequestTypeField` pinned to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked) — an
+ * equipment request is unambiguously a request, not an incident.
  */
 class ProfessionalPhoneFormBuilder
 {
@@ -224,13 +239,17 @@ class ProfessionalPhoneFormBuilder
             value: self::REMPLACEMENT_OPTION_KEY,
         );
 
+        // Was a free-text ShortText — replaced with QuestionTypeUserDevice, see class docblock.
         $modeleActuel = new Question();
         $modeleActuel->add([
             'forms_sections_id' => $sectionId,
             'name' => __('Modèle actuel à remplacer', 'configurationglpiauto'),
-            'type' => QuestionTypeShortText::class,
+            'type' => QuestionTypeUserDevice::class,
             'is_mandatory' => 1,
             'vertical_rank' => 2,
+            'extra_data' => json_encode((new QuestionTypeUserDevicesConfig(
+                is_multiple_devices: false,
+            ))->jsonSerialize()),
             'visibility_strategy' => VisibilityStrategy::VISIBLE_IF->value,
             'conditions' => json_encode([$remplacementCondition->jsonSerialize()]),
         ]);
@@ -275,6 +294,13 @@ class ProfessionalPhoneFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
+                strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],
+            ))->jsonSerialize(),
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::DEMAND_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

@@ -23,9 +23,12 @@ use Glpi\Form\Condition\Type as ConditionType;
 use Glpi\Form\Condition\ValueOperator;
 use Glpi\Form\Condition\VisibilityStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
+use Glpi\Form\Destination\CommonITILField\ITILActorFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\ObserverField;
+use Glpi\Form\Destination\CommonITILField\ObserverFieldConfig;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
@@ -75,6 +78,11 @@ use ITILCategory;
  * `AnswerTagProvider`'s tag still resolves to the human label in the final title, since
  * `Answer::getFormattedAnswer()` runs through `AbstractQuestionTypeSelectable::formatRawAnswer()`
  * first (replaces the key by its option label before it ever reaches the tag system).
+ *
+ * **Second pass (advanced question types)** : same `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring
+ * as `AbroadMissionFormBuilder`/`RemoteWorkFormBuilder` — see the former's docblock for the full
+ * reasoning. A leave request is the single most standard case for automatic manager visibility in
+ * any HR system, across all four leave types this form covers.
  */
 class LeaveRequestFormBuilder
 {
@@ -305,6 +313,9 @@ class LeaveRequestFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            ObserverField::getKey() => (new ObserverFieldConfig(
+                strategies: [ITILActorFieldStrategy::FORM_FILLER_SUPERVISOR],
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

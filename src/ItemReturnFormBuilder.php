@@ -22,12 +22,16 @@ use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
 use Glpi\Form\Destination\FormDestinationTicket;
 use Glpi\Form\Form;
 use Glpi\Form\Question;
+use Glpi\Form\QuestionType\QuestionTypeFile;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
@@ -36,6 +40,7 @@ use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
 
 /**
  * Part of generalizing issue #207's smart-form pattern to the full catalog (explicit maintainer
@@ -48,6 +53,16 @@ use ITILCategory;
  * there's no follow-up field that only makes sense for one of the two. Also carries the "Précisions
  * complémentaires" free-text field every class in this generalization batch adds last, replacing the
  * generic Description field these smart forms no longer have.
+ *
+ * **Second pass (advanced question types)** : "Article concerné" stays free ShortText — purchased
+ * goods in this branch (achats/logistique, not IT) aren't backed by any GLPI itemtype this plugin
+ * creates, so there's nothing real for a `QuestionTypeItem` to point at without guessing. What *is*
+ * a clean, verified fit : `QuestionTypeFile` ("Photo du défaut ou preuve d'achat", optional) — a
+ * return/SAV claim is exactly the "facture, bon de commande, photo du dommage" case this plugin's own
+ * mandate calls out, and GLPI attaches any answered file straight to the ticket automatically
+ * (`AbstractCommonITILFormDestination::setFilesInput()`, no extra destination config needed).
+ * `RequestTypeField` pinned to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked) : a
+ * return/SAV process is a request to the supplier/vendor management team, not an incident.
  */
 class ItemReturnFormBuilder
 {
@@ -195,16 +210,25 @@ class ItemReturnFormBuilder
             ))->jsonSerialize()),
         ]);
 
+        $preuve = new Question();
+        $preuve->add([
+            'forms_sections_id' => $sectionId,
+            'name' => __("Photo du défaut ou preuve d'achat", 'configurationglpiauto'),
+            'type' => QuestionTypeFile::class,
+            'is_mandatory' => 0,
+            'vertical_rank' => 2,
+        ]);
+
         $precisions = new Question();
         $precisions->add([
             'forms_sections_id' => $sectionId,
             'name' => __('Précisions complémentaires', 'configurationglpiauto'),
             'type' => QuestionTypeLongText::class,
             'is_mandatory' => 0,
-            'vertical_rank' => 2,
+            'vertical_rank' => 3,
         ]);
 
-        if (!$article->getID() || !$type->getID() || !$precisions->getID()) {
+        if (!$article->getID() || !$type->getID() || !$preuve->getID() || !$precisions->getID()) {
             return null;
         }
 
@@ -235,6 +259,10 @@ class ItemReturnFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::DEMAND_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([
