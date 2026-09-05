@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-09-05
+
+### Fixed
+
+- `locales/pt_BR.mo` manquant : v1.1.0 livrait `locales/pt_BR.po` mais pas son binaire compilé, alors
+  que `Plugin::loadLang()` (GLPI core, `src/Plugin.php`) ne lit jamais le `.po` directement — il
+  vérifie l'existence d'un fichier `.mo` précompilé pour la langue de session
+  (`$CFG_GLPI["languages"][$lang][1]`) et, à défaut, retombe silencieusement sur `en_GB.mo` puis sur
+  le `msgid` brut (français, langue source de ce plugin), sans aucune erreur. Résultat en v1.1.0 :
+  une session `pt_BR` voyait le cœur de GLPI correctement en portugais (son propre `.mo` est fourni
+  par GLPI) mais l'intégralité de l'interface du plugin (assistant, page de configuration) restait en
+  français — trouvé en testant réellement l'assistant avec un compte `pt_BR` sur l'instance partagée,
+  pas seulement en relisant le code. `.mo` compilé via `msgfmt` (comme `de_DE.mo`/`en_GB.mo`/
+  `es_ES.mo`/`it_IT.mo`, déjà suivis par git — `.gitattributes` les marque `binary` — mais qu'aucune
+  étape de `vendor/bin/extract-locales` ni de la CI ne recompile ou ne vérifie automatiquement ;
+  point de vigilance à garder pour toute future mise à jour de `locales/*.po`). Revérifié en réel
+  après correctif : assistant et page de configuration entièrement en portugais pour une session
+  `pt_BR`.
+
 ## [1.1.0] - 2026-09-05
 
 ### Added
