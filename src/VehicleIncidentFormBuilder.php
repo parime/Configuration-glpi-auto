@@ -35,6 +35,9 @@ use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
 use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
+use Glpi\Form\Destination\CommonITILField\UrgencyField;
+use Glpi\Form\Destination\CommonITILField\UrgencyFieldConfig;
+use Glpi\Form\Destination\CommonITILField\UrgencyFieldStrategy;
 use Glpi\Form\Destination\FormDestination;
 use Glpi\Form\Destination\FormDestinationTicket;
 use Glpi\Form\Form;
@@ -48,6 +51,7 @@ use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
 use Glpi\Form\QuestionType\QuestionTypeShortText;
+use Glpi\Form\QuestionType\QuestionTypeUrgency;
 use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
@@ -93,6 +97,34 @@ use Ticket;
  *
  * `RequestTypeField` pinned to `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no question asked) : an
  * accident/damage declaration is unambiguously an incident.
+ *
+ * **Third pass (objective urgency, not self-rated)** : `QuestionTypeUrgency` was deliberately
+ * excluded catalog-wide during the second pass (see `HelpdeskFormBuilder`'s own docblock : asking a
+ * requester to self-rate "how urgent is MY problem" is a documented ITSM anti-pattern, base users
+ * consistently over-rate their own issue). But that anti-pattern is specifically about *subjective*
+ * self-assessment, not about deriving urgency from an *objective, verifiable fact* the requester is
+ * well-placed to state - "is the vehicle currently immobilised/unusable" isn't a feeling, it's
+ * something they either can or can't drive right now.
+ *
+ * First attempt used a plain `QuestionTypeRadio` ("Oui"/"Non") with its option KEYS set to real
+ * `CommonITILObject::getUrgencyName()` integers, wired via `UrgencyFieldStrategy::SPECIFIC_ANSWER` -
+ * this DOESN'T work, confirmed by actually submitting the form and inspecting the resulting
+ * ticket's `urgency` column (fell back to the default, 3, regardless of the radio answer) :
+ * `UrgencyFieldStrategy::getUrgencyFromSpecificAnswer()` requires `is_numeric($answer->getRawAnswer())`,
+ * but a Selectable-family question type (`QuestionTypeRadio`/`AbstractQuestionTypeSelectable`)
+ * stores its raw answer as an ARRAY (`["4"]`, confirmed in `glpi_forms_answerssets.answers`), even
+ * for a single-choice radio - `is_numeric(["4"])` is false, so `computeUrgency()` silently returns
+ * null and GLPI falls back to its own default. No error anywhere, the ticket is created
+ * successfully either way - the only way to catch this was to check the actual persisted urgency
+ * value, not just confirm the form saved.
+ *
+ * `immobilise` is a REAL `QuestionTypeUrgency` question instead, wired the way GLPI actually
+ * intends (`UrgencyFieldStrategy::LAST_VALID_ANSWER`, the strategy literally named "answer to last
+ * Urgency question" - its own raw answer format is a bare scalar, not array-wrapped, confirmed
+ * working end to end this time). To keep the "objective fact, not self-rating" framing despite
+ * reusing GLPI's native 5-level urgency dropdown for the answer widget (its option LABELS aren't
+ * customisable per-question, only the question's own prompt is), the prompt asks how immobilised
+ * the vehicle itself is, never how urgent the requester personally feels about it.
  */
 class VehicleIncidentFormBuilder
 {
@@ -232,7 +264,7 @@ class VehicleIncidentFormBuilder
     }
 
     /**
-     * @return array{vehicule: Question, dateSinistre: Question}|null
+     * @return array{vehicule: Question, dateSinistre: Question, immobilise: Question}|null
      */
     private function addQuestions(Form $form): ?array
     {
@@ -284,13 +316,22 @@ class VehicleIncidentFormBuilder
             ))->jsonSerialize()),
         ]);
 
+        $immobilise = new Question();
+        $immobilise->add([
+            'forms_sections_id' => $sectionId,
+            'name' => __("Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?", 'configurationglpiauto'),
+            'type' => QuestionTypeUrgency::class,
+            'is_mandatory' => 1,
+            'vertical_rank' => 2,
+        ]);
+
         $tiers = new Question();
         $tiers->add([
             'forms_sections_id' => $sectionId,
             'name' => __('Un tiers est-il impliqué ?', 'configurationglpiauto'),
             'type' => QuestionTypeRadio::class,
             'is_mandatory' => 1,
-            'vertical_rank' => 2,
+            'vertical_rank' => 3,
             'extra_data' => json_encode((new QuestionTypeSelectableExtraDataConfig(
                 options: self::TIERS_OPTIONS,
             ))->jsonSerialize()),
@@ -314,7 +355,7 @@ class VehicleIncidentFormBuilder
             'name' => __('Coordonnées et informations du tiers', 'configurationglpiauto'),
             'type' => QuestionTypeLongText::class,
             'is_mandatory' => 1,
-            'vertical_rank' => 3,
+            'vertical_rank' => 4,
             'visibility_strategy' => VisibilityStrategy::VISIBLE_IF->value,
             'conditions' => json_encode([$tiersOuiCondition->jsonSerialize()]),
         ]);
@@ -325,7 +366,7 @@ class VehicleIncidentFormBuilder
             'name' => __('Photos des dommages', 'configurationglpiauto'),
             'type' => QuestionTypeFile::class,
             'is_mandatory' => 0,
-            'vertical_rank' => 4,
+            'vertical_rank' => 5,
         ]);
 
         $precisions = new Question();
@@ -334,21 +375,21 @@ class VehicleIncidentFormBuilder
             'name' => __('Précisions complémentaires', 'configurationglpiauto'),
             'type' => QuestionTypeLongText::class,
             'is_mandatory' => 0,
-            'vertical_rank' => 5,
+            'vertical_rank' => 6,
         ]);
 
         if (
-            !$vehicule->getID() || !$dateSinistre->getID() || !$coordTiers->getID()
-            || !$photos->getID() || !$precisions->getID()
+            !$vehicule->getID() || !$dateSinistre->getID() || !$immobilise->getID()
+            || !$tiers->getID() || !$coordTiers->getID() || !$photos->getID() || !$precisions->getID()
         ) {
             return null;
         }
 
-        return ['vehicule' => $vehicule, 'dateSinistre' => $dateSinistre];
+        return ['vehicule' => $vehicule, 'dateSinistre' => $dateSinistre, 'immobilise' => $immobilise];
     }
 
     /**
-     * @param array{vehicule: Question, dateSinistre: Question} $questions
+     * @param array{vehicule: Question, dateSinistre: Question, immobilise: Question} $questions
      */
     private function configureDestination(Form $form, int $itilCategoryId, array $questions): void
     {
@@ -381,6 +422,12 @@ class VehicleIncidentFormBuilder
             RequestTypeField::getKey() => (new RequestTypeFieldConfig(
                 strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
                 specific_request_type: Ticket::INCIDENT_TYPE,
+            ))->jsonSerialize(),
+            // Objective fact framing on the prompt, not self-rated urgency - see class docblock,
+            // third pass. LAST_VALID_ANSWER (not SPECIFIC_ANSWER) : the only strategy compatible
+            // with QuestionTypeUrgency's own raw answer format, confirmed by testing.
+            UrgencyField::getKey() => (new UrgencyFieldConfig(
+                strategy: UrgencyFieldStrategy::LAST_VALID_ANSWER,
             ))->jsonSerialize(),
         ];
 
