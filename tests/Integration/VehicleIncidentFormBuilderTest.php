@@ -125,15 +125,28 @@ final class VehicleIncidentFormBuilderTest extends TestCase
         return $form;
     }
 
-    private function questionIdByName(Form $form, string $name): int
+    /**
+     * Looks questions up by `vertical_rank`, not by their (translated) `name` — the builder wraps
+     * every question label in `__()`, so a hardcoded French string only matches when the active
+     * session language happens to be French. Confirmed live: this passed reliably on the shared dev
+     * instance (its "glpi" account's language had been switched to French earlier in this project's
+     * history) but failed in CI's fresh GLPI install, whose default account language isn't French —
+     * the question existed with the exact right English label, just not the one this test searched
+     * for. `vertical_rank` is assigned directly by `VehicleIncidentFormBuilder::addQuestions()`
+     * (vehicule=0, dateSinistre=1, immobilise=2, tiers=3) and is completely locale-independent.
+     */
+    private function questionIdByRank(Form $form, int $rank): int
     {
         $section = new Section();
-        $section->getFromDBByCrit(['forms_forms_id' => $form->getID()]);
+        $this->assertTrue(
+            $section->getFromDBByCrit(['forms_forms_id' => $form->getID()]),
+            'The form should have its default section.'
+        );
 
         $question = new Question();
         $this->assertTrue(
-            $question->getFromDBByCrit(['forms_sections_id' => $section->getID(), 'name' => $name]),
-            "Question \"$name\" should exist on the form."
+            $question->getFromDBByCrit(['forms_sections_id' => $section->getID(), 'vertical_rank' => $rank]),
+            "Question at vertical_rank $rank should exist on the form."
         );
 
         return (int) $question->getID();
@@ -201,10 +214,10 @@ final class VehicleIncidentFormBuilderTest extends TestCase
     {
         $form = $this->buildForm();
         $vehicleId = $this->addRealVehicle('PHPUnit — Renault Kangoo');
-        $immobiliseId = $this->questionIdByName($form, 'Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?');
-        $vehiculeId = $this->questionIdByName($form, 'Véhicule concerné');
-        $dateId = $this->questionIdByName($form, 'Date du sinistre');
-        $tiersId = $this->questionIdByName($form, 'Un tiers est-il impliqué ?');
+        $immobiliseId = $this->questionIdByRank($form, 2);
+        $vehiculeId = $this->questionIdByRank($form, 0);
+        $dateId = $this->questionIdByRank($form, 1);
+        $tiersId = $this->questionIdByRank($form, 3);
 
         $ticket = $this->submitAndGetTicket($form, [
             "answers_$vehiculeId" => ['itemtype' => $this->vehicleClassName(), 'items_id' => $vehicleId],
@@ -225,10 +238,10 @@ final class VehicleIncidentFormBuilderTest extends TestCase
     {
         $form = $this->buildForm();
         $vehicleId = $this->addRealVehicle('PHPUnit — Renault Kangoo 2');
-        $immobiliseId = $this->questionIdByName($form, 'Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?');
-        $vehiculeId = $this->questionIdByName($form, 'Véhicule concerné');
-        $dateId = $this->questionIdByName($form, 'Date du sinistre');
-        $tiersId = $this->questionIdByName($form, 'Un tiers est-il impliqué ?');
+        $immobiliseId = $this->questionIdByRank($form, 2);
+        $vehiculeId = $this->questionIdByRank($form, 0);
+        $dateId = $this->questionIdByRank($form, 1);
+        $tiersId = $this->questionIdByRank($form, 3);
         $vehicleClass = $this->vehicleClassName();
 
         $ticket = $this->submitAndGetTicket($form, [
@@ -250,10 +263,10 @@ final class VehicleIncidentFormBuilderTest extends TestCase
     {
         $form = $this->buildForm();
         $vehicleId = $this->addRealVehicle('PHPUnit — Renault Kangoo 3');
-        $immobiliseId = $this->questionIdByName($form, 'Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?');
-        $vehiculeId = $this->questionIdByName($form, 'Véhicule concerné');
-        $dateId = $this->questionIdByName($form, 'Date du sinistre');
-        $tiersId = $this->questionIdByName($form, 'Un tiers est-il impliqué ?');
+        $immobiliseId = $this->questionIdByRank($form, 2);
+        $vehiculeId = $this->questionIdByRank($form, 0);
+        $dateId = $this->questionIdByRank($form, 1);
+        $tiersId = $this->questionIdByRank($form, 3);
         $vehicleClass = $this->vehicleClassName();
 
         $ticket = $this->submitAndGetTicket($form, [
