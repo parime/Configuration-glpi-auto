@@ -47,20 +47,28 @@ use ITILCategory;
  * (`Form::post_addItem()` → `createFirstSection()` / `addDefaultDestinations()`) — reused here
  * instead of creating them by hand.
  *
- * **Issue #207 triage** : entries flagged `'smart' => true` below are deliberately *not* built by
- * this class's own loop (see the `smart` check in `build()`) : after auditing all ~50 entries, six
- * genuinely benefit from real question fields, a computed ticket title and/or conditional
- * questions (not applied on principle, the plugin owner's explicit instruction), and each gets its
- * own dedicated builder matching the pilot's pattern (`AbroadMissionFormBuilder`, issue #208)
- * instead of this class's generic Title+Description shape: `SoftwareLicenseFormBuilder`,
- * `VpnAccessFormBuilder`, `AccessBadgeFormBuilder`, `LeaveRequestFormBuilder`,
- * `StaffMovementFormBuilder`, `MeetingRoomFormBuilder`. The entry stays in `SERVICES` (rather than
- * being deleted) purely so the wizard's per-branch preview list keeps mentioning the service by
- * name; `smart_title`/`smart_conditional` flag which of the two mechanisms it actually got, for
- * that same preview to badge accordingly. The remaining ~44 stayed plain on purpose: most of the
- * catalog is "signaler/demander X" report-style tickets where a free-text description already says
- * everything a structured field would, and forcing questions onto those would add friction without
- * making the resulting ticket meaningfully more informative.
+ * **Issue #207 triage, generalized catalog-wide** : entries flagged `'smart' => true` below are
+ * deliberately *not* built by this class's own loop (see the `smart` check in `build()`). The pilot
+ * (`AbroadMissionFormBuilder`, issue #208) and the first 6-service wave (#207/#210) initially kept
+ * ~44 other entries plain on the theory that most of the catalog is "signaler/demander X"
+ * report-style tickets where free text already says everything a structured field would. The
+ * plugin owner explicitly revisited that call as too conservative and asked for the exercise to be
+ * redone catalog-wide with a real per-service judgment call each time, biased toward "what
+ * structured field would make this ticket more actionable" rather than "does free text technically
+ * suffice" — resulting in 42 more of those ~44 getting the same treatment (own dedicated builder,
+ * real typed/conditional questions, computed ticket title via `Glpi\Form\Tag\AnswerTagProvider` /
+ * `FormTagProvider`, never hand-written markup), for a total of 48 smart services out of 50. Only
+ * two stayed deliberately plain, each for a reason specific to it rather than a blanket rule:
+ * "Demande administrative RH" is the RH branch's own intentional catch-all sitting alongside 4 other
+ * well-defined RH services (formation, congés, mouvements de personnel, télétravail) that already
+ * partition the well-known cases — a "type" field here would either duplicate those or need an
+ * ever-growing option list to stay honest, so free text is the more honest fit for a deliberately
+ * open-ended residual category. "Signaler un incident ou une urgence sécurité" is a time-critical
+ * emergency report where minimizing friction to submit fast matters more than structured intake;
+ * real triage happens by phone/human contact right after submission regardless of what the form
+ * asked. The entry stays in `SERVICES` (rather than being deleted) purely so the wizard's per-branch
+ * preview list keeps mentioning the service by name; `smart_title`/`smart_conditional` flag which
+ * mechanism it actually got, for that same preview to badge accordingly.
  */
 class ServiceCatalogBuilder
 {
@@ -72,66 +80,71 @@ class ServiceCatalogBuilder
      */
     private const SERVICES = [
         // IT & SI
-        ['branch' => 'it', 'name' => "Installation ou mise à jour d'un logiciel", 'path' => ['Logiciels & Applications', 'Installation / Désinstallation']],
+        ['branch' => 'it', 'name' => "Installation ou mise à jour d'un logiciel", 'path' => ['Logiciels & Applications', 'Installation / Désinstallation'], 'smart' => true, 'smart_title' => true],
         ['branch' => 'it', 'name' => 'Demande de licence logicielle', 'path' => ['Logiciels & Applications', 'Licences & Clés'], 'smart' => true, 'smart_title' => true],
-        ['branch' => 'it', 'name' => 'Signaler un bug ou dysfonctionnement logiciel', 'path' => ['Logiciels & Applications', 'Bug / Dysfonctionnement']],
-        ['branch' => 'it', 'name' => "Création d'un compte utilisateur", 'path' => ['Comptes & Identités', 'Onboarding / Création de compte']],
-        ['branch' => 'it', 'name' => 'Réinitialisation de mot de passe', 'path' => ['Comptes & Identités', 'Mot de passe & Réinitialisation']],
-        ['branch' => 'it', 'name' => "Désactivation d'un compte utilisateur", 'path' => ['Comptes & Identités', 'Offboarding / Suppression']],
+        ['branch' => 'it', 'name' => 'Signaler un bug ou dysfonctionnement logiciel', 'path' => ['Logiciels & Applications', 'Bug / Dysfonctionnement'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'it', 'name' => "Création d'un compte utilisateur", 'path' => ['Comptes & Identités', 'Onboarding / Création de compte'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'it', 'name' => 'Réinitialisation de mot de passe', 'path' => ['Comptes & Identités', 'Mot de passe & Réinitialisation'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'it', 'name' => "Désactivation d'un compte utilisateur", 'path' => ['Comptes & Identités', 'Offboarding / Suppression'], 'smart' => true, 'smart_title' => true],
         ['branch' => 'it', 'name' => "Demande d'accès VPN", 'path' => ['Réseau & Connectivité', 'Accès Distant'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
-        ['branch' => 'it', 'name' => "Demande d'accès Wifi", 'path' => ['Réseau & Connectivité', 'Wifi']],
-        ['branch' => 'it', 'name' => "Demande d'un nouvel écran", 'path' => ['Poste de travail', 'Écran & Affichage']],
-        ['branch' => 'it', 'name' => "Demande d'un ordinateur portable", 'path' => ['Poste de travail', 'Portable']],
-        ['branch' => 'it', 'name' => 'Demande de téléphone professionnel', 'path' => ['Téléphonie & VoIP', 'Smartphone & Flotte mobile']],
-        ['branch' => 'it', 'name' => "Demande de boîte mail ou d'alias", 'path' => ['Messagerie & Collaboration', 'Messagerie']],
-        ['branch' => 'it', 'name' => "Demande d'accès à un espace collaboratif d'équipe", 'path' => ['Messagerie & Collaboration', 'Collaboration']],
+        ['branch' => 'it', 'name' => "Demande d'accès Wifi", 'path' => ['Réseau & Connectivité', 'Wifi'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        ['branch' => 'it', 'name' => "Demande d'un nouvel écran", 'path' => ['Poste de travail', 'Écran & Affichage'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'it', 'name' => "Demande d'un ordinateur portable", 'path' => ['Poste de travail', 'Portable'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        ['branch' => 'it', 'name' => 'Demande de téléphone professionnel', 'path' => ['Téléphonie & VoIP', 'Smartphone & Flotte mobile'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        ['branch' => 'it', 'name' => "Demande de boîte mail ou d'alias", 'path' => ['Messagerie & Collaboration', 'Messagerie'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'it', 'name' => "Demande d'accès à un espace collaboratif d'équipe", 'path' => ['Messagerie & Collaboration', 'Collaboration'], 'smart' => true, 'smart_title' => true],
         // Bâtiment & Moyens Généraux
-        ['branch' => 'batiment', 'name' => 'Signaler un problème de chauffage ou climatisation', 'path' => ['CVC']],
-        ['branch' => 'batiment', 'name' => "Demande d'intervention électricité", 'path' => ['Électricité & Éclairage']],
-        ['branch' => 'batiment', 'name' => "Demande de mobilier ou d'aménagement de poste", 'path' => ['Mobilier & Aménagement']],
-        ['branch' => 'batiment', 'name' => "Signaler une fuite d'eau ou un problème sanitaire", 'path' => ['Plomberie & Sanitaires']],
-        ['branch' => 'batiment', 'name' => 'Problème de porte, serrure ou badge de local', 'path' => ['Serrurerie, Portes & Fenêtres']],
+        ['branch' => 'batiment', 'name' => 'Signaler un problème de chauffage ou climatisation', 'path' => ['CVC'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'batiment', 'name' => "Demande d'intervention électricité", 'path' => ['Électricité & Éclairage'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'batiment', 'name' => "Demande de mobilier ou d'aménagement de poste", 'path' => ['Mobilier & Aménagement'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'batiment', 'name' => "Signaler une fuite d'eau ou un problème sanitaire", 'path' => ['Plomberie & Sanitaires'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'batiment', 'name' => 'Problème de porte, serrure ou badge de local', 'path' => ['Serrurerie, Portes & Fenêtres'], 'smart' => true, 'smart_title' => true],
         ['branch' => 'batiment', 'name' => "Réservation ou problème d'équipement de salle de réunion", 'path' => ['Salles de réunion & Équipements'], 'smart' => true, 'smart_conditional' => true],
-        ['branch' => 'batiment', 'name' => 'Signaler un problème de propreté ou demander un nettoyage', 'path' => ['Prestations & Hygiène', 'Propreté & Nettoyage']],
+        ['branch' => 'batiment', 'name' => 'Signaler un problème de propreté ou demander un nettoyage', 'path' => ['Prestations & Hygiène', 'Propreté & Nettoyage'], 'smart' => true, 'smart_title' => true],
         // Flotte Automobile & Mobilité
-        ['branch' => 'flotte', 'name' => "Demande d'entretien véhicule", 'path' => ['Entretien & Réparation']],
-        ['branch' => 'flotte', 'name' => 'Déclarer un sinistre ou un dommage véhicule', 'path' => ['Sinistres & Carrosserie']],
-        ['branch' => 'flotte', 'name' => 'Demande de carte carburant ou badge de recharge', 'path' => ['Carburant & Recharge']],
+        ['branch' => 'flotte', 'name' => "Demande d'entretien véhicule", 'path' => ['Entretien & Réparation'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'flotte', 'name' => 'Déclarer un sinistre ou un dommage véhicule', 'path' => ['Sinistres & Carrosserie'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        ['branch' => 'flotte', 'name' => 'Demande de carte carburant ou badge de recharge', 'path' => ['Carburant & Recharge'], 'smart' => true, 'smart_title' => true],
         // Ressources Humaines
-        ['branch' => 'rh', 'name' => 'Demande de formation', 'path' => ['Formation & Montée en compétences']],
+        ['branch' => 'rh', 'name' => 'Demande de formation', 'path' => ['Formation & Montée en compétences'], 'smart' => true, 'smart_title' => true],
         ['branch' => 'rh', 'name' => 'Demande de congé ou absence', 'path' => ['Absences & Congés'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
         ['branch' => 'rh', 'name' => "Déclarer une arrivée, un départ ou une mutation", 'path' => ['Mouvements de personnel'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
-        ['branch' => 'rh', 'name' => "Demande de télétravail ou d'aménagement du temps de travail", 'path' => ['Organisation du travail']],
+        ['branch' => 'rh', 'name' => "Demande de télétravail ou d'aménagement du temps de travail", 'path' => ['Organisation du travail'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        // Deliberately left plain (see class docblock): RH branch's own intentional catch-all,
+        // sitting alongside 4 other well-defined RH services that already partition the well-known
+        // cases.
         ['branch' => 'rh', 'name' => 'Demande administrative RH', 'path' => ['Administration RH']],
         // Achats & Logistique
-        ['branch' => 'achats', 'name' => "Demande d'achat ou commande de fournitures", 'path' => ['Sourcing & Commande']],
-        ['branch' => 'achats', 'name' => "Retour ou SAV d'un article", 'path' => ['Retours, SAV & Garanties']],
-        ['branch' => 'achats', 'name' => 'Suivi de réception ou de livraison', 'path' => ['Réception, Livraison & Expédition']],
-        ['branch' => 'achats', 'name' => "Demande de déménagement ou d'archivage", 'path' => ['Déménagement & Archivage']],
+        ['branch' => 'achats', 'name' => "Demande d'achat ou commande de fournitures", 'path' => ['Sourcing & Commande'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'achats', 'name' => "Retour ou SAV d'un article", 'path' => ['Retours, SAV & Garanties'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'achats', 'name' => 'Suivi de réception ou de livraison', 'path' => ['Réception, Livraison & Expédition'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'achats', 'name' => "Demande de déménagement ou d'archivage", 'path' => ['Déménagement & Archivage'], 'smart' => true, 'smart_title' => true],
         // Sécurité & Protection des Personnes
         ['branch' => 'securite', 'name' => "Demande de badge d'accès", 'path' => ["Contrôle d'Accès & Badges"], 'smart' => true, 'smart_title' => true],
-        ['branch' => 'securite', 'name' => 'Signaler un dysfonctionnement vidéosurveillance ou alarme', 'path' => ['Vidéosurveillance & Alarmes']],
+        ['branch' => 'securite', 'name' => 'Signaler un dysfonctionnement vidéosurveillance ou alarme', 'path' => ['Vidéosurveillance & Alarmes'], 'smart' => true, 'smart_title' => true],
+        // Deliberately left plain (see class docblock): time-critical emergency report where
+        // minimizing friction to submit fast matters more than structured intake.
         ['branch' => 'securite', 'name' => 'Signaler un incident ou une urgence sécurité', 'path' => ['Gestion des Incidents & Urgences']],
-        ['branch' => 'securite', 'name' => 'Demande liée à la santé et sécurité au travail', 'path' => ['Santé & Sécurité au Travail']],
+        ['branch' => 'securite', 'name' => 'Demande liée à la santé et sécurité au travail', 'path' => ['Santé & Sécurité au Travail'], 'smart' => true, 'smart_title' => true],
         // Services Généraux & Vie au Travail
-        ['branch' => 'services_generaux', 'name' => 'Demande de fournitures de bureau', 'path' => ['Consommables & Fournitures']],
-        ['branch' => 'services_generaux', 'name' => 'Signaler un problème lié à la pause ou à la restauration', 'path' => ['Pause & Restauration']],
-        ['branch' => 'services_generaux', 'name' => 'Demande liée au tri ou au recyclage', 'path' => ['RSE & Recyclage']],
+        ['branch' => 'services_generaux', 'name' => 'Demande de fournitures de bureau', 'path' => ['Consommables & Fournitures'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'services_generaux', 'name' => 'Signaler un problème lié à la pause ou à la restauration', 'path' => ['Pause & Restauration'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'services_generaux', 'name' => 'Demande liée au tri ou au recyclage', 'path' => ['RSE & Recyclage'], 'smart' => true, 'smart_title' => true],
         // Administratif, Juridique & Finance
-        ['branch' => 'administratif', 'name' => 'Demande liée à une facture ou un paiement', 'path' => ['Finance & Comptabilité']],
-        ['branch' => 'administratif', 'name' => 'Demande de relecture ou signature de contrat', 'path' => ['Juridique & Contrats']],
-        ['branch' => 'administratif', 'name' => 'Envoi de courrier ou demande de reprographie', 'path' => ['Courrier & Reprographie']],
+        ['branch' => 'administratif', 'name' => 'Demande liée à une facture ou un paiement', 'path' => ['Finance & Comptabilité'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'administratif', 'name' => 'Demande de relecture ou signature de contrat', 'path' => ['Juridique & Contrats'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'administratif', 'name' => 'Envoi de courrier ou demande de reprographie', 'path' => ['Courrier & Reprographie'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
         // Communication & Marketing
-        ['branch' => 'communication', 'name' => 'Demande de modification sur le site web ou intranet', 'path' => ['Site Web & Intranet']],
-        ['branch' => 'communication', 'name' => 'Demande de publication sur les réseaux sociaux', 'path' => ['Réseaux Sociaux & Marketing']],
-        ['branch' => 'communication', 'name' => 'Demande de support pour un événement', 'path' => ['Événementiel & Affichage']],
+        ['branch' => 'communication', 'name' => 'Demande de modification sur le site web ou intranet', 'path' => ['Site Web & Intranet'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'communication', 'name' => 'Demande de publication sur les réseaux sociaux', 'path' => ['Réseaux Sociaux & Marketing'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'communication', 'name' => 'Demande de support pour un événement', 'path' => ['Événementiel & Affichage'], 'smart' => true, 'smart_title' => true],
         // Qualité, QHSE & Conformité
-        ['branch' => 'qualite', 'name' => 'Déclarer une non-conformité', 'path' => ['Non-conformités & Actions']],
-        ['branch' => 'qualite', 'name' => 'Demande liée à un audit ou un contrôle', 'path' => ['Audits & Contrôles']],
+        ['branch' => 'qualite', 'name' => 'Déclarer une non-conformité', 'path' => ['Non-conformités & Actions'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'qualite', 'name' => 'Demande liée à un audit ou un contrôle', 'path' => ['Audits & Contrôles'], 'smart' => true, 'smart_title' => true],
         // Maintenance Industrielle & Technique
-        ['branch' => 'maintenance', 'name' => 'Demande de maintenance préventive', 'path' => ['Maintenance Préventive & Contrôles']],
-        ['branch' => 'maintenance', 'name' => 'Signaler une panne ou un besoin de maintenance curative', 'path' => ['Maintenance Curative']],
-        ['branch' => 'maintenance', 'name' => "Demande d'étalonnage d'un instrument", 'path' => ['Étalonnage & Métrologie']],
+        ['branch' => 'maintenance', 'name' => 'Demande de maintenance préventive', 'path' => ['Maintenance Préventive & Contrôles'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'maintenance', 'name' => 'Signaler une panne ou un besoin de maintenance curative', 'path' => ['Maintenance Curative'], 'smart' => true, 'smart_title' => true],
+        ['branch' => 'maintenance', 'name' => "Demande d'étalonnage d'un instrument", 'path' => ['Étalonnage & Métrologie'], 'smart' => true, 'smart_title' => true],
     ];
 
     // GLPI's own bundled illustration catalog (`public/lib/glpi-project/illustrations/icons.json`,

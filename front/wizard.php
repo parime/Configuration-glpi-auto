@@ -18,40 +18,67 @@
 use GlpiPlugin\Configurationglpiauto\AbroadMissionFormBuilder;
 use GlpiPlugin\Configurationglpiauto\AccessBadgeFormBuilder;
 use GlpiPlugin\Configurationglpiauto\AssetTypeBuilder;
+use GlpiPlugin\Configurationglpiauto\AuditRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\BrandingBuilder;
+use GlpiPlugin\Configurationglpiauto\BreakRoomFormBuilder;
 use GlpiPlugin\Configurationglpiauto\BuildingAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\CalendarBuilder;
 use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\CertificateTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\ChangeProblemTemplateBuilder;
+use GlpiPlugin\Configurationglpiauto\CleanlinessRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
+use GlpiPlugin\Configurationglpiauto\ContractReviewFormBuilder;
 use GlpiPlugin\Configurationglpiauto\CountryHolidayBuilder;
+use GlpiPlugin\Configurationglpiauto\CurativeMaintenanceFormBuilder;
+use GlpiPlugin\Configurationglpiauto\DeliveryTrackingFormBuilder;
 use GlpiPlugin\Configurationglpiauto\DocumentManagementBuilder;
+use GlpiPlugin\Configurationglpiauto\DoorLockBadgeFormBuilder;
+use GlpiPlugin\Configurationglpiauto\ElectricalInterventionFormBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityAddressBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
+use GlpiPlugin\Configurationglpiauto\EventSupportFormBuilder;
 use GlpiPlugin\Configurationglpiauto\FaqBuilder;
 use GlpiPlugin\Configurationglpiauto\FieldUnicityBuilder;
 use GlpiPlugin\Configurationglpiauto\FireSafetyAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\FollowupLibraryBuilder;
+use GlpiPlugin\Configurationglpiauto\FuelCardFormBuilder;
+use GlpiPlugin\Configurationglpiauto\FurnitureRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
+use GlpiPlugin\Configurationglpiauto\HeatingClimateFormBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
+use GlpiPlugin\Configurationglpiauto\InstrumentCalibrationFormBuilder;
+use GlpiPlugin\Configurationglpiauto\InvoicePaymentFormBuilder;
+use GlpiPlugin\Configurationglpiauto\ItemReturnFormBuilder;
 use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
+use GlpiPlugin\Configurationglpiauto\LaptopRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\LeaveRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\LineOperatorBuilder;
 use GlpiPlugin\Configurationglpiauto\LocationBuilder;
+use GlpiPlugin\Configurationglpiauto\MailboxRequestFormBuilder;
+use GlpiPlugin\Configurationglpiauto\MailPrintingFormBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerDictionaryBuilder;
 use GlpiPlugin\Configurationglpiauto\MarketplaceBuilder;
 use GlpiPlugin\Configurationglpiauto\MeetingRoomFormBuilder;
+use GlpiPlugin\Configurationglpiauto\NewScreenFormBuilder;
+use GlpiPlugin\Configurationglpiauto\NonConformityFormBuilder;
 use GlpiPlugin\Configurationglpiauto\NotificationBrandingBuilder;
+use GlpiPlugin\Configurationglpiauto\OfficeSuppliesFormBuilder;
 use GlpiPlugin\Configurationglpiauto\PaletteBuilder;
+use GlpiPlugin\Configurationglpiauto\PasswordResetFormBuilder;
 use GlpiPlugin\Configurationglpiauto\PhysicalSecurityAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\PlanningEventBuilder;
+use GlpiPlugin\Configurationglpiauto\PreventiveMaintenanceFormBuilder;
+use GlpiPlugin\Configurationglpiauto\ProfessionalPhoneFormBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaxonomyBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\RecurringTicketLibraryBuilder;
+use GlpiPlugin\Configurationglpiauto\RecyclingRequestFormBuilder;
+use GlpiPlugin\Configurationglpiauto\RelocationArchivingFormBuilder;
+use GlpiPlugin\Configurationglpiauto\RemoteWorkFormBuilder;
 use GlpiPlugin\Configurationglpiauto\RequestTypeTranslationBuilder;
 use GlpiPlugin\Configurationglpiauto\RSSFeedBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
@@ -59,23 +86,38 @@ use GlpiPlugin\Configurationglpiauto\SatisfactionSurveyBuilder;
 use GlpiPlugin\Configurationglpiauto\ServerAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
+use GlpiPlugin\Configurationglpiauto\SocialMediaPostFormBuilder;
+use GlpiPlugin\Configurationglpiauto\SoftwareBugFormBuilder;
+use GlpiPlugin\Configurationglpiauto\SoftwareInstallFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareLicenseFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareLicenseTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\SolutionLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\StaffMovementFormBuilder;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
+use GlpiPlugin\Configurationglpiauto\SupplyOrderFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SupportTierBuilder;
 use GlpiPlugin\Configurationglpiauto\TagBuilder;
 use GlpiPlugin\Configurationglpiauto\TaskCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\TaskTemplateBuilder;
+use GlpiPlugin\Configurationglpiauto\TeamCollaborationSpaceFormBuilder;
 use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
+use GlpiPlugin\Configurationglpiauto\TrainingRequestFormBuilder;
+use GlpiPlugin\Configurationglpiauto\UserAccountCreationFormBuilder;
+use GlpiPlugin\Configurationglpiauto\UserAccountDeactivationFormBuilder;
 use GlpiPlugin\Configurationglpiauto\UserCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\ValidationRoutingBuilder;
 use GlpiPlugin\Configurationglpiauto\ValidationTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\VehicleAssetBuilder;
+use GlpiPlugin\Configurationglpiauto\VehicleIncidentFormBuilder;
+use GlpiPlugin\Configurationglpiauto\VehicleMaintenanceFormBuilder;
+use GlpiPlugin\Configurationglpiauto\VideoSurveillanceFormBuilder;
 use GlpiPlugin\Configurationglpiauto\VipBuilder;
 use GlpiPlugin\Configurationglpiauto\VpnAccessFormBuilder;
 use GlpiPlugin\Configurationglpiauto\WaitReasonBuilder;
+use GlpiPlugin\Configurationglpiauto\WaterLeakFormBuilder;
+use GlpiPlugin\Configurationglpiauto\WebsiteUpdateFormBuilder;
+use GlpiPlugin\Configurationglpiauto\WifiAccessFormBuilder;
+use GlpiPlugin\Configurationglpiauto\WorkplaceSafetyFormBuilder;
 
 /**
  * Validates an uploaded entity logo and returns it as a `data:` URI, or null if missing/invalid.
@@ -464,6 +506,64 @@ if (isset($_POST['finish'])) {
     $leaveRequestFormCreated = (new LeaveRequestFormBuilder())->build($config);
     $staffMovementFormCreated = (new StaffMovementFormBuilder())->build($config);
     $meetingRoomFormCreated = (new MeetingRoomFormBuilder())->build($config);
+    // Issue #207 generalized to the rest of the catalog (42 more SERVICES entries, now also
+    // flagged 'smart'), per explicit maintainer request: the six-service wave above was judged too
+    // conservative, so every remaining service got the same real per-service design pass (own
+    // dedicated builder, typed/conditional questions where they add value, computed title), leaving
+    // only 2 of the original ~50 services deliberately plain (see ServiceCatalogBuilder's docblock
+    // for why those two specifically). Looped + counted here rather than one variable/message per
+    // builder like the six above: at 42 builders, a message per service would flood the wizard's
+    // summary panel — the aggregate count below is more useful to read at a glance.
+    $catalogSmartFormBuilders = [
+        new SoftwareInstallFormBuilder(),
+        new SoftwareBugFormBuilder(),
+        new UserAccountCreationFormBuilder(),
+        new PasswordResetFormBuilder(),
+        new UserAccountDeactivationFormBuilder(),
+        new WifiAccessFormBuilder(),
+        new NewScreenFormBuilder(),
+        new LaptopRequestFormBuilder(),
+        new ProfessionalPhoneFormBuilder(),
+        new MailboxRequestFormBuilder(),
+        new TeamCollaborationSpaceFormBuilder(),
+        new HeatingClimateFormBuilder(),
+        new ElectricalInterventionFormBuilder(),
+        new FurnitureRequestFormBuilder(),
+        new WaterLeakFormBuilder(),
+        new DoorLockBadgeFormBuilder(),
+        new CleanlinessRequestFormBuilder(),
+        new VehicleMaintenanceFormBuilder(),
+        new VehicleIncidentFormBuilder(),
+        new FuelCardFormBuilder(),
+        new TrainingRequestFormBuilder(),
+        new RemoteWorkFormBuilder(),
+        new SupplyOrderFormBuilder(),
+        new ItemReturnFormBuilder(),
+        new DeliveryTrackingFormBuilder(),
+        new RelocationArchivingFormBuilder(),
+        new VideoSurveillanceFormBuilder(),
+        new WorkplaceSafetyFormBuilder(),
+        new OfficeSuppliesFormBuilder(),
+        new BreakRoomFormBuilder(),
+        new RecyclingRequestFormBuilder(),
+        new InvoicePaymentFormBuilder(),
+        new ContractReviewFormBuilder(),
+        new MailPrintingFormBuilder(),
+        new WebsiteUpdateFormBuilder(),
+        new SocialMediaPostFormBuilder(),
+        new EventSupportFormBuilder(),
+        new NonConformityFormBuilder(),
+        new AuditRequestFormBuilder(),
+        new PreventiveMaintenanceFormBuilder(),
+        new CurativeMaintenanceFormBuilder(),
+        new InstrumentCalibrationFormBuilder(),
+    ];
+    $catalogSmartFormsUpgraded = 0;
+    foreach ($catalogSmartFormBuilders as $catalogSmartFormBuilder) {
+        if ($catalogSmartFormBuilder->build($config)) {
+            $catalogSmartFormsUpgraded++;
+        }
+    }
     $statesCreated = (new StateBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
     $ruleRightBuilder = new RuleRightBuilder();
@@ -681,6 +781,9 @@ if (isset($_POST['finish'])) {
     }
     if ($meetingRoomFormCreated) {
         $messages[] = __('Service "Réservation ou problème d\'équipement de salle de réunion" enrichi (question conditionnelle).', 'configurationglpiauto');
+    }
+    if ($catalogSmartFormsUpgraded > 0) {
+        $messages[] = sprintf(__('%d autres services du catalogue enrichis avec des questions ciblées et un titre de ticket calculé automatiquement.', 'configurationglpiauto'), $catalogSmartFormsUpgraded);
     }
     if ($statesCreated !== []) {
         $messages[] = sprintf(__('%d statuts d\'éléments créés.', 'configurationglpiauto'), count($statesCreated));

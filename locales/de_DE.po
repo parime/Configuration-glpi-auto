@@ -2546,3 +2546,263 @@ msgstr "%d FAQ-Artikel erstellt."
 #~ "übersprungen, es wird nichts erfunden. Erstellte Feiertage werden nicht "
 #~ "automatisch einem Kalender zugeordnet: das müssen Sie selbst unter "
 #~ "Konfiguration > Kalender erledigen, sobald sie erstellt sind."
+
+#: src/MailboxRequestFormBuilder.php
+msgid "Adresse ou nom souhaité"
+msgstr "Gewünschte Adresse oder gewünschter Name"
+
+#: src/WifiAccessFormBuilder.php
+msgid "Appareil ou nom du visiteur"
+msgstr "Gerät oder Name des Besuchers"
+
+#: src/ItemReturnFormBuilder.php
+msgid "Article concerné"
+msgstr "Betroffener Artikel"
+
+#: src/SupplyOrderFormBuilder.php
+msgid "Article ou référence souhaité"
+msgstr "Gewünschter Artikel oder gewünschte Referenz"
+
+#: src/OfficeSuppliesFormBuilder.php
+msgid "Article souhaité"
+msgstr "Gewünschter Artikel"
+
+#: src/VehicleIncidentFormBuilder.php
+msgid "Coordonnées et informations du tiers"
+msgstr "Kontaktdaten und Informationen des Dritten"
+
+#: src/RemoteWorkFormBuilder.php
+msgid "Date concernée"
+msgstr "Betroffenes Datum"
+
+#: src/UserAccountCreationFormBuilder.php
+msgid "Date d'arrivée souhaitée"
+msgstr "Gewünschtes Ankunftsdatum"
+
+#: src/EventSupportFormBuilder.php
+msgid "Date de l'événement"
+msgstr "Datum der Veranstaltung"
+
+#: src/SocialMediaPostFormBuilder.php
+msgid "Date de publication souhaitée"
+msgstr "Gewünschtes Veröffentlichungsdatum"
+
+#: src/VehicleIncidentFormBuilder.php
+msgid "Date du sinistre"
+msgstr "Datum des Schadensfalls"
+
+#: src/MailPrintingFormBuilder.php
+msgid "Destinataire et adresse"
+msgstr "Empfänger und Adresse"
+
+#: src/ContractReviewFormBuilder.php
+msgid "Document à faire relire ou signer"
+msgstr "Zu prüfendes oder zu unterzeichnendes Dokument"
+
+#: src/NonConformityFormBuilder.php
+msgid "Domaine ou service concerné"
+msgstr "Betroffener Bereich oder Dienst"
+
+#: src/BreakRoomFormBuilder.php
+msgid "Espace concerné"
+msgstr "Betroffener Bereich"
+
+#: src/PasswordResetFormBuilder.php
+msgid "Identifiant ou compte concerné"
+msgstr "Betroffener Benutzername oder betroffenes Konto"
+
+#: src/InstrumentCalibrationFormBuilder.php
+msgid "Instrument concerné"
+msgstr "Betroffenes Instrument"
+
+#: src/TrainingRequestFormBuilder.php
+msgid "Intitulé de la formation souhaitée"
+msgstr "Bezeichnung der gewünschten Schulung"
+
+#: src/RemoteWorkFormBuilder.php
+msgid "Jour(s) souhaité(s)"
+msgstr "Gewünschte(r) Tag(e)"
+
+#: src/InvoicePaymentFormBuilder.php
+msgid "Justificatif (facture, bon de commande...)"
+msgstr "Beleg (Rechnung, Bestellung...)"
+
+#: src/CurativeMaintenanceFormBuilder.php
+msgid "L'équipement est-il à l'arrêt ?"
+msgstr "Steht die Anlage still?"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Le problème vous empêche-t-il de travailler ?"
+msgstr "Hindert Sie das Problem an der Arbeit?"
+
+#: src/RelocationArchivingFormBuilder.php
+msgid "Localisation concernée (départ et/ou arrivée)"
+msgstr "Betroffener Standort (Abgang und/oder Ankunft)"
+
+#: src/VideoSurveillanceFormBuilder.php
+msgid "Localisation de l'équipement concerné"
+msgstr "Standort der betroffenen Anlage"
+
+#: src/FurnitureRequestFormBuilder.php
+msgid "Localisation du poste"
+msgstr "Standort des Arbeitsplatzes"
+
+#: src/CleanlinessRequestFormBuilder.php src/DoorLockBadgeFormBuilder.php src/ElectricalInterventionFormBuilder.php src/WaterLeakFormBuilder.php
+msgid "Localisation précise"
+msgstr "Genauer Standort"
+
+#: src/HeatingClimateFormBuilder.php
+msgid "Localisation précise (bâtiment, étage, bureau ou salle)"
+msgstr "Genauer Standort (Gebäude, Stockwerk, Büro oder Raum)"
+
+#: src/RecyclingRequestFormBuilder.php
+msgid "Localisation à collecter"
+msgstr "Abzuholender Standort"
+
+#: src/ProfessionalPhoneFormBuilder.php
+msgid "Modèle actuel à remplacer"
+msgstr "Aktuelles zu ersetzendes Modell"
+
+#: src/FuelCardFormBuilder.php src/FurnitureRequestFormBuilder.php src/PasswordResetFormBuilder.php src/UserAccountDeactivationFormBuilder.php
+msgid "Motif"
+msgstr "Grund"
+
+#: src/LaptopRequestFormBuilder.php src/NewScreenFormBuilder.php src/ProfessionalPhoneFormBuilder.php
+msgid "Motif de la demande"
+msgstr "Grund der Anfrage"
+
+#: src/BreakRoomFormBuilder.php src/DoorLockBadgeFormBuilder.php src/ElectricalInterventionFormBuilder.php src/HeatingClimateFormBuilder.php src/WaterLeakFormBuilder.php
+msgid "Nature du problème"
+msgstr "Art des Problems"
+
+#: src/UserAccountCreationFormBuilder.php
+msgid "Nom complet de la personne concernée"
+msgstr "Vollständiger Name der betroffenen Person"
+
+#: src/TeamCollaborationSpaceFormBuilder.php
+msgid "Nom de l'équipe ou du projet"
+msgstr "Name des Teams oder Projekts"
+
+#: src/EventSupportFormBuilder.php
+msgid "Nom de l'événement"
+msgstr "Name der Veranstaltung"
+
+#: src/UserAccountDeactivationFormBuilder.php
+msgid "Nom de la personne concernée"
+msgstr "Name der betroffenen Person"
+
+#: src/NewScreenFormBuilder.php
+msgid "Nombre d'écrans souhaités"
+msgstr "Gewünschte Anzahl an Bildschirmen"
+
+#: src/LaptopRequestFormBuilder.php
+msgid "Numéro d'inventaire ou nom du poste actuel"
+msgstr "Inventarnummer oder Name des aktuellen Arbeitsplatzes"
+
+#: src/DeliveryTrackingFormBuilder.php
+msgid "Numéro de commande ou de bon de livraison"
+msgstr "Bestellnummer oder Lieferscheinnummer"
+
+#: src/InvoicePaymentFormBuilder.php
+msgid "Numéro de facture ou référence"
+msgstr "Rechnungsnummer oder Referenz"
+
+#: src/WebsiteUpdateFormBuilder.php
+msgid "Page ou section concernée"
+msgstr "Betroffene Seite oder Rubrik"
+
+#: src/VehicleIncidentFormBuilder.php
+msgid "Photos des dommages"
+msgstr "Fotos der Schäden"
+
+#: src/UserAccountCreationFormBuilder.php
+msgid "Poste ou service"
+msgstr "Position oder Abteilung"
+
+#: src/AuditRequestFormBuilder.php src/BreakRoomFormBuilder.php src/CleanlinessRequestFormBuilder.php src/ContractReviewFormBuilder.php src/CurativeMaintenanceFormBuilder.php src/DeliveryTrackingFormBuilder.php src/DoorLockBadgeFormBuilder.php src/ElectricalInterventionFormBuilder.php src/EventSupportFormBuilder.php src/FuelCardFormBuilder.php src/FurnitureRequestFormBuilder.php src/HeatingClimateFormBuilder.php src/InstrumentCalibrationFormBuilder.php src/InvoicePaymentFormBuilder.php src/ItemReturnFormBuilder.php src/LaptopRequestFormBuilder.php src/MailPrintingFormBuilder.php src/MailboxRequestFormBuilder.php src/NewScreenFormBuilder.php src/NonConformityFormBuilder.php src/OfficeSuppliesFormBuilder.php src/PasswordResetFormBuilder.php src/PreventiveMaintenanceFormBuilder.php src/ProfessionalPhoneFormBuilder.php src/RecyclingRequestFormBuilder.php src/RelocationArchivingFormBuilder.php src/RemoteWorkFormBuilder.php src/SocialMediaPostFormBuilder.php src/SoftwareBugFormBuilder.php src/SoftwareInstallFormBuilder.php src/SupplyOrderFormBuilder.php src/TeamCollaborationSpaceFormBuilder.php src/TrainingRequestFormBuilder.php src/UserAccountCreationFormBuilder.php src/UserAccountDeactivationFormBuilder.php src/VehicleIncidentFormBuilder.php src/VehicleMaintenanceFormBuilder.php src/VideoSurveillanceFormBuilder.php src/WaterLeakFormBuilder.php src/WebsiteUpdateFormBuilder.php src/WifiAccessFormBuilder.php src/WorkplaceSafetyFormBuilder.php
+msgid "Précisions complémentaires"
+msgstr "Zusätzliche Angaben"
+
+#: src/AuditRequestFormBuilder.php src/PreventiveMaintenanceFormBuilder.php src/TrainingRequestFormBuilder.php
+msgid "Période souhaitée"
+msgstr "Gewünschter Zeitraum"
+
+#: src/OfficeSuppliesFormBuilder.php src/SupplyOrderFormBuilder.php
+msgid "Quantité"
+msgstr "Menge"
+
+#: src/InstrumentCalibrationFormBuilder.php
+msgid "Référence ou numéro de série"
+msgstr "Referenz- oder Seriennummer"
+
+#: src/SocialMediaPostFormBuilder.php
+msgid "Réseau(x) concerné(s)"
+msgstr "Betroffene(s) Netzwerk(e)"
+
+#: src/NewScreenFormBuilder.php
+msgid "Taille souhaitée (ex : 24 pouces)"
+msgstr "Gewünschte Größe (z. B. 24 Zoll)"
+
+#: src/WifiAccessFormBuilder.php
+msgid "Type d'accès"
+msgstr "Zugriffsart"
+
+#: src/TeamCollaborationSpaceFormBuilder.php
+msgid "Type d'accès souhaité"
+msgstr "Gewünschte Zugriffsart"
+
+#: src/ProfessionalPhoneFormBuilder.php
+msgid "Type d'appareil souhaité"
+msgstr "Gewünschter Gerätetyp"
+
+#: src/AuditRequestFormBuilder.php
+msgid "Type d'audit"
+msgstr "Art des Audits"
+
+#: src/VehicleMaintenanceFormBuilder.php
+msgid "Type d'entretien"
+msgstr "Wartungsart"
+
+#: src/ContractReviewFormBuilder.php
+msgid "Type de contrat concerné"
+msgstr "Betroffene Vertragsart"
+
+#: src/VideoSurveillanceFormBuilder.php
+msgid "Type de dysfonctionnement"
+msgstr "Art der Störung"
+
+#: src/RecyclingRequestFormBuilder.php
+msgid "Type de déchet concerné"
+msgstr "Betroffene Abfallart"
+
+#: src/FurnitureRequestFormBuilder.php
+msgid "Type de mobilier concerné"
+msgstr "Betroffene Möbelart"
+
+#: src/WebsiteUpdateFormBuilder.php
+msgid "Type de modification"
+msgstr "Art der Änderung"
+
+#: src/NonConformityFormBuilder.php
+msgid "Type de non-conformité"
+msgstr "Art der Nichtkonformität"
+
+#: src/EventSupportFormBuilder.php
+msgid "Type de support souhaité"
+msgstr "Gewünschte Art der Unterstützung"
+
+#: src/FuelCardFormBuilder.php
+msgid "Type demandé"
+msgstr "Angeforderter Typ"
+
+#: src/VehicleIncidentFormBuilder.php
+msgid "Un tiers est-il impliqué ?"
+msgstr "Ist ein Dritter beteiligt?"
+
+#: src/FuelCardFormBuilder.php src/VehicleIncidentFormBuilder.php src/VehicleMaintenanceFormBuilder.php
+msgid "Véhicule concerné (immatriculation)"
+msgstr "Betroffenes Fahrzeug (Kennzeichen)"
+
+#: src/CurativeMaintenanceFormBuilder.php src/PreventiveMaintenanceFormBuilder.php
+msgid "Équipement ou installation concerné"
+msgstr "Betroffene Anlage oder Einrichtung"
