@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-09-05
+
+### Fixed
+
+- **"Déclarer un sinistre ou un dommage véhicule" : la question "Le véhicule est-il immobilisé ?"
+  ne pilotait pas réellement l'urgence du ticket**, malgré une configuration `UrgencyFieldStrategy::SPECIFIC_ANSWER`
+  qui semblait correcte à la lecture du code. Confirmé en soumettant réellement le formulaire et en
+  inspectant la colonne `urgency` du ticket créé (retombait systématiquement sur la valeur par
+  défaut, 3, quelle que soit la réponse) : un `QuestionTypeRadio` stocke sa réponse brute sous forme
+  de tableau (`["4"]`), même pour un choix unique — `UrgencyFieldStrategy::getUrgencyFromSpecificAnswer()`
+  exige `is_numeric($answer)`, qui échoue silencieusement sur un tableau, sans aucune erreur ni
+  échec de soumission. Remplacé par une vraie question `QuestionTypeUrgency` (dont le format de
+  réponse brute est un scalaire, compatible), pilotée via `UrgencyFieldStrategy::LAST_VALID_ANSWER`
+  (le mécanisme réellement prévu par GLPI pour ce cas). Le libellé de la question reste centré sur
+  l'état objectif du véhicule ("Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"),
+  pas sur un ressenti personnel d'urgence — l'intention initiale (éviter l'auto-évaluation
+  subjective, anti-pattern déjà documenté dans `HelpdeskFormBuilder`) reste respectée, seul le
+  mécanisme technique était cassé. Revérifié de bout en bout : un ticket réellement soumis avec
+  "Très haute" porte maintenant `urgency = 5`.
+
 ## [1.3.0] - 2026-09-05
 
 ### Added

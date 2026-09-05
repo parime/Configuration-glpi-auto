@@ -2830,3 +2830,7 @@ msgstr "Apparecchiatura interessata (se già censita)"
 #: src/NonConformityFormBuilder.php
 msgid "Photo ou preuve documentaire"
 msgstr "Foto o prova documentale"
+
+#: src/VehicleIncidentFormBuilder.php
+msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
+msgstr "In che misura il veicolo è immobilizzato o inutilizzabile?"
