@@ -48,7 +48,7 @@ use KnowbaseItemTranslation;
  * recursive" idiom every other builder in this plugin already uses for instance-wide visibility,
  * e.g. `KnowbaseCategoryBuilder`) is what actually makes the article visible from any entity.
  *
- * Translation: full 5-language translation of the article body (not just a short label), same
+ * Translation: full 6-language translation of the article body (not just a short label), same
  * precedent as `SolutionLibraryBuilder`'s solution templates — the source string is long-form
  * prose, not a UI string, so it stays a plain PHP literal here rather than going through
  * `__()`/`locales/*.po` (confirmed against this repo's own locale-completeness CI check, which
@@ -144,6 +144,23 @@ class FaqBuilder
                         <p>Una vez completado el formulario, haga clic en el botón de envío al final de la página. Se crea entonces un ticket automáticamente, con un título y una categoría ya rellenados para usted: no tiene que hacer nada más.</p>
                         <h4>5. Seguir su solicitud</h4>
                         <p>Para ver en qué punto está su solicitud, haga clic en «Tickets» en el menú superior. Allí encontrará todas sus solicitudes en curso y ya tramitadas. También recibirá un correo electrónico en cada etapa importante (asignación, respuesta del soporte, cierre).</p>
+                        HTML,
+                ],
+                'pt_BR' => [
+                    'name' => 'Como usar o catálogo de serviços para fazer uma solicitação',
+                    'answer' => <<<'HTML'
+                        <p>O <strong>catálogo de serviços</strong> é a vitrine do portal de atendimento: uma lista de tudo o que você pode solicitar (um acesso, um equipamento, uma informação de RH, a reserva de uma sala...) sem precisar escrever um chamado do zero. Você escolhe o que precisa em uma lista, responde a algumas perguntas simples, e um chamado é criado automaticamente para você, já corretamente classificado.</p>
+                        <h4>1. Abrir o catálogo de serviços</h4>
+                        <p>Faça login no portal do GLPI com sua conta habitual. No menu no topo da página, clique em <strong>"Catálogo de serviços"</strong>.</p>
+                        <h4>2. Encontrar o serviço certo</h4>
+                        <p>O catálogo é organizado por tema, em forma de blocos: "TI e Sistemas de Informação", "Recursos Humanos", "Predial e Serviços Gerais"... Clique no tema que corresponde à sua necessidade para ver a lista de serviços disponíveis, ou use diretamente a barra de busca no topo da página se já souber o que está procurando (por exemplo: "teclado", "acesso VPN", "férias").</p>
+                        <h4>3. Preencher o formulário</h4>
+                        <p>Cada serviço abre um pequeno formulário para preencher. Os campos marcados com um asterisco vermelho (*) são obrigatórios, os demais são opcionais. Alguns formulários fazem uma pergunta adicional apenas se sua resposta anterior justificar: por exemplo, um formulário de solicitação de férias só vai pedir um atestado se você indicar que se trata de uma licença médica. Não se surpreenda se o formulário mudar um pouco à sua frente, isso é normal: ele se adapta ao que você já respondeu para fazer apenas as perguntas necessárias.</p>
+                        <p><em>Exemplo:</em> para uma solicitação de licença de software, será perguntado apenas o nome do software desejado e a quantidade de licenças.</p>
+                        <h4>4. Enviar a solicitação</h4>
+                        <p>Depois de preencher o formulário, clique no botão de envio no final da página. Um chamado é então criado automaticamente, com um título e uma categoria já preenchidos para você: não é preciso fazer mais nada.</p>
+                        <h4>5. Acompanhar sua solicitação</h4>
+                        <p>Para ver como está o andamento da sua solicitação, clique em "Chamados" no menu superior. Lá você encontra todas as suas solicitações em andamento e já tratadas. Você também receberá um e-mail a cada etapa importante (atendimento iniciado, resposta do suporte, encerramento).</p>
                         HTML,
                 ],
             ],
@@ -306,6 +323,38 @@ class FaqBuilder
                         <p>Una descripción como «no funciona» obliga al soporte a volver a contactarle para saber más, lo que retrasa la resolución. Una descripción como «mi pantalla externa no se enciende desde esta mañana, el cable está bien conectado» permite actuar de inmediato.</p>
                         <h4>5. Enviar y seguir su ticket</h4>
                         <p>Una vez enviado su ticket, puede seguir su progreso en cualquier momento desde el menú «Tickets»: pestaña «Tickets en curso» para las solicitudes aún no finalizadas, «Tickets resueltos» para el historial. También recibirá un correo electrónico en cada actualización importante (asignación a un técnico, solicitud de más información, resolución). Puede responder directamente en el ticket si tiene información adicional que añadir.</p>
+                        HTML,
+                ],
+                'pt_BR' => [
+                    'name' => 'Reportar um incidente ou fazer uma solicitação: qual a diferença e como proceder',
+                    'answer' => <<<'HTML'
+                        <p>No GLPI, cada chamado pertence a um destes dois tipos:</p>
+                        <ul>
+                        <li><strong>Um incidente</strong>: algo que funcionava antes e não funciona mais. Exemplo: "minha tela não liga mais", "não consigo mais entrar na minha conta", "a impressora do 2º andar está com defeito".</li>
+                        <li><strong>Uma solicitação</strong>: algo que você precisa, mas que não é um problema de funcionamento. Exemplo: "preciso de um teclado novo", "gostaria de ter acesso a esta pasta compartilhada", "vou tirar férias na próxima semana".</li>
+                        </ul>
+                        <p>Resumindo: se algo está quebrado, é um incidente. Se você quer algo novo, é uma solicitação. Fique tranquilo, se você errar, o suporte sempre pode reclassificar seu chamado: o essencial é descrever claramente o que você precisa.</p>
+                        <h4>1. Abrir o portal de atendimento</h4>
+                        <p>Faça login no GLPI com sua conta habitual. Você chega à página inicial do portal, que pergunta "Precisa de ajuda? Alguma dúvida?".</p>
+                        <h4>2. Escolher o ponto de partida certo</h4>
+                        <p>Dois blocos permitem começar:</p>
+                        <ul>
+                        <li><strong>"Reportar um incidente"</strong> se algo não está funcionando;</li>
+                        <li><strong>"Solicitar um serviço"</strong> (ou o <strong>catálogo de serviços</strong>) se você precisa de algo novo.</li>
+                        </ul>
+                        <h4>3. Escolher a categoria certa</h4>
+                        <p>Será solicitado que você especifique a área envolvida (informática, predial, recursos humanos...). Escolha a que melhor corresponde ao seu problema: isso permite que sua solicitação chegue diretamente à equipe certa, sem desvios.</p>
+                        <h4>4. Escrever uma descrição clara</h4>
+                        <p>Reserve alguns segundos para dar informações úteis, isso permite que o suporte resolva seu problema muito mais rápido:</p>
+                        <ul>
+                        <li>o nome ou número do equipamento envolvido, se você souber (geralmente está escrito em uma etiqueta);</li>
+                        <li>desde quando o problema existe ("desde esta manhã", "desde ontem à tarde");</li>
+                        <li>o que você já tentou, se for o caso;</li>
+                        <li>uma captura de tela se aparecer uma mensagem de erro: ela costuma dizer mais do que uma explicação longa.</li>
+                        </ul>
+                        <p>Uma descrição como "não funciona" obriga o suporte a entrar em contato com você para saber mais, o que atrasa a resolução. Uma descrição como "minha tela externa não liga mais desde esta manhã, o cabo está bem conectado" permite agir imediatamente.</p>
+                        <h4>5. Enviar e acompanhar seu chamado</h4>
+                        <p>Depois de enviar seu chamado, você pode acompanhar seu andamento a qualquer momento pelo menu "Chamados": aba "Chamados em andamento" para as solicitações ainda não concluídas, "Chamados resolvidos" para o histórico. Você também receberá um e-mail a cada atualização importante (atendimento assumido por um técnico, pedido de mais informações, resolução). Você pode responder diretamente no chamado se tiver alguma informação adicional a acrescentar.</p>
                         HTML,
                 ],
             ],

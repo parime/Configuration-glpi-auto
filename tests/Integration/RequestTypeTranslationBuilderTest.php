@@ -113,7 +113,7 @@ final class RequestTypeTranslationBuilderTest extends TestCase
 
         global $DB;
         $count = $DB->request(['COUNT' => 'c', 'FROM' => 'glpi_dropdowntranslations', 'WHERE' => ['itemtype' => RequestType::class]])->current()['c'];
-        $this->assertSame(24, $count, '6 types x 4 languages, no duplicates.');
+        $this->assertSame(30, $count, '6 types x 5 languages, no duplicates.');
 
         $count = $DB->request(['COUNT' => 'c', 'FROM' => 'glpi_requesttypes'])->current()['c'];
         $this->assertSame(6, $count, 'Never creates new RequestType rows.');

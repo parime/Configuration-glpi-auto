@@ -83,7 +83,7 @@ All other screenshots (all 18 steps in detail) are in the [tutorial](docs/TUTORI
 - Optional activation of GLPI's native inventory (FusionInventory/GLPI Agent)
 - Useful RSS feeds (CERT-FR security advisories, GLPI release notes) and plugin version tracking
   against the latest GitHub release
-- Interface translated into 5 languages (French, English, German, Italian, Spanish)
+- Interface translated into 6 languages (French, English, German, Italian, Spanish, Brazilian Portuguese)
 
 ## Requirements
 

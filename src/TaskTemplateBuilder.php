@@ -45,6 +45,7 @@ class TaskTemplateBuilder
                 'de_DE' => "CHECKLISTE ONBOARDING\n\n- Konto und Postfach anlegen\n- Arbeitsplatz und Peripheriegeräte einrichten\n- Erforderliche Fachsoftware und Lizenzen installieren\n- Anwendungs- und VPN-Zugänge bei Bedarf konfigurieren\n- Ausrüstung und Benutzerhandbuch übergeben\n- Zugänge mit dem neuen Mitarbeiter bestätigen",
                 'it_IT' => "CHECKLIST ONBOARDING\n\n- Creare l'account e la casella di posta\n- Configurare la postazione di lavoro e le periferiche\n- Installare i software aziendali e le licenze necessarie\n- Configurare gli accessi applicativi e VPN se necessario\n- Consegnare il materiale e la guida utente\n- Convalidare gli accessi con il collaboratore",
                 'es_ES' => "LISTA DE VERIFICACIÓN DE INCORPORACIÓN\n\n- Crear la cuenta y el correo electrónico\n- Configurar el puesto de trabajo y los periféricos\n- Instalar el software corporativo y las licencias necesarias\n- Configurar los accesos a aplicaciones y VPN si es necesario\n- Entregar el equipo y la guía del usuario\n- Validar los accesos con el colaborador",
+                'pt_BR' => "CHECKLIST DE ONBOARDING\n\n- Criar a conta e o e-mail\n- Configurar a estação de trabalho e os periféricos\n- Instalar os softwares corporativos e as licenças necessárias\n- Configurar os acessos a aplicativos e VPN, se necessário\n- Entregar o equipamento e o guia do usuário\n- Validar os acessos com o colaborador",
             ],
         ],
         [
@@ -57,6 +58,7 @@ class TaskTemplateBuilder
                 'de_DE' => "CHECKLISTE OFFBOARDING\n\n- Konto und Postfach deaktivieren\n- VPN- und Anwendungszugänge entziehen\n- Ausrüstung zurücknehmen und aufbereiten\n- Daten archivieren oder übertragen\n- Personenbezogene Lizenzen kündigen\n- Gerätestatus in GLPI aktualisieren",
                 'it_IT' => "CHECKLIST OFFBOARDING\n\n- Disattivare l'account e la casella di posta\n- Revocare gli accessi VPN e applicativi\n- Recuperare e ricondizionare il materiale\n- Archiviare o trasferire i dati\n- Disdire le licenze nominative\n- Aggiornare lo stato del dispositivo in GLPI",
                 'es_ES' => "LISTA DE VERIFICACIÓN DE DESVINCULACIÓN\n\n- Desactivar la cuenta y el correo electrónico\n- Revocar los accesos VPN y a aplicaciones\n- Recuperar y reacondicionar el equipo\n- Archivar o transferir los datos\n- Cancelar las licencias nominales\n- Actualizar el estado del equipo en GLPI",
+                'pt_BR' => "CHECKLIST DE OFFBOARDING\n\n- Desativar a conta e o e-mail\n- Revogar os acessos VPN e a aplicativos\n- Recolher e recondicionar o equipamento\n- Arquivar ou transferir os dados\n- Cancelar as licenças nominais\n- Atualizar o status do equipamento no GLPI",
             ],
         ],
         [
@@ -69,6 +71,7 @@ class TaskTemplateBuilder
                 'de_DE' => "CHECKLISTE VORBEUGENDE WARTUNG\n\n- Systemupdates und Treiber prüfen\n- Speicherplatz und Zustand der Festplatte prüfen\n- Sicherungen prüfen\n- Gerät bei Bedarf physisch reinigen\n- Festgestellte Auffälligkeiten dokumentieren",
                 'it_IT' => "CHECKLIST MANUTENZIONE PREVENTIVA\n\n- Verificare gli aggiornamenti di sistema e i driver\n- Controllare lo spazio disco e lo stato del disco\n- Verificare i backup\n- Pulire fisicamente il dispositivo se necessario\n- Registrare le anomalie riscontrate",
                 'es_ES' => "LISTA DE VERIFICACIÓN DE MANTENIMIENTO PREVENTIVO\n\n- Comprobar las actualizaciones del sistema y los controladores\n- Comprobar el espacio en disco y el estado del disco\n- Comprobar las copias de seguridad\n- Limpiar físicamente el equipo si es necesario\n- Registrar las anomalías detectadas",
+                'pt_BR' => "CHECKLIST DE MANUTENÇÃO PREVENTIVA\n\n- Verificar as atualizações do sistema e os drivers\n- Verificar o espaço em disco e a saúde do disco\n- Verificar os backups\n- Limpar fisicamente o equipamento, se necessário\n- Registrar as anomalias constatadas",
             ],
         ],
     ];
