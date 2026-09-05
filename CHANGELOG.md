@@ -29,8 +29,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   administrative RH » (catch-all RH intentionnel aux côtés de 4 autres services RH déjà bien
   définis) et « Signaler un incident ou une urgence sécurité » (rapport d'urgence où minimiser la
   friction de soumission prime sur la structuration). Raisonnement complet par service dans le
-  docblock de `ServiceCatalogBuilder`. 65 nouveaux libellés de champs traduits dans les 5 langues du
-  plugin, vérifié avec le même mécanisme que le job CI « Locale Completeness ».
+  docblock de `ServiceCatalogBuilder`. 65 nouveaux libellés de champs traduits dans les 6 langues du
+  plugin (dont le pt_BR ajouté entre-temps par #216), vérifié avec le même mécanisme que le job CI
+  « Locale Completeness ».
+
+## [1.1.0] - 2026-09-05
+
+### Added
+
+- Traduction complète en portugais du Brésil (pt-BR), issue #215 — proposée à l'origine par
+  @andrefelipeufcg (Universidade Federal de Campina Grande), produite ici directement par un
+  mainteneur pour la livrer sans attendre une contribution externe. `locales/pt_BR.po` couvre les
+  468 chaînes extraites par `vendor/bin/extract-locales` (interface de l'assistant, `front/*.php`,
+  `src/*.php`) — vérifié à blanc contre la même boucle de complétude que la CI (`msgmerge` +
+  `msgattrib --untranslated`) pour les 6 langues désormais supportées, aucune chaîne manquante.
+  Terminologie ITSM/GLPI cohérente avec l'usage brésilien courant (« chamado » pour ticket,
+  « requisição » pour le type ITIL Demande, « escalonamento » pour l'escalade, « localização » pour
+  Lieu...), forme plurielle `nplurals=2; plural=(n > 1);` (comme fr_FR/es_ES/it_IT/de_DE — confirmé
+  être la règle standard de gettext pour pt_BR, distincte de pt_PT qui utilise `plural=(n != 1)`).
+  `pt_BR` ajouté à la boucle de vérification de complétude du workflow CI (job "locales", #174) pour
+  qu'un futur `__()` non traduit dans cette langue soit détecté automatiquement, comme pour les 5
+  autres.
+- Au-delà des chaînes d'interface (`locales/*.po`), extension à `pt_BR` de tout le contenu que ce
+  plugin génère lui-même dans les 5 autres langues et qui ne passe pas par `__()` : les ~341 entrées
+  de `Translations::MAP` (noms d'états, catégories, types d'actifs...) utilisées par
+  `applyIcon()` sur une dizaine de builders, les 6 valeurs natives `RequestType` de GLPI
+  (`RequestTypeTranslationBuilder`), les deux articles de FAQ (`FaqBuilder`), les modèles de suivis
+  (`FollowupLibraryBuilder`), les types/gabarits de solution (`SolutionLibraryBuilder`), les
+  checklists de tâches (`TaskTemplateBuilder`) et les libellés des e-mails de notification
+  personnalisés (`NotificationBrandingBuilder`) — sans quoi seule l'interface du wizard aurait été
+  en portugais, tout le contenu réellement créé dans GLPI serait resté en français/anglais pour un
+  utilisateur pt_BR.
 
 ## [1.0.0] - 2026-09-03
 

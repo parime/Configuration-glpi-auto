@@ -85,7 +85,7 @@ Toutes les autres captures d'écran (les 18 étapes en détail) sont dans le [tu
 - Activation optionnelle de l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)
 - Flux RSS utiles (avis de securite CERT-FR, notes de version GLPI) et suivi de la version du
   plugin par rapport a la derniere release GitHub
-- Interface traduite en 5 langues (francais, anglais, allemand, italien, espagnol)
+- Interface traduite en 6 langues (francais, anglais, allemand, italien, espagnol, portugais du Bresil)
 
 ## Prerequis
 
