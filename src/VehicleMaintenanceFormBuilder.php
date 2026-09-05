@@ -199,7 +199,7 @@ class VehicleMaintenanceFormBuilder
             return null;
         }
 
-        return $definition->getAssetTypeClassName();
+        return $definition->getAssetClassName();
     }
 
     /**

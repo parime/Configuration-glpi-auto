@@ -205,7 +205,7 @@ class VideoSurveillanceFormBuilder
             return null;
         }
 
-        return $definition->getAssetTypeClassName();
+        return $definition->getAssetClassName();
     }
 
     /**

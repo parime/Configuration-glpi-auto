@@ -212,10 +212,14 @@ class VehicleIncidentFormBuilder
     }
 
     /**
-     * Resolves `VehicleAssetBuilder`'s own custom asset class by its stable `system_name`, the same
-     * lookup pattern `AssetDefinition::getAssetTypeClassName()` callers already use elsewhere in this
-     * codebase (e.g. `VehicleAssetBuilder::seedTypes()` itself). Returns null if the definition
-     * doesn't exist yet — defensive only, see class docblock.
+     * Resolves `VehicleAssetBuilder`'s own custom asset class by its stable `system_name`. Uses
+     * `AssetDefinition::getAssetClassName()` — confirmed by reading GLPI 11 core
+     * (`Glpi\Asset\AssetDefinition`) that this, not `getAssetTypeClassName()` (which is the
+     * definition's own native "Type" *dropdown* class, `getAssetClassName() . 'Type'` — the one
+     * `VehicleAssetBuilder::seedTypes()` itself uses, for a different purpose), is the definition's
+     * actual concrete asset item class : `getAssetClassName()`'s own docblock reads "Get the
+     * definition's concrete asset class name." Returns null if the definition doesn't exist yet —
+     * defensive only, see class docblock.
      */
     private function resolveVehicleItemtype(): ?string
     {
@@ -224,7 +228,7 @@ class VehicleIncidentFormBuilder
             return null;
         }
 
-        return $definition->getAssetTypeClassName();
+        return $definition->getAssetClassName();
     }
 
     /**
