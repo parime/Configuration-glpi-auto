@@ -82,7 +82,7 @@ final class FaqBuilderTest extends TestCase
             $this->assertTrue($link->getFromDBByCrit(['knowbaseitems_id' => $item->getID(), 'entities_id' => 0]));
             $this->assertSame(1, (int) $link->fields['is_recursive']);
 
-            foreach (['en_GB', 'de_DE', 'it_IT', 'es_ES'] as $language) {
+            foreach (['en_GB', 'de_DE', 'it_IT', 'es_ES', 'pt_BR'] as $language) {
                 $translation = new KnowbaseItemTranslation();
                 $this->assertTrue(
                     $translation->getFromDBByCrit(['knowbaseitems_id' => $item->getID(), 'language' => $language]),

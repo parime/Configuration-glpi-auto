@@ -58,7 +58,7 @@ use NotificationTemplateTranslation;
  * `language=''` one — a real bug caught in review: GLPI resolves content by the *recipient's own*
  * language (`NotificationTemplate::getByLanguage()`, confirmed in source:
  * `WHERE language IN ($recipient_language, '')`), so a single French-only row would have shown
- * French labels to every recipient regardless of their GLPI language, undermining the 5-language UI
+ * French labels to every recipient regardless of their GLPI language, undermining the 6-language UI
  * translation work shipped just before this. `''` (empty language) doubles as both the universal
  * fallback *and* the French-specific row — matches the SQL `IN` clause, one less row to maintain,
  * same reasoning already used for this plugin's own `fr_FR` locale file (no separate row needed
@@ -479,6 +479,45 @@ class NotificationBrandingBuilder
             'validated_on' => 'Respondido el',
             'solution_type' => 'Tipo de solución',
             'solution_author' => 'Solución proporcionada por',
+        ],
+        'pt_BR' => [
+            'description' => 'Descrição',
+            'solution_provided' => 'Solução fornecida',
+            'status' => 'Status',
+            'opened_on' => 'Aberto em',
+            'resolved_on' => 'Resolvido em',
+            'closed_on' => 'Encerrado em',
+            'view_ticket' => '→ Ver o chamado no GLPI',
+            'validate_ticket' => '→ Tratar a solicitação no GLPI',
+            'access_glpi' => 'Acessar o GLPI',
+            'requesters' => 'Solicitantes',
+            'category' => 'Categoria',
+            'urgency' => 'Urgência',
+            'priority' => 'Prioridade',
+            'last_update_by' => 'Última atualização por',
+            'writer' => 'Escrito por',
+            'written_on' => 'Escrito em',
+            'private' => 'Privado',
+            'assignee' => 'Atribuído a',
+            'start' => 'Início',
+            'end' => 'Fim',
+            'duration' => 'Duração',
+            'due_date' => 'Prazo',
+            'requester_group' => 'Grupo solicitante',
+            'observer_group' => 'Grupo observador',
+            'assigned_groups' => 'Grupos atribuídos',
+            'assigned_users' => 'Usuários atribuídos',
+            'assigned_supplier' => 'Fornecedor atribuído',
+            'document_name' => 'Documento',
+            'document_file' => 'Arquivo',
+            'validator' => 'Aprovador',
+            'validation_status' => 'Status da aprovação',
+            'comment_submission' => 'Comentário da solicitação',
+            'comment_validation' => 'Comentário da resposta',
+            'requested_on' => 'Solicitado em',
+            'validated_on' => 'Respondido em',
+            'solution_type' => 'Tipo de solução',
+            'solution_author' => 'Solução fornecida por',
         ],
     ];
 

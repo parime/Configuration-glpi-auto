@@ -62,6 +62,8 @@ class FollowupLibraryBuilder
 
     private const GREETING_ES = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Hola {{ requesters|first.fullname }},{% else %}Hola,{% endif %}";
 
+    private const GREETING_PT = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Olá {{ requesters|first.fullname }},{% else %}Olá,{% endif %}";
+
     private const TEMPLATES = [
         [
             'name' => 'Relance — informations complémentaires demandées',
@@ -72,6 +74,7 @@ class FollowupLibraryBuilder
                 'de_DE' => self::GREETING_DE . "\n\nWir benötigen weitere Informationen, um mit Ihrer Anfrage fortzufahren:\n- \n\nBitte antworten Sie so schnell wie möglich.\n\nMit freundlichen Grüßen,",
                 'it_IT' => self::GREETING_IT . "\n\nAbbiamo bisogno di ulteriori informazioni per procedere con la vostra richiesta:\n- \n\nVi preghiamo di rispondere il prima possibile.\n\nCordiali saluti,",
                 'es_ES' => self::GREETING_ES . "\n\nNecesitamos información adicional para avanzar con su solicitud:\n- \n\nLe rogamos que responda lo antes posible.\n\nAtentamente,",
+                'pt_BR' => self::GREETING_PT . "\n\nPrecisamos de informações adicionais para avançar com sua solicitação:\n- \n\nPedimos que responda o mais breve possível.\n\nAtenciosamente,",
             ],
         ],
         [
@@ -83,6 +86,7 @@ class FollowupLibraryBuilder
                 'de_DE' => self::GREETING_DE . "\n\nIhre Anfrage wird bearbeitet. Wir warten auf die Lieferung der benötigten Hardware/Software und halten Sie nach Erhalt auf dem Laufenden.\n\nMit freundlichen Grüßen,",
                 'it_IT' => self::GREETING_IT . "\n\nLa vostra richiesta è in corso di elaborazione. Siamo in attesa della consegna dell'hardware/software necessario e vi terremo informati al ricevimento.\n\nCordiali saluti,",
                 'es_ES' => self::GREETING_ES . "\n\nSu solicitud está siendo procesada. Estamos a la espera de la entrega del hardware/software necesario y le mantendremos informado en cuanto lo recibamos.\n\nAtentamente,",
+                'pt_BR' => self::GREETING_PT . "\n\nSua solicitação está sendo processada. Estamos aguardando a entrega do hardware/software necessário e manteremos você informado assim que for recebido.\n\nAtenciosamente,",
             ],
         ],
         [
@@ -94,6 +98,7 @@ class FollowupLibraryBuilder
                 'de_DE' => self::GREETING_DE . "\n\nIhr Ticket wurde zur Analyse an unseren Lieferanten/Hersteller weitergeleitet. Wir melden uns bei Ihnen, sobald wir eine Rückmeldung erhalten.\n\nMit freundlichen Grüßen,",
                 'it_IT' => self::GREETING_IT . "\n\nIl vostro ticket è stato inoltrato al nostro fornitore/editore per l'analisi. Vi ricontatteremo non appena avremo una risposta.\n\nCordiali saluti,",
                 'es_ES' => self::GREETING_ES . "\n\nSu ticket ha sido remitido a nuestro proveedor/editor para su análisis. Nos pondremos en contacto con usted en cuanto tengamos una respuesta.\n\nAtentamente,",
+                'pt_BR' => self::GREETING_PT . "\n\nSeu chamado foi encaminhado ao nosso fornecedor/fabricante para análise. Entraremos em contato assim que tivermos um retorno.\n\nAtenciosamente,",
             ],
         ],
         [
@@ -105,6 +110,7 @@ class FollowupLibraryBuilder
                 'de_DE' => self::GREETING_DE . "\n\nEin Einsatz zur Lösung Ihrer Anfrage ist geplant. Bitte stellen Sie sicher, dass Sie am vereinbarten Termin verfügbar sind.\n\nMit freundlichen Grüßen,",
                 'it_IT' => self::GREETING_IT . "\n\nÈ stato programmato un intervento per risolvere la vostra richiesta. Vi preghiamo di assicurarvi di essere disponibili alla data concordata.\n\nCordiali saluti,",
                 'es_ES' => self::GREETING_ES . "\n\nSe ha programado una intervención para resolver su solicitud. Le rogamos que se asegure de estar disponible en la fecha acordada.\n\nAtentamente,",
+                'pt_BR' => self::GREETING_PT . "\n\nUma intervenção foi programada para resolver sua solicitação. Pedimos que confirme sua disponibilidade na data combinada.\n\nAtenciosamente,",
             ],
         ],
         [
@@ -116,6 +122,7 @@ class FollowupLibraryBuilder
                 'de_DE' => self::GREETING_DE . "\n\nIhre Anfrage erfordert eine Freigabe, bevor sie bearbeitet werden kann. Wir informieren Sie, sobald diese vorliegt.\n\nMit freundlichen Grüßen,",
                 'it_IT' => self::GREETING_IT . "\n\nLa vostra richiesta necessita di un'approvazione prima di poter essere elaborata. Vi informeremo non appena sarà stata ottenuta.\n\nCordiali saluti,",
                 'es_ES' => self::GREETING_ES . "\n\nSu solicitud requiere una aprobación antes de poder ser tramitada. Le informaremos en cuanto la hayamos obtenido.\n\nAtentamente,",
+                'pt_BR' => self::GREETING_PT . "\n\nSua solicitação requer uma aprovação antes de poder ser processada. Iremos informá-lo assim que ela for obtida.\n\nAtenciosamente,",
             ],
         ],
     ];

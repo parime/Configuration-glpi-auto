@@ -106,7 +106,7 @@ jobs:
     # in 4 of 5 languages for several sprints before anyone noticed. Regenerates the .pot from the
     # current code (vendor/bin/extract-locales, already a dev dependency — same tool a human
     # contributor would run by hand, not a hand-rolled regex) and fails if any string it finds is
-    # missing a translation in any of the 5 shipped languages.
+    # missing a translation in any of the 6 shipped languages.
     steps:
       - name: "Checkout code"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
@@ -138,7 +138,7 @@ jobs:
       - name: "Check every language has a translation for every extracted string"
         run: |
           status=0
-          for lang in fr_FR en_GB de_DE es_ES it_IT; do
+          for lang in fr_FR en_GB de_DE es_ES it_IT pt_BR; do
             msgmerge --no-fuzzy-matching --quiet -o /tmp/merged_${lang}.po locales/${lang}.po locales/configurationglpiauto.pot
             missing=$(msgattrib --untranslated /tmp/merged_${lang}.po | grep -c '^msgid "[^"]' || true)
             if [ "$missing" -gt 0 ]; then

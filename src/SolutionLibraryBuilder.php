@@ -62,6 +62,8 @@ class SolutionLibraryBuilder
 
     private const GREETING_ES = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Hola {{ requesters|first.fullname }},{% else %}Hola,{% endif %}";
 
+    private const GREETING_PT = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Olá {{ requesters|first.fullname }},{% else %}Olá,{% endif %}";
+
     /**
      * `solvedate` is defined on every `CommonITILObjectParameters` child alike (Ticket/Change/
      * Problem), same itemtype-branching reasoning as GREETING above. Real bug caught while adding
@@ -89,6 +91,7 @@ class SolutionLibraryBuilder
                         'de_DE' => self::GREETING_DE . "\n\nWir haben den Benutzer Schritt für Schritt bei der Lösung seiner Anfrage begleitet.\n\nDurchgeführte Maßnahme: \n\nMit freundlichen Grüßen,",
                         'it_IT' => self::GREETING_IT . "\n\nAbbiamo accompagnato l'utente passo dopo passo per risolvere la sua richiesta.\n\nAzione svolta: \n\nCordiali saluti,",
                         'es_ES' => self::GREETING_ES . "\n\nHemos acompañado al usuario paso a paso para resolver su solicitud.\n\nAcción realizada: \n\nAtentamente,",
+                        'pt_BR' => self::GREETING_PT . "\n\nAcompanhamos o usuário passo a passo para resolver sua solicitação.\n\nAção realizada: \n\nAtenciosamente,",
                     ],
                 ],
                 [
@@ -100,6 +103,7 @@ class SolutionLibraryBuilder
                         'de_DE' => self::GREETING_DE . "\n\nDem Benutzer wurde eine Schulungs-/Sensibilisierungssitzung zum betreffenden Tool angeboten.\n\nBehandelte Themen: \n\nMit freundlichen Grüßen,",
                         'it_IT' => self::GREETING_IT . "\n\nÈ stata erogata all'utente una sessione di formazione/sensibilizzazione sullo strumento in questione.\n\nArgomenti trattati: \n\nCordiali saluti,",
                         'es_ES' => self::GREETING_ES . "\n\nSe ha impartido al usuario una sesión de formación/sensibilización sobre la herramienta en cuestión.\n\nTemas tratados: \n\nAtentamente,",
+                        'pt_BR' => self::GREETING_PT . "\n\nFoi realizada uma sessão de treinamento/conscientização com o usuário sobre a ferramenta em questão.\n\nTópicos abordados: \n\nAtenciosamente,",
                     ],
                 ],
             ],
@@ -119,6 +123,7 @@ class SolutionLibraryBuilder
                         'de_DE' => self::GREETING_DE . "\n\nDas Problem wurde identifiziert und behoben.\n\nUrsache: \nDurchgeführte Maßnahme: \n\nMit freundlichen Grüßen,",
                         'it_IT' => self::GREETING_IT . "\n\nIl problema è stato individuato e risolto.\n\nCausa: \nAzione svolta: \n\nCordiali saluti,",
                         'es_ES' => self::GREETING_ES . "\n\nSe ha identificado y corregido el problema.\n\nCausa: \nAcción realizada: \n\nAtentamente,",
+                        'pt_BR' => self::GREETING_PT . "\n\nO problema foi identificado e corrigido.\n\nCausa: \nAção realizada: \n\nAtenciosamente,",
                     ],
                 ],
                 [
@@ -130,6 +135,7 @@ class SolutionLibraryBuilder
                         'de_DE' => self::GREETING_DE . "\n\nDas defekte Gerät wurde ersetzt.\n\nBetroffenes Gerät: \nNeues Gerät: \n\nMit freundlichen Grüßen,",
                         'it_IT' => self::GREETING_IT . "\n\nL'apparecchiatura difettosa è stata sostituita.\n\nApparecchiatura interessata: \nNuova apparecchiatura: \n\nCordiali saluti,",
                         'es_ES' => self::GREETING_ES . "\n\nSe ha sustituido el equipo defectuoso.\n\nEquipo afectado: \nNuevo equipo: \n\nAtentamente,",
+                        'pt_BR' => self::GREETING_PT . "\n\nO equipamento com defeito foi substituído.\n\nEquipamento envolvido: \nNovo equipamento: \n\nAtenciosamente,",
                     ],
                 ],
             ],
@@ -152,6 +158,7 @@ class SolutionLibraryBuilder
                         'de_DE' => 'Sicherheitsvorfall behandelt.' . "\n\nSofortmaßnahme: Isolierung des betroffenen Systems.\nBeseitigung: Entfernung schädlicher Elemente, Bereinigung von Persistenzmechanismen.\n\nVerwendete Werkzeuge: \nDatum: " . self::SOLVE_DATE,
                         'it_IT' => 'Incidente di sicurezza gestito.' . "\n\nAzione immediata: isolamento del sistema colpito.\nEradicazione: rimozione degli elementi dannosi, pulizia dei meccanismi di persistenza.\n\nStrumenti utilizzati: \nData: " . self::SOLVE_DATE,
                         'es_ES' => 'Incidente de seguridad tratado.' . "\n\nAcción inmediata: aislamiento del sistema afectado.\nErradicación: eliminación de los elementos maliciosos, limpieza de las persistencias.\n\nHerramientas utilizadas: \nFecha: " . self::SOLVE_DATE,
+                        'pt_BR' => 'Incidente de segurança tratado.' . "\n\nAção imediata: isolamento do sistema afetado.\nErradicação: remoção dos elementos maliciosos, limpeza das persistências.\n\nFerramentas utilizadas: \nData: " . self::SOLVE_DATE,
                     ],
                 ],
                 [
@@ -163,6 +170,7 @@ class SolutionLibraryBuilder
                         'de_DE' => "Nach dem Sicherheitsvorfall wurden Patches eingespielt.\n\nBehobene Schwachstelle: \nEingespielte Patches: \n\nDatum: " . self::SOLVE_DATE,
                         'it_IT' => "Patch applicate a seguito dell'incidente di sicurezza.\n\nVulnerabilità corretta: \nPatch distribuite: \n\nData: " . self::SOLVE_DATE,
                         'es_ES' => "Parches aplicados a raíz del incidente de seguridad.\n\nVulnerabilidad corregida: \nParches desplegados: \n\nFecha: " . self::SOLVE_DATE,
+                        'pt_BR' => "Correções aplicadas em decorrência do incidente de segurança.\n\nVulnerabilidade corrigida: \nCorreções implantadas: \n\nData: " . self::SOLVE_DATE,
                     ],
                 ],
             ],
@@ -182,6 +190,7 @@ class SolutionLibraryBuilder
                         'de_DE' => self::GREETING_DE . "\n\nNach Überprüfung ist das gemeldete Verhalten normal, es wurde keine Anomalie festgestellt.\n\nMit freundlichen Grüßen,",
                         'it_IT' => self::GREETING_IT . "\n\nDopo la verifica, il comportamento segnalato è normale, non è stata rilevata alcuna anomalia.\n\nCordiali saluti,",
                         'es_ES' => self::GREETING_ES . "\n\nTras la verificación, el comportamiento notificado es normal, no se ha detectado ninguna anomalía.\n\nAtentamente,",
+                        'pt_BR' => self::GREETING_PT . "\n\nApós verificação, o comportamento relatado é normal, nenhuma anomalia foi detectada.\n\nAtenciosamente,",
                     ],
                 ],
                 [
@@ -193,6 +202,7 @@ class SolutionLibraryBuilder
                         'de_DE' => self::GREETING_DE . "\n\nDieses Ticket ist ein Duplikat einer bereits in Bearbeitung befindlichen Anfrage.\n\nReferenzticket: \n\nMit freundlichen Grüßen,",
                         'it_IT' => self::GREETING_IT . "\n\nQuesto ticket è un duplicato di una richiesta già in corso di elaborazione.\n\nTicket di riferimento: \n\nCordiali saluti,",
                         'es_ES' => self::GREETING_ES . "\n\nEste ticket es un duplicado de una solicitud que ya está siendo tramitada.\n\nTicket de referencia: \n\nAtentamente,",
+                        'pt_BR' => self::GREETING_PT . "\n\nEste chamado é duplicado de uma solicitação já em andamento.\n\nChamado de referência: \n\nAtenciosamente,",
                     ],
                 ],
                 // 11e gabarit — forum GLPI officiel (topic 294630, utilisateur alecomte demandant un
@@ -210,6 +220,7 @@ class SolutionLibraryBuilder
                         'de_DE' => self::GREETING_DE . "\n\nIhre Anfrage enthält nicht genügend Informationen, um bearbeitet zu werden. Bitte teilen Sie uns mit:\n\n- Eine genaue Beschreibung des Problems oder der Anfrage\n- Einen Screenshot, falls zutreffend\n- Schritte zur Reproduktion des Problems\n\nWir setzen die Bearbeitung fort, sobald wir diese Angaben erhalten haben.\n\nMit freundlichen Grüßen,",
                         'it_IT' => self::GREETING_IT . "\n\nLa vostra richiesta non contiene informazioni sufficienti per essere elaborata. Vi preghiamo di fornire:\n\n- Una descrizione precisa del problema o della richiesta\n- Una schermata, se applicabile\n- I passaggi per riprodurre il problema\n\nRiprenderemo la lavorazione non appena riceveremo questi elementi.\n\nCordiali saluti,",
                         'es_ES' => self::GREETING_ES . "\n\nSu solicitud no contiene suficiente información para ser tramitada. Le rogamos que nos indique:\n\n- Una descripción precisa del problema o de la solicitud\n- Una captura de pantalla si procede\n- Los pasos para reproducir el problema\n\nReanudaremos la tramitación en cuanto recibamos estos datos.\n\nAtentamente,",
+                        'pt_BR' => self::GREETING_PT . "\n\nSua solicitação não contém informações suficientes para ser processada. Pedimos que informe:\n\n- Descrição precisa do problema ou da solicitação\n- Captura de tela, se aplicável\n- Passos para reproduzir o problema\n\nRetomaremos o atendimento assim que recebermos essas informações.\n\nAtenciosamente,",
                     ],
                 ],
             ],
@@ -229,6 +240,7 @@ class SolutionLibraryBuilder
                         'de_DE' => self::GREETING_DE . "\n\nDas Konto wurde wie gewünscht angelegt/geändert.\n\nGewährter Zugriff: \n\nMit freundlichen Grüßen,",
                         'it_IT' => self::GREETING_IT . "\n\nL'account è stato creato/modificato come richiesto.\n\nAccessi concessi: \n\nCordiali saluti,",
                         'es_ES' => self::GREETING_ES . "\n\nLa cuenta ha sido creada/modificada según lo solicitado.\n\nAccesos concedidos: \n\nAtentamente,",
+                        'pt_BR' => self::GREETING_PT . "\n\nA conta foi criada/modificada conforme solicitado.\n\nAcessos concedidos: \n\nAtenciosamente,",
                     ],
                 ],
                 [
@@ -240,6 +252,7 @@ class SolutionLibraryBuilder
                         'de_DE' => self::GREETING_DE . "\n\nIhr Passwort wurde zurückgesetzt. Die Zugangsdaten erhalten Sie über einen separaten Kanal.\n\nMit freundlichen Grüßen,",
                         'it_IT' => self::GREETING_IT . "\n\nLa vostra password è stata reimpostata. Riceverete le credenziali tramite un canale separato.\n\nCordiali saluti,",
                         'es_ES' => self::GREETING_ES . "\n\nSu contraseña ha sido restablecida. Recibirá las credenciales por un canal separado.\n\nAtentamente,",
+                        'pt_BR' => self::GREETING_PT . "\n\nSua senha foi redefinida. Você receberá as credenciais por um canal separado.\n\nAtenciosamente,",
                     ],
                 ],
             ],

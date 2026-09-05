@@ -38,7 +38,7 @@ use RequestType;
  *
  * A different shape from `Translations::applyIcon()`'s other 9 callers: those all translate a name
  * *this plugin itself* wrote in French, so French is always correct as-is and only the other 4
- * languages need a real translation. Here the existing native name is English, so all 5 languages
+ * languages need a real translation. Here the existing native name is English, so all 6 languages
  * (including `fr_FR`) need a real translation — `Translations::applyIcon()` doesn't fit that shape,
  * hence this builder writes its own `DropdownTranslation` rows directly instead of going through
  * the shared French-keyed `MAP`. Never creates `RequestType` rows (GLPI already ships exactly 6,
@@ -48,12 +48,12 @@ use RequestType;
 class RequestTypeTranslationBuilder
 {
     private const TRANSLATIONS = [
-        'Helpdesk' => ['fr_FR' => 'Formulaire web', 'de_DE' => 'Weboberfläche', 'it_IT' => 'Modulo web', 'es_ES' => 'Formulario web'],
-        'E-Mail' => ['fr_FR' => 'E-mail', 'de_DE' => 'E-Mail', 'it_IT' => 'E-mail', 'es_ES' => 'Correo electrónico'],
-        'Phone' => ['fr_FR' => 'Téléphone', 'de_DE' => 'Telefon', 'it_IT' => 'Telefono', 'es_ES' => 'Teléfono'],
-        'Direct' => ['fr_FR' => 'Direct', 'de_DE' => 'Direkt', 'it_IT' => 'Diretto', 'es_ES' => 'Directo'],
-        'Written' => ['fr_FR' => 'Écrit', 'de_DE' => 'Schriftlich', 'it_IT' => 'Scritto', 'es_ES' => 'Escrito'],
-        'Other' => ['fr_FR' => 'Autre', 'de_DE' => 'Sonstige', 'it_IT' => 'Altro', 'es_ES' => 'Otro'],
+        'Helpdesk' => ['fr_FR' => 'Formulaire web', 'de_DE' => 'Weboberfläche', 'it_IT' => 'Modulo web', 'es_ES' => 'Formulario web', 'pt_BR' => 'Formulário web'],
+        'E-Mail' => ['fr_FR' => 'E-mail', 'de_DE' => 'E-Mail', 'it_IT' => 'E-mail', 'es_ES' => 'Correo electrónico', 'pt_BR' => 'E-mail'],
+        'Phone' => ['fr_FR' => 'Téléphone', 'de_DE' => 'Telefon', 'it_IT' => 'Telefono', 'es_ES' => 'Teléfono', 'pt_BR' => 'Telefone'],
+        'Direct' => ['fr_FR' => 'Direct', 'de_DE' => 'Direkt', 'it_IT' => 'Diretto', 'es_ES' => 'Directo', 'pt_BR' => 'Direto'],
+        'Written' => ['fr_FR' => 'Écrit', 'de_DE' => 'Schriftlich', 'it_IT' => 'Scritto', 'es_ES' => 'Escrito', 'pt_BR' => 'Escrito'],
+        'Other' => ['fr_FR' => 'Autre', 'de_DE' => 'Sonstige', 'it_IT' => 'Altro', 'es_ES' => 'Otro', 'pt_BR' => 'Outro'],
     ];
 
     private const ICONS = [
@@ -124,7 +124,7 @@ class RequestTypeTranslationBuilder
     }
 
     /**
-     * @return array<string, array{fr_FR: string, de_DE: string, it_IT: string, es_ES: string, icon: string}>
+     * @return array<string, array{fr_FR: string, de_DE: string, it_IT: string, es_ES: string, pt_BR: string, icon: string}>
      */
     public static function getPreview(): array
     {
