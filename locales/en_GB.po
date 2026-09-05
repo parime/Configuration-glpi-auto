@@ -2737,3 +2737,39 @@ msgstr "Vehicle concerned (registration number)"
 #: src/CurativeMaintenanceFormBuilder.php src/PreventiveMaintenanceFormBuilder.php
 msgid "Équipement ou installation concerné"
 msgstr "Equipment or facility concerned"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Poste ou appareil concerné (si le bug est lié à un poste précis)"
+msgstr "Related workstation or device (if the bug is tied to a specific machine)"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Capture d'écran de l'erreur"
+msgstr "Screenshot of the error"
+
+#: src/LaptopRequestFormBuilder.php
+msgid "Poste actuel à remplacer"
+msgstr "Current workstation to replace"
+
+#: src/NewScreenFormBuilder.php
+msgid "Poste auquel connecter l'écran (si déjà connu)"
+msgstr "Workstation the screen will be connected to (if already known)"
+
+#: src/ItemReturnFormBuilder.php
+msgid "Photo du défaut ou preuve d'achat"
+msgstr "Photo of the defect or proof of purchase"
+
+#: src/PasswordResetFormBuilder.php
+msgid "Compte utilisateur concerné"
+msgstr "Affected user account"
+
+#: src/VehicleIncidentFormBuilder.php src/VehicleMaintenanceFormBuilder.php src/FuelCardFormBuilder.php
+msgid "Véhicule concerné"
+msgstr "Vehicle concerned"
+
+#: src/VideoSurveillanceFormBuilder.php src/DoorLockBadgeFormBuilder.php
+msgid "Équipement concerné (si déjà référencé)"
+msgstr "Related equipment (if already tracked)"
+
+#: src/NonConformityFormBuilder.php
+msgid "Photo ou preuve documentaire"
+msgstr "Photo or supporting document"

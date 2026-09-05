@@ -22,12 +22,16 @@ use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
 use Glpi\Form\Destination\FormDestinationTicket;
 use Glpi\Form\Form;
 use Glpi\Form\Question;
+use Glpi\Form\QuestionType\QuestionTypeFile;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
@@ -36,6 +40,7 @@ use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
 
 /**
  * Part of the generalization of issue #207's smart-form pattern to the full catalog, per explicit
@@ -48,6 +53,14 @@ use ITILCategory;
  * shape as `AccessBadgeFormBuilder`. A final free-text "Précisions complémentaires" field is added
  * on every class in this generalization pass, replacing the generic Description field these smart
  * forms no longer have.
+ *
+ * **Second pass (advanced question types)** : adds an optional `QuestionTypeFile` ("Photo ou preuve
+ * documentaire") — a non-conformity report (defective product, process deviation...) is exactly the
+ * kind of claim visual/documentary evidence makes far more actionable for whoever investigates it,
+ * and GLPI attaches any answered file straight to the ticket automatically
+ * (`AbstractCommonITILFormDestination::setFilesInput()`, no extra destination config needed).
+ * `RequestTypeField` pinned to `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no question asked) :
+ * declaring a non-conformity is reporting something that went wrong, not a scheduling request.
  */
 class NonConformityFormBuilder
 {
@@ -197,16 +210,25 @@ class NonConformityFormBuilder
             'vertical_rank' => 1,
         ]);
 
+        $preuve = new Question();
+        $preuve->add([
+            'forms_sections_id' => $sectionId,
+            'name' => __('Photo ou preuve documentaire', 'configurationglpiauto'),
+            'type' => QuestionTypeFile::class,
+            'is_mandatory' => 0,
+            'vertical_rank' => 2,
+        ]);
+
         $precisions = new Question();
         $precisions->add([
             'forms_sections_id' => $sectionId,
             'name' => __('Précisions complémentaires', 'configurationglpiauto'),
             'type' => QuestionTypeLongText::class,
             'is_mandatory' => 0,
-            'vertical_rank' => 2,
+            'vertical_rank' => 3,
         ]);
 
-        if (!$type->getID() || !$domaine->getID() || !$precisions->getID()) {
+        if (!$type->getID() || !$domaine->getID() || !$preuve->getID() || !$precisions->getID()) {
             return null;
         }
 
@@ -237,6 +259,10 @@ class NonConformityFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::INCIDENT_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

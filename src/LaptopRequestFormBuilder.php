@@ -22,10 +22,16 @@ use Glpi\Form\Condition\ConditionData;
 use Glpi\Form\Condition\Type as ConditionType;
 use Glpi\Form\Condition\ValueOperator;
 use Glpi\Form\Condition\VisibilityStrategy;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsField;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldConfig;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
@@ -35,11 +41,13 @@ use Glpi\Form\Question;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
-use Glpi\Form\QuestionType\QuestionTypeShortText;
+use Glpi\Form\QuestionType\QuestionTypeUserDevice;
+use Glpi\Form\QuestionType\QuestionTypeUserDevicesConfig;
 use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
 
 /**
  * Part of the generalization of issue #207's smart-form pattern to the full catalog, per explicit
@@ -56,6 +64,16 @@ use ITILCategory;
  * Computed title only references the always-visible "motif" answer, not the conditional current-post
  * field : the other two motifs never answer that field, so folding it into the title would render an
  * empty tag most of the time.
+ *
+ * **Second pass (advanced question types)** : the "which machine is being replaced" follow-up used
+ * to be free ShortText (a make/model/inventory number typed by hand, easy to get wrong or leave
+ * ambiguous). Replaced with `QuestionTypeUserDevice` — the requester picks their own real
+ * Computer/Monitor/... GLPI already has affected to them
+ * (`CommonItilObject_Item::getMyDevices()`) — kept mandatory (same as the ShortText it replaces) and
+ * under the exact same `VISIBLE_IF` condition. Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`)
+ * so IT gets a genuine linked asset on the ticket, not a string to go look up by hand. `RequestTypeField`
+ * pinned to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked) — an equipment request is
+ * unambiguously a request, not an incident.
  */
 class LaptopRequestFormBuilder
 {
@@ -209,13 +227,19 @@ class LaptopRequestFormBuilder
             value: self::REMPLACEMENT_OPTION_KEY,
         );
 
+        // Was a free-text ShortText ("Numéro d'inventaire ou nom du poste actuel") — replaced with
+        // QuestionTypeUserDevice so the requester points at their own real GLPI-tracked machine
+        // instead of typing a name/number by hand. See class docblock.
         $posteActuel = new Question();
         $posteActuel->add([
             'forms_sections_id' => $sectionId,
-            'name' => __("Numéro d'inventaire ou nom du poste actuel", 'configurationglpiauto'),
-            'type' => QuestionTypeShortText::class,
+            'name' => __('Poste actuel à remplacer', 'configurationglpiauto'),
+            'type' => QuestionTypeUserDevice::class,
             'is_mandatory' => 1,
             'vertical_rank' => 1,
+            'extra_data' => json_encode((new QuestionTypeUserDevicesConfig(
+                is_multiple_devices: false,
+            ))->jsonSerialize()),
             'visibility_strategy' => VisibilityStrategy::VISIBLE_IF->value,
             'conditions' => json_encode([$remplacementCondition->jsonSerialize()]),
         ]);
@@ -260,6 +284,16 @@ class LaptopRequestFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            // "posteActuel" is the only QuestionTypeUserDevice/QuestionTypeItem question on this
+            // form (only answered on the replacement branch) — LAST_VALID_ANSWER is a no-op when
+            // it wasn't answered (first/supplementary equipment), a real linked item when it was.
+            AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
+                strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],
+            ))->jsonSerialize(),
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::DEMAND_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

@@ -18,24 +18,34 @@
 namespace GlpiPlugin\Configurationglpiauto;
 
 use Glpi\Form\Category as FormCategory;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsField;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldConfig;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
 use Glpi\Form\Destination\FormDestinationTicket;
 use Glpi\Form\Form;
 use Glpi\Form\Question;
+use Glpi\Form\QuestionType\QuestionTypeFile;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
 use Glpi\Form\QuestionType\QuestionTypeShortText;
+use Glpi\Form\QuestionType\QuestionTypeUserDevice;
+use Glpi\Form\QuestionType\QuestionTypeUserDevicesConfig;
 use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
 
 /**
  * Part of the generalization of issue #207's smart-form pattern to the full catalog, per explicit
@@ -49,6 +59,31 @@ use ITILCategory;
  * behind anything. A final free-text "Précisions complémentaires" field is added on every class in
  * this generalization pass, replacing the generic Description field these smart forms no longer
  * have.
+ *
+ * **Second pass (deep-dive into GLPI 11's advanced question types, per explicit maintainer request
+ * that the first pass's basic-types-only treatment was insufficient)** : adds `QuestionTypeUserDevice`
+ * ("Poste ou appareil concerné", optional) so the reporter can point at the *real* Computer/Monitor/
+ * Phone/... GLPI already has affected to them (`CommonItilObject_Item::getMyDevices()`), instead of
+ * re-describing it in free text inside "Précisions" — wired to the ticket as a genuine associated item
+ * via `AssociatedItemsField` (`LAST_VALID_ANSWER`, the only `QuestionTypeUserDevice`/`QuestionTypeItem`
+ * question on this form so no ambiguity). Optional, not mandatory : a software bug can also affect a
+ * shared/non-personal machine, or the reporter may simply not know which asset record it's filed
+ * under — free text in "Précisions" remains the fallback either way. Also adds `QuestionTypeFile`
+ * ("Capture d'écran de l'erreur", optional) — GLPI attaches any answered file straight to the ticket's
+ * content automatically (confirmed via `AbstractCommonITILFormDestination::setFilesInput()`, no extra
+ * destination config needed for that part).
+ *
+ * `RequestTypeField` pinned to `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no question asked) : a bug
+ * report is unambiguously an incident, not a request, and this plugin doesn't otherwise set a ticket
+ * type at all for its smart forms — worth doing explicitly rather than relying on whatever GLPI/the
+ * ticket template happens to default to.
+ *
+ * Deliberately did NOT add a `QuestionTypeUrgency` question here (or anywhere in this second pass) —
+ * see `HelpdeskFormBuilder`'s own docblock: asking requesters to self-rate urgency is a well-documented
+ * ITSM anti-pattern this plugin already goes out of its way to avoid (it actively hides GLPI's native
+ * "Urgency" question on the default self-service forms for exactly that reason). The existing
+ * "bloquant" radio below already gives a support team the signal that matters without asking anyone to
+ * self-rate anything, so it's kept exactly as is.
  */
 class SoftwareBugFormBuilder
 {
@@ -161,7 +196,7 @@ class SoftwareBugFormBuilder
     }
 
     /**
-     * @return array{logiciel: Question, bloquant: Question}|null
+     * @return array{logiciel: Question, bloquant: Question, poste: Question}|null
      */
     private function addQuestions(Form $form): ?array
     {
@@ -196,24 +231,51 @@ class SoftwareBugFormBuilder
             ))->jsonSerialize()),
         ]);
 
+        // Optional: lets the reporter point at their own real GLPI-tracked device instead of
+        // re-describing it in free text — see class docblock. `getMyDevices()` already scopes
+        // this to devices affected to the current end user, so no itemtype restriction to set.
+        $poste = new Question();
+        $poste->add([
+            'forms_sections_id' => $sectionId,
+            'name' => __('Poste ou appareil concerné (si le bug est lié à un poste précis)', 'configurationglpiauto'),
+            'type' => QuestionTypeUserDevice::class,
+            'is_mandatory' => 0,
+            'vertical_rank' => 2,
+            'extra_data' => json_encode((new QuestionTypeUserDevicesConfig(
+                is_multiple_devices: false,
+            ))->jsonSerialize()),
+        ]);
+
+        $capture = new Question();
+        $capture->add([
+            'forms_sections_id' => $sectionId,
+            'name' => __("Capture d'écran de l'erreur", 'configurationglpiauto'),
+            'type' => QuestionTypeFile::class,
+            'is_mandatory' => 0,
+            'vertical_rank' => 3,
+        ]);
+
         $precisions = new Question();
         $precisions->add([
             'forms_sections_id' => $sectionId,
             'name' => __('Précisions complémentaires', 'configurationglpiauto'),
             'type' => QuestionTypeLongText::class,
             'is_mandatory' => 0,
-            'vertical_rank' => 2,
+            'vertical_rank' => 4,
         ]);
 
-        if (!$logiciel->getID() || !$bloquant->getID() || !$precisions->getID()) {
+        if (
+            !$logiciel->getID() || !$bloquant->getID() || !$poste->getID()
+            || !$capture->getID() || !$precisions->getID()
+        ) {
             return null;
         }
 
-        return ['logiciel' => $logiciel, 'bloquant' => $bloquant];
+        return ['logiciel' => $logiciel, 'bloquant' => $bloquant, 'poste' => $poste];
     }
 
     /**
-     * @param array{logiciel: Question, bloquant: Question} $questions
+     * @param array{logiciel: Question, bloquant: Question, poste: Question} $questions
      */
     private function configureDestination(Form $form, int $itilCategoryId, array $questions): void
     {
@@ -236,6 +298,18 @@ class SoftwareBugFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            // The "poste" question is the only QuestionTypeUserDevice/QuestionTypeItem question on
+            // this form, so LAST_VALID_ANSWER unambiguously means "whatever device was answered
+            // there" — turns a free-text device description into a real linked Ticket item.
+            AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
+                strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],
+            ))->jsonSerialize(),
+            // A bug/dysfunction report is unambiguously an incident, not a request — see class
+            // docblock.
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::INCIDENT_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

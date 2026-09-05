@@ -9,6 +9,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Formulaires de catalogue de services « vraiment poussés » : deuxième passe d'approfondissement sur
+  17 des services déjà « intelligents » (issues #207/#208, généralisation v1.2.0), sur demande
+  explicite du mainteneur qui a jugé le premier niveau (types de question basiques uniquement)
+  insuffisant. Exploite cette fois les types de question GLPI 11 réellement avancés, chacun vérifié
+  directement dans le code source GLPI 11 avant implémentation (jamais deviné) :
+  - `QuestionTypeUserDevice` (matériel réellement affecté au demandeur, `CommonItilObject_Item::
+    getMyDevices()`) sur `SoftwareBugFormBuilder`, `LaptopRequestFormBuilder`,
+    `ProfessionalPhoneFormBuilder`, `NewScreenFormBuilder` — remplace ou complète un champ texte libre
+    par un vrai poste/appareil GLPI, rattaché au ticket comme élément lié réel via
+    `AssociatedItemsField`.
+  - `QuestionTypeItem` pointant vers les actifs personnalisés déjà créés par ce même plugin
+    (`VehicleAssetBuilder` → « Vehicule », `BuildingAssetBuilder` → « Local », réservable,
+    `PhysicalSecurityAssetBuilder` → « SecuritePhysique ») : `VehicleIncidentFormBuilder`,
+    `VehicleMaintenanceFormBuilder`, `FuelCardFormBuilder` (véhicule réel au lieu d'une immatriculation
+    tapée à la main), `MeetingRoomFormBuilder` (salle réelle et réservable au lieu d'un nom de salle),
+    `VideoSurveillanceFormBuilder`/`DoorLockBadgeFormBuilder` (équipement de sécurité réel, en
+    complément optionnel, avec repli si le catalogue d'actifs correspondant n'existe pas). Également
+    `QuestionTypeItem` vers l'itemtype natif `User` sur `PasswordResetFormBuilder` (vrai compte GLPI
+    au lieu d'un identifiant tapé à la main).
+  - `QuestionTypeFile` (pièce jointe attachée automatiquement au ticket,
+    `AbstractCommonITILFormDestination::setFilesInput()`, aucune configuration de destination requise)
+    sur `SoftwareBugFormBuilder`, `ItemReturnFormBuilder`, `NonConformityFormBuilder`.
+  - `ObserverField` piloté par `ITILActorFieldStrategy::FORM_FILLER_SUPERVISOR` (aucune question
+    posée : lit directement `users_id_supervisor`, même colonne native que la règle d'approbation
+    déjà utilisée par `ValidationRoutingBuilder`) sur `AbroadMissionFormBuilder`,
+    `RemoteWorkFormBuilder`, `LeaveRequestFormBuilder`, `TrainingRequestFormBuilder` — le supérieur
+    hiérarchique du demandeur est notifié automatiquement, sans lui demander qui il est.
+  - `RequestTypeField` (Incident/Demande) épinglé explicitement par service concerné (aucune question
+    posée), pour un typage de ticket cohérent plutôt que le défaut GLPI implicite.
+  - `QuestionTypeUrgency` délibérément **non utilisé** nulle part : l'auto-évaluation de l'urgence par
+    le demandeur est un anti-pattern ITSM documenté que ce plugin évite déjà explicitement ailleurs
+    (`HelpdeskFormBuilder` masque la question native « Urgency » des formulaires natifs GLPI pour
+    cette exacte raison ; `WaterLeakFormBuilder` tire la même conclusion indépendamment dans son
+    propre docblock) — l'ajouter aurait directement contredit un choix de conception déjà établi et
+    documenté dans ce même plugin.
+  - Les ~31 autres services restent inchangés : soit sans itemtype GLPI fiable à référencer
+    (fournitures, mobilier, équipement industriel/technique non modélisé comme actif dans ce plugin),
+    soit déjà bien servis par leur structure existante (branchement conditionnel, radio objectif).
+  - 9 nouveaux libellés de champ traduits dans les 6 langues du plugin, `.mo` recompilés, vérifié avec
+    le même mécanisme que le job CI « Locale Completeness ».
+
 ## [1.2.0] - 2026-09-05
 
 ### Added

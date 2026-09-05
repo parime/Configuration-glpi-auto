@@ -17,17 +17,26 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use Glpi\Asset\AssetDefinition;
 use Glpi\Form\Category as FormCategory;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsField;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldConfig;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
 use Glpi\Form\Destination\FormDestinationTicket;
 use Glpi\Form\Form;
 use Glpi\Form\Question;
+use Glpi\Form\QuestionType\QuestionTypeItem;
+use Glpi\Form\QuestionType\QuestionTypeItemExtraDataConfig;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
@@ -36,6 +45,7 @@ use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
 
 /**
  * One of the service-catalog upgrades generalizing issue #207's pattern (pioneered by
@@ -53,6 +63,18 @@ use ITILCategory;
  *
  * Computed title only references the always-visible `localisation` answer — "<form name> -
  * <localisation>", tag-built via `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
+ *
+ * **Second pass (advanced question types)** : same optional `QuestionTypeItem`(`SecuritePhysique`)
+ * addition as `VideoSurveillanceFormBuilder` — "Serrure électronique" and "Contrôle d'accès (lecteur
+ * de badge)" are two of that asset's own native types, a direct match for this service. Unlike the
+ * vehicle/room conversions elsewhere in this pass, this form's own branch (`batiment`) is *not* the
+ * same gate `PhysicalSecurityAssetBuilder` requires (`securite` branch + its own opt-in toggle), so
+ * the check here verifies both independently rather than assuming — a customer can easily pick
+ * "batiment" without "securite". "Localisation précise" is kept exactly as is (not every door/lock
+ * problem is on a referenced electronic asset — most physical/mechanical locks never will be), the
+ * new question is purely additive and optional. Wired to `AssociatedItemsField`
+ * (`LAST_VALID_ANSWER`). `RequestTypeField` pinned to `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no
+ * question asked) : a lock/door/badge malfunction is unambiguously an incident.
  */
 class DoorLockBadgeFormBuilder
 {
@@ -61,6 +83,10 @@ class DoorLockBadgeFormBuilder
     private const BRANCH_KEY = 'batiment';
 
     private const CATEGORY_PATH = ['Serrurerie, Portes & Fenêtres'];
+
+    // Matches `PhysicalSecurityAssetBuilder::SYSTEM_NAME` — see `VideoSurveillanceFormBuilder`'s
+    // identical constant.
+    private const SECURITY_ASSET_SYSTEM_NAME = 'SecuritePhysique';
 
     // Same icon `ServiceCatalogBuilder::BRANCH_ILLUSTRATIONS['batiment']` already gave this
     // branch's other forms.
@@ -99,7 +125,7 @@ class DoorLockBadgeFormBuilder
 
         $formCategoryId = $this->getOrCreateFormCategory($branch);
 
-        return $this->getOrCreateForm($formCategoryId, $itilCategoryId);
+        return $this->getOrCreateForm($config, $formCategoryId, $itilCategoryId);
     }
 
     private function resolveItilCategoryId(array $branch): ?int
@@ -136,7 +162,7 @@ class DoorLockBadgeFormBuilder
         return (int) $item->getID();
     }
 
-    private function getOrCreateForm(int $formCategoryId, int $itilCategoryId): bool
+    private function getOrCreateForm(Config $config, int $formCategoryId, int $itilCategoryId): bool
     {
         $form = new Form();
         if ($form->getFromDBByCrit(['name' => self::FORM_NAME, 'forms_categories_id' => $formCategoryId])) {
@@ -156,7 +182,7 @@ class DoorLockBadgeFormBuilder
         }
         $form->getFromDB($formId);
 
-        $questions = $this->addQuestions($form);
+        $questions = $this->addQuestions($form, $config);
         if ($questions === null) {
             return false;
         }
@@ -167,9 +193,31 @@ class DoorLockBadgeFormBuilder
     }
 
     /**
+     * Same lookup pattern as `VideoSurveillanceFormBuilder::resolveSecurityAssetItemtype()` — see
+     * that class's docblock. Also checks the `securite` branch explicitly (unlike
+     * `VideoSurveillanceFormBuilder`, this form's own `batiment` gate doesn't imply it).
+     */
+    private function resolveSecurityAssetItemtype(Config $config): ?string
+    {
+        if (
+            !in_array('securite', $config->getCategoryBranches(), true)
+            || empty($config->fields['physical_security_assets_enabled'])
+        ) {
+            return null;
+        }
+
+        $definition = new AssetDefinition();
+        if (!$definition->getFromDBByCrit(['system_name' => self::SECURITY_ASSET_SYSTEM_NAME])) {
+            return null;
+        }
+
+        return $definition->getAssetTypeClassName();
+    }
+
+    /**
      * @return array{localisation: Question, nature: Question}|null
      */
-    private function addQuestions(Form $form): ?array
+    private function addQuestions(Form $form, Config $config): ?array
     {
         $section = new Section();
         if (!$section->getFromDBByCrit(['forms_forms_id' => $form->getID()])) {
@@ -202,13 +250,37 @@ class DoorLockBadgeFormBuilder
             ))->jsonSerialize()),
         ]);
 
+        // Optional: only added when this plugin's own physical-security asset catalog actually
+        // exists — see class docblock.
+        $securityAssetItemtype = $this->resolveSecurityAssetItemtype($config);
+        $equipement = null;
+        if ($securityAssetItemtype !== null) {
+            $equipement = new Question();
+            $equipement->add([
+                'forms_sections_id' => $sectionId,
+                'name' => __('Équipement concerné (si déjà référencé)', 'configurationglpiauto'),
+                'type' => QuestionTypeItem::class,
+                'is_mandatory' => 0,
+                'vertical_rank' => 2,
+                'extra_data' => json_encode((new QuestionTypeItemExtraDataConfig(
+                    itemtype: $securityAssetItemtype,
+                    root_items_id: 0,
+                    subtree_depth: 0,
+                    selectable_tree_root: false,
+                ))->jsonSerialize()),
+            ]);
+            if (!$equipement->getID()) {
+                return null;
+            }
+        }
+
         $precisions = new Question();
         $precisions->add([
             'forms_sections_id' => $sectionId,
             'name' => __('Précisions complémentaires', 'configurationglpiauto'),
             'type' => QuestionTypeLongText::class,
             'is_mandatory' => 0,
-            'vertical_rank' => 2,
+            'vertical_rank' => 3,
         ]);
 
         if (!$localisation->getID() || !$nature->getID() || !$precisions->getID()) {
@@ -242,6 +314,13 @@ class DoorLockBadgeFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
+                strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],
+            ))->jsonSerialize(),
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::INCIDENT_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

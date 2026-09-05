@@ -17,17 +17,26 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use Glpi\Asset\AssetDefinition;
 use Glpi\Form\Category as FormCategory;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsField;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldConfig;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
 use Glpi\Form\Destination\FormDestinationTicket;
 use Glpi\Form\Form;
 use Glpi\Form\Question;
+use Glpi\Form\QuestionType\QuestionTypeItem;
+use Glpi\Form\QuestionType\QuestionTypeItemExtraDataConfig;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
@@ -36,6 +45,7 @@ use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
 
 /**
  * Part of generalizing issue #207's smart-form pattern to the full catalog (explicit maintainer
@@ -49,6 +59,20 @@ use ITILCategory;
  * regardless of which type is picked. Also carries the "Précisions complémentaires" free-text field
  * every class in this generalization batch adds last, replacing the generic Description field these
  * smart forms no longer have.
+ *
+ * **Second pass (advanced question types)** : "Localisation de l'équipement concerné" is kept exactly
+ * as is (mandatory ShortText) — unlike the vehicle/room custom assets elsewhere in this pass, this
+ * plugin's `PhysicalSecurityAssetBuilder` (custom asset `SecuritePhysique`, types include "Caméra de
+ * vidéosurveillance"/"Centrale d'alarme intrusion") is gated behind its *own* opt-in toggle
+ * (`physical_security_assets_enabled`) in addition to the "securite" branch this form itself already
+ * requires — the two aren't the same single gate the vehicle/room conversions rely on, so the asset
+ * catalog genuinely may not exist even when this form does. Adds an **optional** `QuestionTypeItem`
+ * ("Équipement concerné (si déjà référencé)") pointing at that asset class when the definition is
+ * found, so a reporter who knows the exact camera/alarm can link it for real without forcing everyone
+ * through a picker that might be empty. Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`) — a
+ * no-op when the optional question wasn't added or wasn't answered. `RequestTypeField` pinned to
+ * `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no question asked) : reporting a malfunction is
+ * unambiguously an incident.
  */
 class VideoSurveillanceFormBuilder
 {
@@ -57,6 +81,10 @@ class VideoSurveillanceFormBuilder
     private const BRANCH_KEY = 'securite';
 
     private const CATEGORY_PATH = ['Vidéosurveillance & Alarmes'];
+
+    // Matches `PhysicalSecurityAssetBuilder::SYSTEM_NAME` — resolved by name, same convention as
+    // `VehicleIncidentFormBuilder`'s equivalent constant for `Vehicule`.
+    private const SECURITY_ASSET_SYSTEM_NAME = 'SecuritePhysique';
 
     // Same icon `ServiceCatalogBuilder::BRANCH_ILLUSTRATIONS['securite']` already gave this
     // branch's other forms.
@@ -94,7 +122,7 @@ class VideoSurveillanceFormBuilder
 
         $formCategoryId = $this->getOrCreateFormCategory($branch);
 
-        return $this->getOrCreateForm($formCategoryId, $itilCategoryId);
+        return $this->getOrCreateForm($config, $formCategoryId, $itilCategoryId);
     }
 
     private function resolveItilCategoryId(array $branch): ?int
@@ -131,7 +159,7 @@ class VideoSurveillanceFormBuilder
         return (int) $item->getID();
     }
 
-    private function getOrCreateForm(int $formCategoryId, int $itilCategoryId): bool
+    private function getOrCreateForm(Config $config, int $formCategoryId, int $itilCategoryId): bool
     {
         $form = new Form();
         if ($form->getFromDBByCrit(['name' => self::FORM_NAME, 'forms_categories_id' => $formCategoryId])) {
@@ -151,7 +179,7 @@ class VideoSurveillanceFormBuilder
         }
         $form->getFromDB($formId);
 
-        $questions = $this->addQuestions($form);
+        $questions = $this->addQuestions($form, $config);
         if ($questions === null) {
             return false;
         }
@@ -162,9 +190,28 @@ class VideoSurveillanceFormBuilder
     }
 
     /**
+     * Same lookup pattern as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` — see that
+     * class's docblock. Returns null both when the definition doesn't exist and when the dedicated
+     * toggle is off, since either way there's nothing real for the question to point at.
+     */
+    private function resolveSecurityAssetItemtype(Config $config): ?string
+    {
+        if (empty($config->fields['physical_security_assets_enabled'])) {
+            return null;
+        }
+
+        $definition = new AssetDefinition();
+        if (!$definition->getFromDBByCrit(['system_name' => self::SECURITY_ASSET_SYSTEM_NAME])) {
+            return null;
+        }
+
+        return $definition->getAssetTypeClassName();
+    }
+
+    /**
      * @return array{localisation: Question, type: Question, precisions: Question}|null
      */
-    private function addQuestions(Form $form): ?array
+    private function addQuestions(Form $form, Config $config): ?array
     {
         $section = new Section();
         if (!$section->getFromDBByCrit(['forms_forms_id' => $form->getID()])) {
@@ -197,13 +244,37 @@ class VideoSurveillanceFormBuilder
             ))->jsonSerialize()),
         ]);
 
+        // Optional: only added when this plugin's own physical-security asset catalog actually
+        // exists — see class docblock.
+        $securityAssetItemtype = $this->resolveSecurityAssetItemtype($config);
+        $equipement = null;
+        if ($securityAssetItemtype !== null) {
+            $equipement = new Question();
+            $equipement->add([
+                'forms_sections_id' => $sectionId,
+                'name' => __('Équipement concerné (si déjà référencé)', 'configurationglpiauto'),
+                'type' => QuestionTypeItem::class,
+                'is_mandatory' => 0,
+                'vertical_rank' => 2,
+                'extra_data' => json_encode((new QuestionTypeItemExtraDataConfig(
+                    itemtype: $securityAssetItemtype,
+                    root_items_id: 0,
+                    subtree_depth: 0,
+                    selectable_tree_root: false,
+                ))->jsonSerialize()),
+            ]);
+            if (!$equipement->getID()) {
+                return null;
+            }
+        }
+
         $precisions = new Question();
         $precisions->add([
             'forms_sections_id' => $sectionId,
             'name' => __('Précisions complémentaires', 'configurationglpiauto'),
             'type' => QuestionTypeLongText::class,
             'is_mandatory' => 0,
-            'vertical_rank' => 2,
+            'vertical_rank' => 3,
         ]);
 
         if (!$localisation->getID() || !$type->getID() || !$precisions->getID()) {
@@ -237,6 +308,13 @@ class VideoSurveillanceFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
+                strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],
+            ))->jsonSerialize(),
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::INCIDENT_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

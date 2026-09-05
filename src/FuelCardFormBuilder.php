@@ -17,17 +17,26 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use Glpi\Asset\AssetDefinition;
 use Glpi\Form\Category as FormCategory;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsField;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldConfig;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
 use Glpi\Form\Destination\FormDestinationTicket;
 use Glpi\Form\Form;
 use Glpi\Form\Question;
+use Glpi\Form\QuestionType\QuestionTypeItem;
+use Glpi\Form\QuestionType\QuestionTypeItemExtraDataConfig;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
@@ -36,6 +45,7 @@ use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
 
 /**
  * One of the service-catalog upgrades generalizing issue #207's pattern (pioneered by
@@ -55,6 +65,12 @@ use ITILCategory;
  * which kind of card/badge is requested is the more useful thing to see first, with the vehicle
  * still included for identification — "<form name> - <type> - <vehicule>", tag-built via
  * `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
+ *
+ * **Second pass (advanced question types)** : same `QuestionTypeItem`(`Vehicule`) swap as
+ * `VehicleIncidentFormBuilder`/`VehicleMaintenanceFormBuilder` — see the former's docblock for the
+ * full reasoning. Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`). `RequestTypeField` pinned to
+ * `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked) : a card/badge request, even to replace
+ * a lost one, is administrative, not an open incident blocking the vehicle's use.
  */
 class FuelCardFormBuilder
 {
@@ -63,6 +79,10 @@ class FuelCardFormBuilder
     private const BRANCH_KEY = 'flotte';
 
     private const CATEGORY_PATH = ['Carburant & Recharge'];
+
+    // Matches `VehicleAssetBuilder::SYSTEM_NAME` — see `VehicleIncidentFormBuilder`'s identical
+    // constant for the resolution reasoning.
+    private const VEHICLE_ASSET_SYSTEM_NAME = 'Vehicule';
 
     // Same icon `ServiceCatalogBuilder::BRANCH_ILLUSTRATIONS['flotte']` already gave this branch's
     // other forms.
@@ -173,6 +193,20 @@ class FuelCardFormBuilder
     }
 
     /**
+     * Same lookup as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` — see that class's
+     * docblock.
+     */
+    private function resolveVehicleItemtype(): ?string
+    {
+        $definition = new AssetDefinition();
+        if (!$definition->getFromDBByCrit(['system_name' => self::VEHICLE_ASSET_SYSTEM_NAME])) {
+            return null;
+        }
+
+        return $definition->getAssetTypeClassName();
+    }
+
+    /**
      * @return array{vehicule: Question, type: Question, motif: Question}|null
      */
     private function addQuestions(Form $form): ?array
@@ -187,8 +221,22 @@ class FuelCardFormBuilder
         ]);
         $sectionId = (int) $section->getID();
 
+        $vehicleItemtype = $this->resolveVehicleItemtype();
+
         $vehicule = new Question();
-        $vehicule->add([
+        $vehicule->add($vehicleItemtype !== null ? [
+            'forms_sections_id' => $sectionId,
+            'name' => __('Véhicule concerné', 'configurationglpiauto'),
+            'type' => QuestionTypeItem::class,
+            'is_mandatory' => 1,
+            'vertical_rank' => 0,
+            'extra_data' => json_encode((new QuestionTypeItemExtraDataConfig(
+                itemtype: $vehicleItemtype,
+                root_items_id: 0,
+                subtree_depth: 0,
+                selectable_tree_root: false,
+            ))->jsonSerialize()),
+        ] : [
             'forms_sections_id' => $sectionId,
             'name' => __('Véhicule concerné (immatriculation)', 'configurationglpiauto'),
             'type' => QuestionTypeShortText::class,
@@ -261,6 +309,13 @@ class FuelCardFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
+                strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],
+            ))->jsonSerialize(),
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::DEMAND_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

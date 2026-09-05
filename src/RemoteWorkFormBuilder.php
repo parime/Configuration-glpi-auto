@@ -23,9 +23,12 @@ use Glpi\Form\Condition\Type as ConditionType;
 use Glpi\Form\Condition\ValueOperator;
 use Glpi\Form\Condition\VisibilityStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
+use Glpi\Form\Destination\CommonITILField\ITILActorFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\ObserverField;
+use Glpi\Form\Destination\CommonITILField\ObserverFieldConfig;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
@@ -63,6 +66,11 @@ use ITILCategory;
  * conditional field at all) leaves the others unanswered, so folding either into the title would
  * render an empty tag most of the time. Also carries the "Précisions complémentaires" free-text field
  * every class in this generalization batch adds last.
+ *
+ * **Second pass (advanced question types)** : same `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring
+ * as `AbroadMissionFormBuilder` — see that class's docblock for the full reasoning. A remote-work or
+ * schedule-adjustment request is arguably the single clearest case in this whole catalog for
+ * automatic manager visibility, across all three of this form's motifs.
  */
 class RemoteWorkFormBuilder
 {
@@ -291,6 +299,9 @@ class RemoteWorkFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            ObserverField::getKey() => (new ObserverFieldConfig(
+                strategies: [ITILActorFieldStrategy::FORM_FILLER_SUPERVISOR],
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

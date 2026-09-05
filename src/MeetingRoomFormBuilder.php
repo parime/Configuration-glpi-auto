@@ -17,11 +17,15 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use Glpi\Asset\AssetDefinition;
 use Glpi\Form\Category as FormCategory;
 use Glpi\Form\Condition\ConditionData;
 use Glpi\Form\Condition\Type as ConditionType;
 use Glpi\Form\Condition\ValueOperator;
 use Glpi\Form\Condition\VisibilityStrategy;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsField;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldConfig;
+use Glpi\Form\Destination\CommonITILField\AssociatedItemsFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
@@ -34,6 +38,8 @@ use Glpi\Form\Form;
 use Glpi\Form\Question;
 use Glpi\Form\QuestionType\QuestionTypeDateTime;
 use Glpi\Form\QuestionType\QuestionTypeDateTimeExtraDataConfig;
+use Glpi\Form\QuestionType\QuestionTypeItem;
+use Glpi\Form\QuestionType\QuestionTypeItemExtraDataConfig;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
@@ -62,6 +68,24 @@ use ITILCategory;
  * unanswered, so folding either into the title would render an empty tag half the time. "<form
  * name> - <type>" is still strictly more informative than the plain form name repeated on every
  * ticket, without that risk.
+ *
+ * **Second pass (advanced question types)** : "Salle souhaitée" used to be free ShortText — this
+ * plugin's own `BuildingAssetBuilder` already turns every selected "batiment" branch into a real
+ * custom GLPI asset (`AssetDefinition` system_name `Local`, unconditionally, same single gate this
+ * form itself requires) that's explicitly `IsReservableCapacity`-enabled and whose native type
+ * dropdown includes "Salle de réunion" — exactly the reservable-resource concept this branch of the
+ * question is about. Replaced with `QuestionTypeItem` pointing at that asset class (kept under the
+ * exact same "Réservation de salle" `VISIBLE_IF` condition as the ShortText it replaces). It isn't
+ * filtered down to only the "Salle de réunion" sub-type — `QuestionTypeItem`'s own tree/root
+ * restriction only applies to `CommonTreeDropdown` itemtypes, and "Local" is a flat custom asset list
+ * — so the picker shows every "Local" (bureaux, entrepôts... included), a real trade-off worth being
+ * explicit about, but still a genuine linked GLPI record instead of an unstructured room name.
+ * Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`) : a no-op on the "Problème d'équipement"
+ * branch (question never answered), a real linked room asset on the "Réservation" branch. No
+ * `RequestTypeField` change : this form's own nature is genuinely mixed (booking ahead vs. reporting
+ * a fault right now), so pinning one fixed type would misclassify whichever branch wasn't taken —
+ * same reasoning the class docblock above already gives for keeping the title untouched by either
+ * conditional branch.
  */
 class MeetingRoomFormBuilder
 {
@@ -70,6 +94,10 @@ class MeetingRoomFormBuilder
     private const BRANCH_KEY = 'batiment';
 
     private const CATEGORY_PATH = ['Salles de réunion & Équipements'];
+
+    // Matches `BuildingAssetBuilder::SYSTEM_NAME` — resolved by name rather than shared code, same
+    // convention as `VehicleIncidentFormBuilder`'s identical-shaped constant for `Vehicule`.
+    private const ROOM_ASSET_SYSTEM_NAME = 'Local';
 
     // Same icon `ServiceCatalogBuilder::BRANCH_ILLUSTRATIONS['batiment']` already gave this
     // branch's other forms.
@@ -178,6 +206,20 @@ class MeetingRoomFormBuilder
     }
 
     /**
+     * Same lookup pattern as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` — see that
+     * class's docblock.
+     */
+    private function resolveRoomItemtype(): ?string
+    {
+        $definition = new AssetDefinition();
+        if (!$definition->getFromDBByCrit(['system_name' => self::ROOM_ASSET_SYSTEM_NAME])) {
+            return null;
+        }
+
+        return $definition->getAssetTypeClassName();
+    }
+
+    /**
      * @return array{type: Question}|null
      */
     private function addQuestions(Form $form): ?array
@@ -222,8 +264,26 @@ class MeetingRoomFormBuilder
             value: self::PROBLEM_OPTION_KEY,
         );
 
+        $roomItemtype = $this->resolveRoomItemtype();
+
+        // Was a free-text ShortText — replaced with QuestionTypeItem(Local), see class docblock.
         $salle = new Question();
-        $salle->add([
+        $salle->add($roomItemtype !== null ? [
+            'forms_sections_id' => $sectionId,
+            'name' => __('Salle souhaitée', 'configurationglpiauto'),
+            'type' => QuestionTypeItem::class,
+            'is_mandatory' => 1,
+            'vertical_rank' => 1,
+            'extra_data' => json_encode((new QuestionTypeItemExtraDataConfig(
+                itemtype: $roomItemtype,
+                root_items_id: 0,
+                subtree_depth: 0,
+                selectable_tree_root: false,
+            ))->jsonSerialize()),
+            'visibility_strategy' => VisibilityStrategy::VISIBLE_IF->value,
+            'conditions' => json_encode([$reservationCondition->jsonSerialize()]),
+        ] : [
+            // Fallback if BuildingAssetBuilder's definition can't be found — see class docblock.
             'forms_sections_id' => $sectionId,
             'name' => __('Salle souhaitée', 'configurationglpiauto'),
             'type' => QuestionTypeShortText::class,
@@ -305,6 +365,12 @@ class MeetingRoomFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            // "salle" is the only QuestionTypeItem/QuestionTypeUserDevice question on this form —
+            // a no-op on the "Problème d'équipement" branch (never answered), a real linked room
+            // asset on the "Réservation" branch.
+            AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
+                strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],
+            ))->jsonSerialize(),
         ];
 
         $destination->update([

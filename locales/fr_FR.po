@@ -2785,3 +2785,39 @@ msgstr "Véhicule concerné (immatriculation)"
 #: src/CurativeMaintenanceFormBuilder.php src/PreventiveMaintenanceFormBuilder.php
 msgid "Équipement ou installation concerné"
 msgstr "Équipement ou installation concerné"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Poste ou appareil concerné (si le bug est lié à un poste précis)"
+msgstr "Poste ou appareil concerné (si le bug est lié à un poste précis)"
+
+#: src/SoftwareBugFormBuilder.php
+msgid "Capture d'écran de l'erreur"
+msgstr "Capture d'écran de l'erreur"
+
+#: src/LaptopRequestFormBuilder.php
+msgid "Poste actuel à remplacer"
+msgstr "Poste actuel à remplacer"
+
+#: src/NewScreenFormBuilder.php
+msgid "Poste auquel connecter l'écran (si déjà connu)"
+msgstr "Poste auquel connecter l'écran (si déjà connu)"
+
+#: src/ItemReturnFormBuilder.php
+msgid "Photo du défaut ou preuve d'achat"
+msgstr "Photo du défaut ou preuve d'achat"
+
+#: src/PasswordResetFormBuilder.php
+msgid "Compte utilisateur concerné"
+msgstr "Compte utilisateur concerné"
+
+#: src/VehicleIncidentFormBuilder.php src/VehicleMaintenanceFormBuilder.php src/FuelCardFormBuilder.php
+msgid "Véhicule concerné"
+msgstr "Véhicule concerné"
+
+#: src/VideoSurveillanceFormBuilder.php src/DoorLockBadgeFormBuilder.php
+msgid "Équipement concerné (si déjà référencé)"
+msgstr "Équipement concerné (si déjà référencé)"
+
+#: src/NonConformityFormBuilder.php
+msgid "Photo ou preuve documentaire"
+msgstr "Photo ou preuve documentaire"

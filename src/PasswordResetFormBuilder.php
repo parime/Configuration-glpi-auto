@@ -22,20 +22,26 @@ use Glpi\Form\Destination\CommonITILField\ContentField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryField;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldConfig;
 use Glpi\Form\Destination\CommonITILField\ITILCategoryFieldStrategy;
+use Glpi\Form\Destination\CommonITILField\RequestTypeField;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldConfig;
+use Glpi\Form\Destination\CommonITILField\RequestTypeFieldStrategy;
 use Glpi\Form\Destination\CommonITILField\SimpleValueConfig;
 use Glpi\Form\Destination\CommonITILField\TitleField;
 use Glpi\Form\Destination\FormDestination;
 use Glpi\Form\Destination\FormDestinationTicket;
 use Glpi\Form\Form;
 use Glpi\Form\Question;
+use Glpi\Form\QuestionType\QuestionTypeItem;
+use Glpi\Form\QuestionType\QuestionTypeItemExtraDataConfig;
 use Glpi\Form\QuestionType\QuestionTypeLongText;
 use Glpi\Form\QuestionType\QuestionTypeRadio;
 use Glpi\Form\QuestionType\QuestionTypeSelectableExtraDataConfig;
-use Glpi\Form\QuestionType\QuestionTypeShortText;
 use Glpi\Form\Section;
 use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
+use Ticket;
+use User;
 
 /**
  * Part of the generalization of issue #207's smart-form pattern to the full catalog, per explicit
@@ -48,6 +54,22 @@ use ITILCategory;
  * fields, so a single radio question is enough. A final free-text "Précisions complémentaires" field
  * is added on every class in this generalization pass, replacing the generic Description field these
  * smart forms no longer have.
+ *
+ * **Second pass (advanced question types)** : "Identifiant ou compte concerné" used to be free
+ * ShortText — replaced with `QuestionTypeItem` restricted to `User::class` (confirmed a first-class
+ * supported itemtype for this question type: `QuestionTypeItem` special-cases `User::class` directly
+ * in `getDefaultValueItemId()`), so the requester (or someone resetting a password on behalf of a
+ * colleague) picks the *real* GLPI account from a searchable dropdown instead of typing a login that
+ * IT then has to match by hand — no risk of a typo pointing support at the wrong or a nonexistent
+ * account. `User` is a native GLPI itemtype, not one of this plugin's own custom assets, so no
+ * existence check is needed the way the custom-asset conversions elsewhere in this pass require.
+ * `RequestTypeField` pinned to `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no question asked) : being
+ * locked out of an account is a broken-access incident, not a scheduling request.
+ *
+ * Deliberately did NOT add a `QuestionTypeUrgency` question — see `SoftwareBugFormBuilder`'s docblock
+ * for the full reasoning (self-rated urgency is a documented anti-pattern this plugin already avoids
+ * elsewhere); the "Motif" radio (oublié / verrouillé / autre) already gives support the signal that
+ * matters.
  */
 class PasswordResetFormBuilder
 {
@@ -175,13 +197,20 @@ class PasswordResetFormBuilder
         ]);
         $sectionId = (int) $section->getID();
 
+        // Was a free-text ShortText — replaced with QuestionTypeItem(User), see class docblock.
         $identifiant = new Question();
         $identifiant->add([
             'forms_sections_id' => $sectionId,
-            'name' => __('Identifiant ou compte concerné', 'configurationglpiauto'),
-            'type' => QuestionTypeShortText::class,
+            'name' => __('Compte utilisateur concerné', 'configurationglpiauto'),
+            'type' => QuestionTypeItem::class,
             'is_mandatory' => 1,
             'vertical_rank' => 0,
+            'extra_data' => json_encode((new QuestionTypeItemExtraDataConfig(
+                itemtype: User::class,
+                root_items_id: 0,
+                subtree_depth: 0,
+                selectable_tree_root: false,
+            ))->jsonSerialize()),
         ]);
 
         $motif = new Question();
@@ -236,6 +265,10 @@ class PasswordResetFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
+            RequestTypeField::getKey() => (new RequestTypeFieldConfig(
+                strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,
+                specific_request_type: Ticket::INCIDENT_TYPE,
+            ))->jsonSerialize(),
         ];
 
         $destination->update([
