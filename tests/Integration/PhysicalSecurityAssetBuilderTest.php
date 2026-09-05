@@ -30,17 +30,47 @@ use PHPUnit\Framework\TestCase;
  * different branch than its sibling `FireSafetyAssetBuilder`.
  *
  * See `FireSafetyAssetBuilderTest`'s docblock for why `clearDefinitionsCache()` is required in
- * tearDown() (PHPUnit process-lifetime cache staleness across tests, not a production concern).
+ * tearDown() (PHPUnit process-lifetime cache staleness across tests, not a production concern) —
+ * why it must be immediately followed by `bootDefinitions()`, or every later AssetDefinition-backed
+ * test in the same process loses autoloading entirely, not just this one's — and why the deleted
+ * definition's class names must ALSO be stripped back out of `$CFG_GLPI` before deletion, or a later
+ * test enumerating all helpdesk-eligible types (e.g. `VehicleIncidentFormBuilderTest`'s real form
+ * submission) crashes trying to instantiate this test's own orphaned, already-deleted asset class.
  */
 final class PhysicalSecurityAssetBuilderTest extends TestCase
 {
+    private const BOOTSTRAPPED_CFG_KEYS = [
+        'asset_types', 'assignable_types', 'location_types', 'state_types', 'ticket_types', 'unicity_types',
+    ];
+
     protected function tearDown(): void
     {
+        global $CFG_GLPI;
+
         $definition = new AssetDefinition();
         if ($definition->getFromDBByCrit(['system_name' => 'SecuritePhysique'])) {
+            $staleClasses = [
+                $definition->getAssetClassName(),
+                $definition->getAssetTypeClassName(),
+                $definition->getAssetModelClassName(),
+            ];
+
+            // Stripping BEFORE delete() looked right but isn't — see FireSafetyAssetBuilderTest's
+            // docblock: AssetDefinition::delete()'s own capacity-cleanup re-triggers
+            // bootstrapDefinition() before the row is actually gone, so stripping must happen AFTER
+            // delete() to survive it.
             $definition->delete(['id' => $definition->getID()], true);
+
+            foreach (self::BOOTSTRAPPED_CFG_KEYS as $key) {
+                $CFG_GLPI[$key] = array_values(array_diff($CFG_GLPI[$key], $staleClasses));
+            }
+            $CFG_GLPI['dictionnary_types'] = array_values(array_diff(
+                $CFG_GLPI['dictionnary_types'],
+                [$staleClasses[1], $staleClasses[2]]
+            ));
         }
         AssetDefinitionManager::getInstance()->clearDefinitionsCache();
+        AssetDefinitionManager::getInstance()->bootDefinitions();
     }
 
     private function buildConfig(array $branches, bool $toggleEnabled): Config

@@ -40,16 +40,65 @@ use PHPUnit\Framework\TestCase;
  * re-created definition invisible to the still-cached manager, surfacing as a spurious "Class
  * Glpi\CustomAsset\AssetType not found" only when the full suite ran together (never reproduced
  * running this test class in isolation) — root-caused live rather than worked around blindly.
+ *
+ * `clearDefinitionsCache()` alone is NOT enough, though — it only empties `$this->definitions`;
+ * nothing repopulates it afterwards (`getDefinition()` does a plain array lookup, no lazy reload),
+ * so leaving it at that permanently blinds every AssetDefinition-backed test that runs later in the
+ * same process, including ones this class never touches (e.g. `VehicleIncidentFormBuilderTest`'s own
+ * "Vehicule" definition) — confirmed live: dropped when the fix below was momentarily removed to
+ * check. `bootDefinitions()` right after is the same call GLPI's own kernel boot listener makes
+ * (`CustomObjectsBoot`) — it reloads straight from the DB, so it's cheap and exactly mirrors what a
+ * fresh request would see.
+ *
+ * Deleting the definition alone ALSO leaves a second, nastier trace: `AssetDefinitionManager::
+ * bootstrapDefinition()` (run by `bootDefinitions()` for every *currently existing* definition)
+ * appends the concrete asset class name to several `$CFG_GLPI` arrays (`ticket_types` among them) the
+ * first time it's bootstrapped, but nothing ever pulls it back out when the definition is later
+ * deleted — the class itself stays `class_exists() === true` for the rest of the PHP process (PHP
+ * cannot un-define a class), so any later code enumerating `$CFG_GLPI['ticket_types']` (e.g.
+ * `CommonITILObject::getAllTypesForHelpdesk()`, which a real form submission against an unrelated
+ * `QuestionTypeItem` question ends up calling) tries to `new` that now-defined-but-orphaned class and
+ * hits the exact same "Asset definition is expected to be defined in concrete class" — confirmed live
+ * against `VehicleIncidentFormBuilderTest`, which only started failing, full-suite, once this class's
+ * own cleanup ran first. Stripping the class names back out of every key `bootstrapDefinition()` can
+ * touch, before deleting the definition, is the only way to leave the process in the same state a
+ * fresh request would see.
  */
 final class FireSafetyAssetBuilderTest extends TestCase
 {
+    private const BOOTSTRAPPED_CFG_KEYS = [
+        'asset_types', 'assignable_types', 'location_types', 'state_types', 'ticket_types', 'unicity_types',
+    ];
+
     protected function tearDown(): void
     {
+        global $CFG_GLPI;
+
         $definition = new AssetDefinition();
         if ($definition->getFromDBByCrit(['system_name' => 'SecuriteIncendieSecours'])) {
+            $staleClasses = [
+                $definition->getAssetClassName(),
+                $definition->getAssetTypeClassName(),
+                $definition->getAssetModelClassName(),
+            ];
+
+            // Stripping BEFORE delete() looked right but isn't: AssetDefinition::delete()'s own
+            // capacity-cleanup re-triggers bootstrapDefinition() (confirmed live, by printing
+            // $CFG_GLPI immediately before/after the delete() call) — presumably because it needs
+            // the concrete class name to disable capacities before the row is actually gone, the
+            // same way a fresh create does. Stripping must happen AFTER delete() to survive it.
             $definition->delete(['id' => $definition->getID()], true);
+
+            foreach (self::BOOTSTRAPPED_CFG_KEYS as $key) {
+                $CFG_GLPI[$key] = array_values(array_diff($CFG_GLPI[$key], $staleClasses));
+            }
+            $CFG_GLPI['dictionnary_types'] = array_values(array_diff(
+                $CFG_GLPI['dictionnary_types'],
+                [$staleClasses[1], $staleClasses[2]]
+            ));
         }
         AssetDefinitionManager::getInstance()->clearDefinitionsCache();
+        AssetDefinitionManager::getInstance()->bootDefinitions();
     }
 
     private function buildConfig(bool $branchSelected, bool $toggleEnabled): Config
