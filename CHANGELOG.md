@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Généralisation des formulaires de catalogue de services « intelligents » à l'ensemble du
+  catalogue (suite des issues #207/#208, sur demande explicite du mainteneur qui a jugé la première
+  vague de 6 services trop conservatrice) : 42 services supplémentaires de `ServiceCatalogBuilder`
+  passent du simple couple Titre/Description à des questions structurées ciblées (listes
+  déroulantes/cases à cocher/dates/nombres/pièces jointes selon le service), de la logique
+  conditionnelle là où elle apporte une vraie valeur (`Demande d'accès Wifi`, `Demande d'un
+  ordinateur portable`, `Demande de téléphone professionnel`, `Déclarer un sinistre ou un dommage
+  véhicule`, `Demande de télétravail ou d'aménagement du temps de travail`, `Envoi de courrier ou
+  demande de reprographie`) et, pour la totalité des 42, un titre de ticket calculé automatiquement
+  via le système natif de balises de formulaire de GLPI 11 (`Glpi\Form\Tag\AnswerTagProvider` /
+  `FormTagProvider`), jamais de `<span>` HTML écrit à la main. Chaque service a son propre
+  constructeur dédié dans `src/`, même mécanisme que les 6 builders existants
+  (`Glpi\Form\Question` `visibility_strategy`/`conditions` pour le conditionnel), et un champ texte
+  libre optionnel « Précisions complémentaires » systématique en fin de formulaire comme filet de
+  sécurité. Sur les ~50 services du catalogue, seuls 2 restent volontairement inchangés : « Demande
+  administrative RH » (catch-all RH intentionnel aux côtés de 4 autres services RH déjà bien
+  définis) et « Signaler un incident ou une urgence sécurité » (rapport d'urgence où minimiser la
+  friction de soumission prime sur la structuration). Raisonnement complet par service dans le
+  docblock de `ServiceCatalogBuilder`. 65 nouveaux libellés de champs traduits dans les 5 langues du
+  plugin, vérifié avec le même mécanisme que le job CI « Locale Completeness ».
+
 ## [1.0.0] - 2026-09-03
 
 Premier jalon de version majeure : le plugin est considéré stable au sens de
