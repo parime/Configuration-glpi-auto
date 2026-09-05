@@ -23,6 +23,7 @@ use Glpi\Form\EndUserInputNameProvider;
 use Glpi\Form\Form;
 use Glpi\Form\Question;
 use Glpi\Form\Section;
+use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\VehicleAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\VehicleIncidentFormBuilder;
@@ -102,6 +103,13 @@ final class VehicleIncidentFormBuilderTest extends TestCase
     private function buildForm(): Form
     {
         $config = $this->buildConfig();
+        // VehicleIncidentFormBuilder resolves its ITILCategory by walking a real "Flotte
+        // Automobile & Mobilité / Sinistres & Carrosserie" tree (CATEGORY_PATH) and bails out
+        // (returns false, no form created) if it isn't there yet — CategoryBuilder is what
+        // normally creates it during the real wizard run. On the shared dev instance this always
+        // silently existed already (built by an earlier real wizard run), which is exactly why
+        // this dependency wasn't obvious until CI's fresh-install run caught it.
+        (new CategoryBuilder())->build($config);
         // The vehicle picker question only becomes a real QuestionTypeItem if this definition
         // already exists — same "flotte" gate as VehicleIncidentFormBuilder itself, see its own
         // resolveVehicleItemtype() docblock.
