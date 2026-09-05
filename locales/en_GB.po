@@ -2773,3 +2773,7 @@ msgstr "Related equipment (if already tracked)"
 #: src/NonConformityFormBuilder.php
 msgid "Photo ou preuve documentaire"
 msgstr "Photo or supporting document"
+
+#: src/VehicleIncidentFormBuilder.php
+msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
+msgstr "To what extent is the vehicle immobilised or unusable?"

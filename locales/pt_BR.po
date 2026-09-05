@@ -2845,3 +2845,7 @@ msgstr "Equipamento relacionado (se já cadastrado)"
 #: src/NonConformityFormBuilder.php
 msgid "Photo ou preuve documentaire"
 msgstr "Foto ou comprovante documental"
+
+#: src/VehicleIncidentFormBuilder.php
+msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
+msgstr "Em que medida o veículo está imobilizado ou inutilizável?"

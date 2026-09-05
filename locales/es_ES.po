@@ -2826,3 +2826,7 @@ msgstr "Equipo afectado (si ya está registrado)"
 #: src/NonConformityFormBuilder.php
 msgid "Photo ou preuve documentaire"
 msgstr "Foto o justificante documental"
+
+#: src/VehicleIncidentFormBuilder.php
+msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
+msgstr "¿En qué medida el vehículo está inmovilizado o inutilizable?"
