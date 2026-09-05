@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Test de non-régression (`VehicleIncidentFormBuilderTest`) pour le bug d'urgence corrigé en 1.3.1 :
+  simule une vraie soumission de formulaire (le même chemin que `SubmitAnswerController`, pas juste
+  une inspection de la config de destination) et vérifie l'urgence réellement enregistrée sur le
+  ticket créé — exactement ce qui avait permis de détecter le bug initial. Corrige au passage un bug
+  de test-isolation préexistant (`FireSafetyAssetBuilderTest`/`PhysicalSecurityAssetBuilderTest`
+  vidaient le cache de définitions d'assets sans jamais le recharger).
+
 ## [1.3.1] - 2026-09-05
 
 ### Fixed
