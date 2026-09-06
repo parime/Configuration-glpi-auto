@@ -96,6 +96,14 @@ class ProjectTaskTemplateBuilder
     {
         $item = new ProjectTaskTemplate();
         if ($item->getFromDBByCrit(['name' => $name])) {
+            // Self-heals a template left with `projecttasktypes_id = 0` by an earlier run where
+            // `ProjectTaxonomyBuilder` hadn't been run yet (the wizard's steps are independent and
+            // can be run in any order, or re-run individually) — otherwise that FK stays broken
+            // forever, since nothing else ever revisits it.
+            if ($taskTypeId > 0 && (int) $item->fields['projecttasktypes_id'] !== $taskTypeId) {
+                $item->update(['id' => $item->getID(), 'projecttasktypes_id' => $taskTypeId]);
+            }
+
             return (int) $item->getID();
         }
 
