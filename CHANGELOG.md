@@ -28,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels pour `ServiceCatalogBuilder` et `CategoryBuilder` (aucun des deux
+  n'avait de test dédié) : activation/désactivation, sélection de branches, `is_helpdeskvisible`
+  réservé aux branches racine, idempotence, routage réel d'un ticket soumis vers l'`ITILCategory`
+  mappée, et un regression guard sur `Translations::applyIcon()`.
 - Test de non-régression (`VehicleIncidentFormBuilderTest`) pour le bug d'urgence corrigé en 1.3.1 :
   simule une vraie soumission de formulaire (le même chemin que `SubmitAnswerController`, pas juste
   une inspection de la config de destination) et vérifie l'urgence réellement enregistrée sur le
