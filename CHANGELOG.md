@@ -40,6 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `TagBuilder` et `VipBuilder` : forme réelle des groupes/catégories/gabarits créés, idempotence,
   regression guard sur `Translations::applyIcon()`, et pour `WaitReasonBuilder` la distinction réelle
   entre automatisation complète et manuelle vérifiée directement en base.
+- Tests d'intégration réels pour `ManufacturerBuilder`, `KnowbaseCategoryBuilder` et
+  `FieldUnicityBuilder` : forme réelle des fabricants/catégories créés, filtrage par branche
+  vérifié pour la base de connaissances, et pour `FieldUnicityBuilder` la configuration exacte qui
+  bloque réellement un doublon de numéro de série.
 - Test de non-régression (`VehicleIncidentFormBuilderTest`) pour le bug d'urgence corrigé en 1.3.1 :
   simule une vraie soumission de formulaire (le même chemin que `SubmitAnswerController`, pas juste
   une inspection de la config de destination) et vérifie l'urgence réellement enregistrée sur le
