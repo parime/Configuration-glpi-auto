@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour
+  `PreventiveMaintenanceFormBuilder`, `CurativeMaintenanceFormBuilder`, `InstrumentCalibrationFormBuilder`
+  et `RelocationArchivingFormBuilder` — 4 autres des 33 formulaires de la vague de généralisation du
+  catalogue (issue #207).
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `AuditRequestFormBuilder`,
   `ContractReviewFormBuilder`, `DeliveryTrackingFormBuilder` et `MailPrintingFormBuilder` — 4 autres
   des 33 formulaires de la vague de généralisation du catalogue (issue #207).
