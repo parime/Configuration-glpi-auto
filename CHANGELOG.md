@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels pour `DocumentManagementBuilder`, `FollowupLibraryBuilder`,
+  `ManufacturerDictionaryBuilder` et `PlanningEventBuilder` — aucune de ces 4 classes n'avait de test
+  dédié. `ManufacturerDictionaryBuilder` vérifie les 29 règles de dictionnaire fabricant avec leurs
+  vrais critères (correspondance exacte, pas sous-chaîne) et action `assign`, idempotence comprise
+  (`addMissingCriteria()` n'ajoute jamais de doublon). `PlanningEventBuilder` vérifie la distinction
+  réelle documentée dans la classe (seul le gabarit "Astreinte" utilise `background=1`, le rendu
+  "bloc occupé" propre à la couverture d'astreinte).
 - Tests d'intégration réels pour `StateBuilder` : sélection individuelle d'un seul état (isolée des
   13 autres, sélectionnés par défaut et déjà exercés comme dépendance de configuration ailleurs),
   configuration exacte de visibilité (`DropdownVisibility`) pour les 9 types d'actifs concernés,
