@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `AccessBadgeFormBuilder`,
+  `OfficeSuppliesFormBuilder`, `WifiAccessFormBuilder` et `SoftwareInstallFormBuilder` — 4 des 33
+  formulaires de la vague de généralisation du catalogue (issue #207) qui n'avaient encore aucun
+  test. `WifiAccessFormBuilder` couvre en particulier le champ conditionnel "Date de fin d'accès"
+  (`VisibilityStrategy::VISIBLE_IF`) : réellement optionnel quand masqué (accès permanent),
+  réellement pris en compte quand visible (accès temporaire).
 - Tests d'intégration réels pour `ServerAssetBuilder`, `SatisfactionSurveyBuilder`,
   `PaletteBuilder` et `NotificationBrandingBuilder`. `ServerAssetBuilder` suit le même patron que
   `VehicleAssetBuilder`/`BuildingAssetBuilder` (forme de la définition, regression guard
