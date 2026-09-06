@@ -29,10 +29,16 @@ use PHPUnit\Framework\TestCase;
  */
 final class FuelTypeTest extends TestCase
 {
-    public function testGetTypeNameIsSingularAndPluralInFrench(): void
+    /**
+     * Compared against the same `_n()` call rather than a hardcoded literal — CI's default session
+     * language isn't necessarily French (confirmed: CI returned "Fuel type" for the same call), so
+     * asserting a specific translated string would depend on which locale happens to be active.
+     */
+    public function testGetTypeNameUsesTheRealTranslationDomainForSingularAndPlural(): void
     {
-        $this->assertSame('Type de carburant', FuelType::getTypeName(1));
-        $this->assertSame('Types de carburant', FuelType::getTypeName(2));
+        $this->assertSame(_n('Type de carburant', 'Types de carburant', 1, 'configurationglpiauto'), FuelType::getTypeName(1));
+        $this->assertSame(_n('Type de carburant', 'Types de carburant', 2, 'configurationglpiauto'), FuelType::getTypeName(2));
+        $this->assertNotSame(FuelType::getTypeName(1), FuelType::getTypeName(2), 'Singular and plural must actually differ.');
     }
 
     public function testGetIconReturnsAGasStationIcon(): void
