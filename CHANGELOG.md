@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Tests d'intégration réels pour `StateBuilder` : sélection individuelle d'un seul état (isolée des
+  13 autres, sélectionnés par défaut et déjà exercés comme dépendance de configuration ailleurs),
+  configuration exacte de visibilité (`DropdownVisibility`) pour les 9 types d'actifs concernés,
+  idempotence, et regression guard sur `Translations::applyIcon()`.
+
 ### Fixed
 
 - **`VehicleAssetBuilder`/`BuildingAssetBuilder`/`ServerAssetBuilder`/`PhysicalSecurityAssetBuilder`/
