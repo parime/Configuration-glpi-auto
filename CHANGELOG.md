@@ -38,6 +38,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `FuelCardFormBuilderTest` et `VehicleMaintenanceFormBuilderTest` (véhicule), et
   `VideoSurveillanceFormBuilderTest`/`DoorLockBadgeFormBuilderTest` (équipement de sécurité physique,
   question optionnelle à double condition — branche(s) + bascule dédiée).
+- Tests de non-régression (vraie soumission, avec une session temporairement basculée sur un vrai
+  utilisateur créé pour l'occasion — pas seulement le compte superadmin du bootstrap) pour le
+  mécanisme `ObserverField`(`FORM_FILLER_SUPERVISOR`, ajoute automatiquement le supérieur hiérarchique
+  du demandeur comme observateur) : `LeaveRequestFormBuilderTest`, `AbroadMissionFormBuilderTest`,
+  `RemoteWorkFormBuilderTest`, `TrainingRequestFormBuilderTest`.
 - Corrige au passage un bug de test-isolation préexistant (`FireSafetyAssetBuilderTest`/
   `PhysicalSecurityAssetBuilderTest` vidaient le cache de définitions d'assets sans jamais le
   recharger) et un second, plus profond (le cache process-wide de GLPI pour les règles métier,
