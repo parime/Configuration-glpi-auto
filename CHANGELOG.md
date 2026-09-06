@@ -12,6 +12,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour
+  `TeamCollaborationSpaceFormBuilder`, `UserAccountCreationFormBuilder`,
+  `UserAccountDeactivationFormBuilder` et `WebsiteUpdateFormBuilder` — les 4 derniers des 33
+  formulaires de la vague de généralisation du catalogue (issue #207), qui ont désormais tous un
+  test dédié.
+- Test d'intégration réel pour `HelpdeskFormBuilder` — seule classe `*FormBuilder` du plugin qui ne
+  crée pas de formulaire mais modifie les 2 formulaires natifs "Report an issue"/"Request a service"
+  de GLPI 11 pour y masquer Urgency/Observers/Location. Vérifie directement le mécanisme réel
+  documenté dans la classe (`VisibilityStrategy::VISIBLE_IF` + liste de conditions vide, la seule
+  façon d'obtenir un masquage permanent — il n'existe pas de stratégie "toujours masqué" native).
+  `setUp()`/`tearDown()` capturent et restaurent l'état d'origine de chaque question ciblée pour ne
+  laisser aucune trace sur l'instance de dev partagée.
+- Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour
   `PreventiveMaintenanceFormBuilder`, `CurativeMaintenanceFormBuilder`, `InstrumentCalibrationFormBuilder`
   et `RelocationArchivingFormBuilder` — 4 autres des 33 formulaires de la vague de généralisation du
   catalogue (issue #207).
