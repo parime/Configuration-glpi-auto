@@ -44,6 +44,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `FieldUnicityBuilder` : forme réelle des fabricants/catégories créés, filtrage par branche
   vérifié pour la base de connaissances, et pour `FieldUnicityBuilder` la configuration exacte qui
   bloque réellement un doublon de numéro de série.
+- Tests d'intégration réels pour `TaskCategoryBuilder`, `LineOperatorBuilder` et `RSSFeedBuilder` :
+  forme réelle des catégories créées, et pour `LineOperatorBuilder` un regression guard direct sur le
+  `mcc`/`mnc` exact de chaque opérateur (bug documenté dans la classe : les omettre créait
+  silencieusement un seul opérateur sur quatre, sans erreur visible).
 - Test de non-régression (`VehicleIncidentFormBuilderTest`) pour le bug d'urgence corrigé en 1.3.1 :
   simule une vraie soumission de formulaire (le même chemin que `SubmitAnswerController`, pas juste
   une inspection de la config de destination) et vérifie l'urgence réellement enregistrée sur le
