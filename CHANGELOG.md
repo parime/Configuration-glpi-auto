@@ -48,6 +48,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   forme réelle des catégories créées, et pour `LineOperatorBuilder` un regression guard direct sur le
   `mcc`/`mnc` exact de chaque opérateur (bug documenté dans la classe : les omettre créait
   silencieusement un seul opérateur sur quatre, sans erreur visible).
+- Tests d'intégration réels pour `TaskTemplateBuilder`, `TicketTemplateBuilder`,
+  `ValidationTemplateBuilder` et `ChangeProblemTemplateBuilder` : la scission simplifié/complet de
+  `TicketTemplateBuilder` vérifiée directement via `TicketTemplate::getAllowedFields(true)`, et
+  l'asymétrie réelle de `ChangeProblemTemplateBuilder` (`impact` obligatoire sur Change uniquement)
+  vérifiée en base plutôt que sur le seul nombre de gabarits créés.
 - Test de non-régression (`VehicleIncidentFormBuilderTest`) pour le bug d'urgence corrigé en 1.3.1 :
   simule une vraie soumission de formulaire (le même chemin que `SubmitAnswerController`, pas juste
   une inspection de la config de destination) et vérifie l'urgence réellement enregistrée sur le
