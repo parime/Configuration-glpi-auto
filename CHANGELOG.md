@@ -50,6 +50,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   format d'entrée découvert en les écrivant : la réponse brute attendue pour ce type de question est
   une chaîne `"<Itemtype>_<id>"`, pas le tableau `{itemtype, items_id}` qu'attend `QuestionTypeItem`
   — les deux se ressemblent mais ne partagent pas le même format côté soumission.
+- Tests de non-régression (vraie soumission, vraies assertions) pour les 3 derniers formulaires du
+  catalogue restant à couvrir depuis la vague v1.3.0 : `ItemReturnFormBuilderTest`,
+  `NonConformityFormBuilderTest` (`RequestTypeField` + titre calculé, ces deux formulaires n'ayant pas
+  d'actif à associer) et `PasswordResetFormBuilderTest` (`QuestionTypeItem` pointant vers un `User`
+  natif). Les 17 formulaires approfondis en v1.3.0 ont désormais chacun un test de ce type.
 - Corrige au passage un bug de test-isolation préexistant (`FireSafetyAssetBuilderTest`/
   `PhysicalSecurityAssetBuilderTest` vidaient le cache de définitions d'assets sans jamais le
   recharger) et un second, plus profond (le cache process-wide de GLPI pour les règles métier,
