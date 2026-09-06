@@ -33,8 +33,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   une inspection de la config de destination) et vérifie l'urgence réellement enregistrée sur le
   ticket créé — exactement ce qui avait permis de détecter le bug initial. Étendu pour vérifier aussi
   le lien réel véhicule/ticket (voir le correctif ci-dessus).
-- Test de non-régression (`MeetingRoomFormBuilderTest`) pour le correctif ci-dessus, sur le formulaire
-  de réservation de salle de réunion.
+- Tests de non-régression pour le correctif ci-dessus, sur les autres formulaires du catalogue qui
+  lient un actif personnalisé à un ticket : `MeetingRoomFormBuilderTest` (salle de réunion),
+  `FuelCardFormBuilderTest` et `VehicleMaintenanceFormBuilderTest` (véhicule), et
+  `VideoSurveillanceFormBuilderTest`/`DoorLockBadgeFormBuilderTest` (équipement de sécurité physique,
+  question optionnelle à double condition — branche(s) + bascule dédiée).
 - Corrige au passage un bug de test-isolation préexistant (`FireSafetyAssetBuilderTest`/
   `PhysicalSecurityAssetBuilderTest` vidaient le cache de définitions d'assets sans jamais le
   recharger) et un second, plus profond (le cache process-wide de GLPI pour les règles métier,
