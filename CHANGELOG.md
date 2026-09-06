@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `BreakRoomFormBuilder`,
+  `EventSupportFormBuilder`, `RecyclingRequestFormBuilder` et `SupplyOrderFormBuilder` — 4 autres
+  des 33 formulaires de la vague de généralisation du catalogue (issue #207).
+  `EventSupportFormBuilder` couvre en particulier une question `QuestionTypeCheckbox`
+  (multi-sélection) — plusieurs types de support choisis à la fois, jamais testé jusqu'ici.
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `VpnAccessFormBuilder`,
   `SoftwareLicenseFormBuilder`, `FurnitureRequestFormBuilder` et `MailboxRequestFormBuilder` — 4
   autres des 33 formulaires de la vague de généralisation du catalogue (issue #207).
