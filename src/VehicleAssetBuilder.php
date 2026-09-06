@@ -269,10 +269,38 @@ class VehicleAssetBuilder
 
     private function syncHelpdeskItemTypeProfiles(AssetDefinition $definition): void
     {
+        if ($this->isHelpdeskItemTypeAlreadySynced($definition)) {
+            return;
+        }
+
         $definition->update([
             'id' => $definition->getID(),
             '_profiles_extra' => ['helpdesk_item_type' => $this->getAllProfileIds()],
         ]);
+    }
+
+    /**
+     * Real fix (found while auditing this session's own test DB) : calling
+     * `AssetDefinition::update()` unconditionally on every run — even though the write itself is
+     * additive-only and idempotent — has a very expensive side effect confirmed live: GLPI core
+     * resyncs `DropdownVisibility` for the custom asset type against every existing dropdown
+     * (`State` among others) on every `update()` call, without checking for already-existing
+     * rows, leaving thousands of duplicate rows behind after repeated wizard runs (confirmed:
+     * 6552 duplicate rows out of 6678 total on this project's own dev instance). Skipping the
+     * call entirely once every profile is already synced avoids ever re-triggering that resync.
+     */
+    private function isHelpdeskItemTypeAlreadySynced(AssetDefinition $definition): bool
+    {
+        global $DB;
+
+        $customObjectClass = $definition->getCustomObjectClassName();
+        foreach ($DB->request(['FROM' => 'glpi_profiles', 'FIELDS' => ['id', 'helpdesk_item_type']]) as $row) {
+            if (!in_array($customObjectClass, importArrayFromDB($row['helpdesk_item_type']), true)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

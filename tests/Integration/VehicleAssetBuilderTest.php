@@ -210,4 +210,42 @@ final class VehicleAssetBuilderTest extends TestCase
             );
         }
     }
+
+    /**
+     * Real regression found while auditing this session's own test DB (2026-09-06) : calling
+     * `AssetDefinition::update()` unconditionally on every `build()` run — done here via
+     * `syncHelpdeskItemTypeProfiles()`, on the reasoning that the write itself is additive-only and
+     * idempotent — turned out to have an expensive side effect: GLPI core resyncs
+     * `DropdownVisibility` for the custom asset type against every existing dropdown (`State` among
+     * others) on every single `update()` call, with no check for already-existing rows. Confirmed
+     * live: 6552 duplicate rows out of 6678 total on this project's own dev instance, all traceable
+     * to this exact pattern across the 5 custom-asset builders that share it
+     * (Vehicle/Building/Server/PhysicalSecurity/FireSafety). Fixed by skipping the `update()` call
+     * entirely once every profile is already synced — this test proves a second `build()` call no
+     * longer grows the `DropdownVisibility` table at all for this asset type.
+     */
+    public function testSecondBuildDoesNotGrowDropdownVisibilityRows(): void
+    {
+        $builder = new VehicleAssetBuilder();
+        $builder->build($this->buildConfig(['flotte']));
+
+        $definition = new AssetDefinition();
+        $definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME]);
+        $customObjectClass = $definition->getCustomObjectClassName();
+
+        global $DB;
+        $before = $DB->request([
+            'FROM' => 'glpi_dropdownvisibilities',
+            'WHERE' => ['itemtype' => 'State', 'visible_itemtype' => $customObjectClass],
+        ])->count();
+
+        $builder->build($this->buildConfig(['flotte']));
+
+        $after = $DB->request([
+            'FROM' => 'glpi_dropdownvisibilities',
+            'WHERE' => ['itemtype' => 'State', 'visible_itemtype' => $customObjectClass],
+        ])->count();
+
+        $this->assertSame($before, $after, 'A second build() call must not add any new DropdownVisibility rows.');
+    }
 }

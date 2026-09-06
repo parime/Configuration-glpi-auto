@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **`VehicleAssetBuilder`/`BuildingAssetBuilder`/`ServerAssetBuilder`/`PhysicalSecurityAssetBuilder`/
+  `FireSafetyAssetBuilder` laissaient des milliers de lignes en trop dans `glpi_dropdownvisibilities`
+  à chaque ré-exécution de l'assistant**, trouvé en auditant la base de test de ce projet (6552
+  doublons sur 6678 lignes au total). Cause : ces 5 classes appellent
+  `AssetDefinition::update()` sans condition à chaque exécution pour synchroniser
+  `helpdesk_item_type` (correctif documenté dans leur propre docblock) — or GLPI core resynchronise
+  alors `DropdownVisibility` pour chaque dropdown existant (`State` entre autres) contre le type
+  d'actif personnalisé, sans vérifier les doublons. Corrigé en sautant l'appel `update()` dès que
+  tous les profils sont déjà synchronisés — un second passage de l'assistant ne modifie plus du
+  tout cette table. Correctif rétroactif sur le principe (n'efface rien d'existant), et les 6524
+  lignes en trop déjà présentes sur cette instance ont été nettoyées.
+
 ### Added
 
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour
