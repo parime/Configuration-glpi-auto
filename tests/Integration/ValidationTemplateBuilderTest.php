@@ -19,6 +19,7 @@ namespace GlpiPlugin\Configurationglpiauto\Tests\Integration;
 
 use DropdownTranslation;
 use GlpiPlugin\Configurationglpiauto\Config;
+use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\ValidationTemplateBuilder;
 use ITILValidationTemplate;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +30,20 @@ final class ValidationTemplateBuilderTest extends TestCase
     private const COMMITTEE_NAME = 'Validation comité';
 
     private const SIMPLE_NAME = 'Validation simple';
+
+    /**
+     * The "Validation comité (2/3)" `ValidationStep` is created by `GeneralSettingsBuilder`
+     * (`committee_validation_enabled`), not by `ValidationTemplateBuilder` itself — it only looks
+     * the step up by name if it happens to exist (see that class's own docblock). On a fresh install
+     * (unlike this project's own long-lived shared dev instance, where the step already exists from
+     * an earlier run) it genuinely doesn't exist yet, so this suite must build it itself.
+     */
+    protected function setUp(): void
+    {
+        $config = new Config();
+        $config->fields = array_merge(Config::getDefaults(), ['committee_validation_enabled' => 1]);
+        (new GeneralSettingsBuilder())->apply($config);
+    }
 
     private function buildConfig(bool $enabled, bool $icons = false): Config
     {

@@ -19,6 +19,7 @@ namespace GlpiPlugin\Configurationglpiauto\Tests\Integration;
 
 use DropdownTranslation;
 use GlpiPlugin\Configurationglpiauto\Config;
+use GlpiPlugin\Configurationglpiauto\TaskCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\TaskTemplateBuilder;
 use PHPUnit\Framework\TestCase;
 use Planning;
@@ -30,6 +31,20 @@ final class TaskTemplateBuilderTest extends TestCase
     private const NAME = 'Onboarding — Arrivée collaborateur';
 
     private const CATEGORY_NAME = 'Gestion des comptes utilisateurs';
+
+    /**
+     * `TaskTemplateBuilder::findCategoryId()` resolves the target category by name against
+     * whatever `TaskCategoryBuilder` already created (see that class's own docblock) — it never
+     * creates the category itself. On a fresh install (unlike this project's own long-lived shared
+     * dev instance, where every category already exists from earlier runs) that category genuinely
+     * doesn't exist yet, so this suite must build it itself rather than assume it.
+     */
+    protected function setUp(): void
+    {
+        $config = new Config();
+        $config->fields = array_merge(Config::getDefaults(), ['task_categories_enabled' => 1]);
+        (new TaskCategoryBuilder())->build($config);
+    }
 
     private function buildConfig(bool $enabled, bool $icons = false): Config
     {
