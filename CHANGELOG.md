@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `WorkplaceSafetyFormBuilder`,
+  `SocialMediaPostFormBuilder`, `StaffMovementFormBuilder` et `InvoicePaymentFormBuilder` — 4 autres
+  des 33 formulaires de la vague de généralisation du catalogue (issue #207).
+  `StaffMovementFormBuilder` couvre le seul formulaire du catalogue utilisant
+  `LogicOperator::OR` (le champ "Poste concerné" doit être visible pour une Arrivée *ou* une
+  Mutation, mais pas pour un Départ) — mécanisme jamais testé jusqu'ici. `InvoicePaymentFormBuilder`
+  vérifie qu'une soumission sans la pièce jointe optionnelle reste valide.
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `BreakRoomFormBuilder`,
   `EventSupportFormBuilder`, `RecyclingRequestFormBuilder` et `SupplyOrderFormBuilder` — 4 autres
   des 33 formulaires de la vague de généralisation du catalogue (issue #207).
