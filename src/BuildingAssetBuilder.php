@@ -129,6 +129,14 @@ class BuildingAssetBuilder
 
         $this->seedTypes($definition);
 
+        // Real bug found by testing MeetingRoomFormBuilder's real submission path (not by reading
+        // the code) : without this, `AssociatedItemsField` on a form's `QuestionTypeItem` question
+        // pointing at this asset silently links nothing to the resulting ticket, no error anywhere —
+        // see `VehicleAssetBuilder::syncHelpdeskItemTypeProfiles()`'s docblock for the full root
+        // cause (same fix, same mechanism, this plugin's own second custom asset to hit it).
+        // Idempotent and additive-only, safe to call unconditionally on every run.
+        $this->syncHelpdeskItemTypeProfiles($definition);
+
         return $isNew ? 1 : 0;
     }
 
@@ -147,6 +155,32 @@ class BuildingAssetBuilder
                 $item->add($crit);
             }
         }
+    }
+
+    /**
+     * See `VehicleAssetBuilder::getAllProfileIds()`'s docblock for the full root cause this exists
+     * to fix.
+     *
+     * @return int[]
+     */
+    private function getAllProfileIds(): array
+    {
+        global $DB;
+
+        $ids = [];
+        foreach ($DB->request(['FROM' => 'glpi_profiles', 'FIELDS' => ['id']]) as $row) {
+            $ids[] = (int) $row['id'];
+        }
+
+        return $ids;
+    }
+
+    private function syncHelpdeskItemTypeProfiles(AssetDefinition $definition): void
+    {
+        $definition->update([
+            'id' => $definition->getID(),
+            '_profiles_extra' => ['helpdesk_item_type' => $this->getAllProfileIds()],
+        ]);
     }
 
     /**

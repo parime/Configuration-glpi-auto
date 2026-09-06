@@ -27,6 +27,7 @@ use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\VehicleAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\VehicleIncidentFormBuilder;
+use Item_Ticket;
 use PHPUnit\Framework\TestCase;
 use Ticket;
 
@@ -277,5 +278,46 @@ final class VehicleIncidentFormBuilderTest extends TestCase
         ]);
 
         $this->assertStringContainsString('PHPUnit — Renault Kangoo 3', $ticket->fields['name']);
+    }
+
+    /**
+     * Regression guard for a second, separate real bug found while testing a sibling builder
+     * (`MeetingRoomFormBuilderTest`) : `AssociatedItemsField` on this form's `vehicule` question
+     * silently linked nothing to the resulting ticket, no error anywhere, because
+     * `VehicleAssetBuilder` never granted any GLPI profile `helpdesk_item_type` visibility for the
+     * "Vehicule" asset class — a checkbox GLPI's own admin UI sets when creating a custom asset
+     * definition by hand, skipped entirely when creating one programmatically. Fixed in
+     * `VehicleAssetBuilder::syncHelpdeskItemTypeProfiles()` (see its own docblock for the full root
+     * cause). This is exactly the class of bug asserting on the destination's `config` JSON cannot
+     * catch — the config was, and still is, correctly `AssociatedItemsFieldStrategy::
+     * LAST_VALID_ANSWER`; only the real, persisted `Item_Ticket` row proves the feature actually
+     * works end-to-end.
+     */
+    public function testVehicleIsAssociatedOnTheTicket(): void
+    {
+        $form = $this->buildForm();
+        $vehicleId = $this->addRealVehicle('PHPUnit — Renault Kangoo 4');
+        $immobiliseId = $this->questionIdByRank($form, 2);
+        $vehiculeId = $this->questionIdByRank($form, 0);
+        $dateId = $this->questionIdByRank($form, 1);
+        $tiersId = $this->questionIdByRank($form, 3);
+        $vehicleClass = $this->vehicleClassName();
+
+        $ticket = $this->submitAndGetTicket($form, [
+            "answers_$vehiculeId" => ['itemtype' => $vehicleClass, 'items_id' => $vehicleId],
+            "answers_$dateId" => '2026-09-05',
+            "answers_$immobiliseId" => 3,
+            "answers_$tiersId" => ['2'],
+        ]);
+
+        $link = new Item_Ticket();
+        $this->assertTrue(
+            $link->getFromDBByCrit([
+                'tickets_id' => $ticket->getID(),
+                'itemtype' => $vehicleClass,
+                'items_id' => $vehicleId,
+            ]),
+            'The ticket should be linked to the chosen vehicle via a real Item_Ticket row.'
+        );
     }
 }
