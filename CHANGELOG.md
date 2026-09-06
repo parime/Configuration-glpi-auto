@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `VpnAccessFormBuilder`,
+  `SoftwareLicenseFormBuilder`, `FurnitureRequestFormBuilder` et `MailboxRequestFormBuilder` — 4
+  autres des 33 formulaires de la vague de généralisation du catalogue (issue #207).
+  `VpnAccessFormBuilder` couvre le même mécanisme de champ conditionnel que `WifiAccessFormBuilder`
+  (date de fin d'accès optionnelle pour un accès permanent, prise en compte pour un accès
+  temporaire).
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `AccessBadgeFormBuilder`,
   `OfficeSuppliesFormBuilder`, `WifiAccessFormBuilder` et `SoftwareInstallFormBuilder` — 4 des 33
   formulaires de la vague de généralisation du catalogue (issue #207) qui n'avaient encore aucun
