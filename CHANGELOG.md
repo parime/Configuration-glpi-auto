@@ -36,6 +36,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   du plugin qui créent un vrai type d'actif GLPI 11 natif) : forme réelle de la définition créée
   (capacités, droits par défaut), champs personnalisés attendus, seed des types natifs sans
   duplication, et un regression guard sur `helpdesk_item_type`.
+- Tests d'intégration réels pour `SupportTierBuilder`, `UserCategoryBuilder`, `WaitReasonBuilder`,
+  `TagBuilder` et `VipBuilder` : forme réelle des groupes/catégories/gabarits créés, idempotence,
+  regression guard sur `Translations::applyIcon()`, et pour `WaitReasonBuilder` la distinction réelle
+  entre automatisation complète et manuelle vérifiée directement en base.
 - Test de non-régression (`VehicleIncidentFormBuilderTest`) pour le bug d'urgence corrigé en 1.3.1 :
   simule une vraie soumission de formulaire (le même chemin que `SubmitAnswerController`, pas juste
   une inspection de la config de destination) et vérifie l'urgence réellement enregistrée sur le
