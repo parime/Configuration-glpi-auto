@@ -80,9 +80,15 @@ final class EntityBuilderTest extends TestCase
 
         $this->assertSame($first, $second);
 
+        $siteSud = new Entity();
+        $siteSud->getFromDBByCrit(['name' => 'Site Sud', 'entities_id' => $first[0]['entities_id']]);
+
         global $DB;
-        $count = $DB->request(['FROM' => Entity::getTable(), 'WHERE' => ['name' => 'Atelier']])->count();
-        $this->assertSame(1, $count, 'Exactly one "Atelier" entity must exist — no duplicate.');
+        // Scoped to this specific parent — "Atelier" isn't a unique-enough name on its own to
+        // assume no other test elsewhere in the suite creates its own unrelated entity of the same
+        // name under a different parent.
+        $count = $DB->request(['FROM' => Entity::getTable(), 'WHERE' => ['name' => 'Atelier', 'entities_id' => $siteSud->getID()]])->count();
+        $this->assertSame(1, $count, 'Exactly one "Atelier" entity must exist under "Site Sud" — no duplicate.');
     }
 
     public function testDescribeSummarizesNamesAndDescendantCounts(): void

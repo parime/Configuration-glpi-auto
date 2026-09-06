@@ -11,6 +11,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels pour `LocationBuilder`, `CountryHolidayBuilder`, `FuelType`,
+  `ConfigurationProfile` et `Profile` — aucune de ces 5 classes n'avait de test dédié.
+  `LocationBuilder` couvre la règle "pas de données, pas de Location" à toute profondeur de
+  l'arborescence, le rattachement au plus proche ancêtre ayant une Location, et les sous-lieux
+  purement manuels imbriqués. `CountryHolidayBuilder` reste volontairement limité aux chemins
+  vérifiables sans réseau (même raisonnement déjà documenté dans `RSSFeedBuilderTest` pour cette
+  classe) : désactivé, chemin vide, pays non reconnu — jamais le vrai appel Nager.Date, pour ne pas
+  faire dépendre la CI de la disponibilité d'un service tiers. `Profile::uninstall()` est exercé
+  puis immédiatement restauré via `install()` dans un bloc try/finally, pour ne pas laisser les
+  droits Super-Admin réels de cette instance cassés en cas d'échec d'assertion en cours de route.
+
+### Fixed
+
+- **`EntityBuilderTest::testBuildIsIdempotentAndReturnsTheSameEntityIds` comptait les entités
+  "Atelier" par nom seul, sans les scoper à leur parent** — révélé en ajoutant `LocationBuilderTest`
+  (qui crée sa propre entité "Atelier" sous un parent différent) : les deux arborescences de test
+  sont parfaitement valides indépendamment (des entités de même nom sous des parents différents ne
+  sont pas des doublons), mais l'assertion, elle, ne distinguait pas les deux. Corrigé en scopant le
+  comptage à l'entité "Site Sud" précise créée par ce test — bug de test, pas de comportement réel
+  du plugin.
+
+- Tests d'intégration réels pour `SlaBuilder` et `MarketplaceBuilder` — aucune des deux classes
+  n'avait de test dédié. `SlaBuilder` est la classe la plus complexe du plugin (SLM, SLA/OLA par
+  priorité, escalade N1→N2→N3) : couvre `build()`/`buildFromOverride()`, `assignToEntities()`/
+  `assignMap()` (règles `RuleTicket` avec leurs critères/actions réels), et les 3 niveaux
+  d'escalade (relève de priorité, réassignation de groupe avant échéance, réassignation à
+  l'échéance). Les assertions sur les valeurs d'heures passent par `buildFromOverride()` avec un
+  nom de client unique par test plutôt que par le nom fixe `build()` — l'instance de dev partagée a
+  déjà un vrai SLM "SLA standard" issu d'exécutions réelles antérieures, jamais mis à jour sur les
+  clés déjà résolues (`getOrCreateLevelAgreement()` ne réécrit jamais les heures d'un SLA déjà
+  existant), donc y asserter des heures précises aurait testé de la donnée réelle laissée par un
+  humain, pas ce test.
 - Tests d'intégration réels pour `ProjectTaskTemplateBuilder`, `ProjectTemplateBuilder`,
   `EntityBuilder` et `EntityAddressBuilder` — aucune de ces 4 classes n'avait de test dédié.
   `EntityAddressBuilder` est testé avec une véritable arborescence d'entités créée au préalable via
