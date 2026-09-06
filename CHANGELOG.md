@@ -43,6 +43,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   mécanisme `ObserverField`(`FORM_FILLER_SUPERVISOR`, ajoute automatiquement le supérieur hiérarchique
   du demandeur comme observateur) : `LeaveRequestFormBuilderTest`, `AbroadMissionFormBuilderTest`,
   `RemoteWorkFormBuilderTest`, `TrainingRequestFormBuilderTest`.
+- Tests de non-régression pour les formulaires utilisant `QuestionTypeUserDevice` (pointe vers un
+  vrai appareil GLPI natif déjà affecté au demandeur, pas un actif personnalisé de ce plugin) +
+  `AssociatedItemsField` : `SoftwareBugFormBuilderTest`, `LaptopRequestFormBuilderTest`,
+  `ProfessionalPhoneFormBuilderTest`, `NewScreenFormBuilderTest`. Documentent au passage un piège de
+  format d'entrée découvert en les écrivant : la réponse brute attendue pour ce type de question est
+  une chaîne `"<Itemtype>_<id>"`, pas le tableau `{itemtype, items_id}` qu'attend `QuestionTypeItem`
+  — les deux se ressemblent mais ne partagent pas le même format côté soumission.
 - Corrige au passage un bug de test-isolation préexistant (`FireSafetyAssetBuilderTest`/
   `PhysicalSecurityAssetBuilderTest` vidaient le cache de définitions d'assets sans jamais le
   recharger) et un second, plus profond (le cache process-wide de GLPI pour les règles métier,
