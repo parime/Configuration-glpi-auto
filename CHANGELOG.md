@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `AuditRequestFormBuilder`,
+  `ContractReviewFormBuilder`, `DeliveryTrackingFormBuilder` et `MailPrintingFormBuilder` — 4 autres
+  des 33 formulaires de la vague de généralisation du catalogue (issue #207).
+  `MailPrintingFormBuilder` couvre le même mécanisme de champ conditionnel que
+  `VpnAccessFormBuilder`/`WifiAccessFormBuilder` (destinataire/adresse visible uniquement pour
+  "Envoi de courrier", jamais pour "Reprographie").
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `WorkplaceSafetyFormBuilder`,
   `SocialMediaPostFormBuilder`, `StaffMovementFormBuilder` et `InvoicePaymentFormBuilder` — 4 autres
   des 33 formulaires de la vague de généralisation du catalogue (issue #207).
