@@ -93,6 +93,31 @@ final class TaskTemplateBuilderTest extends TestCase
         $this->assertSame(1, $count, 'Exactly one row must exist — no duplicate.');
     }
 
+    /**
+     * Regression guard: a template created while `TaskCategoryBuilder` hadn't run yet (wizard
+     * steps are independent and can run in any order) used to stay stuck with
+     * `taskcategories_id = 0` forever — `getOrCreateTemplate()` found the existing row by name and
+     * returned early without ever revisiting its category FK.
+     */
+    public function testASecondRunHealsAPreviouslyUnresolvedCategory(): void
+    {
+        $builder = new TaskTemplateBuilder();
+        $builder->build($this->buildConfig(true));
+
+        $template = new TaskTemplate();
+        $template->getFromDBByCrit(['name' => self::NAME]);
+        $template->update(['id' => $template->getID(), 'taskcategories_id' => 0]);
+
+        $builder->build($this->buildConfig(true));
+
+        $category = new TaskCategory();
+        $category->getFromDBByCrit(['name' => self::CATEGORY_NAME, 'taskcategories_id' => 0]);
+
+        $template = new TaskTemplate();
+        $template->getFromDBByCrit(['name' => self::NAME]);
+        $this->assertSame((int) $category->getID(), (int) $template->fields['taskcategories_id']);
+    }
+
     public function testTogglingIconsOnThenOffUpdatesTheTranslation(): void
     {
         $builder = new TaskTemplateBuilder();

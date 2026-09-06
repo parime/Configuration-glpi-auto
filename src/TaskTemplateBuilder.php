@@ -118,6 +118,15 @@ class TaskTemplateBuilder
     {
         $item = new TaskTemplate();
         if ($item->getFromDBByCrit(['name' => $name])) {
+            // Self-heals a template left with `taskcategories_id = 0` by an earlier run where
+            // `TaskCategoryBuilder` hadn't been run yet (the wizard's steps are independent and can
+            // be run in any order, or re-run individually) — see
+            // `ProjectTaskTemplateBuilder::getOrCreateTemplate()`'s own docblock for the same
+            // reasoning applied to project task templates.
+            if ($categoryId > 0 && (int) $item->fields['taskcategories_id'] !== $categoryId) {
+                $item->update(['id' => $item->getID(), 'taskcategories_id' => $categoryId]);
+            }
+
             return (int) $item->getID();
         }
 

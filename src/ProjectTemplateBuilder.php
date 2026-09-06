@@ -137,6 +137,14 @@ class ProjectTemplateBuilder
         $project = new Project();
         $crit = ['is_template' => 1, 'template_name' => $name];
         if ($project->getFromDBByCrit($crit)) {
+            // Self-heals a template left with `projecttypes_id = 0` by an earlier run where
+            // `ProjectTaxonomyBuilder` hadn't been run yet — see
+            // `ProjectTaskTemplateBuilder::getOrCreateTemplate()`'s own docblock for the same
+            // reasoning applied to task templates.
+            if ($projectTypeId > 0 && (int) $project->fields['projecttypes_id'] !== $projectTypeId) {
+                $project->update(['id' => $project->getID(), 'projecttypes_id' => $projectTypeId]);
+            }
+
             return (int) $project->getID();
         }
 
@@ -154,6 +162,11 @@ class ProjectTemplateBuilder
         $task = new ProjectTask();
         $crit = ['projects_id' => $projectId, 'name' => $name];
         if ($task->getFromDBByCrit($crit)) {
+            // Same self-healing as getOrCreateTemplate() above, for each task's own type FK.
+            if ($taskTypeId > 0 && (int) $task->fields['projecttasktypes_id'] !== $taskTypeId) {
+                $task->update(['id' => $task->getID(), 'projecttasktypes_id' => $taskTypeId]);
+            }
+
             return;
         }
 

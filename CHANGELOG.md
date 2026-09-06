@@ -11,6 +11,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels pour `ProjectTaskTemplateBuilder`, `ProjectTemplateBuilder`,
+  `EntityBuilder` et `EntityAddressBuilder` — aucune de ces 4 classes n'avait de test dédié.
+  `EntityAddressBuilder` est testé avec une véritable arborescence d'entités créée au préalable via
+  `EntityBuilder` (résolution indépendante par chemin, comme documenté dans la classe).
+- Regression guard sur `TaskTemplateBuilder` pour la même correction (voir section Fixed).
+
+### Fixed
+
+- **`ProjectTaskTemplateBuilder`/`ProjectTemplateBuilder`/`TaskTemplateBuilder` laissaient
+  définitivement une référence à `0` (`projecttasktypes_id`/`projecttypes_id`/`taskcategories_id`)
+  quand l'étape correspondante (`ProjectTaxonomyBuilder`/`TaskCategoryBuilder`) n'avait pas encore
+  été exécutée au moment de la création** — trouvé en écrivant les tests ci-dessus : 3 gabarits de
+  tâches de projet, 2 projets modèles (et leurs 9 tâches), tous bloqués à `0` sur l'instance de test
+  de ce projet. Cause : `getOrCreateTemplate()`/`getOrCreateTask()` retrouvent la ligne existante par
+  nom et la retournent telle quelle, sans jamais revérifier sa clé étrangère une fois la
+  dépendance disponible. Corrigé en mettant à jour la clé étrangère à chaque exécution si elle est
+  encore à `0` et qu'une résolution valide existe désormais ; les lignes déjà en défaut sur cette
+  instance ont été corrigées par le simple fait de relancer les constructeurs concernés.
+
+### Added
+
 - Tests d'intégration réels pour `DocumentManagementBuilder`, `FollowupLibraryBuilder`,
   `ManufacturerDictionaryBuilder` et `PlanningEventBuilder` — aucune de ces 4 classes n'avait de test
   dédié. `ManufacturerDictionaryBuilder` vérifie les 29 règles de dictionnaire fabricant avec leurs
