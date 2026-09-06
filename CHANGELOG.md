@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Tests d'intégration réels pour `ServerAssetBuilder`, `SatisfactionSurveyBuilder`,
+  `PaletteBuilder` et `NotificationBrandingBuilder`. `ServerAssetBuilder` suit le même patron que
+  `VehicleAssetBuilder`/`BuildingAssetBuilder` (forme de la définition, regression guard
+  `helpdesk_item_type`). `SatisfactionSurveyBuilder` : mêmes deux portes que
+  `TagBuilder`/`VipBuilder` (config + plugin tiers actif), le chemin de création restant hors
+  portée sans le plugin "satisfaction" installé. `PaletteBuilder` : fichier de thème réel écrit
+  sous `GLPI_THEMES_DIR` et bascule de `core.palette`, avec regression guard sur la désactivation
+  qui doit réellement réinitialiser l'instance (bug documenté dans la classe, trouvé 2026-08-20).
+  `NotificationBrandingBuilder` : les 23 événements natifs `Ticket` sont réellement réassignés à
+  des gabarits dédiés, idempotence via marqueur HTML vérifiée (y compris la reprise après édition
+  manuelle d'un admin) — `setUp()`/`tearDown()` capturent et restaurent l'état d'origine de chaque
+  événement pour ne laisser aucune trace sur l'instance de dev partagée.
+
 ### Fixed
 
 - **Les questions de type "objet lié" (véhicule, salle de réunion, équipement de sécurité...) ne
