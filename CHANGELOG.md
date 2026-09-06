@@ -9,14 +9,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Les questions de type "objet lié" (véhicule, salle de réunion, équipement de sécurité...) ne
+  liaient en réalité jamais l'objet choisi au ticket créé**, sans aucune erreur nulle part — trouvé en
+  écrivant `MeetingRoomFormBuilderTest`, un test qui vérifie le vrai lien `Item_Ticket` créé plutôt
+  que de se contenter d'un formulaire qui s'enregistre sans erreur. Cause : GLPI restreint, par profil
+  (`glpi_profiles.helpdesk_item_type`), la liste des types d'objets qu'on peut associer à un ticket —
+  un réglage que l'interface d'administration de GLPI fait cocher à la création manuelle d'un type
+  d'actif personnalisé, mais que ce plugin, en créant ses actifs (Véhicule, Local, Sécurité physique...)
+  par programmation, ne renseignait jamais. Chaque profil se retrouvait donc avec une liste vide pour
+  ces actifs, y compris "Self-Service" — le profil des demandeurs eux-mêmes, premiers concernés par
+  ces formulaires de catalogue. Corrigé dans chacun des 5 générateurs d'actifs personnalisés
+  (`VehicleAssetBuilder`, `BuildingAssetBuilder`, `PhysicalSecurityAssetBuilder`,
+  `FireSafetyAssetBuilder`, `ServerAssetBuilder`) : le nouvel actif est désormais automatiquement
+  rendu associable pour tous les profils existants. Correctif rétroactif (s'applique aussi aux actifs
+  déjà créés par une version antérieure du plugin, sans réinstallation).
+
 ### Added
 
 - Test de non-régression (`VehicleIncidentFormBuilderTest`) pour le bug d'urgence corrigé en 1.3.1 :
   simule une vraie soumission de formulaire (le même chemin que `SubmitAnswerController`, pas juste
   une inspection de la config de destination) et vérifie l'urgence réellement enregistrée sur le
-  ticket créé — exactement ce qui avait permis de détecter le bug initial. Corrige au passage un bug
-  de test-isolation préexistant (`FireSafetyAssetBuilderTest`/`PhysicalSecurityAssetBuilderTest`
-  vidaient le cache de définitions d'assets sans jamais le recharger).
+  ticket créé — exactement ce qui avait permis de détecter le bug initial. Étendu pour vérifier aussi
+  le lien réel véhicule/ticket (voir le correctif ci-dessus).
+- Test de non-régression (`MeetingRoomFormBuilderTest`) pour le correctif ci-dessus, sur le formulaire
+  de réservation de salle de réunion.
+- Corrige au passage un bug de test-isolation préexistant (`FireSafetyAssetBuilderTest`/
+  `PhysicalSecurityAssetBuilderTest` vidaient le cache de définitions d'assets sans jamais le
+  recharger) et un second, plus profond (le cache process-wide de GLPI pour les règles métier,
+  `SingletonRuleList`, ne se rechargeait jamais après l'ajout d'une nouvelle règle en cours de suite
+  de tests — corrigé en activant `TU_USER`, le contournement que GLPI documente lui-même pour ce cas
+  précis dans ses propres tests).
 
 ## [1.3.1] - 2026-09-05
 

@@ -193,6 +193,15 @@ class VehicleAssetBuilder
         // should still reach an admin who ran the wizard on an earlier version.
         $this->seedTypes($definition);
 
+        // Real bug found by testing VehicleIncidentFormBuilder's real submission path (not by
+        // reading the code) : without this, `AssociatedItemsField` on a form's `QuestionTypeItem`
+        // question pointing at this asset silently links nothing to the resulting ticket, no error
+        // anywhere — see this method's own class docblock for the full root cause. Idempotent and
+        // additive-only (`AssetDefinition::syncProfilesRights()` only appends missing profile ids),
+        // so safe to call unconditionally on every run, including retroactively for a definition
+        // created by an earlier version of this plugin that predates this fix.
+        $this->syncHelpdeskItemTypeProfiles($definition);
+
         return $isNew ? 1 : 0;
     }
 
@@ -227,6 +236,43 @@ class VehicleAssetBuilder
                 $item->add($crit);
             }
         }
+    }
+
+    /**
+     * `helpdesk_item_type` (`glpi_profiles`, a per-profile serialized array, distinct from the CRUD
+     * `profiles` rights `getDefaultProfileRights()` grants on the asset registry itself) gates
+     * `CommonITILObject::getAllTypesForHelpdesk()` — the list `AssociatedItemsFieldStrategy::
+     * isValidAnswer()` checks a `QuestionTypeItem` answer's itemtype against before linking it to a
+     * ticket. GLPI's own "add a new asset definition" admin form has a dedicated per-profile checkbox
+     * for exactly this (`AssetDefinition::getExtraProfilesFields()`/`syncProfilesRights()`,
+     * `_profiles_extra[helpdesk_item_type]` input) — creating the definition programmatically, as
+     * every builder in this plugin does, skips that checkbox entirely, leaving every profile's list
+     * untouched (empty for this class, on a fresh instance). All existing profiles, not just the ones
+     * with CRUD rights on the asset itself : anyone who can create a ticket (including a plain
+     * "Self-Service" requester, the actual audience of this plugin's own service-catalog forms) needs
+     * to be ABLE to pick the resulting vehicle from the dropdown, or the association silently never
+     * happens - the exact bug this method exists to prevent.
+     *
+     * @return int[]
+     */
+    private function getAllProfileIds(): array
+    {
+        global $DB;
+
+        $ids = [];
+        foreach ($DB->request(['FROM' => 'glpi_profiles', 'FIELDS' => ['id']]) as $row) {
+            $ids[] = (int) $row['id'];
+        }
+
+        return $ids;
+    }
+
+    private function syncHelpdeskItemTypeProfiles(AssetDefinition $definition): void
+    {
+        $definition->update([
+            'id' => $definition->getID(),
+            '_profiles_extra' => ['helpdesk_item_type' => $this->getAllProfileIds()],
+        ]);
     }
 
     /**

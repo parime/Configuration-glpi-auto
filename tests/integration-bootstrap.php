@@ -48,6 +48,26 @@
 
 require_once dirname(__DIR__, 3) . '/vendor/autoload.php';
 
+// GLPI's own `SingletonRuleList` (`src/SingletonRuleList.php`) caches each rule subtype's full,
+// active rule list in a PHP `static` array keyed by `[itemtype][entity]`, populated lazily on first
+// use and NEVER invalidated afterward — harmless for a real request (one process, one page load),
+// but PHPUnit reuses a single process for the whole run: a rule (e.g. one this plugin's own
+// `ValidationRoutingBuilder` creates) added to the DB *after* some earlier, unrelated test already
+// triggered a `Ticket::add()` (priming the cache without it) stays invisible to every ticket created
+// for the rest of the suite. Confirmed live: adding `MeetingRoomFormBuilderTest` — which creates a
+// real ticket earlier, alphabetically, than `ValidationRoutingBuilderTest` — broke that unrelated
+// test's own supervisor-routing assertion with no code change to it at all; reverting to a plain,
+// unrelated `Ticket::add()` in an even-earlier test reproduced the exact same failure. GLPI's own
+// `SingletonRuleList::getInstance()` already has a documented bypass for exactly this
+// ("FIXME: can be removed when using phpunit 10 and process-isolation") : return a fresh, uncached
+// instance whenever `TU_USER` is defined — the same constant GLPI's own historical test suite
+// defines for this and several other test-only behavior switches (`Session`/`Search`/`CommonDBTM`
+// each check `defined('TU_USER')` too), regardless of its actual value. Must be defined before any
+// GLPI class loads a rule collection, so as early in this bootstrap as possible.
+if (!defined('TU_USER')) {
+    define('TU_USER', 'glpi');
+}
+
 // No environment hardcoded here — `null` mirrors bin/console's own default (`$options['env'] ??
 // null`), letting `Glpi\Application\Environment::get()` resolve it from `GLPI_ENVIRONMENT_TYPE`
 // exactly the same way `bin/console database:install`/`plugin:install`/`plugin:activate` already
