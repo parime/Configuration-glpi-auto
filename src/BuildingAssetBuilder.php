@@ -177,10 +177,34 @@ class BuildingAssetBuilder
 
     private function syncHelpdeskItemTypeProfiles(AssetDefinition $definition): void
     {
+        if ($this->isHelpdeskItemTypeAlreadySynced($definition)) {
+            return;
+        }
+
         $definition->update([
             'id' => $definition->getID(),
             '_profiles_extra' => ['helpdesk_item_type' => $this->getAllProfileIds()],
         ]);
+    }
+
+    /**
+     * See `VehicleAssetBuilder::isHelpdeskItemTypeAlreadySynced()`'s own docblock for the full
+     * root cause this exists to fix — calling `AssetDefinition::update()` unconditionally on every
+     * run triggers a GLPI-core `DropdownVisibility` resync with no duplicate check, leaving
+     * thousands of stale rows behind after repeated wizard runs.
+     */
+    private function isHelpdeskItemTypeAlreadySynced(AssetDefinition $definition): bool
+    {
+        global $DB;
+
+        $customObjectClass = $definition->getCustomObjectClassName();
+        foreach ($DB->request(['FROM' => 'glpi_profiles', 'FIELDS' => ['id', 'helpdesk_item_type']]) as $row) {
+            if (!in_array($customObjectClass, importArrayFromDB($row['helpdesk_item_type']), true)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
