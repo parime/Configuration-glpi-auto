@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests d'intégration réels pour `Config` et `Install\Installer` — les deux dernières classes du
+  plugin sans aucune couverture, complétant la campagne "aucune classe sans test". `Config` couvre
+  `prepareInputForAdd()`/`prepareInputForUpdate()` (toute la sanitization d'entrée : arbre d'entités
+  avec profondeur plafonnée et réglages par client, tiers SLA/OLA, palette, endpoint de géocodage,
+  droits LDAP...) appelés directement sur une instance fraîche plutôt que via un vrai `add()`/
+  `update()` — ce sont des fonctions pures sans accès DB, donc sans aucun risque d'écrire sur la
+  vraie ligne singleton (id=1) de cette instance. `Install\Installer::install()` est ré-exécuté pour
+  de vrai sur cette instance déjà installée (chaque `CREATE TABLE` est gardé par `tableExists()`,
+  chaque migration par `addField()`/`dropField()`, tous idempotents) ; `uninstall()` n'est
+  volontairement pas testé ici (vrai `DROP TABLE` sur les tables réelles dont dépend le reste de
+  cette suite) — ce chemin est déjà exercé pour de vrai à chaque run CI par le job dédié qui
+  installe/active/désactive/désinstalle dans un conteneur jetable et vérifie l'absence de résidus.
 - Tests d'intégration réels pour `LocationBuilder`, `CountryHolidayBuilder`, `FuelType`,
   `ConfigurationProfile` et `Profile` — aucune de ces 5 classes n'avait de test dédié.
   `LocationBuilder` couvre la règle "pas de données, pas de Location" à toute profondeur de
