@@ -18,6 +18,7 @@
 namespace GlpiPlugin\Configurationglpiauto\Tests\Integration;
 
 use GlpiPlugin\Configurationglpiauto\FuelType;
+use GlpiPlugin\Configurationglpiauto\Profile;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,6 +45,32 @@ final class FuelTypeTest extends TestCase
     public function testGetIconReturnsAGasStationIcon(): void
     {
         $this->assertSame('ti ti-gas-station', FuelType::getIcon());
+    }
+
+    /**
+     * Regression guard: `$rightname` used to be the native GLPI `'config'` right, which core's own
+     * `\Config::getRights()` strips CREATE/DELETE/PURGE from (a per-entity singleton has no concept
+     * of creating/deleting rows) — meaning "Ajouter"/"Purger" on this dropdown's own screen 403'd
+     * for everyone, super-admin included. Must be this plugin's own dedicated right instead, the
+     * exact fix `Profile.php`'s own docblock explains this right was created to make possible.
+     */
+    public function testRightnameIsThisPluginsOwnDedicatedRightNotTheNativeConfigRight(): void
+    {
+        $this->assertSame(Profile::RIGHT_CONFIG, FuelType::$rightname);
+        $this->assertNotSame('config', FuelType::$rightname);
+    }
+
+    public function testASuperAdminCanCreateAndPurgeThroughTheRealCanCheck(): void
+    {
+        $item = new FuelType();
+        $createInput = ['name' => 'Test — CREATE right'];
+        $this->assertTrue($item->can(-1, CREATE, $createInput), 'CREATE must not be stripped, unlike the native config right.');
+
+        $id = (int) $item->add(['name' => 'Test — CREATE right']);
+        $this->assertGreaterThan(0, $id);
+        $this->assertTrue($item->can($id, PURGE), 'PURGE must not be stripped, unlike the native config right.');
+
+        $item->delete(['id' => $id], true);
     }
 
     public function testCanBeAddedToAndReadBackFromItsOwnRealTable(): void

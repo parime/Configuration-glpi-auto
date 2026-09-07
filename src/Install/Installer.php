@@ -66,7 +66,11 @@ final class Installer
                 KEY `is_active` (`is_active`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
 
-            $DB->doQuery($query) or die($DB->error());
+            if (!$DB->doQuery($query)) {
+                \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s\n", self::PROFILES_TABLE, $DB->error()));
+
+                return false;
+            }
 
             $this->insertDefaultProfiles();
         }
@@ -189,7 +193,11 @@ final class Installer
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
 
-            $DB->doQuery($query) or die($DB->error());
+            if (!$DB->doQuery($query)) {
+                \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s\n", self::CONFIGS_TABLE, $DB->error()));
+
+                return false;
+            }
 
             (new Config())->add(Config::getDefaults() + ['id' => 1]);
         } else {
@@ -376,7 +384,11 @@ final class Installer
                 KEY `name` (`name`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
 
-            $DB->doQuery($query) or die($DB->error());
+            if (!$DB->doQuery($query)) {
+                \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s\n", self::FUELTYPES_TABLE, $DB->error()));
+
+                return false;
+            }
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
@@ -538,6 +550,20 @@ final class Installer
     public function uninstall(Migration $migration): bool
     {
         global $DB;
+
+        // Undoes PaletteBuilder::apply()'s custom-theme write if it's still the active choice —
+        // PaletteBuilder itself already reverts this the moment the wizard is re-run with the
+        // custom palette unchecked, but nothing did so on a straight uninstall: GLPI's own
+        // ThemeManager keeps listing/serving a theme file whose owning plugin no longer exists,
+        // and every user with no personal palette preference stays stuck on it.
+        $paletteConfig = \Config::getConfigurationValues('core', ['palette']);
+        if (($paletteConfig['palette'] ?? '') === 'cga_custom') {
+            \Config::setConfigurationValues('core', ['palette' => '']);
+        }
+        $themePath = GLPI_THEMES_DIR . '/cga_custom.scss';
+        if (is_file($themePath)) {
+            unlink($themePath); // nosemgrep: php.lang.security.unlink-use.unlink-use
+        }
 
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::PROFILES_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::CONFIGS_TABLE . "`");

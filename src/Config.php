@@ -426,6 +426,12 @@ class Config extends CommonDBTM
             $tree = json_decode((string) $input['entity_tree_json'], true);
             $input['entity_tree'] = json_encode(is_array($tree) ? $this->sanitizeTree($tree) : []);
             unset($input['entity_tree_json']);
+        } elseif (array_key_exists('entity_tree', $input)) {
+            // A request naming the COLUMN directly (entity_tree) rather than the form field
+            // (entity_tree_json) would otherwise reach CommonDBTM::update() unsanitized — same
+            // fix as calendar_days/calendar_day_hours below, re-normalize unconditionally.
+            $tree = is_string($input['entity_tree']) ? json_decode($input['entity_tree'], true) : $input['entity_tree'];
+            $input['entity_tree'] = json_encode(is_array($tree) ? $this->sanitizeTree($tree) : []);
         }
 
         if (isset($input['ldap_function_rights'])) {
@@ -439,10 +445,31 @@ class Config extends CommonDBTM
         if (isset($input['calendar_day'])) {
             $input['calendar_days'] = json_encode(array_values(array_map('intval', (array) $input['calendar_day'])));
             unset($input['calendar_day']);
+        } elseif (array_key_exists('calendar_days', $input)) {
+            // A request naming the COLUMN directly (calendar_days) rather than the form field
+            // (calendar_day, singular) would otherwise reach CommonDBTM::update() unsanitized —
+            // this is also what templates/wizard.html.twig emits raw into a <script> block, so an
+            // unsanitized value here is a stored-XSS sink, not just a data-integrity issue.
+            // Re-normalize unconditionally, falling back to an empty array on anything malformed.
+            $days = is_string($input['calendar_days']) ? json_decode($input['calendar_days'], true) : $input['calendar_days'];
+            $input['calendar_days'] = json_encode(is_array($days) ? array_values(array_map('intval', $days)) : []);
         }
 
-        if (isset($input['calendar_day_hours']) && is_array($input['calendar_day_hours'])) {
-            $input['calendar_day_hours'] = json_encode($this->sanitizeDayHours($input['calendar_day_hours']));
+        if (isset($input['calendar_day_hours'])) {
+            // Same bypass as calendar_days above: the previous `is_array()` guard let a scalar
+            // (e.g. a POST field literally named calendar_day_hours) through untouched.
+            $dayHours = is_array($input['calendar_day_hours'])
+                ? $input['calendar_day_hours']
+                : (is_string($input['calendar_day_hours']) ? json_decode($input['calendar_day_hours'], true) : null);
+            $input['calendar_day_hours'] = json_encode(is_array($dayHours) ? $this->sanitizeDayHours($dayHours) : []);
+        }
+
+        if (isset($input['calendar_begin'])) {
+            $input['calendar_begin'] = $this->sanitizeTimeString((string) $input['calendar_begin']);
+        }
+
+        if (isset($input['calendar_end'])) {
+            $input['calendar_end'] = $this->sanitizeTimeString((string) $input['calendar_end']);
         }
 
         if (isset($input['calendar_lunch_break_enabled'])) {
@@ -469,8 +496,16 @@ class Config extends CommonDBTM
             $input['sla_enabled'] = !empty($input['sla_enabled']) ? 1 : 0;
         }
 
-        if (isset($input['sla_tiers']) && is_array($input['sla_tiers'])) {
-            $input['sla_tiers'] = json_encode($this->sanitizeSlaTiers($input['sla_tiers'], self::DEFAULT_SLA_TIERS));
+        if (isset($input['sla_tiers'])) {
+            // Same column-vs-form-field bypass as calendar_days/calendar_day_hours above: the
+            // previous is_array() guard let a scalar (a POST field literally named sla_tiers)
+            // through unsanitized. Not currently rendered |raw anywhere (only read back through
+            // getSlaTiers(), which re-sanitizes), but fixed here too rather than left as a latent
+            // hazard for the next template that reads this column directly.
+            $tiers = is_array($input['sla_tiers'])
+                ? $input['sla_tiers']
+                : (is_string($input['sla_tiers']) ? json_decode($input['sla_tiers'], true) : null);
+            $input['sla_tiers'] = json_encode($this->sanitizeSlaTiers(is_array($tiers) ? $tiers : [], self::DEFAULT_SLA_TIERS));
         }
 
         if (isset($input['sla_astreinte'])) {
@@ -491,8 +526,11 @@ class Config extends CommonDBTM
             $input['ola_enabled'] = !empty($input['ola_enabled']) ? 1 : 0;
         }
 
-        if (isset($input['ola_tiers']) && is_array($input['ola_tiers'])) {
-            $input['ola_tiers'] = json_encode($this->sanitizeSlaTiers($input['ola_tiers'], self::DEFAULT_OLA_TIERS));
+        if (isset($input['ola_tiers'])) {
+            $tiers = is_array($input['ola_tiers'])
+                ? $input['ola_tiers']
+                : (is_string($input['ola_tiers']) ? json_decode($input['ola_tiers'], true) : null);
+            $input['ola_tiers'] = json_encode($this->sanitizeSlaTiers(is_array($tiers) ? $tiers : [], self::DEFAULT_OLA_TIERS));
         }
 
         if (isset($input['category_enabled'])) {
@@ -574,7 +612,7 @@ class Config extends CommonDBTM
             $input['ldap_rights_group_template'] = str_contains($template, '{ENTITY}') ? $template : 'GLPI_{ENTITY}';
         }
 
-        if (isset($input['ldap_rights_profile']) && !in_array($input['ldap_rights_profile'], self::NATIVE_PROFILE_NAMES, true)) {
+        if (isset($input['ldap_rights_profile']) && !$this->isAssignableProfileName((string) $input['ldap_rights_profile'])) {
             $input['ldap_rights_profile'] = 'Admin';
         }
 
@@ -672,13 +710,55 @@ class Config extends CommonDBTM
             }
             $group = trim((string) ($row['group'] ?? ''));
             $profile = (string) ($row['profile'] ?? '');
-            if ($group === '' || !in_array($profile, self::NATIVE_PROFILE_NAMES, true)) {
+            if ($group === '' || !$this->isAssignableProfileName($profile)) {
                 continue;
             }
             $clean[] = ['group' => $group, 'profile' => $profile];
         }
 
         return $clean;
+    }
+
+    /**
+     * A `RuleRight` built from `ldap_rights_profile`/`ldap_function_rights` auto-assigns whichever
+     * profile is named here to any LDAP-imported user matching the configured group — including on
+     * their very next sync, with no further review. Restricting "Super-Admin" to operators who
+     * already hold that profile themselves closes the privilege-escalation path a delegated
+     * `plugin_configurationglpiauto_config` holder (a right explicitly meant to be grantable to a
+     * non-super-admin profile, see Profile.php) would otherwise have: grant yourself an LDAP group
+     * you belong to, assign it "Super-Admin", wait for the next sync. Every other native profile
+     * name is unaffected — this only narrows the one value that grants full instance control.
+     */
+    private function isAssignableProfileName(string $profile): bool
+    {
+        if (!in_array($profile, self::NATIVE_PROFILE_NAMES, true)) {
+            return false;
+        }
+
+        return $profile !== 'Super-Admin' || $this->currentUserHoldsSuperAdminProfile();
+    }
+
+    private function currentUserHoldsSuperAdminProfile(): bool
+    {
+        global $DB;
+
+        $usersId = (int) ($_SESSION['glpiID'] ?? 0);
+        if ($usersId === 0) {
+            return false;
+        }
+
+        $superAdmin = new \Profile();
+        if (!$superAdmin->getFromDBByCrit(['name' => 'Super-Admin'])) {
+            return false;
+        }
+
+        $rows = $DB->request([
+            'FROM' => \Profile_User::getTable(),
+            'WHERE' => ['users_id' => $usersId, 'profiles_id' => $superAdmin->getID()],
+            'LIMIT' => 1,
+        ]);
+
+        return $rows->count() > 0;
     }
 
     /**
@@ -835,7 +915,16 @@ class Config extends CommonDBTM
         }
 
         $error = '';
-        $json = \Toolbox::getURLContent('https://api.github.com/repos/parime/Configuration-glpi-auto/releases/latest', $error);
+        // CURLOPT_TIMEOUT (total request time) alongside core's own CURLOPT_CONNECTTIMEOUT=5
+        // default: on a network with no egress to github.com, the connect timeout alone doesn't
+        // bound a host that accepts the TCP connection but never answers — this wizard-page-render
+        // call would otherwise stall indefinitely instead of failing after a few seconds.
+        $json = \Toolbox::getURLContent(
+            'https://api.github.com/repos/parime/Configuration-glpi-auto/releases/latest',
+            $error,
+            0,
+            [CURLOPT_TIMEOUT => 5]
+        );
         $version = null;
         if (!empty($json)) {
             $data = json_decode($json, true);

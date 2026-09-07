@@ -1702,8 +1702,8 @@
     { value: 6, label: "{{ __('Samedi')|e('js') }}" },
     { value: 0, label: "{{ __('Dimanche')|e('js') }}" }
   ];
-  var initialCalendarDays = {{ config.calendar_days|default('[1,2,3,4,5]')|raw }};
-  var initialCalendarDayHours = {{ config.calendar_day_hours|default('{}')|raw }};
+  var initialCalendarDays = {{ calendar_days|json_encode|raw }};
+  var initialCalendarDayHours = {{ calendar_day_hours|json_encode|raw }};
   var defaultCalendarBegin = "{{ config.calendar_begin|default('08:00')|e('js') }}";
   var defaultCalendarEnd = "{{ config.calendar_end|default('18:00')|e('js') }}";
 

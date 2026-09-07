@@ -61,6 +61,21 @@ if ($endpoint === '' || !preg_match('#^https://#', $endpoint)) {
     return;
 }
 
+// The endpoint host is admin-configurable (self-hosted Nominatim/Photon/LocationIQ...), so an
+// operator holding only this plugin's own right could otherwise point it at an internal address
+// (a loopback/private/link-local host, or a public host that 302-redirects to one) and use this
+// proxy as a semi-blind SSRF into the server's own network — the response body is partially
+// echoed back below. Resolve and reject any non-public address before ever calling it.
+$endpointHost = parse_url($endpoint, PHP_URL_HOST);
+$resolvedIp = is_string($endpointHost) && $endpointHost !== '' ? gethostbyname($endpointHost) : false;
+$isPublicIp = is_string($resolvedIp)
+    && filter_var($resolvedIp, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false;
+if (!$isPublicIp) {
+    http_response_code(500);
+    echo json_encode(['error' => 'misconfigured_endpoint']);
+    return;
+}
+
 // Free-form query ("12 rue de la Paix, Paris") or a postcode-only lookup (city auto-fill) —
 // never both at once, the caller picks one mode. `town`/`country` are optional hints from
 // whatever the admin has already typed in those fields, on either mode.
@@ -116,6 +131,10 @@ try {
             'Accept' => 'application/json',
         ],
         'timeout' => 5,
+        // The public-IP check above only covers the first hop — without this, a host that passes
+        // that check could still 302 the client to an internal address (Guzzle follows up to 5
+        // redirects by default), reopening the same SSRF this proxy exists to prevent.
+        'allow_redirects' => false,
     ]);
 
     $results = json_decode((string) $response->getBody(), true) ?? [];
