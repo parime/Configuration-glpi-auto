@@ -20,6 +20,8 @@ namespace GlpiPlugin\Configurationglpiauto\Tests\Integration;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use PHPUnit\Framework\TestCase;
+use Profile_User;
+use User;
 
 /**
  * `Config` is a real singleton row (id=1) this instance's actual live plugin configuration lives
@@ -275,6 +277,68 @@ final class ConfigTest extends TestCase
         $this->assertArrayNotHasKey('calendar_day', $input);
     }
 
+    /**
+     * Regression guard for the stored-XSS finding in the 1.3.0 security review:
+     * `templates/wizard.html.twig` renders `calendar_days`/`calendar_day_hours` `|raw` into a
+     * `<script>` block. `prepareInput()` used to only sanitize the form field name
+     * (`calendar_day`, singular), so a request naming the real COLUMN directly (`calendar_days`)
+     * reached `CommonDBTM::update()`, and the template, completely unsanitized. Must always come
+     * back as safe JSON, never the raw payload.
+     */
+    public function testPrepareInputRenormalizesCalendarDaysWhenTheColumnNameIsSubmittedDirectly(): void
+    {
+        $input = (new Config())->prepareInputForAdd(['calendar_days' => '0;alert(1)//']);
+        $this->assertSame([], json_decode($input['calendar_days'], true), 'Malformed JSON must fall back to an empty array, never pass through raw.');
+
+        $input = (new Config())->prepareInputForAdd(['calendar_days' => json_encode(['1', 3])]);
+        $this->assertSame([1, 3], json_decode($input['calendar_days'], true), 'A genuinely valid JSON array (e.g. from an upgrade path) still round-trips.');
+    }
+
+    /**
+     * Same bypass, `calendar_day_hours`: the previous `is_array()` guard let a scalar POST value
+     * (the column name submitted directly, matching both the form field and the column) through
+     * completely unsanitized.
+     */
+    public function testPrepareInputRenormalizesCalendarDayHoursWhenAScalarIsSubmitted(): void
+    {
+        $input = (new Config())->prepareInputForAdd(['calendar_day_hours' => '</script><script>alert(1)</script>']);
+        $this->assertSame([], json_decode($input['calendar_day_hours'], true), 'Malformed JSON must fall back to an empty array, never pass through raw.');
+    }
+
+    /**
+     * Same root cause, `entity_tree`: `prepareInput()` only ever sanitized `entity_tree_json` (the
+     * form field), so a request naming the column (`entity_tree`) directly skipped `sanitizeTree()`
+     * entirely — no depth cap, no name trimming. Never rendered `|raw` (only `|json_encode`), so not
+     * itself an XSS sink, but the same structural bypass.
+     */
+    public function testPrepareInputRenormalizesEntityTreeWhenTheColumnNameIsSubmittedDirectly(): void
+    {
+        $input = (new Config())->prepareInputForAdd(['entity_tree' => 'not json at all']);
+        $this->assertSame([], json_decode($input['entity_tree'], true));
+
+        $input = (new Config())->prepareInputForAdd(['entity_tree' => json_encode([['name' => '  Client A  ', 'children' => []]])]);
+        $this->assertSame('Client A', json_decode($input['entity_tree'], true)[0]['name'], 'A genuinely valid tree still gets sanitizeTree()\'s own trimming.');
+    }
+
+    /**
+     * `sla_tiers`/`ola_tiers` had the same column-vs-form-field bypass (a bare `is_array()` guard
+     * let a scalar through) — not currently reachable via any `|raw` sink (only read back through
+     * `getSlaTiers()`, which re-sanitizes on every read), but fixed for the same structural reason.
+     */
+    public function testPrepareInputRenormalizesSlaTiersWhenAScalarIsSubmitted(): void
+    {
+        $input = (new Config())->prepareInputForAdd(['sla_tiers' => 'not an array']);
+        $tiers = json_decode($input['sla_tiers'], true);
+        $this->assertSame(Config::getDefaultSlaTiers(), $tiers);
+    }
+
+    public function testPrepareInputRenormalizesOlaTiersWhenAScalarIsSubmitted(): void
+    {
+        $input = (new Config())->prepareInputForAdd(['ola_tiers' => 'not an array']);
+        $tiers = json_decode($input['ola_tiers'], true);
+        $this->assertSame(Config::getDefaultOlaTiers(), $tiers);
+    }
+
     public function testPrepareInputSanitizesCalendarDayHoursDroppingOutOfRangeDays(): void
     {
         $input = (new Config())->prepareInputForAdd(['calendar_day_hours' => [
@@ -285,6 +349,14 @@ final class ConfigTest extends TestCase
         $clean = json_decode($input['calendar_day_hours'], true);
         $this->assertArrayHasKey(2, $clean);
         $this->assertArrayNotHasKey(9, $clean, 'Day 9 does not exist (0-6 range) and must be dropped.');
+    }
+
+    public function testPrepareInputFallsBackToDefaultTimeForAMalformedCalendarBeginOrEnd(): void
+    {
+        $input = (new Config())->prepareInputForAdd(['calendar_begin' => 'not-a-time', 'calendar_end' => '17:30']);
+
+        $this->assertSame('08:00', $input['calendar_begin']);
+        $this->assertSame('17:30', $input['calendar_end']);
     }
 
     public function testPrepareInputFallsBackToDefaultTimeForAMalformedLunchTime(): void
@@ -349,6 +421,72 @@ final class ConfigTest extends TestCase
     {
         $this->assertSame('Admin', (new Config())->prepareInputForAdd(['ldap_rights_profile' => 'Not-A-Real-Profile'])['ldap_rights_profile']);
         $this->assertSame('Supervisor', (new Config())->prepareInputForAdd(['ldap_rights_profile' => 'Supervisor'])['ldap_rights_profile']);
+    }
+
+    /**
+     * The integration bootstrap logs in as the native "glpi" Super-Admin account, so this is the
+     * baseline this class's other Super-Admin-restriction tests (which impersonate a different,
+     * non-super-admin user) are contrasted against: an operator who genuinely holds Super-Admin may
+     * still assign it via the LDAP rights mapping.
+     */
+    public function testPrepareInputAllowsSuperAdminLdapProfileForAnOperatorWhoHoldsIt(): void
+    {
+        $this->assertSame('Super-Admin', (new Config())->prepareInputForAdd(['ldap_rights_profile' => 'Super-Admin'])['ldap_rights_profile']);
+    }
+
+    /**
+     * Regression guard for the privilege-escalation path found in the 1.3.0 security review: this
+     * plugin's own right (`plugin_configurationglpiauto_config`) is deliberately delegatable to a
+     * non-super-admin profile (see Profile.php), but `ldap_rights_profile` feeds directly into a
+     * `RuleRight` that auto-assigns whichever profile is named here to any LDAP-imported user
+     * matching the configured group — unrestricted, a delegated operator could grant themselves
+     * "Super-Admin" via a group they already belong to. Impersonates a real non-super-admin user by
+     * swapping only `$_SESSION['glpiID']` (not a full `Auth::login()`, which would reset session
+     * keys other tests in this same process depend on) and restores it in `finally`.
+     */
+    public function testPrepareInputRejectsSuperAdminLdapProfileForAnOperatorWhoDoesNotHoldIt(): void
+    {
+        $userId = (int) (new User())->add([
+            'name' => 'phpunit_no_super_admin_' . uniqid(),
+            '_skip_default_group' => true,
+        ]);
+        $this->assertGreaterThan(0, $userId, 'Precondition: throwaway user must be created.');
+
+        $originalUserId = $_SESSION['glpiID'] ?? null;
+        $_SESSION['glpiID'] = $userId;
+        try {
+            $input = (new Config())->prepareInputForAdd(['ldap_rights_profile' => 'Super-Admin']);
+            $this->assertSame('Admin', $input['ldap_rights_profile'], 'A non-super-admin operator must never be able to assign Super-Admin via the LDAP mapping.');
+        } finally {
+            $_SESSION['glpiID'] = $originalUserId;
+        }
+    }
+
+    /**
+     * Same restriction, exercised through the per-row function-rights sanitizer rather than the
+     * single `ldap_rights_profile` field — the row is dropped entirely (not downgraded to "Admin",
+     * unlike the single-field case above) since `sanitizeLdapFunctionRights()` already drops any
+     * row failing its whitelist check rather than substituting a default.
+     */
+    public function testPrepareInputDropsSuperAdminFunctionRightRowForAnOperatorWhoDoesNotHoldIt(): void
+    {
+        $userId = (int) (new User())->add([
+            'name' => 'phpunit_no_super_admin_' . uniqid(),
+            '_skip_default_group' => true,
+        ]);
+        $this->assertGreaterThan(0, $userId, 'Precondition: throwaway user must be created.');
+
+        $originalUserId = $_SESSION['glpiID'] ?? null;
+        $_SESSION['glpiID'] = $userId;
+        try {
+            $input = (new Config())->prepareInputForAdd(['ldap_function_rights' => [
+                ['group' => 'DSI', 'profile' => 'Super-Admin'],
+                ['group' => 'RH', 'profile' => 'Admin'],
+            ]]);
+            $this->assertSame([['group' => 'RH', 'profile' => 'Admin']], json_decode($input['ldap_function_rights'], true));
+        } finally {
+            $_SESSION['glpiID'] = $originalUserId;
+        }
     }
 
     public function testPrepareInputRejectsANonHttpsGeocodingEndpoint(): void

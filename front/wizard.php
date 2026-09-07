@@ -347,11 +347,25 @@ Session::checkRight(Config::$rightname, READ);
 if (isset($_POST['finish'])) {
     Session::checkRight(Config::$rightname, UPDATE);
 
+    // This plugin's own right is deliberately delegatable to a non-super-admin profile (see
+    // Profile.php), but several of the GLPI objects the wizard writes are core-privileged
+    // (creating entities, LDAP right-assignment rules, instance-wide config) — gated here on
+    // the matching native GLPI right in addition to the check above, so a delegated operator
+    // without that specific core right gets that one feature silently skipped (see the
+    // corresponding falsy-count message below) rather than the wizard granting it anyway.
+    $canCreateEntity = Session::haveRight('entity', CREATE);
+    $canUpdateEntity = Session::haveRight('entity', UPDATE);
+    $canManageLdapRules = Session::haveRight('rule_ldap', UPDATE);
+    $canUpdateCoreConfig = Session::haveRight('config', UPDATE);
+
     $config = Config::getConfig();
     $config->update($_POST + ['id' => $config->getID()]);
 
-    $created = (new EntityBuilder())->build($config);
+    $created = $canCreateEntity ? (new EntityBuilder())->build($config) : [];
     $entityIds = EntityBuilder::topEntityIds($created) ?: [0];
+    // Never write branding/address data to an entity outside the operator's own accessible
+    // scope, even one this same request just legitimately created.
+    $entityIds = array_values(array_filter($entityIds, static fn (int $id): bool => Session::haveAccessToEntity($id)));
 
     // One pass over the top-level nodes (= MSP clients), pairing each EntityBuilder result with
     // its matching entity_tree node (same order/index) to check for a per-client calendar/SLA
@@ -567,8 +581,8 @@ if (isset($_POST['finish'])) {
     $statesCreated = (new StateBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
     $ruleRightBuilder = new RuleRightBuilder();
-    $ldapRulesCreated = $ruleRightBuilder->build($config);
-    $ldapFunctionRulesCreated = $ruleRightBuilder->buildFunctionRights($config->getLdapFunctionRights());
+    $ldapRulesCreated = $canManageLdapRules ? $ruleRightBuilder->build($config) : 0;
+    $ldapFunctionRulesCreated = $canManageLdapRules ? $ruleRightBuilder->buildFunctionRights($config->getLdapFunctionRights()) : 0;
     $taskCategoriesCreated = (new TaskCategoryBuilder())->build($config);
     // Runs after TaskCategoryBuilder: resolves task categories by name lookup.
     $taskTemplatesCreated = (new TaskTemplateBuilder())->build($config);
@@ -619,13 +633,13 @@ if (isset($_POST['finish'])) {
     // Reuses $locationDataByPath (same physical address, no reason to type it twice) plus its own
     // phonenumber/fax/website/email fields, with no Location equivalent.
     $entityCommsByPath = !empty($config->fields['entity_native_address_enabled']) ? collectEntityCommsFromPost() : [];
-    $entityAddressesApplied = (new EntityAddressBuilder())->build($config, $locationDataByPath, $entityCommsByPath);
+    $entityAddressesApplied = $canUpdateEntity ? (new EntityAddressBuilder())->build($config, $locationDataByPath, $entityCommsByPath) : 0;
     $userCategoriesCreated = (new UserCategoryBuilder())->build($config);
     $fieldUnicityRulesCreated = (new FieldUnicityBuilder())->build($config);
     $rssFeedsCreated = (new RSSFeedBuilder())->build($config);
     // Never stored in $config (our own table has no field-level encryption) — read straight from
     // POST, forwarded directly to GLPI core's own encrypted config store.
-    $marketplaceRegistrationSaved = (new MarketplaceBuilder())->build((string) ($_POST['glpi_network_registration_key'] ?? ''));
+    $marketplaceRegistrationSaved = $canUpdateCoreConfig ? (new MarketplaceBuilder())->build((string) ($_POST['glpi_network_registration_key'] ?? '')) : 0;
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $lineOperatorsCreated = (new LineOperatorBuilder())->build($config);
@@ -652,65 +666,74 @@ if (isset($_POST['finish'])) {
     // added outside MSP mode: an MSP's unauthenticated login page has no single "the" client color
     // to show, leaking one client's branding there would be wrong, not just incomplete.
     $colorEntityIds = $entityIds;
-    if ($config->fields['entity_mode'] !== Config::MODE_MULTI_MSP && !in_array(0, $colorEntityIds, true)) {
+    if ($config->fields['entity_mode'] !== Config::MODE_MULTI_MSP && !in_array(0, $colorEntityIds, true) && Session::haveAccessToEntity(0)) {
         $colorEntityIds[] = 0;
     }
 
     $brandingBuilder = new BrandingBuilder();
     $perClientColorsCreated = 0;
-    // Per-client color only makes sense once there's more than one top-level entity to actually
-    // differentiate ($entityIds === [0] in mono-entité/empty-tree, same guard EntityLogos already
-    // relies on implicitly through its own per-node panel loop). The root entity (login-page
-    // fallback, added to $colorEntityIds above outside MSP mode) is deliberately never part of
-    // $entityIds itself, so it keeps the *shared* color below regardless of this toggle — an
-    // unauthenticated login page has no single "the" client color to show any more than it did
-    // before this feature existed.
-    if (!empty($config->fields['branding_per_client_enabled']) && $entityIds !== [0]) {
-        $entityIdToColor = [];
-        foreach ($entityIds as $i => $entityId) {
-            $color = (string) ($_POST['entity_color_' . $i] ?? '');
-            if (preg_match('/^#[0-9a-fA-F]{6}$/', $color)) {
-                $entityIdToColor[$entityId] = $color;
+    $brandingApplied = false;
+    // Writes glpi_entities.custom_css_code/mailing_signature — native GLPI 'entity' UPDATE right,
+    // not just this plugin's own, gates all of it (see the $canUpdateEntity comment above).
+    if ($canUpdateEntity) {
+        // Per-client color only makes sense once there's more than one top-level entity to actually
+        // differentiate ($entityIds === [0] in mono-entité/empty-tree, same guard EntityLogos already
+        // relies on implicitly through its own per-node panel loop). The root entity (login-page
+        // fallback, added to $colorEntityIds above outside MSP mode) is deliberately never part of
+        // $entityIds itself, so it keeps the *shared* color below regardless of this toggle — an
+        // unauthenticated login page has no single "the" client color to show any more than it did
+        // before this feature existed.
+        if (!empty($config->fields['branding_per_client_enabled']) && $entityIds !== [0]) {
+            $entityIdToColor = [];
+            foreach ($entityIds as $i => $entityId) {
+                $color = (string) ($_POST['entity_color_' . $i] ?? '');
+                if (preg_match('/^#[0-9a-fA-F]{6}$/', $color)) {
+                    $entityIdToColor[$entityId] = $color;
+                }
             }
-        }
-        $perClientColorsCreated = $brandingBuilder->applyPerClientColors($entityIdToColor);
+            $perClientColorsCreated = $brandingBuilder->applyPerClientColors($entityIdToColor);
 
-        $sharedOnlyIds = array_diff($colorEntityIds, $entityIds);
-        $brandingApplied = $sharedOnlyIds !== [] && $brandingBuilder->apply($config, $sharedOnlyIds);
-    } else {
-        $brandingApplied = $brandingBuilder->apply($config, $colorEntityIds);
+            $sharedOnlyIds = array_diff($colorEntityIds, $entityIds);
+            $brandingApplied = $sharedOnlyIds !== [] && $brandingBuilder->apply($config, $sharedOnlyIds);
+        } else {
+            $brandingApplied = $brandingBuilder->apply($config, $colorEntityIds);
+        }
     }
 
     $logosCreated = 0;
     $entityIdToLogoDataUri = [];
-    if (!empty($config->fields['entity_logos_enabled'])) {
-        foreach ($entityIds as $i => $entityId) {
-            $dataUri = buildEntityLogoDataUri((array) ($_FILES['entity_logo_' . $i] ?? []));
-            if ($dataUri !== null) {
-                $entityIdToLogoDataUri[$entityId] = $dataUri;
+    if ($canUpdateEntity) {
+        if (!empty($config->fields['entity_logos_enabled'])) {
+            foreach ($entityIds as $i => $entityId) {
+                $dataUri = buildEntityLogoDataUri((array) ($_FILES['entity_logo_' . $i] ?? []));
+                if ($dataUri !== null) {
+                    $entityIdToLogoDataUri[$entityId] = $dataUri;
+                }
             }
+            $logosCreated = $brandingBuilder->applyLogos($entityIdToLogoDataUri);
+        } else {
+            // Active undo, same bug class as BrandingBuilder::apply()'s own fix: unchecking "Ajouter un
+            // logo par entité" must remove a logo block a previous run already wrote, not just stop
+            // re-writing it.
+            $brandingBuilder->removeLogos($entityIds);
         }
-        $logosCreated = $brandingBuilder->applyLogos($entityIdToLogoDataUri);
-    } else {
-        // Active undo, same bug class as BrandingBuilder::apply()'s own fix: unchecking "Ajouter un
-        // logo par entité" must remove a logo block a previous run already wrote, not just stop
-        // re-writing it.
-        $brandingBuilder->removeLogos($entityIds);
     }
 
     // Reuses whatever color/logo were already collected above for the UI — root entity's own logo
     // if one was uploaded (matches the login-page fallback logic just above), the shared primary
     // color (not a per-client one: GLPI notification templates aren't entity-scoped the way
     // custom_css_code is, one shared set of branded templates for the whole instance).
-    $notificationBrandingCreated = (new NotificationBrandingBuilder())->apply(
+    // Rewrites 23 native ticket notification templates instance-wide and writes GLPI core config
+    // (palette/general settings) — native 'config' UPDATE right, not just this plugin's own.
+    $notificationBrandingCreated = $canUpdateCoreConfig ? (new NotificationBrandingBuilder())->apply(
         $config,
         (string) ($config->fields['branding_primary_color'] ?? '#206bc4'),
         $entityIdToLogoDataUri[0] ?? null,
-    );
+    ) : 0;
 
-    $paletteApplied = (new PaletteBuilder())->apply($config);
+    $paletteApplied = $canUpdateCoreConfig && (new PaletteBuilder())->apply($config);
 
-    $generalSettingsApplied = (new GeneralSettingsBuilder())->apply($config);
+    $generalSettingsApplied = $canUpdateCoreConfig && (new GeneralSettingsBuilder())->apply($config);
     $ticketTemplatesApplied = (new TicketTemplateBuilder())->apply($config);
     $helpdeskFormApplied = (new HelpdeskFormBuilder())->apply($config);
     $changeProblemTemplatesApplied = (new ChangeProblemTemplateBuilder())->apply($config);
@@ -954,6 +977,12 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'modes'            => Config::getModes(),
     'max_levels'       => Config::MAX_LEVELS,
     'entity_tree'      => $config->getEntityTree(),
+    // Sanitizing accessors, not the raw $config->fields row above — these two are rendered |raw
+    // (as bare JS array/object literals) further down, so they must never carry an unvalidated
+    // value (see Config::getCalendarDays()/getCalendarDayHours(), which re-decode and re-validate
+    // on every read regardless of what's actually stored).
+    'calendar_days'    => $config->getCalendarDays(),
+    'calendar_day_hours' => $config->getCalendarDayHours(),
     'ldap_function_rights' => $config->getLdapFunctionRights(),
     'sla_tiers'        => $config->getSlaTiers(),
     'ola_tiers'        => $config->getOlaTiers(),
@@ -996,8 +1025,12 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'faq_articles_preview' => FaqBuilder::getArticlesPreview(),
     'marketplace_recommended_plugins' => MarketplaceBuilder::getRecommendedPluginsPreview(),
     // Read straight from GLPI core's own encrypted store, matching the native "Enregistrement"
-    // page's own behavior — never mirrored into this plugin's own config table (see MarketplaceBuilder).
-    'glpi_network_registration_key' => \GLPINetwork::getRegistrationKey(),
+    // page's own behavior — never mirrored into this plugin's own config table (see
+    // MarketplaceBuilder). Only ever decrypted for an operator who actually holds the native
+    // 'config' UPDATE right (same right the native page itself requires) — a holder of just this
+    // plugin's own READ right otherwise gets an empty field; leaving it blank on submit is a
+    // no-op for MarketplaceBuilder::build(), never wipes an existing key.
+    'glpi_network_registration_key' => Session::haveRight('config', UPDATE) ? \GLPINetwork::getRegistrationKey() : '',
     'satisfaction_plugin_active' => SatisfactionSurveyBuilder::isThirdPartyPluginActive(),
     'vip_plugin_active' => VipBuilder::isThirdPartyPluginActive(),
     'tag_plugin_active' => TagBuilder::isThirdPartyPluginActive(),

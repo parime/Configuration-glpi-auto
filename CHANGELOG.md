@@ -9,8 +9,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **Contournement d'autorisation : les opérations privilégiées du wizard n'étaient gardées que par
+  le droit propre du plugin** (`plugin_configurationglpiauto_config`), un droit explicitement
+  délégable à un profil non-super-admin (voir `Profile.php`). Un opérateur délégué pouvait ainsi
+  créer une règle `RuleRight` assignant le profil "Super-Admin" à tout utilisateur importé par LDAP
+  correspondant à un groupe qu'il possède lui-même (escalade de privilège complète à la prochaine
+  synchronisation), créer des entités hors de son propre périmètre, ou modifier la configuration
+  cœur de GLPI (palette, réglages généraux, clé d'enregistrement GLPI Network, modèles de
+  notification) — sans détenir les droits natifs correspondants (`rule_ldap`, `entity`, `config`).
+  `front/wizard.php` vérifie désormais le droit natif GLPI adapté à chaque action avant d'invoquer
+  le bâtisseur correspondant (les fonctionnalités concernées sont silencieusement ignorées plutôt
+  que de faire échouer tout l'assistant), les entités écrites sont filtrées par
+  `Session::haveAccessToEntity()`, et `Config::prepareInput()` refuse désormais d'assigner le profil
+  "Super-Admin" via le mapping LDAP à un opérateur qui ne le détient pas lui-même.
+- **XSS stocké : `calendar_days`/`calendar_day_hours` contournaient la sanitization et étaient
+  émis `|raw` dans un bloc `<script>`.** `Config::prepareInput()` normalisait par nom de *champ de
+  formulaire* (`calendar_day`, singulier) alors que `CommonDBTM::update()` écrit par nom de
+  *colonne* — une requête nommant directement la colonne (`calendar_days`) atteignait la base non
+  sanitizée, puis le template. Même défaut structurel corrigé sur `entity_tree` (jamais un point
+  d'injection, mais contournait le plafond de profondeur) et, en profondeur, sur `sla_tiers`/
+  `ola_tiers`. Le template utilise désormais les accesseurs sanitizants (`getCalendarDays()`/
+  `getCalendarDayHours()`) rendus via `|json_encode`, plus jamais la ligne brute en base.
+- **Clé d'enregistrement GLPI Network déchiffrée pour tout détenteur du droit lecture du plugin.**
+  `front/wizard.php` ne la pré-remplit désormais que si l'opérateur détient le droit natif
+  `config` UPDATE (le même que l'écran natif exige) ; laisser le champ vide au moment de valider ne
+  supprime jamais une clé déjà enregistrée.
+- **Durcissement SSRF du proxy de géocodage** (`ajax/geocode.php`) : l'hôte de l'endpoint configuré
+  est désormais résolu et rejeté s'il pointe vers une adresse privée/loopback/link-local, et les
+  redirections HTTP ne sont plus suivies — empêchait un détenteur du seul droit UPDATE du plugin de
+  transformer ce proxy en SSRF semi-aveugle vers le réseau interne du serveur.
+- Le DDL brut d'installation (`src/Install/Installer.php`) n'utilise plus `die($DB->error())` — une
+  erreur de création de table est désormais journalisée et l'installation échoue proprement.
+- `Installer::uninstall()` supprime désormais le thème personnalisé (`cga_custom.scss`) et
+  réinitialise `core.palette` s'il était encore la palette active — auparavant seul un nouveau run
+  du wizard avec la palette décochée faisait ce ménage, jamais une désinstallation directe.
+- L'appel GitHub de vérification de version (`Config::getLatestGithubVersion()`) porte désormais un
+  timeout total (`CURLOPT_TIMEOUT`), pas seulement un timeout de connexion — un hôte acceptant la
+  connexion sans jamais répondre ne bloque plus indéfiniment le rendu de la page de l'assistant.
+- **`FuelType::$rightname` pointait vers le droit natif GLPI `'config'`**, dont
+  `\Config::getRights()` retire CREATE/DELETE/PURGE — "Ajouter"/"Purger" sur cet écran étaient donc
+  impossibles pour tout le monde, super-admin inclus. Corrigé vers le droit propre du plugin
+  (`Profile::RIGHT_CONFIG`), l'exact motif pour lequel ce droit dédié existe déjà.
+- Suppression de `BrandingBuilder::applyMailingSignatures()`, code mort sans appelant ni test
+  depuis son introduction.
+
 ### Added
 
+- Tests de régression pour chacun des correctifs de sécurité ci-dessus : contournement de
+  `prepareInput()` par nom de colonne (`calendar_days`/`calendar_day_hours`/`entity_tree`/
+  `sla_tiers`/`ola_tiers`), restriction du profil "Super-Admin" dans le mapping LDAP (via un vrai
+  utilisateur non-super-admin impersonné le temps du test), et le droit natif de `FuelType`
+  (`can(CREATE)`/`can(PURGE)` exercés réellement, pas seulement lus). `calendar_begin`/
+  `calendar_end` sont désormais aussi normalisés par `sanitizeTimeString()`, comme les champs
+  `calendar_lunch_begin`/`_end` l'étaient déjà.
 - Tests d'intégration réels pour `Config` et `Install\Installer` — les deux dernières classes du
   plugin sans aucune couverture, complétant la campagne "aucune classe sans test". `Config` couvre
   `prepareInputForAdd()`/`prepareInputForUpdate()` (toute la sanitization d'entrée : arbre d'entités
