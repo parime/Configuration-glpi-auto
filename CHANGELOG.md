@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Documentation
+
+- Clarifie dans `ROADMAP.md` que la numérotation de version 1.1 à 2.0 est le schéma spéculatif
+  d'origine, sans rapport avec la vraie numérotation SemVer (déjà à la v1.3.2) — même note
+  corrective que celle déjà présente sur la section "Version 1.0".
+
 ## [1.3.2] - 2026-09-12
 
 ### Security
