@@ -1229,6 +1229,13 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 
 ---
 
+> **Note (2026-09-12)** : les numéros de version ci-dessous (1.1 à 2.0) et les dates "prévues" sont
+> le schéma de numérotation spéculatif d'origine, écrit avant le Sprint 1 — comme pour la section
+> "Version 1.0" ci-dessus, ils n'ont plus aucun rapport avec la numérotation SemVer réelle du
+> plugin, qui a depuis dépassé la v1.3 (voir [CHANGELOG.md](CHANGELOG.md), 75+ versions publiées).
+> Les issues GitHub correspondantes (#112 à #131) sont donc des idées de backlog long terme, pas
+> des travaux planifiés pour une prochaine version réelle proche.
+
 ### 🚀 Version 1.1 - **En Développement**
 
 **Prévue** : Q4 2026
