@@ -1324,10 +1324,12 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 **Prévue** : 2028
 
 **Fonctionnalités expertes** :
-- 📋 **Assistant ISO27001 complet**
-  - Audit de conformité automatique
-  - Génération de documentation
-  - Recommandations de sécurité
+- ~~📋 **Assistant ISO27001 complet**~~ — **abandonné, doublon** (issue #123 fermée le 2026-09-13) :
+  couvert de façon bien plus complète par le plugin dédié
+  [glpi-iso27001-management](https://github.com/parime/glpi-iso27001-management) (GRC Manager,
+  déjà en v2.1.0) — audits internes/CAPA (audit de conformité), politiques de sécurité et
+  Déclaration d'Applicabilité (génération de documentation), plans de traitement des risques
+  (recommandations de sécurité).
 
 - 🎯 **Guide ITIL complet**
   - Implémentation des bonnes pratiques
