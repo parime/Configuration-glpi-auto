@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Clarifie dans `ROADMAP.md` que la numérotation de version 1.1 à 2.0 est le schéma spéculatif
   d'origine, sans rapport avec la vraie numérotation SemVer (déjà à la v1.3.2) — même note
   corrective que celle déjà présente sur la section "Version 1.0".
+- Marque "Assistant ISO27001 complet" (Version 1.4, issue #123) comme abandonné dans
+  `ROADMAP.md` : doublon fonctionnel avec le plugin dédié `glpi-iso27001-management` (GRC
+  Manager), qui couvre déjà l'audit de conformité, la génération de documentation et les
+  recommandations de sécurité de façon bien plus complète.
 
 ## [1.3.2] - 2026-09-12
 
