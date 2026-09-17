@@ -1241,11 +1241,17 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 **Prévue** : Q4 2026
 
 **Nouvelles fonctionnalités** :
-- 🎯 **Mode Audit avancé**
-  - Analyse complète de l'instance existante
-  - Détection automatique des problèmes de configuration
-  - Recommandations intelligentes
-  - Correction automatique proposée
+- ✅ **Mode Audit avancé (issue #112) — livré**, périmètre v1 volontairement réduit à un noyau
+  extensible plutôt qu'une couverture exhaustive des 101 `*Builder` existants : nouveau registre
+  `AuditService`/`AuditCheckInterface` (`src/Audit/`) parcourant des vérifications indépendantes de
+  ce plugin (lisent l'état réel de GLPI, pas seulement sa propre table `Config` — l'audit
+  fonctionne sur n'importe quelle instance), 6 vérifications livrées (notifications désactivées,
+  entités sans adresse, adresse email d'administration restée au défaut d'usine, aucun statut/
+  calendrier/SLA configuré), nouvel écran `front/audit.php` (bouton "Lancer l'audit" depuis l'écran
+  principal). "Correction automatique proposée" pris au sens strict : un correctif ne s'applique
+  jamais sans un clic explicite, et seule la vérification "notifications désactivées" en propose un
+  réellement — un état non ambigu (activées/désactivées), contrairement à une adresse ou un SLA
+  dont la bonne valeur dépend de l'organisation et que ce plugin ne devine jamais à sa place.
 
 - 📦 **Système de Blueprints**
   - Export complet de la configuration

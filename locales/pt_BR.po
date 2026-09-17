@@ -2849,3 +2849,89 @@ msgstr "Foto ou comprovante documental"
 #: src/VehicleIncidentFormBuilder.php
 msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
 msgstr "Em que medida o veículo está imobilizado ou inutilizável?"
+
+msgid "Analyse de l'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré."
+msgstr "Análise do estado atual da sua instância GLPI — independente do que este assistente configurou."
+
+msgid "Aucun problème détecté par cet audit."
+msgstr "Nenhum problema detectado por esta auditoria."
+
+msgid "Corriger"
+msgstr "Corrigir"
+
+msgid "Lancer l'audit"
+msgstr "Executar a auditoria"
+
+#, php-format
+msgid "%d autres services du catalogue enrichis avec des questions ciblées et un titre de ticket calculé automatiquement."
+msgstr "%d outros serviços do catálogo enriquecidos com perguntas direcionadas e um título de chamado calculado automaticamente."
+
+msgid "Correction appliquée."
+msgstr "Correção aplicada."
+
+msgid "Audit de configuration"
+msgstr "Auditoria de configuração"
+
+#, php-format
+msgid "%d entité sans adresse renseignée"
+msgid_plural "%d entités sans adresse renseignée"
+msgstr[0] "%d entidade sem endereço cadastrado"
+msgstr[1] "%d entidades sem endereço cadastrado"
+
+msgid "Renseignez l'adresse de chaque entité concernée, utile pour les documents générés et la conformité."
+msgstr "Preencha o endereço de cada entidade afetada, útil para os documentos gerados e a conformidade."
+
+msgid "Aucun SLA n'est configuré"
+msgstr "Nenhum SLA está configurado"
+
+msgid "Aucun engagement de délai (temps de résolution, escalade...) n'est suivi sur les tickets."
+msgstr "Nenhum compromisso de prazo (tempo de resolução, escalonamento...) é acompanhado nos chamados."
+
+msgid "Définissez au moins un SLA via l'assistant de configuration si des engagements de délai s'appliquent."
+msgstr "Defina pelo menos um SLA através do assistente de configuração se houver compromissos de prazo aplicáveis."
+
+msgid "Configuration générale"
+msgstr "Configuração geral"
+
+msgid "Adresse email d'administration non configurée"
+msgstr "Endereço de e-mail de administração não configurado"
+
+msgid "Aucune adresse email d'administration n'est renseignée."
+msgstr "Nenhum endereço de e-mail de administração foi informado."
+
+#, php-format
+msgid "L'adresse email d'administration est toujours celle par défaut (%s)."
+msgstr "O endereço de e-mail de administração ainda é o padrão (%s)."
+
+msgid "Renseignez une véritable adresse email d'administration dans la configuration générale de GLPI."
+msgstr "Configure um endereço de e-mail de administração real na configuração geral do GLPI."
+
+msgid "Calendriers"
+msgstr "Calendários"
+
+msgid "Aucun calendrier n'est configuré"
+msgstr "Nenhum calendário está configurado"
+
+msgid "Les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées sans calendrier."
+msgstr "Os prazos de SLA/OLA (horário comercial) não podem ser calculados sem um calendário."
+
+msgid "Créez au moins un calendrier via l'assistant de configuration ou manuellement."
+msgstr "Crie pelo menos um calendário através do assistente de configuração ou manualmente."
+
+msgid "Les notifications sont désactivées"
+msgstr "As notificações estão desativadas"
+
+msgid "Aucune notification (nouveau ticket, réponse, rappel...) n'est envoyée par GLPI."
+msgstr "Nenhuma notificação (novo chamado, resposta, lembrete...) é enviada pelo GLPI."
+
+msgid "Activez les notifications dans la configuration générale de GLPI."
+msgstr "Ative as notificações na configuração geral do GLPI."
+
+msgid "Aucun statut d'élément n'est défini"
+msgstr "Nenhum status de item está definido"
+
+msgid "Le parc ne peut pas exprimer \"en stock\", \"attribué\", \"en panne\"... sans au moins un statut."
+msgstr "O parque não pode expressar \"em estoque\", \"atribuído\", \"com defeito\"... sem pelo menos um status."
+
+msgid "Utilisez l'assistant de configuration (étape Statuts) ou créez-en manuellement."
+msgstr "Use o assistente de configuração (etapa Status) ou crie-os manualmente."

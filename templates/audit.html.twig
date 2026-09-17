@@ -1,0 +1,60 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #112 ("Mode Audit avancé") : analyse l'état réel de l'instance GLPI (pas seulement la
+   configuration de ce plugin) et affiche les constats groupés par gravité, avec une correction
+   d'un clic uniquement pour les constats dont le "bon" état n'est pas ambigu (voir
+   NotificationsDisabledCheck) — les autres n'affichent qu'une recommandation, jamais une valeur
+   inventée à la place de l'administrateur. #}
+
+<div class="card">
+  <div class="card-body">
+    <p class="text-muted">
+      {{ __('Analyse de l\'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré.', 'configurationglpiauto') }}
+    </p>
+
+    {% if findings is empty %}
+      <div class="alert alert-success">
+        <i class="ti ti-circle-check me-1"></i>
+        {{ __('Aucun problème détecté par cet audit.', 'configurationglpiauto') }}
+      </div>
+    {% else %}
+      {% for finding in findings %}
+        {% set severityClass = {
+          'critical': 'alert-danger',
+          'warning': 'alert-warning',
+          'info': 'alert-info'
+        }[finding.severity]|default('alert-info') %}
+        <div class="alert {{ severityClass }} d-flex justify-content-between align-items-start gap-3">
+          <div>
+            <div class="text-muted small">{{ finding.domain }}</div>
+            <strong>{{ finding.title }}</strong>
+            <p class="mb-1">{{ finding.description }}</p>
+            <p class="mb-0 small">{{ finding.recommendation }}</p>
+          </div>
+          {% if finding.fixable and can_fix %}
+            <form method="post" action="{{ config('root_doc') }}/plugins/configurationglpiauto/front/audit.php" class="flex-shrink-0">
+              <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+              <input type="hidden" name="fix" value="{{ finding.checkKey }}">
+              <button type="submit" class="btn btn-sm btn-primary">
+                <i class="ti ti-tool me-1"></i>{{ __('Corriger', 'configurationglpiauto') }}
+              </button>
+            </form>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>

@@ -2825,3 +2825,89 @@ msgstr "Photo ou preuve documentaire"
 #: src/VehicleIncidentFormBuilder.php
 msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
 msgstr "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
+
+msgid "Analyse de l'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré."
+msgstr "Analyse de l'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré."
+
+msgid "Aucun problème détecté par cet audit."
+msgstr "Aucun problème détecté par cet audit."
+
+msgid "Corriger"
+msgstr "Corriger"
+
+msgid "Lancer l'audit"
+msgstr "Lancer l'audit"
+
+#, php-format
+msgid "%d autres services du catalogue enrichis avec des questions ciblées et un titre de ticket calculé automatiquement."
+msgstr "%d autres services du catalogue enrichis avec des questions ciblées et un titre de ticket calculé automatiquement."
+
+msgid "Correction appliquée."
+msgstr "Correction appliquée."
+
+msgid "Audit de configuration"
+msgstr "Audit de configuration"
+
+#, php-format
+msgid "%d entité sans adresse renseignée"
+msgid_plural "%d entités sans adresse renseignée"
+msgstr[0] "%d entité sans adresse renseignée"
+msgstr[1] "%d entités sans adresse renseignée"
+
+msgid "Renseignez l'adresse de chaque entité concernée, utile pour les documents générés et la conformité."
+msgstr "Renseignez l'adresse de chaque entité concernée, utile pour les documents générés et la conformité."
+
+msgid "Aucun SLA n'est configuré"
+msgstr "Aucun SLA n'est configuré"
+
+msgid "Aucun engagement de délai (temps de résolution, escalade...) n'est suivi sur les tickets."
+msgstr "Aucun engagement de délai (temps de résolution, escalade...) n'est suivi sur les tickets."
+
+msgid "Définissez au moins un SLA via l'assistant de configuration si des engagements de délai s'appliquent."
+msgstr "Définissez au moins un SLA via l'assistant de configuration si des engagements de délai s'appliquent."
+
+msgid "Configuration générale"
+msgstr "Configuration générale"
+
+msgid "Adresse email d'administration non configurée"
+msgstr "Adresse email d'administration non configurée"
+
+msgid "Aucune adresse email d'administration n'est renseignée."
+msgstr "Aucune adresse email d'administration n'est renseignée."
+
+#, php-format
+msgid "L'adresse email d'administration est toujours celle par défaut (%s)."
+msgstr "L'adresse email d'administration est toujours celle par défaut (%s)."
+
+msgid "Renseignez une véritable adresse email d'administration dans la configuration générale de GLPI."
+msgstr "Renseignez une véritable adresse email d'administration dans la configuration générale de GLPI."
+
+msgid "Calendriers"
+msgstr "Calendriers"
+
+msgid "Aucun calendrier n'est configuré"
+msgstr "Aucun calendrier n'est configuré"
+
+msgid "Les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées sans calendrier."
+msgstr "Les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées sans calendrier."
+
+msgid "Créez au moins un calendrier via l'assistant de configuration ou manuellement."
+msgstr "Créez au moins un calendrier via l'assistant de configuration ou manuellement."
+
+msgid "Les notifications sont désactivées"
+msgstr "Les notifications sont désactivées"
+
+msgid "Aucune notification (nouveau ticket, réponse, rappel...) n'est envoyée par GLPI."
+msgstr "Aucune notification (nouveau ticket, réponse, rappel...) n'est envoyée par GLPI."
+
+msgid "Activez les notifications dans la configuration générale de GLPI."
+msgstr "Activez les notifications dans la configuration générale de GLPI."
+
+msgid "Aucun statut d'élément n'est défini"
+msgstr "Aucun statut d'élément n'est défini"
+
+msgid "Le parc ne peut pas exprimer \"en stock\", \"attribué\", \"en panne\"... sans au moins un statut."
+msgstr "Le parc ne peut pas exprimer \"en stock\", \"attribué\", \"en panne\"... sans au moins un statut."
+
+msgid "Utilisez l'assistant de configuration (étape Statuts) ou créez-en manuellement."
+msgstr "Utilisez l'assistant de configuration (étape Statuts) ou créez-en manuellement."

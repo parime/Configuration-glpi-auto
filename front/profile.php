@@ -27,6 +27,11 @@ echo "<div class='mb-3 d-flex gap-2'>";
 echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/wizard.php') . "'>";
 echo "<i class='ti ti-wand'></i> " . __('Lancer l\'assistant de configuration', 'configurationglpiauto');
 echo "</a>";
+// Issue #112 ("Mode Audit avancé") : même emplacement/style que le bouton assistant ci-dessus,
+// pas de nouvelle entrée de menu séparée.
+echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/audit.php') . "'>";
+echo "<i class='ti ti-stethoscope'></i> " . __('Lancer l\'audit', 'configurationglpiauto');
+echo "</a>";
 if (ConfigurationProfile::canCreate()) {
     echo "<a class='btn btn-primary' href='" . htmlspecialchars(ConfigurationProfile::getFormURL()) . "'>";
     echo "<i class='ti ti-plus'></i> " . __('Ajouter');

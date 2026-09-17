@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Mode Audit avancé (issue #112)** : nouvel écran "Lancer l'audit" analysant l'état réel de
+  l'instance GLPI (pas seulement ce que ce plugin a lui-même configuré) — 6 vérifications
+  (notifications désactivées, entités sans adresse, adresse email d'administration restée au
+  défaut d'usine, aucun statut/calendrier/SLA configuré), chacune avec une recommandation claire,
+  et une correction en un clic pour la seule vérification dont le bon état n'est pas ambigu
+  (notifications). Noyau extensible (`AuditService`/`AuditCheckInterface`,
+  `src/Audit/`) : ajouter une future vérification ne demande qu'une nouvelle classe.
+
 ### Documentation
 
 - Clarifie dans `ROADMAP.md` que la numérotation de version 1.1 à 2.0 est le schéma spéculatif
