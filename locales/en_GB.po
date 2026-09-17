@@ -2777,3 +2777,89 @@ msgstr "Photo or supporting document"
 #: src/VehicleIncidentFormBuilder.php
 msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
 msgstr "To what extent is the vehicle immobilised or unusable?"
+
+msgid "Analyse de l'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré."
+msgstr "Analysis of your GLPI instance's current state — independent of what this wizard itself configured."
+
+msgid "Aucun problème détecté par cet audit."
+msgstr "No problem detected by this audit."
+
+msgid "Corriger"
+msgstr "Fix"
+
+msgid "Lancer l'audit"
+msgstr "Run the audit"
+
+#, php-format
+msgid "%d autres services du catalogue enrichis avec des questions ciblées et un titre de ticket calculé automatiquement."
+msgstr "%d other catalog services enriched with targeted questions and an automatically computed ticket title."
+
+msgid "Correction appliquée."
+msgstr "Fix applied."
+
+msgid "Audit de configuration"
+msgstr "Configuration audit"
+
+#, php-format
+msgid "%d entité sans adresse renseignée"
+msgid_plural "%d entités sans adresse renseignée"
+msgstr[0] "%d entity with no address on file"
+msgstr[1] "%d entities with no address on file"
+
+msgid "Renseignez l'adresse de chaque entité concernée, utile pour les documents générés et la conformité."
+msgstr "Fill in the address for each entity concerned — useful for generated documents and compliance."
+
+msgid "Aucun SLA n'est configuré"
+msgstr "No SLA is configured"
+
+msgid "Aucun engagement de délai (temps de résolution, escalade...) n'est suivi sur les tickets."
+msgstr "No time commitment (resolution time, escalation...) is tracked on tickets."
+
+msgid "Définissez au moins un SLA via l'assistant de configuration si des engagements de délai s'appliquent."
+msgstr "Define at least one SLA via the configuration wizard if time commitments apply."
+
+msgid "Configuration générale"
+msgstr "General configuration"
+
+msgid "Adresse email d'administration non configurée"
+msgstr "Administration email address not configured"
+
+msgid "Aucune adresse email d'administration n'est renseignée."
+msgstr "No administration email address is set."
+
+#, php-format
+msgid "L'adresse email d'administration est toujours celle par défaut (%s)."
+msgstr "The administration email address is still the default one (%s)."
+
+msgid "Renseignez une véritable adresse email d'administration dans la configuration générale de GLPI."
+msgstr "Set a real administration email address in GLPI's general configuration."
+
+msgid "Calendriers"
+msgstr "Calendars"
+
+msgid "Aucun calendrier n'est configuré"
+msgstr "No calendar is configured"
+
+msgid "Les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées sans calendrier."
+msgstr "SLA/OLA deadlines (business hours) cannot be calculated without a calendar."
+
+msgid "Créez au moins un calendrier via l'assistant de configuration ou manuellement."
+msgstr "Create at least one calendar via the configuration wizard or manually."
+
+msgid "Les notifications sont désactivées"
+msgstr "Notifications are disabled"
+
+msgid "Aucune notification (nouveau ticket, réponse, rappel...) n'est envoyée par GLPI."
+msgstr "No notification (new ticket, reply, reminder...) is sent by GLPI."
+
+msgid "Activez les notifications dans la configuration générale de GLPI."
+msgstr "Enable notifications in GLPI's general configuration."
+
+msgid "Aucun statut d'élément n'est défini"
+msgstr "No item status is defined"
+
+msgid "Le parc ne peut pas exprimer \"en stock\", \"attribué\", \"en panne\"... sans au moins un statut."
+msgstr "The asset base cannot express \"in stock\", \"assigned\", \"faulty\"... without at least one status."
+
+msgid "Utilisez l'assistant de configuration (étape Statuts) ou créez-en manuellement."
+msgstr "Use the configuration wizard (States step) or create some manually."

@@ -2830,3 +2830,89 @@ msgstr "Foto o justificante documental"
 #: src/VehicleIncidentFormBuilder.php
 msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
 msgstr "¿En qué medida el vehículo está inmovilizado o inutilizable?"
+
+msgid "Analyse de l'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré."
+msgstr "Análisis del estado actual de su instancia GLPI, independiente de lo que este asistente haya configurado."
+
+msgid "Aucun problème détecté par cet audit."
+msgstr "Esta auditoría no ha detectado ningún problema."
+
+msgid "Corriger"
+msgstr "Corregir"
+
+msgid "Lancer l'audit"
+msgstr "Ejecutar la auditoría"
+
+#, php-format
+msgid "%d autres services du catalogue enrichis avec des questions ciblées et un titre de ticket calculé automatiquement."
+msgstr "%d otros servicios del catálogo enriquecidos con preguntas específicas y un título de ticket calculado automáticamente."
+
+msgid "Correction appliquée."
+msgstr "Corrección aplicada."
+
+msgid "Audit de configuration"
+msgstr "Auditoría de configuración"
+
+#, php-format
+msgid "%d entité sans adresse renseignée"
+msgid_plural "%d entités sans adresse renseignée"
+msgstr[0] "%d entidad sin dirección registrada"
+msgstr[1] "%d entidades sin dirección registrada"
+
+msgid "Renseignez l'adresse de chaque entité concernée, utile pour les documents générés et la conformité."
+msgstr "Complete la dirección de cada entidad afectada, útil para los documentos generados y el cumplimiento normativo."
+
+msgid "Aucun SLA n'est configuré"
+msgstr "No hay ningún SLA configurado"
+
+msgid "Aucun engagement de délai (temps de résolution, escalade...) n'est suivi sur les tickets."
+msgstr "No se realiza ningún seguimiento de plazos (tiempo de resolución, escalado...) en los tickets."
+
+msgid "Définissez au moins un SLA via l'assistant de configuration si des engagements de délai s'appliquent."
+msgstr "Defina al menos un SLA a través del asistente de configuración si se aplican compromisos de plazo."
+
+msgid "Configuration générale"
+msgstr "Configuración general"
+
+msgid "Adresse email d'administration non configurée"
+msgstr "Dirección de correo de administración no configurada"
+
+msgid "Aucune adresse email d'administration n'est renseignée."
+msgstr "No se ha indicado ninguna dirección de correo de administración."
+
+#, php-format
+msgid "L'adresse email d'administration est toujours celle par défaut (%s)."
+msgstr "La dirección de correo de administración sigue siendo la predeterminada (%s)."
+
+msgid "Renseignez une véritable adresse email d'administration dans la configuration générale de GLPI."
+msgstr "Configure una dirección de correo de administración real en la configuración general de GLPI."
+
+msgid "Calendriers"
+msgstr "Calendarios"
+
+msgid "Aucun calendrier n'est configuré"
+msgstr "No hay ningún calendario configurado"
+
+msgid "Les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées sans calendrier."
+msgstr "Los plazos de SLA/OLA (horario laboral) no se pueden calcular sin un calendario."
+
+msgid "Créez au moins un calendrier via l'assistant de configuration ou manuellement."
+msgstr "Cree al menos un calendario a través del asistente de configuración o manualmente."
+
+msgid "Les notifications sont désactivées"
+msgstr "Las notificaciones están desactivadas"
+
+msgid "Aucune notification (nouveau ticket, réponse, rappel...) n'est envoyée par GLPI."
+msgstr "GLPI no envía ninguna notificación (nuevo ticket, respuesta, recordatorio...)."
+
+msgid "Activez les notifications dans la configuration générale de GLPI."
+msgstr "Active las notificaciones en la configuración general de GLPI."
+
+msgid "Aucun statut d'élément n'est défini"
+msgstr "No hay ningún estado de elemento definido"
+
+msgid "Le parc ne peut pas exprimer \"en stock\", \"attribué\", \"en panne\"... sans au moins un statut."
+msgstr "El parque no puede expresar \"en stock\", \"asignado\", \"averiado\"... sin al menos un estado."
+
+msgid "Utilisez l'assistant de configuration (étape Statuts) ou créez-en manuellement."
+msgstr "Utilice el asistente de configuración (paso Estados) o créelos manualmente."

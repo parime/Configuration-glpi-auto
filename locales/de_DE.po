@@ -2846,3 +2846,89 @@ msgstr "Foto oder Nachweisdokument"
 #: src/VehicleIncidentFormBuilder.php
 msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
 msgstr "In welchem Ausmaß ist das Fahrzeug immobilisiert oder unbrauchbar?"
+
+msgid "Analyse de l'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré."
+msgstr "Analyse des aktuellen Zustands Ihrer GLPI-Instanz — unabhängig davon, was dieser Assistent selbst konfiguriert hat."
+
+msgid "Aucun problème détecté par cet audit."
+msgstr "Von diesem Audit wurde kein Problem festgestellt."
+
+msgid "Corriger"
+msgstr "Korrigieren"
+
+msgid "Lancer l'audit"
+msgstr "Audit starten"
+
+#, php-format
+msgid "%d autres services du catalogue enrichis avec des questions ciblées et un titre de ticket calculé automatiquement."
+msgstr "%d weitere Katalogdienste mit gezielten Fragen und automatisch berechnetem Ticket-Titel angereichert."
+
+msgid "Correction appliquée."
+msgstr "Korrektur angewendet."
+
+msgid "Audit de configuration"
+msgstr "Konfigurationsaudit"
+
+#, php-format
+msgid "%d entité sans adresse renseignée"
+msgid_plural "%d entités sans adresse renseignée"
+msgstr[0] "%d Entität ohne hinterlegte Adresse"
+msgstr[1] "%d Entitäten ohne hinterlegte Adresse"
+
+msgid "Renseignez l'adresse de chaque entité concernée, utile pour les documents générés et la conformité."
+msgstr "Tragen Sie die Adresse jeder betroffenen Entität ein — nützlich für generierte Dokumente und die Compliance."
+
+msgid "Aucun SLA n'est configuré"
+msgstr "Es ist kein SLA konfiguriert"
+
+msgid "Aucun engagement de délai (temps de résolution, escalade...) n'est suivi sur les tickets."
+msgstr "Auf Tickets wird keine Fristzusage (Lösungszeit, Eskalation...) verfolgt."
+
+msgid "Définissez au moins un SLA via l'assistant de configuration si des engagements de délai s'appliquent."
+msgstr "Definieren Sie über den Konfigurationsassistenten mindestens ein SLA, falls Fristzusagen gelten."
+
+msgid "Configuration générale"
+msgstr "Allgemeine Konfiguration"
+
+msgid "Adresse email d'administration non configurée"
+msgstr "Administrations-E-Mail-Adresse nicht konfiguriert"
+
+msgid "Aucune adresse email d'administration n'est renseignée."
+msgstr "Es ist keine Administrations-E-Mail-Adresse hinterlegt."
+
+#, php-format
+msgid "L'adresse email d'administration est toujours celle par défaut (%s)."
+msgstr "Die Administrations-E-Mail-Adresse ist noch die Standardadresse (%s)."
+
+msgid "Renseignez une véritable adresse email d'administration dans la configuration générale de GLPI."
+msgstr "Hinterlegen Sie eine echte Administrations-E-Mail-Adresse in der allgemeinen GLPI-Konfiguration."
+
+msgid "Calendriers"
+msgstr "Kalender"
+
+msgid "Aucun calendrier n'est configuré"
+msgstr "Es ist kein Kalender konfiguriert"
+
+msgid "Les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées sans calendrier."
+msgstr "SLA-/OLA-Fristen (Geschäftszeiten) können ohne Kalender nicht berechnet werden."
+
+msgid "Créez au moins un calendrier via l'assistant de configuration ou manuellement."
+msgstr "Erstellen Sie über den Konfigurationsassistenten oder manuell mindestens einen Kalender."
+
+msgid "Les notifications sont désactivées"
+msgstr "Benachrichtigungen sind deaktiviert"
+
+msgid "Aucune notification (nouveau ticket, réponse, rappel...) n'est envoyée par GLPI."
+msgstr "GLPI sendet keine Benachrichtigung (neues Ticket, Antwort, Erinnerung...)."
+
+msgid "Activez les notifications dans la configuration générale de GLPI."
+msgstr "Aktivieren Sie die Benachrichtigungen in der allgemeinen GLPI-Konfiguration."
+
+msgid "Aucun statut d'élément n'est défini"
+msgstr "Es ist kein Elementstatus definiert"
+
+msgid "Le parc ne peut pas exprimer \"en stock\", \"attribué\", \"en panne\"... sans au moins un statut."
+msgstr "Der Bestand kann ohne mindestens einen Status nicht \"auf Lager\", \"zugewiesen\", \"defekt\"... ausdrücken."
+
+msgid "Utilisez l'assistant de configuration (étape Statuts) ou créez-en manuellement."
+msgstr "Verwenden Sie den Konfigurationsassistenten (Schritt Status) oder erstellen Sie welche manuell."

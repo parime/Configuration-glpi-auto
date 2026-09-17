@@ -2834,3 +2834,89 @@ msgstr "Foto o prova documentale"
 #: src/VehicleIncidentFormBuilder.php
 msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
 msgstr "In che misura il veicolo è immobilizzato o inutilizzabile?"
+
+msgid "Analyse de l'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré."
+msgstr "Analisi dello stato attuale della vostra istanza GLPI, indipendente da ciò che questa procedura guidata ha configurato."
+
+msgid "Aucun problème détecté par cet audit."
+msgstr "Nessun problema rilevato da questo audit."
+
+msgid "Corriger"
+msgstr "Correggi"
+
+msgid "Lancer l'audit"
+msgstr "Avvia l'audit"
+
+#, php-format
+msgid "%d autres services du catalogue enrichis avec des questions ciblées et un titre de ticket calculé automatiquement."
+msgstr "%d altri servizi del catalogo arricchiti con domande mirate e un titolo del ticket calcolato automaticamente."
+
+msgid "Correction appliquée."
+msgstr "Correzione applicata."
+
+msgid "Audit de configuration"
+msgstr "Audit di configurazione"
+
+#, php-format
+msgid "%d entité sans adresse renseignée"
+msgid_plural "%d entités sans adresse renseignée"
+msgstr[0] "%d entità senza indirizzo registrato"
+msgstr[1] "%d entità senza indirizzo registrato"
+
+msgid "Renseignez l'adresse de chaque entité concernée, utile pour les documents générés et la conformité."
+msgstr "Inserite l'indirizzo di ogni entità interessata, utile per i documenti generati e la conformità."
+
+msgid "Aucun SLA n'est configuré"
+msgstr "Nessun SLA è configurato"
+
+msgid "Aucun engagement de délai (temps de résolution, escalade...) n'est suivi sur les tickets."
+msgstr "Nessun impegno sui tempi (tempo di risoluzione, escalation...) viene monitorato sui ticket."
+
+msgid "Définissez au moins un SLA via l'assistant de configuration si des engagements de délai s'appliquent."
+msgstr "Definite almeno un SLA tramite la procedura guidata di configurazione se si applicano impegni sui tempi."
+
+msgid "Configuration générale"
+msgstr "Configurazione generale"
+
+msgid "Adresse email d'administration non configurée"
+msgstr "Indirizzo email di amministrazione non configurato"
+
+msgid "Aucune adresse email d'administration n'est renseignée."
+msgstr "Non è stato inserito alcun indirizzo email di amministrazione."
+
+#, php-format
+msgid "L'adresse email d'administration est toujours celle par défaut (%s)."
+msgstr "L'indirizzo email di amministrazione è ancora quello predefinito (%s)."
+
+msgid "Renseignez une véritable adresse email d'administration dans la configuration générale de GLPI."
+msgstr "Inserite un vero indirizzo email di amministrazione nella configurazione generale di GLPI."
+
+msgid "Calendriers"
+msgstr "Calendari"
+
+msgid "Aucun calendrier n'est configuré"
+msgstr "Nessun calendario è configurato"
+
+msgid "Les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées sans calendrier."
+msgstr "Le scadenze SLA/OLA (orario lavorativo) non possono essere calcolate senza un calendario."
+
+msgid "Créez au moins un calendrier via l'assistant de configuration ou manuellement."
+msgstr "Create almeno un calendario tramite la procedura guidata di configurazione o manualmente."
+
+msgid "Les notifications sont désactivées"
+msgstr "Le notifiche sono disattivate"
+
+msgid "Aucune notification (nouveau ticket, réponse, rappel...) n'est envoyée par GLPI."
+msgstr "GLPI non invia alcuna notifica (nuovo ticket, risposta, promemoria...)."
+
+msgid "Activez les notifications dans la configuration générale de GLPI."
+msgstr "Attivate le notifiche nella configurazione generale di GLPI."
+
+msgid "Aucun statut d'élément n'est défini"
+msgstr "Nessuno stato dell'elemento è definito"
+
+msgid "Le parc ne peut pas exprimer \"en stock\", \"attribué\", \"en panne\"... sans au moins un statut."
+msgstr "Il parco non può esprimere \"in magazzino\", \"assegnato\", \"guasto\"... senza almeno uno stato."
+
+msgid "Utilisez l'assistant de configuration (étape Statuts) ou créez-en manuellement."
+msgstr "Utilizzate la procedura guidata di configurazione (fase Stati) o createli manualmente."
