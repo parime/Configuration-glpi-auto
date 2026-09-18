@@ -1,166 +1,25 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: configurationglpiauto\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-18 21:20+0000\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: templates/wizard.html.twig
 msgid "Version du plugin"
 msgstr "Plugin-Version"
 
+#: templates/wizard.html.twig
 msgid "Version installée"
 msgstr "Installierte Version"
 
+#: templates/wizard.html.twig
 msgid "Dernière version sur GitHub"
 msgstr "Neueste Version auf GitHub"
-
-msgid "Fermetures automatiques selon le pays (jours fériés)"
-msgstr "Automatische Schließungen nach Land (Feiertage)"
-
-msgid ""
-"Ajoute les jours fériés à date fixe du pays saisi ci-dessous, rattachés "
-"automatiquement au calendrier du site/client concerné — France par défaut si "
-"aucun pays n'est saisi (y compris en mode mono-site sans adresse). Un pays "
-"saisi mais non reconnu est simplement ignoré, sans rien inventer."
-msgstr ""
-"Fügt die festen Feiertage des unten angegebenen Landes hinzu, automatisch "
-"dem Kalender des betreffenden Standorts/Kunden zugeordnet — standardmäßig "
-"Frankreich, wenn kein Land angegeben ist (auch im Einzelstandort-Modus ohne "
-"Adresse). Ein angegebenes, aber nicht erkanntes Land wird einfach ignoriert, "
-"ohne etwas zu erfinden."
-
-msgid ""
-"Sans adresse complétée ci-dessous pour un site/client, celui-ci recevra les "
-"jours fériés français par défaut — complétez au moins le champ \"Pays\" de "
-"chaque site pour que les sites hors France reçoivent leurs propres jours "
-"fériés."
-msgstr ""
-"Ohne eine unten ausgefüllte Adresse für einen Standort/Kunden erhält dieser "
-"standardmäßig die französischen Feiertage — füllen Sie mindestens das Feld "
-"\"Land\" für jeden Standort aus, damit Standorte außerhalb Frankreichs ihre "
-"eigenen Feiertage erhalten."
-
-msgid ""
-"Les jours fériés sont désormais ajoutés automatiquement selon le pays saisi "
-"à l'étape \"Lieux\" (France par défaut si aucun pays n'est saisi) — voir la "
-"case \"Fermetures automatiques selon le pays\" à cette étape."
-msgstr ""
-"Feiertage werden jetzt automatisch anhand des im Schritt \"Standorte\" "
-"angegebenen Landes hinzugefügt (standardmäßig Frankreich, wenn kein Land "
-"angegeben ist) — siehe das Kontrollkästchen \"Automatische Schließungen nach "
-"Land\" in diesem Schritt."
-
-msgid "Activer l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)"
-msgstr "Natives GLPI-Inventar aktivieren (FusionInventory-/GLPI-Agent)"
-
-msgid ""
-"Ouvre l'endpoint d'inventaire de GLPI (Configuration > Inventaire) pour que "
-"les agents installés sur le parc puissent remonter leurs données "
-"automatiquement. Décochée par défaut, comme la validation N+1 ci-dessous : "
-"ceci ouvre un vrai point d'entrée réseau, pas juste du contenu — à activer "
-"seulement si vous comptez réellement déployer des agents."
-msgstr ""
-"Öffnet den Inventar-Endpunkt von GLPI (Konfiguration > Inventar), damit auf "
-"dem Gerätepark installierte Agenten ihre Daten automatisch melden können. "
-"Standardmäßig deaktiviert, wie das Freigabe-Kontrollkästchen unten: Dies "
-"öffnet einen echten Netzwerkzugangspunkt, nicht nur Inhalte — nur "
-"aktivieren, wenn Sie tatsächlich Agenten einsetzen möchten."
-
-msgid ""
-"Créer les types de licence logicielle courants (OEM, volume, abonnement, "
-"open source...)"
-msgstr ""
-"Gängige Softwarelizenztypen erstellen (OEM, Volumen, Abonnement, Open "
-"Source...)"
-
-msgid ""
-"Créer les types de certificat courants (SSL/TLS, signature de code, S/"
-"MIME...)"
-msgstr ""
-"Gängige Zertifikatstypen erstellen (SSL/TLS, Codesignierung, S/MIME...)"
-
-msgid ""
-"Créer des modèles de tickets pour les tâches récurrentes courantes (revue "
-"utilisateurs, maintenance, mises à jour)"
-msgstr ""
-"Ticketvorlagen für gängige wiederkehrende Aufgaben erstellen "
-"(Benutzerüberprüfung, Wartung, Updates)"
-
-msgid ""
-"Contenu prêt à l'emploi uniquement — aucune planification automatique "
-"créée : à sélectionner vous-même dans Configuration > Intitulés > Assistance "
-"> Tickets récurrents une fois le groupe et la fréquence décidés."
-msgstr ""
-"Nur sofort einsatzbereiter Inhalt — es wird keine automatische Planung "
-"erstellt: Wählen Sie selbst eine dieser Vorlagen unter Konfiguration > "
-"Feldwerte > Support > Wiederkehrende Tickets aus, sobald Gruppe und "
-"Häufigkeit feststehen."
-
-msgid "Ajouter des flux RSS utiles (sécurité CERT-FR, notes de version GLPI)"
-msgstr ""
-"Nützliche RSS-Feeds hinzufügen (CERT-FR-Sicherheitswarnungen, GLPI-"
-"Versionshinweise)"
-
-msgid ""
-"Visible dans Outils > Flux RSS pour toute l'instance — utile pour suivre les "
-"vulnérabilités affectant le parc et les nouvelles versions de GLPI sans "
-"quitter l'outil."
-msgstr ""
-"Sichtbar unter Werkzeuge > RSS-Feeds für die gesamte Instanz — nützlich, um "
-"Schwachstellen im Gerätepark und neue GLPI-Versionen zu verfolgen, ohne das "
-"Tool zu verlassen."
-
-msgid "Statuts de projet supplémentaires"
-msgstr "Zusätzliche Projektstatus"
-
-msgid "En plus des 3 statuts natifs GLPI (Nouveau, En cours, Fermé)"
-msgstr ""
-"Zusätzlich zu den 3 nativen GLPI-Status (Neu, In Bearbeitung, Geschlossen)"
-
-msgid ""
-"Selon le nombre d'options cochées (arborescence multi-site, actifs "
-"personnalisés, bibliothèques de gabarits...), la création peut prendre "
-"plusieurs minutes — ne fermez pas cette page et ne cliquez qu'une seule fois "
-"sur \"Terminer\"."
-msgstr ""
-"Je nachdem, wie viele Optionen ausgewählt sind (Mehrstandort-Struktur, "
-"benutzerdefinierte Assets, Vorlagenbibliotheken...), kann die Erstellung "
-"mehrere Minuten dauern — schließen Sie diese Seite nicht und klicken Sie nur "
-"einmal auf \"Fertigstellen\"."
-
-msgid ""
-"%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre "
-"sites du même pays)."
-msgstr ""
-"%d Standort(e) einem eigenen Kalender für ihr Land zugeordnet (gemeinsam "
-"genutzt von Standorten im selben Land)."
-
-msgid ""
-"%d logo(s) trop volumineux pour être appliqué(s) — utilisez un fichier plus "
-"léger (idéalement sous 40 Ko) ou configurez-le manuellement depuis "
-"Configuration > Entités > onglet Général."
-msgstr ""
-"%d Logo(s) zu groß, um angewendet zu werden — verwenden Sie eine kleinere "
-"Datei (idealerweise unter 40 KB) oder konfigurieren Sie es manuell unter "
-"Konfiguration > Entitäten > Reiter Allgemein."
-
-msgid "%d types de licence logicielle créés."
-msgstr "%d Softwarelizenztypen erstellt."
-
-msgid "%d types de certificat créés."
-msgstr "%d Zertifikatstypen erstellt."
-
-msgid "%d modèles de tickets récurrents créés."
-msgstr "%d Vorlagen für wiederkehrende Tickets erstellt."
-
-msgid "%d types de projet/tâche de projet/statuts de projet créés."
-msgstr "%d Projekttypen/Projektaufgabentypen/Projektstatus erstellt."
-
-msgid "%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s)."
-msgstr ""
-"%d Feiertag(e) erstellt und dem/den betreffenden Kalender(n) zugeordnet."
 
 #: templates/wizard.html.twig
 msgid "Vérification de l'environnement"
@@ -316,6 +175,35 @@ msgstr ""
 "für den Entitätsdatensatz."
 
 #: templates/wizard.html.twig
+msgid "Fermetures automatiques selon le pays (jours fériés)"
+msgstr "Automatische Schließungen nach Land (Feiertage)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Ajoute les jours fériés à date fixe du pays saisi ci-dessous, rattachés "
+"automatiquement au calendrier du site/client concerné — France par défaut si "
+"aucun pays n'est saisi (y compris en mode mono-site sans adresse). Un pays "
+"saisi mais non reconnu est simplement ignoré, sans rien inventer."
+msgstr ""
+"Fügt die festen Feiertage des unten angegebenen Landes hinzu, automatisch "
+"dem Kalender des betreffenden Standorts/Kunden zugeordnet — standardmäßig "
+"Frankreich, wenn kein Land angegeben ist (auch im Einzelstandort-Modus ohne "
+"Adresse). Ein angegebenes, aber nicht erkanntes Land wird einfach ignoriert, "
+"ohne etwas zu erfinden."
+
+#: templates/wizard.html.twig
+msgid ""
+"Sans adresse complétée ci-dessous pour un site/client, celui-ci recevra les "
+"jours fériés français par défaut — complétez au moins le champ \"Pays\" de "
+"chaque site pour que les sites hors France reçoivent leurs propres jours "
+"fériés."
+msgstr ""
+"Ohne eine unten ausgefüllte Adresse für einen Standort/Kunden erhält dieser "
+"standardmäßig die französischen Feiertage — füllen Sie mindestens das Feld "
+"\"Land\" für jeden Standort aus, damit Standorte außerhalb Frankreichs ihre "
+"eigenen Feiertage erhalten."
+
+#: templates/wizard.html.twig
 msgid "Calendrier"
 msgstr "Kalender"
 
@@ -370,6 +258,17 @@ msgstr ""
 "Wenn aktiviert, wird jeder Tag, dessen Öffnungszeiten die Pause umfassen, in "
 "zwei Zeiträume (Vormittag + Nachmittag) statt in einen durchgehenden "
 "Zeitraum aufgeteilt."
+
+#: templates/wizard.html.twig
+msgid ""
+"Les jours fériés sont désormais ajoutés automatiquement selon le pays saisi "
+"à l'étape \"Lieux\" (France par défaut si aucun pays n'est saisi) — voir la "
+"case \"Fermetures automatiques selon le pays\" à cette étape."
+msgstr ""
+"Feiertage werden jetzt automatisch anhand des im Schritt \"Standorte\" "
+"angegebenen Landes hinzugefügt (standardmäßig Frankreich, wenn kein Land "
+"angegeben ist) — siehe das Kontrollkästchen \"Automatische Schließungen nach "
+"Land\" in diesem Schritt."
 
 #: templates/wizard.html.twig
 msgid "Niveaux de service (SLA)"
@@ -609,6 +508,17 @@ msgstr ""
 "automatisch in die richtige Kategorie geleitet."
 
 #: templates/wizard.html.twig
+msgid ""
+"Quelques services vont plus loin avec de vraies questions (dates, "
+"quantités...) : le titre du ticket est alors calculé automatiquement, et/ou "
+"certaines questions ne s'affichent que selon une réponse précédente (voir "
+"les badges ci-dessous)."
+msgstr ""
+"Einige Dienste gehen weiter mit echten Fragen (Daten, Mengen...): Der Ticket-"
+"Titel wird dann automatisch berechnet, und/oder manche Fragen erscheinen nur "
+"je nach einer vorherigen Antwort (siehe die Abzeichen unten)."
+
+#: templates/wizard.html.twig
 msgid "Créer le catalogue de services"
 msgstr "Servicekatalog erstellen"
 
@@ -621,6 +531,57 @@ msgstr ""
 "Zweig — das Deaktivieren eines Zweigs dort entfernt auch dessen Dienste hier."
 
 #: templates/wizard.html.twig
+msgid "Titre de ticket calculé automatiquement à partir des réponses"
+msgstr "Ticket-Titel automatisch aus den Antworten berechnet"
+
+#: templates/wizard.html.twig
+msgid "titre calculé"
+msgstr "berechneter Titel"
+
+#: templates/wizard.html.twig
+msgid ""
+"Certaines questions ne s'affichent que selon la réponse donnée à une "
+"question précédente"
+msgstr ""
+"Manche Fragen erscheinen nur je nach der Antwort auf eine vorherige Frage"
+
+#: templates/wizard.html.twig
+msgid "question conditionnelle"
+msgstr "bedingte Frage"
+
+#: templates/wizard.html.twig
+msgid ""
+"Pilote : un formulaire plus avancé que les autres services ci-dessus, avec "
+"de vraies questions (pays, dates) et un titre de ticket calculé "
+"automatiquement à partir des réponses (nouveau moteur de formulaires GLPI "
+"11)."
+msgstr ""
+"Pilot: ein fortschrittlicheres Formular als die anderen Dienste oben, mit "
+"echten Fragen (Land, Daten) und einem automatisch aus den Antworten "
+"berechneten Ticket-Titel (neue GLPI-11-Formular-Engine)."
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer le service \"Demande de droit d'accès / mission à "
+"l'étranger\" (branche Ressources Humaines)"
+msgstr ""
+"Dienst \"Antrag auf Zugangsrecht / Dienstreise ins Ausland\" erstellen "
+"(Bereich Personalwesen)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Questions : pays de destination, date de début, date de fin, motif / "
+"précisions"
+msgstr "Fragen: Zielland, Startdatum, Enddatum, Grund / Anmerkungen"
+
+#: templates/wizard.html.twig
+msgid ""
+"Titre du ticket calculé automatiquement : nom du formulaire + dates de début/"
+"fin + pays"
+msgstr ""
+"Ticket-Titel automatisch berechnet: Formularname + Start-/Enddatum + Land"
+
+#: templates/wizard.html.twig src/Audit/Checks/NoStatesConfiguredCheck.php:41
 msgid "Statuts des éléments"
 msgstr "Elementstatus"
 
@@ -982,6 +943,7 @@ msgid "Montrer les nouveaux tickets sur la page d'accueil"
 msgstr "Neue Tickets auf der Startseite anzeigen"
 
 #: templates/wizard.html.twig
+#: src/Audit/Checks/NotificationsDisabledCheck.php:41
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
@@ -1049,6 +1011,24 @@ msgid ""
 "collégiales"
 msgstr ""
 "Freigabeschritt „Ausschuss (2/3)\" für gemeinsame Entscheidungen hinzufügen"
+
+#: templates/wizard.html.twig
+msgid "Activer l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)"
+msgstr "Natives GLPI-Inventar aktivieren (FusionInventory-/GLPI-Agent)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Ouvre l'endpoint d'inventaire de GLPI (Configuration > Inventaire) pour que "
+"les agents installés sur le parc puissent remonter leurs données "
+"automatiquement. Décochée par défaut, comme la validation N+1 ci-dessous : "
+"ceci ouvre un vrai point d'entrée réseau, pas juste du contenu — à activer "
+"seulement si vous comptez réellement déployer des agents."
+msgstr ""
+"Öffnet den Inventar-Endpunkt von GLPI (Konfiguration > Inventar), damit auf "
+"dem Gerätepark installierte Agenten ihre Daten automatisch melden können. "
+"Standardmäßig deaktiviert, wie das Freigabe-Kontrollkästchen unten: Dies "
+"öffnet einen echten Netzwerkzugangspunkt, nicht nur Inhalte — nur "
+"aktivieren, wenn Sie tatsächlich Agenten einsetzen möchten."
 
 #: templates/wizard.html.twig
 msgid ""
@@ -1211,6 +1191,40 @@ msgstr ""
 "Kabel, Festplatten...)"
 
 #: templates/wizard.html.twig
+msgid ""
+"Créer les types de licence logicielle courants (OEM, volume, abonnement, "
+"open source...)"
+msgstr ""
+"Gängige Softwarelizenztypen erstellen (OEM, Volumen, Abonnement, Open "
+"Source...)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer les types de certificat courants (SSL/TLS, signature de code, S/"
+"MIME...)"
+msgstr ""
+"Gängige Zertifikatstypen erstellen (SSL/TLS, Codesignierung, S/MIME...)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer des modèles de tickets pour les tâches récurrentes courantes (revue "
+"utilisateurs, maintenance, mises à jour)"
+msgstr ""
+"Ticketvorlagen für gängige wiederkehrende Aufgaben erstellen "
+"(Benutzerüberprüfung, Wartung, Updates)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Contenu prêt à l'emploi uniquement — aucune planification automatique "
+"créée : à sélectionner vous-même dans Configuration > Intitulés > Assistance "
+"> Tickets récurrents une fois le groupe et la fréquence décidés."
+msgstr ""
+"Nur sofort einsatzbereiter Inhalt — es wird keine automatische Planung "
+"erstellt: Wählen Sie selbst eine dieser Vorlagen unter Konfiguration > "
+"Feldwerte > Support > Wiederkehrende Tickets aus, sobald Gruppe und "
+"Häufigkeit feststehen."
+
+#: templates/wizard.html.twig
 msgid "Traduire les sources de demande natives de GLPI"
 msgstr "Native Anfragequellen von GLPI übersetzen"
 
@@ -1258,6 +1272,22 @@ msgstr ""
 "Import. Eine leere Seriennummer gilt nie als Duplikat."
 
 #: templates/wizard.html.twig
+msgid "Ajouter des flux RSS utiles (sécurité CERT-FR, notes de version GLPI)"
+msgstr ""
+"Nützliche RSS-Feeds hinzufügen (CERT-FR-Sicherheitswarnungen, GLPI-"
+"Versionshinweise)"
+
+#: templates/wizard.html.twig
+msgid ""
+"Visible dans Outils > Flux RSS pour toute l'instance — utile pour suivre les "
+"vulnérabilités affectant le parc et les nouvelles versions de GLPI sans "
+"quitter l'outil."
+msgstr ""
+"Sichtbar unter Werkzeuge > RSS-Feeds für die gesamte Instanz — nützlich, um "
+"Schwachstellen im Gerätepark und neue GLPI-Versionen zu verfolgen, ohne das "
+"Tool zu verlassen."
+
+#: templates/wizard.html.twig
 msgid "Créer les catégories de la base de connaissances"
 msgstr "Wissensdatenbank-Kategorien erstellen"
 
@@ -1268,6 +1298,18 @@ msgid ""
 msgstr ""
 "Gleiche Themen wie die Ticket-Kategorien (Schritt 6), damit sich Self-"
 "Service-Portal und Wissensdatenbank gleich gliedern."
+
+#: templates/wizard.html.twig
+msgid "Ajouter des articles de FAQ pour les utilisateurs finaux"
+msgstr "FAQ-Artikel für Endbenutzer hinzufügen"
+
+#: templates/wizard.html.twig
+msgid ""
+"Visibles dans la FAQ du portail libre-service : comment utiliser le "
+"catalogue de services, et comment signaler un incident ou faire une demande."
+msgstr ""
+"Sichtbar in der FAQ des Self-Service-Portals: wie man den Servicekatalog "
+"nutzt und wie man einen Vorfall meldet oder eine Anfrage stellt."
 
 #: templates/wizard.html.twig
 msgid "Créer les rubriques de documents et les niveaux de criticité"
@@ -1335,6 +1377,15 @@ msgstr "Projekttypen"
 #: templates/wizard.html.twig
 msgid "Types de tâche de projet"
 msgstr "Projektaufgabentypen"
+
+#: templates/wizard.html.twig
+msgid "Statuts de projet supplémentaires"
+msgstr "Zusätzliche Projektstatus"
+
+#: templates/wizard.html.twig
+msgid "En plus des 3 statuts natifs GLPI (Nouveau, En cours, Fermé)"
+msgstr ""
+"Zusätzlich zu den 3 nativen GLPI-Status (Neu, In Bearbeitung, Geschlossen)"
 
 #: templates/wizard.html.twig
 msgid "Créer les gabarits de tâches de projets"
@@ -1492,6 +1543,18 @@ msgstr ""
 "Wissensdatenbank-Kategorien sowie die Projekttypen/-vorlagen."
 
 #: templates/wizard.html.twig
+msgid ""
+"Selon le nombre d'options cochées (arborescence multi-site, actifs "
+"personnalisés, bibliothèques de gabarits...), la création peut prendre "
+"plusieurs minutes — ne fermez pas cette page et ne cliquez qu'une seule fois "
+"sur \"Terminer\"."
+msgstr ""
+"Je nachdem, wie viele Optionen ausgewählt sind (Mehrstandort-Struktur, "
+"benutzerdefinierte Assets, Vorlagenbibliotheken...), kann die Erstellung "
+"mehrere Minuten dauern — schließen Sie diese Seite nicht und klicken Sie nur "
+"einmal auf \"Fertigstellen\"."
+
+#: templates/wizard.html.twig
 msgid "Structure"
 msgstr "Struktur"
 
@@ -1499,7 +1562,7 @@ msgstr "Struktur"
 msgid "Arborescence"
 msgstr "Baumstruktur"
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig src/Audit/Checks/NoSlaConfiguredCheck.php:39
 msgid "SLA"
 msgstr "SLA"
 
@@ -1550,6 +1613,7 @@ msgid "Création en cours..."
 msgstr "Wird erstellt..."
 
 #: templates/wizard.html.twig
+#: src/Audit/Checks/EntitiesWithoutAddressCheck.php:40
 msgid "Entités"
 msgstr "Entitäten"
 
@@ -1838,6 +1902,10 @@ msgid "catégories base de connaissances"
 msgstr "Wissensdatenbank-Kategorien"
 
 #: templates/wizard.html.twig
+msgid "articles de FAQ"
+msgstr "FAQ-Artikel"
+
+#: templates/wizard.html.twig
 msgid "types de projet/tâche"
 msgstr "Projekt-/Aufgabentypen"
 
@@ -1848,6 +1916,22 @@ msgstr "Projektaufgabenvorlagen"
 #: templates/wizard.html.twig
 msgid "modèles de projet"
 msgstr "Projektvorlagen"
+
+#: templates/audit.html.twig
+msgid ""
+"Analyse de l'état actuel de votre instance GLPI — indépendante de ce que cet "
+"assistant a lui-même configuré."
+msgstr ""
+"Analyse des aktuellen Zustands Ihrer GLPI-Instanz — unabhängig davon, was "
+"dieser Assistent selbst konfiguriert hat."
+
+#: templates/audit.html.twig
+msgid "Aucun problème détecté par cet audit."
+msgstr "Von diesem Audit wurde kein Problem festgestellt."
+
+#: templates/audit.html.twig
+msgid "Corriger"
+msgstr "Korrigieren"
 
 #: templates/_entity_structure_fields.html.twig
 msgid "Aperçu"
@@ -1913,11 +1997,19 @@ msgstr "Noch keine Entität hinzugefügt."
 msgid "Lancer l'assistant de configuration"
 msgstr "Konfigurationsassistenten starten"
 
-#: front/wizard.php:278
+#: front/profile.php:33
+msgid "Lancer l'audit"
+msgstr "Audit starten"
+
+#: front/profile.php:38
+msgid "Importer un Blueprint (JSON)"
+msgstr "Blueprint importieren (JSON)"
+
+#: front/wizard.php:328
 msgid "Dossier des palettes personnalisées inscriptible"
 msgstr "Ordner für benutzerdefinierte Paletten beschreibbar"
 
-#: front/wizard.php:280
+#: front/wizard.php:330
 #, php-format
 msgid ""
 "nécessaire à la palette personnalisée (étape 17) — vérifiez les droits sur %s"
@@ -1925,11 +2017,11 @@ msgstr ""
 "erforderlich für die benutzerdefinierte Palette (Schritt 17) — prüfen Sie "
 "die Rechte für %s"
 
-#: front/wizard.php:283
+#: front/wizard.php:333
 msgid "Dossier de cache GLPI inscriptible"
 msgstr "GLPI-Cache-Ordner beschreibbar"
 
-#: front/wizard.php:285
+#: front/wizard.php:335
 #, php-format
 msgid ""
 "nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s"
@@ -1937,11 +2029,11 @@ msgstr ""
 "erforderlich für den allgemein reibungslosen Betrieb von GLPI — prüfen Sie "
 "die Rechte für %s"
 
-#: front/wizard.php:288
+#: front/wizard.php:338
 msgid "Extension GD ou Imagick disponible"
 msgstr "GD- oder Imagick-Erweiterung verfügbar"
 
-#: front/wizard.php:290
+#: front/wizard.php:340
 msgid ""
 "utile pour valider les logos uploadés (étape 17) — ni l'une ni l'autre n'est "
 "chargée"
@@ -1949,57 +2041,66 @@ msgstr ""
 "nützlich zur Validierung hochgeladener Logos (Schritt 17) — keine der beiden "
 "ist geladen"
 
-#: front/wizard.php:595
+#: front/wizard.php:743
 msgid "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
 msgstr "Keine Entität zu erstellen (Einzelentitätsmodus oder leere Struktur)."
 
-#: front/wizard.php:596
+#: front/wizard.php:744
 #, php-format
 msgid "Structure créée : %s."
 msgstr "Struktur erstellt: %s."
 
-#: front/wizard.php:598
+#: front/wizard.php:746
 msgid "Calendrier créé et assigné."
 msgstr "Kalender erstellt und zugewiesen."
 
-#: front/wizard.php:607
+#: front/wizard.php:750
+#, php-format
+msgid ""
+"%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre "
+"sites du même pays)."
+msgstr ""
+"%d Standort(e) einem eigenen Kalender für ihr Land zugeordnet (gemeinsam "
+"genutzt von Standorten im selben Land)."
+
+#: front/wizard.php:755
 msgid "SLA créés et assignés."
 msgstr "SLAs erstellt und zugewiesen."
 
-#: front/wizard.php:610
+#: front/wizard.php:758
 msgid "OLA (engagements internes) créés et assignés."
 msgstr "OLA (interne Verpflichtungen) erstellt und zugewiesen."
 
-#: front/wizard.php:613
+#: front/wizard.php:761
 msgid "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
 msgstr ""
 "Support-Gruppen N1/N2/N3 erstellt, automatische Eskalation konfiguriert."
 
-#: front/wizard.php:616
+#: front/wizard.php:764
 #, php-format
 msgid "%d client(s) avec des réglages personnalisés."
 msgstr "%d Kunde(n) mit benutzerdefinierten Einstellungen."
 
-#: front/wizard.php:619
+#: front/wizard.php:767
 #, php-format
 msgid "%d catégories de tickets créées."
 msgstr "%d Ticket-Kategorien erstellt."
 
-#: front/wizard.php:622
+#: front/wizard.php:770
 msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
 msgstr ""
 "Benutzerdefinierter Vermögenswert \"Fahrzeug\" erstellt (Zweig Fuhrpark)."
 
-#: front/wizard.php:625
+#: front/wizard.php:773
 msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
 msgstr ""
 "Benutzerdefinierter Vermögenswert \"Server\" erstellt (Zweig IT & Systeme)."
 
-#: front/wizard.php:628
+#: front/wizard.php:776
 msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
 msgstr "Benutzerdefinierter Vermögenswert \"Raum\" erstellt (Zweig Gebäude)."
 
-#: front/wizard.php:631
+#: front/wizard.php:779
 msgid ""
 "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche "
 "Bâtiment)."
@@ -2007,7 +2108,7 @@ msgstr ""
 "Benutzerdefinierter Vermögenswert \"Brandschutz & Erste Hilfe\" erstellt "
 "(Zweig Gebäude)."
 
-#: front/wizard.php:634
+#: front/wizard.php:782
 msgid ""
 "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection "
 "des Personnes)."
@@ -2015,209 +2116,658 @@ msgstr ""
 "Benutzerdefinierter Vermögenswert \"Physische Sicherheit\" erstellt (Zweig "
 "Sicherheit)."
 
-#: front/wizard.php:637
+#: front/wizard.php:785
 #, php-format
 msgid "%d services créés dans le catalogue."
 msgstr "%d Dienste im Katalog erstellt."
 
-#: front/wizard.php:640
+#: front/wizard.php:788
+msgid ""
+"Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de "
+"ticket calculé automatiquement)."
+msgstr ""
+"Dienst \"Antrag auf Zugangsrecht / Dienstreise ins Ausland\" erstellt "
+"(Ticket-Titel automatisch berechnet)."
+
+#: front/wizard.php:791
+msgid ""
+"Service \"Demande de licence logicielle\" enrichi (titre de ticket calculé "
+"automatiquement)."
+msgstr ""
+"Dienst \"Softwarelizenzantrag\" erweitert (Ticket-Titel automatisch "
+"berechnet)."
+
+#: front/wizard.php:794
+msgid ""
+"Service \"Demande d'accès VPN\" enrichi (question conditionnelle, titre de "
+"ticket calculé automatiquement)."
+msgstr ""
+"Dienst \"VPN-Zugangsantrag\" erweitert (bedingte Frage, Ticket-Titel "
+"automatisch berechnet)."
+
+#: front/wizard.php:797
+msgid ""
+"Service \"Demande de badge d'accès\" enrichi (titre de ticket calculé "
+"automatiquement)."
+msgstr ""
+"Dienst \"Zugangsausweisantrag\" erweitert (Ticket-Titel automatisch "
+"berechnet)."
+
+#: front/wizard.php:800
+msgid ""
+"Service \"Demande de congé ou absence\" enrichi (question conditionnelle, "
+"titre de ticket calculé automatiquement)."
+msgstr ""
+"Dienst \"Urlaubs- oder Abwesenheitsantrag\" erweitert (bedingte Frage, "
+"Ticket-Titel automatisch berechnet)."
+
+#: front/wizard.php:803
+msgid ""
+"Service \"Déclarer une arrivée, un départ ou une mutation\" enrichi "
+"(question conditionnelle, titre de ticket calculé automatiquement)."
+msgstr ""
+"Dienst \"Ankunft, Abgang oder Versetzung melden\" erweitert (bedingte Frage, "
+"Ticket-Titel automatisch berechnet)."
+
+#: front/wizard.php:806
+msgid ""
+"Service \"Réservation ou problème d'équipement de salle de réunion\" enrichi "
+"(question conditionnelle)."
+msgstr ""
+"Dienst \"Besprechungsraum buchen oder Ausstattungsproblem\" erweitert "
+"(bedingte Frage)."
+
+#: front/wizard.php:809
+#, php-format
+msgid ""
+"%d autres services du catalogue enrichis avec des questions ciblées et un "
+"titre de ticket calculé automatiquement."
+msgstr ""
+"%d weitere Katalogdienste mit gezielten Fragen und automatisch berechnetem "
+"Ticket-Titel angereichert."
+
+#: front/wizard.php:812
 #, php-format
 msgid "%d statuts d'éléments créés."
 msgstr "%d Elementstatus erstellt."
 
-#: front/wizard.php:643
+#: front/wizard.php:815
 #, php-format
 msgid "%d raisons d'attente créées."
 msgstr "%d Wartegründe erstellt."
 
-#: front/wizard.php:646
+#: front/wizard.php:818
 msgid "Personnalisation graphique appliquée."
 msgstr "Grafische Anpassung angewendet."
 
-#: front/wizard.php:649
+#: front/wizard.php:821
 #, php-format
 msgid "%d logo(s) d'entité appliqué(s)."
 msgstr "%d Entitätslogo(s) angewendet."
 
-#: front/wizard.php:659
+#: front/wizard.php:826
+#, php-format
+msgid ""
+"%d logo(s) trop volumineux pour être appliqué(s) — utilisez un fichier plus "
+"léger (idéalement sous 40 Ko) ou configurez-le manuellement depuis "
+"Configuration > Entités > onglet Général."
+msgstr ""
+"%d Logo(s) zu groß, um angewendet zu werden — verwenden Sie eine kleinere "
+"Datei (idealerweise unter 40 KB) oder konfigurieren Sie es manuell unter "
+"Konfiguration > Entitäten > Reiter Allgemein."
+
+#: front/wizard.php:831
 #, php-format
 msgid "%d couleur(s) par client/site appliquée(s)."
 msgstr "%d Farbe(n) pro Kunde/Standort angewendet."
 
-#: front/wizard.php:662
+#: front/wizard.php:834
 #, php-format
 msgid "%d modèle(s) de notification personnalisés."
 msgstr "%d Benachrichtigungsvorlage(n) personalisiert."
 
-#: front/wizard.php:666
+#: front/wizard.php:838
 msgid "Palette GLPI personnalisée créée et définie par défaut."
 msgstr "Benutzerdefinierte GLPI-Palette erstellt und als Standard festgelegt."
 
-#: front/wizard.php:667
+#: front/wizard.php:839
 msgid "Palette GLPI native définie par défaut."
 msgstr "Native GLPI-Palette als Standard festgelegt."
 
-#: front/wizard.php:670
+#: front/wizard.php:842
 msgid "Réglages généraux GLPI appliqués."
 msgstr "Allgemeine GLPI-Einstellungen angewendet."
 
-#: front/wizard.php:673
+#: front/wizard.php:845
 msgid "Modèles de tickets créés et assignés aux profils."
 msgstr "Ticket-Vorlagen erstellt und Profilen zugewiesen."
 
-#: front/wizard.php:676
+#: front/wizard.php:848
 msgid "Champs masqués sur les formulaires de création en libre-service."
 msgstr "Felder in den Self-Service-Erstellungsformularen ausgeblendet."
 
-#: front/wizard.php:679
+#: front/wizard.php:851
 #, php-format
 msgid "%d règle(s) de droits LDAP créées."
 msgstr "%d LDAP-Rechteregel(n) erstellt."
 
-#: front/wizard.php:682
+#: front/wizard.php:854
 #, php-format
 msgid "%d règle(s) de droits par fonction créées."
 msgstr "%d funktionsbasierte Rechteregel(n) erstellt."
 
-#: front/wizard.php:685
+#: front/wizard.php:857
 #, php-format
 msgid "%d catégories de tâches créées."
 msgstr "%d Aufgabenkategorien erstellt."
 
-#: front/wizard.php:688
+#: front/wizard.php:860
 #, php-format
 msgid "%d gabarits de tâche créés."
 msgstr "%d Aufgabenvorlagen erstellt."
 
-#: front/wizard.php:691
+#: front/wizard.php:863
 #, php-format
 msgid "%d gabarits de solution créés."
 msgstr "%d Lösungsvorlagen erstellt."
 
-#: front/wizard.php:694
+#: front/wizard.php:866
 #, php-format
 msgid "%d gabarits de suivis créés."
 msgstr "%d Verlaufsvorlagen erstellt."
 
-#: front/wizard.php:697
+#: front/wizard.php:869
 #, php-format
 msgid "%d gabarits de validation créés."
 msgstr "%d Freigabevorlagen erstellt."
 
-#: front/wizard.php:700
+#: front/wizard.php:872
 msgid "Modèles de changement et de problème créés et assignés aux profils."
 msgstr "Änderungs- und Problemvorlagen erstellt und Profilen zugewiesen."
 
-#: front/wizard.php:703
+#: front/wizard.php:875
 #, php-format
 msgid "%d lieux créés."
 msgstr "%d Standorte erstellt."
 
-#: front/wizard.php:706
+#: front/wizard.php:878
 #, php-format
 msgid "%d fabricants créés."
 msgstr "%d Hersteller erstellt."
 
-#: front/wizard.php:709
+#: front/wizard.php:881
 #, php-format
 msgid "%d règle(s) de dictionnaire fabricant créées."
 msgstr "%d Hersteller-Wörterbuchregel(n) erstellt."
 
-#: front/wizard.php:712
+#: front/wizard.php:884
 #, php-format
 msgid "%d opérateurs téléphoniques créés."
 msgstr "%d Telefonanbieter erstellt."
 
-#: front/wizard.php:715
+#: front/wizard.php:887
 #, php-format
 msgid "%d types de matériel créés."
 msgstr "%d Gerätetypen erstellt."
 
-#: front/wizard.php:727
+#: front/wizard.php:890
+#, php-format
+msgid "%d types de licence logicielle créés."
+msgstr "%d Softwarelizenztypen erstellt."
+
+#: front/wizard.php:893
+#, php-format
+msgid "%d types de certificat créés."
+msgstr "%d Zertifikatstypen erstellt."
+
+#: front/wizard.php:896
+#, php-format
+msgid "%d modèles de tickets récurrents créés."
+msgstr "%d Vorlagen für wiederkehrende Tickets erstellt."
+
+#: front/wizard.php:899
 #, php-format
 msgid "%d catégories de base de connaissances créées."
 msgstr "%d Wissensdatenbank-Kategorien erstellt."
 
-#: front/wizard.php:730
+#: front/wizard.php:902
+#, php-format
+msgid "%d articles de FAQ créés."
+msgstr "%d FAQ-Artikel erstellt."
+
+#: front/wizard.php:905
 #, php-format
 msgid "%d rubriques de documents/criticités créées."
 msgstr "%d Dokumentkategorien/-kritikalitäten erstellt."
 
-#: front/wizard.php:733
+#: front/wizard.php:908
 #, php-format
 msgid "%d catégories/gabarits d'évènements de planning créés."
 msgstr "%d Planungsereignis-Kategorien/-Vorlagen erstellt."
 
-#: front/wizard.php:739
+#: front/wizard.php:911
+#, php-format
+msgid "%d types de projet/tâche de projet/statuts de projet créés."
+msgstr "%d Projekttypen/Projektaufgabentypen/Projektstatus erstellt."
+
+#: front/wizard.php:914
 #, php-format
 msgid "%d gabarits de tâches de projets créés."
 msgstr "%d Projektaufgabenvorlagen erstellt."
 
-#: front/wizard.php:742
+#: front/wizard.php:917
 #, php-format
 msgid "%d modèle(s) de projet créés, structure de tâches incluse."
 msgstr "%d Projektvorlage(n) erstellt, inklusive Aufgabenstruktur."
 
-#: front/wizard.php:745
+#: front/wizard.php:920
 #, php-format
 msgid "%d source(s) de demande traduites."
 msgstr "%d Anfragequelle(n) übersetzt."
 
-#: front/wizard.php:748
+#: front/wizard.php:923
 #, php-format
 msgid "%d fiche(s) d'entité complétées avec leur adresse."
 msgstr "%d Entitätsdatensatz/-sätze mit Adresse vervollständigt."
 
-#: front/wizard.php:754
+#: front/wizard.php:926
+#, php-format
+msgid "%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s)."
+msgstr ""
+"%d Feiertag(e) erstellt und dem/den betreffenden Kalender(n) zugeordnet."
+
+#: front/wizard.php:929
 msgid "Enquête de satisfaction créée (plugin More satisfaction)."
 msgstr "Zufriedenheitsumfrage erstellt (Plugin More satisfaction)."
 
-#: front/wizard.php:757
+#: front/wizard.php:932
 msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
 msgstr "Gruppe \"VIP\" erstellt und aktiviert (Plugin VIP)."
 
-#: front/wizard.php:760
+#: front/wizard.php:935
 #, php-format
 msgid "%d tag(s) créé(s) (plugin Tag)."
 msgstr "%d Tag(s) erstellt (Plugin Tag)."
 
-#: front/wizard.php:763
+#: front/wizard.php:938
 msgid "Règle de validation automatique (supérieur hiérarchique) créée."
 msgstr "Automatische Genehmigungsregel erstellt (Vorgesetzter)."
 
-#: front/wizard.php:766
+#: front/wizard.php:941
 #, php-format
 msgid "%d catégories d'utilisateur créées."
 msgstr "%d Benutzerkategorien erstellt."
 
-#: front/wizard.php:769
+#: front/wizard.php:944
 #, php-format
 msgid "%d règle(s) d'unicité de numéro de série créées."
 msgstr "%d Regel(n) für eindeutige Seriennummern erstellt."
 
-#: front/wizard.php:772
+#: front/wizard.php:947
 #, php-format
 msgid "%d flux RSS ajouté(s)."
 msgstr "%d RSS-Feed(s) hinzugefügt."
 
-#: front/wizard.php:775
+#: front/wizard.php:950
 msgid "Clé d'enregistrement GLPI Network enregistrée."
 msgstr "GLPI-Network-Registrierungsschlüssel gespeichert."
 
-#: front/wizard.php:782
+#: front/wizard.php:957
 msgid "Assistant de configuration"
 msgstr "Konfigurationsassistent"
+
+#: front/profile.form.php:44
+msgid "Configuration actuelle enregistrée comme Blueprint."
+msgstr "Aktuelle Konfiguration als Blueprint gespeichert."
+
+#: front/profile.form.php:54 front/profile.form.php:66
+msgid "Ce profil ne contient aucun Blueprint exploitable."
+msgstr "Dieses Profil enthält keinen verwendbaren Blueprint."
+
+#: front/profile.form.php:60
+msgid "Blueprint appliqué. Vérifiez chaque étape avant de valider."
+msgstr "Blueprint angewendet. Überprüfen Sie jeden Schritt vor der Bestätigung."
+
+#: front/profile.form.php:85
+msgid "Enregistrer la configuration actuelle comme Blueprint"
+msgstr "Aktuelle Konfiguration als Blueprint speichern"
+
+#: front/profile.form.php:93
+msgid "Appliquer ce Blueprint (via l'assistant)"
+msgstr "Diesen Blueprint anwenden (über den Assistenten)"
+
+#: front/profile.form.php:98
+msgid "Exporter ce Blueprint (JSON)"
+msgstr "Diesen Blueprint exportieren (JSON)"
+
+#: front/profile.form.php:104
+msgid ""
+"Ce fichier peut contenir des informations propres à votre organisation "
+"(adresses d'entités...) : vérifiez son contenu avant de le partager."
+msgstr "Diese Datei kann organisationsspezifische Informationen enthalten (Adressen von Entitäten...): Prüfen Sie den Inhalt, bevor Sie sie weitergeben."
+
+#: front/blueprint_import.php:28
+msgid "Veuillez choisir un fichier Blueprint (.json)."
+msgstr "Bitte wählen Sie eine Blueprint-Datei (.json)."
+
+#: front/blueprint_import.php:34
+msgid "Ce fichier n'est pas un JSON valide."
+msgstr "Diese Datei ist kein gültiges JSON."
+
+#: front/blueprint_import.php:54
+msgid "Blueprint importé"
+msgstr "Importierter Blueprint"
+
+#: front/blueprint_import.php:63
+msgid "Blueprint importé comme nouveau profil."
+msgstr "Blueprint als neues Profil importiert."
+
+#: front/blueprint_import.php:67
+msgid "Importer un Blueprint"
+msgstr "Blueprint importieren"
+
+#: front/blueprint_import.php:73
+msgid "Fichier Blueprint (.json)"
+msgstr "Blueprint-Datei (.json)"
+
+#: front/blueprint_import.php:77
+msgid "Nom du profil (facultatif, repris du fichier sinon)"
+msgstr "Profilname (optional, sonst aus der Datei übernommen)"
+
+#: front/blueprint_import.php:81
+msgid ""
+"N'importez que des fichiers Blueprint dont vous connaissez la provenance : "
+"ce fichier reconfigurera votre instance une fois appliqué via l'assistant."
+msgstr "Importieren Sie nur Blueprint-Dateien, deren Herkunft Sie kennen: Diese Datei konfiguriert Ihre Instanz nach der Anwendung über den Assistenten neu."
+
+#: front/audit.php:33
+msgid "Correction appliquée."
+msgstr "Korrektur angewendet."
+
+#: front/audit.php:41
+msgid "Audit de configuration"
+msgstr "Konfigurationsaudit"
+
+#: src/NonConformityFormBuilder.php:188 src/StaffMovementFormBuilder.php:195
+#: src/PasswordResetFormBuilder.php:196
+#: src/TeamCollaborationSpaceFormBuilder.php:172
+#: src/LaptopRequestFormBuilder.php:202
+#: src/VideoSurveillanceFormBuilder.php:222 src/WifiAccessFormBuilder.php:183
+#: src/PreventiveMaintenanceFormBuilder.php:168
+#: src/SoftwareLicenseFormBuilder.php:171 src/WaterLeakFormBuilder.php:182
+#: src/RecyclingRequestFormBuilder.php:179 src/AccessBadgeFormBuilder.php:170
+#: src/VehicleIncidentFormBuilder.php:277 src/DoorLockBadgeFormBuilder.php:228
+#: src/OfficeSuppliesFormBuilder.php:169 src/SoftwareBugFormBuilder.php:209
+#: src/HeatingClimateFormBuilder.php:183 src/EventSupportFormBuilder.php:182
+#: src/FuelCardFormBuilder.php:220 src/TrainingRequestFormBuilder.php:175
+#: src/DeliveryTrackingFormBuilder.php:167
+#: src/VehicleMaintenanceFormBuilder.php:216 src/RemoteWorkFormBuilder.php:201
+#: src/UserAccountDeactivationFormBuilder.php:176
+#: src/WebsiteUpdateFormBuilder.php:177 src/LeaveRequestFormBuilder.php:212
+#: src/WorkplaceSafetyFormBuilder.php:175
+#: src/FurnitureRequestFormBuilder.php:189 src/VpnAccessFormBuilder.php:188
+#: src/CurativeMaintenanceFormBuilder.php:173
+#: src/CleanlinessRequestFormBuilder.php:178 src/SupplyOrderFormBuilder.php:167
+#: src/AbroadMissionFormBuilder.php:248 src/MailboxRequestFormBuilder.php:174
+#: src/SocialMediaPostFormBuilder.php:180 src/InvoicePaymentFormBuilder.php:179
+#: src/ProfessionalPhoneFormBuilder.php:202 src/MailPrintingFormBuilder.php:190
+#: src/NewScreenFormBuilder.php:198
+#: src/InstrumentCalibrationFormBuilder.php:167
+#: src/SoftwareInstallFormBuilder.php:173 src/MeetingRoomFormBuilder.php:233
+#: src/BreakRoomFormBuilder.php:178 src/ItemReturnFormBuilder.php:188
+#: src/ElectricalInterventionFormBuilder.php:180
+#: src/UserAccountCreationFormBuilder.php:168
+#: src/ContractReviewFormBuilder.php:171
+#: src/RelocationArchivingFormBuilder.php:174
+#: src/AuditRequestFormBuilder.php:176
+msgid "Votre demande"
+msgstr "Ihr Antrag"
+
+#: src/NonConformityFormBuilder.php:195
+msgid "Type de non-conformité"
+msgstr "Art der Nichtkonformität"
+
+#: src/NonConformityFormBuilder.php:207
+msgid "Domaine ou service concerné"
+msgstr "Betroffener Bereich oder Dienst"
+
+#: src/NonConformityFormBuilder.php:216
+msgid "Photo ou preuve documentaire"
+msgstr "Foto oder Nachweisdokument"
+
+#: src/NonConformityFormBuilder.php:225 src/PasswordResetFormBuilder.php:231
+#: src/TeamCollaborationSpaceFormBuilder.php:200
+#: src/LaptopRequestFormBuilder.php:250
+#: src/VideoSurveillanceFormBuilder.php:274 src/WifiAccessFormBuilder.php:239
+#: src/PreventiveMaintenanceFormBuilder.php:198
+#: src/WaterLeakFormBuilder.php:210 src/RecyclingRequestFormBuilder.php:207
+#: src/VehicleIncidentFormBuilder.php:375 src/DoorLockBadgeFormBuilder.php:280
+#: src/OfficeSuppliesFormBuilder.php:194 src/SoftwareBugFormBuilder.php:261
+#: src/HeatingClimateFormBuilder.php:211 src/EventSupportFormBuilder.php:224
+#: src/FuelCardFormBuilder.php:274 src/TrainingRequestFormBuilder.php:205
+#: src/DeliveryTrackingFormBuilder.php:183
+#: src/VehicleMaintenanceFormBuilder.php:258 src/RemoteWorkFormBuilder.php:265
+#: src/UserAccountDeactivationFormBuilder.php:218
+#: src/WebsiteUpdateFormBuilder.php:205 src/WorkplaceSafetyFormBuilder.php:194
+#: src/FurnitureRequestFormBuilder.php:229
+#: src/CurativeMaintenanceFormBuilder.php:201
+#: src/CleanlinessRequestFormBuilder.php:206 src/SupplyOrderFormBuilder.php:192
+#: src/MailboxRequestFormBuilder.php:202 src/SocialMediaPostFormBuilder.php:213
+#: src/InvoicePaymentFormBuilder.php:216
+#: src/ProfessionalPhoneFormBuilder.php:260 src/MailPrintingFormBuilder.php:232
+#: src/NewScreenFormBuilder.php:238
+#: src/InstrumentCalibrationFormBuilder.php:192
+#: src/SoftwareInstallFormBuilder.php:201 src/BreakRoomFormBuilder.php:206
+#: src/ItemReturnFormBuilder.php:225
+#: src/ElectricalInterventionFormBuilder.php:208
+#: src/UserAccountCreationFormBuilder.php:207
+#: src/ContractReviewFormBuilder.php:196
+#: src/RelocationArchivingFormBuilder.php:202
+#: src/AuditRequestFormBuilder.php:209
+msgid "Précisions complémentaires"
+msgstr "Zusätzliche Angaben"
 
 #: src/CalendarBuilder.php:95
 #, php-format
 msgid "Horaires — %s"
 msgstr "Zeiten — %s"
 
-#: src/FuelType.php:42
+#: src/StaffMovementFormBuilder.php:202
+msgid "Nom du salarié concerné"
+msgstr "Name des betroffenen Mitarbeiters"
+
+#: src/StaffMovementFormBuilder.php:211
+msgid "Type de mouvement"
+msgstr "Art der Personalbewegung"
+
+#: src/StaffMovementFormBuilder.php:247
+msgid "Poste concerné"
+msgstr "Betroffene Stelle"
+
+#: src/StaffMovementFormBuilder.php:258
+msgid "Date d'effet"
+msgstr "Datum des Inkrafttretens"
+
+#: src/StaffMovementFormBuilder.php:293
+msgid "le"
+msgstr "am"
+
+#: src/PasswordResetFormBuilder.php:204
+msgid "Compte utilisateur concerné"
+msgstr "Betroffenes Benutzerkonto"
+
+#: src/PasswordResetFormBuilder.php:219 src/FuelCardFormBuilder.php:262
+#: src/UserAccountDeactivationFormBuilder.php:206
+#: src/FurnitureRequestFormBuilder.php:217
+msgid "Motif"
+msgstr "Grund"
+
+#: src/TeamCollaborationSpaceFormBuilder.php:179
+msgid "Nom de l'équipe ou du projet"
+msgstr "Name des Teams oder Projekts"
+
+#: src/TeamCollaborationSpaceFormBuilder.php:188
+msgid "Type d'accès souhaité"
+msgstr "Gewünschte Zugriffsart"
+
+#: src/LaptopRequestFormBuilder.php:209
+#: src/ProfessionalPhoneFormBuilder.php:221 src/NewScreenFormBuilder.php:226
+msgid "Motif de la demande"
+msgstr "Grund der Anfrage"
+
+#: src/LaptopRequestFormBuilder.php:236
+msgid "Poste actuel à remplacer"
+msgstr "Zu ersetzender aktueller Arbeitsplatz"
+
+#: src/VideoSurveillanceFormBuilder.php:229
+msgid "Localisation de l'équipement concerné"
+msgstr "Standort der betroffenen Anlage"
+
+#: src/VideoSurveillanceFormBuilder.php:238
+msgid "Type de dysfonctionnement"
+msgstr "Art der Störung"
+
+#: src/VideoSurveillanceFormBuilder.php:255
+#: src/DoorLockBadgeFormBuilder.php:261
+msgid "Équipement concerné (si déjà référencé)"
+msgstr "Betroffene Ausrüstung (falls bereits erfasst)"
+
+#: src/WifiAccessFormBuilder.php:190
+msgid "Type d'accès"
+msgstr "Zugriffsart"
+
+#: src/WifiAccessFormBuilder.php:214
+msgid "Appareil ou nom du visiteur"
+msgstr "Gerät oder Name des Besuchers"
+
+#: src/WifiAccessFormBuilder.php:223
+#: src/UserAccountDeactivationFormBuilder.php:192
+#: src/VpnAccessFormBuilder.php:228
+msgid "Date de fin d'accès souhaitée"
+msgstr "Gewünschtes Enddatum des Zugriffs"
+
+#: src/PreventiveMaintenanceFormBuilder.php:175
+#: src/CurativeMaintenanceFormBuilder.php:180
+msgid "Équipement ou installation concerné"
+msgstr "Betroffene Anlage oder Einrichtung"
+
+#: src/PreventiveMaintenanceFormBuilder.php:184
+#: src/TrainingRequestFormBuilder.php:191 src/AuditRequestFormBuilder.php:195
+msgid "Période souhaitée"
+msgstr "Gewünschter Zeitraum"
+
+#: src/FuelType.php:46
 msgid "Type de carburant"
 msgid_plural "Types de carburant"
 msgstr[0] "Kraftstoffart"
 msgstr[1] "Kraftstoffarten"
+
+#: src/SoftwareLicenseFormBuilder.php:178 src/SoftwareBugFormBuilder.php:216
+#: src/SoftwareInstallFormBuilder.php:180
+msgid "Logiciel concerné"
+msgstr "Betroffene Software"
+
+#: src/SoftwareLicenseFormBuilder.php:187
+msgid "Quantité de licences"
+msgstr "Anzahl der Lizenzen"
+
+#: src/SoftwareLicenseFormBuilder.php:197
+msgid "Précisions"
+msgstr "Anmerkungen"
+
+#: src/WaterLeakFormBuilder.php:189 src/DoorLockBadgeFormBuilder.php:235
+#: src/CleanlinessRequestFormBuilder.php:185
+#: src/ElectricalInterventionFormBuilder.php:187
+msgid "Localisation précise"
+msgstr "Genauer Standort"
+
+#: src/WaterLeakFormBuilder.php:198 src/DoorLockBadgeFormBuilder.php:244
+#: src/HeatingClimateFormBuilder.php:199 src/BreakRoomFormBuilder.php:194
+#: src/ElectricalInterventionFormBuilder.php:196
+msgid "Nature du problème"
+msgstr "Art des Problems"
+
+#: src/RecyclingRequestFormBuilder.php:186
+msgid "Type de déchet concerné"
+msgstr "Betroffene Abfallart"
+
+#: src/RecyclingRequestFormBuilder.php:198
+msgid "Localisation à collecter"
+msgstr "Abzuholender Standort"
+
+#: src/AccessBadgeFormBuilder.php:183
+msgid "Zone ou local concerné"
+msgstr "Betroffener Bereich oder Raum"
+
+#: src/AccessBadgeFormBuilder.php:192
+msgid "Date de début d'accès"
+msgstr "Startdatum des Zugriffs"
+
+#: src/AccessBadgeFormBuilder.php:202
+msgid "Date de fin d'accès"
+msgstr "Enddatum des Zugriffs"
+
+#: src/AccessBadgeFormBuilder.php:232 src/LeaveRequestFormBuilder.php:306
+#: src/AbroadMissionFormBuilder.php:320
+msgid "du"
+msgstr "vom"
+
+#: src/AccessBadgeFormBuilder.php:233 src/LeaveRequestFormBuilder.php:307
+#: src/AbroadMissionFormBuilder.php:321
+msgid "au"
+msgstr "bis"
+
+#: src/VehicleIncidentFormBuilder.php:286 src/FuelCardFormBuilder.php:229
+#: src/VehicleMaintenanceFormBuilder.php:225
+msgid "Véhicule concerné"
+msgstr "Betroffenes Fahrzeug"
+
+#: src/VehicleIncidentFormBuilder.php:299 src/FuelCardFormBuilder.php:241
+#: src/VehicleMaintenanceFormBuilder.php:237
+msgid "Véhicule concerné (immatriculation)"
+msgstr "Betroffenes Fahrzeug (Kennzeichen)"
+
+#: src/VehicleIncidentFormBuilder.php:308
+msgid "Date du sinistre"
+msgstr "Datum des Schadensfalls"
+
+#: src/VehicleIncidentFormBuilder.php:322
+msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
+msgstr "In welchem Ausmaß ist das Fahrzeug immobilisiert oder unbrauchbar?"
+
+#: src/VehicleIncidentFormBuilder.php:331
+msgid "Un tiers est-il impliqué ?"
+msgstr "Ist ein Dritter beteiligt?"
+
+#: src/VehicleIncidentFormBuilder.php:355
+msgid "Coordonnées et informations du tiers"
+msgstr "Kontaktdaten und Informationen des Dritten"
+
+#: src/VehicleIncidentFormBuilder.php:366
+msgid "Photos des dommages"
+msgstr "Fotos der Schäden"
+
+#: src/OfficeSuppliesFormBuilder.php:176
+msgid "Article souhaité"
+msgstr "Gewünschter Artikel"
+
+#: src/OfficeSuppliesFormBuilder.php:185 src/SupplyOrderFormBuilder.php:183
+msgid "Quantité"
+msgstr "Menge"
+
+#: src/SoftwareBugFormBuilder.php:225
+msgid "Le problème vous empêche-t-il de travailler ?"
+msgstr "Hindert Sie das Problem an der Arbeit?"
+
+#: src/SoftwareBugFormBuilder.php:240
+msgid "Poste ou appareil concerné (si le bug est lié à un poste précis)"
+msgstr ""
+"Betroffener Arbeitsplatz oder betroffenes Gerät (falls der Fehler an ein "
+"bestimmtes Gerät gebunden ist)"
+
+#: src/SoftwareBugFormBuilder.php:252
+msgid "Capture d'écran de l'erreur"
+msgstr "Screenshot des Fehlers"
 
 #: src/ConfigurationProfile.php:59
 msgid "Profil de configuration"
@@ -2245,6 +2795,38 @@ msgstr "Benutzerdefiniert"
 msgid "Type"
 msgstr "Typ"
 
+#: src/HeatingClimateFormBuilder.php:190
+msgid "Localisation précise (bâtiment, étage, bureau ou salle)"
+msgstr "Genauer Standort (Gebäude, Stockwerk, Büro oder Raum)"
+
+#: src/EventSupportFormBuilder.php:189
+msgid "Nom de l'événement"
+msgstr "Name der Veranstaltung"
+
+#: src/EventSupportFormBuilder.php:198
+msgid "Date de l'événement"
+msgstr "Datum der Veranstaltung"
+
+#: src/EventSupportFormBuilder.php:212
+msgid "Type de support souhaité"
+msgstr "Gewünschte Art der Unterstützung"
+
+#: src/FuelCardFormBuilder.php:250
+msgid "Type demandé"
+msgstr "Angeforderter Typ"
+
+#: src/TrainingRequestFormBuilder.php:182
+msgid "Intitulé de la formation souhaitée"
+msgstr "Bezeichnung der gewünschten Schulung"
+
+#: src/DeliveryTrackingFormBuilder.php:174
+msgid "Numéro de commande ou de bon de livraison"
+msgstr "Bestellnummer oder Lieferscheinnummer"
+
+#: src/VehicleMaintenanceFormBuilder.php:246
+msgid "Type d'entretien"
+msgstr "Wartungsart"
+
 #: src/Config.php:100
 msgid "Configuration"
 msgstr "Konfiguration"
@@ -2262,13 +2844,279 @@ msgstr ""
 msgid "Multi-entité — infogérance de plusieurs entreprises clientes (MSP)"
 msgstr "Multi-Entität — IT-Betrieb für mehrere Kundenunternehmen (MSP)"
 
-#: src/ServiceCatalogBuilder.php:254
+#: src/RemoteWorkFormBuilder.php:208 src/WorkplaceSafetyFormBuilder.php:182
+#: src/CleanlinessRequestFormBuilder.php:194
+#: src/MailboxRequestFormBuilder.php:181 src/InvoicePaymentFormBuilder.php:195
+#: src/MailPrintingFormBuilder.php:197 src/SoftwareInstallFormBuilder.php:189
+#: src/MeetingRoomFormBuilder.php:240 src/ItemReturnFormBuilder.php:204
+#: src/RelocationArchivingFormBuilder.php:181
+msgid "Type de demande"
+msgstr "Anfrageart"
+
+#: src/RemoteWorkFormBuilder.php:238
+msgid "Date concernée"
+msgstr "Betroffenes Datum"
+
+#: src/RemoteWorkFormBuilder.php:254
+msgid "Jour(s) souhaité(s)"
+msgstr "Gewünschte(r) Tag(e)"
+
+#: src/UserAccountDeactivationFormBuilder.php:183
+msgid "Nom de la personne concernée"
+msgstr "Name der betroffenen Person"
+
+#: src/WebsiteUpdateFormBuilder.php:184
+msgid "Page ou section concernée"
+msgstr "Betroffene Seite oder Rubrik"
+
+#: src/WebsiteUpdateFormBuilder.php:193
+msgid "Type de modification"
+msgstr "Art der Änderung"
+
+#: src/LeaveRequestFormBuilder.php:225
+msgid "Type de congé"
+msgstr "Urlaubsart"
+
+#: src/LeaveRequestFormBuilder.php:242 src/AbroadMissionFormBuilder.php:270
+msgid "Date de début"
+msgstr "Startdatum"
+
+#: src/LeaveRequestFormBuilder.php:252 src/AbroadMissionFormBuilder.php:280
+msgid "Date de fin"
+msgstr "Enddatum"
+
+#: src/LeaveRequestFormBuilder.php:272
+msgid "Date de réception du justificatif médical"
+msgstr "Eingangsdatum der ärztlichen Bescheinigung"
+
+#: src/FurnitureRequestFormBuilder.php:196
+msgid "Type de mobilier concerné"
+msgstr "Betroffene Möbelart"
+
+#: src/FurnitureRequestFormBuilder.php:208
+msgid "Localisation du poste"
+msgstr "Standort des Arbeitsplatzes"
+
+#: src/VpnAccessFormBuilder.php:195
+msgid "Réseau ou ressource à atteindre"
+msgstr "Zu erreichendes Netzwerk oder Ressource"
+
+#: src/VpnAccessFormBuilder.php:204
+msgid "Durée d'accès"
+msgstr "Zugriffsdauer"
+
+#: src/CurativeMaintenanceFormBuilder.php:189
+msgid "L'équipement est-il à l'arrêt ?"
+msgstr "Steht die Anlage still?"
+
+#: src/ServiceCatalogBuilder.php:287
 msgid "Titre"
 msgstr "Titel"
 
-#: src/ServiceCatalogBuilder.php:263
+#: src/ServiceCatalogBuilder.php:296
 msgid "Description"
 msgstr "Beschreibung"
+
+#: src/SupplyOrderFormBuilder.php:174
+msgid "Article ou référence souhaité"
+msgstr "Gewünschter Artikel oder gewünschte Referenz"
+
+#: src/AbroadMissionFormBuilder.php:261
+msgid "Pays de destination"
+msgstr "Zielland"
+
+#: src/AbroadMissionFormBuilder.php:290
+msgid "Motif / précisions"
+msgstr "Grund / Anmerkungen"
+
+#: src/MailboxRequestFormBuilder.php:193
+msgid "Adresse ou nom souhaité"
+msgstr "Gewünschte Adresse oder gewünschter Name"
+
+#: src/SocialMediaPostFormBuilder.php:187
+msgid "Réseau(x) concerné(s)"
+msgstr "Betroffene(s) Netzwerk(e)"
+
+#: src/SocialMediaPostFormBuilder.php:199
+msgid "Date de publication souhaitée"
+msgstr "Gewünschtes Veröffentlichungsdatum"
+
+#: src/InvoicePaymentFormBuilder.php:186
+msgid "Numéro de facture ou référence"
+msgstr "Rechnungsnummer oder Referenz"
+
+#: src/InvoicePaymentFormBuilder.php:207
+msgid "Justificatif (facture, bon de commande...)"
+msgstr "Beleg (Rechnung, Bestellung...)"
+
+#: src/ProfessionalPhoneFormBuilder.php:209
+msgid "Type d'appareil souhaité"
+msgstr "Gewünschter Gerätetyp"
+
+#: src/ProfessionalPhoneFormBuilder.php:246
+msgid "Modèle actuel à remplacer"
+msgstr "Aktuelles zu ersetzendes Modell"
+
+#: src/Audit/Checks/EntitiesWithoutAddressCheck.php:71
+#, php-format
+msgid "%d entité sans adresse renseignée"
+msgid_plural "%d entités sans adresse renseignée"
+msgstr[0] "%d Entität ohne hinterlegte Adresse"
+msgstr[1] "%d Entitäten ohne hinterlegte Adresse"
+
+#: src/Audit/Checks/EntitiesWithoutAddressCheck.php:80
+msgid ""
+"Renseignez l'adresse de chaque entité concernée, utile pour les documents "
+"générés et la conformité."
+msgstr ""
+"Tragen Sie die Adresse jeder betroffenen Entität ein — nützlich für "
+"generierte Dokumente und die Compliance."
+
+#: src/Audit/Checks/NoSlaConfiguredCheck.php:56
+msgid "Aucun SLA n'est configuré"
+msgstr "Es ist kein SLA konfiguriert"
+
+#: src/Audit/Checks/NoSlaConfiguredCheck.php:58
+msgid ""
+"Aucun engagement de délai (temps de résolution, escalade...) n'est suivi sur "
+"les tickets."
+msgstr ""
+"Auf Tickets wird keine Fristzusage (Lösungszeit, Eskalation...) verfolgt."
+
+#: src/Audit/Checks/NoSlaConfiguredCheck.php:62
+msgid ""
+"Définissez au moins un SLA via l'assistant de configuration si des "
+"engagements de délai s'appliquent."
+msgstr ""
+"Definieren Sie über den Konfigurationsassistenten mindestens ein SLA, falls "
+"Fristzusagen gelten."
+
+#: src/Audit/Checks/DefaultAdminEmailCheck.php:43
+msgid "Configuration générale"
+msgstr "Allgemeine Konfiguration"
+
+#: src/Audit/Checks/DefaultAdminEmailCheck.php:59
+msgid "Adresse email d'administration non configurée"
+msgstr "Administrations-E-Mail-Adresse nicht konfiguriert"
+
+#: src/Audit/Checks/DefaultAdminEmailCheck.php:61
+msgid "Aucune adresse email d'administration n'est renseignée."
+msgstr "Es ist keine Administrations-E-Mail-Adresse hinterlegt."
+
+#: src/Audit/Checks/DefaultAdminEmailCheck.php:63
+#, php-format
+msgid "L'adresse email d'administration est toujours celle par défaut (%s)."
+msgstr "Die Administrations-E-Mail-Adresse ist noch die Standardadresse (%s)."
+
+#: src/Audit/Checks/DefaultAdminEmailCheck.php:67
+msgid ""
+"Renseignez une véritable adresse email d'administration dans la "
+"configuration générale de GLPI."
+msgstr ""
+"Hinterlegen Sie eine echte Administrations-E-Mail-Adresse in der allgemeinen "
+"GLPI-Konfiguration."
+
+#: src/Audit/Checks/NoActiveCalendarCheck.php:39
+msgid "Calendriers"
+msgstr "Kalender"
+
+#: src/Audit/Checks/NoActiveCalendarCheck.php:56
+msgid "Aucun calendrier n'est configuré"
+msgstr "Es ist kein Kalender konfiguriert"
+
+#: src/Audit/Checks/NoActiveCalendarCheck.php:58
+msgid ""
+"Les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées sans "
+"calendrier."
+msgstr ""
+"SLA-/OLA-Fristen (Geschäftszeiten) können ohne Kalender nicht berechnet "
+"werden."
+
+#: src/Audit/Checks/NoActiveCalendarCheck.php:62
+msgid ""
+"Créez au moins un calendrier via l'assistant de configuration ou "
+"manuellement."
+msgstr ""
+"Erstellen Sie über den Konfigurationsassistenten oder manuell mindestens "
+"einen Kalender."
+
+#: src/Audit/Checks/NotificationsDisabledCheck.php:54
+msgid "Les notifications sont désactivées"
+msgstr "Benachrichtigungen sind deaktiviert"
+
+#: src/Audit/Checks/NotificationsDisabledCheck.php:56
+msgid ""
+"Aucune notification (nouveau ticket, réponse, rappel...) n'est envoyée par "
+"GLPI."
+msgstr ""
+"GLPI sendet keine Benachrichtigung (neues Ticket, Antwort, Erinnerung...)."
+
+#: src/Audit/Checks/NotificationsDisabledCheck.php:59
+msgid "Activez les notifications dans la configuration générale de GLPI."
+msgstr ""
+"Aktivieren Sie die Benachrichtigungen in der allgemeinen GLPI-Konfiguration."
+
+#: src/Audit/Checks/NoStatesConfiguredCheck.php:58
+msgid "Aucun statut d'élément n'est défini"
+msgstr "Es ist kein Elementstatus definiert"
+
+#: src/Audit/Checks/NoStatesConfiguredCheck.php:60
+msgid ""
+"Le parc ne peut pas exprimer \"en stock\", \"attribué\", \"en panne\"... "
+"sans au moins un statut."
+msgstr ""
+"Der Bestand kann ohne mindestens einen Status nicht \"auf Lager\", "
+"\"zugewiesen\", \"defekt\"... ausdrücken."
+
+#: src/Audit/Checks/NoStatesConfiguredCheck.php:64
+msgid ""
+"Utilisez l'assistant de configuration (étape Statuts) ou créez-en "
+"manuellement."
+msgstr ""
+"Verwenden Sie den Konfigurationsassistenten (Schritt Status) oder erstellen "
+"Sie welche manuell."
+
+#: src/MailPrintingFormBuilder.php:221
+msgid "Destinataire et adresse"
+msgstr "Empfänger und Adresse"
+
+#: src/NewScreenFormBuilder.php:205
+msgid "Nombre d'écrans souhaités"
+msgstr "Gewünschte Anzahl an Bildschirmen"
+
+#: src/NewScreenFormBuilder.php:217
+msgid "Taille souhaitée (ex : 24 pouces)"
+msgstr "Gewünschte Größe (z. B. 24 Zoll)"
+
+#: src/NewScreenFormBuilder.php:249
+msgid "Poste auquel connecter l'écran (si déjà connu)"
+msgstr ""
+"Arbeitsplatz, an den der Bildschirm angeschlossen wird (falls bereits "
+"bekannt)"
+
+#: src/InstrumentCalibrationFormBuilder.php:174
+msgid "Instrument concerné"
+msgstr "Betroffenes Instrument"
+
+#: src/InstrumentCalibrationFormBuilder.php:183
+msgid "Référence ou numéro de série"
+msgstr "Referenz- oder Seriennummer"
+
+#: src/MeetingRoomFormBuilder.php:273 src/MeetingRoomFormBuilder.php:288
+msgid "Salle souhaitée"
+msgstr "Gewünschter Raum"
+
+#: src/MeetingRoomFormBuilder.php:299
+msgid "Date souhaitée"
+msgstr "Gewünschtes Datum"
+
+#: src/MeetingRoomFormBuilder.php:315
+msgid "Équipement concerné"
+msgstr "Betroffene Ausstattung"
+
+#: src/MeetingRoomFormBuilder.php:326
+msgid "Description du problème"
+msgstr "Beschreibung des Problems"
 
 #: src/SlaBuilder.php:141
 #, php-format
@@ -2305,193 +3153,45 @@ msgstr "Eskalation — %s"
 msgid "Escalade N3 — %s"
 msgstr "Eskalation N3 — %s"
 
-#: src/AbroadMissionFormBuilder.php
-msgid "Votre demande"
-msgstr "Ihr Antrag"
+#: src/BreakRoomFormBuilder.php:185
+msgid "Espace concerné"
+msgstr "Betroffener Bereich"
 
-#: src/AbroadMissionFormBuilder.php
-msgid "Pays de destination"
-msgstr "Zielland"
+#: src/ItemReturnFormBuilder.php:195
+msgid "Article concerné"
+msgstr "Betroffener Artikel"
 
-#: src/AbroadMissionFormBuilder.php
-msgid "Date de début"
-msgstr "Startdatum"
+#: src/ItemReturnFormBuilder.php:216
+msgid "Photo du défaut ou preuve d'achat"
+msgstr "Foto des Mangels oder Kaufbeleg"
 
-#: src/AbroadMissionFormBuilder.php
-msgid "Date de fin"
-msgstr "Enddatum"
+#: src/UserAccountCreationFormBuilder.php:175
+msgid "Nom complet de la personne concernée"
+msgstr "Vollständiger Name der betroffenen Person"
 
-#: src/AbroadMissionFormBuilder.php
-msgid "Motif / précisions"
-msgstr "Grund / Anmerkungen"
+#: src/UserAccountCreationFormBuilder.php:184
+msgid "Date d'arrivée souhaitée"
+msgstr "Gewünschtes Ankunftsdatum"
 
-#: src/AbroadMissionFormBuilder.php
-msgid "du"
-msgstr "vom"
+#: src/UserAccountCreationFormBuilder.php:198
+msgid "Poste ou service"
+msgstr "Position oder Abteilung"
 
-#: src/AbroadMissionFormBuilder.php
-msgid "au"
-msgstr "bis"
+#: src/ContractReviewFormBuilder.php:178
+msgid "Type de contrat concerné"
+msgstr "Betroffene Vertragsart"
 
-#: src/LeaveRequestFormBuilder.php
-msgid "Type de congé"
-msgstr "Urlaubsart"
+#: src/ContractReviewFormBuilder.php:187
+msgid "Document à faire relire ou signer"
+msgstr "Zu prüfendes oder zu unterzeichnendes Dokument"
 
-#: src/LeaveRequestFormBuilder.php
-msgid "Date de réception du justificatif médical"
-msgstr "Eingangsdatum der ärztlichen Bescheinigung"
+#: src/RelocationArchivingFormBuilder.php:193
+msgid "Localisation concernée (départ et/ou arrivée)"
+msgstr "Betroffener Standort (Abgang und/oder Ankunft)"
 
-#: src/VpnAccessFormBuilder.php
-msgid "Réseau ou ressource à atteindre"
-msgstr "Zu erreichendes Netzwerk oder Ressource"
-
-#: src/VpnAccessFormBuilder.php
-msgid "Durée d'accès"
-msgstr "Zugriffsdauer"
-
-#: src/VpnAccessFormBuilder.php
-msgid "Date de fin d'accès souhaitée"
-msgstr "Gewünschtes Enddatum des Zugriffs"
-
-#: src/AccessBadgeFormBuilder.php
-msgid "Zone ou local concerné"
-msgstr "Betroffener Bereich oder Raum"
-
-#: src/AccessBadgeFormBuilder.php
-msgid "Date de début d'accès"
-msgstr "Startdatum des Zugriffs"
-
-#: src/AccessBadgeFormBuilder.php
-msgid "Date de fin d'accès"
-msgstr "Enddatum des Zugriffs"
-
-#: src/SoftwareLicenseFormBuilder.php
-msgid "Logiciel concerné"
-msgstr "Betroffene Software"
-
-#: src/SoftwareLicenseFormBuilder.php
-msgid "Quantité de licences"
-msgstr "Anzahl der Lizenzen"
-
-#: src/SoftwareLicenseFormBuilder.php
-msgid "Précisions"
-msgstr "Anmerkungen"
-
-#: src/MeetingRoomFormBuilder.php
-msgid "Type de demande"
-msgstr "Anfrageart"
-
-#: src/MeetingRoomFormBuilder.php
-msgid "Salle souhaitée"
-msgstr "Gewünschter Raum"
-
-#: src/MeetingRoomFormBuilder.php
-msgid "Date souhaitée"
-msgstr "Gewünschtes Datum"
-
-#: src/MeetingRoomFormBuilder.php
-msgid "Équipement concerné"
-msgstr "Betroffene Ausstattung"
-
-#: src/MeetingRoomFormBuilder.php
-msgid "Description du problème"
-msgstr "Beschreibung des Problems"
-
-#: src/StaffMovementFormBuilder.php
-msgid "Nom du salarié concerné"
-msgstr "Name des betroffenen Mitarbeiters"
-
-#: src/StaffMovementFormBuilder.php
-msgid "Type de mouvement"
-msgstr "Art der Personalbewegung"
-
-#: src/StaffMovementFormBuilder.php
-msgid "Poste concerné"
-msgstr "Betroffene Stelle"
-
-#: src/StaffMovementFormBuilder.php
-msgid "Date d'effet"
-msgstr "Datum des Inkrafttretens"
-
-#: src/StaffMovementFormBuilder.php
-msgid "le"
-msgstr "am"
-
-#: front/wizard.php
-msgid "Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de ticket calculé automatiquement)."
-msgstr "Dienst \"Antrag auf Zugangsrecht / Dienstreise ins Ausland\" erstellt (Ticket-Titel automatisch berechnet)."
-
-#: front/wizard.php
-msgid "Service \"Demande de licence logicielle\" enrichi (titre de ticket calculé automatiquement)."
-msgstr "Dienst \"Softwarelizenzantrag\" erweitert (Ticket-Titel automatisch berechnet)."
-
-#: front/wizard.php
-msgid "Service \"Demande d'accès VPN\" enrichi (question conditionnelle, titre de ticket calculé automatiquement)."
-msgstr "Dienst \"VPN-Zugangsantrag\" erweitert (bedingte Frage, Ticket-Titel automatisch berechnet)."
-
-#: front/wizard.php
-msgid "Service \"Demande de badge d'accès\" enrichi (titre de ticket calculé automatiquement)."
-msgstr "Dienst \"Zugangsausweisantrag\" erweitert (Ticket-Titel automatisch berechnet)."
-
-#: front/wizard.php
-msgid "Service \"Demande de congé ou absence\" enrichi (question conditionnelle, titre de ticket calculé automatiquement)."
-msgstr "Dienst \"Urlaubs- oder Abwesenheitsantrag\" erweitert (bedingte Frage, Ticket-Titel automatisch berechnet)."
-
-#: front/wizard.php
-msgid "Service \"Déclarer une arrivée, un départ ou une mutation\" enrichi (question conditionnelle, titre de ticket calculé automatiquement)."
-msgstr "Dienst \"Ankunft, Abgang oder Versetzung melden\" erweitert (bedingte Frage, Ticket-Titel automatisch berechnet)."
-
-#: front/wizard.php
-msgid "Service \"Réservation ou problème d'équipement de salle de réunion\" enrichi (question conditionnelle)."
-msgstr "Dienst \"Besprechungsraum buchen oder Ausstattungsproblem\" erweitert (bedingte Frage)."
-
-#: templates/wizard.html.twig
-msgid "Quelques services vont plus loin avec de vraies questions (dates, quantités...) : le titre du ticket est alors calculé automatiquement, et/ou certaines questions ne s'affichent que selon une réponse précédente (voir les badges ci-dessous)."
-msgstr "Einige Dienste gehen weiter mit echten Fragen (Daten, Mengen...): Der Ticket-Titel wird dann automatisch berechnet, und/oder manche Fragen erscheinen nur je nach einer vorherigen Antwort (siehe die Abzeichen unten)."
-
-#: templates/wizard.html.twig
-msgid "titre calculé"
-msgstr "berechneter Titel"
-
-#: templates/wizard.html.twig
-msgid "Titre de ticket calculé automatiquement à partir des réponses"
-msgstr "Ticket-Titel automatisch aus den Antworten berechnet"
-
-#: templates/wizard.html.twig
-msgid "question conditionnelle"
-msgstr "bedingte Frage"
-
-#: templates/wizard.html.twig
-msgid "Certaines questions ne s'affichent que selon la réponse donnée à une question précédente"
-msgstr "Manche Fragen erscheinen nur je nach der Antwort auf eine vorherige Frage"
-
-#: templates/wizard.html.twig
-msgid "Pilote : un formulaire plus avancé que les autres services ci-dessus, avec de vraies questions (pays, dates) et un titre de ticket calculé automatiquement à partir des réponses (nouveau moteur de formulaires GLPI 11)."
-msgstr "Pilot: ein fortschrittlicheres Formular als die anderen Dienste oben, mit echten Fragen (Land, Daten) und einem automatisch aus den Antworten berechneten Ticket-Titel (neue GLPI-11-Formular-Engine)."
-
-#: templates/wizard.html.twig
-msgid "Créer le service \"Demande de droit d'accès / mission à l'étranger\" (branche Ressources Humaines)"
-msgstr "Dienst \"Antrag auf Zugangsrecht / Dienstreise ins Ausland\" erstellen (Bereich Personalwesen)"
-
-#: templates/wizard.html.twig
-msgid "Questions : pays de destination, date de début, date de fin, motif / précisions"
-msgstr "Fragen: Zielland, Startdatum, Enddatum, Grund / Anmerkungen"
-
-#: templates/wizard.html.twig
-msgid "Titre du ticket calculé automatiquement : nom du formulaire + dates de début/fin + pays"
-msgstr "Ticket-Titel automatisch berechnet: Formularname + Start-/Enddatum + Land"
-
-msgid "Ajouter des articles de FAQ pour les utilisateurs finaux"
-msgstr "FAQ-Artikel für Endbenutzer hinzufügen"
-
-msgid "Visibles dans la FAQ du portail libre-service : comment utiliser le catalogue de services, et comment signaler un incident ou faire une demande."
-msgstr "Sichtbar in der FAQ des Self-Service-Portals: wie man den Servicekatalog nutzt und wie man einen Vorfall meldet oder eine Anfrage stellt."
-
-msgid "articles de FAQ"
-msgstr "FAQ-Artikel"
-
-msgid "%d articles de FAQ créés."
-msgstr "%d FAQ-Artikel erstellt."
+#: src/AuditRequestFormBuilder.php:183
+msgid "Type d'audit"
+msgstr "Art des Audits"
 
 #~ msgid "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"
 #~ msgstr "CERT-FR (ANSSI) Sicherheitswarnungs-RSS-Feed hinzufügen"
@@ -2547,388 +3247,8 @@ msgstr "%d FAQ-Artikel erstellt."
 #~ "automatisch einem Kalender zugeordnet: das müssen Sie selbst unter "
 #~ "Konfiguration > Kalender erledigen, sobald sie erstellt sind."
 
-#: src/MailboxRequestFormBuilder.php
-msgid "Adresse ou nom souhaité"
-msgstr "Gewünschte Adresse oder gewünschter Name"
-
-#: src/WifiAccessFormBuilder.php
-msgid "Appareil ou nom du visiteur"
-msgstr "Gerät oder Name des Besuchers"
-
-#: src/ItemReturnFormBuilder.php
-msgid "Article concerné"
-msgstr "Betroffener Artikel"
-
-#: src/SupplyOrderFormBuilder.php
-msgid "Article ou référence souhaité"
-msgstr "Gewünschter Artikel oder gewünschte Referenz"
-
-#: src/OfficeSuppliesFormBuilder.php
-msgid "Article souhaité"
-msgstr "Gewünschter Artikel"
-
-#: src/VehicleIncidentFormBuilder.php
-msgid "Coordonnées et informations du tiers"
-msgstr "Kontaktdaten und Informationen des Dritten"
-
-#: src/RemoteWorkFormBuilder.php
-msgid "Date concernée"
-msgstr "Betroffenes Datum"
-
-#: src/UserAccountCreationFormBuilder.php
-msgid "Date d'arrivée souhaitée"
-msgstr "Gewünschtes Ankunftsdatum"
-
-#: src/EventSupportFormBuilder.php
-msgid "Date de l'événement"
-msgstr "Datum der Veranstaltung"
-
-#: src/SocialMediaPostFormBuilder.php
-msgid "Date de publication souhaitée"
-msgstr "Gewünschtes Veröffentlichungsdatum"
-
-#: src/VehicleIncidentFormBuilder.php
-msgid "Date du sinistre"
-msgstr "Datum des Schadensfalls"
-
-#: src/MailPrintingFormBuilder.php
-msgid "Destinataire et adresse"
-msgstr "Empfänger und Adresse"
-
-#: src/ContractReviewFormBuilder.php
-msgid "Document à faire relire ou signer"
-msgstr "Zu prüfendes oder zu unterzeichnendes Dokument"
-
-#: src/NonConformityFormBuilder.php
-msgid "Domaine ou service concerné"
-msgstr "Betroffener Bereich oder Dienst"
-
-#: src/BreakRoomFormBuilder.php
-msgid "Espace concerné"
-msgstr "Betroffener Bereich"
-
-#: src/PasswordResetFormBuilder.php
-msgid "Identifiant ou compte concerné"
-msgstr "Betroffener Benutzername oder betroffenes Konto"
-
-#: src/InstrumentCalibrationFormBuilder.php
-msgid "Instrument concerné"
-msgstr "Betroffenes Instrument"
-
-#: src/TrainingRequestFormBuilder.php
-msgid "Intitulé de la formation souhaitée"
-msgstr "Bezeichnung der gewünschten Schulung"
-
-#: src/RemoteWorkFormBuilder.php
-msgid "Jour(s) souhaité(s)"
-msgstr "Gewünschte(r) Tag(e)"
-
-#: src/InvoicePaymentFormBuilder.php
-msgid "Justificatif (facture, bon de commande...)"
-msgstr "Beleg (Rechnung, Bestellung...)"
-
-#: src/CurativeMaintenanceFormBuilder.php
-msgid "L'équipement est-il à l'arrêt ?"
-msgstr "Steht die Anlage still?"
-
-#: src/SoftwareBugFormBuilder.php
-msgid "Le problème vous empêche-t-il de travailler ?"
-msgstr "Hindert Sie das Problem an der Arbeit?"
-
-#: src/RelocationArchivingFormBuilder.php
-msgid "Localisation concernée (départ et/ou arrivée)"
-msgstr "Betroffener Standort (Abgang und/oder Ankunft)"
-
-#: src/VideoSurveillanceFormBuilder.php
-msgid "Localisation de l'équipement concerné"
-msgstr "Standort der betroffenen Anlage"
-
-#: src/FurnitureRequestFormBuilder.php
-msgid "Localisation du poste"
-msgstr "Standort des Arbeitsplatzes"
-
-#: src/CleanlinessRequestFormBuilder.php src/DoorLockBadgeFormBuilder.php src/ElectricalInterventionFormBuilder.php src/WaterLeakFormBuilder.php
-msgid "Localisation précise"
-msgstr "Genauer Standort"
-
-#: src/HeatingClimateFormBuilder.php
-msgid "Localisation précise (bâtiment, étage, bureau ou salle)"
-msgstr "Genauer Standort (Gebäude, Stockwerk, Büro oder Raum)"
-
-#: src/RecyclingRequestFormBuilder.php
-msgid "Localisation à collecter"
-msgstr "Abzuholender Standort"
-
-#: src/ProfessionalPhoneFormBuilder.php
-msgid "Modèle actuel à remplacer"
-msgstr "Aktuelles zu ersetzendes Modell"
-
-#: src/FuelCardFormBuilder.php src/FurnitureRequestFormBuilder.php src/PasswordResetFormBuilder.php src/UserAccountDeactivationFormBuilder.php
-msgid "Motif"
-msgstr "Grund"
-
-#: src/LaptopRequestFormBuilder.php src/NewScreenFormBuilder.php src/ProfessionalPhoneFormBuilder.php
-msgid "Motif de la demande"
-msgstr "Grund der Anfrage"
-
-#: src/BreakRoomFormBuilder.php src/DoorLockBadgeFormBuilder.php src/ElectricalInterventionFormBuilder.php src/HeatingClimateFormBuilder.php src/WaterLeakFormBuilder.php
-msgid "Nature du problème"
-msgstr "Art des Problems"
-
-#: src/UserAccountCreationFormBuilder.php
-msgid "Nom complet de la personne concernée"
-msgstr "Vollständiger Name der betroffenen Person"
-
-#: src/TeamCollaborationSpaceFormBuilder.php
-msgid "Nom de l'équipe ou du projet"
-msgstr "Name des Teams oder Projekts"
-
-#: src/EventSupportFormBuilder.php
-msgid "Nom de l'événement"
-msgstr "Name der Veranstaltung"
-
-#: src/UserAccountDeactivationFormBuilder.php
-msgid "Nom de la personne concernée"
-msgstr "Name der betroffenen Person"
-
-#: src/NewScreenFormBuilder.php
-msgid "Nombre d'écrans souhaités"
-msgstr "Gewünschte Anzahl an Bildschirmen"
-
-#: src/LaptopRequestFormBuilder.php
-msgid "Numéro d'inventaire ou nom du poste actuel"
-msgstr "Inventarnummer oder Name des aktuellen Arbeitsplatzes"
-
-#: src/DeliveryTrackingFormBuilder.php
-msgid "Numéro de commande ou de bon de livraison"
-msgstr "Bestellnummer oder Lieferscheinnummer"
-
-#: src/InvoicePaymentFormBuilder.php
-msgid "Numéro de facture ou référence"
-msgstr "Rechnungsnummer oder Referenz"
-
-#: src/WebsiteUpdateFormBuilder.php
-msgid "Page ou section concernée"
-msgstr "Betroffene Seite oder Rubrik"
-
-#: src/VehicleIncidentFormBuilder.php
-msgid "Photos des dommages"
-msgstr "Fotos der Schäden"
-
-#: src/UserAccountCreationFormBuilder.php
-msgid "Poste ou service"
-msgstr "Position oder Abteilung"
-
-#: src/AuditRequestFormBuilder.php src/BreakRoomFormBuilder.php src/CleanlinessRequestFormBuilder.php src/ContractReviewFormBuilder.php src/CurativeMaintenanceFormBuilder.php src/DeliveryTrackingFormBuilder.php src/DoorLockBadgeFormBuilder.php src/ElectricalInterventionFormBuilder.php src/EventSupportFormBuilder.php src/FuelCardFormBuilder.php src/FurnitureRequestFormBuilder.php src/HeatingClimateFormBuilder.php src/InstrumentCalibrationFormBuilder.php src/InvoicePaymentFormBuilder.php src/ItemReturnFormBuilder.php src/LaptopRequestFormBuilder.php src/MailPrintingFormBuilder.php src/MailboxRequestFormBuilder.php src/NewScreenFormBuilder.php src/NonConformityFormBuilder.php src/OfficeSuppliesFormBuilder.php src/PasswordResetFormBuilder.php src/PreventiveMaintenanceFormBuilder.php src/ProfessionalPhoneFormBuilder.php src/RecyclingRequestFormBuilder.php src/RelocationArchivingFormBuilder.php src/RemoteWorkFormBuilder.php src/SocialMediaPostFormBuilder.php src/SoftwareBugFormBuilder.php src/SoftwareInstallFormBuilder.php src/SupplyOrderFormBuilder.php src/TeamCollaborationSpaceFormBuilder.php src/TrainingRequestFormBuilder.php src/UserAccountCreationFormBuilder.php src/UserAccountDeactivationFormBuilder.php src/VehicleIncidentFormBuilder.php src/VehicleMaintenanceFormBuilder.php src/VideoSurveillanceFormBuilder.php src/WaterLeakFormBuilder.php src/WebsiteUpdateFormBuilder.php src/WifiAccessFormBuilder.php src/WorkplaceSafetyFormBuilder.php
-msgid "Précisions complémentaires"
-msgstr "Zusätzliche Angaben"
-
-#: src/AuditRequestFormBuilder.php src/PreventiveMaintenanceFormBuilder.php src/TrainingRequestFormBuilder.php
-msgid "Période souhaitée"
-msgstr "Gewünschter Zeitraum"
-
-#: src/OfficeSuppliesFormBuilder.php src/SupplyOrderFormBuilder.php
-msgid "Quantité"
-msgstr "Menge"
-
-#: src/InstrumentCalibrationFormBuilder.php
-msgid "Référence ou numéro de série"
-msgstr "Referenz- oder Seriennummer"
-
-#: src/SocialMediaPostFormBuilder.php
-msgid "Réseau(x) concerné(s)"
-msgstr "Betroffene(s) Netzwerk(e)"
-
-#: src/NewScreenFormBuilder.php
-msgid "Taille souhaitée (ex : 24 pouces)"
-msgstr "Gewünschte Größe (z. B. 24 Zoll)"
-
-#: src/WifiAccessFormBuilder.php
-msgid "Type d'accès"
-msgstr "Zugriffsart"
-
-#: src/TeamCollaborationSpaceFormBuilder.php
-msgid "Type d'accès souhaité"
-msgstr "Gewünschte Zugriffsart"
-
-#: src/ProfessionalPhoneFormBuilder.php
-msgid "Type d'appareil souhaité"
-msgstr "Gewünschter Gerätetyp"
-
-#: src/AuditRequestFormBuilder.php
-msgid "Type d'audit"
-msgstr "Art des Audits"
-
-#: src/VehicleMaintenanceFormBuilder.php
-msgid "Type d'entretien"
-msgstr "Wartungsart"
-
-#: src/ContractReviewFormBuilder.php
-msgid "Type de contrat concerné"
-msgstr "Betroffene Vertragsart"
-
-#: src/VideoSurveillanceFormBuilder.php
-msgid "Type de dysfonctionnement"
-msgstr "Art der Störung"
-
-#: src/RecyclingRequestFormBuilder.php
-msgid "Type de déchet concerné"
-msgstr "Betroffene Abfallart"
-
-#: src/FurnitureRequestFormBuilder.php
-msgid "Type de mobilier concerné"
-msgstr "Betroffene Möbelart"
-
-#: src/WebsiteUpdateFormBuilder.php
-msgid "Type de modification"
-msgstr "Art der Änderung"
-
-#: src/NonConformityFormBuilder.php
-msgid "Type de non-conformité"
-msgstr "Art der Nichtkonformität"
-
-#: src/EventSupportFormBuilder.php
-msgid "Type de support souhaité"
-msgstr "Gewünschte Art der Unterstützung"
-
-#: src/FuelCardFormBuilder.php
-msgid "Type demandé"
-msgstr "Angeforderter Typ"
-
-#: src/VehicleIncidentFormBuilder.php
-msgid "Un tiers est-il impliqué ?"
-msgstr "Ist ein Dritter beteiligt?"
-
-#: src/FuelCardFormBuilder.php src/VehicleIncidentFormBuilder.php src/VehicleMaintenanceFormBuilder.php
-msgid "Véhicule concerné (immatriculation)"
-msgstr "Betroffenes Fahrzeug (Kennzeichen)"
-
-#: src/CurativeMaintenanceFormBuilder.php src/PreventiveMaintenanceFormBuilder.php
-msgid "Équipement ou installation concerné"
-msgstr "Betroffene Anlage oder Einrichtung"
-
-#: src/SoftwareBugFormBuilder.php
-msgid "Poste ou appareil concerné (si le bug est lié à un poste précis)"
-msgstr "Betroffener Arbeitsplatz oder betroffenes Gerät (falls der Fehler an ein bestimmtes Gerät gebunden ist)"
-
-#: src/SoftwareBugFormBuilder.php
-msgid "Capture d'écran de l'erreur"
-msgstr "Screenshot des Fehlers"
-
-#: src/LaptopRequestFormBuilder.php
-msgid "Poste actuel à remplacer"
-msgstr "Zu ersetzender aktueller Arbeitsplatz"
-
-#: src/NewScreenFormBuilder.php
-msgid "Poste auquel connecter l'écran (si déjà connu)"
-msgstr "Arbeitsplatz, an den der Bildschirm angeschlossen wird (falls bereits bekannt)"
-
-#: src/ItemReturnFormBuilder.php
-msgid "Photo du défaut ou preuve d'achat"
-msgstr "Foto des Mangels oder Kaufbeleg"
-
-#: src/PasswordResetFormBuilder.php
-msgid "Compte utilisateur concerné"
-msgstr "Betroffenes Benutzerkonto"
-
-#: src/VehicleIncidentFormBuilder.php src/VehicleMaintenanceFormBuilder.php src/FuelCardFormBuilder.php
-msgid "Véhicule concerné"
-msgstr "Betroffenes Fahrzeug"
-
-#: src/VideoSurveillanceFormBuilder.php src/DoorLockBadgeFormBuilder.php
-msgid "Équipement concerné (si déjà référencé)"
-msgstr "Betroffene Ausrüstung (falls bereits erfasst)"
-
-#: src/NonConformityFormBuilder.php
-msgid "Photo ou preuve documentaire"
-msgstr "Foto oder Nachweisdokument"
-
-#: src/VehicleIncidentFormBuilder.php
-msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
-msgstr "In welchem Ausmaß ist das Fahrzeug immobilisiert oder unbrauchbar?"
-
-msgid "Analyse de l'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré."
-msgstr "Analyse des aktuellen Zustands Ihrer GLPI-Instanz — unabhängig davon, was dieser Assistent selbst konfiguriert hat."
-
-msgid "Aucun problème détecté par cet audit."
-msgstr "Von diesem Audit wurde kein Problem festgestellt."
-
-msgid "Corriger"
-msgstr "Korrigieren"
-
-msgid "Lancer l'audit"
-msgstr "Audit starten"
-
-#, php-format
-msgid "%d autres services du catalogue enrichis avec des questions ciblées et un titre de ticket calculé automatiquement."
-msgstr "%d weitere Katalogdienste mit gezielten Fragen und automatisch berechnetem Ticket-Titel angereichert."
-
-msgid "Correction appliquée."
-msgstr "Korrektur angewendet."
-
-msgid "Audit de configuration"
-msgstr "Konfigurationsaudit"
-
-#, php-format
-msgid "%d entité sans adresse renseignée"
-msgid_plural "%d entités sans adresse renseignée"
-msgstr[0] "%d Entität ohne hinterlegte Adresse"
-msgstr[1] "%d Entitäten ohne hinterlegte Adresse"
-
-msgid "Renseignez l'adresse de chaque entité concernée, utile pour les documents générés et la conformité."
-msgstr "Tragen Sie die Adresse jeder betroffenen Entität ein — nützlich für generierte Dokumente und die Compliance."
-
-msgid "Aucun SLA n'est configuré"
-msgstr "Es ist kein SLA konfiguriert"
-
-msgid "Aucun engagement de délai (temps de résolution, escalade...) n'est suivi sur les tickets."
-msgstr "Auf Tickets wird keine Fristzusage (Lösungszeit, Eskalation...) verfolgt."
-
-msgid "Définissez au moins un SLA via l'assistant de configuration si des engagements de délai s'appliquent."
-msgstr "Definieren Sie über den Konfigurationsassistenten mindestens ein SLA, falls Fristzusagen gelten."
-
-msgid "Configuration générale"
-msgstr "Allgemeine Konfiguration"
-
-msgid "Adresse email d'administration non configurée"
-msgstr "Administrations-E-Mail-Adresse nicht konfiguriert"
-
-msgid "Aucune adresse email d'administration n'est renseignée."
-msgstr "Es ist keine Administrations-E-Mail-Adresse hinterlegt."
-
-#, php-format
-msgid "L'adresse email d'administration est toujours celle par défaut (%s)."
-msgstr "Die Administrations-E-Mail-Adresse ist noch die Standardadresse (%s)."
-
-msgid "Renseignez une véritable adresse email d'administration dans la configuration générale de GLPI."
-msgstr "Hinterlegen Sie eine echte Administrations-E-Mail-Adresse in der allgemeinen GLPI-Konfiguration."
-
-msgid "Calendriers"
-msgstr "Kalender"
-
-msgid "Aucun calendrier n'est configuré"
-msgstr "Es ist kein Kalender konfiguriert"
-
-msgid "Les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées sans calendrier."
-msgstr "SLA-/OLA-Fristen (Geschäftszeiten) können ohne Kalender nicht berechnet werden."
-
-msgid "Créez au moins un calendrier via l'assistant de configuration ou manuellement."
-msgstr "Erstellen Sie über den Konfigurationsassistenten oder manuell mindestens einen Kalender."
-
-msgid "Les notifications sont désactivées"
-msgstr "Benachrichtigungen sind deaktiviert"
-
-msgid "Aucune notification (nouveau ticket, réponse, rappel...) n'est envoyée par GLPI."
-msgstr "GLPI sendet keine Benachrichtigung (neues Ticket, Antwort, Erinnerung...)."
-
-msgid "Activez les notifications dans la configuration générale de GLPI."
-msgstr "Aktivieren Sie die Benachrichtigungen in der allgemeinen GLPI-Konfiguration."
-
-msgid "Aucun statut d'élément n'est défini"
-msgstr "Es ist kein Elementstatus definiert"
-
-msgid "Le parc ne peut pas exprimer \"en stock\", \"attribué\", \"en panne\"... sans au moins un statut."
-msgstr "Der Bestand kann ohne mindestens einen Status nicht \"auf Lager\", \"zugewiesen\", \"defekt\"... ausdrücken."
-
-msgid "Utilisez l'assistant de configuration (étape Statuts) ou créez-en manuellement."
-msgstr "Verwenden Sie den Konfigurationsassistenten (Schritt Status) oder erstellen Sie welche manuell."
+#~ msgid "Identifiant ou compte concerné"
+#~ msgstr "Betroffener Benutzername oder betroffenes Konto"
+
+#~ msgid "Numéro d'inventaire ou nom du poste actuel"
+#~ msgstr "Inventarnummer oder Name des aktuellen Arbeitsplatzes"

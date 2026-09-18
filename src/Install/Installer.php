@@ -59,6 +59,7 @@ final class Installer
                 `is_active` tinyint NOT NULL DEFAULT 1,
                 `sort_order` int NOT NULL DEFAULT 0,
                 `comment` text,
+                `snapshot` longtext,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -73,6 +74,17 @@ final class Installer
             }
 
             $this->insertDefaultProfiles();
+        } else {
+            // Système de Blueprints (issue #113) : une ligne dont `snapshot` est renseigné EST un
+            // Blueprint complet (instantané de `Config::getDefaults()`), pas seulement un
+            // pointeur vers un `type` figé — voir GlpiPlugin\Configurationglpiauto\Blueprint\
+            // BlueprintSerializer. `longtext` (pas `text`) : un `Config` complet avec ses ~8
+            // champs déjà JSON-imbriqués peut dépasser la limite de 64 Ko de `text` une fois
+            // réencodé (même leçon que la corrélation CPE d'un plugin jumeau de cet auteur cette
+            // même session, qui a réellement dépassé cette limite sur une vraie donnée).
+            // addField() est idempotent (no-op si la colonne existe déjà), pas besoin de
+            // fieldExists() en plus, même convention que le reste de ce fichier.
+            $migration->addField(self::PROFILES_TABLE, 'snapshot', 'longtext');
         }
 
         if (!$DB->tableExists(self::CONFIGS_TABLE)) {

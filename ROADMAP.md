@@ -1253,12 +1253,16 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
   réellement — un état non ambigu (activées/désactivées), contrairement à une adresse ou un SLA
   dont la bonne valeur dépend de l'organisation et que ce plugin ne devine jamais à sa place.
 
-- 📦 **Système de Blueprints**
-  - Export complet de la configuration
-  - Format JSON standardisé
-  - Création de bibliothèque de Blueprints
-  - Partage entre instances
-  - Import de configurations prédéfinies
+- ✅ **Système de Blueprints (issue #113) — livré**, un profil de configuration
+  (`ConfigurationProfile`, colonne `snapshot`) peut désormais capturer un instantané JSON complet
+  de `Config` (~135 champs, format standardisé et versionné —
+  `src/Blueprint/BlueprintSerializer.php`), l'exporter en fichier `.json` téléchargeable, et un
+  fichier Blueprint peut être importé (`front/blueprint_import.php`) comme nouveau profil.
+  "Partage entre instances" pris au sens portabilité par fichier, pas un service en ligne — un
+  vrai "Marketplace communautaire" reste un item séparé, bien plus tard (issue #128, v2.0.3).
+  Comme le Mode Audit ci-dessus, jamais d'application silencieuse : importer/appliquer un
+  Blueprint pré-remplit `Config` puis redirige vers l'assistant pour revue humaine de chaque
+  étape avant toute écriture réelle sur les objets GLPI.
 
 - ⏪ **Fonctionnalité de Rollback**
   - Restauration complète des configurations précédentes
@@ -1421,7 +1425,7 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 
 ### Version 1.1
 - [ ] Mode Audit fonctionnel
-- [ ] Blueprints implémentés
+- [x] Blueprints implémentés
 - [ ] Rollback opérationnel
 - [ ] Dry Run amélioré
 - [ ] Tests d'intégration complets
