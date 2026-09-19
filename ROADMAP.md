@@ -1412,10 +1412,18 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
   (case à cocher dans l'étape « Réglages généraux »), sans dupliquer le tableau de bord
   « Assistance » existant, et sans jamais l'écraser sur un second passage de l'assistant.
 
-- ✨ **Bonnes pratiques automatiques**
-  - Analyse continue de la configuration
-  - Suggestions d'amélioration
-  - Optimisation automatique
+- ✅ **Bonnes pratiques automatiques** (issue #125) — livré, périmètre réduit : « analyse continue
+  de la configuration » et « suggestions d'amélioration » sont déjà exactement ce que fait le
+  registre d'audit livré sous #112 (`AuditService`, `src/Audit/`), conçu pour grandir sans toucher
+  `front/audit.php` ; « optimisation automatique » y est déjà tranchée au sens strict (jamais sans
+  clic explicite d'un humain). Ce qui restait vraiment à faire : agrandir ce registre plutôt que le
+  refaire. 3 nouvelles vérifications ajoutées, comblant deux vrais trous de couverture absents des 6
+  vérifications de #112 — sécurité des comptes (`DefaultCredentialsCheck` : détecte les comptes de
+  démonstration GLPI encore sur leur mot de passe d'usine, un vrai positif confirmé sur l'instance
+  de développement partagée ; `WeakPasswordPolicyCheck` : longueur/complexité de mot de passe sous
+  le plancher ANSSI/NIST) et catégorisation des tickets (`NoTicketCategoriesCheck`, même structure
+  que les vérifications statuts/calendrier/SLA déjà en place). Aucune des trois n'est corrigible
+  automatiquement, pour la même raison que toutes les vérifications existantes.
 
 ---
 

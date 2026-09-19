@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: configurationglpiauto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 17:31+0000\n"
+"POT-Creation-Date: 2026-09-19 18:38+0000\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -405,7 +405,7 @@ msgstr "Automatische Eskalation N1 → N2 (beim obigen Schwellenwert)"
 msgid "Escalade automatique N2 → N3 (à l'échéance du SLA)"
 msgstr "Automatische Eskalation N2 → N3 (bei Ablauf des SLA)"
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig src/Audit/Checks/NoTicketCategoriesCheck.php:40
 msgid "Catégories de tickets"
 msgstr "Ticket-Kategorien"
 
@@ -1037,7 +1037,10 @@ msgid ""
 "Créer un tableau de bord natif GLPI mettant en avant la conformité SLA "
 "(tickets en retard par technicien et par groupe), en plus des indicateurs "
 "déjà présents sur le tableau de bord « Assistance »"
-msgstr "Erstellt ein natives GLPI-Dashboard, das die SLA-Konformität hervorhebt (verspätete Tickets, nach Techniker und nach Gruppe), zusätzlich zu den bereits im Dashboard „Support“ vorhandenen Kennzahlen"
+msgstr ""
+"Erstellt ein natives GLPI-Dashboard, das die SLA-Konformität hervorhebt "
+"(verspätete Tickets, nach Techniker und nach Gruppe), zusätzlich zu den "
+"bereits im Dashboard „Support“ vorhandenen Kennzahlen"
 
 #: templates/wizard.html.twig
 msgid "Activer l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)"
@@ -3405,6 +3408,26 @@ msgstr ""
 "Definieren Sie über den Konfigurationsassistenten mindestens ein SLA, falls "
 "Fristzusagen gelten."
 
+#: src/Audit/Checks/NoTicketCategoriesCheck.php:57
+msgid "Aucune catégorie de ticket n'est configurée"
+msgstr "Es ist keine Ticket-Kategorie konfiguriert"
+
+#: src/Audit/Checks/NoTicketCategoriesCheck.php:59
+msgid ""
+"Les tickets ne peuvent pas être classifiés ni routés automatiquement vers la "
+"bonne équipe sans au moins une catégorie."
+msgstr "Tickets können ohne mindestens eine Kategorie nicht klassifiziert oder automatisch an das richtige Team weitergeleitet werden."
+"Les tickets ne peuvent pas être classifiés ni routés automatiquement vers la "
+"bonne équipe sans au moins une catégorie."
+
+#: src/Audit/Checks/NoTicketCategoriesCheck.php:63
+msgid ""
+"Utilisez l'assistant de configuration (étape Catégories de tickets) ou créez-"
+"en manuellement."
+msgstr "Verwenden Sie den Konfigurationsassistenten (Schritt Ticket-Kategorien) oder erstellen Sie welche manuell."
+"Verwenden Sie den Konfigurationsassistenten (Schritt Status) oder erstellen "
+"Sie welche manuell."
+
 #: src/Audit/Checks/DefaultAdminEmailCheck.php:43
 msgid "Configuration générale"
 msgstr "Allgemeine Konfiguration"
@@ -3429,6 +3452,49 @@ msgid ""
 msgstr ""
 "Hinterlegen Sie eine echte Administrations-E-Mail-Adresse in der allgemeinen "
 "GLPI-Konfiguration."
+
+#: src/Audit/Checks/WeakPasswordPolicyCheck.php:44
+msgid "Mots de passe"
+msgstr "Passwörter"
+
+#: src/Audit/Checks/WeakPasswordPolicyCheck.php:60
+msgid "longueur minimale inférieure à 8 caractères"
+msgstr "Mindestlänge unter 8 Zeichen"
+
+#: src/Audit/Checks/WeakPasswordPolicyCheck.php:69
+msgid "aucune exigence de complexité (chiffre, lettre, majuscule ou symbole)"
+msgstr "keine Komplexitätsanforderung (Zahl, Buchstabe, Großbuchstabe oder Symbol)"
+
+#: src/Audit/Checks/WeakPasswordPolicyCheck.php:80
+msgid "La politique de mot de passe est faible"
+msgstr "Die Passwortrichtlinie ist schwach"
+
+#: src/Audit/Checks/WeakPasswordPolicyCheck.php:83
+msgid ""
+"Renforcez la politique de mot de passe dans la configuration générale de "
+"GLPI : au moins 8 caractères et une exigence de complexité."
+msgstr "Verschärfen Sie die Passwortrichtlinie in der allgemeinen Konfiguration von GLPI: mindestens 8 Zeichen und eine Komplexitätsanforderung."
+"Renforcez la politique de mot de passe dans la configuration générale de "
+"GLPI : au moins 8 caractères et une exigence de complexité."
+
+#: src/Audit/Checks/DefaultCredentialsCheck.php:56
+msgid "Comptes par défaut"
+msgstr "Standardkonten"
+
+#: src/Audit/Checks/DefaultCredentialsCheck.php:89
+#, php-format
+msgid "%d compte par défaut utilise encore son mot de passe d'usine"
+msgid_plural "%d comptes par défaut utilisent encore leur mot de passe d'usine"
+msgstr[0] "%d Standardkonto verwendet noch sein werkseitiges Passwort"
+msgstr[1] "%d Standardkonten verwenden noch ihr werkseitiges Passwort"
+
+#: src/Audit/Checks/DefaultCredentialsCheck.php:98
+msgid ""
+"Changez immédiatement le mot de passe de ces comptes, ou désactivez-les "
+"s'ils ne sont pas utilisés : ce sont des identifiants publiquement connus."
+msgstr "Ändern Sie sofort das Passwort dieser Konten oder deaktivieren Sie sie, falls sie nicht verwendet werden: Es handelt sich um öffentlich bekannte Zugangsdaten."
+"Changez immédiatement le mot de passe de ces comptes, ou désactivez-les "
+"s'ils ne sont pas utilisés : ce sont des identifiants publiquement connus."
 
 #: src/Audit/Checks/NoActiveCalendarCheck.php:39
 msgid "Calendriers"

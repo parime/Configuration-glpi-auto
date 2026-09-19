@@ -18,11 +18,14 @@
 namespace GlpiPlugin\Configurationglpiauto\Audit;
 
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultAdminEmailCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultCredentialsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\EntitiesWithoutAddressCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoActiveCalendarCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoSlaConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoStatesConfiguredCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoTicketCategoriesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NotificationsDisabledCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\WeakPasswordPolicyCheck;
 use LogicException;
 
 /**
@@ -46,6 +49,9 @@ final class AuditService
             NoStatesConfiguredCheck::class,
             NoActiveCalendarCheck::class,
             NoSlaConfiguredCheck::class,
+            NoTicketCategoriesCheck::class,
+            DefaultCredentialsCheck::class,
+            WeakPasswordPolicyCheck::class,
         ];
     }
 
