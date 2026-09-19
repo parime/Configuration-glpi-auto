@@ -123,4 +123,24 @@ final class BlueprintWorkflowTest extends TestCase
         $this->assertSame(Config::getDefaults()['branding_primary_color'], $imported['branding_primary_color']);
         $this->assertSame(Config::getDefaults()['calendar_begin'], $imported['calendar_begin']);
     }
+
+    /**
+     * Export sélectif par catégorie (issue #117), exercé contre le vrai `Config` en direct plutôt
+     * qu'un petit jeu de données à la main : exporter, filtrer à un seul champ, réimporter — seul
+     * ce champ doit provenir du fichier filtré, tout le reste doit retomber sur les vraies valeurs
+     * par défaut (jamais sur la valeur réelle non retenue dans le fichier).
+     */
+    public function testSelectivelyExportedBlueprintOnlyCarriesTheChosenFieldOnReimport(): void
+    {
+        $liveFields = Config::getConfig()->fields;
+        $exported = BlueprintSerializer::export($liveFields, 'Export sélectif', PLUGIN_CONFIGURATIONGLPIAUTO_VERSION);
+
+        $filtered = BlueprintSerializer::filterConfig($exported, ['entity_mode']);
+        $this->assertSame(['entity_mode' => $liveFields['entity_mode']], $filtered['config']);
+
+        $imported = BlueprintSerializer::import($filtered, Config::getDefaults());
+
+        $this->assertSame($liveFields['entity_mode'], $imported['entity_mode']);
+        $this->assertSame(Config::getDefaults()['branding_primary_color'], $imported['branding_primary_color'], 'A field left out of the selective export must fall back to the real default, never the live value it was never given.');
+    }
 }

@@ -16,51 +16,31 @@
  */
 
 use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
+use GlpiPlugin\Configurationglpiauto\Blueprint\FieldGroupLabel;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigHistory;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
 Session::checkRight(Config::$rightname, READ);
 
-/**
- * Regroupement purement visuel par préfixe de nom de champ (calculé, jamais une table de
- * correspondance figée à maintenir) — voir la docblock de BlueprintSerializer::diff(). Repli sur le
- * préfixe brut si absent de cette petite table de libellés lisibles : dégradation propre, pas une
- * exigence d'exhaustivité dès le jour 1 (un futur champ `Config` tombe automatiquement dans son
- * groupe, avec ou sans libellé traduit). Une fermeture locale plutôt qu'une fonction/constante
- * globale : ce fichier n'est pas namespacé (convention de ce plugin pour tous les `front/*.php`),
- * une déclaration globale polluerait inutilement cet espace de noms partagé.
- */
-$groupLabels = [
-    'entity' => __('Entités', 'configurationglpiauto'), 'calendar' => __('Calendrier', 'configurationglpiauto'), 'sla' => __('SLA', 'configurationglpiauto'), 'ola' => __('OLA', 'configurationglpiauto'),
-    'escalation' => __('Escalade', 'configurationglpiauto'), 'category' => __('Catégories', 'configurationglpiauto'), 'state' => __('Statuts', 'configurationglpiauto'),
-    'branding' => __('Personnalisation', 'configurationglpiauto'), 'notifications' => __('Notifications', 'configurationglpiauto'), 'ldap' => __('LDAP', 'configurationglpiauto'),
-    'location' => __('Lieux', 'configurationglpiauto'), 'ticket' => __('Tickets', 'configurationglpiauto'), 'task' => __('Tâches', 'configurationglpiauto'), 'validation' => __('Validations', 'configurationglpiauto'),
-    'change' => __('Changements', 'configurationglpiauto'), 'project' => __('Projets', 'configurationglpiauto'), 'kb' => __('Base de connaissances', 'configurationglpiauto'),
-    'manufacturer' => __('Fabricants', 'configurationglpiauto'), 'document' => __('Documents', 'configurationglpiauto'), 'planning' => __('Planning', 'configurationglpiauto'),
-    'satisfaction' => __('Satisfaction', 'configurationglpiauto'), 'committee' => __('Comité de validation', 'configurationglpiauto'), 'wait' => __('Raisons d\'attente', 'configurationglpiauto'),
-    'service' => __('Catalogue de services', 'configurationglpiauto'), 'abroad' => __('Missions à l\'étranger', 'configurationglpiauto'), 'solution' => __('Solutions', 'configurationglpiauto'),
-    'followup' => __('Suivis', 'configurationglpiauto'), 'user' => __('Utilisateurs', 'configurationglpiauto'), 'field' => __('Unicité des champs', 'configurationglpiauto'),
-    'rss' => __('Flux RSS', 'configurationglpiauto'), 'line' => __('Lignes téléphoniques', 'configurationglpiauto'), 'asset' => __('Types d\'actifs', 'configurationglpiauto'),
-    'software' => __('Licences logicielles', 'configurationglpiauto'), 'certificate' => __('Certificats', 'configurationglpiauto'), 'recurring' => __('Tickets récurrents', 'configurationglpiauto'),
-    'country' => __('Jours fériés', 'configurationglpiauto'), 'vip' => __('Groupe VIP', 'configurationglpiauto'), 'tag' => __('Étiquettes', 'configurationglpiauto'), 'fire' => __('Sécurité incendie', 'configurationglpiauto'),
-    'physical' => __('Sécurité physique', 'configurationglpiauto'), 'general' => __('Réglages généraux', 'configurationglpiauto'), 'financial' => __('Informations financières', 'configurationglpiauto'),
-    'inventory' => __('Inventaire', 'configurationglpiauto'), 'request' => __('Types de requête', 'configurationglpiauto'),
-];
-$groupLabelFor = static function (string $field) use ($groupLabels): string {
-    $prefix = substr($field, 0, strpos($field, '_') ?: strlen($field));
+// Import/Export avancé (issue #117), volet "conflict resolution" : cet écran sert désormais aussi
+// bien à restaurer une entrée d'historique (ConfigHistory, #114) qu'à appliquer un Blueprint
+// (ConfigurationProfile, #113) — les deux sont structurellement le même Blueprint stocké dans une
+// colonne `snapshot`, la même revue diff+sélective a donc du sens pour les deux plutôt que de
+// garder un écrasement complet sans revue pour l'un des deux chemins. `ConfigHistory` par défaut :
+// rétrocompatible avec les liens existants générés avant #117 (sans paramètre `itemtype`).
+$allowedItemtypes = [ConfigHistory::class, ConfigurationProfile::class];
+$requestedItemtype = $_GET['itemtype'] ?? $_POST['itemtype'] ?? ConfigHistory::class;
+$itemtype = in_array($requestedItemtype, $allowedItemtypes, true) ? $requestedItemtype : ConfigHistory::class;
 
-    return $groupLabels[$prefix] ?? ucfirst($prefix);
-};
-
-$item = new ConfigHistory();
+$item = new $itemtype();
 $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
 $item->check($id, READ);
 
 $decoded = json_decode((string) $item->fields['snapshot'], true);
 if (!is_array($decoded)) {
-    Session::addMessageAfterRedirect(__('Cet historique ne contient aucun Blueprint exploitable.', 'configurationglpiauto'), false, ERROR);
-    Html::redirect($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/history.php');
+    Session::addMessageAfterRedirect(__('Ce Blueprint n\'est pas exploitable.', 'configurationglpiauto'), false, ERROR);
+    Html::back();
 }
 
 if (isset($_POST['restore_all']) || isset($_POST['restore_selected'])) {
@@ -81,21 +61,33 @@ if (isset($_POST['restore_all']) || isset($_POST['restore_selected'])) {
     Html::redirect(ConfigurationProfile::getSearchURL());
 }
 
-Html::header(__('Restaurer une configuration', 'configurationglpiauto'), $_SERVER['PHP_SELF'], 'config', ConfigHistory::class);
+Html::header(__('Restaurer une configuration', 'configurationglpiauto'), $_SERVER['PHP_SELF'], 'config', $itemtype);
 
 $fullyDefaulted = BlueprintSerializer::import($decoded, Config::getDefaults());
 $diff = BlueprintSerializer::diff(Config::getConfig()->fields, $fullyDefaulted);
 
 $groups = [];
 foreach ($diff as $field => $values) {
-    $groups[$groupLabelFor($field)][$field] = $values;
+    $groups[FieldGroupLabel::for($field)][$field] = $values;
 }
 ksort($groups);
 
+// Import/Export avancé (issue #117), volet "validation automatique" : Config::prepareInputForAdd()
+// (pur, sans effet de bord — voir ConfigTest) corrige déjà silencieusement les valeurs devenues
+// invalides (branche de catégorie disparue, statut hors liste blanche, profil LDAP non détenu par
+// l'utilisateur qui importe...) sans jamais le dire. Réutilise diff() tel quel plutôt que d'écrire
+// une nouvelle logique de comparaison : $fullyDefaulted est déjà "ce qui serait appliqué",
+// $sanitized "ce qui serait réellement écrit une fois passé par le même sanitizeur que Config::
+// update() applique de toute façon" — jamais bloquant, purement informatif.
+$sanitized = (new Config())->prepareInputForAdd($fullyDefaulted);
+$autoCorrections = BlueprintSerializer::diff($fullyDefaulted, $sanitized);
+
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/history_restore.html.twig', [
-    'item'       => $item,
-    'groups'     => $groups,
-    'csrf_token' => Session::getNewCSRFToken(),
+    'item'             => $item,
+    'itemtype'         => $itemtype,
+    'groups'           => $groups,
+    'auto_corrections' => $autoCorrections,
+    'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 
 Html::footer();

@@ -16,8 +16,8 @@
  */
 
 use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
+use GlpiPlugin\Configurationglpiauto\Blueprint\FieldGroupLabel;
 use GlpiPlugin\Configurationglpiauto\Config;
-use GlpiPlugin\Configurationglpiauto\ConfigHistory;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
 $item = new ConfigurationProfile();
@@ -45,35 +45,70 @@ if (isset($_POST['add'])) {
     Session::addMessageAfterRedirect(__('Configuration actuelle enregistrée comme Blueprint.', 'configurationglpiauto'));
     Html::back();
 } elseif (isset($_POST['apply_snapshot'])) {
-    // Ne réécrit QUE Config (préremplissage) puis redirige vers l'assistant pour revue humaine —
-    // jamais une exécution directe des Builders depuis cet écran, même principe que le choix d'un
-    // profil à l'étape 1 de l'assistant existant.
+    // Import/Export avancé (issue #117), volet "conflict resolution" : n'applique plus directement
+    // ici — redirige vers l'écran de diff+application sélective déjà construit pour la restauration
+    // d'historique (front/history_restore.php, #114), généralisé pour accepter aussi un
+    // ConfigurationProfile. Jamais un écrasement complet sans revue, même principe que le choix
+    // d'un profil à l'étape 1 de l'assistant existant.
     $item->check($_POST['id'], READ);
-    $item->getFromDB($_POST['id']);
-    $decoded = json_decode((string) $item->fields['snapshot'], true);
-    if (!is_array($decoded)) {
-        Session::addMessageAfterRedirect(__('Ce profil ne contient aucun Blueprint exploitable.', 'configurationglpiauto'), false, ERROR);
-        Html::back();
-    }
-    $config = Config::getConfig();
-    // Fonctionnalité de Rollback (issue #114) : capture l'état COURANT (avant écrasement) comme
-    // point d'historique automatique — voir ConfigHistory::captureAutomatic().
-    ConfigHistory::captureAutomatic($config);
-    $fields = BlueprintSerializer::import($decoded, Config::getDefaults());
-    $config->update($fields + ['id' => $config->getID()]);
-    Session::addMessageAfterRedirect(__('Blueprint appliqué. Vérifiez chaque étape avant de valider.', 'configurationglpiauto'));
-    Html::redirect(ConfigurationProfile::getSearchURL());
+    Html::redirect($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/history_restore.php'
+        . '?itemtype=' . ConfigurationProfile::class . '&id=' . (int) $_POST['id']);
 } elseif (isset($_GET['export_snapshot'])) {
     $item->check($_GET['id'], READ);
     $item->getFromDB($_GET['id']);
     if (empty($item->fields['snapshot'])) {
         Html::displayErrorAndDie(__('Ce profil ne contient aucun Blueprint exploitable.', 'configurationglpiauto'));
     }
+    $decoded = json_decode((string) $item->fields['snapshot'], true);
+    if (!is_array($decoded)) {
+        Html::displayErrorAndDie(__('Ce profil ne contient aucun Blueprint exploitable.', 'configurationglpiauto'));
+    }
+
+    // Import/Export avancé (issue #117), volet "export sélectif par catégorie" : sans sélection
+    // explicite, affiche un écran de choix plutôt que de télécharger tout de suite — "Tout
+    // exporter" reproduit exactement le comportement précédent (fichier complet).
+    if (isset($_GET['fields'])) {
+        $onlyFields = array_map('strval', (array) $_GET['fields']);
+        $filtered = BlueprintSerializer::filterConfig($decoded, $onlyFields);
+        $content = json_encode($filtered, JSON_PRETTY_PRINT);
+    } elseif (isset($_GET['all'])) {
+        $content = $item->fields['snapshot'];
+    } else {
+        Html::header(__('Exporter ce Blueprint', 'configurationglpiauto'), $_SERVER['PHP_SELF'], 'config', ConfigurationProfile::class);
+        echo "<div class='card'><div class='card-body'>";
+        echo "<p class='text-muted'>" . __('Choisissez les réglages à inclure dans le fichier exporté, ou exportez l\'intégralité de la configuration.', 'configurationglpiauto') . "</p>";
+        echo "<form method='get' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "'>";
+        echo Html::hidden('id', ['value' => $_GET['id']]);
+        echo Html::hidden('export_snapshot', ['value' => 1]);
+        $groups = [];
+        foreach (array_keys($decoded['config'] ?? []) as $field) {
+            $groups[FieldGroupLabel::for($field)][] = $field;
+        }
+        ksort($groups);
+        foreach ($groups as $groupLabel => $groupFields) {
+            echo "<h3 class='mt-3'>" . htmlspecialchars($groupLabel) . "</h3>";
+            foreach ($groupFields as $field) {
+                echo "<div class='form-check'>";
+                echo "<input class='form-check-input' type='checkbox' name='fields[]' value='" . htmlspecialchars($field) . "' id='field_" . htmlspecialchars($field) . "' checked>";
+                echo "<label class='form-check-label' for='field_" . htmlspecialchars($field) . "'><code>" . htmlspecialchars($field) . "</code></label>";
+                echo "</div>";
+            }
+        }
+        echo "<div class='d-flex gap-2 mt-3'>";
+        echo "<button type='submit' class='btn btn-primary'><i class='ti ti-download'></i> " . __('Exporter la sélection', 'configurationglpiauto') . "</button>";
+        $exportAllUrl = $_SERVER['PHP_SELF'] . '?id=' . (int) $_GET['id'] . '&export_snapshot=1&all=1';
+        echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($exportAllUrl) . "'><i class='ti ti-download'></i> " . __('Exporter l\'intégralité', 'configurationglpiauto') . "</a>";
+        echo "</div>";
+        echo "</form></div></div>";
+        Html::footer();
+        exit;
+    }
+
     $filename = preg_replace('/[^A-Za-z0-9_-]+/', '_', $item->fields['name']) . '-blueprint.json';
     header('Content-Type: application/json; charset=UTF-8');
     header('Content-Disposition: attachment; filename="' . $filename . '"');
-    header('Content-Length: ' . strlen($item->fields['snapshot']));
-    echo $item->fields['snapshot'];
+    header('Content-Length: ' . strlen($content));
+    echo $content;
     exit;
 } else {
     Session::checkRight(ConfigurationProfile::$rightname, READ);
