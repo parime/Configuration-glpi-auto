@@ -87,6 +87,7 @@ use GlpiPlugin\Configurationglpiauto\SatisfactionSurveyBuilder;
 use GlpiPlugin\Configurationglpiauto\ServerAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\ServiceCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\SlaBuilder;
+use GlpiPlugin\Configurationglpiauto\SmtpBuilder;
 use GlpiPlugin\Configurationglpiauto\SocialMediaPostFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareBugFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareInstallFormBuilder;
@@ -778,6 +779,10 @@ if (isset($_POST['finish'])) {
     $paletteApplied = $canUpdateCoreConfig && (new PaletteBuilder())->apply($config);
 
     $generalSettingsApplied = $canUpdateCoreConfig && (new GeneralSettingsBuilder())->apply($config);
+    // Configuration SMTP avancée (issue #121) : écrit directement dans la configuration native
+    // GLPI ($_POST, jamais $config->fields) — voir la docblock de SmtpBuilder pour la raison
+    // (jamais faire transiter un mot de passe par Config/BlueprintSerializer/ConfigHistory).
+    $smtpApplied = $canUpdateCoreConfig && (new SmtpBuilder())->build($_POST);
     $ticketTemplatesApplied = (new TicketTemplateBuilder())->apply($config);
     $helpdeskFormApplied = (new HelpdeskFormBuilder())->apply($config);
     $changeProblemTemplatesApplied = (new ChangeProblemTemplateBuilder())->apply($config);
@@ -884,6 +889,9 @@ if (isset($_POST['finish'])) {
     }
     if ($generalSettingsApplied) {
         $messages[] = __('Réglages généraux GLPI appliqués.', 'configurationglpiauto');
+    }
+    if ($smtpApplied) {
+        $messages[] = __('Configuration SMTP appliquée. Testez l\'envoi depuis Configuration > Notifications.', 'configurationglpiauto');
     }
     if ($ticketTemplatesApplied) {
         $messages[] = __('Modèles de tickets créés et assignés aux profils.', 'configurationglpiauto');
@@ -1076,6 +1084,20 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     // plugin's own READ right otherwise gets an empty field; leaving it blank on submit is a
     // no-op for MarketplaceBuilder::build(), never wipes an existing key.
     'glpi_network_registration_key' => Session::haveRight('config', UPDATE) ? \GLPINetwork::getRegistrationKey() : '',
+    // Configuration SMTP avancée (issue #121) : lu directement depuis la configuration native GLPI
+    // déjà chargée globalement, jamais mirroré dans la table Config propre au plugin (même
+    // raisonnement que glpi_network_registration_key ci-dessus). Le mot de passe lui-même n'est
+    // JAMAIS renvoyé au navigateur — seul un booléen "un mot de passe est déjà enregistré", même
+    // convention que l'écran natif GLPI (front/notificationmailingsetting.form.php).
+    'smtp_defaults' => Session::haveRight('config', UPDATE) ? [
+        'mode' => (int) ($CFG_GLPI['smtp_mode'] ?? MAIL_MAIL),
+        'host' => $CFG_GLPI['smtp_host'] ?? '',
+        'port' => (int) ($CFG_GLPI['smtp_port'] ?? 25),
+        'sender' => $CFG_GLPI['smtp_sender'] ?? '',
+        'check_certificate' => !empty($CFG_GLPI['smtp_check_certificate']),
+        'username' => $CFG_GLPI['smtp_username'] ?? '',
+        'has_existing_password' => !empty($CFG_GLPI['smtp_passwd']),
+    ] : null,
     'satisfaction_plugin_active' => SatisfactionSurveyBuilder::isThirdPartyPluginActive(),
     'vip_plugin_active' => VipBuilder::isThirdPartyPluginActive(),
     'tag_plugin_active' => TagBuilder::isThirdPartyPluginActive(),

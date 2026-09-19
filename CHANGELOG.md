@@ -11,6 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Configuration SMTP avancée (issue #121)** : nouvelle étape d'assistant (18/19, "Configuration
+  SMTP") pour revoir directement les réglages d'envoi de mail natifs de GLPI (serveur, port,
+  adresse d'expédition, identifiants, vérification du certificat TLS). `SmtpBuilder` (nouveau)
+  écrit **directement** dans `Config::setConfigurationValues('core', ...)` — jamais dans `Config`
+  propre à ce plugin ni dans `BlueprintSerializer`/`ConfigHistory` : un mot de passe SMTP qui y
+  transiterait fuiterait en clair dans chaque export de Blueprint et chaque entrée d'historique
+  automatique. GLPI cœur chiffre déjà `smtp_passwd` via `GLPIKey` (confirmé en lisant `Config::
+  setConfigurationValues()`) — cette classe ne réimplémente aucun chiffrement, et le mot de passe
+  n'est jamais pré-rempli/renvoyé au navigateur (même convention que l'écran natif GLPI). "Tests de
+  connectivité" et "gestion des certificats" (texte de l'issue) sont déjà couverts par GLPI cœur
+  (`NotificationMailing::testNotification()`, réglage `smtp_check_certificate`) — un simple lien
+  vers l'écran natif remplace toute réimplémentation, GLPI ne teste de toute façon que la
+  configuration réellement enregistrée, jamais un formulaire en cours de saisie.
 - **Import/Export avancé (issue #117)** : appliquer un Blueprint (`front/profile.form.php`)
   redirige désormais vers l'écran de diff+application sélective déjà construit pour la
   restauration d'historique (#114, `front/history_restore.php`, généralisé aux deux itemtypes) —

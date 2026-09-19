@@ -1559,9 +1559,86 @@
         <p class="text-muted small mb-0">{{ __('Remplace le modèle de notification GLPI par défaut de ces 4 évènements par une version HTML reprenant la couleur et le logo ci-dessus — un e-mail modifié à la main ensuite n\'est plus jamais réécrit par une réexécution de l\'assistant.', 'configurationglpiauto') }}</p>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 18 : Récapitulatif #}
+      {# ---------------------------------------------------------------- Étape 18 : Configuration SMTP #}
       <div class="cga-wizard-step" data-step="18" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 18 : {{ __('Récapitulatif', 'configurationglpiauto') }}</h3>
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 18 : {{ __('Configuration SMTP', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : révise directement les réglages d\'envoi d\'e-mail natifs de GLPI (Configuration > Notifications). Le test de connexion se fait après application, depuis cet écran natif — GLPI teste toujours la configuration réellement enregistrée, jamais un formulaire en cours de saisie.', 'configurationglpiauto') }}</p>
+
+        {# Issue #121 ("Configuration SMTP avancée") : ces champs ne vivent JAMAIS dans Config
+           propre au plugin — voir la docblock de SmtpBuilder. Pré-remplis depuis smtp_defaults
+           (lu directement de $CFG_GLPI dans front/wizard.php), jamais depuis `config`. #}
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="smtp_enabled" value="0">
+          <input type="checkbox" name="smtp_enabled" value="1" class="form-check-input" id="cga-smtp-enabled">
+          <label class="form-check-label" for="cga-smtp-enabled">{{ __('Modifier la configuration SMTP', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-smtp-fields" style="display: none;">
+          <div class="mb-3">
+            <label class="form-label">{{ __('Mode d\'envoi', 'configurationglpiauto') }}</label>
+            <select name="smtp_mode" id="cga-smtp-mode" class="form-select" style="max-width: 320px;">
+              <option value="0" {{ smtp_defaults.mode|default(0) == 0 ? 'selected' : '' }}>{{ __('Fonction mail() native de PHP', 'configurationglpiauto') }}</option>
+              <option value="1" {{ smtp_defaults.mode|default(0) == 1 ? 'selected' : '' }}>{{ __('Serveur SMTP', 'configurationglpiauto') }}</option>
+            </select>
+          </div>
+
+          <div id="cga-smtp-server-fields" style="display: none;">
+            <div class="d-flex gap-3 flex-wrap mb-3">
+              <div>
+                <label class="form-label">{{ __('Serveur SMTP', 'configurationglpiauto') }}</label>
+                <input type="text" name="smtp_host" class="form-control" value="{{ smtp_defaults.host|default('') }}" placeholder="smtp.example.com">
+              </div>
+              <div>
+                <label class="form-label">{{ __('Port', 'configurationglpiauto') }}</label>
+                <input type="number" name="smtp_port" class="form-control" style="max-width: 120px;" value="{{ smtp_defaults.port|default(25) }}" min="1" max="65535">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ __('Adresse d\'expédition', 'configurationglpiauto') }}</label>
+              <input type="email" name="smtp_sender" class="form-control" style="max-width: 320px;" value="{{ smtp_defaults.sender|default('') }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ __('Nom d\'utilisateur', 'configurationglpiauto') }}</label>
+              <input type="text" name="smtp_username" class="form-control" style="max-width: 320px;" value="{{ smtp_defaults.username|default('') }}" autocomplete="off">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ __('Mot de passe', 'configurationglpiauto') }}</label>
+              <input type="password" name="smtp_passwd" class="form-control" style="max-width: 320px;" autocomplete="new-password" placeholder="{{ smtp_defaults.has_existing_password|default(false) ? __('Laisser vide pour conserver le mot de passe enregistré', 'configurationglpiauto') : '' }}">
+              {% if smtp_defaults.has_existing_password|default(false) %}
+                <div class="form-check mt-1">
+                  <input type="checkbox" name="_blank_smtp_passwd" value="1" class="form-check-input" id="cga-smtp-blank-passwd">
+                  <label class="form-check-label small" for="cga-smtp-blank-passwd">{{ __('Effacer le mot de passe enregistré', 'configurationglpiauto') }}</label>
+                </div>
+              {% endif %}
+            </div>
+            <div class="form-check form-switch mb-3">
+              <input type="hidden" name="smtp_check_certificate" value="0">
+              <input
+                type="checkbox"
+                name="smtp_check_certificate"
+                value="1"
+                class="form-check-input"
+                id="cga-smtp-check-certificate"
+                {{ smtp_defaults.check_certificate|default(true) ? 'checked' : '' }}
+              >
+              <label class="form-check-label" for="cga-smtp-check-certificate">{{ __('Vérifier le certificat TLS du serveur', 'configurationglpiauto') }}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info d-flex align-items-center gap-2">
+          <i class="ti ti-info-circle"></i>
+          <div>
+            {{ __('Une fois cette étape terminée, testez l\'envoi d\'un e-mail réel depuis', 'configurationglpiauto') }}
+            <a href="{{ config('root_doc') }}/front/notificationmailingsetting.form.php" target="_blank" rel="noopener">{{ __('Configuration > Notifications', 'configurationglpiauto') }}</a>
+            {{ __('— GLPI y envoie un vrai message de test et affiche le résultat détaillé.', 'configurationglpiauto') }}
+          </div>
+        </div>
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 19 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="19" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 19 : {{ __('Récapitulatif', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits/modèles de projet.', 'configurationglpiauto') }}</p>
 
         <div class="alert alert-info d-flex align-items-center gap-2 mb-3">
@@ -1649,7 +1726,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 18;
+  var STEP_COUNT = 19;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -1712,6 +1789,7 @@
     "{{ __('Général & Outils', 'configurationglpiauto')|e('js') }}",
     "{{ __('Projets', 'configurationglpiauto')|e('js') }}",
     "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Configuration SMTP', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
 
@@ -2008,6 +2086,21 @@
   }
   entityLogosEnabledInput.addEventListener('change', toggleEntityLogosFields);
   toggleEntityLogosFields();
+
+  // Issue #121 ("Configuration SMTP avancée") : jamais de champ Config propre au plugin ici, voir
+  // la docblock de SmtpBuilder — ces champs vont directement dans front/wizard.php -> SmtpBuilder
+  // -> Config::setConfigurationValues('core', ...) de GLPI.
+  var smtpEnabledInput = document.getElementById('cga-smtp-enabled');
+  var smtpFields = document.getElementById('cga-smtp-fields');
+  var smtpModeInput = document.getElementById('cga-smtp-mode');
+  var smtpServerFields = document.getElementById('cga-smtp-server-fields');
+  function toggleSmtpFields() {
+    smtpFields.style.display = smtpEnabledInput.checked ? '' : 'none';
+    smtpServerFields.style.display = smtpModeInput.value === '1' ? '' : 'none';
+  }
+  smtpEnabledInput.addEventListener('change', toggleSmtpFields);
+  smtpModeInput.addEventListener('change', toggleSmtpFields);
+  toggleSmtpFields();
 
   // One file input per top-level entity (or a single one for mono-entité/empty tree, matching
   // entities_id=0 fallback) — named by index, matching how front/wizard.php pairs

@@ -1334,10 +1334,16 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
   - Synchronisation automatique
   - Gestion des groupes
 
-- 📮 **Configuration SMTP avancée**
-  - Tests de connectivité
-  - Configuration sécurisée
-  - Gestion des certificats
+- ✅ **Configuration SMTP avancée (issue #121) — livré, périmètre réduit** : GLPI cœur fournit déjà
+  la quasi-totalité de ce que l'issue demandait — chiffrement du mot de passe SMTP (`GLPIKey`),
+  test de connexion réel (`NotificationMailing::testNotification()`, envoie un vrai email de
+  test), et vérification de certificat TLS (`smtp_check_certificate`). Nouvelle étape d'assistant
+  qui revoit directement ces réglages natifs (`SmtpBuilder`, jamais via `Config`/Blueprints/
+  Rollback propres au plugin — décision de sécurité délibérée, un secret ne doit jamais transiter
+  par un mécanisme qui l'exporterait en clair dans un fichier partageable), avec un lien vers
+  l'écran natif GLPI pour le test de connexion plutôt qu'une réimplémentation. "Gestion des
+  certificats" au sens gestion de certificats clients n'existe pas dans GLPI cœur et rien
+  n'indique un vrai besoin — non construit.
 
 - 🔑 **Authentification SSO**
   - Support SAML
