@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: configurationglpiauto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 21:20+0000\n"
+"POT-Creation-Date: 2026-09-19 10:32+0000\n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -95,7 +95,7 @@ msgstr ""
 "Elija la estructura de entidades a configurar — la vista previa a la derecha "
 "se actualiza en directo."
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:38
 msgid "Lieux"
 msgstr "Ubicaciones"
 
@@ -200,7 +200,7 @@ msgstr ""
 "campo \"País\" de cada sitio para que los sitios fuera de Francia reciban "
 "sus propios días festivos."
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:35
 msgid "Calendrier"
 msgstr "Calendario"
 
@@ -482,7 +482,7 @@ msgstr ""
 msgid "Champs : zone couverte, date de dernière maintenance/vérification."
 msgstr "Campos: zona cubierta, fecha del último mantenimiento/verificación."
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:42
 msgid "Catalogue de services"
 msgstr "Catálogo de servicios"
 
@@ -622,7 +622,7 @@ msgstr ""
 msgid "recommandé"
 msgstr "recomendado"
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:41
 msgid "Raisons d'attente"
 msgstr "Motivos de espera"
 
@@ -939,7 +939,7 @@ msgstr "Mostrar la paginación encima de los resultados"
 msgid "Montrer les nouveaux tickets sur la page d'accueil"
 msgstr "Mostrar los nuevos tickets en la página de inicio"
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:37
 #: src/Audit/Checks/NotificationsDisabledCheck.php:41
 msgid "Notifications"
 msgstr "Notificaciones"
@@ -966,7 +966,7 @@ msgstr ""
 "caducidad de licencias (desactivadas por defecto, aunque las notificaciones "
 "correspondientes ya no lo están)"
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:47
 msgid "Informations financières"
 msgstr "Información financiera"
 
@@ -1353,7 +1353,7 @@ msgstr "Cada una con un color distinto en la planificación de GLPI."
 msgid "Gabarits d'évènements externes"
 msgstr "Plantillas de eventos externos"
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:39
 msgid "Projets"
 msgstr "Proyectos"
 
@@ -1558,19 +1558,20 @@ msgstr "Estructura"
 msgid "Arborescence"
 msgstr "Estructura de árbol"
 
-#: templates/wizard.html.twig src/Audit/Checks/NoSlaConfiguredCheck.php:39
+#: templates/wizard.html.twig front/history_restore.php:35
+#: src/Audit/Checks/NoSlaConfiguredCheck.php:39
 msgid "SLA"
 msgstr "SLA"
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:36
 msgid "Catégories"
 msgstr "Categorías"
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:37
 msgid "Personnalisation"
 msgstr "Personalización"
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:47
 msgid "Réglages généraux"
 msgstr "Ajustes generales"
 
@@ -1608,12 +1609,12 @@ msgstr "Finalizar"
 msgid "Création en cours..."
 msgstr "Creando..."
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:35
 #: src/Audit/Checks/EntitiesWithoutAddressCheck.php:40
 msgid "Entités"
 msgstr "Entidades"
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig front/history_restore.php:36
 msgid "Statuts"
 msgstr "Estados"
 
@@ -1989,6 +1990,35 @@ msgstr "Añadir una subentidad"
 msgid "Aucune entité ajoutée pour l'instant."
 msgstr "Ninguna entidad añadida todavía."
 
+#: templates/history_restore.html.twig
+msgid ""
+"Choisissez les réglages à restaurer, ou restaurez l'intégralité de cette "
+"configuration. Rien n'est appliqué directement : après confirmation, "
+"vérifiez chaque étape de l'assistant avant de valider."
+msgstr "Elija los ajustes a restaurar, o restaure esta configuración por completo. Nada se aplica directamente: tras confirmar, revise cada paso del asistente antes de validar."
+
+#: templates/history_restore.html.twig
+msgid ""
+"Cette configuration est déjà identique à la configuration actuelle — rien à "
+"restaurer."
+msgstr "Esta configuración ya es idéntica a la configuración actual — nada que restaurar."
+
+#: templates/history_restore.html.twig
+msgid "Valeur actuelle"
+msgstr "Valor actual"
+
+#: templates/history_restore.html.twig
+msgid "Valeur dans la sauvegarde"
+msgstr "Valor en la copia de seguridad"
+
+#: templates/history_restore.html.twig
+msgid "Restaurer la sélection"
+msgstr "Restaurar la selección"
+
+#: templates/history_restore.html.twig
+msgid "Restaurer intégralement"
+msgstr "Restaurar por completo"
+
 #: front/profile.php:28
 msgid "Lancer l'assistant de configuration"
 msgstr "Iniciar el asistente de configuración"
@@ -2001,11 +2031,15 @@ msgstr "Ejecutar la auditoría"
 msgid "Importer un Blueprint (JSON)"
 msgstr "Importar un Blueprint (JSON)"
 
-#: front/wizard.php:328
+#: front/profile.php:43
+msgid "Historique & Rollback"
+msgstr "Historial y Rollback"
+
+#: front/wizard.php:329
 msgid "Dossier des palettes personnalisées inscriptible"
 msgstr "Carpeta de paletas personalizadas con permisos de escritura"
 
-#: front/wizard.php:330
+#: front/wizard.php:331
 #, php-format
 msgid ""
 "nécessaire à la palette personnalisée (étape 17) — vérifiez les droits sur %s"
@@ -2013,11 +2047,11 @@ msgstr ""
 "necesario para la paleta personalizada (paso 17) — compruebe los permisos en "
 "%s"
 
-#: front/wizard.php:333
+#: front/wizard.php:334
 msgid "Dossier de cache GLPI inscriptible"
 msgstr "Carpeta de caché de GLPI con permisos de escritura"
 
-#: front/wizard.php:335
+#: front/wizard.php:336
 #, php-format
 msgid ""
 "nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s"
@@ -2025,11 +2059,11 @@ msgstr ""
 "necesario para el buen funcionamiento general de GLPI — compruebe los "
 "permisos en %s"
 
-#: front/wizard.php:338
+#: front/wizard.php:339
 msgid "Extension GD ou Imagick disponible"
 msgstr "Extensión GD o Imagick disponible"
 
-#: front/wizard.php:340
+#: front/wizard.php:341
 msgid ""
 "utile pour valider les logos uploadés (étape 17) — ni l'une ni l'autre n'est "
 "chargée"
@@ -2037,20 +2071,20 @@ msgstr ""
 "útil para validar los logos subidos (paso 17) — ninguna de las dos está "
 "cargada"
 
-#: front/wizard.php:743
+#: front/wizard.php:747
 msgid "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
 msgstr "Ninguna entidad que crear (modo de entidad única, o árbol vacío)."
 
-#: front/wizard.php:744
+#: front/wizard.php:748
 #, php-format
 msgid "Structure créée : %s."
 msgstr "Estructura creada: %s."
 
-#: front/wizard.php:746
+#: front/wizard.php:750
 msgid "Calendrier créé et assigné."
 msgstr "Calendario creado y asignado."
 
-#: front/wizard.php:750
+#: front/wizard.php:754
 #, php-format
 msgid ""
 "%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre "
@@ -2059,41 +2093,41 @@ msgstr ""
 "%d sitio(s) vinculado(s) a un calendario dedicado a su país (compartido "
 "entre sitios del mismo país)."
 
-#: front/wizard.php:755
+#: front/wizard.php:759
 msgid "SLA créés et assignés."
 msgstr "SLA creados y asignados."
 
-#: front/wizard.php:758
+#: front/wizard.php:762
 msgid "OLA (engagements internes) créés et assignés."
 msgstr "OLA (compromisos internos) creados y asignados."
 
-#: front/wizard.php:761
+#: front/wizard.php:765
 msgid "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
 msgstr "Grupos de soporte N1/N2/N3 creados, escalada automática configurada."
 
-#: front/wizard.php:764
+#: front/wizard.php:768
 #, php-format
 msgid "%d client(s) avec des réglages personnalisés."
 msgstr "%d cliente(s) con ajustes personalizados."
 
-#: front/wizard.php:767
+#: front/wizard.php:771
 #, php-format
 msgid "%d catégories de tickets créées."
 msgstr "%d categorías de tickets creadas."
 
-#: front/wizard.php:770
+#: front/wizard.php:774
 msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
 msgstr "Activo personalizado \"Vehículo\" creado (rama Flota de Vehículos)."
 
-#: front/wizard.php:773
+#: front/wizard.php:777
 msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
 msgstr "Activo personalizado \"Servidor\" creado (rama TI y Sistemas)."
 
-#: front/wizard.php:776
+#: front/wizard.php:780
 msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
 msgstr "Activo personalizado \"Local\" creado (rama Edificio)."
 
-#: front/wizard.php:779
+#: front/wizard.php:783
 msgid ""
 "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche "
 "Bâtiment)."
@@ -2101,18 +2135,18 @@ msgstr ""
 "Activo personalizado \"Seguridad contra incendios y primeros auxilios\" "
 "creado (rama Edificio)."
 
-#: front/wizard.php:782
+#: front/wizard.php:786
 msgid ""
 "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection "
 "des Personnes)."
 msgstr "Activo personalizado \"Seguridad física\" creado (rama Seguridad)."
 
-#: front/wizard.php:785
+#: front/wizard.php:789
 #, php-format
 msgid "%d services créés dans le catalogue."
 msgstr "%d servicios creados en el catálogo."
 
-#: front/wizard.php:788
+#: front/wizard.php:792
 msgid ""
 "Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de "
 "ticket calculé automatiquement)."
@@ -2120,7 +2154,7 @@ msgstr ""
 "Servicio \"Solicitud de derecho de acceso / misión al extranjero\" creado "
 "(título de ticket calculado automáticamente)."
 
-#: front/wizard.php:791
+#: front/wizard.php:795
 msgid ""
 "Service \"Demande de licence logicielle\" enrichi (titre de ticket calculé "
 "automatiquement)."
@@ -2128,7 +2162,7 @@ msgstr ""
 "Servicio \"Solicitud de licencia de software\" mejorado (título de ticket "
 "calculado automáticamente)."
 
-#: front/wizard.php:794
+#: front/wizard.php:798
 msgid ""
 "Service \"Demande d'accès VPN\" enrichi (question conditionnelle, titre de "
 "ticket calculé automatiquement)."
@@ -2136,7 +2170,7 @@ msgstr ""
 "Servicio \"Solicitud de acceso VPN\" mejorado (pregunta condicional, título "
 "de ticket calculado automáticamente)."
 
-#: front/wizard.php:797
+#: front/wizard.php:801
 msgid ""
 "Service \"Demande de badge d'accès\" enrichi (titre de ticket calculé "
 "automatiquement)."
@@ -2144,7 +2178,7 @@ msgstr ""
 "Servicio \"Solicitud de tarjeta de acceso\" mejorado (título de ticket "
 "calculado automáticamente)."
 
-#: front/wizard.php:800
+#: front/wizard.php:804
 msgid ""
 "Service \"Demande de congé ou absence\" enrichi (question conditionnelle, "
 "titre de ticket calculé automatiquement)."
@@ -2152,7 +2186,7 @@ msgstr ""
 "Servicio \"Solicitud de permiso o ausencia\" mejorado (pregunta condicional, "
 "título de ticket calculado automáticamente)."
 
-#: front/wizard.php:803
+#: front/wizard.php:807
 msgid ""
 "Service \"Déclarer une arrivée, un départ ou une mutation\" enrichi "
 "(question conditionnelle, titre de ticket calculé automatiquement)."
@@ -2160,7 +2194,7 @@ msgstr ""
 "Servicio \"Declarar una llegada, una salida o un traslado\" mejorado "
 "(pregunta condicional, título de ticket calculado automáticamente)."
 
-#: front/wizard.php:806
+#: front/wizard.php:810
 msgid ""
 "Service \"Réservation ou problème d'équipement de salle de réunion\" enrichi "
 "(question conditionnelle)."
@@ -2168,7 +2202,7 @@ msgstr ""
 "Servicio \"Reserva o problema de equipamiento de sala de reuniones\" "
 "mejorado (pregunta condicional)."
 
-#: front/wizard.php:809
+#: front/wizard.php:813
 #, php-format
 msgid ""
 "%d autres services du catalogue enrichis avec des questions ciblées et un "
@@ -2177,26 +2211,26 @@ msgstr ""
 "%d otros servicios del catálogo enriquecidos con preguntas específicas y un "
 "título de ticket calculado automáticamente."
 
-#: front/wizard.php:812
+#: front/wizard.php:816
 #, php-format
 msgid "%d statuts d'éléments créés."
 msgstr "%d estados de elementos creados."
 
-#: front/wizard.php:815
+#: front/wizard.php:819
 #, php-format
 msgid "%d raisons d'attente créées."
 msgstr "%d motivos de espera creados."
 
-#: front/wizard.php:818
+#: front/wizard.php:822
 msgid "Personnalisation graphique appliquée."
 msgstr "Personalización gráfica aplicada."
 
-#: front/wizard.php:821
+#: front/wizard.php:825
 #, php-format
 msgid "%d logo(s) d'entité appliqué(s)."
 msgstr "%d logo(s) de entidad aplicados."
 
-#: front/wizard.php:826
+#: front/wizard.php:830
 #, php-format
 msgid ""
 "%d logo(s) trop volumineux pour être appliqué(s) — utilisez un fichier plus "
@@ -2207,236 +2241,258 @@ msgstr ""
 "ligero (idealmente por debajo de 40 KB) o configúrelo manualmente desde "
 "Configuración > Entidades > pestaña General."
 
-#: front/wizard.php:831
+#: front/wizard.php:835
 #, php-format
 msgid "%d couleur(s) par client/site appliquée(s)."
 msgstr "%d color(es) por cliente/sede aplicados."
 
-#: front/wizard.php:834
+#: front/wizard.php:838
 #, php-format
 msgid "%d modèle(s) de notification personnalisés."
 msgstr "%d plantilla(s) de notificación personalizadas."
 
-#: front/wizard.php:838
+#: front/wizard.php:842
 msgid "Palette GLPI personnalisée créée et définie par défaut."
 msgstr "Paleta GLPI personalizada creada y definida como predeterminada."
 
-#: front/wizard.php:839
+#: front/wizard.php:843
 msgid "Palette GLPI native définie par défaut."
 msgstr "Paleta GLPI nativa definida como predeterminada."
 
-#: front/wizard.php:842
+#: front/wizard.php:846
 msgid "Réglages généraux GLPI appliqués."
 msgstr "Ajustes generales de GLPI aplicados."
 
-#: front/wizard.php:845
+#: front/wizard.php:849
 msgid "Modèles de tickets créés et assignés aux profils."
 msgstr "Plantillas de tickets creadas y asignadas a los perfiles."
 
-#: front/wizard.php:848
+#: front/wizard.php:852
 msgid "Champs masqués sur les formulaires de création en libre-service."
 msgstr "Campos ocultos en los formularios de creación de autoservicio."
 
-#: front/wizard.php:851
+#: front/wizard.php:855
 #, php-format
 msgid "%d règle(s) de droits LDAP créées."
 msgstr "%d regla(s) de derechos LDAP creadas."
 
-#: front/wizard.php:854
+#: front/wizard.php:858
 #, php-format
 msgid "%d règle(s) de droits par fonction créées."
 msgstr "%d regla(s) de derechos por función creadas."
 
-#: front/wizard.php:857
+#: front/wizard.php:861
 #, php-format
 msgid "%d catégories de tâches créées."
 msgstr "%d categorías de tareas creadas."
 
-#: front/wizard.php:860
+#: front/wizard.php:864
 #, php-format
 msgid "%d gabarits de tâche créés."
 msgstr "%d plantillas de tarea creadas."
 
-#: front/wizard.php:863
+#: front/wizard.php:867
 #, php-format
 msgid "%d gabarits de solution créés."
 msgstr "%d plantillas de solución creadas."
 
-#: front/wizard.php:866
+#: front/wizard.php:870
 #, php-format
 msgid "%d gabarits de suivis créés."
 msgstr "%d plantillas de seguimiento creadas."
 
-#: front/wizard.php:869
+#: front/wizard.php:873
 #, php-format
 msgid "%d gabarits de validation créés."
 msgstr "%d plantillas de aprobación creadas."
 
-#: front/wizard.php:872
+#: front/wizard.php:876
 msgid "Modèles de changement et de problème créés et assignés aux profils."
 msgstr "Plantillas de cambio y problema creadas y asignadas a los perfiles."
 
-#: front/wizard.php:875
+#: front/wizard.php:879
 #, php-format
 msgid "%d lieux créés."
 msgstr "%d ubicaciones creadas."
 
-#: front/wizard.php:878
+#: front/wizard.php:882
 #, php-format
 msgid "%d fabricants créés."
 msgstr "%d fabricantes creados."
 
-#: front/wizard.php:881
+#: front/wizard.php:885
 #, php-format
 msgid "%d règle(s) de dictionnaire fabricant créées."
 msgstr "%d regla(s) de diccionario de fabricante creadas."
 
-#: front/wizard.php:884
+#: front/wizard.php:888
 #, php-format
 msgid "%d opérateurs téléphoniques créés."
 msgstr "%d operadores telefónicos creados."
 
-#: front/wizard.php:887
+#: front/wizard.php:891
 #, php-format
 msgid "%d types de matériel créés."
 msgstr "%d tipos de dispositivo creados."
 
-#: front/wizard.php:890
+#: front/wizard.php:894
 #, php-format
 msgid "%d types de licence logicielle créés."
 msgstr "%d tipos de licencia de software creados."
 
-#: front/wizard.php:893
+#: front/wizard.php:897
 #, php-format
 msgid "%d types de certificat créés."
 msgstr "%d tipos de certificado creados."
 
-#: front/wizard.php:896
+#: front/wizard.php:900
 #, php-format
 msgid "%d modèles de tickets récurrents créés."
 msgstr "%d plantillas de tickets recurrentes creadas."
 
-#: front/wizard.php:899
+#: front/wizard.php:903
 #, php-format
 msgid "%d catégories de base de connaissances créées."
 msgstr "%d categorías de base de conocimiento creadas."
 
-#: front/wizard.php:902
+#: front/wizard.php:906
 #, php-format
 msgid "%d articles de FAQ créés."
 msgstr "%d artículos de FAQ creados."
 
-#: front/wizard.php:905
+#: front/wizard.php:909
 #, php-format
 msgid "%d rubriques de documents/criticités créées."
 msgstr "%d categorías de documentos/criticidades creadas."
 
-#: front/wizard.php:908
+#: front/wizard.php:912
 #, php-format
 msgid "%d catégories/gabarits d'évènements de planning créés."
 msgstr "%d categorías/plantillas de eventos de planificación creadas."
 
-#: front/wizard.php:911
+#: front/wizard.php:915
 #, php-format
 msgid "%d types de projet/tâche de projet/statuts de projet créés."
 msgstr "%d tipos de proyecto/tarea de proyecto/estados de proyecto creados."
 
-#: front/wizard.php:914
+#: front/wizard.php:918
 #, php-format
 msgid "%d gabarits de tâches de projets créés."
 msgstr "%d plantillas de tareas de proyecto creadas."
 
-#: front/wizard.php:917
+#: front/wizard.php:921
 #, php-format
 msgid "%d modèle(s) de projet créés, structure de tâches incluse."
 msgstr "%d plantilla(s) de proyecto creadas, estructura de tareas incluida."
 
-#: front/wizard.php:920
+#: front/wizard.php:924
 #, php-format
 msgid "%d source(s) de demande traduites."
 msgstr "%d fuente(s) de solicitud traducidas."
 
-#: front/wizard.php:923
+#: front/wizard.php:927
 #, php-format
 msgid "%d fiche(s) d'entité complétées avec leur adresse."
 msgstr "%d ficha(s) de entidad completadas con su dirección."
 
-#: front/wizard.php:926
+#: front/wizard.php:930
 #, php-format
 msgid "%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s)."
 msgstr ""
 "%d día(s) festivo(s) creado(s) y vinculado(s) al(los) calendario(s) "
 "correspondiente(s)."
 
-#: front/wizard.php:929
+#: front/wizard.php:933
 msgid "Enquête de satisfaction créée (plugin More satisfaction)."
 msgstr "Encuesta de satisfacción creada (plugin More satisfaction)."
 
-#: front/wizard.php:932
+#: front/wizard.php:936
 msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
 msgstr "Grupo \"VIP\" creado y activado (plugin VIP)."
 
-#: front/wizard.php:935
+#: front/wizard.php:939
 #, php-format
 msgid "%d tag(s) créé(s) (plugin Tag)."
 msgstr "%d etiqueta(s) creada(s) (plugin Tag)."
 
-#: front/wizard.php:938
+#: front/wizard.php:942
 msgid "Règle de validation automatique (supérieur hiérarchique) créée."
 msgstr "Regla de aprobación automática creada (superior)."
 
-#: front/wizard.php:941
+#: front/wizard.php:945
 #, php-format
 msgid "%d catégories d'utilisateur créées."
 msgstr "%d categorías de usuario creadas."
 
-#: front/wizard.php:944
+#: front/wizard.php:948
 #, php-format
 msgid "%d règle(s) d'unicité de numéro de série créées."
 msgstr "%d regla(s) de unicidad de número de serie creadas."
 
-#: front/wizard.php:947
+#: front/wizard.php:951
 #, php-format
 msgid "%d flux RSS ajouté(s)."
 msgstr "%d feed(s) RSS añadidos."
 
-#: front/wizard.php:950
+#: front/wizard.php:954
 msgid "Clé d'enregistrement GLPI Network enregistrée."
 msgstr "Clave de registro de GLPI Network guardada."
 
-#: front/wizard.php:957
+#: front/wizard.php:961
 msgid "Assistant de configuration"
 msgstr "Asistente de configuración"
 
-#: front/profile.form.php:44
+#: front/history.php:28
+msgid "Veuillez indiquer un nom pour ce point de sauvegarde."
+msgstr "Indique un nombre para este punto de guardado."
+
+#: front/history.php:33
+msgid "Point de sauvegarde créé."
+msgstr "Punto de guardado creado."
+
+#: front/history.php:41
+msgid "Seuls les points de sauvegarde manuels peuvent être supprimés."
+msgstr "Solo se pueden eliminar los puntos de guardado manuales."
+
+#: front/history.php:55 src/ConfigHistory.php:84
+msgid "Label du point de sauvegarde"
+msgstr "Etiqueta del punto de guardado"
+
+#: front/history.php:59
+msgid "Créer un point de sauvegarde"
+msgstr "Crear un punto de guardado"
+
+#: front/profile.form.php:45
 msgid "Configuration actuelle enregistrée comme Blueprint."
 msgstr "Configuración actual guardada como Blueprint."
 
-#: front/profile.form.php:54 front/profile.form.php:66
+#: front/profile.form.php:55 front/profile.form.php:70
 msgid "Ce profil ne contient aucun Blueprint exploitable."
 msgstr "Este perfil no contiene ningún Blueprint utilizable."
 
-#: front/profile.form.php:60
+#: front/profile.form.php:64
 msgid "Blueprint appliqué. Vérifiez chaque étape avant de valider."
 msgstr "Blueprint aplicado. Revise cada paso antes de confirmar."
 
-#: front/profile.form.php:85
+#: front/profile.form.php:89
 msgid "Enregistrer la configuration actuelle comme Blueprint"
 msgstr "Guardar la configuración actual como Blueprint"
 
-#: front/profile.form.php:93
+#: front/profile.form.php:97
 msgid "Appliquer ce Blueprint (via l'assistant)"
 msgstr "Aplicar este Blueprint (a través del asistente)"
 
-#: front/profile.form.php:98
+#: front/profile.form.php:102
 msgid "Exporter ce Blueprint (JSON)"
 msgstr "Exportar este Blueprint (JSON)"
 
-#: front/profile.form.php:104
+#: front/profile.form.php:108
 msgid ""
 "Ce fichier peut contenir des informations propres à votre organisation "
 "(adresses d'entités...) : vérifiez son contenu avant de le partager."
-msgstr "Este archivo puede contener información propia de su organización (direcciones de entidades...): verifique su contenido antes de compartirlo."
+msgstr ""
+"Este archivo puede contener información propia de su organización "
+"(direcciones de entidades...): verifique su contenido antes de compartirlo."
 
 #: front/blueprint_import.php:28
 msgid "Veuillez choisir un fichier Blueprint (.json)."
@@ -2470,7 +2526,9 @@ msgstr "Nombre del perfil (opcional, se toma del archivo si no se indica)"
 msgid ""
 "N'importez que des fichiers Blueprint dont vous connaissez la provenance : "
 "ce fichier reconfigurera votre instance une fois appliqué via l'assistant."
-msgstr "Importe únicamente archivos Blueprint cuyo origen conozca: este archivo reconfigurará su instancia una vez aplicado a través del asistente."
+msgstr ""
+"Importe únicamente archivos Blueprint cuyo origen conozca: este archivo "
+"reconfigurará su instancia una vez aplicado a través del asistente."
 
 #: front/audit.php:33
 msgid "Correction appliquée."
@@ -2479,6 +2537,142 @@ msgstr "Corrección aplicada."
 #: front/audit.php:41
 msgid "Audit de configuration"
 msgstr "Auditoría de configuración"
+
+#: front/history_restore.php:35
+msgid "OLA"
+msgstr "OLA"
+
+#: front/history_restore.php:36
+msgid "Escalade"
+msgstr "Escalado"
+
+#: front/history_restore.php:37
+msgid "LDAP"
+msgstr "LDAP"
+
+#: front/history_restore.php:38
+msgid "Tickets"
+msgstr "Tickets"
+
+#: front/history_restore.php:38
+msgid "Tâches"
+msgstr "Tareas"
+
+#: front/history_restore.php:38
+msgid "Validations"
+msgstr "Validaciones"
+
+#: front/history_restore.php:39
+msgid "Changements"
+msgstr "Cambios"
+
+#: front/history_restore.php:39
+msgid "Base de connaissances"
+msgstr "Base de conocimiento"
+
+#: front/history_restore.php:40
+msgid "Fabricants"
+msgstr "Fabricantes"
+
+#: front/history_restore.php:40
+msgid "Documents"
+msgstr "Documentos"
+
+#: front/history_restore.php:40
+msgid "Planning"
+msgstr "Planificación"
+
+#: front/history_restore.php:41
+msgid "Satisfaction"
+msgstr "Satisfacción"
+
+#: front/history_restore.php:41
+msgid "Comité de validation"
+msgstr "Comité de validación"
+
+#: front/history_restore.php:42
+msgid "Missions à l'étranger"
+msgstr "Misiones en el extranjero"
+
+#: front/history_restore.php:42
+msgid "Solutions"
+msgstr "Soluciones"
+
+#: front/history_restore.php:43
+msgid "Suivis"
+msgstr "Seguimientos"
+
+#: front/history_restore.php:43
+msgid "Utilisateurs"
+msgstr "Usuarios"
+
+#: front/history_restore.php:43
+msgid "Unicité des champs"
+msgstr "Unicidad de campos"
+
+#: front/history_restore.php:44
+msgid "Flux RSS"
+msgstr "Fuentes RSS"
+
+#: front/history_restore.php:44
+msgid "Lignes téléphoniques"
+msgstr "Líneas telefónicas"
+
+#: front/history_restore.php:44
+msgid "Types d'actifs"
+msgstr "Tipos de activos"
+
+#: front/history_restore.php:45
+msgid "Licences logicielles"
+msgstr "Licencias de software"
+
+#: front/history_restore.php:45
+msgid "Certificats"
+msgstr "Certificados"
+
+#: front/history_restore.php:45
+msgid "Tickets récurrents"
+msgstr "Tickets recurrentes"
+
+#: front/history_restore.php:46
+msgid "Jours fériés"
+msgstr "Días festivos"
+
+#: front/history_restore.php:46
+msgid "Groupe VIP"
+msgstr "Grupo VIP"
+
+#: front/history_restore.php:46
+msgid "Étiquettes"
+msgstr "Etiquetas"
+
+#: front/history_restore.php:46
+msgid "Sécurité incendie"
+msgstr "Seguridad contra incendios"
+
+#: front/history_restore.php:47
+msgid "Sécurité physique"
+msgstr "Seguridad física"
+
+#: front/history_restore.php:48
+msgid "Inventaire"
+msgstr "Inventario"
+
+#: front/history_restore.php:48
+msgid "Types de requête"
+msgstr "Tipos de solicitud"
+
+#: front/history_restore.php:62
+msgid "Cet historique ne contient aucun Blueprint exploitable."
+msgstr "Este historial no contiene ningún Blueprint utilizable."
+
+#: front/history_restore.php:80
+msgid "Restauration appliquée. Vérifiez chaque étape avant de valider."
+msgstr "Restauración aplicada. Revise cada paso antes de confirmar."
+
+#: front/history_restore.php:84
+msgid "Restaurer une configuration"
+msgstr "Restaurar una configuración"
 
 #: src/NonConformityFormBuilder.php:188 src/StaffMovementFormBuilder.php:195
 #: src/PasswordResetFormBuilder.php:196
@@ -2786,6 +2980,16 @@ msgstr "Personalizado"
 #: src/ConfigurationProfile.php:86
 msgid "Type"
 msgstr "Tipo"
+
+#: src/ConfigHistory.php:58
+msgid "Historique de configuration"
+msgid_plural "Historique de configuration"
+msgstr[0] "Historial de configuración"
+msgstr[1] "Historial de configuración"
+
+#: src/ConfigHistory.php:85
+msgid "Point de sauvegarde manuel"
+msgstr "Punto de guardado manual"
 
 #: src/HeatingClimateFormBuilder.php:190
 msgid "Localisation précise (bâtiment, étage, bureau ou salle)"

@@ -17,6 +17,7 @@
 
 use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
 use GlpiPlugin\Configurationglpiauto\Config;
+use GlpiPlugin\Configurationglpiauto\ConfigHistory;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
 $item = new ConfigurationProfile();
@@ -55,6 +56,9 @@ if (isset($_POST['add'])) {
         Html::back();
     }
     $config = Config::getConfig();
+    // Fonctionnalité de Rollback (issue #114) : capture l'état COURANT (avant écrasement) comme
+    // point d'historique automatique — voir ConfigHistory::captureAutomatic().
+    ConfigHistory::captureAutomatic($config);
     $fields = BlueprintSerializer::import($decoded, Config::getDefaults());
     $config->update($fields + ['id' => $config->getID()]);
     Session::addMessageAfterRedirect(__('Blueprint appliqué. Vérifiez chaque étape avant de valider.', 'configurationglpiauto'));

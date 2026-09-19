@@ -37,6 +37,8 @@ final class Installer
 
     private const FUELTYPES_TABLE = 'glpi_plugin_configurationglpiauto_fueltypes';
 
+    private const HISTORY_TABLE = 'glpi_plugin_configurationglpiauto_history';
+
     public function install(Migration $migration): bool
     {
         global $DB;
@@ -403,6 +405,35 @@ final class Installer
             }
         }
 
+        // Fonctionnalité de Rollback (issue #114) : une ligne EST un Blueprint complet (même format
+        // que GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer::export(), voir
+        // ConfigHistory dans le même namespace) — `is_manual=0` pour un instantané automatique
+        // (capturé juste avant chaque écrasement réel de Config, purgé au-delà des 20 plus récents),
+        // `is_manual=1` pour un point de sauvegarde créé explicitement par un administrateur (jamais
+        // purgé automatiquement). `longtext`, même raison que PROFILES_TABLE.snapshot ci-dessus.
+        if (!$DB->tableExists(self::HISTORY_TABLE)) {
+            $charset   = DBConnection::getDefaultCharset();
+            $collation = DBConnection::getDefaultCollation();
+            $keySign   = DBConnection::getDefaultPrimaryKeySignOption();
+
+            $query = "CREATE TABLE `" . self::HISTORY_TABLE . "` (
+                `id` int {$keySign} NOT NULL AUTO_INCREMENT,
+                `is_manual` tinyint NOT NULL DEFAULT 0,
+                `label` varchar(255) DEFAULT NULL,
+                `snapshot` longtext,
+                `date_creation` timestamp NULL DEFAULT NULL,
+                `date_mod` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                KEY `is_manual` (`is_manual`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
+
+            if (!$DB->doQuery($query)) {
+                \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s\n", self::HISTORY_TABLE, $DB->error()));
+
+                return false;
+            }
+        }
+
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
         // pratiques que n'importe quel profil peut suivre — retires de la liste des profils
         // proposes (Sprint 11, voir ConfigurationProfile::getSuggestedDefaults()). Desactivation,
@@ -580,6 +611,7 @@ final class Installer
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::PROFILES_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::CONFIGS_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::FUELTYPES_TABLE . "`");
+        $DB->doQuery("DROP TABLE IF EXISTS `" . self::HISTORY_TABLE . "`");
 
         Profile::uninstall();
 

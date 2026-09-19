@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Fonctionnalité de Rollback (issue #114)** : historique automatique des configurations
+  (`ConfigHistory`) capturé juste avant chaque écrasement réel de `Config` (fin de l'assistant,
+  application d'un Blueprint), plus des points de sauvegarde créés à la demande
+  (`front/history.php`, bouton "Créer un point de sauvegarde") — les 20 entrées automatiques les
+  plus récentes sont conservées, les points de sauvegarde manuels ne sont jamais purgés. Restaurer
+  une entrée (`front/history_restore.php`) affiche d'abord un diff champ par champ contre la
+  configuration actuelle, avec une case à cocher par champ pour un rollback sélectif — jamais une
+  notion de "module" figée, un simple regroupement visuel par préfixe de nom de champ. Comme pour
+  les Blueprints, restaurer ne réécrit jamais silencieusement la configuration : ça pré-remplit
+  `Config` puis redirige vers l'assistant pour revue humaine de chaque étape.
+  `BlueprintSerializer::import()`/`diff()` étendus pour porter cette sélectivité, entièrement
+  rétrocompatibles.
 - **Système de Blueprints (issue #113)** : un profil de configuration
   (`front/profile.php`/`profile.form.php`) peut désormais capturer l'état actuel de `Config` comme
   instantané JSON standardisé ("Blueprint"), l'exporter en fichier `.json`, et importer un fichier

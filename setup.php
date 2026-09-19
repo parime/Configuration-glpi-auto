@@ -17,6 +17,7 @@
 
 use Glpi\Plugin\Hooks;
 use GlpiPlugin\Configurationglpiauto\Config;
+use GlpiPlugin\Configurationglpiauto\ConfigHistory;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\FuelType;
 
@@ -65,6 +66,7 @@ function plugin_init_configurationglpiauto(): void
     Plugin::registerClass(ConfigurationProfile::class);
     Plugin::registerClass(Config::class);
     Plugin::registerClass(FuelType::class);
+    Plugin::registerClass(ConfigHistory::class);
 }
 
 /**
