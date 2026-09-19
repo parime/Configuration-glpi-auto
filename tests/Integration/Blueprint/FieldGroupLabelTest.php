@@ -30,8 +30,11 @@ final class FieldGroupLabelTest extends TestCase
 {
     public function testKnownPrefixReturnsItsTranslatedLabel(): void
     {
-        $this->assertSame('SLA', FieldGroupLabel::for('sla_tiers'));
-        $this->assertSame('Entités', FieldGroupLabel::for('entity_mode'));
+        // CI runs GLPI in English by default, the shared dev instance in French — never hardcode
+        // a literal translated string here, build the expectation via the same __() call instead
+        // (locale-agnostic either way).
+        $this->assertSame(__('SLA', 'configurationglpiauto'), FieldGroupLabel::for('sla_tiers'));
+        $this->assertSame(__('Entités', 'configurationglpiauto'), FieldGroupLabel::for('entity_mode'));
     }
 
     public function testUnknownPrefixFallsBackToTheCapitalizedPrefixItself(): void
