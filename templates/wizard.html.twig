@@ -62,6 +62,24 @@
       </div>
     {% endif %}
 
+    {# Issue #115 ("Mode Dry Run amélioré"), volet "validation pré-déploiement" : mêmes droits que
+       ceux vérifiés silencieusement dans le bloc "finish" (front/wizard.php) avant d'exécuter
+       chaque fonctionnalité — affichés ici en amont pour qu'un opérateur dont le droit propre à ce
+       plugin est délégué (voir Profile.php) mais qui ne détient pas le droit natif GLPI
+       correspondant sache, avant de remplir tout l'assistant, qu'une fonctionnalité entière sera
+       silencieusement ignorée à la fin plutôt que de le découvrir après coup. #}
+    {% if rights_preview is defined and rights_preview|filter(c => not c.ok)|length > 0 %}
+      <div class="alert alert-warning mb-3">
+        <strong>{{ __('Droits de l\'opérateur actuel', 'configurationglpiauto') }}</strong> —
+        {{ __('certains droits GLPI natifs vous manquent : les fonctionnalités correspondantes seront silencieusement ignorées à l\'étape finale. Cela n\'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée vous intéresse.', 'configurationglpiauto') }}
+        <ul class="mb-0 mt-1">
+          {% for check in rights_preview %}
+            <li>{{ check.ok ? '✅' : '⚠️' }} {{ check.label }}{% if not check.ok and check.hint %} — <span class="text-muted">{{ check.hint }}</span>{% endif %}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
     <div class="progress mb-2" style="height: 6px;">
       <div class="progress-bar" id="cga-wizard-progress" role="progressbar" style="width: 25%;"></div>
     </div>
@@ -1548,7 +1566,11 @@
 
         <div class="alert alert-info d-flex align-items-center gap-2 mb-3">
           <i class="ti ti-clock"></i>
-          <div>{{ __('Selon le nombre d\'options cochées (arborescence multi-site, actifs personnalisés, bibliothèques de gabarits...), la création peut prendre plusieurs minutes — ne fermez pas cette page et ne cliquez qu\'une seule fois sur "Terminer".', 'configurationglpiauto') }}</div>
+          {# Issue #115 ("Mode Dry Run amélioré") : durée estimée dynamique (par paliers, jamais
+             une fausse précision en secondes — aucune mesure réelle de durée n'existe dans ce
+             plugin pour la calibrer plus finement), calculée dans fillSummary() à partir du même
+             total d'éléments réellement cochés que les autres lignes de ce récapitulatif. #}
+          <div>{{ __('Durée estimée', 'configurationglpiauto') }} : <strong id="cga-summary-time-estimate"></strong> — {{ __('estimation indicative, selon le nombre d\'options cochées (arborescence multi-site, actifs personnalisés, bibliothèques de gabarits...) — ne fermez pas cette page et ne cliquez qu\'une seule fois sur "Terminer".', 'configurationglpiauto') }}</div>
         </div>
 
         <ul class="list-group mb-3">
@@ -3323,6 +3345,13 @@
   updateSlaMode();
 
   function fillSummary() {
+    // Issue #115 ("Mode Dry Run amélioré") : somme des mêmes compteurs déjà affichés plus bas dans
+    // cette fonction (branches de catégories cochées, statuts sélectionnés, entités feuilles...) —
+    // jamais un recomptage séparé des objets GLPI réellement créés (ça exigerait de dupliquer la
+    // logique de chaque *Builder ici). Un ordre de grandeur honnête, pas une mesure exacte : voir
+    // le barème à la fin de cette fonction.
+    var totalItemsEstimate = 0;
+
     var profileInput = document.querySelector('input[name="configurationprofiles_id"]:checked');
     var profileLabel = profileInput
       ? profileInput.closest('.form-check').querySelector('label').textContent.trim()
@@ -3391,25 +3420,32 @@
       document.getElementById('cga-summary-sla').textContent = slaSummary;
     }
 
+    var selectedCategoryBranchCount = Array.prototype.filter.call(categoryBranchToggles, function (t) { return t.checked; }).length;
     document.getElementById('cga-summary-categories').textContent = !categoryEnabledInput.checked
       ? "{{ __('Aucune', 'configurationglpiauto')|e('js') }}"
-      : Array.prototype.filter.call(categoryBranchToggles, function (t) { return t.checked; }).length
+      : selectedCategoryBranchCount
         + ' / ' + categoryBranchToggles.length + ' ' + "{{ __('branches', 'configurationglpiauto')|e('js') }}"
         + (categoryIconsEnabledInput.checked ? " {{ __('(avec icônes)', 'configurationglpiauto')|e('js') }}" : '');
+    // Chaque branche crée en réalité plusieurs catégories (voir categories_preview) — poids
+    // approximatif, pas un compte exact, cohérent avec le principe "ordre de grandeur" ci-dessus.
+    if (categoryEnabledInput.checked) { totalItemsEstimate += selectedCategoryBranchCount * 10; }
 
+    var selectedServiceBranchCount = Array.prototype.filter.call(document.querySelectorAll('.cga-service-branch-preview'), function (el) { return el.style.display !== 'none'; }).length;
     document.getElementById('cga-summary-service-catalog').textContent = !serviceCatalogEnabledInput.checked
       ? "{{ __('Aucun', 'configurationglpiauto')|e('js') }}"
-      : Array.prototype.filter.call(document.querySelectorAll('.cga-service-branch-preview'), function (el) { return el.style.display !== 'none'; }).length
-        + ' ' + "{{ __('branches avec services', 'configurationglpiauto')|e('js') }}";
+      : selectedServiceBranchCount + ' ' + "{{ __('branches avec services', 'configurationglpiauto')|e('js') }}";
+    if (serviceCatalogEnabledInput.checked) { totalItemsEstimate += selectedServiceBranchCount * 5; }
 
     var selectedStateCount = Array.prototype.filter.call(document.querySelectorAll('.cga-state-name-toggle'), function (el) { return el.checked; }).length;
     document.getElementById('cga-summary-states').textContent = (!stateEnabledInput.checked || selectedStateCount === 0)
       ? "{{ __('Aucun', 'configurationglpiauto')|e('js') }}"
       : (selectedStateCount + ' ' + "{{ __('statuts', 'configurationglpiauto')|e('js') }}" + (stateIconsEnabledInput.checked ? " {{ __('(avec icônes)', 'configurationglpiauto')|e('js') }}" : ''));
+    totalItemsEstimate += selectedStateCount;
 
     document.getElementById('cga-summary-wait-reasons').textContent = !waitReasonsEnabledInput.checked
       ? "{{ __('Aucune', 'configurationglpiauto')|e('js') }}"
       : ({{ wait_reasons_preview|length }} + ' ' + "{{ __('raisons d\'attente', 'configurationglpiauto')|e('js') }}");
+    if (waitReasonsEnabledInput.checked) { totalItemsEstimate += {{ wait_reasons_preview|length }}; }
 
     var brandingParts = [];
     if (brandingEnabledInput.checked) { brandingParts.push("{{ __('Couleur principale', 'configurationglpiauto')|e('js') }} " + brandingColorInput.value); }
@@ -3434,6 +3470,9 @@
     document.getElementById('cga-summary-ldap-rights').textContent = (ldapRightsEnabledInput.checked && ldapRightsLeafCount > 0)
       ? (ldapRightsLeafCount + ' ' + "{{ __('règle(s)', 'configurationglpiauto')|e('js') }}" + ' — ' + ldapRightsProfileInput.value)
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+    // Décompté même hors LDAP : ldapRightsLeafCount reflète le nombre d'entités feuilles de
+    // l'arborescence, le plus gros poste de création à lui seul dans les grandes arborescences.
+    totalItemsEstimate += ldapRightsLeafCount;
 
     var tasksSolutionsParts = [];
     if (taskCategoriesEnabledInput.checked) { tasksSolutionsParts.push("{{ __('catégories de tâches', 'configurationglpiauto')|e('js') }}"); }
@@ -3467,6 +3506,22 @@
     document.getElementById('cga-summary-projects').textContent = projectsParts.length
       ? projectsParts.join(', ')
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+
+    // Chaque bibliothèque/catalogue activé (tâches/solutions, suivis/validations, outils
+    // généraux, projets, réglages généraux) pèse pour un poids forfaitaire modeste dans
+    // l'estimation — ce sont des catalogues de taille à peu près fixe, pas des listes qui
+    // grandissent avec la sélection de l'utilisateur comme les catégories ou les statuts.
+    totalItemsEstimate += (tasksSolutionsParts.length + followupsValidationsParts.length + generalToolsParts.length + projectsParts.length) * 15;
+    totalItemsEstimate += generalSettingsCheckedCount * 5;
+
+    var estimateLabel = totalItemsEstimate < 20
+      ? "{{ __('quelques secondes', 'configurationglpiauto')|e('js') }}"
+      : totalItemsEstimate < 100
+        ? "{{ __('moins d\'une minute', 'configurationglpiauto')|e('js') }}"
+        : totalItemsEstimate < 500
+          ? "{{ __('une à quelques minutes', 'configurationglpiauto')|e('js') }}"
+          : "{{ __('plusieurs minutes', 'configurationglpiauto')|e('js') }}";
+    document.getElementById('cga-summary-time-estimate').textContent = estimateLabel;
   }
 
   function showStep(n) {
