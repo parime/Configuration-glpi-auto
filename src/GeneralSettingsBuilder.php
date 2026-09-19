@@ -20,6 +20,7 @@ namespace GlpiPlugin\Configurationglpiauto;
 use CommonITILSatisfaction;
 use CronTask;
 use Entity;
+use GlpiPlugin\Configurationglpiauto\Audit\AuditWatchCron;
 use Notification;
 use ProjectState;
 use ValidationStep;
@@ -114,12 +115,31 @@ class GeneralSettingsBuilder
             $applied = true;
         }
 
+        if (!empty($config->fields['audit_watch_enabled'])) {
+            $this->enableAuditWatch();
+            $applied = true;
+        }
+
         if (!empty($config->fields['inventory_enabled'])) {
             \Config::setConfigurationValues('inventory', ['enabled_inventory' => 1]);
             $applied = true;
         }
 
         return $applied;
+    }
+
+    /**
+     * Active la tâche planifiée enregistrée à l'installation (`Installer::install()`, toujours
+     * `CronTask::STATE_DISABLE` tant que ce réglage n'est pas coché) — même mécanisme exact que
+     * `applyNotifications()` ci-dessus pour les CronTasks natifs de GLPI cœur, réutilisé ici pour
+     * celui propre à ce plugin (issue #131, voir `AuditWatchCron`).
+     */
+    private function enableAuditWatch(): void
+    {
+        $cronTask = new CronTask();
+        if ($cronTask->getFromDBByCrit(['itemtype' => AuditWatchCron::class, 'name' => 'auditwatch'])) {
+            $cronTask->update(['id' => $cronTask->getID(), 'state' => CronTask::STATE_WAITING]);
+        }
     }
 
     /**

@@ -17,8 +17,10 @@
 
 namespace GlpiPlugin\Configurationglpiauto\Install;
 
+use CronTask;
 use DBConnection;
 use DropdownTranslation;
+use GlpiPlugin\Configurationglpiauto\Audit\AuditWatchCron;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\Profile;
@@ -139,6 +141,8 @@ final class Installer
                 `satisfaction_survey_enabled` tinyint NOT NULL DEFAULT 0,
                 `committee_validation_enabled` tinyint NOT NULL DEFAULT 0,
                 `dashboard_enabled` tinyint NOT NULL DEFAULT 0,
+                `audit_watch_enabled` tinyint NOT NULL DEFAULT 0,
+                `audit_watch_state` text,
                 `inventory_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -381,6 +385,12 @@ final class Installer
             // Guide ITIL complet (issue #124) : voir DashboardBuilder — purement additif, même
             // valeur par défaut que les autres réglages généraux.
             $migration->addField(self::CONFIGS_TABLE, 'dashboard_enabled', 'bool', ['value' => 1]);
+            // Analyse continue (issue #131) : voir AuditWatchCron — purement additif, même valeur
+            // par défaut que les autres réglages généraux. `audit_watch_state` n'a volontairement
+            // pas de valeur par défaut : jamais saisi via l'assistant, uniquement écrit par
+            // AuditWatchCron/remis à zéro par front/audit.php.
+            $migration->addField(self::CONFIGS_TABLE, 'audit_watch_enabled', 'bool', ['value' => 1]);
+            $migration->addField(self::CONFIGS_TABLE, 'audit_watch_state', 'text');
         }
 
         // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape
@@ -591,6 +601,16 @@ final class Installer
             ]],
         ]);
 
+        // Analyse continue (issue #131) : enregistre la tâche planifiée une seule fois (CronTask::
+        // register() vérifie déjà les doublons via getFromDBbyName) — jamais active tant que
+        // l'assistant ne l'active pas explicitement (voir GeneralSettingsBuilder::
+        // enableAuditWatch()), même raisonnement que inventory_enabled : un comportement en tâche
+        // de fond nouveau, pas juste un contenu généré.
+        CronTask::register(AuditWatchCron::class, 'auditwatch', WEEK_TIMESTAMP, [
+            'state' => CronTask::STATE_DISABLE,
+            'mode'  => CronTask::MODE_INTERNAL,
+        ]);
+
         return true;
     }
 
@@ -611,6 +631,12 @@ final class Installer
         if (is_file($themePath)) {
             unlink($themePath); // nosemgrep: php.lang.security.unlink-use.unlink-use
         }
+
+        // Analyse continue (issue #131) : retire la tâche planifiée que ce plugin enregistre
+        // (CronTask::unregister() matche par préfixe d'itemtype, voir sa propre docblock) — avant
+        // les DROP TABLE ci-dessous, même ordre que le reste de cette méthode (défaire d'abord ce
+        // qui dépend de GLPI cœur, puis les tables propres au plugin).
+        CronTask::unregister('configurationglpiauto');
 
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::PROFILES_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::CONFIGS_TABLE . "`");

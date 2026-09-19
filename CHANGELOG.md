@@ -11,6 +11,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Analyse continue (issue #131)** : la première tâche planifiée GLPI (`CronTask`) que ce plugin
+  enregistre lui-même (`GeneralSettingsBuilder` n'activait jusqu'ici que des CronTasks *existants*
+  de GLPI cœur) — `AuditWatchCron` ré-exécute chaque semaine le registre d'audit existant
+  (`AuditService`, #112/#125) et accumule un compteur de *nouveaux* constats critiques dans la
+  configuration du plugin. "Surveillance en temps réel" et "alertes proactives" (texte de l'issue)
+  pris au sens réalisable pour un plugin de configuration ponctuelle : pas de nouvelle
+  infrastructure `NotificationTarget`/`NotificationTemplate` (disproportionnée, jamais nécessaire
+  jusqu'ici), mais une bannière sur `front/audit.php` à la prochaine visite d'un administrateur,
+  acquittée (remise à zéro) dès qu'elle est vue. Nouvelle case à cocher "Analyse continue de la
+  configuration" dans l'étape "Réglages généraux", décochée par défaut à l'installation de la tâche
+  (jamais active tant que l'assistant ne l'active pas explicitement). Fermeture sans implémentation
+  de deux issues restantes du même lot (#128 "Marketplace communautaire", hors périmètre pour un
+  plugin unique ; #130 "Recommandations automatiques", doublon du champ `recommendation` déjà porté
+  par chaque constat d'audit) ; #126 "API REST complète" reportée (incompatible en l'état avec le
+  principe "jamais écrire silencieusement" au-delà de la lecture).
 - **Bonnes pratiques automatiques (issue #125)** : 3 nouvelles vérifications ajoutées au registre
   d'audit existant (`AuditService`, issue #112) plutôt qu'une réimplémentation — "analyse continue
   de la configuration" et "suggestions d'amélioration" (texte de l'issue) sont déjà exactement ce

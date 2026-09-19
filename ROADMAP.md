@@ -1432,35 +1432,42 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 **Prévue** : 2029
 
 **Plateforme complète** :
-- 🔄 **API REST complète**
-  - Accès programmatique à toutes les fonctionnalités
-  - Webhooks pour l'intégration temps réel
-  - Documentation Swagger/OpenAPI
+- ⏸️ **API REST complète** (issue #126) — reportée : "accès programmatique à toutes les
+  fonctionnalités" ne peut pas dépasser la lecture seule sans rompre le principe "jamais écrire
+  silencieusement" appliqué à chaque fonctionnalité de ce plugin (chaque écriture réelle passe par
+  l'assistant pour revue humaine) ; une API en lecture seule (constats d'audit, Blueprints) reste
+  envisageable mais n'a pas encore de consommateur réel identifié.
 
 - 🔗 **Synchronisation multi-instances**
   - Gestion centralisée de plusieurs instances GLPI
   - Synchronisation des configurations
   - Réplication des données
 
-- 🏪 **Marketplace communautaire**
-  - Écosystème de plugins et configurations
-  - Système de notation et de confiance
-  - Monétisation pour les créateurs
+- ❌ **Marketplace communautaire** — **fermé sans implémentation** (issue #128 fermée le
+  2026-09-19) : un écosystème de plugins/configurations avec notation et monétisation est une
+  plateforme à part entière (service web, infrastructure de paiement, gouvernance de confiance),
+  pas une fonctionnalité qu'un plugin GLPI unique peut construire dans son propre code.
 
 - 🤖 **Assistant IA intégré**
   - Recommandations intelligentes basées sur l'IA
   - Analyse prédictive des problèmes
   - Optimisation automatique de la configuration
 
-- 🎯 **Recommandations automatiques**
-  - Moteur de recommandations temps réel
-  - Apprentissage des meilleures pratiques
-  - Adaptation aux spécificités de l'organisation
+- ❌ **Recommandations automatiques** — **fermé sans implémentation** (issue #130 fermée le
+  2026-09-19) : doublon du champ `recommendation` déjà porté par chaque `AuditFinding` depuis #112/
+  #125 ; un vrai "apprentissage automatique" temps réel n'a pas sa place dans ce plugin (aucune
+  télémétrie, aucun pipeline d'entraînement, et contredirait le principe "jamais deviner à la place
+  d'un humain ce qui est propre à son organisation").
 
-- 📊 **Analyse continue**
-  - Surveillance en temps réel
-  - Alertes proactives
-  - Rapports d'optimisation
+- ✅ **Analyse continue** (issue #131) — livré, périmètre réduit : "surveillance en temps réel" et
+  "alertes proactives" pris au sens réalisable pour un plugin de configuration ponctuelle, pas au
+  sens littéral (polling live, notifications push). `AuditWatchCron` (nouveau, première tâche
+  planifiée que ce plugin enregistre lui-même) ré-exécute chaque semaine le registre d'audit
+  existant (#112/#125) et accumule un compteur de nouveaux constats critiques, affiché en bannière
+  sur `front/audit.php` à la prochaine visite d'un administrateur — volontairement sans nouvelle
+  infrastructure de notification GLPI (`NotificationTarget`/`NotificationTemplate`), disproportionnée
+  pour ce lot. "Rapports d'optimisation" n'a pas de sens séparé de l'audit déjà existant : l'écran
+  d'audit lui-même EST le rapport.
 
 ---
 
