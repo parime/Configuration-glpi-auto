@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Système de Blueprints (issue #113)** : un profil de configuration
+  (`front/profile.php`/`profile.form.php`) peut désormais capturer l'état actuel de `Config` comme
+  instantané JSON standardisé ("Blueprint"), l'exporter en fichier `.json`, et importer un fichier
+  Blueprint (`front/blueprint_import.php`) comme nouveau profil. Appliquer un Blueprint ne réécrit
+  jamais silencieusement la configuration : il pré-remplit `Config` puis redirige vers l'assistant
+  pour revue humaine, comme le choix d'un profil à l'étape 1. Portabilité par fichier entre
+  instances, pas un service de partage en ligne. `src/Blueprint/BlueprintSerializer.php` (pur,
+  testable) gère l'aller-retour export/import, avec repli sur les vraies valeurs par défaut pour
+  tout champ absent d'un Blueprint exporté par une version plus ancienne du plugin.
 - **Mode Audit avancé (issue #112)** : nouvel écran "Lancer l'audit" analysant l'état réel de
   l'instance GLPI (pas seulement ce que ce plugin a lui-même configuré) — 6 vérifications
   (notifications désactivées, entités sans adresse, adresse email d'administration restée au

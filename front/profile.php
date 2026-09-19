@@ -32,6 +32,12 @@ echo "</a>";
 echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/audit.php') . "'>";
 echo "<i class='ti ti-stethoscope'></i> " . __('Lancer l\'audit', 'configurationglpiauto');
 echo "</a>";
+// Issue #113 ("Système de Blueprints") : même emplacement/style que les boutons ci-dessus.
+if (ConfigurationProfile::canCreate()) {
+    echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/blueprint_import.php') . "'>";
+    echo "<i class='ti ti-upload'></i> " . __('Importer un Blueprint (JSON)', 'configurationglpiauto');
+    echo "</a>";
+}
 if (ConfigurationProfile::canCreate()) {
     echo "<a class='btn btn-primary' href='" . htmlspecialchars(ConfigurationProfile::getFormURL()) . "'>";
     echo "<i class='ti ti-plus'></i> " . __('Ajouter');
