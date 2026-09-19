@@ -179,6 +179,14 @@ class Config extends CommonDBTM
             // recréé ensuite (voir DashboardBuilder) — purement additif, même raisonnement de
             // défaut que les autres réglages généraux ci-dessus.
             'dashboard_enabled' => 1,
+            // Analyse continue (issue #131) : active une tâche planifiée GLPI native (voir
+            // AuditWatchCron) qui ré-exécute l'audit existant et accumule un compteur de nouveaux
+            // constats critiques, affiché en bannière sur front/audit.php — purement additif,
+            // aucune correction ni notification externe, même raisonnement de défaut que les
+            // autres réglages généraux ci-dessus. `audit_watch_state` (l'état accumulé lui-même)
+            // n'a volontairement pas de valeur par défaut ici : jamais saisi via l'assistant,
+            // uniquement écrit par AuditWatchCron/remis à zéro par front/audit.php.
+            'audit_watch_enabled' => 1,
             // Décoché par défaut, contrairement au reste des réglages généraux : ouvre un vrai
             // point d'entrée réseau (l'endpoint d'inventaire) plutôt que de générer du contenu,
             // même raisonnement que validation_supervisor_routing_enabled ci-dessous.
@@ -581,7 +589,7 @@ class Config extends CommonDBTM
             $input['state_icons_enabled'] = !empty($input['state_icons_enabled']) ? 1 : 0;
         }
 
-        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled', 'dashboard_enabled', 'inventory_enabled'] as $field) {
+        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled', 'dashboard_enabled', 'audit_watch_enabled', 'inventory_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

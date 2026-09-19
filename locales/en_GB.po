@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: configurationglpiauto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 18:38+0000\n"
+"POT-Creation-Date: 2026-09-19 20:41+0000\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1012,6 +1012,20 @@ msgstr ""
 "Create a native GLPI dashboard highlighting SLA compliance (late tickets, by "
 "technician and by group), in addition to the indicators already present on "
 "the \"Assistance\" dashboard"
+
+#: templates/wizard.html.twig
+msgid "Analyse continue de la configuration"
+msgstr "Continuous configuration analysis"
+
+#: templates/wizard.html.twig
+msgid ""
+"Ré-exécuter l'audit de configuration une fois par semaine (Configuration > "
+"Audit) et signaler les nouveaux constats critiques à la prochaine visite "
+"d'un administrateur"
+msgstr "Re-run the configuration audit once a week (Configuration > Audit) and flag new critical findings the next time an administrator visits"
+"Ré-exécuter l'audit de configuration une fois par semaine (Configuration > "
+"Audit) et signaler les nouveaux constats critiques à la prochaine visite "
+"d'un administrateur"
 
 #: templates/wizard.html.twig
 msgid "Activer l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)"
@@ -2684,6 +2698,13 @@ msgstr "Fix applied."
 msgid "Audit de configuration"
 msgstr "Configuration audit"
 
+#: front/audit.php:65
+#, php-format
+msgid "%d nouveau constat critique détecté depuis la dernière vérification automatique."
+msgid_plural "%d nouveaux constats critiques détectés depuis la dernière vérification automatique."
+msgstr[0] "%d new critical finding detected since the last automatic check."
+msgstr[1] "%d new critical findings detected since the last automatic check."
+
 #: front/history_restore.php:45
 msgid "Ce Blueprint n'est pas exploitable."
 msgstr "This Blueprint is not usable."
@@ -3297,6 +3318,14 @@ msgstr "Desired device type"
 msgid "Modèle actuel à remplacer"
 msgstr "Current model to replace"
 
+#: src/Audit/AuditWatchCron.php:45
+msgid ""
+"Ré-exécute l'audit de configuration et détecte les nouveaux constats "
+"critiques"
+msgstr "Re-runs the configuration audit and detects new critical findings"
+"Ré-exécute l'audit de configuration et détecte les nouveaux constats "
+"critiques"
+
 #: src/Audit/Checks/EntitiesWithoutAddressCheck.php:71
 #, php-format
 msgid "%d entité sans adresse renseignée"
@@ -3339,15 +3368,18 @@ msgstr "No ticket category is configured"
 msgid ""
 "Les tickets ne peuvent pas être classifiés ni routés automatiquement vers la "
 "bonne équipe sans au moins une catégorie."
-msgstr "Tickets cannot be classified or automatically routed to the right team without at least one category."
-"Les tickets ne peuvent pas être classifiés ni routés automatiquement vers la "
-"bonne équipe sans au moins une catégorie."
+msgstr ""
+"Tickets cannot be classified or automatically routed to the right team "
+"without at least one category.Les tickets ne peuvent pas être classifiés ni "
+"routés automatiquement vers la bonne équipe sans au moins une catégorie."
 
 #: src/Audit/Checks/NoTicketCategoriesCheck.php:63
 msgid ""
 "Utilisez l'assistant de configuration (étape Catégories de tickets) ou créez-"
 "en manuellement."
-msgstr "Use the configuration wizard (Ticket categories step) or create some manually."
+msgstr ""
+"Use the configuration wizard (Ticket categories step) or create some "
+"manually."
 
 #: src/Audit/Checks/DefaultAdminEmailCheck.php:43
 msgid "Configuration générale"
@@ -3393,9 +3425,11 @@ msgstr "The password policy is weak"
 msgid ""
 "Renforcez la politique de mot de passe dans la configuration générale de "
 "GLPI : au moins 8 caractères et une exigence de complexité."
-msgstr "Strengthen the password policy in GLPI's general configuration: at least 8 characters and a complexity requirement."
-"Renforcez la politique de mot de passe dans la configuration générale de "
-"GLPI : au moins 8 caractères et une exigence de complexité."
+msgstr ""
+"Strengthen the password policy in GLPI's general configuration: at least 8 "
+"characters and a complexity requirement.Renforcez la politique de mot de "
+"passe dans la configuration générale de GLPI : au moins 8 caractères et une "
+"exigence de complexité."
 
 #: src/Audit/Checks/DefaultCredentialsCheck.php:56
 msgid "Comptes par défaut"
@@ -3412,9 +3446,11 @@ msgstr[1] "%d default accounts are still using their factory passwords"
 msgid ""
 "Changez immédiatement le mot de passe de ces comptes, ou désactivez-les "
 "s'ils ne sont pas utilisés : ce sont des identifiants publiquement connus."
-msgstr "Change the password of these accounts immediately, or disable them if unused: these are publicly known credentials."
-"Changez immédiatement le mot de passe de ces comptes, ou désactivez-les "
-"s'ils ne sont pas utilisés : ce sont des identifiants publiquement connus."
+msgstr ""
+"Change the password of these accounts immediately, or disable them if "
+"unused: these are publicly known credentials.Changez immédiatement le mot de "
+"passe de ces comptes, ou désactivez-les s'ils ne sont pas utilisés : ce sont "
+"des identifiants publiquement connus."
 
 #: src/Audit/Checks/NoActiveCalendarCheck.php:39
 msgid "Calendriers"

@@ -1037,6 +1037,15 @@
           <li class="list-group-item">{{ __('Créer un tableau de bord natif GLPI mettant en avant la conformité SLA (tickets en retard par technicien et par groupe), en plus des indicateurs déjà présents sur le tableau de bord « Assistance »', 'configurationglpiauto') }}</li>
         </ul>
 
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="audit_watch_enabled" value="0">
+          <input type="checkbox" name="audit_watch_enabled" value="1" class="form-check-input cga-general-settings-group" id="cga-audit-watch-enabled" {{ config.audit_watch_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-audit-watch-enabled">{{ __('Analyse continue de la configuration', 'configurationglpiauto') }}</label>
+        </div>
+        <ul class="list-group mb-3" style="max-width: 560px;">
+          <li class="list-group-item">{{ __('Ré-exécuter l\'audit de configuration une fois par semaine (Configuration > Audit) et signaler les nouveaux constats critiques à la prochaine visite d\'un administrateur', 'configurationglpiauto') }}</li>
+        </ul>
+
         <hr class="my-3">
         <div class="form-check form-switch mb-1">
           <input type="hidden" name="inventory_enabled" value="0">

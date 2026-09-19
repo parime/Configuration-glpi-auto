@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: configurationglpiauto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 18:38+0000\n"
+"POT-Creation-Date: 2026-09-19 20:41+0000\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1041,6 +1041,20 @@ msgstr ""
 "Erstellt ein natives GLPI-Dashboard, das die SLA-Konformität hervorhebt "
 "(verspätete Tickets, nach Techniker und nach Gruppe), zusätzlich zu den "
 "bereits im Dashboard „Support“ vorhandenen Kennzahlen"
+
+#: templates/wizard.html.twig
+msgid "Analyse continue de la configuration"
+msgstr "Kontinuierliche Konfigurationsanalyse"
+
+#: templates/wizard.html.twig
+msgid ""
+"Ré-exécuter l'audit de configuration une fois par semaine (Configuration > "
+"Audit) et signaler les nouveaux constats critiques à la prochaine visite "
+"d'un administrateur"
+msgstr "Führt das Konfigurationsaudit einmal pro Woche erneut aus (Konfiguration > Audit) und meldet neue kritische Feststellungen beim nächsten Besuch eines Administrators"
+"Ré-exécuter l'audit de configuration une fois par semaine (Configuration > "
+"Audit) et signaler les nouveaux constats critiques à la prochaine visite "
+"d'un administrateur"
 
 #: templates/wizard.html.twig
 msgid "Activer l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)"
@@ -2757,6 +2771,13 @@ msgstr "Korrektur angewendet."
 msgid "Audit de configuration"
 msgstr "Konfigurationsaudit"
 
+#: front/audit.php:65
+#, php-format
+msgid "%d nouveau constat critique détecté depuis la dernière vérification automatique."
+msgid_plural "%d nouveaux constats critiques détectés depuis la dernière vérification automatique."
+msgstr[0] "%d neue kritische Feststellung seit der letzten automatischen Prüfung erkannt."
+msgstr[1] "%d neue kritische Feststellungen seit der letzten automatischen Prüfung erkannt."
+
 #: front/history_restore.php:45
 msgid "Ce Blueprint n'est pas exploitable."
 msgstr "Dieser Blueprint ist nicht verwendbar."
@@ -3374,6 +3395,14 @@ msgstr "Gewünschter Gerätetyp"
 msgid "Modèle actuel à remplacer"
 msgstr "Aktuelles zu ersetzendes Modell"
 
+#: src/Audit/AuditWatchCron.php:45
+msgid ""
+"Ré-exécute l'audit de configuration et détecte les nouveaux constats "
+"critiques"
+msgstr "Führt das Konfigurationsaudit erneut aus und erkennt neue kritische Feststellungen"
+"Ré-exécute l'audit de configuration et détecte les nouveaux constats "
+"critiques"
+
 #: src/Audit/Checks/EntitiesWithoutAddressCheck.php:71
 #, php-format
 msgid "%d entité sans adresse renseignée"
@@ -3416,17 +3445,20 @@ msgstr "Es ist keine Ticket-Kategorie konfiguriert"
 msgid ""
 "Les tickets ne peuvent pas être classifiés ni routés automatiquement vers la "
 "bonne équipe sans au moins une catégorie."
-msgstr "Tickets können ohne mindestens eine Kategorie nicht klassifiziert oder automatisch an das richtige Team weitergeleitet werden."
-"Les tickets ne peuvent pas être classifiés ni routés automatiquement vers la "
-"bonne équipe sans au moins une catégorie."
+msgstr ""
+"Tickets können ohne mindestens eine Kategorie nicht klassifiziert oder "
+"automatisch an das richtige Team weitergeleitet werden.Les tickets ne "
+"peuvent pas être classifiés ni routés automatiquement vers la bonne équipe "
+"sans au moins une catégorie."
 
 #: src/Audit/Checks/NoTicketCategoriesCheck.php:63
 msgid ""
 "Utilisez l'assistant de configuration (étape Catégories de tickets) ou créez-"
 "en manuellement."
-msgstr "Verwenden Sie den Konfigurationsassistenten (Schritt Ticket-Kategorien) oder erstellen Sie welche manuell."
-"Verwenden Sie den Konfigurationsassistenten (Schritt Status) oder erstellen "
-"Sie welche manuell."
+msgstr ""
+"Verwenden Sie den Konfigurationsassistenten (Schritt Ticket-Kategorien) oder "
+"erstellen Sie welche manuell.Verwenden Sie den Konfigurationsassistenten "
+"(Schritt Status) oder erstellen Sie welche manuell."
 
 #: src/Audit/Checks/DefaultAdminEmailCheck.php:43
 msgid "Configuration générale"
@@ -3463,7 +3495,8 @@ msgstr "Mindestlänge unter 8 Zeichen"
 
 #: src/Audit/Checks/WeakPasswordPolicyCheck.php:69
 msgid "aucune exigence de complexité (chiffre, lettre, majuscule ou symbole)"
-msgstr "keine Komplexitätsanforderung (Zahl, Buchstabe, Großbuchstabe oder Symbol)"
+msgstr ""
+"keine Komplexitätsanforderung (Zahl, Buchstabe, Großbuchstabe oder Symbol)"
 
 #: src/Audit/Checks/WeakPasswordPolicyCheck.php:80
 msgid "La politique de mot de passe est faible"
@@ -3473,9 +3506,11 @@ msgstr "Die Passwortrichtlinie ist schwach"
 msgid ""
 "Renforcez la politique de mot de passe dans la configuration générale de "
 "GLPI : au moins 8 caractères et une exigence de complexité."
-msgstr "Verschärfen Sie die Passwortrichtlinie in der allgemeinen Konfiguration von GLPI: mindestens 8 Zeichen und eine Komplexitätsanforderung."
-"Renforcez la politique de mot de passe dans la configuration générale de "
-"GLPI : au moins 8 caractères et une exigence de complexité."
+msgstr ""
+"Verschärfen Sie die Passwortrichtlinie in der allgemeinen Konfiguration von "
+"GLPI: mindestens 8 Zeichen und eine Komplexitätsanforderung.Renforcez la "
+"politique de mot de passe dans la configuration générale de GLPI : au moins "
+"8 caractères et une exigence de complexité."
 
 #: src/Audit/Checks/DefaultCredentialsCheck.php:56
 msgid "Comptes par défaut"
@@ -3492,9 +3527,12 @@ msgstr[1] "%d Standardkonten verwenden noch ihr werkseitiges Passwort"
 msgid ""
 "Changez immédiatement le mot de passe de ces comptes, ou désactivez-les "
 "s'ils ne sont pas utilisés : ce sont des identifiants publiquement connus."
-msgstr "Ändern Sie sofort das Passwort dieser Konten oder deaktivieren Sie sie, falls sie nicht verwendet werden: Es handelt sich um öffentlich bekannte Zugangsdaten."
-"Changez immédiatement le mot de passe de ces comptes, ou désactivez-les "
-"s'ils ne sont pas utilisés : ce sont des identifiants publiquement connus."
+msgstr ""
+"Ändern Sie sofort das Passwort dieser Konten oder deaktivieren Sie sie, "
+"falls sie nicht verwendet werden: Es handelt sich um öffentlich bekannte "
+"Zugangsdaten.Changez immédiatement le mot de passe de ces comptes, ou "
+"désactivez-les s'ils ne sont pas utilisés : ce sont des identifiants "
+"publiquement connus."
 
 #: src/Audit/Checks/NoActiveCalendarCheck.php:39
 msgid "Calendriers"

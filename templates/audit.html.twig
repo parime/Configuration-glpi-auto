@@ -25,6 +25,17 @@
       {{ __('Analyse de l\'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré.', 'configurationglpiauto') }}
     </p>
 
+    {# Issue #131 ("Analyse continue") : compteur accumulé par la tâche planifiée AuditWatchCron
+       depuis la dernière visite de cet écran — déjà remis à zéro côté PHP au moment du rendu, cette
+       bannière n'apparaît donc qu'une seule fois par lot de nouveaux constats. Message déjà rendu
+       côté PHP (front/audit.php) : extract-locales n'extrait `_n()` que depuis le code PHP. #}
+    {% if new_critical_message is not null %}
+      <div class="alert alert-danger">
+        <i class="ti ti-alert-triangle me-1"></i>
+        {{ new_critical_message }}
+      </div>
+    {% endif %}
+
     {% if findings is empty %}
       <div class="alert alert-success">
         <i class="ti ti-circle-check me-1"></i>

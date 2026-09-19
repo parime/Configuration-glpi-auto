@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: configurationglpiauto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 18:38+0000\n"
+"POT-Creation-Date: 2026-09-19 20:41+0000\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1037,6 +1037,20 @@ msgstr ""
 "Cria um painel nativo do GLPI destacando a conformidade de SLA (chamados "
 "atrasados, por técnico e por grupo), além dos indicadores já presentes no "
 "painel \"Atendimento\""
+
+#: templates/wizard.html.twig
+msgid "Analyse continue de la configuration"
+msgstr "Análise contínua da configuração"
+
+#: templates/wizard.html.twig
+msgid ""
+"Ré-exécuter l'audit de configuration une fois par semaine (Configuration > "
+"Audit) et signaler les nouveaux constats critiques à la prochaine visite "
+"d'un administrateur"
+msgstr "Executa novamente a auditoria de configuração uma vez por semana (Configuração > Auditoria) e sinaliza novos achados críticos na próxima visita de um administrador"
+"Ré-exécuter l'audit de configuration une fois par semaine (Configuration > "
+"Audit) et signaler les nouveaux constats critiques à la prochaine visite "
+"d'un administrateur"
 
 #: templates/wizard.html.twig
 msgid "Activer l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)"
@@ -2742,6 +2756,13 @@ msgstr "Correção aplicada."
 msgid "Audit de configuration"
 msgstr "Auditoria de configuração"
 
+#: front/audit.php:65
+#, php-format
+msgid "%d nouveau constat critique détecté depuis la dernière vérification automatique."
+msgid_plural "%d nouveaux constats critiques détectés depuis la dernière vérification automatique."
+msgstr[0] "%d novo achado crítico detectado desde a última verificação automática."
+msgstr[1] "%d novos achados críticos detectados desde a última verificação automática."
+
 #: front/history_restore.php:45
 msgid "Ce Blueprint n'est pas exploitable."
 msgstr "Este Blueprint não é utilizável."
@@ -3357,6 +3378,14 @@ msgstr "Tipo de dispositivo desejado"
 msgid "Modèle actuel à remplacer"
 msgstr "Modelo atual a ser substituído"
 
+#: src/Audit/AuditWatchCron.php:45
+msgid ""
+"Ré-exécute l'audit de configuration et détecte les nouveaux constats "
+"critiques"
+msgstr "Executa novamente a auditoria de configuração e detecta novos achados críticos"
+"Ré-exécute l'audit de configuration et détecte les nouveaux constats "
+"critiques"
+
 #: src/Audit/Checks/EntitiesWithoutAddressCheck.php:71
 #, php-format
 msgid "%d entité sans adresse renseignée"
@@ -3400,16 +3429,20 @@ msgstr "Nenhuma categoria de chamado está configurada"
 msgid ""
 "Les tickets ne peuvent pas être classifiés ni routés automatiquement vers la "
 "bonne équipe sans au moins une catégorie."
-msgstr "Os chamados não podem ser classificados nem roteados automaticamente para a equipe certa sem pelo menos uma categoria."
-"Les tickets ne peuvent pas être classifiés ni routés automatiquement vers la "
-"bonne équipe sans au moins une catégorie."
+msgstr ""
+"Os chamados não podem ser classificados nem roteados automaticamente para a "
+"equipe certa sem pelo menos uma categoria.Les tickets ne peuvent pas être "
+"classifiés ni routés automatiquement vers la bonne équipe sans au moins une "
+"catégorie."
 
 #: src/Audit/Checks/NoTicketCategoriesCheck.php:63
 msgid ""
 "Utilisez l'assistant de configuration (étape Catégories de tickets) ou créez-"
 "en manuellement."
-msgstr "Use o assistente de configuração (etapa Categorias de chamados) ou crie algumas manualmente."
-"Use o assistente de configuração (etapa Status) ou crie-os manualmente."
+msgstr ""
+"Use o assistente de configuração (etapa Categorias de chamados) ou crie "
+"algumas manualmente.Use o assistente de configuração (etapa Status) ou crie-"
+"os manualmente."
 
 #: src/Audit/Checks/DefaultAdminEmailCheck.php:43
 msgid "Configuration générale"
@@ -3446,7 +3479,8 @@ msgstr "comprimento mínimo inferior a 8 caracteres"
 
 #: src/Audit/Checks/WeakPasswordPolicyCheck.php:69
 msgid "aucune exigence de complexité (chiffre, lettre, majuscule ou symbole)"
-msgstr "nenhuma exigência de complexidade (número, letra, maiúscula ou símbolo)"
+msgstr ""
+"nenhuma exigência de complexidade (número, letra, maiúscula ou símbolo)"
 
 #: src/Audit/Checks/WeakPasswordPolicyCheck.php:80
 msgid "La politique de mot de passe est faible"
@@ -3456,9 +3490,11 @@ msgstr "A política de senhas é fraca"
 msgid ""
 "Renforcez la politique de mot de passe dans la configuration générale de "
 "GLPI : au moins 8 caractères et une exigence de complexité."
-msgstr "Reforce a política de senhas na configuração geral do GLPI: pelo menos 8 caracteres e uma exigência de complexidade."
-"Renforcez la politique de mot de passe dans la configuration générale de "
-"GLPI : au moins 8 caractères et une exigence de complexité."
+msgstr ""
+"Reforce a política de senhas na configuração geral do GLPI: pelo menos 8 "
+"caracteres e uma exigência de complexidade.Renforcez la politique de mot de "
+"passe dans la configuration générale de GLPI : au moins 8 caractères et une "
+"exigence de complexité."
 
 #: src/Audit/Checks/DefaultCredentialsCheck.php:56
 msgid "Comptes par défaut"
@@ -3475,9 +3511,11 @@ msgstr[1] "%d contas padrão ainda usam sua senha de fábrica"
 msgid ""
 "Changez immédiatement le mot de passe de ces comptes, ou désactivez-les "
 "s'ils ne sont pas utilisés : ce sont des identifiants publiquement connus."
-msgstr "Altere imediatamente a senha dessas contas, ou desative-as se não forem usadas: são credenciais publicamente conhecidas."
-"Changez immédiatement le mot de passe de ces comptes, ou désactivez-les "
-"s'ils ne sont pas utilisés : ce sont des identifiants publiquement connus."
+msgstr ""
+"Altere imediatamente a senha dessas contas, ou desative-as se não forem "
+"usadas: são credenciais publicamente conhecidas.Changez immédiatement le mot "
+"de passe de ces comptes, ou désactivez-les s'ils ne sont pas utilisés : ce "
+"sont des identifiants publiquement connus."
 
 #: src/Audit/Checks/NoActiveCalendarCheck.php:39
 msgid "Calendriers"
