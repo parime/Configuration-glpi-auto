@@ -20,23 +20,25 @@ namespace GlpiPlugin\Configurationglpiauto\Tests\Integration\Audit;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoActiveCalendarCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoSlaConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoStatesConfiguredCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoTicketCategoriesCheck;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
- * `NoStatesConfiguredCheck`/`NoActiveCalendarCheck`/`NoSlaConfiguredCheck` each flag a *globally
- * empty* table (`glpi_states`/`glpi_calendars`/`glpi_slas`). Deliberately NOT forced into either
- * branch here: this suite runs against the same shared, persistent instance as every other
- * Integration test in this plugin, and whether these tables already have rows depends on which
- * other suites (StateBuilderTest, CalendarBuilderTest, SlaBuilderTest...) happened to run first —
- * true on the shared dev instance, NOT guaranteed on a fresh CI database where PHPUnit's execution
- * order is unspecified. Forcibly emptying real shared tables to exercise the "problem detected"
- * branch would also be destructive to other suites' and any real organization's own data.
+ * `NoStatesConfiguredCheck`/`NoActiveCalendarCheck`/`NoSlaConfiguredCheck`/`NoTicketCategoriesCheck`
+ * each flag a *globally empty* table (`glpi_states`/`glpi_calendars`/`glpi_slas`/
+ * `glpi_itilcategories`). Deliberately NOT forced into either branch here: this suite runs against
+ * the same shared, persistent instance as every other Integration test in this plugin, and whether
+ * these tables already have rows depends on which other suites (StateBuilderTest,
+ * CalendarBuilderTest, SlaBuilderTest, CategoryBuilderTest...) happened to run first — true on the
+ * shared dev instance, NOT guaranteed on a fresh CI database where PHPUnit's execution order is
+ * unspecified. Forcibly emptying real shared tables to exercise the "problem detected" branch would
+ * also be destructive to other suites' and any real organization's own data.
  *
  * What IS safely verifiable regardless of table state or execution order: each check runs without
  * error, returns at most one finding (never one row per missing item), and never claims to be
- * fixable — none of these three can guess what the right states/calendar/SLA should be for a given
- * organization (see each class's own docblock).
+ * fixable — none of these four can guess what the right states/calendar/SLA/categories should be
+ * for a given organization (see each class's own docblock).
  */
 final class CountBasedChecksTest extends TestCase
 {
@@ -46,9 +48,10 @@ final class CountBasedChecksTest extends TestCase
     public static function checkProvider(): array
     {
         return [
-            'states'     => [static fn () => new NoStatesConfiguredCheck()],
-            'calendars'  => [static fn () => new NoActiveCalendarCheck()],
-            'slas'       => [static fn () => new NoSlaConfiguredCheck()],
+            'states'            => [static fn () => new NoStatesConfiguredCheck()],
+            'calendars'         => [static fn () => new NoActiveCalendarCheck()],
+            'slas'              => [static fn () => new NoSlaConfiguredCheck()],
+            'ticket_categories' => [static fn () => new NoTicketCategoriesCheck()],
         ];
     }
 

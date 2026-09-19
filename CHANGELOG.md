@@ -11,6 +11,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Bonnes pratiques automatiques (issue #125)** : 3 nouvelles vérifications ajoutées au registre
+  d'audit existant (`AuditService`, issue #112) plutôt qu'une réimplémentation — "analyse continue
+  de la configuration" et "suggestions d'amélioration" (texte de l'issue) sont déjà exactement ce
+  que fait ce registre, et "optimisation automatique" y est déjà tranchée au sens strict (jamais
+  sans clic explicite). `DefaultCredentialsCheck` (nouveau) détecte si l'un des 4 comptes de
+  démonstration standards de GLPI (`glpi`, `tech`, `normal`, `post-only`) utilise encore son mot de
+  passe d'usine (`password_verify()` contre le hash réel, jamais de mot de passe lu ou stocké en
+  clair) — un vrai risque de sécurité ISO27001 (A.9, comptes par défaut), confirmé en conditions
+  réelles sur l'instance de développement partagée. `WeakPasswordPolicyCheck` (nouveau) signale une
+  longueur minimale de mot de passe sous les 8 caractères (plancher ANSSI/NIST, pas une valeur
+  propre à une organisation) ou l'absence de toute exigence de complexité. `NoTicketCategoriesCheck`
+  (nouveau) comble un trou de couverture ITIL (catégorisation des tickets), même structure que les
+  vérifications de statuts/calendrier/SLA déjà en place. Les 3 sont, comme toutes les vérifications
+  existantes, jamais corrigibles automatiquement : deviner un mot de passe, une politique ou une
+  catégorie à la place d'un humain serait pire que le constat lui-même.
 - **Guide ITIL complet (issue #124)** : nouveau document `docs/ITIL_GUIDE.md` expliquant, pour
   chaque pratique ITIL 4 (gestion des incidents/demandes, SLA/OLA et escalade N1→N2→N3, gestion
   des changements/problèmes, workflow d'approbation, gestion de la connaissance, enquêtes de
