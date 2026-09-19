@@ -33,6 +33,7 @@ use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\ContractReviewFormBuilder;
 use GlpiPlugin\Configurationglpiauto\CountryHolidayBuilder;
 use GlpiPlugin\Configurationglpiauto\CurativeMaintenanceFormBuilder;
+use GlpiPlugin\Configurationglpiauto\DashboardBuilder;
 use GlpiPlugin\Configurationglpiauto\DeliveryTrackingFormBuilder;
 use GlpiPlugin\Configurationglpiauto\DocumentManagementBuilder;
 use GlpiPlugin\Configurationglpiauto\DoorLockBadgeFormBuilder;
@@ -783,6 +784,9 @@ if (isset($_POST['finish'])) {
     // GLPI ($_POST, jamais $config->fields) — voir la docblock de SmtpBuilder pour la raison
     // (jamais faire transiter un mot de passe par Config/BlueprintSerializer/ConfigHistory).
     $smtpApplied = $canUpdateCoreConfig && (new SmtpBuilder())->build($_POST);
+    // Guide ITIL complet (issue #124) : crée un tableau de bord GLPI natif (objet partagé "core"),
+    // même droit que les autres réglages transverses ci-dessus.
+    $dashboardApplied = $canUpdateCoreConfig && !empty($config->fields['dashboard_enabled']) && (new DashboardBuilder())->build();
     $ticketTemplatesApplied = (new TicketTemplateBuilder())->apply($config);
     $helpdeskFormApplied = (new HelpdeskFormBuilder())->apply($config);
     $changeProblemTemplatesApplied = (new ChangeProblemTemplateBuilder())->apply($config);
@@ -892,6 +896,9 @@ if (isset($_POST['finish'])) {
     }
     if ($smtpApplied) {
         $messages[] = __('Configuration SMTP appliquée. Testez l\'envoi depuis Configuration > Notifications.', 'configurationglpiauto');
+    }
+    if ($dashboardApplied) {
+        $messages[] = __('Tableau de bord ITIL créé (Tableaux de bord > Tableau de bord ITIL).', 'configurationglpiauto');
     }
     if ($ticketTemplatesApplied) {
         $messages[] = __('Modèles de tickets créés et assignés aux profils.', 'configurationglpiauto');

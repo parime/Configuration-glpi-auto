@@ -138,6 +138,7 @@ final class Installer
                 `project_task_states_enabled` tinyint NOT NULL DEFAULT 0,
                 `satisfaction_survey_enabled` tinyint NOT NULL DEFAULT 0,
                 `committee_validation_enabled` tinyint NOT NULL DEFAULT 0,
+                `dashboard_enabled` tinyint NOT NULL DEFAULT 0,
                 `inventory_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -377,6 +378,9 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'certificate_type_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'recurring_ticket_library_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'abroad_mission_form_enabled', 'bool', ['value' => 0]);
+            // Guide ITIL complet (issue #124) : voir DashboardBuilder — purement additif, même
+            // valeur par défaut que les autres réglages généraux.
+            $migration->addField(self::CONFIGS_TABLE, 'dashboard_enabled', 'bool', ['value' => 1]);
         }
 
         // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape

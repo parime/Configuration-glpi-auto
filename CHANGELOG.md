@@ -11,6 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Guide ITIL complet (issue #124)** : nouveau document `docs/ITIL_GUIDE.md` expliquant, pour
+  chaque pratique ITIL 4 (gestion des incidents/demandes, SLA/OLA et escalade N1→N2→N3, gestion
+  des changements/problèmes, workflow d'approbation, gestion de la connaissance, enquêtes de
+  satisfaction), quelle étape de l'assistant la construit concrètement — l'audit interne déjà
+  présent dans `ROADMAP.md` montrait que l'essentiel de ces pratiques est déjà implémenté depuis
+  longtemps, il manquait une explication pensée pour un administrateur, pas une réimplémentation.
+  Seul vrai manque concret identifié : deux cartes de conformité SLA natives à GLPI
+  (`bn_count_tickets_expired_by_tech`/`_group`) n'apparaissent sur aucun tableau de bord par
+  défaut. `DashboardBuilder` (nouveau) crée un tableau de bord GLPI natif dédié ("Tableau de bord
+  ITIL", case à cocher dans l'étape "Réglages généraux") les mettant en avant, en plus des
+  indicateurs déjà présents sur le tableau de bord "Assistance" — jamais recréé sur un second
+  passage de l'assistant (`Dashboard::saveItems()` fait un remplacement complet, pas une fusion :
+  toute personnalisation d'un administrateur sur ce tableau de bord doit survivre).
 - **Configuration SMTP avancée (issue #121)** : nouvelle étape d'assistant (18/19, "Configuration
   SMTP") pour revoir directement les réglages d'envoi de mail natifs de GLPI (serveur, port,
   adresse d'expédition, identifiants, vérification du certificat TLS). `SmtpBuilder` (nouveau)
