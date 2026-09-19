@@ -77,6 +77,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- Documente dans `ROADMAP.md` un vrai casse-compatibilité GLPI 12 confirmé en lisant le code
+  source réel de `12.0.0-rc1` : le cœur type désormais strictement `CommonGLPI::$rightname`
+  (`public static string`), ce que 4 classes de ce plugin (`Config`, `ConfigurationProfile`,
+  `ConfigHistory`, `FuelType`) redéclarent sans type (motif GLPI 11) — une règle stricte
+  d'héritage PHP rend impossible un même fichier compatible avec GLPI 11 et 12 à la fois.
+  Confirmé sans solution de compatibilité côté cœur GLPI (issue
+  [glpi-project/glpi#25399](https://github.com/glpi-project/glpi/issues/25399)). Aucun changement
+  de code pour l'instant, décision délibérée : `MAX_GLPI = 11.99.99` reste tel quel (c'est la
+  configuration protectrice correcte tant que GLPI 12 n'est pas stable et que ce plugin n'a pas
+  reçu son propre correctif de typage) — chantier dédié (nouvelle branche/version majeure) prévu
+  une fois GLPI 12 stable réellement publié.
 - Marque "Profils communautaires" (Version 1.2, issue #118) comme fermé dans `ROADMAP.md` :
   même thématique de partage/catalogue communautaire que le Marketplace de configurations (#116,
   déjà fermé), décision du porteur du plugin de ne pas en faire une priorité actuelle — et de
