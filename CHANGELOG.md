@@ -64,6 +64,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- Marque "Profils communautaires" (Version 1.2, issue #118) comme fermé dans `ROADMAP.md` :
+  même thématique de partage/catalogue communautaire que le Marketplace de configurations (#116,
+  déjà fermé), décision du porteur du plugin de ne pas en faire une priorité actuelle — et de
+  toute façon pas réalisable comme simple fonctionnalité de plugin ("catalogue de profils
+  certifiés" suppose une vraie infrastructure d'hébergement/modération).
 - Clarifie dans `ROADMAP.md` que la numérotation de version 1.1 à 2.0 est le schéma spéculatif
   d'origine, sans rapport avec la vraie numérotation SemVer (déjà à la v1.3.2) — même note
   corrective que celle déjà présente sur la section "Version 1.0".
