@@ -1264,11 +1264,18 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
   Blueprint pré-remplit `Config` puis redirige vers l'assistant pour revue humaine de chaque
   étape avant toute écriture réelle sur les objets GLPI.
 
-- ⏪ **Fonctionnalité de Rollback**
-  - Restauration complète des configurations précédentes
-  - Historique des déploiements
-  - Gestion des points de sauvegarde
-  - Rollback sélectif par module
+- ✅ **Fonctionnalité de Rollback (issue #114) — livré**, historique automatique
+  (`ConfigHistory`, table dédiée) capturé juste avant chaque écrasement réel de `Config` (fin de
+  l'assistant, application d'un Blueprint) — les 20 entrées automatiques les plus récentes sont
+  conservées, purge synchrone à la capture, pas de `CronTask` dédié. Points de sauvegarde créés à
+  la demande (`front/history.php`), jamais purgés automatiquement — même table, un simple booléen
+  (`is_manual`) distingue les deux. Restaurer (`front/history_restore.php`) affiche d'abord un
+  diff champ par champ contre la configuration actuelle, groupé visuellement par préfixe de nom de
+  champ (calculé, jamais une notion de "module" figée à maintenir) : "rollback sélectif par
+  module" devient un rollback sélectif par champ, avec une case à cocher par champ — plus précis
+  et auto-maintenu (un futur champ `Config` tombe automatiquement dans son groupe). Même principe
+  que les Blueprints : restaurer ne réécrit jamais silencieusement la configuration, ça pré-remplit
+  `Config` puis redirige vers l'assistant pour revue humaine de chaque étape.
 
 - 🎭 **Mode Dry Run amélioré**
   - Simulation complète avant déploiement
@@ -1426,7 +1433,7 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 ### Version 1.1
 - [ ] Mode Audit fonctionnel
 - [x] Blueprints implémentés
-- [ ] Rollback opérationnel
+- [x] Rollback opérationnel
 - [ ] Dry Run amélioré
 - [ ] Tests d'intégration complets
 

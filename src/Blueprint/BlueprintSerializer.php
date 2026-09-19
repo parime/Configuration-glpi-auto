@@ -93,12 +93,18 @@ final class BlueprintSerializer
      *     actuellement installée du plugin — chaque champ absent du Blueprint importé (par
      *     exemple exporté par une version plus ancienne de ce plugin, avant l'ajout d'un nouveau
      *     réglage) retombe sur sa vraie valeur par défaut, jamais `null`/vide.
+     * @param ?array<int, string> $onlyFields Rollback sélectif (issue #114) : si non `null`, seuls
+     *     les champs listés ici sont écrasés par le Blueprint — tout le reste retombe sur
+     *     `$currentDefaults` (jamais sur la valeur actuelle non passée en paramètre, la même
+     *     discipline "toujours défauts réels, jamais deviné" que pour un champ absent du Blueprint).
+     *     `null` (par défaut) préserve le comportement historique (tous les champs du Blueprint
+     *     s'appliquent) — tous les appelants existants avant #114 ne passent que 2 arguments.
      * @return array<string, mixed> Champs prêts pour `Config::update()`.
      * @throws InvalidArgumentException Si le fichier n'est pas un Blueprint valide dans un format
      *     reconnu — jamais une supposition silencieuse sur un contenu qui ne ressemble pas à un
      *     Blueprint.
      */
-    public static function import(array $decodedJson, array $currentDefaults): array
+    public static function import(array $decodedJson, array $currentDefaults, ?array $onlyFields = null): array
     {
         if (!isset($decodedJson['format_version']) || (int) $decodedJson['format_version'] !== self::FORMAT_VERSION) {
             throw new InvalidArgumentException(
@@ -122,6 +128,10 @@ final class BlueprintSerializer
                 continue;
             }
 
+            if ($onlyFields !== null && !in_array($key, $onlyFields, true)) {
+                continue;
+            }
+
             if (in_array($key, self::JSON_ENCODED_FIELDS, true)) {
                 $result[$key] = json_encode($imported[$key]);
                 continue;
@@ -131,5 +141,51 @@ final class BlueprintSerializer
         }
 
         return $result;
+    }
+
+    /**
+     * Rollback sélectif par champ (issue #114), plutôt qu'une notion de "module" inventée : compare
+     * l'état actuel de `Config` à un instantané déjà complété par `import()`, champ par champ, pour
+     * n'afficher/ne cocher que ce qui a réellement changé.
+     *
+     * @param array<string, mixed> $currentFields `Config::getConfig()->fields` (forme brute, chaînes
+     *     JSON pour les ~8 champs concernés).
+     * @param array<string, mixed> $snapshotFields Résultat de `import()` — JAMAIS la sous-clé brute
+     *     `decodedJson['config']` directement : `import()` complète déjà les champs absents avec les
+     *     vraies valeurs par défaut, donc diffé contre son résultat évite qu'un champ manquant d'un
+     *     ancien Blueprint apparaisse comme un faux positif.
+     * @return array<string, array{current: mixed, snapshot: mixed}> Seulement les champs qui
+     *     diffèrent réellement — décode les ~8 champs JSON des deux côtés avant de comparer, jamais
+     *     une comparaison de chaînes JSON brutes (qui donnerait de faux positifs sur un simple
+     *     réordonnancement de clés).
+     */
+    public static function diff(array $currentFields, array $snapshotFields): array
+    {
+        $diff = [];
+
+        foreach ($snapshotFields as $key => $snapshotValue) {
+            if (in_array($key, self::INSTANCE_SPECIFIC_FIELDS, true)) {
+                continue;
+            }
+
+            $currentValue = $currentFields[$key] ?? null;
+
+            if (in_array($key, self::JSON_ENCODED_FIELDS, true)) {
+                $decodedCurrent = json_decode((string) $currentValue, true);
+                $decodedSnapshot = json_decode((string) $snapshotValue, true);
+
+                if ($decodedCurrent != $decodedSnapshot) {
+                    $diff[$key] = ['current' => $decodedCurrent, 'snapshot' => $decodedSnapshot];
+                }
+
+                continue;
+            }
+
+            if ((string) $currentValue !== (string) $snapshotValue) {
+                $diff[$key] = ['current' => $currentValue, 'snapshot' => $snapshotValue];
+            }
+        }
+
+        return $diff;
     }
 }

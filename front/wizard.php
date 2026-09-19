@@ -28,6 +28,7 @@ use GlpiPlugin\Configurationglpiauto\CertificateTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\ChangeProblemTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\CleanlinessRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
+use GlpiPlugin\Configurationglpiauto\ConfigHistory;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\ContractReviewFormBuilder;
 use GlpiPlugin\Configurationglpiauto\CountryHolidayBuilder;
@@ -359,6 +360,9 @@ if (isset($_POST['finish'])) {
     $canUpdateCoreConfig = Session::haveRight('config', UPDATE);
 
     $config = Config::getConfig();
+    // Fonctionnalité de Rollback (issue #114) : capture l'état COURANT (avant écrasement) comme
+    // point d'historique automatique — voir ConfigHistory::captureAutomatic().
+    ConfigHistory::captureAutomatic($config);
     $config->update($_POST + ['id' => $config->getID()]);
 
     $created = $canCreateEntity ? (new EntityBuilder())->build($config) : [];

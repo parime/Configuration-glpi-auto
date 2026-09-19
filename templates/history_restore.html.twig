@@ -1,0 +1,69 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #114 ("Fonctionnalité de Rollback") : diff champ par champ entre la configuration actuelle
+   et l'instantané choisi, groupé visuellement par préfixe de nom de champ — jamais une notion de
+   "module" inventée (voir BlueprintSerializer::diff()). Style minimaliste, même esprit que
+   audit.html.twig : pas de widget de diff visuel riche, juste les valeurs actuelle/sauvegardée
+   côte à côte. #}
+
+<div class="card">
+  <div class="card-body">
+    <p class="text-muted">
+      {{ __('Choisissez les réglages à restaurer, ou restaurez l\'intégralité de cette configuration. Rien n\'est appliqué directement : après confirmation, vérifiez chaque étape de l\'assistant avant de valider.', 'configurationglpiauto') }}
+    </p>
+
+    {% if groups is empty %}
+      <div class="alert alert-info">
+        <i class="ti ti-info-circle me-1"></i>
+        {{ __('Cette configuration est déjà identique à la configuration actuelle — rien à restaurer.', 'configurationglpiauto') }}
+      </div>
+    {% else %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/configurationglpiauto/front/history_restore.php">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.getID() }}">
+
+        {% for groupLabel, fields in groups %}
+          <h3 class="mt-3">{{ groupLabel }}</h3>
+          {% for field, values in fields %}
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" name="fields[]" value="{{ field }}" id="field_{{ field }}" checked>
+              <label class="form-check-label" for="field_{{ field }}"><code>{{ field }}</code></label>
+              <div class="row small">
+                <div class="col-6">
+                  <div class="text-muted">{{ __('Valeur actuelle', 'configurationglpiauto') }}</div>
+                  <pre class="mb-0">{{ values.current is iterable ? values.current|json_encode(constant('JSON_PRETTY_PRINT')) : values.current }}</pre>
+                </div>
+                <div class="col-6">
+                  <div class="text-muted">{{ __('Valeur dans la sauvegarde', 'configurationglpiauto') }}</div>
+                  <pre class="mb-0">{{ values.snapshot is iterable ? values.snapshot|json_encode(constant('JSON_PRETTY_PRINT')) : values.snapshot }}</pre>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endfor %}
+
+        <div class="d-flex gap-2 mt-3">
+          <button type="submit" name="restore_selected" value="1" class="btn btn-primary">
+            <i class="ti ti-history me-1"></i>{{ __('Restaurer la sélection', 'configurationglpiauto') }}
+          </button>
+          <button type="submit" name="restore_all" value="1" class="btn btn-outline-primary">
+            <i class="ti ti-history me-1"></i>{{ __('Restaurer intégralement', 'configurationglpiauto') }}
+          </button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>
