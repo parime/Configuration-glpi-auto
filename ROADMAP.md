@@ -1298,17 +1298,18 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 **Prévue** : Q2 2027
 
 **Fonctionnalités avancées** :
-- 🏪 **Marketplace de configurations**
-  - Téléchargement de profils prédéfinis
-  - Partage communautaire
-  - Notation et commentaires
-  - Mises à jour automatiques
+- 🏪 **Marketplace de configurations (issue #116) — fermé, pas une priorité actuelle**, décision
+  du porteur du plugin (voir le commentaire de fermeture de l'issue). Non traité.
 
-- 📤 **Import/Export avancé**
-  - Export sélectif par catégorie
-  - Planification des imports
-  - Validation automatique
-  - Conflict resolution
+- ✅ **Import/Export avancé (issue #117) — livré, périmètre réduit** : "conflict resolution" et
+  "validation automatique" réutilisent l'écran de diff+application sélective déjà construit pour
+  le Rollback (#114, `front/history_restore.php`), généralisé pour accepter aussi bien une entrée
+  d'historique qu'un Blueprint de profil — appliquer un Blueprint n'est plus un écrasement complet
+  sans revue. "Export sélectif par catégorie" ajoute un écran de choix avant le téléchargement
+  (`BlueprintSerializer::filterConfig()`). "Planification des imports" est explicitement retirée
+  du périmètre (décision utilisateur) : une exécution planifiée sans surveillance romprait la
+  règle "jamais d'écriture silencieuse sur `Config`" appliquée à toutes les fonctionnalités livrées
+  cette session, et aucun `CronTask` n'existe nulle part dans ce plugin aujourd'hui.
 
 - 👥 **Profils communautaires**
   - Partage de configurations entre utilisateurs
@@ -1447,7 +1448,7 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 
 ### Version 1.2
 - [ ] Marketplace fonctionnel
-- [ ] Import/Export avancé
+- [x] Import/Export avancé
 - [ ] Profils communautaires
 - [ ] Tests de bout en bout
 - [ ] Documentation utilisateur complète

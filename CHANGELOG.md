@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Import/Export avancé (issue #117)** : appliquer un Blueprint (`front/profile.form.php`)
+  redirige désormais vers l'écran de diff+application sélective déjà construit pour la
+  restauration d'historique (#114, `front/history_restore.php`, généralisé aux deux itemtypes) —
+  fini l'écrasement complet sans revue ("conflict resolution"). Cet écran affiche aussi un
+  nouveau bandeau "Corrections automatiques", listant les valeurs que `Config` ajusterait
+  silencieusement de toute façon (branche de catégorie disparue, statut hors liste blanche...) —
+  jamais bloquant, juste informatif ("validation automatique"). Exporter un Blueprint propose
+  maintenant un écran de sélection par catégorie de réglages avant le téléchargement ("export
+  sélectif"), via `BlueprintSerializer::filterConfig()`. La "planification des imports" annoncée
+  par l'issue est explicitement hors périmètre v1 (décision utilisateur) : elle romprait la règle
+  "jamais d'écriture silencieuse sur `Config`" appliquée à toutes les fonctionnalités de ce
+  plugin, aucun `CronTask` n'existant nulle part aujourd'hui.
 - **Mode Dry Run amélioré (issue #115)** : l'étape "Récapitulatif" de l'assistant affiche
   désormais un avertissement pré-déploiement sur les droits GLPI natifs manquants (création/
   modification d'entités, règles LDAP, configuration générale) — jusqu'ici, une fonctionnalité

@@ -188,4 +188,27 @@ final class BlueprintSerializer
 
         return $diff;
     }
+
+    /**
+     * Export sélectif par catégorie (issue #117) : restreint la sous-clé `config` d'un Blueprint
+     * déjà exporté (résultat de `export()`) aux champs choisis — jamais les métadonnées
+     * (`format_version`/`plugin_version`/`exported_at`/`profile_name`), toujours nécessaires à un
+     * import valide ultérieur, même sur un export partiel.
+     *
+     * @param array<string, mixed> $decodedJson Résultat de `export()` (ou tout Blueprint déjà
+     *     décodé au même format).
+     * @param array<int, string> $onlyFields Champs de `config` à conserver — `[]` produit un
+     *     `config` vide (export "vide" explicite, jamais une supposition silencieuse sur ce que
+     *     l'utilisateur voulait garder).
+     * @return array<string, mixed> Même structure que `$decodedJson`, `config` filtré.
+     */
+    public static function filterConfig(array $decodedJson, array $onlyFields): array
+    {
+        $decodedJson['config'] = array_intersect_key(
+            $decodedJson['config'] ?? [],
+            array_flip($onlyFields)
+        );
+
+        return $decodedJson;
+    }
 }

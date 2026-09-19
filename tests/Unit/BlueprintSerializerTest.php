@@ -249,4 +249,45 @@ final class BlueprintSerializerTest extends TestCase
 
         $this->assertSame([], BlueprintSerializer::diff($fields, $fields));
     }
+
+    // --- filterConfig() (export sélectif, issue #117) ---
+
+    private const EXPORT_FOR_FILTERING = [
+        'format_version' => 1,
+        'plugin_version' => '1.4.0',
+        'exported_at' => '2026-09-19T00:00:00+00:00',
+        'profile_name' => 'Mon profil',
+        'config' => ['entity_mode' => 'multi', 'state_enabled' => 1, 'branding_primary_color' => '#123456'],
+    ];
+
+    public function testFilterConfigKeepsOnlyTheRequestedFields(): void
+    {
+        $filtered = BlueprintSerializer::filterConfig(self::EXPORT_FOR_FILTERING, ['entity_mode']);
+
+        $this->assertSame(['entity_mode' => 'multi'], $filtered['config']);
+    }
+
+    public function testFilterConfigPreservesMetadataUntouched(): void
+    {
+        $filtered = BlueprintSerializer::filterConfig(self::EXPORT_FOR_FILTERING, ['entity_mode']);
+
+        $this->assertSame(1, $filtered['format_version']);
+        $this->assertSame('1.4.0', $filtered['plugin_version']);
+        $this->assertSame('2026-09-19T00:00:00+00:00', $filtered['exported_at']);
+        $this->assertSame('Mon profil', $filtered['profile_name']);
+    }
+
+    public function testFilterConfigWithEmptyFieldListProducesAnEmptyConfig(): void
+    {
+        $filtered = BlueprintSerializer::filterConfig(self::EXPORT_FOR_FILTERING, []);
+
+        $this->assertSame([], $filtered['config']);
+    }
+
+    public function testFilterConfigIgnoresRequestedFieldsThatDoNotExistInConfig(): void
+    {
+        $filtered = BlueprintSerializer::filterConfig(self::EXPORT_FOR_FILTERING, ['entity_mode', 'does_not_exist']);
+
+        $this->assertSame(['entity_mode' => 'multi'], $filtered['config']);
+    }
 }

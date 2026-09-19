@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: configurationglpiauto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 10:59+0000\n"
+"POT-Creation-Date: 2026-09-19 14:50+0000\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,7 +45,11 @@ msgid ""
 "correspondantes seront silencieusement ignorées à l'étape finale. Cela "
 "n'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée "
 "vous intéresse."
-msgstr "mancano alcuni diritti nativi di GLPI: le funzionalità corrispondenti verranno ignorate silenziosamente nell'ultimo passaggio. Questo non impedisce di continuare, ma correggerli se la funzionalità interessata è importante per voi."
+msgstr ""
+"mancano alcuni diritti nativi di GLPI: le funzionalità corrispondenti "
+"verranno ignorate silenziosamente nell'ultimo passaggio. Questo non "
+"impedisce di continuare, ma correggerli se la funzionalità interessata è "
+"importante per voi."
 
 #: templates/wizard.html.twig
 msgid "Étape"
@@ -109,7 +113,7 @@ msgstr ""
 "Scegli la struttura delle entità da impostare — l'anteprima a destra si "
 "aggiorna in tempo reale."
 
-#: templates/wizard.html.twig front/history_restore.php:38
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:47
 msgid "Lieux"
 msgstr "Sedi"
 
@@ -214,7 +218,7 @@ msgstr ""
 "campo \"Paese\" di ogni sito affinché i siti fuori dalla Francia ricevano i "
 "propri giorni festivi."
 
-#: templates/wizard.html.twig front/history_restore.php:35
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:44
 msgid "Calendrier"
 msgstr "Calendario"
 
@@ -499,7 +503,7 @@ msgstr ""
 msgid "Champs : zone couverte, date de dernière maintenance/vérification."
 msgstr "Campi: area coperta, data dell'ultima manutenzione/verifica."
 
-#: templates/wizard.html.twig front/history_restore.php:42
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:51
 msgid "Catalogue de services"
 msgstr "Catalogo dei servizi"
 
@@ -637,7 +641,7 @@ msgstr ""
 msgid "recommandé"
 msgstr "consigliato"
 
-#: templates/wizard.html.twig front/history_restore.php:41
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:50
 msgid "Raisons d'attente"
 msgstr "Motivi di attesa"
 
@@ -953,7 +957,7 @@ msgstr "Mostra la paginazione sopra i risultati"
 msgid "Montrer les nouveaux tickets sur la page d'accueil"
 msgstr "Mostra i nuovi ticket nella pagina iniziale"
 
-#: templates/wizard.html.twig front/history_restore.php:37
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:46
 #: src/Audit/Checks/NotificationsDisabledCheck.php:41
 msgid "Notifications"
 msgstr "Notifiche"
@@ -980,7 +984,7 @@ msgstr ""
 "scadenza licenze (disattivate di default, mentre le notifiche corrispondenti "
 "lo sono già)"
 
-#: templates/wizard.html.twig front/history_restore.php:47
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:56
 msgid "Informations financières"
 msgstr "Informazioni finanziarie"
 
@@ -1367,7 +1371,7 @@ msgstr "Ognuna con un colore distinto nella pianificazione GLPI."
 msgid "Gabarits d'évènements externes"
 msgstr "Modelli di eventi esterni"
 
-#: templates/wizard.html.twig front/history_restore.php:39
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:48
 msgid "Projets"
 msgstr "Progetti"
 
@@ -1561,7 +1565,10 @@ msgid ""
 "estimation indicative, selon le nombre d'options cochées (arborescence multi-"
 "site, actifs personnalisés, bibliothèques de gabarits...) — ne fermez pas "
 "cette page et ne cliquez qu'une seule fois sur \"Terminer\"."
-msgstr "stima indicativa, in base al numero di opzioni selezionate (struttura multi-sede, asset personalizzati, librerie di modelli...) — non chiudere questa pagina e fare clic su \"Termina\" una sola volta."
+msgstr ""
+"stima indicativa, in base al numero di opzioni selezionate (struttura multi-"
+"sede, asset personalizzati, librerie di modelli...) — non chiudere questa "
+"pagina e fare clic su \"Termina\" una sola volta."
 
 #: templates/wizard.html.twig
 msgid "Structure"
@@ -1571,20 +1578,20 @@ msgstr "Struttura"
 msgid "Arborescence"
 msgstr "Struttura ad albero"
 
-#: templates/wizard.html.twig front/history_restore.php:35
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:44
 #: src/Audit/Checks/NoSlaConfiguredCheck.php:39
 msgid "SLA"
 msgstr "SLA"
 
-#: templates/wizard.html.twig front/history_restore.php:36
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:45
 msgid "Catégories"
 msgstr "Categorie"
 
-#: templates/wizard.html.twig front/history_restore.php:37
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:46
 msgid "Personnalisation"
 msgstr "Personalizzazione"
 
-#: templates/wizard.html.twig front/history_restore.php:47
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:56
 msgid "Réglages généraux"
 msgstr "Impostazioni generali"
 
@@ -1622,12 +1629,12 @@ msgstr "Termina"
 msgid "Création en cours..."
 msgstr "Creazione in corso..."
 
-#: templates/wizard.html.twig front/history_restore.php:35
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:44
 #: src/Audit/Checks/EntitiesWithoutAddressCheck.php:40
 msgid "Entités"
 msgstr "Entità"
 
-#: templates/wizard.html.twig front/history_restore.php:36
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:45
 msgid "Statuts"
 msgstr "Stati"
 
@@ -2030,6 +2037,16 @@ msgstr ""
 "verificare ogni passaggio della procedura guidata prima di convalidare."
 
 #: templates/history_restore.html.twig
+msgid "Corrections automatiques"
+msgstr "Correzioni automatiche"
+
+#: templates/history_restore.html.twig
+msgid ""
+"ces valeurs ne sont plus valides sur cette instance et seront "
+"automatiquement ajustées à l'application."
+msgstr "questi valori non sono più validi su questa istanza e verranno regolati automaticamente all'applicazione."
+
+#: templates/history_restore.html.twig
 msgid ""
 "Cette configuration est déjà identique à la configuration actuelle — rien à "
 "restaurer."
@@ -2112,7 +2129,9 @@ msgstr "Creare entità"
 msgid ""
 "nécessaire pour construire l'arborescence (étape 2) — les entités déjà "
 "existantes restent utilisables, mais aucune nouvelle ne sera créée"
-msgstr "necessario per costruire la struttura ad albero (fase 2) — le entità già esistenti restano utilizzabili, ma non ne verrà creata nessuna nuova"
+msgstr ""
+"necessario per costruire la struttura ad albero (fase 2) — le entità già "
+"esistenti restano utilizzabili, ma non ne verrà creata nessuna nuova"
 
 #: front/wizard.php:369
 msgid "Modifier des entités"
@@ -2122,7 +2141,9 @@ msgstr "Modificare entità"
 msgid ""
 "nécessaire pour la personnalisation par entité (adresses, logos, calendrier/"
 "SLA par client...)"
-msgstr "necessario per la personalizzazione per entità (indirizzi, loghi, calendario/SLA per cliente...)"
+msgstr ""
+"necessario per la personalizzazione per entità (indirizzi, loghi, calendario/"
+"SLA per cliente...)"
 
 #: front/wizard.php:374
 msgid "Gérer les règles d'affectation LDAP"
@@ -2536,27 +2557,41 @@ msgstr "Crea un punto di salvataggio"
 msgid "Configuration actuelle enregistrée comme Blueprint."
 msgstr "Configurazione attuale salvata come Blueprint."
 
-#: front/profile.form.php:55 front/profile.form.php:70
+#: front/profile.form.php:60 front/profile.form.php:64
 msgid "Ce profil ne contient aucun Blueprint exploitable."
 msgstr "Questo profilo non contiene alcun Blueprint utilizzabile."
 
-#: front/profile.form.php:64
-msgid "Blueprint appliqué. Vérifiez chaque étape avant de valider."
-msgstr "Blueprint applicato. Verificare ogni passaggio prima di confermare."
+#: front/profile.form.php:77
+msgid "Exporter ce Blueprint"
+msgstr "Esporta questo Blueprint"
 
-#: front/profile.form.php:89
+#: front/profile.form.php:79
+msgid ""
+"Choisissez les réglages à inclure dans le fichier exporté, ou exportez "
+"l'intégralité de la configuration."
+msgstr "Scegliere le impostazioni da includere nel file esportato, oppure esportare l'intera configurazione."
+
+#: front/profile.form.php:98
+msgid "Exporter la sélection"
+msgstr "Esporta la selezione"
+
+#: front/profile.form.php:100
+msgid "Exporter l'intégralité"
+msgstr "Esporta tutto"
+
+#: front/profile.form.php:124
 msgid "Enregistrer la configuration actuelle comme Blueprint"
 msgstr "Salva la configurazione attuale come Blueprint"
 
-#: front/profile.form.php:97
+#: front/profile.form.php:132
 msgid "Appliquer ce Blueprint (via l'assistant)"
 msgstr "Applica questo Blueprint (tramite la procedura guidata)"
 
-#: front/profile.form.php:102
+#: front/profile.form.php:137
 msgid "Exporter ce Blueprint (JSON)"
 msgstr "Esporta questo Blueprint (JSON)"
 
-#: front/profile.form.php:108
+#: front/profile.form.php:143
 msgid ""
 "Ce fichier peut contenir des informations propres à votre organisation "
 "(adresses d'entités...) : vérifiez son contenu avant de le partager."
@@ -2609,139 +2644,15 @@ msgstr "Correzione applicata."
 msgid "Audit de configuration"
 msgstr "Audit di configurazione"
 
-#: front/history_restore.php:35
-msgid "OLA"
-msgstr "OLA"
-
-#: front/history_restore.php:36
-msgid "Escalade"
-msgstr "Escalation"
-
-#: front/history_restore.php:37
-msgid "LDAP"
-msgstr "LDAP"
-
-#: front/history_restore.php:38
-msgid "Tickets"
-msgstr "Ticket"
-
-#: front/history_restore.php:38
-msgid "Tâches"
-msgstr "Attività"
-
-#: front/history_restore.php:38
-msgid "Validations"
-msgstr "Convalide"
-
-#: front/history_restore.php:39
-msgid "Changements"
-msgstr "Cambiamenti"
-
-#: front/history_restore.php:39
-msgid "Base de connaissances"
-msgstr "Base di conoscenza"
-
-#: front/history_restore.php:40
-msgid "Fabricants"
-msgstr "Produttori"
-
-#: front/history_restore.php:40
-msgid "Documents"
-msgstr "Documenti"
-
-#: front/history_restore.php:40
-msgid "Planning"
-msgstr "Pianificazione"
-
-#: front/history_restore.php:41
-msgid "Satisfaction"
-msgstr "Soddisfazione"
-
-#: front/history_restore.php:41
-msgid "Comité de validation"
-msgstr "Comitato di convalida"
-
 #: front/history_restore.php:42
-msgid "Missions à l'étranger"
-msgstr "Missioni all'estero"
+msgid "Ce Blueprint n'est pas exploitable."
+msgstr "Questo Blueprint non è utilizzabile."
 
-#: front/history_restore.php:42
-msgid "Solutions"
-msgstr "Soluzioni"
-
-#: front/history_restore.php:43
-msgid "Suivis"
-msgstr "Follow-up"
-
-#: front/history_restore.php:43
-msgid "Utilisateurs"
-msgstr "Utenti"
-
-#: front/history_restore.php:43
-msgid "Unicité des champs"
-msgstr "Unicità dei campi"
-
-#: front/history_restore.php:44
-msgid "Flux RSS"
-msgstr "Feed RSS"
-
-#: front/history_restore.php:44
-msgid "Lignes téléphoniques"
-msgstr "Linee telefoniche"
-
-#: front/history_restore.php:44
-msgid "Types d'actifs"
-msgstr "Tipi di asset"
-
-#: front/history_restore.php:45
-msgid "Licences logicielles"
-msgstr "Licenze software"
-
-#: front/history_restore.php:45
-msgid "Certificats"
-msgstr "Certificati"
-
-#: front/history_restore.php:45
-msgid "Tickets récurrents"
-msgstr "Ticket ricorrenti"
-
-#: front/history_restore.php:46
-msgid "Jours fériés"
-msgstr "Giorni festivi"
-
-#: front/history_restore.php:46
-msgid "Groupe VIP"
-msgstr "Gruppo VIP"
-
-#: front/history_restore.php:46
-msgid "Étiquettes"
-msgstr "Etichette"
-
-#: front/history_restore.php:46
-msgid "Sécurité incendie"
-msgstr "Sicurezza antincendio"
-
-#: front/history_restore.php:47
-msgid "Sécurité physique"
-msgstr "Sicurezza fisica"
-
-#: front/history_restore.php:48
-msgid "Inventaire"
-msgstr "Inventario"
-
-#: front/history_restore.php:48
-msgid "Types de requête"
-msgstr "Tipi di richiesta"
-
-#: front/history_restore.php:62
-msgid "Cet historique ne contient aucun Blueprint exploitable."
-msgstr "Questa cronologia non contiene alcun Blueprint utilizzabile."
-
-#: front/history_restore.php:80
+#: front/history_restore.php:60
 msgid "Restauration appliquée. Vérifiez chaque étape avant de valider."
 msgstr "Ripristino applicato. Verificare ogni passaggio prima di confermare."
 
-#: front/history_restore.php:84
+#: front/history_restore.php:64
 msgid "Restaurer une configuration"
 msgstr "Ripristina una configurazione"
 
@@ -3139,6 +3050,130 @@ msgstr "Pagina o sezione interessata"
 msgid "Type de modification"
 msgstr "Tipo di modifica"
 
+#: src/Blueprint/FieldGroupLabel.php:44
+msgid "OLA"
+msgstr "OLA"
+
+#: src/Blueprint/FieldGroupLabel.php:45
+msgid "Escalade"
+msgstr "Escalation"
+
+#: src/Blueprint/FieldGroupLabel.php:46
+msgid "LDAP"
+msgstr "LDAP"
+
+#: src/Blueprint/FieldGroupLabel.php:47
+msgid "Tickets"
+msgstr "Ticket"
+
+#: src/Blueprint/FieldGroupLabel.php:47
+msgid "Tâches"
+msgstr "Attività"
+
+#: src/Blueprint/FieldGroupLabel.php:47
+msgid "Validations"
+msgstr "Convalide"
+
+#: src/Blueprint/FieldGroupLabel.php:48
+msgid "Changements"
+msgstr "Cambiamenti"
+
+#: src/Blueprint/FieldGroupLabel.php:48
+msgid "Base de connaissances"
+msgstr "Base di conoscenza"
+
+#: src/Blueprint/FieldGroupLabel.php:49
+msgid "Fabricants"
+msgstr "Produttori"
+
+#: src/Blueprint/FieldGroupLabel.php:49
+msgid "Documents"
+msgstr "Documenti"
+
+#: src/Blueprint/FieldGroupLabel.php:49
+msgid "Planning"
+msgstr "Pianificazione"
+
+#: src/Blueprint/FieldGroupLabel.php:50
+msgid "Satisfaction"
+msgstr "Soddisfazione"
+
+#: src/Blueprint/FieldGroupLabel.php:50
+msgid "Comité de validation"
+msgstr "Comitato di convalida"
+
+#: src/Blueprint/FieldGroupLabel.php:51
+msgid "Missions à l'étranger"
+msgstr "Missioni all'estero"
+
+#: src/Blueprint/FieldGroupLabel.php:51
+msgid "Solutions"
+msgstr "Soluzioni"
+
+#: src/Blueprint/FieldGroupLabel.php:52
+msgid "Suivis"
+msgstr "Follow-up"
+
+#: src/Blueprint/FieldGroupLabel.php:52
+msgid "Utilisateurs"
+msgstr "Utenti"
+
+#: src/Blueprint/FieldGroupLabel.php:52
+msgid "Unicité des champs"
+msgstr "Unicità dei campi"
+
+#: src/Blueprint/FieldGroupLabel.php:53
+msgid "Flux RSS"
+msgstr "Feed RSS"
+
+#: src/Blueprint/FieldGroupLabel.php:53
+msgid "Lignes téléphoniques"
+msgstr "Linee telefoniche"
+
+#: src/Blueprint/FieldGroupLabel.php:53
+msgid "Types d'actifs"
+msgstr "Tipi di asset"
+
+#: src/Blueprint/FieldGroupLabel.php:54
+msgid "Licences logicielles"
+msgstr "Licenze software"
+
+#: src/Blueprint/FieldGroupLabel.php:54
+msgid "Certificats"
+msgstr "Certificati"
+
+#: src/Blueprint/FieldGroupLabel.php:54
+msgid "Tickets récurrents"
+msgstr "Ticket ricorrenti"
+
+#: src/Blueprint/FieldGroupLabel.php:55
+msgid "Jours fériés"
+msgstr "Giorni festivi"
+
+#: src/Blueprint/FieldGroupLabel.php:55
+msgid "Groupe VIP"
+msgstr "Gruppo VIP"
+
+#: src/Blueprint/FieldGroupLabel.php:55
+msgid "Étiquettes"
+msgstr "Etichette"
+
+#: src/Blueprint/FieldGroupLabel.php:55
+msgid "Sécurité incendie"
+msgstr "Sicurezza antincendio"
+
+#: src/Blueprint/FieldGroupLabel.php:56
+msgid "Sécurité physique"
+msgstr "Sicurezza fisica"
+
+#: src/Blueprint/FieldGroupLabel.php:57
+msgid "Inventaire"
+msgstr "Inventario"
+
+#: src/Blueprint/FieldGroupLabel.php:57
+msgid "Types de requête"
+msgstr "Tipi di richiesta"
+
 #: src/LeaveRequestFormBuilder.php:225
 msgid "Type de congé"
 msgstr "Tipo di congedo"
@@ -3456,6 +3491,12 @@ msgstr "Ubicazione interessata (partenza e/o arrivo)"
 #: src/AuditRequestFormBuilder.php:183
 msgid "Type d'audit"
 msgstr "Tipo di audit"
+
+#~ msgid "Blueprint appliqué. Vérifiez chaque étape avant de valider."
+#~ msgstr "Blueprint applicato. Verificare ogni passaggio prima di confermare."
+
+#~ msgid "Cet historique ne contient aucun Blueprint exploitable."
+#~ msgstr "Questa cronologia non contiene alcun Blueprint utilizzabile."
 
 #~ msgid ""
 #~ "Selon le nombre d'options cochées (arborescence multi-site, actifs "
