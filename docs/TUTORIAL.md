@@ -7,9 +7,9 @@
 Configurer une instance GLPI neuve à la main (entités, calendrier, SLA, catégories, statuts,
 modèles, droits, personnalisation) prend habituellement plusieurs jours à un administrateur qui
 découvre l'outil, avec le risque d'oublier un réglage important en cours de route. Cet assistant
-condense ce travail en 18 étapes guidées : vous répondez à des questions sur votre organisation,
+condense ce travail en 19 étapes guidées : vous répondez à des questions sur votre organisation,
 il construit la configuration correspondante, et vous voyez le résultat avant qu'il ne soit
-appliqué. Ce tutoriel parcourt chacune de ces 18 étapes, avec une capture d'écran de chacune, pour
+appliqué. Ce tutoriel parcourt chacune de ces 19 étapes, avec une capture d'écran de chacune, pour
 que vous sachiez exactement à quoi vous attendre, même avant d'avoir installé le plugin.
 
 Les captures ci-dessous montrent le profil **« Plusieurs sites ou services »** : les
@@ -26,8 +26,8 @@ Le point de départ : quatre profils prédéfinis (PME/ETI mono-site, plusieurs 
 plusieurs entreprises clientes/MSP, ou personnalisé). Le choix pré-remplit la structure d'entités,
 le calendrier et les SLA des étapes suivantes avec des valeurs adaptées ; tout reste ajustable
 ensuite, aucun choix n'est définitif. Un bouton **mode express** permet aussi de valider directement
-avec les valeurs par défaut du profil choisi, sans parcourir les 18 étapes une à une : pour une
-installation simple, une instance opérationnelle en quelques secondes plutôt qu'en 17 étapes
+avec les valeurs par défaut du profil choisi, sans parcourir les 19 étapes une à une : pour une
+installation simple, une instance opérationnelle en quelques secondes plutôt qu'en 18 étapes
 supplémentaires.
 
 ![Étape 1 : Choix du profil](screenshots/01-profil.png)
@@ -178,9 +178,21 @@ purement esthétique, qui ne doit pas retarder les réglages fonctionnels qui pr
 
 ![Étape 17 : Personnalisation graphique](screenshots/17-personnalisation.png)
 
-### Étape 18 : Récapitulatif
+### Étape 18 : Configuration SMTP
 
-Dernière étape avant la création réelle : relit tous les choix des 17 étapes précédentes. Rien
+Optionnel : révise directement les réglages d'envoi d'e-mail natifs de GLPI (serveur, port,
+adresse d'expédition, identifiants, vérification du certificat TLS) — jamais une copie propre à ce
+plugin, ces réglages sont écrits directement dans la configuration GLPI native. Le mot de passe
+n'est jamais pré-rempli ni renvoyé au navigateur, même s'il y en a déjà un enregistré. Le test de
+connexion se fait après avoir terminé l'assistant, depuis l'écran natif GLPI (Configuration >
+Notifications) : GLPI n'y teste que la configuration réellement enregistrée, jamais un formulaire
+en cours de saisie.
+
+*(Capture d'écran à venir.)*
+
+### Étape 19 : Récapitulatif
+
+Dernière étape avant la création réelle : relit tous les choix des 18 étapes précédentes. Rien
 n'est créé dans GLPI avant de valider ici : c'est le tout premier moment de tout le parcours où
 quelque chose est réellement écrit en base.
 
@@ -206,7 +218,7 @@ Configuring a fresh GLPI instance by hand (entities, calendar, SLAs, categories,
 templates, rights, customization) usually takes a newcomer administrator several days, with the
 risk of missing something important along the way. This wizard condenses that work into 18 guided
 steps: you answer questions about your organization, it builds the matching configuration, and you
-see the result before it's applied. This tutorial walks through each of these 18 steps, with a
+see the result before it's applied. This tutorial walks through each of these 19 steps, with a
 screenshot of each, so you know exactly what to expect, even before installing the plugin.
 
 The screenshots below show the **"Multiple sites or departments"** profile: the other profiles
@@ -223,7 +235,7 @@ The starting point: four predefined profiles (single-site SMB, multiple sites or
 multiple client companies/MSP, or custom). The choice pre-fills the entity structure, calendar and
 SLAs of the following steps with values suited to it; everything remains adjustable afterwards,
 no choice is final. An **express mode** button also lets you confirm directly with the chosen
-profile's default values, without going through all 18 steps one by one: for a simple install, an
+profile's default values, without going through all 19 steps one by one: for a simple install, an
 operational instance in a few seconds rather than 17 more steps.
 
 ![Étape 1 : Choix du profil](screenshots/01-profil.png)
@@ -369,9 +381,20 @@ shouldn't delay the functional settings that come before it.
 
 ![Étape 17 : Personnalisation graphique](screenshots/17-personnalisation.png)
 
-### Step 18 : Summary
+### Step 18 : SMTP configuration
 
-The last step before actual creation: reviews every choice made in the previous 17 steps. Nothing
+Optional: review GLPI's native mail-sending settings directly (server, port, sender address,
+credentials, TLS certificate verification) — never a copy specific to this plugin, these settings
+are written directly into GLPI's native configuration. The password is never pre-filled or sent
+back to the browser, even if one is already saved. The connection test happens after finishing the
+wizard, from GLPI's native screen (Setup > Notifications): GLPI only ever tests the configuration
+actually saved there, never a form still being filled in.
+
+*(Screenshot coming soon.)*
+
+### Step 19 : Summary
+
+The last step before actual creation: reviews every choice made in the previous 18 steps. Nothing
 is created in GLPI before confirming here: this is the very first moment in the whole flow where
 anything is actually written to the database.
 

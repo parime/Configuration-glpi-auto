@@ -175,6 +175,10 @@ class Config extends CommonDBTM
             'project_task_states_enabled' => 1,
             'satisfaction_survey_enabled' => 1,
             'committee_validation_enabled' => 1,
+            // Guide ITIL complet (issue #124) : crée un tableau de bord GLPI natif dédié, jamais
+            // recréé ensuite (voir DashboardBuilder) — purement additif, même raisonnement de
+            // défaut que les autres réglages généraux ci-dessus.
+            'dashboard_enabled' => 1,
             // Décoché par défaut, contrairement au reste des réglages généraux : ouvre un vrai
             // point d'entrée réseau (l'endpoint d'inventaire) plutôt que de générer du contenu,
             // même raisonnement que validation_supervisor_routing_enabled ci-dessous.
@@ -577,7 +581,7 @@ class Config extends CommonDBTM
             $input['state_icons_enabled'] = !empty($input['state_icons_enabled']) ? 1 : 0;
         }
 
-        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled', 'inventory_enabled'] as $field) {
+        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled', 'dashboard_enabled', 'inventory_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

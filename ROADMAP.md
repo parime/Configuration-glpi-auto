@@ -1400,10 +1400,17 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
   Déclaration d'Applicabilité (génération de documentation), plans de traitement des risques
   (recommandations de sécurité).
 
-- 🎯 **Guide ITIL complet**
-  - Implémentation des bonnes pratiques
-  - Workflows ITIL prédéfinis
-  - Métriques et rapports ITIL
+- ✅ **Guide ITIL complet** (issue #124) — livré, périmètre réduit : « implémentation des bonnes
+  pratiques » et « workflows ITIL prédéfinis » étaient déjà couverts en grande partie par ce
+  plugin (voir l'audit ci-dessus) — ce qui manquait vraiment n'était pas du code mais une
+  explication pensée pour un administrateur, pas pour un développeur qui suit l'avancement du
+  projet ; nouveau document [`docs/ITIL_GUIDE.md`](docs/ITIL_GUIDE.md) qui fait ce lien pratique
+  ITIL 4 ↔ étape de l'assistant. Seul vrai manque concret sur « métriques et rapports ITIL » :
+  deux cartes de conformité SLA déjà présentes dans GLPI cœur
+  (`bn_count_tickets_expired_by_tech`/`_group`) n'apparaissent sur aucun tableau de bord par
+  défaut — `DashboardBuilder` crée un tableau de bord GLPI natif dédié qui les met en avant
+  (case à cocher dans l'étape « Réglages généraux »), sans dupliquer le tableau de bord
+  « Assistance » existant, et sans jamais l'écraser sur un second passage de l'assistant.
 
 - ✨ **Bonnes pratiques automatiques**
   - Analyse continue de la configuration
