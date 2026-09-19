@@ -1277,11 +1277,19 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
   que les Blueprints : restaurer ne réécrit jamais silencieusement la configuration, ça pré-remplit
   `Config` puis redirige vers l'assistant pour revue humaine de chaque étape.
 
-- 🎭 **Mode Dry Run amélioré**
-  - Simulation complète avant déploiement
-  - Visualisation des impacts
-  - Estimation du temps d'exécution
-  - Validation pré-deploiement
+- ✅ **Mode Dry Run amélioré (issue #115) — livré**, l'étape "Récapitulatif" existante de
+  l'assistant (déjà un vrai résumé calculé côté client à partir des cases réellement cochées, pas
+  un catalogue statique) reçoit deux ajouts concrets : un bandeau "validation pré-déploiement"
+  listant les droits GLPI natifs manquants de l'opérateur (`checkDeploymentRights()`, même forme
+  que `checkEnvironmentPrerequisites()` déjà existant) — jusqu'ici, une fonctionnalité pouvait être
+  silencieusement ignorée à l'étape finale sans que l'opérateur délégué le sache — et une durée
+  estimée par palier (calculée à partir du nombre réel d'éléments sélectionnés) remplaçant l'ancien
+  texte statique identique dans tous les cas. Une vraie "visualisation des impacts" contre l'état
+  réel de la base (N nouveaux/M déjà existants) exigerait de retoucher chacun des ~30 `*Builder`
+  (idempotence et écriture fusionnées dans `build()`, aucune méthode de vérification séparée
+  aujourd'hui) — chantier disproportionné pour ce ticket, explicitement hors périmètre v1, même
+  discipline que les réductions de périmètre déjà actées pour l'Audit (#112) et les Blueprints
+  (#113).
 
 ---
 
@@ -1434,7 +1442,7 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 - [ ] Mode Audit fonctionnel
 - [x] Blueprints implémentés
 - [x] Rollback opérationnel
-- [ ] Dry Run amélioré
+- [x] Dry Run amélioré
 - [ ] Tests d'intégration complets
 
 ### Version 1.2

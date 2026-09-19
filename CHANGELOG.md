@@ -11,6 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Mode Dry Run amélioré (issue #115)** : l'étape "Récapitulatif" de l'assistant affiche
+  désormais un avertissement pré-déploiement sur les droits GLPI natifs manquants (création/
+  modification d'entités, règles LDAP, configuration générale) — jusqu'ici, une fonctionnalité
+  entière pouvait être silencieusement ignorée à l'étape finale sans que l'opérateur délégué le
+  sache. La durée estimée, jusqu'ici un texte statique identique dans tous les cas, devient un
+  ordre de grandeur par palier ("quelques secondes" à "plusieurs minutes") calculé à partir du
+  nombre réel d'éléments sélectionnés. Aucune nouvelle table ni classe : entièrement porté par
+  `front/wizard.php`/`templates/wizard.html.twig`, périmètre volontairement limité à l'écran de
+  l'assistant — une vraie visualisation d'impact contre l'état réel de la base (N nouveaux/M déjà
+  existants) exigerait de retoucher chacun des ~30 `*Builder`, explicitement hors périmètre.
 - **Fonctionnalité de Rollback (issue #114)** : historique automatique des configurations
   (`ConfigHistory`) capturé juste avant chaque écrasement réel de `Config` (fin de l'assistant,
   application d'un Blueprint), plus des points de sauvegarde créés à la demande

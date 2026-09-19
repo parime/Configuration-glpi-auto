@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: configurationglpiauto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 10:32+0000\n"
+"POT-Creation-Date: 2026-09-19 10:59+0000\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,6 +34,18 @@ msgstr ""
 "certains points ci-dessous peuvent limiter des fonctionnalités du wizard. "
 "Cela n'empêche pas de continuer, mais corrigez-les si la fonctionnalité "
 "concernée vous intéresse."
+
+#: templates/wizard.html.twig
+msgid "Droits de l'opérateur actuel"
+msgstr "Droits de l'opérateur actuel"
+
+#: templates/wizard.html.twig
+msgid ""
+"certains droits GLPI natifs vous manquent : les fonctionnalités "
+"correspondantes seront silencieusement ignorées à l'étape finale. Cela "
+"n'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée "
+"vous intéresse."
+msgstr "certains droits GLPI natifs vous manquent : les fonctionnalités correspondantes seront silencieusement ignorées à l'étape finale. Cela n'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée vous intéresse."
 
 #: templates/wizard.html.twig
 msgid "Étape"
@@ -1535,16 +1547,15 @@ msgstr ""
 "connaissances, et les types/gabarits/modèles de projet."
 
 #: templates/wizard.html.twig
+msgid "Durée estimée"
+msgstr "Durée estimée"
+
+#: templates/wizard.html.twig
 msgid ""
-"Selon le nombre d'options cochées (arborescence multi-site, actifs "
-"personnalisés, bibliothèques de gabarits...), la création peut prendre "
-"plusieurs minutes — ne fermez pas cette page et ne cliquez qu'une seule fois "
-"sur \"Terminer\"."
-msgstr ""
-"Selon le nombre d'options cochées (arborescence multi-site, actifs "
-"personnalisés, bibliothèques de gabarits...), la création peut prendre "
-"plusieurs minutes — ne fermez pas cette page et ne cliquez qu'une seule fois "
-"sur \"Terminer\"."
+"estimation indicative, selon le nombre d'options cochées (arborescence multi-"
+"site, actifs personnalisés, bibliothèques de gabarits...) — ne fermez pas "
+"cette page et ne cliquez qu'une seule fois sur \"Terminer\"."
+msgstr "estimation indicative, selon le nombre d'options cochées (arborescence multi-site, actifs personnalisés, bibliothèques de gabarits...) — ne fermez pas cette page et ne cliquez qu'une seule fois sur \"Terminer\"."
 
 #: templates/wizard.html.twig
 msgid "Structure"
@@ -1910,6 +1921,22 @@ msgstr "gabarits de tâches de projets"
 msgid "modèles de projet"
 msgstr "modèles de projet"
 
+#: templates/wizard.html.twig
+msgid "quelques secondes"
+msgstr "quelques secondes"
+
+#: templates/wizard.html.twig
+msgid "moins d'une minute"
+msgstr "moins d'une minute"
+
+#: templates/wizard.html.twig
+msgid "une à quelques minutes"
+msgstr "une à quelques minutes"
+
+#: templates/wizard.html.twig
+msgid "plusieurs minutes"
+msgstr "plusieurs minutes"
+
 #: templates/audit.html.twig
 msgid ""
 "Analyse de l'état actuel de votre instance GLPI — indépendante de ce que cet "
@@ -1991,13 +2018,18 @@ msgid ""
 "Choisissez les réglages à restaurer, ou restaurez l'intégralité de cette "
 "configuration. Rien n'est appliqué directement : après confirmation, "
 "vérifiez chaque étape de l'assistant avant de valider."
-msgstr "Choisissez les réglages à restaurer, ou restaurez l'intégralité de cette configuration. Rien n'est appliqué directement : après confirmation, vérifiez chaque étape de l'assistant avant de valider."
+msgstr ""
+"Choisissez les réglages à restaurer, ou restaurez l'intégralité de cette "
+"configuration. Rien n'est appliqué directement : après confirmation, "
+"vérifiez chaque étape de l'assistant avant de valider."
 
 #: templates/history_restore.html.twig
 msgid ""
 "Cette configuration est déjà identique à la configuration actuelle — rien à "
 "restaurer."
-msgstr "Cette configuration est déjà identique à la configuration actuelle — rien à restaurer."
+msgstr ""
+"Cette configuration est déjà identique à la configuration actuelle — rien à "
+"restaurer."
 
 #: templates/history_restore.html.twig
 msgid "Valeur actuelle"
@@ -2065,20 +2097,56 @@ msgstr ""
 "utile pour valider les logos uploadés (étape 17) — ni l'une ni l'autre n'est "
 "chargée"
 
-#: front/wizard.php:747
+#: front/wizard.php:364
+msgid "Créer des entités"
+msgstr "Créer des entités"
+
+#: front/wizard.php:366
+msgid ""
+"nécessaire pour construire l'arborescence (étape 2) — les entités déjà "
+"existantes restent utilisables, mais aucune nouvelle ne sera créée"
+msgstr "nécessaire pour construire l'arborescence (étape 2) — les entités déjà existantes restent utilisables, mais aucune nouvelle ne sera créée"
+
+#: front/wizard.php:369
+msgid "Modifier des entités"
+msgstr "Modifier des entités"
+
+#: front/wizard.php:371
+msgid ""
+"nécessaire pour la personnalisation par entité (adresses, logos, calendrier/"
+"SLA par client...)"
+msgstr "nécessaire pour la personnalisation par entité (adresses, logos, calendrier/SLA par client...)"
+
+#: front/wizard.php:374
+msgid "Gérer les règles d'affectation LDAP"
+msgstr "Gérer les règles d'affectation LDAP"
+
+#: front/wizard.php:376
+msgid "nécessaire aux droits LDAP par entité (étape 13)"
+msgstr "nécessaire aux droits LDAP par entité (étape 13)"
+
+#: front/wizard.php:379
+msgid "Modifier la configuration générale de GLPI"
+msgstr "Modifier la configuration générale de GLPI"
+
+#: front/wizard.php:381
+msgid "nécessaire aux réglages généraux (étape 14)"
+msgstr "nécessaire aux réglages généraux (étape 14)"
+
+#: front/wizard.php:787
 msgid "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
 msgstr "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
 
-#: front/wizard.php:748
+#: front/wizard.php:788
 #, php-format
 msgid "Structure créée : %s."
 msgstr "Structure créée : %s."
 
-#: front/wizard.php:750
+#: front/wizard.php:790
 msgid "Calendrier créé et assigné."
 msgstr "Calendrier créé et assigné."
 
-#: front/wizard.php:754
+#: front/wizard.php:794
 #, php-format
 msgid ""
 "%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre "
@@ -2087,41 +2155,41 @@ msgstr ""
 "%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre "
 "sites du même pays)."
 
-#: front/wizard.php:759
+#: front/wizard.php:799
 msgid "SLA créés et assignés."
 msgstr "SLA créés et assignés."
 
-#: front/wizard.php:762
+#: front/wizard.php:802
 msgid "OLA (engagements internes) créés et assignés."
 msgstr "OLA (engagements internes) créés et assignés."
 
-#: front/wizard.php:765
+#: front/wizard.php:805
 msgid "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
 msgstr "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
 
-#: front/wizard.php:768
+#: front/wizard.php:808
 #, php-format
 msgid "%d client(s) avec des réglages personnalisés."
 msgstr "%d client(s) avec des réglages personnalisés."
 
-#: front/wizard.php:771
+#: front/wizard.php:811
 #, php-format
 msgid "%d catégories de tickets créées."
 msgstr "%d catégories de tickets créées."
 
-#: front/wizard.php:774
+#: front/wizard.php:814
 msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
 msgstr "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
 
-#: front/wizard.php:777
+#: front/wizard.php:817
 msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
 msgstr "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
 
-#: front/wizard.php:780
+#: front/wizard.php:820
 msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
 msgstr "Actif personnalisé \"Local\" créé (branche Bâtiment)."
 
-#: front/wizard.php:783
+#: front/wizard.php:823
 msgid ""
 "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche "
 "Bâtiment)."
@@ -2129,7 +2197,7 @@ msgstr ""
 "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche "
 "Bâtiment)."
 
-#: front/wizard.php:786
+#: front/wizard.php:826
 msgid ""
 "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection "
 "des Personnes)."
@@ -2137,12 +2205,12 @@ msgstr ""
 "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection "
 "des Personnes)."
 
-#: front/wizard.php:789
+#: front/wizard.php:829
 #, php-format
 msgid "%d services créés dans le catalogue."
 msgstr "%d services créés dans le catalogue."
 
-#: front/wizard.php:792
+#: front/wizard.php:832
 msgid ""
 "Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de "
 "ticket calculé automatiquement)."
@@ -2150,7 +2218,7 @@ msgstr ""
 "Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de "
 "ticket calculé automatiquement)."
 
-#: front/wizard.php:795
+#: front/wizard.php:835
 msgid ""
 "Service \"Demande de licence logicielle\" enrichi (titre de ticket calculé "
 "automatiquement)."
@@ -2158,7 +2226,7 @@ msgstr ""
 "Service \"Demande de licence logicielle\" enrichi (titre de ticket calculé "
 "automatiquement)."
 
-#: front/wizard.php:798
+#: front/wizard.php:838
 msgid ""
 "Service \"Demande d'accès VPN\" enrichi (question conditionnelle, titre de "
 "ticket calculé automatiquement)."
@@ -2166,7 +2234,7 @@ msgstr ""
 "Service \"Demande d'accès VPN\" enrichi (question conditionnelle, titre de "
 "ticket calculé automatiquement)."
 
-#: front/wizard.php:801
+#: front/wizard.php:841
 msgid ""
 "Service \"Demande de badge d'accès\" enrichi (titre de ticket calculé "
 "automatiquement)."
@@ -2174,7 +2242,7 @@ msgstr ""
 "Service \"Demande de badge d'accès\" enrichi (titre de ticket calculé "
 "automatiquement)."
 
-#: front/wizard.php:804
+#: front/wizard.php:844
 msgid ""
 "Service \"Demande de congé ou absence\" enrichi (question conditionnelle, "
 "titre de ticket calculé automatiquement)."
@@ -2182,7 +2250,7 @@ msgstr ""
 "Service \"Demande de congé ou absence\" enrichi (question conditionnelle, "
 "titre de ticket calculé automatiquement)."
 
-#: front/wizard.php:807
+#: front/wizard.php:847
 msgid ""
 "Service \"Déclarer une arrivée, un départ ou une mutation\" enrichi "
 "(question conditionnelle, titre de ticket calculé automatiquement)."
@@ -2190,7 +2258,7 @@ msgstr ""
 "Service \"Déclarer une arrivée, un départ ou une mutation\" enrichi "
 "(question conditionnelle, titre de ticket calculé automatiquement)."
 
-#: front/wizard.php:810
+#: front/wizard.php:850
 msgid ""
 "Service \"Réservation ou problème d'équipement de salle de réunion\" enrichi "
 "(question conditionnelle)."
@@ -2198,7 +2266,7 @@ msgstr ""
 "Service \"Réservation ou problème d'équipement de salle de réunion\" enrichi "
 "(question conditionnelle)."
 
-#: front/wizard.php:813
+#: front/wizard.php:853
 #, php-format
 msgid ""
 "%d autres services du catalogue enrichis avec des questions ciblées et un "
@@ -2207,26 +2275,26 @@ msgstr ""
 "%d autres services du catalogue enrichis avec des questions ciblées et un "
 "titre de ticket calculé automatiquement."
 
-#: front/wizard.php:816
+#: front/wizard.php:856
 #, php-format
 msgid "%d statuts d'éléments créés."
 msgstr "%d statuts d'éléments créés."
 
-#: front/wizard.php:819
+#: front/wizard.php:859
 #, php-format
 msgid "%d raisons d'attente créées."
 msgstr "%d raisons d'attente créées."
 
-#: front/wizard.php:822
+#: front/wizard.php:862
 msgid "Personnalisation graphique appliquée."
 msgstr "Personnalisation graphique appliquée."
 
-#: front/wizard.php:825
+#: front/wizard.php:865
 #, php-format
 msgid "%d logo(s) d'entité appliqué(s)."
 msgstr "%d logo(s) d'entité appliqué(s)."
 
-#: front/wizard.php:830
+#: front/wizard.php:870
 #, php-format
 msgid ""
 "%d logo(s) trop volumineux pour être appliqué(s) — utilisez un fichier plus "
@@ -2237,203 +2305,203 @@ msgstr ""
 "léger (idéalement sous 40 Ko) ou configurez-le manuellement depuis "
 "Configuration > Entités > onglet Général."
 
-#: front/wizard.php:835
+#: front/wizard.php:875
 #, php-format
 msgid "%d couleur(s) par client/site appliquée(s)."
 msgstr "%d couleur(s) par client/site appliquée(s)."
 
-#: front/wizard.php:838
+#: front/wizard.php:878
 #, php-format
 msgid "%d modèle(s) de notification personnalisés."
 msgstr "%d modèle(s) de notification personnalisés."
 
-#: front/wizard.php:842
+#: front/wizard.php:882
 msgid "Palette GLPI personnalisée créée et définie par défaut."
 msgstr "Palette GLPI personnalisée créée et définie par défaut."
 
-#: front/wizard.php:843
+#: front/wizard.php:883
 msgid "Palette GLPI native définie par défaut."
 msgstr "Palette GLPI native définie par défaut."
 
-#: front/wizard.php:846
+#: front/wizard.php:886
 msgid "Réglages généraux GLPI appliqués."
 msgstr "Réglages généraux GLPI appliqués."
 
-#: front/wizard.php:849
+#: front/wizard.php:889
 msgid "Modèles de tickets créés et assignés aux profils."
 msgstr "Modèles de tickets créés et assignés aux profils."
 
-#: front/wizard.php:852
+#: front/wizard.php:892
 msgid "Champs masqués sur les formulaires de création en libre-service."
 msgstr "Champs masqués sur les formulaires de création en libre-service."
 
-#: front/wizard.php:855
+#: front/wizard.php:895
 #, php-format
 msgid "%d règle(s) de droits LDAP créées."
 msgstr "%d règle(s) de droits LDAP créées."
 
-#: front/wizard.php:858
+#: front/wizard.php:898
 #, php-format
 msgid "%d règle(s) de droits par fonction créées."
 msgstr "%d règle(s) de droits par fonction créées."
 
-#: front/wizard.php:861
+#: front/wizard.php:901
 #, php-format
 msgid "%d catégories de tâches créées."
 msgstr "%d catégories de tâches créées."
 
-#: front/wizard.php:864
+#: front/wizard.php:904
 #, php-format
 msgid "%d gabarits de tâche créés."
 msgstr "%d gabarits de tâche créés."
 
-#: front/wizard.php:867
+#: front/wizard.php:907
 #, php-format
 msgid "%d gabarits de solution créés."
 msgstr "%d gabarits de solution créés."
 
-#: front/wizard.php:870
+#: front/wizard.php:910
 #, php-format
 msgid "%d gabarits de suivis créés."
 msgstr "%d gabarits de suivis créés."
 
-#: front/wizard.php:873
+#: front/wizard.php:913
 #, php-format
 msgid "%d gabarits de validation créés."
 msgstr "%d gabarits de validation créés."
 
-#: front/wizard.php:876
+#: front/wizard.php:916
 msgid "Modèles de changement et de problème créés et assignés aux profils."
 msgstr "Modèles de changement et de problème créés et assignés aux profils."
 
-#: front/wizard.php:879
+#: front/wizard.php:919
 #, php-format
 msgid "%d lieux créés."
 msgstr "%d lieux créés."
 
-#: front/wizard.php:882
+#: front/wizard.php:922
 #, php-format
 msgid "%d fabricants créés."
 msgstr "%d fabricants créés."
 
-#: front/wizard.php:885
+#: front/wizard.php:925
 #, php-format
 msgid "%d règle(s) de dictionnaire fabricant créées."
 msgstr "%d règle(s) de dictionnaire fabricant créées."
 
-#: front/wizard.php:888
+#: front/wizard.php:928
 #, php-format
 msgid "%d opérateurs téléphoniques créés."
 msgstr "%d opérateurs téléphoniques créés."
 
-#: front/wizard.php:891
+#: front/wizard.php:931
 #, php-format
 msgid "%d types de matériel créés."
 msgstr "%d types de matériel créés."
 
-#: front/wizard.php:894
+#: front/wizard.php:934
 #, php-format
 msgid "%d types de licence logicielle créés."
 msgstr "%d types de licence logicielle créés."
 
-#: front/wizard.php:897
+#: front/wizard.php:937
 #, php-format
 msgid "%d types de certificat créés."
 msgstr "%d types de certificat créés."
 
-#: front/wizard.php:900
+#: front/wizard.php:940
 #, php-format
 msgid "%d modèles de tickets récurrents créés."
 msgstr "%d modèles de tickets récurrents créés."
 
-#: front/wizard.php:903
+#: front/wizard.php:943
 #, php-format
 msgid "%d catégories de base de connaissances créées."
 msgstr "%d catégories de base de connaissances créées."
 
-#: front/wizard.php:906
+#: front/wizard.php:946
 #, php-format
 msgid "%d articles de FAQ créés."
 msgstr "%d articles de FAQ créés."
 
-#: front/wizard.php:909
+#: front/wizard.php:949
 #, php-format
 msgid "%d rubriques de documents/criticités créées."
 msgstr "%d rubriques de documents/criticités créées."
 
-#: front/wizard.php:912
+#: front/wizard.php:952
 #, php-format
 msgid "%d catégories/gabarits d'évènements de planning créés."
 msgstr "%d catégories/gabarits d'évènements de planning créés."
 
-#: front/wizard.php:915
+#: front/wizard.php:955
 #, php-format
 msgid "%d types de projet/tâche de projet/statuts de projet créés."
 msgstr "%d types de projet/tâche de projet/statuts de projet créés."
 
-#: front/wizard.php:918
+#: front/wizard.php:958
 #, php-format
 msgid "%d gabarits de tâches de projets créés."
 msgstr "%d gabarits de tâches de projets créés."
 
-#: front/wizard.php:921
+#: front/wizard.php:961
 #, php-format
 msgid "%d modèle(s) de projet créés, structure de tâches incluse."
 msgstr "%d modèle(s) de projet créés, structure de tâches incluse."
 
-#: front/wizard.php:924
+#: front/wizard.php:964
 #, php-format
 msgid "%d source(s) de demande traduites."
 msgstr "%d source(s) de demande traduites."
 
-#: front/wizard.php:927
+#: front/wizard.php:967
 #, php-format
 msgid "%d fiche(s) d'entité complétées avec leur adresse."
 msgstr "%d fiche(s) d'entité complétées avec leur adresse."
 
-#: front/wizard.php:930
+#: front/wizard.php:970
 #, php-format
 msgid "%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s)."
 msgstr ""
 "%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s)."
 
-#: front/wizard.php:933
+#: front/wizard.php:973
 msgid "Enquête de satisfaction créée (plugin More satisfaction)."
 msgstr "Enquête de satisfaction créée (plugin More satisfaction)."
 
-#: front/wizard.php:936
+#: front/wizard.php:976
 msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
 msgstr "Groupe \"VIP\" créé et activé (plugin VIP)."
 
-#: front/wizard.php:939
+#: front/wizard.php:979
 #, php-format
 msgid "%d tag(s) créé(s) (plugin Tag)."
 msgstr "%d tag(s) créé(s) (plugin Tag)."
 
-#: front/wizard.php:942
+#: front/wizard.php:982
 msgid "Règle de validation automatique (supérieur hiérarchique) créée."
 msgstr "Règle de validation automatique (supérieur hiérarchique) créée."
 
-#: front/wizard.php:945
+#: front/wizard.php:985
 #, php-format
 msgid "%d catégories d'utilisateur créées."
 msgstr "%d catégories d'utilisateur créées."
 
-#: front/wizard.php:948
+#: front/wizard.php:988
 #, php-format
 msgid "%d règle(s) d'unicité de numéro de série créées."
 msgstr "%d règle(s) d'unicité de numéro de série créées."
 
-#: front/wizard.php:951
+#: front/wizard.php:991
 #, php-format
 msgid "%d flux RSS ajouté(s)."
 msgstr "%d flux RSS ajouté(s)."
 
-#: front/wizard.php:954
+#: front/wizard.php:994
 msgid "Clé d'enregistrement GLPI Network enregistrée."
 msgstr "Clé d'enregistrement GLPI Network enregistrée."
 
-#: front/wizard.php:961
+#: front/wizard.php:1001
 msgid "Assistant de configuration"
 msgstr "Assistant de configuration"
 
@@ -3379,6 +3447,17 @@ msgstr "Localisation concernée (départ et/ou arrivée)"
 #: src/AuditRequestFormBuilder.php:183
 msgid "Type d'audit"
 msgstr "Type d'audit"
+
+#~ msgid ""
+#~ "Selon le nombre d'options cochées (arborescence multi-site, actifs "
+#~ "personnalisés, bibliothèques de gabarits...), la création peut prendre "
+#~ "plusieurs minutes — ne fermez pas cette page et ne cliquez qu'une seule "
+#~ "fois sur \"Terminer\"."
+#~ msgstr ""
+#~ "Selon le nombre d'options cochées (arborescence multi-site, actifs "
+#~ "personnalisés, bibliothèques de gabarits...), la création peut prendre "
+#~ "plusieurs minutes — ne fermez pas cette page et ne cliquez qu'une seule "
+#~ "fois sur \"Terminer\"."
 
 #~ msgid "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"
 #~ msgstr "Ajouter le flux RSS des avis de sécurité CERT-FR (ANSSI)"

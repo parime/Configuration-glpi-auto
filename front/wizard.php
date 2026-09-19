@@ -343,6 +343,46 @@ function checkEnvironmentPrerequisites(): array
     ];
 }
 
+/**
+ * Mode Dry Run amélioré (issue #115), volet "validation pré-déploiement" : ce sont les 4 mêmes
+ * vérifications `Session::haveRight()` déjà faites plus bas dans le bloc `finish` (POST) pour
+ * décider quelles fonctionnalités exécuter — dupliquées ici (peu coûteuses, sans effet de bord)
+ * plutôt que refactorées, pour ne jamais toucher ce chemin d'écriture déjà en production. Sans
+ * cet avertissement, un opérateur dont le droit propre à ce plugin est délégué (voir Profile.php)
+ * mais qui ne détient pas le droit natif GLPI correspondant remplit tout l'assistant sans jamais
+ * savoir qu'une fonctionnalité entière sera silencieusement ignorée à l'étape "finish" — le
+ * message de fin de course ne distingue pas "0 parce que non coché" de "0 parce que droit
+ * manquant". Même forme/esprit que checkEnvironmentPrerequisites() ci-dessus : informationnel,
+ * jamais bloquant.
+ *
+ * @return array<int, array{label: string, ok: bool, hint: string}>
+ */
+function checkDeploymentRights(): array
+{
+    return [
+        [
+            'label' => __('Créer des entités', 'configurationglpiauto'),
+            'ok' => Session::haveRight('entity', CREATE),
+            'hint' => __('nécessaire pour construire l\'arborescence (étape 2) — les entités déjà existantes restent utilisables, mais aucune nouvelle ne sera créée', 'configurationglpiauto'),
+        ],
+        [
+            'label' => __('Modifier des entités', 'configurationglpiauto'),
+            'ok' => Session::haveRight('entity', UPDATE),
+            'hint' => __('nécessaire pour la personnalisation par entité (adresses, logos, calendrier/SLA par client...)', 'configurationglpiauto'),
+        ],
+        [
+            'label' => __('Gérer les règles d\'affectation LDAP', 'configurationglpiauto'),
+            'ok' => Session::haveRight('rule_ldap', UPDATE),
+            'hint' => __('nécessaire aux droits LDAP par entité (étape 13)', 'configurationglpiauto'),
+        ],
+        [
+            'label' => __('Modifier la configuration générale de GLPI', 'configurationglpiauto'),
+            'ok' => Session::haveRight('config', UPDATE),
+            'hint' => __('nécessaire aux réglages généraux (étape 14)', 'configurationglpiauto'),
+        ],
+    ];
+}
+
 Session::checkRight(Config::$rightname, READ);
 
 if (isset($_POST['finish'])) {
@@ -975,6 +1015,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
 
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/wizard.html.twig', [
     'prereq_checks'    => checkEnvironmentPrerequisites(),
+    'rights_preview'   => checkDeploymentRights(),
     'config'           => $config->fields,
     'profiles'         => $profiles,
     'profile_defaults' => $profileDefaults,
