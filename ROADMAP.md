@@ -1311,10 +1311,11 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
   règle "jamais d'écriture silencieuse sur `Config`" appliquée à toutes les fonctionnalités livrées
   cette session, et aucun `CronTask` n'existe nulle part dans ce plugin aujourd'hui.
 
-- 👥 **Profils communautaires**
-  - Partage de configurations entre utilisateurs
-  - Catalogue de profils certifiés
-  - Adaptation automatique aux besoins spécifiques
+- 👥 **Profils communautaires (issue #118) — fermé, pas une priorité actuelle**, même décision et
+  même raison que le Marketplace de configurations (#116) : même thématique de partage/catalogue
+  communautaire, et de toute façon pas réalisable comme simple fonctionnalité de plugin
+  ("catalogue de profils certifiés" suppose une vraie infrastructure d'hébergement/modération). La
+  portabilité par fichier (export/import de Blueprints) reste couverte par #113. Non traité.
 
 ---
 
