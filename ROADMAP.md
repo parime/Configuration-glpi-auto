@@ -13,6 +13,42 @@ Devenir **la référence Open Source** pour l'initialisation, la standardisation
 
 ---
 
+## ⚠️ Compatibilité GLPI 12 (à surveiller, pas encore une action à mener)
+
+GLPI 12 est sorti en version candidate (`12.0.0-rc1`, 3 septembre 2026), feature-complete, stable
+annoncée pour octobre 2026. `setup.php` de ce plugin plafonne aujourd'hui `PLUGIN_
+CONFIGURATIONGLPIAUTO_MAX_GLPI` à `11.99.99` — **volontairement laissé tel quel pour l'instant, ce
+n'est pas un oubli à corriger** :
+
+- **Un vrai casse-compatibilité confirmé, pas une supposition** : GLPI 12 type strictement des
+  propriétés de classes cœur jusqu'ici non typées (`CommonGLPI::$rightname`, `CommonDBRelation::
+  $itemtype_1`, `CommonDBChild::$items_id`...) — confirmé en lisant directement le code source réel
+  de `12.0.0-rc1` (`src/CommonGLPI.php:109` : `public static string $rightname = '';`). Par une
+  règle stricte d'héritage PHP, une classe qui redéclare une propriété DOIT reprendre exactement le
+  même type que son parent — or GLPI 11 ne type pas cette propriété, donc *aucun fichier PHP unique
+  ne peut être compatible avec GLPI 11 ET 12 simultanément* dès qu'il redéclare l'une de ces
+  propriétés. Confirmé officiellement par un membre de l'équipe cœur GLPI (issue GitHub
+  [glpi-project/glpi#25399](https://github.com/glpi-project/glpi/issues/25399), fermée) : aucune
+  couche de compatibilité n'est prévue, la seule voie possible pour un plugin concerné est une
+  branche/version majeure séparée par version majeure de GLPI.
+- **4 classes de ce plugin sont concernées** (grep exhaustif de `public static $rightname` dans
+  `src/`) : `Config`, `ConfigurationProfile`, `ConfigHistory`, `FuelType` — chacune redéclare
+  `$rightname` sans type, exactement le motif qui fatal-error sous GLPI 12. Aucune autre propriété
+  à risque trouvée (`$itemtype_1`/`$items_id` non utilisés par ce plugin — il n'étend ni
+  `CommonDBRelation` ni `CommonDBChild`). Le correctif technique lui-même est trivial une fois le
+  moment venu (`public static string $rightname = ...;`, un mot-clé par fichier) — ce qui est
+  réellement coûteux, c'est la stratégie de publication (une version majeure dédiée, pas un patch).
+- **Décision délibérée : ne rien changer tant que GLPI 12 n'est pas sorti en version stable.**
+  Le plafond `MAX_GLPI = 11.99.99` actuel est la configuration *protectrice* correcte — il empêche
+  aujourd'hui l'installation sur une version qui ferait planter le plugin, ce n'est pas un défaut à
+  lever. Le relever maintenant, avant que GLPI 12 stable ne soit sorti et avant que ce plugin n'ait
+  reçu son propre correctif de typage, laisserait un administrateur installer une combinaison
+  cassée. À traiter comme un chantier dédié une fois GLPI 12 stable réellement publié : nouvelle
+  branche/version majeure de ce plugin (ex. une ligne `v2.x` dédiée à GLPI 12, en parallèle du
+  maintien de `v1.x` pour GLPI 11), avec le correctif de typage ci-dessus comme premier changement.
+
+---
+
 ## 📅 Versions et Calendrier
 
 ### ✅ Version 1.0 - **Publiée (2026-09-03)**
