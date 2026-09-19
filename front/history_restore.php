@@ -29,11 +29,14 @@ Session::checkRight(Config::$rightname, READ);
 // colonne `snapshot`, la même revue diff+sélective a donc du sens pour les deux plutôt que de
 // garder un écrasement complet sans revue pour l'un des deux chemins. `ConfigHistory` par défaut :
 // rétrocompatible avec les liens existants générés avant #117 (sans paramètre `itemtype`).
-$allowedItemtypes = [ConfigHistory::class, ConfigurationProfile::class];
+// Une branche explicite plutôt que `new $itemtype()` : seules deux classes sont jamais légitimes
+// ici, autant l'exprimer directement plutôt que d'instancier une classe à partir d'une chaîne
+// dérivée de la requête (Semgrep signale à raison ce motif comme une instanciation d'objet
+// potentiellement contaminée, même quand — comme ici — une liste blanche stricte la précède déjà).
 $requestedItemtype = $_GET['itemtype'] ?? $_POST['itemtype'] ?? ConfigHistory::class;
-$itemtype = in_array($requestedItemtype, $allowedItemtypes, true) ? $requestedItemtype : ConfigHistory::class;
+$itemtype = $requestedItemtype === ConfigurationProfile::class ? ConfigurationProfile::class : ConfigHistory::class;
 
-$item = new $itemtype();
+$item = $itemtype === ConfigurationProfile::class ? new ConfigurationProfile() : new ConfigHistory();
 $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
 $item->check($id, READ);
 
