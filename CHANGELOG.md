@@ -118,6 +118,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (notifications). Noyau extensible (`AuditService`/`AuditCheckInterface`,
   `src/Audit/`) : ajouter une future vérification ne demande qu'une nouvelle classe.
 
+### Fixed
+
+- `GeneralSettingsBuilderTest` fusionnait `Config::getDefaults()` (tous les groupes de réglages
+  généraux activés par défaut) en ne surchargeant que `inventory_enabled`, faisant écrire à chaque
+  exécution de la vraie configuration GLPI cœur (`auto_create_infocoms`, `use_notifications`, 3
+  CronTasks natifs, une vraie ligne `ValidationStep`, l'état de la tâche `auditwatch`) que
+  `tearDown()` ne remettait jamais à zéro — sauf `enabled_inventory`, seul réglage que ce fichier
+  prétend tester. Trouvé en conditions réelles : `auto_create_infocoms` restait activé sur
+  l'instance de développement partagée bien après l'exécution de cette suite, ce qui a fait échouer
+  la suite de tests d'écriture Infocom d'un plugin jumeau installé sur la même instance. Corrigé en
+  forçant explicitement à 0 chaque groupe non concerné.
+
 ### Documentation
 
 - Documente dans `ROADMAP.md` un vrai casse-compatibilité GLPI 12 confirmé en lisant le code
