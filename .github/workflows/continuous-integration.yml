@@ -52,25 +52,91 @@ jobs:
     name: "PHPStan Analysis"
     runs-on: ubuntu-latest
     needs: ci
+    # #274: PHPStan a besoin du VRAI autoload GLPI (.phpstan-bootstrap.php charge
+    # /var/www/glpi/vendor/autoload.php) pour resoudre les classes du coeur (CommonDBTM, Session...)
+    # utilisees par src/ -- sans ca il tourne "a l'aveugle" et remonte des milliers de faux
+    # "class.notFound". Un simple `actions/checkout` + `composer install` sur ubuntu-latest nu (la
+    # version precedente de ce job) ne fournit jamais ce chemin : confirme en CI sur la PR #274 (0
+    # erreur en local dans le conteneur Docker de dev, 1000+ en CI). Ce job construit donc son
+    # propre GLPI reel via Docker et lance PHPStan a l'interieur via `docker exec`, exactement la
+    # meme recette que le plugin jumeau assetsign-glpi (`.github/workflows/ci.yml`), qui l'a
+    # eprouvee la premiere.
+    env:
+      GLPI_IMAGE: glpi/glpi:11.0.8
 
     steps:
       - name: "Checkout code"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
 
-      - name: "Setup PHP"
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
-        with:
-          php-version: "8.2"
-          coverage: none
-          tools: composer
-
-      - name: "Install dependencies"
+      - name: "Démarre MariaDB"
         run: |
-          composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader
+          docker network create configurationglpiauto-phpstan
+          docker run -d --name mariadb --network configurationglpiauto-phpstan \
+            -e MARIADB_ROOT_PASSWORD=glpi_password \
+            -e MARIADB_DATABASE=glpidb \
+            -e MARIADB_USER=glpi_user \
+            -e MARIADB_PASSWORD=glpi_password \
+            mariadb:11
+
+          echo "Attente que MariaDB accepte les connexions..."
+          for i in $(seq 1 30); do
+            docker exec mariadb mariadb-admin ping -h 127.0.0.1 -u root -pglpi_password --silent && break
+            sleep 2
+          done
+
+      - name: "Démarre GLPI (auto-installation via l'image officielle)"
+        run: |
+          docker run -d --name glpi --network configurationglpiauto-phpstan \
+            -e TIMEZONE=Europe/Paris \
+            -e GLPI_DB_HOST=mariadb \
+            -e GLPI_DB_PORT=3306 \
+            -e GLPI_DB_NAME=glpidb \
+            -e GLPI_DB_USER=glpi_user \
+            -e GLPI_DB_PASSWORD=glpi_password \
+            "$GLPI_IMAGE"
+
+          echo "Attente que l'auto-installation de GLPI soit terminee..."
+          ready=0
+          for i in $(seq 1 60); do
+            docker exec glpi test -f /var/glpi/config/config_db.php && { ready=1; break; }
+            sleep 5
+          done
+          if [ "$ready" != "1" ]; then
+            echo "::error::GLPI n'a jamais termine son auto-installation (config_db.php absent)."
+            docker logs glpi --tail 200
+            exit 1
+          fi
+
+      - name: "Copie le plugin dans le conteneur GLPI"
+        run: |
+          docker exec glpi mkdir -p /var/www/glpi/plugins/configurationglpiauto
+          docker cp ./. glpi:/var/www/glpi/plugins/configurationglpiauto
+          # cf. assetsign-glpi/.github/workflows/ci.yml : les fichiers copies appartiennent a root
+          # (l'utilisateur du checkout), pas www-data (celui sous lequel tourne PHP dans ce
+          # conteneur) -- sans ce chown, composer install echoue en tentant de creer des dossiers
+          # dans vendor/.
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/configurationglpiauto
+
+      - name: "Installe les dépendances (composer, y compris PHPStan)"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          docker exec glpi sh -c '
+            export COMPOSER_HOME=/tmp/composer-home
+            mkdir -p "$COMPOSER_HOME"
+            cd /tmp
+            php -r "copy(\"https://getcomposer.org/installer\", \"composer-setup.php\");"
+            php composer-setup.php --install-dir=/tmp --filename=composer.phar
+          '
+          docker exec -e COMPOSER_AUTH="{\"github-oauth\":{\"github.com\":\"$GH_TOKEN\"}}" glpi sh -c '
+            export COMPOSER_HOME=/tmp/composer-home
+            cd /var/www/glpi/plugins/configurationglpiauto
+            php /tmp/composer.phar install --no-interaction --prefer-dist --optimize-autoloader
+          '
 
       - name: "Run PHPStan"
         run: |
-          vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+          docker exec glpi sh -c "cd /var/www/glpi/plugins/configurationglpiauto && vendor/bin/phpstan analyse --no-progress --memory-limit=1G"
 
   php-cs-fixer:
     name: "PHP-CS-Fixer"
