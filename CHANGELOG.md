@@ -132,6 +132,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- Fermeture sans implémentation de l'issue #126 (« API REST complète ») : contredit le principe
+  déjà établi « jamais écrire silencieusement sur `Config` » pour tout ce qui dépasserait la
+  lecture seule, et aucun consommateur réel identifié pour une API en lecture seule à ce jour.
 - Documente dans `ROADMAP.md` un vrai casse-compatibilité GLPI 12 confirmé en lisant le code
   source réel de `12.0.0-rc1` : le cœur type désormais strictement `CommonGLPI::$rightname`
   (`public static string`), ce que 4 classes de ce plugin (`Config`, `ConfigurationProfile`,
