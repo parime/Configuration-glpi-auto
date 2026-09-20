@@ -1,16 +1,77 @@
 parameters:
     level: 6
     tmpDir: .phpstan.cache
-    # Scope limited to pure-PHP logic with no runtime dependency on the GLPI core classes
-    # (CommonDBTM, Migration, ProfileRight, Entity, Calendar, DBmysql, global $DB/
-    # $PLUGIN_HOOKS...). Those are only available inside a running GLPI instance and are not
-    # stubbed for static analysis here — same constraint documented in the sibling
-    # glpi-vulnerability-manager repo. Every class under src/ currently extends or instantiates
-    # a GLPI core class somewhere in the file, so none of it can be analysed this way yet — only
-    # tests/Unit (which covers pure static helpers, see EntityBuilderTest) qualifies so far.
-    # `paths: []` makes PHPStan itself error ("At least one path must be specified") rather than
-    # silently analysing nothing, so point it at tests/ instead of excluding everything.
+    # Le cœur GLPI (CommonDBTM, Migration, Entity, DBmysql, global $DB/$PLUGIN_HOOKS...) n'est
+    # jamais stubé ici : le bootstrap ci-dessous charge le VRAI autoload GLPI (aucune connexion DB
+    # requise pour la seule résolution de types), même technique que le plugin jumeau
+    # assetsign-glpi (`.phpstan-bootstrap.php`), qui a le premier prouvé que `src/` est analysable
+    # de cette façon — ce fichier ne scannait jusqu'ici que `tests/Unit`, laissant tout le code
+    # métier réel (109 fichiers sous `src/`) hors de portée de l'analyse statique.
+    bootstrapFiles:
+        - .phpstan-bootstrap.php
     paths:
-        - tests/Unit
+        - src
+        - front
+        - ajax
+        - hook.php
+        - setup.php
+        - tests
     excludePaths:
         - vendor/*
+    ignoreErrors:
+        -
+            # `GLPI_VERSION` est déjà définie dès que le bootstrap PHPStan charge l'autoload GLPI
+            # (composer), donc PHPStan la voit toujours définie — mais en exécution réelle, ce
+            # fichier peut être chargé avant que le cœur GLPI ne définisse cette constante (c'est
+            # exactement ce que `defined()` sert à distinguer ici). Faux positif de bootstrap, pas
+            # un vrai bug : la vérification reste nécessaire à l'exécution.
+            message: '#Right side of && is always false#'
+            path: setup.php
+        -
+            # `Html::back()`/`Html::redirect()` (cœur GLPI) ne sont pas annotées `@return never` —
+            # elles redirigent puis appellent `exit`, donc le code après leur appel n'est jamais
+            # atteint en pratique, mais PHPStan ne peut pas le déduire sans cette annotation absente
+            # du cœur GLPI. Confirmé en lisant chaque site : la variable est bien toujours définie
+            # sur tout chemin qui atteint réellement le code suivant.
+            identifier: variable.undefined
+            path: front/blueprint_import.php
+        -
+            # `$CFG_GLPI` est une globale peuplée par le bootstrap GLPI avant l'inclusion de tout
+            # front-controller — jamais définie localement dans ce fichier (comme dans tous les
+            # `front/*.php` de ce plugin), donc invisible pour l'analyse statique isolée d'un seul
+            # fichier sans stub de variables globales.
+            identifier: variable.undefined
+            path: front/profile.form.php
+        -
+            # Dette de typage connue, jamais des bugs : ce plugin n'annote pas encore le type de
+            # valeur de chaque tableau imbriqué partout (`array` plutôt que `array<string, mixed>`
+            # etc.) — un vrai chantier de précision de type à mener séparément, pas quelque chose à
+            # cacher indéfiniment (d'où une entrée dédiée et commentée plutôt qu'un `level` abaissé
+            # qui masquerait aussi de vraies erreurs futures d'un tout autre genre).
+            identifier: missingType.iterableValue
+        -
+            # `?? default` sur des données décodées depuis POST/JSON externe (formulaire du
+            # wizard, Blueprint importé, JSON de config stocké en base) : PHPStan, en analysant un
+            # chemin de code avec des littéraux constants, peut prouver que la clé existe toujours
+            # dans CE contexte précis — mais la garde reste une protection légitime contre des
+            # données runtime moins fiables que ce que le type statique local suggère (un Blueprint
+            # exporté par une version antérieure du plugin, un POST forgé...), jamais du code mort
+            # dangereux à retirer en masse.
+            identifier: nullCoalesce.offset
+        -
+            # Même nature que nullCoalesce.offset ci-dessus (`empty($ICONS[$name] ?? ...)`-style
+            # gardes sur des tableaux constants d'icônes) — légitime contre un futur désalignement
+            # entre deux constantes censées partager les mêmes clés.
+            identifier: empty.offset
+        -
+            # RequestTypeTranslationBuilder::ICONS/TRANSLATIONS sont deux constantes déclarées
+            # séparément mais censées rester synchronisées (mêmes clés) — la garde `!== ''` protège
+            # contre un futur désalignement (une entrée ajoutée à l'une sans l'autre), PHPStan ne
+            # peut prouver "toujours vrai" qu'avec l'état ACTUEL des deux tableaux.
+            identifier: notIdentical.alwaysTrue
+        -
+            # LocationBuilder/RuleRightBuilder : `is_array($node['children'] ?? null)` reste une
+            # garde légitime avant de descendre récursivement dans un arbre reconstruit depuis
+            # `Config::getEntityTree()` (JSON stocké en base, potentiellement écrit par une version
+            # antérieure du plugin) — jamais du code mort dangereux à retirer.
+            identifier: function.alreadyNarrowedType

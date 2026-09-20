@@ -98,7 +98,11 @@ class ProjectTaxonomyBuilder
             $count++;
         }
         foreach (self::TASK_TYPES as $type) {
-            $id = $this->getOrCreate(ProjectTaskType::class, $type['name'], $type['comment'] ?? '');
+            // Unlike PROJECT_TYPES just above, TASK_TYPES entries never had a 'comment' key — a
+            // leftover `$type['comment'] ?? ''` copy-pasted from that loop always evaluated to ''
+            // here, never anything real (confirmed by PHPStan: the key simply doesn't exist on
+            // this constant's shape).
+            $id = $this->getOrCreate(ProjectTaskType::class, $type['name'], '');
             // Always called (see StateBuilder::build() for the reasoning) so unchecking icons after
             // a prior run actually strips them instead of leaving old rows stuck.
             Translations::applyIcon(ProjectTaskType::class, $id, $type['name'], $withIcons ? $type['icon'] : '');

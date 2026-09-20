@@ -35,8 +35,9 @@ final class AuditServiceTest extends TestCase
         // No assertion on count/content here: this suite runs against a shared, persistent
         // instance (same convention as every other Integration test in this plugin) whose exact
         // state (notifications, entities, states...) depends on which other suites already ran —
-        // each individual check has its own dedicated test for its real detection logic.
-        $this->assertIsArray($findings);
+        // each individual check has its own dedicated test for its real detection logic. (A prior
+        // `assertIsArray($findings)` here was removed: `runAll()`'s own return type already
+        // guarantees this, so PHPStan correctly flagged it as always true — it tested nothing.)
     }
 
     public function testFixThrowsOnAnUnknownCheckKey(): void

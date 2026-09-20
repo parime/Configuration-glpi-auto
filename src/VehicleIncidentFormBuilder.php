@@ -378,9 +378,12 @@ class VehicleIncidentFormBuilder
             'vertical_rank' => 6,
         ]);
 
+        // $tiers est déjà vérifié plus haut (retour anticipé juste après sa création, nécessaire
+        // avant de lire $tiers->fields['uuid']) — le revérifier ici serait toujours faux (PHPStan
+        // l'a confirmé) puisque ce point du code n'est jamais atteint sinon.
         if (
             !$vehicule->getID() || !$dateSinistre->getID() || !$immobilise->getID()
-            || !$tiers->getID() || !$coordTiers->getID() || !$photos->getID() || !$precisions->getID()
+            || !$coordTiers->getID() || !$photos->getID() || !$precisions->getID()
         ) {
             return null;
         }

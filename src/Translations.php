@@ -338,7 +338,9 @@ final class Translations
         'Webcam' => ['en_GB' => 'Webcam', 'de_DE' => 'Webcam', 'it_IT' => 'Webcam', 'es_ES' => 'Webcam', 'pt_BR' => 'Webcam'],
         'Casque' => ['en_GB' => 'Headset', 'de_DE' => 'Headset', 'it_IT' => 'Cuffie', 'es_ES' => 'Auriculares', 'pt_BR' => 'Headset'],
         'Station d\'accueil' => ['en_GB' => 'Docking station', 'de_DE' => 'Dockingstation', 'it_IT' => 'Docking station', 'es_ES' => 'Estación de acoplamiento', 'pt_BR' => 'Estação de acoplamento'],
-        'Scanner' => ['en_GB' => 'Scanner', 'de_DE' => 'Scanner', 'it_IT' => 'Scanner', 'es_ES' => 'Escáner', 'pt_BR' => 'Scanner'],
+        // 'Scanner' déjà défini plus haut (catégorie de ticket, même libellé français, même
+        // traduction dans les 5 langues) — doublon accidentel trouvé et retiré par PHPStan
+        // (array.duplicateKey), inoffensif ici (valeurs identiques) mais réel.
         'Disque externe' => ['en_GB' => 'External drive', 'de_DE' => 'Externe Festplatte', 'it_IT' => 'Disco esterno', 'es_ES' => 'Disco externo', 'pt_BR' => 'Disco externo'],
 
         // ---- AssetTypeBuilder (glpi_phonetypes) ----
