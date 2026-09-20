@@ -1432,11 +1432,12 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 **Prévue** : 2029
 
 **Plateforme complète** :
-- ⏸️ **API REST complète** (issue #126) — reportée : "accès programmatique à toutes les
-  fonctionnalités" ne peut pas dépasser la lecture seule sans rompre le principe "jamais écrire
-  silencieusement" appliqué à chaque fonctionnalité de ce plugin (chaque écriture réelle passe par
-  l'assistant pour revue humaine) ; une API en lecture seule (constats d'audit, Blueprints) reste
-  envisageable mais n'a pas encore de consommateur réel identifié.
+- ❌ **API REST complète** — **fermée sans implémentation** (issue #126 fermée le 2026-09-20) :
+  "accès programmatique à toutes les fonctionnalités" ne peut pas dépasser la lecture seule sans
+  rompre le principe "jamais écrire silencieusement" appliqué à chaque fonctionnalité de ce plugin
+  (chaque écriture réelle passe par l'assistant pour revue humaine). Une API en lecture seule
+  (constats d'audit, Blueprints) resterait envisageable, mais n'a aucun consommateur réel identifié
+  — pas de valeur concrète à construire à l'aveugle.
 
 - 🔗 **Synchronisation multi-instances**
   - Gestion centralisée de plusieurs instances GLPI
