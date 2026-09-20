@@ -323,7 +323,7 @@ class Config extends CommonDBTM
      * its own (see sanitizeClientSettings()) uses this. Missing/invalid levels fall back to
      * DEFAULT_SLA_TIERS rather than leaving a gap.
      *
-     * @return array<string, array{tto_hours: int, ttr_hours: int}>
+     * @return array<int, array{tto_hours: int, ttr_hours: int}>
      */
     public function getSlaTiers(): array
     {
@@ -336,7 +336,7 @@ class Config extends CommonDBTM
      * The built-in starting-point tier table — exposed so ConfigurationProfile::getSuggestedDefaults()
      * can reuse it instead of duplicating the same 6 numbers a second time.
      *
-     * @return array<string, array{tto_hours: int, ttr_hours: int}>
+     * @return array<int, array{tto_hours: int, ttr_hours: int}>
      */
     public static function getDefaultSlaTiers(): array
     {
@@ -347,7 +347,7 @@ class Config extends CommonDBTM
      * Same as getSlaTiers(), for the OLA (internal commitment) table — see class docs on
      * sanitizeSlaSettings() for why OLA lives alongside SLA rather than as its own concept.
      *
-     * @return array<string, array{tto_hours: int, ttr_hours: int}>
+     * @return array<int, array{tto_hours: int, ttr_hours: int}>
      */
     public function getOlaTiers(): array
     {
@@ -357,7 +357,7 @@ class Config extends CommonDBTM
     }
 
     /**
-     * @return array<string, array{tto_hours: int, ttr_hours: int}>
+     * @return array<int, array{tto_hours: int, ttr_hours: int}>
      */
     public static function getDefaultOlaTiers(): array
     {
@@ -834,7 +834,7 @@ class Config extends CommonDBTM
      * container in SlaBuilder), so nesting it separately would just be two objects that always
      * have to agree on which client they belong to.
      *
-     * @return array{enabled: bool, astreinte: bool, tiers: array<string, array{tto_hours: int, ttr_hours: int}>, ola_enabled: bool, ola_tiers: array<string, array{tto_hours: int, ttr_hours: int}>}
+     * @return array{enabled: bool, astreinte: bool, tiers: array<int, array{tto_hours: int, ttr_hours: int}>, ola_enabled: bool, ola_tiers: array<int, array{tto_hours: int, ttr_hours: int}>}
      */
     private function sanitizeSlaSettings(array $sla): array
     {
@@ -852,14 +852,18 @@ class Config extends CommonDBTM
      * or malformed in $tiers rather than leaving a gap a ticket could fall through. Shared by SLA
      * and OLA tables — same shape, different starting-point numbers ($defaults).
      *
-     * @param array<string, array{tto_hours: int, ttr_hours: int}> $defaults
-     * @return array<string, array{tto_hours: int, ttr_hours: int}>
+     * @param array<int, array{tto_hours: int, ttr_hours: int}> $defaults
+     * @return array<int, array{tto_hours: int, ttr_hours: int}>
      */
     private function sanitizeSlaTiers(array $tiers, array $defaults): array
     {
         $clean = [];
-        foreach (self::PRIORITY_LEVELS as $level) {
-            $key = (string) $level;
+        foreach (self::PRIORITY_LEVELS as $key) {
+            // PRIORITY_LEVELS is already a list of ints — a former `(string) $level` cast here was
+            // misleading, not just redundant: PHP always normalizes a numeric-string array key back
+            // to int (confirmed by PHPStan, which infers `array<int, ...>` for this method's actual
+            // return shape despite the `array<string, ...>` docblock this cast was written to
+            // match), so the cast never achieved a string-keyed array in the first place.
             $tier = is_array($tiers[$key] ?? null) ? $tiers[$key] : [];
 
             $clean[$key] = [

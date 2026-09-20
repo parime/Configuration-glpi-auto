@@ -44,11 +44,11 @@ class EntityAddressBuilder
     private const LOCATION_FIELDS = ['address', 'postcode', 'town', 'state', 'country', 'latitude', 'longitude', 'altitude'];
 
     /**
-     * @param array<string, array<string, string>> $dataByPath Same shape/keys as
+     * @param array<int|string, array<string, string>> $dataByPath Same shape/keys as
      *        `LocationBuilder::build()`'s own `$dataByPath` — only the fields also present on
      *        `Entity` (address/postcode/town/state/country/latitude/longitude/altitude) are used;
      *        `Location`-only fields (building, room, code, alias, comment) are ignored here.
-     * @param array<string, array{phonenumber?: string, fax?: string, website?: string, email?: string}> $commsByPath
+     * @param array<int|string, array{phonenumber?: string, fax?: string, website?: string, email?: string}> $commsByPath
      *        Entity-only fields with no `Location` equivalent, keyed by the same path.
      * @return int Number of entities actually updated (i.e. with real data to apply — not a count
      *             of every entity in the tree).
@@ -69,8 +69,8 @@ class EntityAddressBuilder
 
     /**
      * @param array{name: string, children: array} $node
-     * @param array<string, array<string, string>> $dataByPath
-     * @param array<string, array<string, string>> $commsByPath
+     * @param array<int|string, array<string, string>> $dataByPath
+     * @param array<int|string, array<string, string>> $commsByPath
      */
     private function buildNode(array $node, int $parentEntityId, string $path, array $dataByPath, array $commsByPath): int
     {

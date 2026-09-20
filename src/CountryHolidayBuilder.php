@@ -146,9 +146,9 @@ class CountryHolidayBuilder
     ];
 
     /**
-     * @param array<string, string> $countryByPath Raw free-text country values typed on Location
+     * @param array<int|string, string> $countryByPath Raw free-text country values typed on Location
      *        address fields, keyed by the same wizard-tree path as `location_country_<path>`.
-     * @param array<string, int> $calendarIdByPath Calendar to attach each path's country holidays
+     * @param array<int|string, int> $calendarIdByPath Calendar to attach each path's country holidays
      *        to, keyed by the same paths — resolved by the caller from `$calendarMap` (see class
      *        docblock). A path absent here (or whose country isn't recognized) still creates the
      *        holidays, just doesn't attach them to anything.

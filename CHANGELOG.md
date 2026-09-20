@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **PHPStan n'analysait jamais le vrai code métier** : `phpstan.neon` limitait volontairement le
+  scope à `tests/Unit`, avec un commentaire expliquant que le cœur GLPI n'était pas stubé pour
+  l'analyse statique — alors que le plugin jumeau `assetsign-glpi` prouvait déjà le contraire via
+  un bootstrap dédié (charge le vrai autoload GLPI, sans connexion DB). Même technique reprise ici
+  (`.phpstan-bootstrap.php`) : `src/`, `front/`, `ajax/`, `hook.php`, `setup.php` sont désormais
+  réellement scannés (109 fichiers auparavant hors de portée). Sur les 243 signalements initiaux
+  (niveau 6), plusieurs révélaient de vrais problèmes, corrigés : une clé de traduction dupliquée
+  ('Scanner') dans `Translations.php` qui masquait silencieusement une entrée par l'autre (valeurs
+  identiques donc inoffensif ici, mais une vraie duplication accidentelle) ; un vestige de
+  copier-coller dans `ProjectTaxonomyBuilder.php` lisant un champ `comment` qui n'a jamais existé
+  sur `TASK_TYPES` (toujours vide, sans effet) ; une vérification redondante déjà couverte par un
+  retour anticipé dans `VehicleIncidentFormBuilder.php` ; plusieurs annotations de type
+  `array<string, ...>` en réalité `array<int, ...>`/`array<int|string, ...>` (les tiers SLA/OLA
+  sont indexés par des niveaux de priorité entiers, pas des chaînes — un cast `(string)` trompeur
+  mais inoffensif, PHP normalisant de toute façon les clés numériques). Le reste (gardes
+  défensives contre des données POST/JSON externes, dette de précision de type `array` sans valeur
+  précisée) est documenté explicitement dans `ignoreErrors`, jamais masqué silencieusement.
+
 ### Added
 
 - **Analyse continue (issue #131)** : la première tâche planifiée GLPI (`CronTask`) que ce plugin

@@ -43,7 +43,7 @@ use PHPUnit\Framework\TestCase;
 final class CountBasedChecksTest extends TestCase
 {
     /**
-     * @return list<array{0: callable(): \GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface}>
+     * @return array<string, array{0: callable(): \GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface}>
      */
     public static function checkProvider(): array
     {

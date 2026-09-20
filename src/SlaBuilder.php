@@ -119,7 +119,7 @@ class SlaBuilder
      * *and* tier) is passed in from the caller's already-resolved values (plugin-wide default or
      * this client's own `settings.escalation` override), not read from $sla.
      *
-     * @param array{enabled: bool, astreinte: bool, tiers: array<string, array{tto_hours: int, ttr_hours: int}>, ola_enabled: bool, ola_tiers: array<string, array{tto_hours: int, ttr_hours: int}>} $sla
+     * @param array{enabled: bool, astreinte: bool, tiers: array<int, array{tto_hours: int, ttr_hours: int}>, ola_enabled: bool, ola_tiers: array<int, array{tto_hours: int, ttr_hours: int}>} $sla
      * @param array{n1: int, n2: int, n3: int}|array{}|null $tierGroupIds
      * @return array<int, array{tto: int, ttr: int, ola_tto: ?int, ola_ttr: ?int}>|null
      */
@@ -270,8 +270,8 @@ class SlaBuilder
     }
 
     /**
-     * @param array<string, array{tto_hours: int, ttr_hours: int}> $tiers
-     * @param array<string, array{tto_hours: int, ttr_hours: int}> $olaTiers
+     * @param array<int, array{tto_hours: int, ttr_hours: int}> $tiers
+     * @param array<int, array{tto_hours: int, ttr_hours: int}> $olaTiers
      * @param array{n1: int, n2: int, n3: int}|array{}|null $tierGroupIds
      * @return array<int, array{tto: int, ttr: int, ola_tto: ?int, ola_ttr: ?int}>
      */
@@ -307,7 +307,7 @@ class SlaBuilder
 
         $result = [];
         foreach (Config::PRIORITY_LEVELS as $priority) {
-            $tier = $tiers[(string) $priority] ?? ['tto_hours' => 4, 'ttr_hours' => 48];
+            $tier = $tiers[$priority] ?? ['tto_hours' => 4, 'ttr_hours' => 48];
             $label = CommonITILObject::getPriorityName($priority);
 
             $ttoId = $this->getOrCreateLevelAgreement(SLA::class, $slmId, SLM::TTO, sprintf(__('Prise en charge — %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours']);
@@ -316,7 +316,7 @@ class SlaBuilder
             $olaTtoId = null;
             $olaTtrId = null;
             if ($olaEnabled) {
-                $olaTier = $olaTiers[(string) $priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
+                $olaTier = $olaTiers[$priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
                 $olaTtoId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTO, sprintf(__('OLA prise en charge — %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours']);
                 $olaTtrId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTR, sprintf(__('OLA résolution — %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours']);
             }
@@ -324,7 +324,7 @@ class SlaBuilder
             if ($escalationEnabled || $tierGroupIds !== null) {
                 $this->ensureEscalationLevel(SlaLevel::class, $ttrId, (int) $tier['ttr_hours'], $priority, $escalationEnabled, $escalationThresholdPercent, $tierGroupIds, $autoN1N2, $autoN2N3);
                 if ($olaTtrId !== null) {
-                    $olaTier = $olaTiers[(string) $priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
+                    $olaTier = $olaTiers[$priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
                     $this->ensureEscalationLevel(OlaLevel::class, $olaTtrId, (int) $olaTier['ttr_hours'], $priority, $escalationEnabled, $escalationThresholdPercent, $tierGroupIds, $autoN1N2, $autoN2N3);
                 }
             }

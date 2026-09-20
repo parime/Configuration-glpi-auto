@@ -190,8 +190,10 @@ function sanitizeCoordinate(string $value, float $max): string
  * tree — only the wizard's own JS, which only ever renders inputs for nodes an admin has actually
  * expanded.
  *
- * @return array<string, array<string, string>> Path => non-empty fields only (a node with nothing
- *         filled in has no entry at all, matching `LocationBuilder`'s "no data, no Location" rule).
+ * @return array<int|string, array<string, string>> Path => non-empty fields only (a node with
+ *         nothing filled in has no entry at all, matching `LocationBuilder`'s "no data, no
+ *         Location" rule). A root-level path ("0") is a plain numeric-string key, which PHP
+ *         normalizes to an int array key on access — hence `int|string`, not just `string`.
  */
 function collectLocationDataFromPost(): array
 {
@@ -475,7 +477,7 @@ if (isset($_POST['finish'])) {
         // given country determines that shared calendar's hours — same "first submission wins,
         // idempotent on name" convention this class already uses for the plugin-wide shared
         // calendar, not a new inconsistency.
-        $explicitCountry = trim((string) ($locationDataByPath[(string) $i]['country'] ?? ''));
+        $explicitCountry = trim((string) ($locationDataByPath[$i]['country'] ?? ''));
         if ($calendarId !== null && $explicitCountry !== '') {
             $baseSettings = $calendarOverride ?? [
                 'enabled' => true,
