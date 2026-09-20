@@ -29,6 +29,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   défensives contre des données POST/JSON externes, dette de précision de type `array` sans valeur
   précisée) est documenté explicitement dans `ignoreErrors`, jamais masqué silencieusement.
 
+- **Le job CI "PHPStan Analysis" tournait sans aucun GLPI disponible** : contrairement à
+  l'exécution locale (conteneur Docker de dev, où `/var/www/html/glpi/vendor/autoload.php` existe
+  réellement), ce job se contentait d'un `actions/checkout` + `composer install` sur un runner
+  `ubuntu-latest` nu — les deux chemins vérifiés par `.phpstan-bootstrap.php` étaient donc toujours
+  absents, PHPStan tournait sans aucune classe du cœur GLPI chargée, et remontait 1000+ faux
+  `class.notFound` (constaté sur la PR #274, alors que le même code donnait 0 erreur en local). Le
+  job construit désormais son propre GLPI réel via Docker (MariaDB + image officielle `glpi/glpi`,
+  auto-installée) et lance PHPStan à l'intérieur via `docker exec` — même recette déjà éprouvée par
+  le plugin jumeau `assetsign-glpi` (`.github/workflows/ci.yml`).
+
 ### Added
 
 - **Analyse continue (issue #131)** : la première tâche planifiée GLPI (`CronTask`) que ce plugin
