@@ -39,6 +39,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   auto-installée) et lance PHPStan à l'intérieur via `docker exec` — même recette déjà éprouvée par
   le plugin jumeau `assetsign-glpi` (`.github/workflows/ci.yml`).
 
+- **Le plugin recommandé « remise-glpi » n'existe plus sous ce nom** : `MarketplaceBuilder` et
+  `StateBuilder` citaient encore l'ancien nom du dépôt jumeau (`https://github.com/parime/remise-glpi`),
+  renommé `assetsign-glpi` il y a longtemps — GitHub redirige encore l'ancienne URL (301), donc le
+  lien ne cassait jamais franchement, ce qui a laissé un nom et une description périmés (ne
+  mentionnant ni la signature électronique, ni le passeport numérique, ni le score de santé — les
+  fonctionnalités phares actuelles du plugin) passer inaperçus dans l'assistant. Corrigé aux deux
+  endroits (nom, URL, description), vérifié contre le vrai dépôt (`gh repo view`) plutôt que contre
+  une ancienne citation.
+
+- **Aucun statut ne correspondait à la fonctionnalité « Destruction » d'`assetsign-glpi`** :
+  `StateBuilder` recommandait déjà "En stock"/"Attribué"/"Donné"/"Vendu"/"Attente restitution" pour
+  interopérer avec les déclenchements automatiques de remise/don/vente/restitution du plugin jumeau,
+  mais rien pour son déclenchement Destruction (`Assetsign::TYPE_DESTRUCTION`,
+  `Config.destruction_states`) — "Obsolète"/"Défectueux" décrivent un état du matériel, pas
+  l'événement de mise au rebut lui-même (même distinction déjà faite entre "Attribué"/"En stock" et
+  "Donné"/"Vendu"). Nouveau statut "Détruit" ajouté (14 → 15 statuts), marqué recommandé.
+
+### Changed
+
+- **Le panneau « Marketplace & plugins recommandés » était noyé au milieu de l'étape 14** (Réglages
+  généraux), entre une dizaine de cases à cocher sans rapport — peu de chances qu'un administrateur
+  le remarque avant de cliquer sur "Terminer". Déplacé en bas de l'étape 19 (Récapitulatif), la
+  seule page que chaque administrateur lit réellement avant de valider, pour lui donner une vraie
+  visibilité. Le deuxième plugin jumeau, `glpi-iso27001-management` (GRC/ISO 27001), a aussi été
+  ajouté à la liste — il ne l'était pas alors que les trois plugins sont conçus comme complémentaires.
+
 ### Added
 
 - **Analyse continue (issue #131)** : la première tâche planifiée GLPI (`CronTask`) que ce plugin

@@ -54,6 +54,7 @@ final class Translations
         'Externe' => ['en_GB' => 'External', 'de_DE' => 'Extern', 'it_IT' => 'Esterno', 'es_ES' => 'Externo', 'pt_BR' => 'Externo'],
         'Compte de service' => ['en_GB' => 'Service account', 'de_DE' => 'Dienstkonto', 'it_IT' => 'Account di servizio', 'es_ES' => 'Cuenta de servicio', 'pt_BR' => 'Conta de serviço'],
         'Vendu' => ['en_GB' => 'Sold', 'de_DE' => 'Verkauft', 'it_IT' => 'Venduto', 'es_ES' => 'Vendido', 'pt_BR' => 'Vendido'],
+        'Détruit' => ['en_GB' => 'Destroyed', 'de_DE' => 'Zerstört', 'it_IT' => 'Distrutto', 'es_ES' => 'Destruido', 'pt_BR' => 'Destruído'],
 
         // ---- TaskCategoryBuilder (glpi_taskcategories) ----
         'Diagnostic & Analyse' => ['en_GB' => 'Diagnosis & Analysis', 'de_DE' => 'Diagnose & Analyse', 'it_IT' => 'Diagnosi e Analisi', 'es_ES' => 'Diagnóstico y Análisis', 'pt_BR' => 'Diagnóstico e Análise'],

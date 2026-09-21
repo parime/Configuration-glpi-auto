@@ -379,7 +379,7 @@ class Config extends CommonDBTM
     }
 
     /**
-     * Which of `StateBuilder`'s 14 states the admin wants created — same "whitelist-intersect,
+     * Which of `StateBuilder`'s 15 states the admin wants created — same "whitelist-intersect,
      * empty rather than a guess" reasoning as `getCategoryBranches()`.
      *
      * @return string[]
