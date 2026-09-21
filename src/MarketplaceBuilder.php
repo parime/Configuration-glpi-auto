@@ -40,15 +40,32 @@ namespace GlpiPlugin\Configurationglpiauto;
  * (`data-key` attribute, license, author, star rating) rather than guessed from a GitHub repo name
  * — confirmed the hard way that `one-timesecret` (the repo name) and `onetimesecret` (the real
  * marketplace key) actually differ.
+ *
+ * The first two entries below are this plugin's own sibling repos (same author, deliberately
+ * complementary rather than overlapping — see this plugin's own ROADMAP.md "Vision"): `assetsign-glpi`
+ * interoperates directly with `StateBuilder`'s recommended states (see that class' own docblock),
+ * `glpi-iso27001-management` with the ITIL categories/service catalog this wizard seeds (a "Sécurité
+ * SI" category and equivalent already exist for its Security incidents to file under). Re-verified
+ * both names/URLs against the real repos (`gh repo view`) rather than trusting an old citation —
+ * `assetsign-glpi` was named `remise-glpi` until a rename partway through this plugin's own
+ * development (GitHub keeps the old URL as a redirect, which is how a stale name/description sat
+ * here undetected for a while: the link never actually broke, it just stopped matching reality).
  */
 class MarketplaceBuilder
 {
     private const RECOMMENDED_PLUGINS = [
         [
-            'name' => 'remise-glpi',
+            'name' => 'assetsign-glpi',
             'key' => null,
-            'description' => 'Gestion de feuilles de prêt, retour, vente ou don de matériel, pour la traçabilité des mouvements de parc et la centralisation des documents associés dans GLPI.',
-            'url' => 'https://github.com/parime/remise-glpi',
+            'description' => 'Plugin GLPI de remise, restitution, don et vente de matériel : signature électronique intégrée (sans service tiers), état des lieux visuel, passeport numérique et score de santé du matériel.',
+            'url' => 'https://github.com/parime/assetsign-glpi',
+            'note' => 'Pas encore publié sur le marketplace natif — installation manuelle depuis GitHub.',
+        ],
+        [
+            'name' => 'glpi-iso27001-management',
+            'key' => null,
+            'description' => 'Plateforme open source de gouvernance, risques et conformité (GRC/ISO 27001) intégrée à GLPI : registre des risques, incidents de sécurité, audits, non-conformités et plan de traitement, sans quitter GLPI.',
+            'url' => 'https://github.com/parime/glpi-iso27001-management',
             'note' => 'Pas encore publié sur le marketplace natif — installation manuelle depuis GitHub.',
         ],
         [

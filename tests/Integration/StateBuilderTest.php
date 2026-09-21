@@ -25,9 +25,9 @@ use State;
 
 /**
  * `Config::getStateNames()` (not tested directly here, but exercised through it) individually
- * selects which of the 14 states get built — this suite deliberately selects a single, otherwise
+ * selects which of the 15 states get built — this suite deliberately selects a single, otherwise
  * untouched state to isolate that filtering behaviour, rather than relying on the defaults (which
- * select all 14 and are already exercised as a setup dependency across many other test files).
+ * select all 15 and are already exercised as a setup dependency across many other test files).
  */
 final class StateBuilderTest extends TestCase
 {

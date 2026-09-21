@@ -655,7 +655,7 @@
           </div>
 
           <p class="text-muted small mb-1">{{ __('Le statut décrit la situation d\'un équipement dans son cycle de vie (en stock, attribué, en panne...) — il sert à filtrer et suivre le parc, indépendamment de sa localisation ou de son entité. Ne cochez que les statuts qui correspondent à des situations réelles chez vous ; chacun peut être appliqué aux ordinateurs, téléphones, moniteurs, licences, etc.', 'configurationglpiauto') }}</p>
-          <p class="text-muted small mb-1">{{ __('Les statuts marqués « recommandé » sont ceux utilisés par remise-glpi (déclenchement automatique remise/don/vente/restitution) — les décocher n\'empêche rien de fonctionner mais réduit l\'interopérabilité entre les deux plugins si vous utilisez remise-glpi.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-1">{{ __('Les statuts marqués « recommandé » sont ceux utilisés par assetsign-glpi (déclenchement automatique remise/don/vente/destruction/restitution) — les décocher n\'empêche rien de fonctionner mais réduit l\'interopérabilité entre les deux plugins si vous utilisez assetsign-glpi.', 'configurationglpiauto') }}</p>
           <ul class="list-group" id="cga-state-preview" style="max-width: 560px;">
             {% for state in states_preview %}
               <li class="list-group-item d-flex align-items-start gap-2">
@@ -1061,26 +1061,6 @@
           <label class="form-check-label" for="cga-validation-supervisor-routing-enabled">{{ __('Validation automatique par le supérieur hiérarchique du demandeur (« N+1 »)', 'configurationglpiauto') }}</label>
         </div>
         <p class="text-muted small mb-3">{{ __('Envoie automatiquement une demande d\'approbation au supérieur hiérarchique du demandeur (champ natif GLPI « Superviseur ») pour chaque ticket de type Demande. Décochée par défaut, contrairement au reste de cette page : ceci change un vrai comportement (approbation obligatoire), pas juste du contenu — et ne fait quelque chose que si le champ Superviseur des utilisateurs est renseigné (import LDAP ou saisie manuelle). Sans supérieur renseigné, aucune validation n\'est créée.', 'configurationglpiauto') }}</p>
-
-        <h4 class="mb-1">{{ __('Marketplace & plugins recommandés', 'configurationglpiauto') }}</h4>
-        <p class="text-muted small mb-2">{{ __('Optionnel : une clé d\'enregistrement GLPI Network (au moins gratuite) débloque le marketplace natif de GLPI (Configuration > Plugins > Marketplace) — sans elle, la liste des plugins y reste vide.', 'configurationglpiauto') }}</p>
-        <div class="mb-3" style="max-width: 560px;">
-          <label class="form-label mb-1" for="cga-glpi-network-registration-key">{{ __('Clé d\'enregistrement GLPI Network', 'configurationglpiauto') }}</label>
-          <input type="text" name="glpi_network_registration_key" id="cga-glpi-network-registration-key" class="form-control" value="{{ glpi_network_registration_key|default('') }}" autocomplete="off">
-          <p class="text-muted small mb-0">{{ __('S\'obtient gratuitement sur', 'configurationglpiauto') }} <a href="https://services.glpi-network.com/" target="_blank" rel="noopener">services.glpi-network.com</a>.</p>
-        </div>
-
-        <p class="text-muted small mb-2">{{ __('Une fois le marketplace débloqué, ces plugins sont installables en un clic depuis Configuration > Plugins > Marketplace — non installés automatiquement par cet assistant.', 'configurationglpiauto') }}</p>
-        <div class="d-flex flex-wrap gap-2 mb-2">
-          {% for plugin in marketplace_recommended_plugins %}
-            <div class="card card-body p-2" style="max-width: 320px;">
-              <strong>{{ plugin.name }}</strong>
-              <p class="text-muted small mb-1">{{ plugin.description }}</p>
-              <p class="text-muted small mb-1"><em>{{ plugin.note }}</em></p>
-              <a href="{{ plugin.url }}" target="_blank" rel="noopener" class="small">{{ plugin.url }}</a>
-            </div>
-          {% endfor %}
-        </div>
 
         {# Visible uniquement si le plugin tiers "More satisfaction" est installé ET activé —
            aucune trace dans le formulaire sinon, comme demandé. #}
@@ -1721,6 +1701,30 @@
             <strong>{{ __('Projets', 'configurationglpiauto') }} :</strong> <span id="cga-summary-projects"></span>
           </li>
         </ul>
+
+        {# Déplacé ici depuis l'étape 14 (Réglages généraux), où il se perdait au milieu d'une
+           dizaine de cases à cocher sans rapport — la dernière page, celle que chaque
+           administrateur lit vraiment avant de cliquer sur "Terminer", donne enfin une vraie
+           visibilité à ces recommandations. #}
+        <h4 class="mb-1">{{ __('Marketplace & plugins recommandés', 'configurationglpiauto') }}</h4>
+        <p class="text-muted small mb-2">{{ __('Optionnel : une clé d\'enregistrement GLPI Network (au moins gratuite) débloque le marketplace natif de GLPI (Configuration > Plugins > Marketplace) — sans elle, la liste des plugins y reste vide.', 'configurationglpiauto') }}</p>
+        <div class="mb-3" style="max-width: 560px;">
+          <label class="form-label mb-1" for="cga-glpi-network-registration-key">{{ __('Clé d\'enregistrement GLPI Network', 'configurationglpiauto') }}</label>
+          <input type="text" name="glpi_network_registration_key" id="cga-glpi-network-registration-key" class="form-control" value="{{ glpi_network_registration_key|default('') }}" autocomplete="off">
+          <p class="text-muted small mb-0">{{ __('S\'obtient gratuitement sur', 'configurationglpiauto') }} <a href="https://services.glpi-network.com/" target="_blank" rel="noopener">services.glpi-network.com</a>.</p>
+        </div>
+
+        <p class="text-muted small mb-2">{{ __('Une fois le marketplace débloqué, ces plugins sont installables en un clic depuis Configuration > Plugins > Marketplace — non installés automatiquement par cet assistant.', 'configurationglpiauto') }}</p>
+        <div class="d-flex flex-wrap gap-2 mb-2">
+          {% for plugin in marketplace_recommended_plugins %}
+            <div class="card card-body p-2" style="max-width: 320px;">
+              <strong>{{ plugin.name }}</strong>
+              <p class="text-muted small mb-1">{{ plugin.description }}</p>
+              <p class="text-muted small mb-1"><em>{{ plugin.note }}</em></p>
+              <a href="{{ plugin.url }}" target="_blank" rel="noopener" class="small">{{ plugin.url }}</a>
+            </div>
+          {% endfor %}
+        </div>
       </div>
 
       <div class="mt-4 d-flex gap-2">

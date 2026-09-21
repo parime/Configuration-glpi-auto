@@ -623,15 +623,15 @@ msgstr ""
 
 #: templates/wizard.html.twig
 msgid ""
-"Les statuts marqués « recommandé » sont ceux utilisés par remise-glpi "
-"(déclenchement automatique remise/don/vente/restitution) — les décocher "
-"n'empêche rien de fonctionner mais réduit l'interopérabilité entre les deux "
-"plugins si vous utilisez remise-glpi."
+"Les statuts marqués « recommandé » sont ceux utilisés par assetsign-glpi "
+"(déclenchement automatique remise/don/vente/destruction/restitution) — les "
+"décocher n'empêche rien de fonctionner mais réduit l'interopérabilité entre "
+"les deux plugins si vous utilisez assetsign-glpi."
 msgstr ""
-"Los estados marcados como \"recomendado\" son los que utiliza remise-glpi "
-"(activación automática de entrega/donación/venta/devolución) — desmarcarlos "
-"no impide que nada funcione, pero reduce la interoperabilidad entre los dos "
-"plugins si usa remise-glpi."
+"Los estados marcados como \"recomendado\" son los que utiliza assetsign-"
+"glpi (activación automática de entrega/donación/venta/destrucción/"
+"devolución) — desmarcarlos no impide que nada funcione, pero reduce la "
+"interoperabilidad entre los dos plugins si usa assetsign-glpi."
 
 #: templates/wizard.html.twig
 msgid "recommandé"

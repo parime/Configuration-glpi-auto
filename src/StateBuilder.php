@@ -30,7 +30,7 @@ use State;
 use Unmanaged;
 
 /**
- * Turns a Config's state setting into 14 real GLPI State ("Statuts des éléments") rows, used
+ * Turns a Config's state setting into 15 real GLPI State ("Statuts des éléments") rows, used
  * across the asset/CMDB module. Confirmed against a fresh GLPI 11.0.8 instance: `glpi_states` is
  * *empty* out of the box — GLPI ships zero default states, so this genuinely fills a gap rather
  * than duplicating something already there. Not a per-entity/per-client concept, unlike
@@ -51,14 +51,21 @@ use Unmanaged;
  * need a row here, not every itemtype with "Non".
  *
  * Individually selectable (`Config.state_names`, checkboxes on the wizard step) rather than
- * all-or-nothing — same "no bundling" lesson as Sprint 26. Five of the 14 are flagged as
- * recommended: this sibling plugin's own `remise-glpi`
- * (https://github.com/parime/remise-glpi) auto-triggers a handover/return/donation/sale workflow
- * off a `State` change, so an admin running both plugins needs "En stock"/"Attribué"/"Donné"/
- * "Vendu"/"Attente restitution" to exist for the two plugins to actually interoperate — but
- * `remise-glpi` matches by *state ID* (configured in its own settings, confirmed in its
- * `ARCHITECTURE.md`), not by exact name string, so this is a recommendation to keep selected, not
- * a hardcoded name dependency.
+ * all-or-nothing — same "no bundling" lesson as Sprint 26. Six of the 15 are flagged as
+ * recommended: this sibling plugin's own `assetsign-glpi`
+ * (https://github.com/parime/assetsign-glpi — renamed from `remise-glpi` partway through this
+ * plugin's own development, confirmed against the real repo rather than an old citation) auto-
+ * triggers a handover/return/donation/sale/destruction workflow off a `State` change, so an admin
+ * running both plugins needs "En stock"/"Attribué"/"Donné"/"Vendu"/"Détruit"/"Attente restitution"
+ * to exist for the two plugins to actually interoperate — but `assetsign-glpi` matches by *state
+ * ID* (configured in its own settings: `Config.donation_states`/`vente_states`/`destruction_states`,
+ * confirmed in its `ARCHITECTURE.md`), not by exact name string, so this is a recommendation to
+ * keep selected, not a hardcoded name dependency. "Détruit" specifically closes a real gap found
+ * live: `assetsign-glpi` has a dedicated Destruction workflow (`Assetsign::TYPE_DESTRUCTION`,
+ * `destruction_states`) with no name in the previous 14-state list resembling it — "Obsolète" and
+ * "Défectueux" describe a *condition*, not the *disposal event itself* (exactly the same
+ * distinction "Donné"/"Vendu" already draw from "Attribué"/"En stock"), so reusing either for
+ * destruction would have been the same category error, not a shortcut.
  */
 class StateBuilder
 {
@@ -77,11 +84,12 @@ class StateBuilder
         ['name' => 'Externe', 'comment' => 'Utilisateur externe à l\'entreprise', 'icon' => '🔗'],
         ['name' => 'Compte de service', 'comment' => 'Compte utilisé par des applications ou des bots', 'icon' => '🤖'],
         ['name' => 'Vendu', 'comment' => 'Le matériel a été cédé (Vendu) et ne fait plus partie du parc.', 'icon' => '💰'],
+        ['name' => 'Détruit', 'comment' => 'Le matériel a été physiquement détruit (destruction sécurisée, recyclage) et ne fait plus partie du parc.', 'icon' => '🗑️'],
     ];
 
-    // Kept selected by default for interoperability with remise-glpi's own donation/sale/return
-    // workflow triggers — see class docblock.
-    public const RECOMMENDED_NAMES = ['En stock', 'Attribué', 'Donné', 'Vendu', 'Attente restitution'];
+    // Kept selected by default for interoperability with assetsign-glpi's own donation/sale/
+    // destruction/return workflow triggers — see class docblock.
+    public const RECOMMENDED_NAMES = ['En stock', 'Attribué', 'Donné', 'Vendu', 'Détruit', 'Attente restitution'];
 
     // Only the itemtypes that should default to "Oui" — absence of a row means "Non" at runtime
     // (see class docblock), so the much longer list of component/infrastructure types that stay
