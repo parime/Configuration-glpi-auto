@@ -3519,9 +3519,7 @@ msgid ""
 "s'ils ne sont pas utilisés : ce sont des identifiants publiquement connus."
 msgstr ""
 "Cambiare immediatamente la password di questi account, o disattivarli se non "
-"utilizzati: sono credenziali pubblicamente note.Changez immédiatement le mot "
-"de passe de ces comptes, ou désactivez-les s'ils ne sont pas utilisés : ce "
-"sont des identifiants publiquement connus."
+"utilizzati: sono credenziali pubblicamente note."
 
 #: src/Audit/Checks/NoActiveCalendarCheck.php:39
 msgid "Calendriers"

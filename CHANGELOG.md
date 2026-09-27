@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Le texte de recommandation de l'audit continu "Comptes par défaut utilisent encore leur mot de
+  passe d'usine" apparaissait dupliqué**, sa propre traduction française collée deux fois en
+  français, et une copie complète du texte source français ajoutée à la suite de la vraie
+  traduction dans les 5 autres langues (anglais, allemand, espagnol, italien, portugais) —
+  découvert lors d'un passage en revue manuel de l'écran d'audit sur une instance peuplée de
+  données réalistes (le job CI "Locale Completeness" ne vérifie que la *présence* d'une traduction
+  par chaîne, jamais son contenu, donc ce genre de corruption ne peut pas y être détecté). Introduit
+  par #271 (analyse continue). Les 6 fichiers `locales/*.po` corrigés, `.mo` régénérés
+  (`msgfmt`) ; vérifié en direct après un `cache:clear` (GLPI met les traductions compilées en
+  cache indépendamment du fichier `.mo` source) que le texte de recommandation ne contient plus la
+  duplication, en français comme en anglais.
+
 - **PHPStan n'analysait jamais le vrai code métier** : `phpstan.neon` limitait volontairement le
   scope à `tests/Unit`, avec un commentaire expliquant que le cœur GLPI n'était pas stubé pour
   l'analyse statique — alors que le plugin jumeau `assetsign-glpi` prouvait déjà le contraire via

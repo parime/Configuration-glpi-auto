@@ -3531,9 +3531,7 @@ msgid ""
 msgstr ""
 "Ändern Sie sofort das Passwort dieser Konten oder deaktivieren Sie sie, "
 "falls sie nicht verwendet werden: Es handelt sich um öffentlich bekannte "
-"Zugangsdaten.Changez immédiatement le mot de passe de ces comptes, ou "
-"désactivez-les s'ils ne sont pas utilisés : ce sont des identifiants "
-"publiquement connus."
+"Zugangsdaten."
 
 #: src/Audit/Checks/NoActiveCalendarCheck.php:39
 msgid "Calendriers"
