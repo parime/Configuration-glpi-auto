@@ -25,10 +25,8 @@ use CommonDBTM;
  * wizard (ROADMAP "Assistant de création des entités") — it does not create any Entity yet, it
  * only records the shape the wizard will build later and lets the admin preview it live.
  */
-class Config extends CommonDBTM
+class Config extends Compat\Base\ConfigBase
 {
-    use Compat\HasRightname;
-
     public const RIGHTNAME = Profile::RIGHT_CONFIG;
 
     public const MODE_MONO = 'mono';

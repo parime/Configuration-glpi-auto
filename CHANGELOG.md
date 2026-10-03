@@ -14,9 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Compatibilité GLPI 11 et GLPI 12 depuis un seul paquet** (plafond `PLUGIN_CONFIGURATIONGLPIAUTO_MAX_GLPI`
   relevé à `12.99.99`), même approche que les plugins jumeaux assetsign-glpi et grcmanager :
   - `$rightname` (typé en GLPI 12, non typé en GLPI 11 — aucune déclaration unique ne passe sur
-    les deux) fourni par un trait `Compat\HasRightname` dont la variante est choisie au chargement
-    (`compat/glpi11` / `compat/glpi12`), la valeur propre à chaque classe passant par une
-    constante `RIGHTNAME` ;
+    les deux) redéclaré par une classe intermédiaire `Compat\Base\…Base` déclarée selon la
+    version installée, la valeur propre à chaque classe passant par une constante `RIGHTNAME`.
+    Une classe et non un trait : sur PHP 8.2 à 8.4, un trait ne peut pas
+    redéclarer une propriété héritée avec une autre valeur (erreur fatale, ou en PHP 8.2 valeur
+    partagée en silence avec la classe de GLPI). Nouveau job CI `php-compat` qui charge chaque
+    classe concernée sur le vrai cœur GLPI, sous PHP 8.2 à 8.5 × GLPI 11 et PHP 8.3 à 8.5 × GLPI 12 (aussi ajouté au Quality Gate) ;
   - `QueryExpression` → `Glpi\DBAL\QueryExpression`, `$DB->request('table', …)` → forme tableau
     (supprimés en GLPI 12) ;
   - HTTP sortant (jours fériés, géocodage, vérification de version GitHub) via un adaptateur

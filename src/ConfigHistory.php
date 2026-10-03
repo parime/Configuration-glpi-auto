@@ -17,7 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use CommonDBTM;
 use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
 
 /**
@@ -42,10 +41,8 @@ use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
  * (`getTypeName()`, la matrice de droits...), même précaution que documentée sur `getTable()`
  * ci-dessous.
  */
-final class ConfigHistory extends CommonDBTM
+final class ConfigHistory extends Compat\Base\ConfigHistoryBase
 {
-    use Compat\HasRightname;
-
     public const RIGHTNAME = Profile::RIGHT_CONFIG;
 
     private const MAX_AUTOMATIC_ENTRIES = 20;
