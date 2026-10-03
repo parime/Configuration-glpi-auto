@@ -519,17 +519,7 @@ final class Translations
      */
     public static function applyIcon(string $itemtype, int $id, string $frenchName, string $icon): void
     {
-        $translated = self::MAP[$frenchName] ?? [];
-        $byLanguage = [
-            'fr_FR' => $frenchName,
-            'en_GB' => $translated['en_GB'] ?? $frenchName,
-            'de_DE' => $translated['de_DE'] ?? $frenchName,
-            'it_IT' => $translated['it_IT'] ?? $frenchName,
-            'es_ES' => $translated['es_ES'] ?? $frenchName,
-            'pt_BR' => $translated['pt_BR'] ?? $frenchName,
-        ];
-
-        foreach ($byLanguage as $language => $text) {
+        foreach (self::namesByLanguage($frenchName) as $language => $text) {
             // trim(): callers with no icon of their own (e.g. CategoryBuilder's leaf nodes, which
             // were never given an emoji) pass '' here — still want the translated text alone, not
             // a stray leading space from the empty icon slot.
@@ -549,6 +539,25 @@ final class Translations
                 $translation->update($crit + ['id' => (int) $translation->getID(), 'value' => $value]);
             }
         }
+    }
+
+    /**
+     * `$frenchName` in each of the 6 supported languages (French itself when `MAP` has no entry).
+     *
+     * @return array<string, string> language => name
+     */
+    public static function namesByLanguage(string $frenchName): array
+    {
+        $translated = self::MAP[$frenchName] ?? [];
+
+        return [
+            'fr_FR' => $frenchName,
+            'en_GB' => $translated['en_GB'] ?? $frenchName,
+            'de_DE' => $translated['de_DE'] ?? $frenchName,
+            'it_IT' => $translated['it_IT'] ?? $frenchName,
+            'es_ES' => $translated['es_ES'] ?? $frenchName,
+            'pt_BR' => $translated['pt_BR'] ?? $frenchName,
+        ];
     }
 
     /**

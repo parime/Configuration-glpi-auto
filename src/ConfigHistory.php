@@ -44,7 +44,9 @@ use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
  */
 final class ConfigHistory extends CommonDBTM
 {
-    public static $rightname = Profile::RIGHT_CONFIG;
+    use Compat\HasRightname;
+
+    public const RIGHTNAME = Profile::RIGHT_CONFIG;
 
     private const MAX_AUTOMATIC_ENTRIES = 20;
 

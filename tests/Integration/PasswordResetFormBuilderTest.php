@@ -147,7 +147,7 @@ final class PasswordResetFormBuilderTest extends TestCase
         $motifId = $this->questionIdByRank($form, 1);
 
         $ticket = $this->submitAndGetTicket($form, [
-            "answers_$identifiantId" => ['itemtype' => User::class, 'items_id' => $targetUserId],
+            "answers_$identifiantId" => ItemAnswer::of(User::class, $targetUserId),
             "answers_$motifId" => ['2'],
         ]);
 

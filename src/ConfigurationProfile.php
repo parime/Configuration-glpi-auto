@@ -34,7 +34,9 @@ use CommonDBTM;
  */
 class ConfigurationProfile extends CommonDBTM
 {
-    public static $rightname = Profile::RIGHT_PROFILE;
+    use Compat\HasRightname;
+
+    public const RIGHTNAME = Profile::RIGHT_PROFILE;
 
     public static function getTable($classname = null)
     {

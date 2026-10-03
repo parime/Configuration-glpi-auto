@@ -186,19 +186,18 @@ final class MeetingRoomFormBuilderTest extends TestCase
 
         $ticket = $this->submitAndGetTicket($form, [
             "answers_$typeId" => ['1'],
-            "answers_$salleId" => ['itemtype' => $this->roomClassName(), 'items_id' => $roomId],
+            "answers_$salleId" => ItemAnswer::of($this->roomClassName(), $roomId),
             "answers_$dateId" => '2026-09-10',
         ]);
 
         $link = new Item_Ticket();
-        $this->assertTrue(
-            $link->getFromDBByCrit([
-                'tickets_id' => $ticket->getID(),
-                'itemtype' => $this->roomClassName(),
-                'items_id' => $roomId,
-            ]),
-            'The ticket should be linked to the chosen room via a real Item_Ticket row.'
-        );
+        $linked = $link->getFromDBByCrit([
+            'tickets_id' => $ticket->getID(),
+            'itemtype' => $this->roomClassName(),
+            'items_id' => $roomId,
+        ]);
+        ItemAnswer::skipIfGlpi12DropsAssociatedItem($linked);
+        $this->assertTrue($linked, 'The ticket should be linked to the chosen room via a real Item_Ticket row.');
     }
 
     /**

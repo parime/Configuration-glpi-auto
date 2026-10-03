@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Compatibilité GLPI 11 et GLPI 12 depuis un seul paquet** (plafond `PLUGIN_CONFIGURATIONGLPIAUTO_MAX_GLPI`
+  relevé à `12.99.99`), même approche que les plugins jumeaux assetsign-glpi et grcmanager :
+  - `$rightname` (typé en GLPI 12, non typé en GLPI 11 — aucune déclaration unique ne passe sur
+    les deux) fourni par un trait `Compat\HasRightname` dont la variante est choisie au chargement
+    (`compat/glpi11` / `compat/glpi12`), la valeur propre à chaque classe passant par une
+    constante `RIGHTNAME` ;
+  - `QueryExpression` → `Glpi\DBAL\QueryExpression`, `$DB->request('table', …)` → forme tableau
+    (supprimés en GLPI 12) ;
+  - HTTP sortant (jours fériés, géocodage, vérification de version GitHub) via un adaptateur
+    `Compat\Http` : `Glpi\Toolbox\HttpClient` en GLPI 12, client Guzzle de GLPI en GLPI 11 ;
+  - base de connaissances : GLPI 12 a supprimé `KnowbaseItemCategory` — chaque branche devient un
+    article conteneur sous l'article racine (même forme que la migration 11→12 de GLPI), visible
+    de toute l'organisation, icônes via `KnowbaseItemTranslation` ;
+  - OLA : GLPI 12 exige un groupe assignable par OLA — rattachés au groupe « Support N1 » ;
+  - nouveau job CI « GLPI 12 » (installation, cycle désinstallation/réinstallation, suite
+    d'intégration complète), ajouté au Quality Gate.
+
+  Vérifié : 454/454 sur GLPI 11.0.9 ; sur GLPI 12.0.0-rc2, 448/454 + 6 tests marqués
+  « incomplets » à cause d'un bug du cœur GLPI 12 (`AssociatedItemsFieldStrategy` lit encore
+  `items_id` alors que les questions « Élément » envoient désormais `items_ids` : l'élément choisi
+  n'est pas lié au ticket). Ces tests redeviennent stricts d'eux-mêmes dès que GLPI corrige. À
+  revérifier sur la 12.0.0 finale.
+
 ### Fixed
 
 - **Le texte de recommandation de l'audit continu "Comptes par défaut utilisent encore leur mot de

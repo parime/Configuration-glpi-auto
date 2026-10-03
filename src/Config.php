@@ -27,7 +27,9 @@ use CommonDBTM;
  */
 class Config extends CommonDBTM
 {
-    public static $rightname = Profile::RIGHT_CONFIG;
+    use Compat\HasRightname;
+
+    public const RIGHTNAME = Profile::RIGHT_CONFIG;
 
     public const MODE_MONO = 'mono';
 
@@ -912,10 +914,9 @@ class Config extends CommonDBTM
      *
      * Mise en cache 24h (même durée/mécanisme que `RSSFeed::getRSSFeed()` du cœur GLPI,
      * `$GLPI_CACHE`) : l'API GitHub non authentifiée est limitée à 60 requêtes/heure par IP,
-     * largement insuffisant si appelée à chaque affichage de la page. `Toolbox::getURLContent()`
-     * (pas un appel HTTP direct) : réutilise la gestion de proxy/timeout/erreurs déjà établie par
-     * le cœur GLPI pour ce type d'appel — même fonction que `Toolbox::checkNewVersionAvailable()`,
-     * qui fait exactement ceci pour GLPI lui-même.
+     * largement insuffisant si appelée à chaque affichage de la page. Client HTTP du cœur GLPI
+     * (pas un appel HTTP direct), via `Compat\Http` (GLPI 11 et 12) : réutilise la gestion de
+     * proxy/timeout/erreurs déjà établie par le cœur GLPI pour ce type d'appel.
      *
      * @return string|null Numéro de version (sans le "v" du tag), ou null si l'appel a échoué
      *         (pas de connexion, API GitHub indisponible...).
@@ -930,17 +931,17 @@ class Config extends CommonDBTM
             return $cached === '' ? null : $cached;
         }
 
-        $error = '';
-        // CURLOPT_TIMEOUT (total request time) alongside core's own CURLOPT_CONNECTTIMEOUT=5
-        // default: on a network with no egress to github.com, the connect timeout alone doesn't
-        // bound a host that accepts the TCP connection but never answers — this wizard-page-render
-        // call would otherwise stall indefinitely instead of failing after a few seconds.
-        $json = \Toolbox::getURLContent(
-            'https://api.github.com/repos/parime/Configuration-glpi-auto/releases/latest',
-            $error,
-            0,
-            [CURLOPT_TIMEOUT => 5]
-        );
+        // Total request timeout (not only a connect timeout): on a network with no egress to
+        // github.com, a host that accepts the TCP connection but never answers would otherwise
+        // stall this wizard-page-render call indefinitely instead of failing after a few seconds.
+        try {
+            $json = Compat\Http::get('https://api.github.com/repos/parime/Configuration-glpi-auto/releases/latest', [
+                'headers' => ['User-Agent' => 'Configuration-glpi-auto-plugin'],
+                'timeout' => 5,
+            ]);
+        } catch (\Throwable) {
+            $json = '';
+        }
         $version = null;
         if (!empty($json)) {
             $data = json_decode($json, true);

@@ -226,7 +226,7 @@ final class Installer
             // actual UPDATE happens after executeMigration() below, once sla_tiers physically
             // exists to write into.
             if ($DB->fieldExists(self::CONFIGS_TABLE, 'sla_tto_hours') && $DB->fieldExists(self::CONFIGS_TABLE, 'sla_ttr_hours')) {
-                $row = $DB->request(self::CONFIGS_TABLE, ['id' => 1])->current();
+                $row = $DB->request(['FROM' => self::CONFIGS_TABLE, 'WHERE' => ['id' => 1]])->current();
                 if ($row !== null) {
                     $slaTiersSeed = array_fill_keys(
                         array_map('strval', Config::PRIORITY_LEVELS),
@@ -293,7 +293,7 @@ final class Installer
             // off for an instance that had it on; the actual backfill happens after
             // executeMigration() below, same pattern as sla_tiers above.
             if ($DB->fieldExists(self::CONFIGS_TABLE, 'general_settings_enabled')) {
-                $row = $DB->request(self::CONFIGS_TABLE, ['id' => 1])->current();
+                $row = $DB->request(['FROM' => self::CONFIGS_TABLE, 'WHERE' => ['id' => 1]])->current();
                 if ($row !== null) {
                     $generalSettingsSeed = (int) $row['general_settings_enabled'];
                 }
@@ -509,7 +509,7 @@ final class Installer
         // The icon translation's value is only set once at creation (CategoryBuilder::buildNode()
         // never updates it on reuse) — has to be fixed up here too, or it keeps showing the old
         // name text next to the (unchanged) icon.
-        $renamedCategory = $DB->request('glpi_itilcategories', ['name' => 'Messagerie & Collaboration'])->current();
+        $renamedCategory = $DB->request(['FROM' => 'glpi_itilcategories', 'WHERE' => ['name' => 'Messagerie & Collaboration']])->current();
         if ($renamedCategory !== null) {
             $DB->update(
                 'glpi_dropdowntranslations',
@@ -556,7 +556,7 @@ final class Installer
                 ['illustration' => $illustration],
                 ['name' => $categoryName, 'forms_categories_id' => 0, 'illustration' => '']
             );
-            $formCategory = $DB->request('glpi_forms_categories', ['name' => $categoryName, 'forms_categories_id' => 0])->current();
+            $formCategory = $DB->request(['FROM' => 'glpi_forms_categories', 'WHERE' => ['name' => $categoryName, 'forms_categories_id' => 0]])->current();
             if ($formCategory !== null) {
                 $DB->update(
                     'glpi_forms_forms',

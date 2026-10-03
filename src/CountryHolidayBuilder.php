@@ -42,7 +42,7 @@ use Holiday;
  * Data source: Nager.Date (`https://date.nager.at`), a free public holidays API — confirmed live
  * (real, current French holidays returned) and confirmed to cover ~100 countries
  * (`/api/v3/AvailableCountries`) before committing to this design, not assumed. Called server-side
- * only, at wizard-submission time — same `Toolbox::getGuzzleClient()` pattern already used by
+ * only, at wizard-submission time — same GLPI core HTTP client (`Compat\Http`) already used by
  * `ajax/geocode.php` (honours GLPI's own configured outbound proxy), not a new client-facing
  * endpoint.
  *
@@ -234,8 +234,7 @@ class CountryHolidayBuilder
     private function fetchHolidays(string $isoCode, int $year): ?array
     {
         try {
-            $client = \Toolbox::getGuzzleClient();
-            $response = $client->request('GET', "https://date.nager.at/api/v3/PublicHolidays/{$year}/{$isoCode}", [
+            $body = Compat\Http::get("https://date.nager.at/api/v3/PublicHolidays/{$year}/{$isoCode}", [
                 'headers' => [
                     'User-Agent' => 'Configuration-glpi-auto-plugin (+https://github.com/parime/Configuration-glpi-auto)',
                     'Accept' => 'application/json',
@@ -243,7 +242,7 @@ class CountryHolidayBuilder
                 'timeout' => 5,
             ]);
 
-            $data = json_decode((string) $response->getBody(), true);
+            $data = json_decode($body, true);
 
             return is_array($data) ? $data : null;
         } catch (\Throwable $e) {

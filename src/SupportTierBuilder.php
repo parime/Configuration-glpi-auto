@@ -84,6 +84,15 @@ class SupportTierBuilder
         return self::TIERS;
     }
 
+    /**
+     * The N1 group alone, even when escalation is off: GLPI 12 requires every OLA to belong to an
+     * assignable group (see SlaBuilder), and N1 is the team that takes incoming tickets.
+     */
+    public function getOrCreateFirstTierGroup(): int
+    {
+        return $this->getOrCreate(self::TIERS['n1']['name']);
+    }
+
     private function getOrCreate(string $name): int
     {
         $group = new Group();

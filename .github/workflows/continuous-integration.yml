@@ -358,10 +358,93 @@ jobs:
         run: |
           composer validate --strict
 
+  glpi12:
+    name: "GLPI 12 - installation + suite d'integration (Docker)"
+    runs-on: ubuntu-latest
+    needs: ci
+    # Le job "ci" (workflow officiel glpi-project) ne couvre que GLPI 11 : sans ce job, la
+    # compatibilite GLPI 12 (src/Compat/ + compat/glpi12/) pourrait regresser silencieusement.
+    # Meme recette que le plugin jumeau glpi-iso27001-management (job real-glpi12-install).
+    env:
+      GLPI12_IMAGE: glpi/glpi:12.0.0-rc2
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
+
+      - name: "Démarre MariaDB"
+        run: |
+          docker network create configurationglpiauto-glpi12
+          docker run -d --name mariadb --network configurationglpiauto-glpi12 \
+            -e MARIADB_ROOT_PASSWORD=glpi_password \
+            -e MARIADB_DATABASE=glpidb \
+            -e MARIADB_USER=glpi_user \
+            -e MARIADB_PASSWORD=glpi_password \
+            mariadb:11
+          for i in $(seq 1 30); do
+            docker exec mariadb mariadb-admin ping -h 127.0.0.1 -u root -pglpi_password --silent && break
+            sleep 2
+          done
+
+      - name: "Démarre GLPI 12 et installe sa base"
+        run: |
+          docker run -d --name glpi --network configurationglpiauto-glpi12 -e TIMEZONE=Europe/Paris "$GLPI12_IMAGE"
+          for i in $(seq 1 12); do
+            docker exec glpi php bin/console database:install --db-host=mariadb --db-name=glpidb \
+              --db-user=glpi_user --db-password=glpi_password --no-interaction && exit 0
+            echo "database:install pas encore pret (tentative $i/12), nouvel essai dans 5s..."
+            sleep 5
+          done
+          exit 1
+
+      - name: "Copie le plugin et installe ses dépendances de production"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          docker exec glpi mkdir -p /var/www/glpi/plugins/configurationglpiauto
+          docker cp ./. glpi:/var/www/glpi/plugins/configurationglpiauto
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/configurationglpiauto
+          docker exec -e COMPOSER_AUTH="{\"github-oauth\":{\"github.com\":\"$GH_TOKEN\"}}" glpi sh -c '
+            export COMPOSER_HOME=/tmp/composer-home
+            mkdir -p "$COMPOSER_HOME"
+            cd /tmp
+            php -r "copy(\"https://getcomposer.org/installer\", \"composer-setup.php\");"
+            php composer-setup.php --install-dir=/tmp --filename=composer.phar
+            cd /var/www/glpi/plugins/configurationglpiauto
+            php /tmp/composer.phar install --no-interaction --prefer-dist --no-dev
+          '
+
+      - name: "Installe, active, désinstalle puis réinstalle le plugin"
+        run: |
+          docker exec glpi php bin/console plugin:install configurationglpiauto --username=glpi --no-interaction
+          docker exec glpi php bin/console plugin:activate configurationglpiauto --no-interaction
+          docker exec glpi php bin/console plugin:deactivate configurationglpiauto --no-interaction
+          docker exec glpi php bin/console plugin:uninstall configurationglpiauto --no-interaction
+          docker exec glpi php bin/console plugin:install configurationglpiauto --username=glpi --no-interaction
+          docker exec glpi php bin/console plugin:activate configurationglpiauto --no-interaction
+
+      - name: "Suite d'intégration sur GLPI 12"
+        # Dépendances de dev APRÈS toutes les commandes console : elles embarquent leur propre
+        # symfony/console, incompatible avec celui de GLPI 12 (collision d'autoload constatée en
+        # local, la console GLPI planterait).
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          docker exec -e COMPOSER_AUTH="{\"github-oauth\":{\"github.com\":\"$GH_TOKEN\"}}" glpi sh -c '
+            export COMPOSER_HOME=/tmp/composer-home
+            cd /var/www/glpi/plugins/configurationglpiauto
+            php /tmp/composer.phar install --no-interaction --prefer-dist
+            php vendor/bin/phpunit
+          '
+
+      - name: "Logs GLPI (en cas d'échec)"
+        if: failure()
+        run: docker logs glpi --tail 200
+
   quality-gate:
     name: "Quality Gate"
     runs-on: ubuntu-latest
-    needs: [phpstan, php-cs-fixer, phpunit, trivy, semgrep, dependabot, validation, locales]
+    needs: [phpstan, php-cs-fixer, phpunit, trivy, semgrep, dependabot, validation, locales, glpi12]
 
     steps:
       - name: "All checks passed"
@@ -374,3 +457,4 @@ jobs:
           echo "Semgrep: ✓"
           echo "Dependabot: ✓"
           echo "Validation: ✓"
+          echo "GLPI 12: ✓"

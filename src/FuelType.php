@@ -39,7 +39,9 @@ use CommonDropdown;
  */
 class FuelType extends CommonDropdown
 {
-    public static $rightname = Profile::RIGHT_CONFIG;
+    use Compat\HasRightname;
+
+    public const RIGHTNAME = Profile::RIGHT_CONFIG;
 
     public static function getTypeName($nb = 0)
     {

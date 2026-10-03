@@ -2,7 +2,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![PHP Version: 8.2+](https://img.shields.io/badge/PHP-8.2%2B-8892B0.svg)](https://php.net)
-[![GLPI Version: 11.0+](https://img.shields.io/badge/GLPI-11.0%2B-FF6B6B.svg)](https://glpi-project.org)
+[![GLPI Version: 11 & 12](https://img.shields.io/badge/GLPI-11%20%7C%2012-FF6B6B.svg)](https://glpi-project.org)
 [![Build Status](https://github.com/parime/Configuration-glpi-auto/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/parime/Configuration-glpi-auto/actions)
 [![Latest Release](https://img.shields.io/github/v/release/parime/Configuration-glpi-auto)](https://github.com/parime/Configuration-glpi-auto/releases)
 
@@ -90,7 +90,15 @@ Toutes les autres captures d'écran (les 19 étapes en détail) sont dans le [tu
 ## Prerequis
 
 - PHP 8.2+
-- GLPI 11.0+
+- GLPI 11.0+ ou GLPI 12 (un seul paquet pour les deux versions, il s'adapte au chargement)
+
+Sur GLPI 12 (verifie sur 12.0.0-rc2) :
+
+- les "categories de la base de connaissances" deviennent des articles conteneurs sous l'article
+  racine (GLPI 12 a supprime les categories) ;
+- chaque OLA est rattache au groupe "Support N1" (GLPI 12 exige un groupe par OLA) ;
+- limite connue, cote coeur GLPI 12.0.0-rc2 : l'element choisi dans une question de type
+  "Element" d'un formulaire (vehicule, salle, equipement) n'est pas encore lie au ticket cree.
 - Base de donnees: MySQL 5.7+, MariaDB 10.2+, PostgreSQL 9.6+
 
 ## Installation

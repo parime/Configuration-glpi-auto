@@ -18,7 +18,24 @@ parameters:
         - tests
     excludePaths:
         - vendor/*
+    # Variantes GLPI 11/12 des traits de compatibilité (cf. src/Compat/GlpiVersion.php) : le
+    # chargeur fait un `require_once` dynamique que PHPStan ne suit pas. L'analyse tourne contre un
+    # cœur GLPI 11, donc seule la variante 11 (propriétés non typées) est cohérente avec lui.
+    scanDirectories:
+        - compat/glpi11
     ignoreErrors:
+        -
+            # Même faux positif que setup.php ci-dessous : PHPStan fige GLPI_VERSION à la version
+            # du cœur qui sert à l'analyse (11), donc la branche GLPI 12 lui paraît impossible.
+            message: '#Right side of && is always false#'
+            path: src/Compat/GlpiVersion.php
+        -
+            # Symboles propres à GLPI 12 (base de connaissances refondue), utilisés uniquement
+            # derrière `GlpiVersion::isAtLeast12()` : absents du cœur GLPI 11 qui sert à l'analyse.
+            message: '#KnowbaseItem_KnowbaseItem|KnowbaseItem::getRootId\(\)#'
+            paths:
+                - src/KnowbaseCategoryBuilder.php
+                - tests/Integration/KnowbaseCategoryBuilderTest.php
         -
             # `GLPI_VERSION` est déjà définie dès que le bootstrap PHPStan charge l'autoload GLPI
             # (composer), donc PHPStan la voit toujours définie — mais en exécution réelle, ce

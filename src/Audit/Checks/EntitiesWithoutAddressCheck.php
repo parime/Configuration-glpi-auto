@@ -17,9 +17,9 @@
 
 namespace GlpiPlugin\Configurationglpiauto\Audit\Checks;
 
+use Glpi\DBAL\QueryExpression;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
-use QueryExpression;
 
 /**
  * `glpi_entities.address` — une entité sans adresse renseignée est un constat, jamais une donnée à
