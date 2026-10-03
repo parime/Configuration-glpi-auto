@@ -140,6 +140,12 @@ final class SlaBuilderTest extends TestCase
         $slm = new SLM();
         $slm->getFromDBByCrit(['name' => sprintf('SLA — %s', $clientName)]);
         $this->assertSame((int) $slm->getID(), (int) $olaTtr->fields['slms_id'], 'OLA lives in the same SLM as the SLA — not a second container.');
+
+        if (\GlpiPlugin\Configurationglpiauto\Compat\GlpiVersion::isAtLeast12()) {
+            $group = new \Group();
+            $this->assertTrue($group->getFromDB((int) $olaTtr->fields['groups_id']), 'GLPI 12: an OLA must belong to a group.');
+            $this->assertSame('Support N1', $group->fields['name']);
+        }
     }
 
     public function testBuildFromOverrideAstreinteForcesNoCalendarEvenWhenOneIsPassed(): void

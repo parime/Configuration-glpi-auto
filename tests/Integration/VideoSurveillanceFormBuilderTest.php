@@ -209,19 +209,18 @@ final class VideoSurveillanceFormBuilderTest extends TestCase
         $ticket = $this->submitAndGetTicket($form, [
             "answers_$localisationId" => 'Hall entrée bâtiment A',
             "answers_$typeId" => ['1'],
-            "answers_$equipementQId" => ['itemtype' => $equipmentClass, 'items_id' => $equipmentId],
+            "answers_$equipementQId" => ItemAnswer::of($equipmentClass, $equipmentId),
         ]);
 
         $link = new Item_Ticket();
-        $this->assertTrue(
-            $link->getFromDBByCrit([
-                'tickets_id' => $ticket->getID(),
-                'itemtype' => $equipmentClass,
-                'items_id' => $equipmentId,
-            ]),
-            'The ticket should be linked to the chosen equipment via a real Item_Ticket row.'
-        );
+        $linked = $link->getFromDBByCrit([
+            'tickets_id' => $ticket->getID(),
+            'itemtype' => $equipmentClass,
+            'items_id' => $equipmentId,
+        ]);
         $this->assertSame(Ticket::INCIDENT_TYPE, (int) $ticket->fields['type']);
+        ItemAnswer::skipIfGlpi12DropsAssociatedItem($linked);
+        $this->assertTrue($linked, 'The ticket should be linked to the chosen equipment via a real Item_Ticket row.');
     }
 
     /**

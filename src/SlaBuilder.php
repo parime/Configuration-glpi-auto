@@ -305,6 +305,8 @@ class SlaBuilder
         }
         $slmId = (int) $slm->getID();
 
+        $olaExtra = $olaEnabled ? $this->olaGroupInput($tierGroupIds) : [];
+
         $result = [];
         foreach (Config::PRIORITY_LEVELS as $priority) {
             $tier = $tiers[$priority] ?? ['tto_hours' => 4, 'ttr_hours' => 48];
@@ -317,8 +319,8 @@ class SlaBuilder
             $olaTtrId = null;
             if ($olaEnabled) {
                 $olaTier = $olaTiers[$priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
-                $olaTtoId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTO, sprintf(__('OLA prise en charge — %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours']);
-                $olaTtrId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTR, sprintf(__('OLA résolution — %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours']);
+                $olaTtoId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTO, sprintf(__('OLA prise en charge — %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours'], $olaExtra);
+                $olaTtrId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTR, sprintf(__('OLA résolution — %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours'], $olaExtra);
             }
 
             if ($escalationEnabled || $tierGroupIds !== null) {
@@ -431,16 +433,35 @@ class SlaBuilder
     }
 
     /**
-     * @param class-string<SLA|OLA> $class
+     * GLPI 12 makes an OLA the commitment of one assignable group (`OLA::prepareInputForAdd()`
+     * rejects `groups_id = 0`): the N1 tier, i.e. the team that takes incoming tickets — the
+     * tier's own group when escalation already built it, else created/reused on its own. GLPI 11
+     * has no such column.
+     *
+     * @param array{n1: int, n2: int, n3: int}|array{}|null $tierGroupIds
+     * @return array<string, int>
      */
-    private function getOrCreateLevelAgreement(string $class, int $slmId, int $type, string $name, int $hours): int
+    private function olaGroupInput(?array $tierGroupIds): array
+    {
+        if (!Compat\GlpiVersion::isAtLeast12()) {
+            return [];
+        }
+
+        return ['groups_id' => (int) ($tierGroupIds['n1'] ?? (new SupportTierBuilder())->getOrCreateFirstTierGroup())];
+    }
+
+    /**
+     * @param class-string<SLA|OLA> $class
+     * @param array<string, int> $extra Additional input on creation (see olaGroupInput()).
+     */
+    private function getOrCreateLevelAgreement(string $class, int $slmId, int $type, string $name, int $hours, array $extra = []): int
     {
         $agreement = new $class();
         if ($agreement->getFromDBByCrit(['slms_id' => $slmId, 'type' => $type, 'name' => $name])) {
             return (int) $agreement->getID();
         }
 
-        $id = $agreement->add([
+        $id = $agreement->add($extra + [
             'slms_id' => $slmId,
             'name' => $name,
             'type' => $type,

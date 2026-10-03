@@ -32,9 +32,9 @@ use CommonDBTM;
  * to remove the whole risk category, per the same lesson already documented on the sibling
  * glpi-vulnerability-manager plugin.
  */
-class ConfigurationProfile extends CommonDBTM
+class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
 {
-    public static $rightname = Profile::RIGHT_PROFILE;
+    public const RIGHTNAME = Profile::RIGHT_PROFILE;
 
     public static function getTable($classname = null)
     {

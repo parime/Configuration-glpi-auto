@@ -17,8 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use CommonDropdown;
-
 /**
  * A plain, flat dropdown (no `CommonTreeDropdown` nesting needed) — GLPI has no native "fuel type"
  * concept anywhere, unlike every other dropdown this plugin populates (`Manufacturer`, `State`,
@@ -37,9 +35,9 @@ use CommonDropdown;
  * on this dropdown's own screen 403 for everyone, super-admin included — the exact bug
  * Profile.php's own docblock explains this dedicated right was created to avoid.
  */
-class FuelType extends CommonDropdown
+class FuelType extends Compat\Base\FuelTypeBase
 {
-    public static $rightname = Profile::RIGHT_CONFIG;
+    public const RIGHTNAME = Profile::RIGHT_CONFIG;
 
     public static function getTypeName($nb = 0)
     {

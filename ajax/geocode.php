@@ -15,6 +15,7 @@
  * -------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Configurationglpiauto\Compat\Http;
 use GlpiPlugin\Configurationglpiauto\Config;
 
 /**
@@ -32,7 +33,7 @@ use GlpiPlugin\Configurationglpiauto\Config;
  *   URL (would otherwise be a textbook SSRF: whoever controls the query params controls what the
  *   GLPI server fetches).
  *
- * `Toolbox::getGuzzleClient()` (GLPI core) rather than raw `file_get_contents`/curl — automatically
+ * GLPI core's HTTP client (via `Compat\Http`, GLPI 11 and 12) rather than raw `file_get_contents`/curl — automatically
  * honours GLPI's own configured outbound proxy (`proxy_name`/`proxy_port`), which a corporate
  * install behind a proxy would otherwise silently fail through.
  */
@@ -120,8 +121,7 @@ if ($postcode !== '') {
 }
 
 try {
-    $client = Toolbox::getGuzzleClient();
-    $response = $client->request('GET', $endpoint . '/search', [
+    $body = Http::get($endpoint . '/search', [
         'query' => $params,
         'headers' => [
             // Identifies the request per Nominatim's usage policy (a plain browser fetch() can't
@@ -132,12 +132,12 @@ try {
         ],
         'timeout' => 5,
         // The public-IP check above only covers the first hop — without this, a host that passes
-        // that check could still 302 the client to an internal address (Guzzle follows up to 5
+        // that check could still redirect the client to an internal address (HTTP clients follow
         // redirects by default), reopening the same SSRF this proxy exists to prevent.
-        'allow_redirects' => false,
+        'follow_redirects' => false,
     ]);
 
-    $results = json_decode((string) $response->getBody(), true) ?? [];
+    $results = json_decode($body, true) ?? [];
 } catch (\Throwable $e) {
     \Glpi\Error\ErrorHandler::logCaughtException($e);
     http_response_code(502);

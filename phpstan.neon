@@ -17,8 +17,27 @@ parameters:
         - setup.php
         - tests
     excludePaths:
-        - vendor/*
+        analyseAndScan:
+            - vendor/*
+        # Classes parentes de compatibilité : leur branche GLPI 12 (propriétés typées) n'est
+        # jamais déclarée face au cœur GLPI 11 qui sert à l'analyse, et PHPStan refuse d'ignorer
+        # l'erreur « should not have a native type » qu'il y voit. Toujours scannées (les classes
+        # du plugin en héritent), seulement plus analysées.
+        analyse:
+            - src/Compat/Base/*
     ignoreErrors:
+        -
+            # Même faux positif que setup.php ci-dessous : PHPStan fige GLPI_VERSION à la version
+            # du cœur qui sert à l'analyse (11), donc la branche GLPI 12 lui paraît impossible.
+            message: '#Right side of && is always false#'
+            path: src/Compat/GlpiVersion.php
+        -
+            # Symboles propres à GLPI 12 (base de connaissances refondue), utilisés uniquement
+            # derrière `GlpiVersion::isAtLeast12()` : absents du cœur GLPI 11 qui sert à l'analyse.
+            message: '#KnowbaseItem_KnowbaseItem|KnowbaseItem::getRootId\(\)#'
+            paths:
+                - src/KnowbaseCategoryBuilder.php
+                - tests/Integration/KnowbaseCategoryBuilderTest.php
         -
             # `GLPI_VERSION` est déjà définie dès que le bootstrap PHPStan charge l'autoload GLPI
             # (composer), donc PHPStan la voit toujours définie — mais en exécution réelle, ce

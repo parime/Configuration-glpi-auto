@@ -2,7 +2,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![PHP Version: 8.2+](https://img.shields.io/badge/PHP-8.2%2B-8892B0.svg)](https://php.net)
-[![GLPI Version: 11.0+](https://img.shields.io/badge/GLPI-11.0%2B-FF6B6B.svg)](https://glpi-project.org)
+[![GLPI Version: 11 & 12](https://img.shields.io/badge/GLPI-11%20%7C%2012-FF6B6B.svg)](https://glpi-project.org)
 [![Build Status](https://github.com/parime/Configuration-glpi-auto/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/parime/Configuration-glpi-auto/actions)
 [![Latest Release](https://img.shields.io/github/v/release/parime/Configuration-glpi-auto)](https://github.com/parime/Configuration-glpi-auto/releases)
 
@@ -88,7 +88,15 @@ All other screenshots (all 19 steps in detail) are in the [tutorial](docs/TUTORI
 ## Requirements
 
 - PHP 8.2+
-- GLPI 11.0+
+- GLPI 11.0+ or GLPI 12 (one package for both versions, it adapts at load time)
+
+On GLPI 12 (checked on 12.0.0-rc2):
+
+- "knowledge base categories" become container articles under the root article (GLPI 12
+  removed categories);
+- each OLA is attached to the "Support N1" group (GLPI 12 requires a group per OLA);
+- known limitation, in GLPI 12.0.0-rc2 core: the item picked in a form's "Item" question
+  (vehicle, room, equipment) is not linked to the created ticket yet.
 - Database: MySQL 5.7+, MariaDB 10.2+, PostgreSQL 9.6+
 
 ## Installation

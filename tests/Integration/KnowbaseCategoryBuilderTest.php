@@ -18,9 +18,13 @@
 namespace GlpiPlugin\Configurationglpiauto\Tests\Integration;
 
 use DropdownTranslation;
+use GlpiPlugin\Configurationglpiauto\Compat\GlpiVersion;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\KnowbaseCategoryBuilder;
+use KnowbaseItem;
+use KnowbaseItem_KnowbaseItem;
 use KnowbaseItemCategory;
+use KnowbaseItemTranslation;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,6 +32,9 @@ use PHPUnit\Framework\TestCase;
  * instead of inventing a second taxonomy (see its own docblock) — this test picks a single branch
  * ('qualite') to isolate the "only selected branches get a matching KB category" behaviour, rather
  * than one already exercised by `CategoryBuilderTest`.
+ *
+ * Runs on both GLPI 11 (`KnowbaseItemCategory` + `DropdownTranslation`) and GLPI 12 (container
+ * `KnowbaseItem` under the root article + `KnowbaseItemTranslation`): the helpers below hide which.
  */
 final class KnowbaseCategoryBuilderTest extends TestCase
 {
@@ -45,6 +52,63 @@ final class KnowbaseCategoryBuilderTest extends TestCase
         return $config;
     }
 
+    /**
+     * Ids of the top-level KB "categories" named after the branch.
+     *
+     * @return list<int>
+     */
+    private function findCategoryIds(): array
+    {
+        global $DB;
+
+        if (GlpiVersion::isAtLeast12()) {
+            $criteria = [
+                'SELECT' => 'id',
+                'FROM' => KnowbaseItem::getTable(),
+                'WHERE' => [
+                    'name' => self::BRANCH_NAME,
+                    'id' => new \Glpi\DBAL\QuerySubQuery([
+                        'SELECT' => 'knowbaseitems_id',
+                        'FROM' => KnowbaseItem_KnowbaseItem::getTable(),
+                        'WHERE' => ['knowbaseitems_id_parent' => KnowbaseItem::getRootId()],
+                    ]),
+                ],
+            ];
+        } else {
+            $criteria = [
+                'SELECT' => 'id',
+                'FROM' => KnowbaseItemCategory::getTable(),
+                'WHERE' => ['name' => self::BRANCH_NAME, 'knowbaseitemcategories_id' => 0],
+            ];
+        }
+
+        return array_map(static fn (array $row): int => (int) $row['id'], iterator_to_array($DB->request($criteria), false));
+    }
+
+    private function frenchTranslation(int $id): ?string
+    {
+        if (GlpiVersion::isAtLeast12()) {
+            $translation = new KnowbaseItemTranslation();
+            if (!$translation->getFromDBByCrit(['knowbaseitems_id' => $id, 'language' => 'fr_FR'])) {
+                return null;
+            }
+
+            return $translation->fields['name'];
+        }
+
+        $translation = new DropdownTranslation();
+        if (!$translation->getFromDBByCrit([
+            'itemtype' => KnowbaseItemCategory::class,
+            'items_id' => $id,
+            'language' => 'fr_FR',
+            'field' => 'name',
+        ])) {
+            return null;
+        }
+
+        return $translation->fields['value'];
+    }
+
     public function testReturnsZeroWhenDisabled(): void
     {
         $count = (new KnowbaseCategoryBuilder())->build($this->buildConfig(false, ['qualite']));
@@ -57,33 +121,32 @@ final class KnowbaseCategoryBuilderTest extends TestCase
         $count = (new KnowbaseCategoryBuilder())->build($this->buildConfig(true, ['qualite']));
 
         $this->assertSame(1, $count);
+        $ids = $this->findCategoryIds();
+        $this->assertCount(1, $ids);
 
-        $category = new KnowbaseItemCategory();
-        $this->assertTrue($category->getFromDBByCrit(['name' => self::BRANCH_NAME, 'knowbaseitemcategories_id' => 0]));
+        if (GlpiVersion::isAtLeast12()) {
+            // A GLPI 12 container article is closed by default: without this, self-service users
+            // could no longer browse what used to be a category visible to everyone.
+            $this->assertTrue((new \Entity_KnowbaseItem())->getFromDBByCrit([
+                'knowbaseitems_id' => $ids[0],
+                'entities_id' => 0,
+                'is_recursive' => 1,
+            ]));
+        }
     }
 
     public function testBuildIsIdempotentAndReusesTheSameCategory(): void
     {
         $builder = new KnowbaseCategoryBuilder();
         $builder->build($this->buildConfig(true, ['qualite']));
-
-        $category = new KnowbaseItemCategory();
-        $category->getFromDBByCrit(['name' => self::BRANCH_NAME, 'knowbaseitemcategories_id' => 0]);
-        $idBefore = (int) $category->getID();
+        $idsBefore = $this->findCategoryIds();
 
         $second = $builder->build($this->buildConfig(true, ['qualite']));
         $this->assertSame(1, $second);
 
-        $category = new KnowbaseItemCategory();
-        $category->getFromDBByCrit(['name' => self::BRANCH_NAME, 'knowbaseitemcategories_id' => 0]);
-        $this->assertSame($idBefore, (int) $category->getID());
-
-        global $DB;
-        $matches = $DB->request([
-            'FROM' => KnowbaseItemCategory::getTable(),
-            'WHERE' => ['name' => self::BRANCH_NAME, 'knowbaseitemcategories_id' => 0],
-        ])->count();
-        $this->assertSame(1, $matches, 'Exactly one row must exist — no duplicate.');
+        $idsAfter = $this->findCategoryIds();
+        $this->assertCount(1, $idsAfter, 'Exactly one row must exist — no duplicate.');
+        $this->assertSame($idsBefore, $idsAfter);
     }
 
     public function testTogglingIconsOnThenOffUpdatesTheTranslation(): void
@@ -91,27 +154,11 @@ final class KnowbaseCategoryBuilderTest extends TestCase
         $builder = new KnowbaseCategoryBuilder();
         $builder->build($this->buildConfig(true, ['qualite'], icons: true));
 
-        $category = new KnowbaseItemCategory();
-        $category->getFromDBByCrit(['name' => self::BRANCH_NAME, 'knowbaseitemcategories_id' => 0]);
-
-        $translation = new DropdownTranslation();
-        $this->assertTrue($translation->getFromDBByCrit([
-            'itemtype' => KnowbaseItemCategory::class,
-            'items_id' => $category->getID(),
-            'language' => 'fr_FR',
-            'field' => 'name',
-        ]));
-        $this->assertStringStartsWith('📋', $translation->fields['value']);
+        $id = $this->findCategoryIds()[0];
+        $this->assertStringStartsWith('📋', (string) $this->frenchTranslation($id));
 
         $builder->build($this->buildConfig(true, ['qualite'], icons: false));
 
-        $translation = new DropdownTranslation();
-        $translation->getFromDBByCrit([
-            'itemtype' => KnowbaseItemCategory::class,
-            'items_id' => $category->getID(),
-            'language' => 'fr_FR',
-            'field' => 'name',
-        ]);
-        $this->assertSame(self::BRANCH_NAME, $translation->fields['value']);
+        $this->assertSame(self::BRANCH_NAME, $this->frenchTranslation($id));
     }
 }

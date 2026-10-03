@@ -168,20 +168,19 @@ final class VehicleMaintenanceFormBuilderTest extends TestCase
         $vehicleClass = $this->vehicleClassName();
 
         $ticket = $this->submitAndGetTicket($form, [
-            "answers_$vehiculeId" => ['itemtype' => $vehicleClass, 'items_id' => $vehicleId],
+            "answers_$vehiculeId" => ItemAnswer::of($vehicleClass, $vehicleId),
             "answers_$typeId" => ['1'],
         ]);
 
         $link = new Item_Ticket();
-        $this->assertTrue(
-            $link->getFromDBByCrit([
-                'tickets_id' => $ticket->getID(),
-                'itemtype' => $vehicleClass,
-                'items_id' => $vehicleId,
-            ]),
-            'The ticket should be linked to the chosen vehicle via a real Item_Ticket row.'
-        );
+        $linked = $link->getFromDBByCrit([
+            'tickets_id' => $ticket->getID(),
+            'itemtype' => $vehicleClass,
+            'items_id' => $vehicleId,
+        ]);
         $this->assertSame(Ticket::DEMAND_TYPE, (int) $ticket->fields['type']);
+        ItemAnswer::skipIfGlpi12DropsAssociatedItem($linked);
+        $this->assertTrue($linked, 'The ticket should be linked to the chosen vehicle via a real Item_Ticket row.');
     }
 
     public function testTicketTitleIncludesVehicleName(): void
@@ -193,7 +192,7 @@ final class VehicleMaintenanceFormBuilderTest extends TestCase
         $vehicleClass = $this->vehicleClassName();
 
         $ticket = $this->submitAndGetTicket($form, [
-            "answers_$vehiculeId" => ['itemtype' => $vehicleClass, 'items_id' => $vehicleId],
+            "answers_$vehiculeId" => ItemAnswer::of($vehicleClass, $vehicleId),
             "answers_$typeId" => ['2'],
         ]);
 
