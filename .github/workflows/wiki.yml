@@ -1,0 +1,56 @@
+name: Wiki
+
+# Le wiki GitHub n'est qu'une vue de la documentation versionnee (README, guides, CHANGELOG...) :
+# il est regenere ici a chaque mise a jour de main, jamais modifie a la main (toute modification
+# directe serait ecrasee au passage suivant). Pages et barre laterale : .github/wiki-pages.json,
+# generation : .github/scripts/build_wiki.py.
+#
+# Prerequis unique : GitHub ne cree le depot du wiki qu'a la creation d'une premiere page depuis
+# l'onglet Wiki du site - sans elle, ce workflow echoue avec un message explicite.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.md'
+      - '.github/wiki-pages.json'
+      - '.github/scripts/build_wiki.py'
+      - '.github/workflows/wiki.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wiki
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publie le wiki
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupère le dépôt
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
+
+      - name: Génère les pages
+        run: python3 .github/scripts/build_wiki.py . /tmp/wiki-pages "$GITHUB_REPOSITORY" main
+
+      - name: Publie dans le wiki
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! git clone -q "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" /tmp/wiki-repo; then
+            echo "::error::Wiki pas encore initialisé : créez une première page (n'importe quel contenu) depuis l'onglet Wiki du dépôt, puis relancez ce workflow."
+            exit 1
+          fi
+          rsync -a --delete --exclude .git /tmp/wiki-pages/ /tmp/wiki-repo/
+          cd /tmp/wiki-repo
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Wiki déjà à jour."
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "Wiki régénéré depuis ${GITHUB_SHA::7}"
+          git push -q origin HEAD
