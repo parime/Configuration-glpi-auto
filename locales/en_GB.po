@@ -3729,3 +3729,114 @@ msgstr "already set, kept"
 
 msgid "statut à créer (cochez-le ci-dessus)"
 msgstr "status to create (tick it above)"
+
+msgid "Envoie par e-mail le rapport périodique de l'audit de configuration"
+msgstr "Emails the periodic configuration audit report"
+
+msgid "Rapport d'audit périodique"
+msgstr "Periodic audit report"
+
+msgid "Adresses supplémentaires (réglage du rapport d'audit)"
+msgstr "Additional addresses (audit report setting)"
+
+msgid "Premier rapport : pas encore de comparaison possible."
+msgstr "First report: no comparison possible yet."
+
+#, php-format
+msgid "Aucune évolution depuis le rapport du %s."
+msgstr "No change since the report of %s."
+
+#, php-format
+msgid "Depuis le rapport du %1$s : %2$d contrôle(s) dégradé(s), %3$d amélioré(s)."
+msgstr "Since the report of %1$s: %2$d check(s) worsened, %3$d improved."
+
+msgid "En échec"
+msgstr "Failing"
+
+msgid "En alerte"
+msgstr "Warning"
+
+msgid "Contrôles exécutés"
+msgstr "Checks run"
+
+msgid "Contrôles OK"
+msgstr "Checks OK"
+
+msgid "Contrôles en alerte"
+msgstr "Checks with warnings"
+
+msgid "Contrôles en échec"
+msgstr "Failing checks"
+
+msgid "Évolution depuis le rapport précédent"
+msgstr "Change since the previous report"
+
+msgid "Gravité"
+msgstr "Severity"
+
+msgid "Domaine"
+msgstr "Area"
+
+msgid "Constat"
+msgstr "Finding"
+
+msgid "Recommandation"
+msgstr "Recommendation"
+
+msgid "Points à traiter"
+msgstr "Items to address"
+
+msgid "Les notifications par e-mail de GLPI sont désactivées : activez-les dans Configuration > Notifications."
+msgstr "GLPI email notifications are disabled: enable them in Setup > Notifications."
+
+msgid "Rapport d'audit mis en file d'envoi."
+msgstr "Audit report queued for sending."
+
+msgid "Aucune notification active n'a pu envoyer le rapport : vérifiez la notification et ses destinataires."
+msgstr "No active notification could send the report: check the notification and its recipients."
+
+msgid "Réglages du rapport d'audit enregistrés."
+msgstr "Audit report settings saved."
+
+msgid "Rapport périodique par e-mail"
+msgstr "Periodic email report"
+
+msgid "Reçoit automatiquement la synthèse de cet audit : nombre de contrôles OK, en alerte et en échec, points à traiter avec leur recommandation et évolution depuis le rapport précédent. Aucun mot de passe ni secret n'est envoyé, seulement les constats."
+msgstr "Automatically receive a summary of this audit: number of checks OK, with warnings and failing, items to address with their recommendation, and the change since the previous report. No password or secret is sent, only the findings."
+
+msgid "Fréquence"
+msgstr "Frequency"
+
+msgid "Désactivé"
+msgstr "Disabled"
+
+msgid "Hebdomadaire"
+msgstr "Weekly"
+
+msgid "Mensuel"
+msgstr "Monthly"
+
+msgid "N'envoyer que s'il y a un changement ou une anomalie"
+msgstr "Only send if something changed or is wrong"
+
+msgid "Adresses supplémentaires (facultatif)"
+msgstr "Additional addresses (optional)"
+
+msgid "Une adresse par ligne, pour des destinataires sans compte GLPI. Par défaut, le rapport part à l'administrateur GLPI ; profils et groupes se choisissent dans les destinataires de la notification."
+msgstr "One address per line, for recipients without a GLPI account. By default the report goes to the GLPI administrator; profiles and groups are chosen in the notification's recipients."
+
+msgid "Enregistrer"
+msgstr "Save"
+
+msgid "Enregistrer et envoyer maintenant"
+msgstr "Save and send now"
+
+msgid "Modifier le modèle et les destinataires"
+msgstr "Edit the template and recipients"
+
+#, php-format
+msgid "Dernier rapport envoyé le %s"
+msgstr "Last report sent on %s"
+
+msgid "Aucun rapport envoyé pour l'instant."
+msgstr "No report sent yet."

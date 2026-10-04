@@ -187,6 +187,10 @@ class Config extends Compat\Base\ConfigBase
             // n'a volontairement pas de valeur par défaut ici : jamais saisi via l'assistant,
             // uniquement écrit par AuditWatchCron/remis à zéro par front/audit.php.
             'audit_watch_enabled' => 1,
+            // Issue #285 : rapport d'audit périodique par e-mail (voir AuditReportCron) — la tâche
+            // planifiée reste désactivée tant que l'administrateur ne l'active pas sur front/audit.php.
+            'audit_report_only_on_change' => 1,
+            'audit_report_emails' => '',
             // Décoché par défaut, contrairement au reste des réglages généraux : ouvre un vrai
             // point d'entrée réseau (l'endpoint d'inventaire) plutôt que de générer du contenu,
             // même raisonnement que validation_supervisor_routing_enabled ci-dessous.
@@ -393,6 +397,32 @@ class Config extends Compat\Base\ConfigBase
         $names = json_decode((string) ($this->fields['state_names'] ?? '[]'), true);
 
         return is_array($names) ? array_values(array_intersect(StateBuilder::getStateNames(), $names)) : [];
+    }
+
+    /**
+     * Adresses supplémentaires du rapport d'audit (issue #285).
+     *
+     * @return list<string>
+     */
+    public function getAuditReportEmails(): array
+    {
+        return self::parseEmails((string) ($this->fields['audit_report_emails'] ?? ''));
+    }
+
+    /**
+     * @return list<string> adresses valides, sans doublon, 20 au plus
+     */
+    public static function parseEmails(string $raw): array
+    {
+        $emails = [];
+        foreach (preg_split('/[\s,;]+/', $raw) ?: [] as $candidate) {
+            $candidate = trim($candidate);
+            if ($candidate !== '' && filter_var($candidate, FILTER_VALIDATE_EMAIL) !== false) {
+                $emails[strtolower($candidate)] = $candidate;
+            }
+        }
+
+        return array_slice(array_values($emails), 0, 20);
     }
 
     /**
@@ -616,11 +646,17 @@ class Config extends Compat\Base\ConfigBase
             )));
         }
 
+        // Issue #285 : adresses supplémentaires du rapport d'audit — seules des adresses valides
+        // sont conservées (séparateurs : retour à la ligne, virgule, point-virgule, espace).
+        if (isset($input['audit_report_emails'])) {
+            $input['audit_report_emails'] = implode("\n", self::parseEmails((string) $input['audit_report_emails']));
+        }
+
         if (isset($input['state_icons_enabled'])) {
             $input['state_icons_enabled'] = !empty($input['state_icons_enabled']) ? 1 : 0;
         }
 
-        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled', 'dashboard_enabled', 'audit_watch_enabled', 'inventory_enabled'] as $field) {
+        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled', 'dashboard_enabled', 'audit_watch_enabled', 'audit_report_only_on_change', 'inventory_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

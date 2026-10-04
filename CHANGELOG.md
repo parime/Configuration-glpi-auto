@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Rapport d'audit périodique par e-mail** (#285) : nouvelle action automatique `auditreport`
+  (désactivée par défaut, hebdomadaire ou mensuelle) qui envoie la synthèse de l'audit de
+  configuration via une notification GLPI native, modèle FR/EN et destinataires modifiables :
+  contrôles OK / en alerte / en échec, points à traiter avec leur recommandation, évolution
+  depuis le rapport précédent. Destinataires par défaut : l'administrateur GLPI et des adresses
+  supplémentaires facultatives ; option « seulement s'il y a un changement ou une anomalie ».
+  Réglages et bouton « envoyer maintenant » sur l'écran Audit. Aucun secret dans l'e-mail.
 - **Déclencheurs assetsign reliés aux statuts d'éléments** (#283) : si le plugin assetsign-glpi est
   actif, l'étape 8 de l'assistant relie ses déclencheurs « changement d'État » aux statuts créés
   (Attribué → remise, Attente restitution → restitution, Donné → don, Vendu → vente, Détruit →

@@ -3747,3 +3747,114 @@ msgstr "já configurado, mantido"
 
 msgid "statut à créer (cochez-le ci-dessus)"
 msgstr "status a criar (marque-o acima)"
+
+msgid "Envoie par e-mail le rapport périodique de l'audit de configuration"
+msgstr "Envia por e-mail o relatório periódico da auditoria de configuração"
+
+msgid "Rapport d'audit périodique"
+msgstr "Relatório de auditoria periódico"
+
+msgid "Adresses supplémentaires (réglage du rapport d'audit)"
+msgstr "Endereços adicionais (configuração do relatório de auditoria)"
+
+msgid "Premier rapport : pas encore de comparaison possible."
+msgstr "Primeiro relatório: ainda não é possível comparar."
+
+#, php-format
+msgid "Aucune évolution depuis le rapport du %s."
+msgstr "Nenhuma alteração desde o relatório de %s."
+
+#, php-format
+msgid "Depuis le rapport du %1$s : %2$d contrôle(s) dégradé(s), %3$d amélioré(s)."
+msgstr "Desde o relatório de %1$s: %2$d verificação(ões) piorada(s), %3$d melhorada(s)."
+
+msgid "En échec"
+msgstr "Com falha"
+
+msgid "En alerte"
+msgstr "Alerta"
+
+msgid "Contrôles exécutés"
+msgstr "Verificações executadas"
+
+msgid "Contrôles OK"
+msgstr "Verificações OK"
+
+msgid "Contrôles en alerte"
+msgstr "Verificações em alerta"
+
+msgid "Contrôles en échec"
+msgstr "Verificações com falha"
+
+msgid "Évolution depuis le rapport précédent"
+msgstr "Evolução desde o relatório anterior"
+
+msgid "Gravité"
+msgstr "Gravidade"
+
+msgid "Domaine"
+msgstr "Área"
+
+msgid "Constat"
+msgstr "Constatação"
+
+msgid "Recommandation"
+msgstr "Recomendação"
+
+msgid "Points à traiter"
+msgstr "Pontos a tratar"
+
+msgid "Les notifications par e-mail de GLPI sont désactivées : activez-les dans Configuration > Notifications."
+msgstr "As notificações por e-mail do GLPI estão desativadas: ative-as em Configuração > Notificações."
+
+msgid "Rapport d'audit mis en file d'envoi."
+msgstr "Relatório de auditoria colocado na fila de envio."
+
+msgid "Aucune notification active n'a pu envoyer le rapport : vérifiez la notification et ses destinataires."
+msgstr "Nenhuma notificação ativa pôde enviar o relatório: verifique a notificação e os destinatários."
+
+msgid "Réglages du rapport d'audit enregistrés."
+msgstr "Configurações do relatório de auditoria salvas."
+
+msgid "Rapport périodique par e-mail"
+msgstr "Relatório periódico por e-mail"
+
+msgid "Reçoit automatiquement la synthèse de cet audit : nombre de contrôles OK, en alerte et en échec, points à traiter avec leur recommandation et évolution depuis le rapport précédent. Aucun mot de passe ni secret n'est envoyé, seulement les constats."
+msgstr "Receba automaticamente a síntese desta auditoria: número de verificações OK, em alerta e com falha, pontos a tratar com a recomendação e evolução desde o relatório anterior. Nenhuma senha ou segredo é enviado, apenas as constatações."
+
+msgid "Fréquence"
+msgstr "Frequência"
+
+msgid "Désactivé"
+msgstr "Desativado"
+
+msgid "Hebdomadaire"
+msgstr "Semanal"
+
+msgid "Mensuel"
+msgstr "Mensal"
+
+msgid "N'envoyer que s'il y a un changement ou une anomalie"
+msgstr "Enviar apenas se houver alteração ou anomalia"
+
+msgid "Adresses supplémentaires (facultatif)"
+msgstr "Endereços adicionais (opcional)"
+
+msgid "Une adresse par ligne, pour des destinataires sans compte GLPI. Par défaut, le rapport part à l'administrateur GLPI ; profils et groupes se choisissent dans les destinataires de la notification."
+msgstr "Um endereço por linha, para destinatários sem conta GLPI. Por padrão, o relatório vai para o administrador do GLPI; perfis e grupos são escolhidos nos destinatários da notificação."
+
+msgid "Enregistrer"
+msgstr "Salvar"
+
+msgid "Enregistrer et envoyer maintenant"
+msgstr "Salvar e enviar agora"
+
+msgid "Modifier le modèle et les destinataires"
+msgstr "Editar o modelo e os destinatários"
+
+#, php-format
+msgid "Dernier rapport envoyé le %s"
+msgstr "Último relatório enviado em %s"
+
+msgid "Aucun rapport envoyé pour l'instant."
+msgstr "Nenhum relatório enviado até agora."

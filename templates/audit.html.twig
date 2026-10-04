@@ -69,3 +69,55 @@
     {% endif %}
   </div>
 </div>
+
+{# Issue #285 : rapport d'audit périodique par e-mail. Fréquence = tâche planifiée GLPI
+   « auditreport » ; modèle et destinataires = notification GLPI native (lien ci-dessous). #}
+<div class="card mt-3">
+  <div class="card-header">
+    <h3 class="card-title"><i class="ti ti-mail-forward me-2"></i>{{ __('Rapport périodique par e-mail', 'configurationglpiauto') }}</h3>
+  </div>
+  <div class="card-body">
+    <p class="text-muted">{{ __('Reçoit automatiquement la synthèse de cet audit : nombre de contrôles OK, en alerte et en échec, points à traiter avec leur recommandation et évolution depuis le rapport précédent. Aucun mot de passe ni secret n\'est envoyé, seulement les constats.', 'configurationglpiauto') }}</p>
+    {% if not report.notifications_on %}
+      <div class="alert alert-warning"><i class="ti ti-alert-triangle me-1"></i>{{ __('Les notifications par e-mail de GLPI sont désactivées : activez-les dans Configuration > Notifications.', 'configurationglpiauto') }}</div>
+    {% endif %}
+    <form method="post" action="{{ config('root_doc') }}/plugins/configurationglpiauto/front/audit.php">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label" for="cga-report-frequency">{{ __('Fréquence', 'configurationglpiauto') }}</label>
+          <select class="form-select" name="audit_report_frequency" id="cga-report-frequency" {{ can_fix ? '' : 'disabled' }}>
+            <option value="off" {{ report.frequency == 'off' ? 'selected' : '' }}>{{ __('Désactivé', 'configurationglpiauto') }}</option>
+            <option value="week" {{ report.frequency == 'week' ? 'selected' : '' }}>{{ __('Hebdomadaire', 'configurationglpiauto') }}</option>
+            <option value="month" {{ report.frequency == 'month' ? 'selected' : '' }}>{{ __('Mensuel', 'configurationglpiauto') }}</option>
+          </select>
+          <div class="form-check form-switch mt-3">
+            <input type="checkbox" class="form-check-input" name="audit_report_only_on_change" value="1" id="cga-report-only-on-change" {{ report.only_on_change ? 'checked' : '' }} {{ can_fix ? '' : 'disabled' }}>
+            <label class="form-check-label" for="cga-report-only-on-change">{{ __('N\'envoyer que s\'il y a un changement ou une anomalie', 'configurationglpiauto') }}</label>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <label class="form-label" for="cga-report-emails">{{ __('Adresses supplémentaires (facultatif)', 'configurationglpiauto') }}</label>
+          <textarea class="form-control" name="audit_report_emails" id="cga-report-emails" rows="3" placeholder="rssi@exemple.fr" {{ can_fix ? '' : 'disabled' }}>{{ report.emails }}</textarea>
+          <small class="form-hint">{{ __('Une adresse par ligne, pour des destinataires sans compte GLPI. Par défaut, le rapport part à l\'administrateur GLPI ; profils et groupes se choisissent dans les destinataires de la notification.', 'configurationglpiauto') }}</small>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+        {% if can_fix %}
+          <button type="submit" name="save_report" value="1" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i>{{ __('Enregistrer', 'configurationglpiauto') }}</button>
+          <button type="submit" name="send_report_now" value="1" class="btn btn-outline-secondary"><i class="ti ti-send me-1"></i>{{ __('Enregistrer et envoyer maintenant', 'configurationglpiauto') }}</button>
+        {% endif %}
+        {% if report.notification_url %}
+          <a href="{{ report.notification_url }}" class="btn btn-link"><i class="ti ti-bell-cog me-1"></i>{{ __('Modifier le modèle et les destinataires', 'configurationglpiauto') }}</a>
+        {% endif %}
+        <span class="text-muted small ms-auto">
+          {% if report.last_sent %}
+            {{ __('Dernier rapport envoyé le %s', 'configurationglpiauto')|format(report.last_sent) }}
+          {% else %}
+            {{ __('Aucun rapport envoyé pour l\'instant.', 'configurationglpiauto') }}
+          {% endif %}
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
