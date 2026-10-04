@@ -1,0 +1,56 @@
+[
+  {
+    "page": "Home",
+    "source": "README.md",
+    "title": "Accueil",
+    "section": "Documentation (FR)"
+  },
+  {
+    "page": "Tutoriel",
+    "source": "docs/TUTORIAL.md",
+    "title": "Tutoriel",
+    "section": "Documentation (FR)"
+  },
+  {
+    "page": "Guide-ITIL",
+    "source": "docs/ITIL_GUIDE.md",
+    "title": "Guide ITIL",
+    "section": "Documentation (FR)"
+  },
+  {
+    "page": "Support",
+    "source": "SUPPORT.md",
+    "title": "Support",
+    "section": "Documentation (FR)"
+  },
+  {
+    "page": "Home-en",
+    "source": "README.en.md",
+    "title": "Home",
+    "section": "Documentation (EN)"
+  },
+  {
+    "page": "Feuille-de-route",
+    "source": "ROADMAP.md",
+    "title": "Feuille de route",
+    "section": "Projet"
+  },
+  {
+    "page": "Historique-des-versions",
+    "source": "CHANGELOG.md",
+    "title": "Historique des versions",
+    "section": "Projet"
+  },
+  {
+    "page": "Securite",
+    "source": "SECURITY.md",
+    "title": "Sécurité",
+    "section": "Projet"
+  },
+  {
+    "page": "Contribuer",
+    "source": "CONTRIBUTING.md",
+    "title": "Contribuer",
+    "section": "Projet"
+  }
+]
