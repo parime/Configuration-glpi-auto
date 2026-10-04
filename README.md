@@ -66,6 +66,8 @@ Toutes les autres captures d'écran (les 19 étapes en détail) sont dans le [tu
   categorie)
 - Statuts d'elements, statuts de projet supplementaires et raisons d'attente avec relance/cloture
   automatiques
+- Si le plugin assetsign-glpi est actif : ses declencheurs de fiches (remise, restitution, don,
+  vente, destruction, reforme) relies aux statuts crees, sans jamais modifier un reglage existant
 - Personnalisation graphique : couleur et logo, palette GLPI native ou personnalisee, reglages
   differencies par client/site en mode MSP
 - Modeles de tickets (simplifie / complet) assignes automatiquement selon le profil GLPI de

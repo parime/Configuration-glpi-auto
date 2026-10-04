@@ -3692,3 +3692,40 @@ msgstr "Audit type"
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Inventory number or name of the current workstation"
+
+#, php-format
+msgid "%d déclencheur(s) assetsign relié(s) aux statuts d'éléments."
+msgstr "%d assetsign trigger(s) linked to item statuses."
+
+msgid "Remise (attribution)"
+msgstr "Handover (assignment)"
+
+msgid "Restitution"
+msgstr "Return"
+
+msgid "Don"
+msgstr "Donation"
+
+msgid "Vente"
+msgstr "Sale"
+
+msgid "Destruction"
+msgstr "Destruction"
+
+msgid "Réforme (date de mise au rebut)"
+msgstr "Decommissioning (disposal date)"
+
+msgid "Plugin assetsign détecté — relier ses déclencheurs de fiches à ces statuts"
+msgstr "assetsign plugin detected — link its form triggers to these statuses"
+
+msgid "Quand un matériel passe dans l'un de ces statuts, assetsign crée la fiche correspondante à faire signer. Un déclencheur déjà réglé dans assetsign n'est jamais modifié. La restitution est déclenchée par « Attente restitution » : le retour en stock s'accompagne en général du retrait de l'utilisateur, déjà géré par assetsign lui-même."
+msgstr "When an item moves to one of these statuses, assetsign creates the matching form to be signed. A trigger already set in assetsign is never changed. The return is triggered by \"Attente restitution\" (awaiting return): moving back to stock usually comes with removing the user, which assetsign already handles itself."
+
+msgid "sera réglé"
+msgstr "will be set"
+
+msgid "déjà réglé, conservé"
+msgstr "already set, kept"
+
+msgid "statut à créer (cochez-le ci-dessus)"
+msgstr "status to create (tick it above)"

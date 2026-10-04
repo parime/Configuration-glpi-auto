@@ -64,6 +64,8 @@ All other screenshots (all 19 steps in detail) are in the [tutorial](docs/TUTORI
 - Topic-based ticket categories (11 selectable branches, up to 3 levels) and a self-service
   catalog (native GLPI 11 forms, automatic routing to the right category)
 - Asset statuses, additional project statuses and pending reasons with automatic follow-up/closure
+- If the assetsign-glpi plugin is active: its form triggers (handover, return, donation, sale,
+  destruction, decommissioning) linked to the created statuses, never changing an existing setting
 - Visual customization: color and logo, native or custom GLPI palette, settings differentiated
   per client/site in MSP mode
 - Ticket templates (simplified / full) automatically assigned based on the user's GLPI profile,

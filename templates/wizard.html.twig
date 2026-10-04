@@ -679,6 +679,43 @@
             {% endfor %}
           </ul>
         </div>
+        {# Issue #283 : visible uniquement si le plugin jumeau assetsign-glpi est installé ET activé.
+           Aperçu calculé avant application ; un déclencheur déjà réglé dans assetsign est conservé. #}
+        {% if assetsign_plugin_active %}
+          {% set assetsign_trigger_labels = {
+            'handover_states': __('Remise (attribution)', 'configurationglpiauto'),
+            'return_states': __('Restitution', 'configurationglpiauto'),
+            'donation_states': __('Don', 'configurationglpiauto'),
+            'vente_states': __('Vente', 'configurationglpiauto'),
+            'destruction_states': __('Destruction', 'configurationglpiauto'),
+            'reforme_states': __('Réforme (date de mise au rebut)', 'configurationglpiauto')
+          } %}
+          <hr class="my-3">
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="assetsign_triggers_enabled" value="0">
+            <input type="checkbox" name="assetsign_triggers_enabled" value="1" class="form-check-input" id="cga-assetsign-triggers-enabled" {{ config.assetsign_triggers_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-assetsign-triggers-enabled"><i class="ti ti-signature me-1"></i>{{ __('Plugin assetsign détecté — relier ses déclencheurs de fiches à ces statuts', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-2">{{ __('Quand un matériel passe dans l\'un de ces statuts, assetsign crée la fiche correspondante à faire signer. Un déclencheur déjà réglé dans assetsign n\'est jamais modifié. La restitution est déclenchée par « Attente restitution » : le retour en stock s\'accompagne en général du retrait de l\'utilisateur, déjà géré par assetsign lui-même.', 'configurationglpiauto') }}</p>
+          <input type="hidden" name="assetsign_trigger_fields[]" value="">
+          <ul class="list-group mb-0" style="max-width: 560px;">
+            {% for field, step in assetsign_trigger_preview %}
+              <li class="list-group-item d-flex align-items-center gap-2">
+                <input type="checkbox" name="assetsign_trigger_fields[]" value="{{ field }}" class="form-check-input mt-0" id="cga-assetsign-trigger-{{ field }}" {{ field in assetsign_trigger_fields ? 'checked' : '' }}>
+                <label class="form-check-label flex-grow-1" for="cga-assetsign-trigger-{{ field }}">
+                  <strong>{{ assetsign_trigger_labels[field] }}</strong> ← {{ step.state }}
+                </label>
+                {% if step.action == 'set' %}
+                  <span class="badge bg-green-lt"><i class="ti ti-plus me-1"></i>{{ __('sera réglé', 'configurationglpiauto') }}</span>
+                {% elseif step.action == 'kept' %}
+                  <span class="badge bg-secondary-lt"><i class="ti ti-lock me-1"></i>{{ __('déjà réglé, conservé', 'configurationglpiauto') }}</span>
+                {% else %}
+                  <span class="badge bg-yellow-lt"><i class="ti ti-alert-triangle me-1"></i>{{ __('statut à créer (cochez-le ci-dessus)', 'configurationglpiauto') }}</span>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
       </div>
 
       {# ---------------------------------------------------------------- Étape 9 : Raisons d'attente #}
