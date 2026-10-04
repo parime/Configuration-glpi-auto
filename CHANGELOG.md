@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- **Déclencheurs assetsign reliés aux statuts d'éléments** (#283) : si le plugin assetsign-glpi est
+  actif, l'étape 8 de l'assistant relie ses déclencheurs « changement d'État » aux statuts créés
+  (Attribué → remise, Attente restitution → restitution, Donné → don, Vendu → vente, Détruit →
+  destruction, Obsolète → réforme), avec un aperçu avant application. Seul un déclencheur vide est
+  rempli : un réglage existant n'est jamais modifié.
+
 ## [1.4.0] - 2026-10-04
 
 ### Added

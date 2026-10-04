@@ -3759,3 +3759,40 @@ msgstr "Type d'audit"
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Numéro d'inventaire ou nom du poste actuel"
+
+#, php-format
+msgid "%d déclencheur(s) assetsign relié(s) aux statuts d'éléments."
+msgstr "%d déclencheur(s) assetsign relié(s) aux statuts d'éléments."
+
+msgid "Remise (attribution)"
+msgstr "Remise (attribution)"
+
+msgid "Restitution"
+msgstr "Restitution"
+
+msgid "Don"
+msgstr "Don"
+
+msgid "Vente"
+msgstr "Vente"
+
+msgid "Destruction"
+msgstr "Destruction"
+
+msgid "Réforme (date de mise au rebut)"
+msgstr "Réforme (date de mise au rebut)"
+
+msgid "Plugin assetsign détecté — relier ses déclencheurs de fiches à ces statuts"
+msgstr "Plugin assetsign détecté — relier ses déclencheurs de fiches à ces statuts"
+
+msgid "Quand un matériel passe dans l'un de ces statuts, assetsign crée la fiche correspondante à faire signer. Un déclencheur déjà réglé dans assetsign n'est jamais modifié. La restitution est déclenchée par « Attente restitution » : le retour en stock s'accompagne en général du retrait de l'utilisateur, déjà géré par assetsign lui-même."
+msgstr "Quand un matériel passe dans l'un de ces statuts, assetsign crée la fiche correspondante à faire signer. Un déclencheur déjà réglé dans assetsign n'est jamais modifié. La restitution est déclenchée par « Attente restitution » : le retour en stock s'accompagne en général du retrait de l'utilisateur, déjà géré par assetsign lui-même."
+
+msgid "sera réglé"
+msgstr "sera réglé"
+
+msgid "déjà réglé, conservé"
+msgstr "déjà réglé, conservé"
+
+msgid "statut à créer (cochez-le ci-dessus)"
+msgstr "statut à créer (cochez-le ci-dessus)"

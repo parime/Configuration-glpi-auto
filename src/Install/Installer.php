@@ -20,6 +20,7 @@ namespace GlpiPlugin\Configurationglpiauto\Install;
 use CronTask;
 use DBConnection;
 use DropdownTranslation;
+use GlpiPlugin\Configurationglpiauto\AssetsignTriggerBuilder;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditWatchCron;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
@@ -200,6 +201,8 @@ final class Installer
                 `satisfaction_plugin_survey_enabled` tinyint NOT NULL DEFAULT 0,
                 `vip_group_enabled` tinyint NOT NULL DEFAULT 0,
                 `tag_library_enabled` tinyint NOT NULL DEFAULT 0,
+                `assetsign_triggers_enabled` tinyint NOT NULL DEFAULT 0,
+                `assetsign_trigger_fields` text,
                 `validation_supervisor_routing_enabled` tinyint NOT NULL DEFAULT 0,
                 `fire_safety_assets_enabled` tinyint NOT NULL DEFAULT 0,
                 `fire_safety_asset_icons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -365,6 +368,10 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'satisfaction_plugin_survey_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'vip_group_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'tag_library_enabled', 'bool', ['value' => 0]);
+            // Issue #283 : décoché à la mise à jour (comme les autres intégrations de plugins tiers),
+            // liste des déclencheurs pré-remplie pour qu'il suffise de cocher la case.
+            $migration->addField(self::CONFIGS_TABLE, 'assetsign_triggers_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'assetsign_trigger_fields', 'text', ['value' => json_encode(array_keys(AssetsignTriggerBuilder::TRIGGERS))]);
             $migration->addField(self::CONFIGS_TABLE, 'validation_supervisor_routing_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'calendar_day_hours', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_break_enabled', 'bool', ['value' => 0]);

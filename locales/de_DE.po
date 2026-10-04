@@ -3787,3 +3787,40 @@ msgstr "Art des Audits"
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Inventarnummer oder Name des aktuellen Arbeitsplatzes"
+
+#, php-format
+msgid "%d déclencheur(s) assetsign relié(s) aux statuts d'éléments."
+msgstr "%d assetsign-Auslöser mit Elementstatus verknüpft."
+
+msgid "Remise (attribution)"
+msgstr "Übergabe (Zuweisung)"
+
+msgid "Restitution"
+msgstr "Rückgabe"
+
+msgid "Don"
+msgstr "Spende"
+
+msgid "Vente"
+msgstr "Verkauf"
+
+msgid "Destruction"
+msgstr "Vernichtung"
+
+msgid "Réforme (date de mise au rebut)"
+msgstr "Ausmusterung (Entsorgungsdatum)"
+
+msgid "Plugin assetsign détecté — relier ses déclencheurs de fiches à ces statuts"
+msgstr "assetsign-Plugin erkannt — seine Formular-Auslöser mit diesen Status verknüpfen"
+
+msgid "Quand un matériel passe dans l'un de ces statuts, assetsign crée la fiche correspondante à faire signer. Un déclencheur déjà réglé dans assetsign n'est jamais modifié. La restitution est déclenchée par « Attente restitution » : le retour en stock s'accompagne en général du retrait de l'utilisateur, déjà géré par assetsign lui-même."
+msgstr "Wechselt ein Gerät in einen dieser Status, erstellt assetsign das passende Formular zur Unterschrift. Ein in assetsign bereits eingestellter Auslöser wird nie geändert. Die Rückgabe wird durch „Attente restitution“ (Rückgabe ausstehend) ausgelöst: Die Rückkehr ins Lager geht meist mit dem Entfernen des Benutzers einher, was assetsign bereits selbst übernimmt."
+
+msgid "sera réglé"
+msgstr "wird eingestellt"
+
+msgid "déjà réglé, conservé"
+msgstr "bereits eingestellt, beibehalten"
+
+msgid "statut à créer (cochez-le ci-dessus)"
+msgstr "Status muss erstellt werden (oben ankreuzen)"

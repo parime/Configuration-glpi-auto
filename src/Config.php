@@ -260,6 +260,10 @@ class Config extends Compat\Base\ConfigBase
             'satisfaction_plugin_survey_enabled' => 1,
             'vip_group_enabled' => 1,
             'tag_library_enabled' => 1,
+            // Issue #283 : déclencheurs assetsign, tous cochés par défaut (sans effet si le plugin
+            // assetsign est absent, voir AssetsignTriggerBuilder).
+            'assetsign_triggers_enabled' => 1,
+            'assetsign_trigger_fields' => json_encode(array_keys(AssetsignTriggerBuilder::TRIGGERS)),
             // Opt-in, not opt-out like the rest of this list: a real ticket-workflow behavior
             // change (mandatory approval on every matching ticket), not content scaffolding — same
             // exception already applied to branding.
@@ -389,6 +393,21 @@ class Config extends Compat\Base\ConfigBase
         $names = json_decode((string) ($this->fields['state_names'] ?? '[]'), true);
 
         return is_array($names) ? array_values(array_intersect(StateBuilder::getStateNames(), $names)) : [];
+    }
+
+    /**
+     * Déclencheurs assetsign cochés dans l'assistant (issue #283), filtrés par la même liste
+     * blanche que prepareInput().
+     *
+     * @return string[]
+     */
+    public function getAssetsignTriggerFields(): array
+    {
+        $fields = json_decode((string) ($this->fields['assetsign_trigger_fields'] ?? '[]'), true);
+
+        return is_array($fields)
+            ? array_values(array_intersect(array_keys(AssetsignTriggerBuilder::TRIGGERS), $fields))
+            : [];
     }
 
     /**
@@ -585,6 +604,18 @@ class Config extends Compat\Base\ConfigBase
             )), JSON_UNESCAPED_UNICODE);
         }
 
+        // Issue #283 : même double forme (tableau du formulaire / JSON des valeurs par défaut) et
+        // même liste blanche que state_names.
+        if (isset($input['assetsign_trigger_fields'])) {
+            $fields = is_string($input['assetsign_trigger_fields'])
+                ? (json_decode($input['assetsign_trigger_fields'], true) ?? [])
+                : $input['assetsign_trigger_fields'];
+            $input['assetsign_trigger_fields'] = json_encode(array_values(array_intersect(
+                array_keys(AssetsignTriggerBuilder::TRIGGERS),
+                is_array($fields) ? $fields : []
+            )));
+        }
+
         if (isset($input['state_icons_enabled'])) {
             $input['state_icons_enabled'] = !empty($input['state_icons_enabled']) ? 1 : 0;
         }
@@ -647,7 +678,7 @@ class Config extends Compat\Base\ConfigBase
             $input['native_palette'] = '';
         }
 
-        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'kb_faq_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled', 'notification_branding_enabled', 'manufacturer_dictionary_enabled', 'location_geocoding_enabled', 'project_templates_enabled', 'request_type_translations_enabled', 'entity_native_address_enabled', 'user_categories_enabled', 'user_category_icons_enabled', 'field_unicity_enabled', 'rss_feeds_enabled', 'line_operators_enabled', 'asset_types_enabled', 'asset_type_icons_enabled', 'software_license_types_enabled', 'software_license_type_icons_enabled', 'certificate_types_enabled', 'certificate_type_icons_enabled', 'recurring_ticket_library_enabled', 'country_holidays_enabled', 'satisfaction_plugin_survey_enabled', 'vip_group_enabled', 'tag_library_enabled', 'validation_supervisor_routing_enabled', 'fire_safety_assets_enabled', 'fire_safety_asset_icons_enabled', 'physical_security_assets_enabled', 'physical_security_asset_icons_enabled', 'request_type_icons_enabled'] as $field) {
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'kb_faq_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled', 'notification_branding_enabled', 'manufacturer_dictionary_enabled', 'location_geocoding_enabled', 'project_templates_enabled', 'request_type_translations_enabled', 'entity_native_address_enabled', 'user_categories_enabled', 'user_category_icons_enabled', 'field_unicity_enabled', 'rss_feeds_enabled', 'line_operators_enabled', 'asset_types_enabled', 'asset_type_icons_enabled', 'software_license_types_enabled', 'software_license_type_icons_enabled', 'certificate_types_enabled', 'certificate_type_icons_enabled', 'recurring_ticket_library_enabled', 'country_holidays_enabled', 'satisfaction_plugin_survey_enabled', 'vip_group_enabled', 'tag_library_enabled', 'assetsign_triggers_enabled', 'validation_supervisor_routing_enabled', 'fire_safety_assets_enabled', 'fire_safety_asset_icons_enabled', 'physical_security_assets_enabled', 'physical_security_asset_icons_enabled', 'request_type_icons_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

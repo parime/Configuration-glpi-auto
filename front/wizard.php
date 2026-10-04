@@ -17,6 +17,7 @@
 
 use GlpiPlugin\Configurationglpiauto\AbroadMissionFormBuilder;
 use GlpiPlugin\Configurationglpiauto\AccessBadgeFormBuilder;
+use GlpiPlugin\Configurationglpiauto\AssetsignTriggerBuilder;
 use GlpiPlugin\Configurationglpiauto\AssetTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\AuditRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\BrandingBuilder;
@@ -627,6 +628,8 @@ if (isset($_POST['finish'])) {
         }
     }
     $statesCreated = (new StateBuilder())->build($config);
+    // Issue #283 : après StateBuilder, qui crée les statuts auxquels les déclencheurs renvoient.
+    $assetsignTriggersSet = (new AssetsignTriggerBuilder())->build($config);
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
     $ruleRightBuilder = new RuleRightBuilder();
     $ldapRulesCreated = $canManageLdapRules ? $ruleRightBuilder->build($config) : 0;
@@ -986,6 +989,9 @@ if (isset($_POST['finish'])) {
     if ($countryHolidaysCreated > 0) {
         $messages[] = sprintf(__('%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s).', 'configurationglpiauto'), $countryHolidaysCreated);
     }
+    if ($assetsignTriggersSet > 0) {
+        $messages[] = sprintf(__('%d déclencheur(s) assetsign relié(s) aux statuts d\'éléments.', 'configurationglpiauto'), $assetsignTriggersSet);
+    }
     if ($satisfactionSurveyCreated > 0) {
         $messages[] = __('Enquête de satisfaction créée (plugin More satisfaction).', 'configurationglpiauto');
     }
@@ -1110,6 +1116,9 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'satisfaction_plugin_active' => SatisfactionSurveyBuilder::isThirdPartyPluginActive(),
     'vip_plugin_active' => VipBuilder::isThirdPartyPluginActive(),
     'tag_plugin_active' => TagBuilder::isThirdPartyPluginActive(),
+    'assetsign_plugin_active' => AssetsignTriggerBuilder::isThirdPartyPluginActive(),
+    'assetsign_trigger_preview' => AssetsignTriggerBuilder::preview(),
+    'assetsign_trigger_fields' => $config->getAssetsignTriggerFields(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
     'installed_version'     => PLUGIN_CONFIGURATIONGLPIAUTO_VERSION,
     'latest_github_version' => Config::getLatestGithubVersion(),

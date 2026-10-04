@@ -3766,3 +3766,40 @@ msgstr "Tipo de auditoría"
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Número de inventario o nombre del puesto actual"
+
+#, php-format
+msgid "%d déclencheur(s) assetsign relié(s) aux statuts d'éléments."
+msgstr "%d disparador(es) de assetsign vinculado(s) a los estados de elementos."
+
+msgid "Remise (attribution)"
+msgstr "Entrega (asignación)"
+
+msgid "Restitution"
+msgstr "Devolución"
+
+msgid "Don"
+msgstr "Donación"
+
+msgid "Vente"
+msgstr "Venta"
+
+msgid "Destruction"
+msgstr "Destrucción"
+
+msgid "Réforme (date de mise au rebut)"
+msgstr "Baja (fecha de retirada)"
+
+msgid "Plugin assetsign détecté — relier ses déclencheurs de fiches à ces statuts"
+msgstr "Plugin assetsign detectado — vincular sus disparadores de fichas a estos estados"
+
+msgid "Quand un matériel passe dans l'un de ces statuts, assetsign crée la fiche correspondante à faire signer. Un déclencheur déjà réglé dans assetsign n'est jamais modifié. La restitution est déclenchée par « Attente restitution » : le retour en stock s'accompagne en général du retrait de l'utilisateur, déjà géré par assetsign lui-même."
+msgstr "Cuando un equipo pasa a uno de estos estados, assetsign crea la ficha correspondiente para firmar. Un disparador ya configurado en assetsign nunca se modifica. La devolución se dispara con «Attente restitution» (pendiente de devolución): la vuelta al stock suele ir acompañada de la retirada del usuario, que assetsign ya gestiona por sí mismo."
+
+msgid "sera réglé"
+msgstr "se configurará"
+
+msgid "déjà réglé, conservé"
+msgstr "ya configurado, se conserva"
+
+msgid "statut à créer (cochez-le ci-dessus)"
+msgstr "estado por crear (márquelo arriba)"
