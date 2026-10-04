@@ -161,7 +161,7 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           python3 .github/scripts/update_marketplace_xml.py \
-            configurationglpiauto.xml "$VERSION" "=11.0.0" \
+            configurationglpiauto.xml "$VERSION" "~11.0,~12.0" \
             "https://github.com/parime/Configuration-glpi-auto/releases/download/${GITHUB_REF_NAME}/${ARCHIVE_NAME}" \
             "        " "            "
 
