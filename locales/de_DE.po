@@ -3824,3 +3824,114 @@ msgstr "bereits eingestellt, beibehalten"
 
 msgid "statut à créer (cochez-le ci-dessus)"
 msgstr "Status muss erstellt werden (oben ankreuzen)"
+
+msgid "Envoie par e-mail le rapport périodique de l'audit de configuration"
+msgstr "Versendet den regelmäßigen Bericht der Konfigurationsprüfung per E-Mail"
+
+msgid "Rapport d'audit périodique"
+msgstr "Regelmäßiger Prüfbericht"
+
+msgid "Adresses supplémentaires (réglage du rapport d'audit)"
+msgstr "Zusätzliche Adressen (Einstellung des Prüfberichts)"
+
+msgid "Premier rapport : pas encore de comparaison possible."
+msgstr "Erster Bericht: noch kein Vergleich möglich."
+
+#, php-format
+msgid "Aucune évolution depuis le rapport du %s."
+msgstr "Keine Veränderung seit dem Bericht vom %s."
+
+#, php-format
+msgid "Depuis le rapport du %1$s : %2$d contrôle(s) dégradé(s), %3$d amélioré(s)."
+msgstr "Seit dem Bericht vom %1$s: %2$d Prüfung(en) verschlechtert, %3$d verbessert."
+
+msgid "En échec"
+msgstr "Fehlgeschlagen"
+
+msgid "En alerte"
+msgstr "Warnung"
+
+msgid "Contrôles exécutés"
+msgstr "Ausgeführte Prüfungen"
+
+msgid "Contrôles OK"
+msgstr "Prüfungen OK"
+
+msgid "Contrôles en alerte"
+msgstr "Prüfungen mit Warnung"
+
+msgid "Contrôles en échec"
+msgstr "Fehlgeschlagene Prüfungen"
+
+msgid "Évolution depuis le rapport précédent"
+msgstr "Veränderung seit dem letzten Bericht"
+
+msgid "Gravité"
+msgstr "Schweregrad"
+
+msgid "Domaine"
+msgstr "Bereich"
+
+msgid "Constat"
+msgstr "Befund"
+
+msgid "Recommandation"
+msgstr "Empfehlung"
+
+msgid "Points à traiter"
+msgstr "Zu behebende Punkte"
+
+msgid "Les notifications par e-mail de GLPI sont désactivées : activez-les dans Configuration > Notifications."
+msgstr "Die E-Mail-Benachrichtigungen von GLPI sind deaktiviert: Aktivieren Sie sie unter Einstellungen > Benachrichtigungen."
+
+msgid "Rapport d'audit mis en file d'envoi."
+msgstr "Prüfbericht zum Versand eingereiht."
+
+msgid "Aucune notification active n'a pu envoyer le rapport : vérifiez la notification et ses destinataires."
+msgstr "Keine aktive Benachrichtigung konnte den Bericht senden: Prüfen Sie die Benachrichtigung und ihre Empfänger."
+
+msgid "Réglages du rapport d'audit enregistrés."
+msgstr "Einstellungen des Prüfberichts gespeichert."
+
+msgid "Rapport périodique par e-mail"
+msgstr "Regelmäßiger E-Mail-Bericht"
+
+msgid "Reçoit automatiquement la synthèse de cet audit : nombre de contrôles OK, en alerte et en échec, points à traiter avec leur recommandation et évolution depuis le rapport précédent. Aucun mot de passe ni secret n'est envoyé, seulement les constats."
+msgstr "Erhalten Sie automatisch eine Zusammenfassung dieser Prüfung: Anzahl der Prüfungen OK, mit Warnung und fehlgeschlagen, zu behebende Punkte mit Empfehlung und die Veränderung seit dem letzten Bericht. Es werden keine Passwörter oder Geheimnisse gesendet, nur die Befunde."
+
+msgid "Fréquence"
+msgstr "Häufigkeit"
+
+msgid "Désactivé"
+msgstr "Deaktiviert"
+
+msgid "Hebdomadaire"
+msgstr "Wöchentlich"
+
+msgid "Mensuel"
+msgstr "Monatlich"
+
+msgid "N'envoyer que s'il y a un changement ou une anomalie"
+msgstr "Nur senden, wenn sich etwas geändert hat oder ein Problem besteht"
+
+msgid "Adresses supplémentaires (facultatif)"
+msgstr "Zusätzliche Adressen (optional)"
+
+msgid "Une adresse par ligne, pour des destinataires sans compte GLPI. Par défaut, le rapport part à l'administrateur GLPI ; profils et groupes se choisissent dans les destinataires de la notification."
+msgstr "Eine Adresse pro Zeile, für Empfänger ohne GLPI-Konto. Standardmäßig geht der Bericht an den GLPI-Administrator; Profile und Gruppen werden in den Empfängern der Benachrichtigung ausgewählt."
+
+msgid "Enregistrer"
+msgstr "Speichern"
+
+msgid "Enregistrer et envoyer maintenant"
+msgstr "Speichern und jetzt senden"
+
+msgid "Modifier le modèle et les destinataires"
+msgstr "Vorlage und Empfänger bearbeiten"
+
+#, php-format
+msgid "Dernier rapport envoyé le %s"
+msgstr "Letzter Bericht gesendet am %s"
+
+msgid "Aucun rapport envoyé pour l'instant."
+msgstr "Noch kein Bericht gesendet."

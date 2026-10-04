@@ -65,7 +65,9 @@ function plugin_init_configurationglpiauto(): void
     $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['configurationglpiauto'] = 'front/wizard.php';
 
     Plugin::registerClass(ConfigurationProfile::class);
-    Plugin::registerClass(Config::class);
+    // Issue #285 : `notificationtemplates_types` rend la ligne de configuration porteuse de la
+    // notification « Rapport d'audit périodique » (voir NotificationTargetConfig).
+    Plugin::registerClass(Config::class, ['notificationtemplates_types' => true]);
     Plugin::registerClass(FuelType::class);
     Plugin::registerClass(ConfigHistory::class);
 }

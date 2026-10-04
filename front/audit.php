@@ -15,6 +15,7 @@
  * -------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Configurationglpiauto\Audit\AuditReportCron;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditService;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
@@ -33,6 +34,56 @@ if (isset($_POST['fix'])) {
         Session::addMessageAfterRedirect(__('Correction appliquée.', 'configurationglpiauto'));
     } catch (\LogicException $e) {
         Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+    }
+
+    Html::redirect($_SERVER['PHP_SELF']);
+}
+
+// Issue #285 : réglages du rapport d'audit périodique par e-mail. La fréquence est celle de la
+// tâche planifiée GLPI elle-même (désactivée / hebdomadaire / mensuelle), pour qu'elle reste
+// cohérente avec Configuration > Actions automatiques.
+$reportTask = new CronTask();
+$reportTaskFound = $reportTask->getFromDBbyName(AuditReportCron::class, AuditReportCron::TASK_NAME);
+
+if (isset($_POST['save_report']) || isset($_POST['send_report_now'])) {
+    Session::checkRight(Config::$rightname, UPDATE);
+
+    $config = Config::getConfig();
+    $config->update([
+        'id'                          => $config->getID(),
+        'audit_report_only_on_change' => !empty($_POST['audit_report_only_on_change']) ? 1 : 0,
+        'audit_report_emails'         => (string) ($_POST['audit_report_emails'] ?? ''),
+    ]);
+
+    $frequencies = ['week' => WEEK_TIMESTAMP, 'month' => MONTH_TIMESTAMP];
+    $frequency = (string) ($_POST['audit_report_frequency'] ?? 'off');
+    if ($reportTaskFound) {
+        $reportTask->update([
+            'id'        => $reportTask->getID(),
+            'state'     => isset($frequencies[$frequency]) ? CronTask::STATE_WAITING : CronTask::STATE_DISABLE,
+            'frequency' => $frequencies[$frequency] ?? $reportTask->fields['frequency'],
+        ]);
+    }
+
+    if (isset($_POST['send_report_now'])) {
+        global $CFG_GLPI;
+        if (empty($CFG_GLPI['use_notifications']) || empty($CFG_GLPI['notifications_mailing'])) {
+            Session::addMessageAfterRedirect(
+                __('Les notifications par e-mail de GLPI sont désactivées : activez-les dans Configuration > Notifications.', 'configurationglpiauto'),
+                false,
+                ERROR
+            );
+        } elseif (AuditReportCron::run(true)) {
+            Session::addMessageAfterRedirect(__('Rapport d\'audit mis en file d\'envoi.', 'configurationglpiauto'));
+        } else {
+            Session::addMessageAfterRedirect(
+                __('Aucune notification active n\'a pu envoyer le rapport : vérifiez la notification et ses destinataires.', 'configurationglpiauto'),
+                false,
+                ERROR
+            );
+        }
+    } else {
+        Session::addMessageAfterRedirect(__('Réglages du rapport d\'audit enregistrés.', 'configurationglpiauto'));
     }
 
     Html::redirect($_SERVER['PHP_SELF']);
@@ -74,7 +125,31 @@ if ($newCriticalCount > 0) {
     $config->update(['id' => $config->getID(), 'audit_watch_state' => json_encode($watchState)]);
 }
 
+global $DB, $CFG_GLPI;
+$reportNotificationId = 0;
+foreach ($DB->request([
+    'SELECT' => ['id'],
+    'FROM'   => Notification::getTable(),
+    'WHERE'  => ['itemtype' => Config::class, 'event' => AuditReportCron::EVENT],
+    'LIMIT'  => 1,
+]) as $row) {
+    $reportNotificationId = (int) $row['id'];
+}
+$reportState = json_decode((string) ($config->fields['audit_report_state'] ?? ''), true);
+$reportFrequency = 'off';
+if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_DISABLE) {
+    $reportFrequency = (int) $reportTask->fields['frequency'] >= MONTH_TIMESTAMP ? 'month' : 'week';
+}
+
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/audit.html.twig', [
+    'report' => [
+        'frequency'          => $reportFrequency,
+        'only_on_change'     => !empty($config->fields['audit_report_only_on_change']),
+        'emails'             => implode("\n", $config->getAuditReportEmails()),
+        'last_sent'          => is_array($reportState) && isset($reportState['date']) ? Html::convDateTime($reportState['date']) : null,
+        'notification_url'   => $reportNotificationId > 0 ? Notification::getFormURLWithID($reportNotificationId) : null,
+        'notifications_on'   => !empty($CFG_GLPI['use_notifications']) && !empty($CFG_GLPI['notifications_mailing']),
+    ],
     'findings'              => $findings,
     'can_fix'               => Session::haveRight(Config::$rightname, UPDATE),
     'csrf_token'            => Session::getNewCSRFToken(),

@@ -21,12 +21,16 @@ use CronTask;
 use DBConnection;
 use DropdownTranslation;
 use GlpiPlugin\Configurationglpiauto\AssetsignTriggerBuilder;
+use GlpiPlugin\Configurationglpiauto\Audit\AuditReportCron;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditWatchCron;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
+use GlpiPlugin\Configurationglpiauto\NotificationTargetConfig;
 use GlpiPlugin\Configurationglpiauto\Profile;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use Migration;
+use Notification;
+use NotificationTemplate;
 
 /**
  * Handles plugin install/uninstall. Kept out of hook.php so it can evolve independently, same
@@ -144,6 +148,9 @@ final class Installer
                 `dashboard_enabled` tinyint NOT NULL DEFAULT 0,
                 `audit_watch_enabled` tinyint NOT NULL DEFAULT 0,
                 `audit_watch_state` text,
+                `audit_report_only_on_change` tinyint NOT NULL DEFAULT 1,
+                `audit_report_emails` text,
+                `audit_report_state` text,
                 `inventory_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -398,6 +405,10 @@ final class Installer
             // AuditWatchCron/remis à zéro par front/audit.php.
             $migration->addField(self::CONFIGS_TABLE, 'audit_watch_enabled', 'bool', ['value' => 1]);
             $migration->addField(self::CONFIGS_TABLE, 'audit_watch_state', 'text');
+            // Issue #285 : rapport d'audit périodique (voir AuditReportCron).
+            $migration->addField(self::CONFIGS_TABLE, 'audit_report_only_on_change', 'bool', ['value' => 1]);
+            $migration->addField(self::CONFIGS_TABLE, 'audit_report_emails', 'text');
+            $migration->addField(self::CONFIGS_TABLE, 'audit_report_state', 'text');
         }
 
         // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape
@@ -618,6 +629,14 @@ final class Installer
             'mode'  => CronTask::MODE_INTERNAL,
         ]);
 
+        // Rapport d'audit périodique (issue #285) : même principe, désactivé tant que
+        // l'administrateur ne l'active pas (front/audit.php), plus sa notification modifiable.
+        CronTask::register(AuditReportCron::class, AuditReportCron::TASK_NAME, WEEK_TIMESTAMP, [
+            'state' => CronTask::STATE_DISABLE,
+            'mode'  => CronTask::MODE_INTERNAL,
+        ]);
+        $this->seedAuditReportNotification();
+
         return true;
     }
 
@@ -645,6 +664,15 @@ final class Installer
         // qui dépend de GLPI cœur, puis les tables propres au plugin).
         CronTask::unregister('configurationglpiauto');
 
+        // Issue #285 : notification et modèle du rapport d'audit (purge en cascade de leurs
+        // cibles/traductions via les classes GLPI).
+        foreach ($DB->request(['SELECT' => ['id'], 'FROM' => 'glpi_notifications', 'WHERE' => ['itemtype' => Config::class]]) as $row) {
+            (new Notification())->delete(['id' => $row['id']], true);
+        }
+        foreach ($DB->request(['SELECT' => ['id'], 'FROM' => 'glpi_notificationtemplates', 'WHERE' => ['itemtype' => Config::class]]) as $row) {
+            (new NotificationTemplate())->delete(['id' => $row['id']], true);
+        }
+
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::PROFILES_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::CONFIGS_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::FUELTYPES_TABLE . "`");
@@ -653,6 +681,91 @@ final class Installer
         Profile::uninstall();
 
         return true;
+    }
+
+    /**
+     * Issue #285 : notification « Rapport d'audit périodique » + modèle (FR par défaut, EN pour les
+     * destinataires en anglais), destinataire par défaut l'administrateur GLPI. Idempotent : jamais
+     * recréée si elle existe (l'administrateur a pu modifier modèle et destinataires).
+     */
+    private function seedAuditReportNotification(): void
+    {
+        global $DB;
+
+        $exists = $DB->request([
+            'FROM'  => 'glpi_notifications',
+            'WHERE' => ['itemtype' => Config::class, 'event' => AuditReportCron::EVENT],
+        ])->count() > 0;
+        if ($exists) {
+            return;
+        }
+
+        $templateId = (new NotificationTemplate())->add([
+            'name'     => 'Configuration GLPI Auto - Rapport d\'audit périodique',
+            'itemtype' => Config::class,
+            'comment'  => 'Envoyé par la tâche automatique « auditreport » (issue #285).',
+        ]);
+
+        $translations = [
+            '' => [
+                'subject' => 'Rapport d\'audit : ##audit.critical## en échec, ##audit.warning## en alerte',
+                'intro'   => 'Rapport d\'audit de configuration du ##audit.date##',
+                'summary' => 'Contrôles exécutés : ##audit.total## — OK : ##audit.ok## — en alerte : ##audit.warning## — en échec : ##audit.critical##',
+                'todo'    => 'Points à traiter',
+                'reco'    => 'Recommandation',
+                'link'    => 'Ouvrir l\'audit dans GLPI',
+                'sep'     => ' : ',
+            ],
+            'en_GB' => [
+                'subject' => 'Audit report: ##audit.critical## failing, ##audit.warning## warning',
+                'intro'   => 'Configuration audit report of ##audit.date##',
+                'summary' => 'Checks run: ##audit.total## — OK: ##audit.ok## — warning: ##audit.warning## — failing: ##audit.critical##',
+                'todo'    => 'Items to address',
+                'reco'    => 'Recommendation',
+                'link'    => 'Open the audit in GLPI',
+                'sep'     => ': ',
+            ],
+        ];
+        foreach ($translations as $language => $t) {
+            $DB->insert('glpi_notificationtemplatetranslations', [
+                'notificationtemplates_id' => $templateId,
+                'language'                 => $language,
+                'subject'                  => $t['subject'],
+                'content_text'             => $t['intro'] . "\n\n" . $t['summary'] . "\n##audit.evolution##\n\n"
+                    . $t['todo'] . rtrim($t['sep']) . "\n##FOREACHproblems##- [##problem.severity##] ##problem.title## (##problem.domain##)\n"
+                    . "  " . $t['reco'] . $t['sep'] . "##problem.recommendation##\n##ENDFOREACHproblems##\n"
+                    . $t['link'] . $t['sep'] . "##audit.url##",
+                'content_html'             => '<p><strong>' . $t['intro'] . '</strong></p>'
+                    . '<p>' . $t['summary'] . '<br>##audit.evolution##</p>'
+                    . '<p><strong>' . $t['todo'] . '</strong></p><ul>##FOREACHproblems##'
+                    . '<li><strong>[##problem.severity##] ##problem.title##</strong> (##problem.domain##)<br>'
+                    . $t['reco'] . $t['sep'] . '##problem.recommendation##</li>##ENDFOREACHproblems##</ul>'
+                    . '<p><a href="##audit.url##">' . $t['link'] . '</a></p>',
+            ]);
+        }
+
+        $notificationId = (new Notification())->add([
+            'name'         => 'Configuration GLPI Auto - Rapport d\'audit périodique',
+            'entities_id'  => 0,
+            'is_recursive' => 1,
+            'itemtype'     => Config::class,
+            'event'        => AuditReportCron::EVENT,
+            'is_active'    => 1,
+        ]);
+        $DB->insert('glpi_notifications_notificationtemplates', [
+            'notifications_id'         => $notificationId,
+            'mode'                     => 'mailing',
+            'notificationtemplates_id' => $templateId,
+        ]);
+        // Destinataires par défaut : l'administrateur GLPI et les adresses supplémentaires saisies
+        // sur front/audit.php (cible vide tant qu'aucune adresse n'est saisie).
+        foreach ([Notification::GLOBAL_ADMINISTRATOR, NotificationTargetConfig::EXTRA_ADDRESSES_TARGET] as $target) {
+            $DB->insert('glpi_notificationtargets', [
+                'items_id'         => $target,
+                'type'             => Notification::USER_TYPE,
+                'notifications_id' => $notificationId,
+            ]);
+        }
     }
 
     private function insertDefaultProfiles(): void

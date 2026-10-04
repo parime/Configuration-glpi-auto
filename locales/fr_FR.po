@@ -3796,3 +3796,114 @@ msgstr "déjà réglé, conservé"
 
 msgid "statut à créer (cochez-le ci-dessus)"
 msgstr "statut à créer (cochez-le ci-dessus)"
+
+msgid "Envoie par e-mail le rapport périodique de l'audit de configuration"
+msgstr "Envoie par e-mail le rapport périodique de l'audit de configuration"
+
+msgid "Rapport d'audit périodique"
+msgstr "Rapport d'audit périodique"
+
+msgid "Adresses supplémentaires (réglage du rapport d'audit)"
+msgstr "Adresses supplémentaires (réglage du rapport d'audit)"
+
+msgid "Premier rapport : pas encore de comparaison possible."
+msgstr "Premier rapport : pas encore de comparaison possible."
+
+#, php-format
+msgid "Aucune évolution depuis le rapport du %s."
+msgstr "Aucune évolution depuis le rapport du %s."
+
+#, php-format
+msgid "Depuis le rapport du %1$s : %2$d contrôle(s) dégradé(s), %3$d amélioré(s)."
+msgstr "Depuis le rapport du %1$s : %2$d contrôle(s) dégradé(s), %3$d amélioré(s)."
+
+msgid "En échec"
+msgstr "En échec"
+
+msgid "En alerte"
+msgstr "En alerte"
+
+msgid "Contrôles exécutés"
+msgstr "Contrôles exécutés"
+
+msgid "Contrôles OK"
+msgstr "Contrôles OK"
+
+msgid "Contrôles en alerte"
+msgstr "Contrôles en alerte"
+
+msgid "Contrôles en échec"
+msgstr "Contrôles en échec"
+
+msgid "Évolution depuis le rapport précédent"
+msgstr "Évolution depuis le rapport précédent"
+
+msgid "Gravité"
+msgstr "Gravité"
+
+msgid "Domaine"
+msgstr "Domaine"
+
+msgid "Constat"
+msgstr "Constat"
+
+msgid "Recommandation"
+msgstr "Recommandation"
+
+msgid "Points à traiter"
+msgstr "Points à traiter"
+
+msgid "Les notifications par e-mail de GLPI sont désactivées : activez-les dans Configuration > Notifications."
+msgstr "Les notifications par e-mail de GLPI sont désactivées : activez-les dans Configuration > Notifications."
+
+msgid "Rapport d'audit mis en file d'envoi."
+msgstr "Rapport d'audit mis en file d'envoi."
+
+msgid "Aucune notification active n'a pu envoyer le rapport : vérifiez la notification et ses destinataires."
+msgstr "Aucune notification active n'a pu envoyer le rapport : vérifiez la notification et ses destinataires."
+
+msgid "Réglages du rapport d'audit enregistrés."
+msgstr "Réglages du rapport d'audit enregistrés."
+
+msgid "Rapport périodique par e-mail"
+msgstr "Rapport périodique par e-mail"
+
+msgid "Reçoit automatiquement la synthèse de cet audit : nombre de contrôles OK, en alerte et en échec, points à traiter avec leur recommandation et évolution depuis le rapport précédent. Aucun mot de passe ni secret n'est envoyé, seulement les constats."
+msgstr "Reçoit automatiquement la synthèse de cet audit : nombre de contrôles OK, en alerte et en échec, points à traiter avec leur recommandation et évolution depuis le rapport précédent. Aucun mot de passe ni secret n'est envoyé, seulement les constats."
+
+msgid "Fréquence"
+msgstr "Fréquence"
+
+msgid "Désactivé"
+msgstr "Désactivé"
+
+msgid "Hebdomadaire"
+msgstr "Hebdomadaire"
+
+msgid "Mensuel"
+msgstr "Mensuel"
+
+msgid "N'envoyer que s'il y a un changement ou une anomalie"
+msgstr "N'envoyer que s'il y a un changement ou une anomalie"
+
+msgid "Adresses supplémentaires (facultatif)"
+msgstr "Adresses supplémentaires (facultatif)"
+
+msgid "Une adresse par ligne, pour des destinataires sans compte GLPI. Par défaut, le rapport part à l'administrateur GLPI ; profils et groupes se choisissent dans les destinataires de la notification."
+msgstr "Une adresse par ligne, pour des destinataires sans compte GLPI. Par défaut, le rapport part à l'administrateur GLPI ; profils et groupes se choisissent dans les destinataires de la notification."
+
+msgid "Enregistrer"
+msgstr "Enregistrer"
+
+msgid "Enregistrer et envoyer maintenant"
+msgstr "Enregistrer et envoyer maintenant"
+
+msgid "Modifier le modèle et les destinataires"
+msgstr "Modifier le modèle et les destinataires"
+
+#, php-format
+msgid "Dernier rapport envoyé le %s"
+msgstr "Dernier rapport envoyé le %s"
+
+msgid "Aucun rapport envoyé pour l'instant."
+msgstr "Aucun rapport envoyé pour l'instant."
