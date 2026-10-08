@@ -52,8 +52,14 @@ parameters:
             # atteint en pratique, mais PHPStan ne peut pas le déduire sans cette annotation absente
             # du cœur GLPI. Confirmé en lisant chaque site : la variable est bien toujours définie
             # sur tout chemin qui atteint réellement le code suivant.
+            # reportUnmatched: false — les versions récentes du cœur GLPI 11 (image 11.0.x de la CI
+            # officielle, depuis le 7 octobre 2026) annotent enfin ces méthodes : le faux positif
+            # n'existe plus avec elles, mais subsiste avec les autres versions analysées (GLPI 12,
+            # image figée du job PHPStan). Sans ce réglage, l'exception devenue inutile sur l'une
+            # faisait échouer l'analyse (« Ignored error pattern … was not matched »).
             identifier: variable.undefined
             path: front/blueprint_import.php
+            reportUnmatched: false
         -
             # `$CFG_GLPI` est une globale peuplée par le bootstrap GLPI avant l'inclusion de tout
             # front-controller — jamais définie localement dans ce fichier (comme dans tous les
