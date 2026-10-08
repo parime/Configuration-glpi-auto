@@ -85,6 +85,10 @@ Toutes les autres captures d'écran (les 19 étapes en détail) sont dans le [tu
   d'instance de base de donnees, en plus des types de materiel standards (ordinateurs, ecrans,
   reseau, peripheriques, telephones)
 - Activation optionnelle de l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)
+- Audit de configuration de l'instance GLPI (comptes par defaut, politique de mots de passe,
+  notifications, SLA, statuts...) avec correction en un clic quand le bon reglage est sans
+  ambiguite, verification continue et rapport periodique par e-mail (hebdomadaire ou mensuel,
+  notification GLPI modifiable, aucun secret transmis)
 - Flux RSS utiles (avis de securite CERT-FR, notes de version GLPI) et suivi de la version du
   plugin par rapport a la derniere release GitHub
 - Interface traduite en 6 langues (francais, anglais, allemand, italien, espagnol, portugais du Bresil)
@@ -101,7 +105,8 @@ Sur GLPI 12 (verifie sur 12.0.0-rc2) :
 - chaque OLA est rattache au groupe "Support N1" (GLPI 12 exige un groupe par OLA) ;
 - limite connue, cote coeur GLPI 12.0.0-rc2 : l'element choisi dans une question de type
   "Element" d'un formulaire (vehicule, salle, equipement) n'est pas encore lie au ticket cree.
-- Base de donnees: MySQL 5.7+, MariaDB 10.2+, PostgreSQL 9.6+
+- Base de donnees : celle exigee par GLPI 11 (MySQL 8.0+ ou MariaDB 10.6+) ; GLPI ne prend pas en
+  charge PostgreSQL
 
 ## Installation
 

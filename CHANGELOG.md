@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **README** : prérequis base de données corrigés (GLPI 11 exige MySQL 8.0+ ou MariaDB 10.6+ et ne
+  prend pas en charge PostgreSQL, annoncé à tort) ; ajout de l'audit de configuration et de son
+  rapport périodique par e-mail à la liste des fonctionnalités.
 - **CI** : l'analyse PHPStan de la CI officielle GLPI échouait depuis le 7 octobre 2026 (« Ignored
   error pattern … was not matched ») : une exception devenue inutile avec les versions récentes du
   cœur GLPI 11 est désormais tolérée (`reportUnmatched: false`), sans retirer la protection pour les

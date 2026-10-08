@@ -83,6 +83,10 @@ All other screenshots (all 19 steps in detail) are in the [tutorial](docs/TUTORI
   instance types, on top of standard equipment types (computers, monitors, network, peripherals,
   phones)
 - Optional activation of GLPI's native inventory (FusionInventory/GLPI Agent)
+- Configuration audit of the GLPI instance (default accounts, password policy, notifications,
+  SLAs, statuses...) with one-click fixes when the right setting is unambiguous, continuous
+  checking and a periodic email report (weekly or monthly, editable GLPI notification, no secret
+  sent)
 - Useful RSS feeds (CERT-FR security advisories, GLPI release notes) and plugin version tracking
   against the latest GitHub release
 - Interface translated into 6 languages (French, English, German, Italian, Spanish, Brazilian Portuguese)
@@ -99,7 +103,8 @@ On GLPI 12 (checked on 12.0.0-rc2):
 - each OLA is attached to the "Support N1" group (GLPI 12 requires a group per OLA);
 - known limitation, in GLPI 12.0.0-rc2 core: the item picked in a form's "Item" question
   (vehicle, room, equipment) is not linked to the created ticket yet.
-- Database: MySQL 5.7+, MariaDB 10.2+, PostgreSQL 9.6+
+- Database: the one required by GLPI 11 (MySQL 8.0+ or MariaDB 10.6+); GLPI does not support
+  PostgreSQL
 
 ## Installation
 
