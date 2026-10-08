@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **CI** : l'analyse PHPStan de la CI officielle GLPI échouait depuis le 7 octobre 2026 (« Ignored
+  error pattern … was not matched ») : une exception devenue inutile avec les versions récentes du
+  cœur GLPI 11 est désormais tolérée (`reportUnmatched: false`), sans retirer la protection pour les
+  autres versions analysées.
+
 ### Added
 
 - **Rapport d'audit périodique par e-mail** (#285) : nouvelle action automatique `auditreport`
