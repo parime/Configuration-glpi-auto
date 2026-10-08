@@ -62,7 +62,7 @@ jobs:
     # meme recette que le plugin jumeau assetsign-glpi (`.github/workflows/ci.yml`), qui l'a
     # eprouvee la premiere.
     env:
-      GLPI_IMAGE: glpi/glpi:11.0.8
+      GLPI_IMAGE: glpi/glpi:11.0.11
 
     steps:
       - name: "Checkout code"
@@ -366,7 +366,7 @@ jobs:
     # compatibilite GLPI 12 (src/Compat/) pourrait regresser silencieusement.
     # Meme recette que le plugin jumeau glpi-iso27001-management (job real-glpi12-install).
     env:
-      GLPI12_IMAGE: glpi/glpi:12.0.0-rc2
+      GLPI12_IMAGE: glpi/glpi:12.0.0-rc3
 
     steps:
       - name: "Checkout code"
@@ -456,7 +456,7 @@ jobs:
 
       - name: Extrait le code de GLPI 11 et GLPI 12 des images officielles
         run: |
-          for v in 11.0.9 12.0.0-rc2; do
+          for v in 11.0.11 12.0.0-rc3; do
             docker create --name "glpi-$v" "glpi/glpi:$v"
             mkdir -p "/tmp/glpi-$v"
             docker cp "glpi-$v:/var/www/glpi/src" "/tmp/glpi-$v/src"
@@ -467,8 +467,8 @@ jobs:
         # GLPI 11 : PHP 8.2 a 8.5 ; GLPI 12 : PHP 8.3 a 8.5.
         run: |
           status=0
-          for combo in "8.2 11.0.9" "8.3 11.0.9" "8.4 11.0.9" "8.5 11.0.9" \
-                       "8.3 12.0.0-rc2" "8.4 12.0.0-rc2" "8.5 12.0.0-rc2"; do
+          for combo in "8.2 11.0.11" "8.3 11.0.11" "8.4 11.0.11" "8.5 11.0.11" \
+                       "8.3 12.0.0-rc3" "8.4 12.0.0-rc3" "8.5 12.0.0-rc3"; do
             set -- $combo
             docker run --rm -v "$PWD:/p" -v "/tmp/glpi-$2:/g" "php:$1-cli" \
               php /p/.github/scripts/compat-smoke.php /g /p || status=1
@@ -478,7 +478,9 @@ jobs:
   quality-gate:
     name: "Quality Gate"
     runs-on: ubuntu-latest
-    needs: [phpstan, php-cs-fixer, phpunit, trivy, semgrep, dependabot, validation, locales, glpi12, php-compat]
+    # `ci` : la CI officielle GLPI (installation + tests sur chaque PHP/base de la matrice) - absente
+    # jusqu'au 8 octobre 2026, une PR pouvait donc etre fusionnee avec ces jobs en echec.
+    needs: [ci, phpstan, php-cs-fixer, phpunit, trivy, semgrep, dependabot, validation, locales, glpi12, php-compat]
 
     steps:
       - name: "All checks passed"

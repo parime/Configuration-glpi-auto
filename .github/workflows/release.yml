@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
 
 env:
-  GLPI_IMAGE: glpi/glpi:11.0.8
+  GLPI_IMAGE: glpi/glpi:11.0.11
 
 jobs:
   release:
