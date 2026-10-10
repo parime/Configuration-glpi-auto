@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Compatibilité GLPI 12** : installation, suite d'intégration et chargement des classes vérifiés en
+  CI sur GLPI 12.0.0 finale (sortie le 7 octobre 2026) au lieu de la 12.0.0-rc3. La limite connue
+  sur les questions « Élément » des formulaires reste présente dans le cœur GLPI 12.0.0 (#284).
+
 ### Fixed
 
 - **README** : prérequis base de données corrigés (GLPI 11 exige MySQL 8.0+ ou MariaDB 10.6+ et ne
