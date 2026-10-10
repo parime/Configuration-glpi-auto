@@ -38,7 +38,7 @@ final class ItemAnswer
     }
 
     /**
-     * GLPI 12.0.0-rc2 core bug: `AssociatedItemsFieldStrategy::isValidAnswer()` still expects the
+     * GLPI 12 core bug (12.0.0-rc2 up to 12.0.0 final, still on GLPI main on 2026-10-10): `AssociatedItemsFieldStrategy::isValidAnswer()` still expects the
      * GLPI 11 `items_id` key, so a `QuestionTypeItem` answer (now `items_ids`) is never linked to
      * the created ticket, whatever the strategy — the plugin's destination config is right, GLPI
      * drops it. Marks the test incomplete instead of failing while the link is missing on GLPI 12;
