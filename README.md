@@ -98,12 +98,12 @@ Toutes les autres captures d'écran (les 19 étapes en détail) sont dans le [tu
 - PHP 8.2+
 - GLPI 11.0+ ou GLPI 12 (un seul paquet pour les deux versions, il s'adapte au chargement)
 
-Sur GLPI 12 (verifie sur 12.0.0-rc2) :
+Sur GLPI 12 (verifie en CI sur GLPI 12.0.0, version finale du 7 octobre 2026) :
 
 - les "categories de la base de connaissances" deviennent des articles conteneurs sous l'article
   racine (GLPI 12 a supprime les categories) ;
 - chaque OLA est rattache au groupe "Support N1" (GLPI 12 exige un groupe par OLA) ;
-- limite connue, cote coeur GLPI 12.0.0-rc2 : l'element choisi dans une question de type
+- limite connue, cote coeur GLPI (toujours presente en 12.0.0) : l'element choisi dans une question de type
   "Element" d'un formulaire (vehicule, salle, equipement) n'est pas encore lie au ticket cree.
 - Base de donnees : celle exigee par GLPI 11 (MySQL 8.0+ ou MariaDB 10.6+) ; GLPI ne prend pas en
   charge PostgreSQL

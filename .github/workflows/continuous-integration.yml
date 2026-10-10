@@ -366,7 +366,7 @@ jobs:
     # compatibilite GLPI 12 (src/Compat/) pourrait regresser silencieusement.
     # Meme recette que le plugin jumeau glpi-iso27001-management (job real-glpi12-install).
     env:
-      GLPI12_IMAGE: glpi/glpi:12.0.0-rc3
+      GLPI12_IMAGE: glpi/glpi:12.0.0
 
     steps:
       - name: "Checkout code"
@@ -456,7 +456,7 @@ jobs:
 
       - name: Extrait le code de GLPI 11 et GLPI 12 des images officielles
         run: |
-          for v in 11.0.11 12.0.0-rc3; do
+          for v in 11.0.11 12.0.0; do
             docker create --name "glpi-$v" "glpi/glpi:$v"
             mkdir -p "/tmp/glpi-$v"
             docker cp "glpi-$v:/var/www/glpi/src" "/tmp/glpi-$v/src"
@@ -468,7 +468,7 @@ jobs:
         run: |
           status=0
           for combo in "8.2 11.0.11" "8.3 11.0.11" "8.4 11.0.11" "8.5 11.0.11" \
-                       "8.3 12.0.0-rc3" "8.4 12.0.0-rc3" "8.5 12.0.0-rc3"; do
+                       "8.3 12.0.0" "8.4 12.0.0" "8.5 12.0.0"; do
             set -- $combo
             docker run --rm -v "$PWD:/p" -v "/tmp/glpi-$2:/g" "php:$1-cli" \
               php /p/.github/scripts/compat-smoke.php /g /p || status=1
