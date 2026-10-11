@@ -161,7 +161,7 @@ class FollowupLibraryBuilder
     private function getOrCreateTemplate(string $name, string $content): int
     {
         $item = new ITILFollowupTemplate();
-        if ($item->getFromDBByCrit(['name' => $name])) {
+        if (Lookup::loadFirst($item, ['name' => $name])) {
             return (int) $item->getID();
         }
 

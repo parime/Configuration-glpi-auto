@@ -137,7 +137,7 @@ class GeneralSettingsBuilder
     private function enableAuditWatch(): void
     {
         $cronTask = new CronTask();
-        if ($cronTask->getFromDBByCrit(['itemtype' => AuditWatchCron::class, 'name' => 'auditwatch'])) {
+        if (Lookup::loadFirst($cronTask, ['itemtype' => AuditWatchCron::class, 'name' => 'auditwatch'])) {
             $cronTask->update(['id' => $cronTask->getID(), 'state' => CronTask::STATE_WAITING]);
         }
     }
@@ -184,14 +184,14 @@ class GeneralSettingsBuilder
 
         $notification = new Notification();
         foreach (self::NOTIFICATIONS_TO_ENABLE as $target) {
-            if ($notification->getFromDBByCrit(['itemtype' => $target['itemtype'], 'event' => $target['event']])) {
+            if (Lookup::loadFirst($notification, ['itemtype' => $target['itemtype'], 'event' => $target['event']])) {
                 $notification->update(['id' => $notification->getID(), 'is_active' => 1]);
             }
         }
 
         $cronTask = new CronTask();
         foreach (self::CRONTASKS_TO_ENABLE as $target) {
-            if ($cronTask->getFromDBByCrit(['itemtype' => $target['itemtype'], 'name' => $target['name']])) {
+            if (Lookup::loadFirst($cronTask, ['itemtype' => $target['itemtype'], 'name' => $target['name']])) {
                 $cronTask->update(['id' => $cronTask->getID(), 'state' => CronTask::STATE_WAITING]);
             }
         }
@@ -230,7 +230,7 @@ class GeneralSettingsBuilder
     private function ensureCommitteeValidationStep(): void
     {
         $step = new ValidationStep();
-        if (!$step->getFromDBByCrit(['name' => 'Validation comité (2/3)'])) {
+        if (!Lookup::loadFirst($step, ['name' => 'Validation comité (2/3)'])) {
             $step->add([
                 'name' => 'Validation comité (2/3)',
                 'minimal_required_validation_percent' => 67,
@@ -252,7 +252,7 @@ class GeneralSettingsBuilder
         $ids = [];
         $state = new ProjectState();
         foreach (['New' => 'unstarted', 'Processing' => 'inprogress', 'Closed' => 'completed'] as $name => $bucket) {
-            if (!$state->getFromDBByCrit(['name' => $name])) {
+            if (!Lookup::loadFirst($state, ['name' => $name])) {
                 return [];
             }
             $ids["projecttask_{$bucket}_states_id"] = (int) $state->getID();

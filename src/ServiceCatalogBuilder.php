@@ -221,7 +221,7 @@ class ServiceCatalogBuilder
     private function getOrCreateFormCategory(array $branch, string $illustration): int
     {
         $item = new FormCategory();
-        if (!$item->getFromDBByCrit(['name' => $branch['icon'] . ' ' . $branch['name'], 'forms_categories_id' => 0])) {
+        if (!Lookup::loadFirst($item, ['name' => $branch['icon'] . ' ' . $branch['name'], 'forms_categories_id' => 0])) {
             $id = $item->add([
                 'name' => $branch['icon'] . ' ' . $branch['name'],
                 'forms_categories_id' => 0,
@@ -240,13 +240,13 @@ class ServiceCatalogBuilder
     private function resolveItilCategoryId(array $branch, array $path): ?int
     {
         $item = new ITILCategory();
-        if (!$item->getFromDBByCrit(['name' => $branch['name'], 'itilcategories_id' => 0])) {
+        if (!Lookup::loadFirst($item, ['name' => $branch['name'], 'itilcategories_id' => 0])) {
             return null;
         }
         $parentId = (int) $item->getID();
 
         foreach ($path as $name) {
-            if (!$item->getFromDBByCrit(['name' => $name, 'itilcategories_id' => $parentId])) {
+            if (!Lookup::loadFirst($item, ['name' => $name, 'itilcategories_id' => $parentId])) {
                 return null;
             }
             $parentId = (int) $item->getID();
@@ -258,7 +258,7 @@ class ServiceCatalogBuilder
     private function getOrCreateServiceForm(string $name, int $formCategoryId, int $itilCategoryId, string $illustration): void
     {
         $form = new Form();
-        if (!$form->getFromDBByCrit(['name' => $name, 'forms_categories_id' => $formCategoryId])) {
+        if (!Lookup::loadFirst($form, ['name' => $name, 'forms_categories_id' => $formCategoryId])) {
             $formId = $form->add([
                 'name' => $name,
                 'forms_categories_id' => $formCategoryId,
@@ -276,7 +276,7 @@ class ServiceCatalogBuilder
     private function addQuestions(int $formId): void
     {
         $section = new Section();
-        if (!$section->getFromDBByCrit(['forms_forms_id' => $formId])) {
+        if (!Lookup::loadFirst($section, ['forms_forms_id' => $formId])) {
             return;
         }
         $sectionId = (int) $section->getID();
@@ -303,7 +303,7 @@ class ServiceCatalogBuilder
     private function configureDestinationCategory(int $formId, int $itilCategoryId): void
     {
         $destination = new FormDestination();
-        if (!$destination->getFromDBByCrit(['forms_forms_id' => $formId, 'itemtype' => FormDestinationTicket::class])) {
+        if (!Lookup::loadFirst($destination, ['forms_forms_id' => $formId, 'itemtype' => FormDestinationTicket::class])) {
             return;
         }
 

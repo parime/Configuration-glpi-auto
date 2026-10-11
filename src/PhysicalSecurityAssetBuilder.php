@@ -133,7 +133,7 @@ class PhysicalSecurityAssetBuilder
         $withIcons = !empty($config->fields['physical_security_asset_icons_enabled']);
 
         $definition = new AssetDefinition();
-        $isNew = !$definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME]);
+        $isNew = !Lookup::loadFirst($definition, ['system_name' => self::SYSTEM_NAME]);
 
         if ($isNew) {
             $capacities = array_map(static fn (string $class): array => ['name' => $class], self::CAPACITIES);
@@ -205,7 +205,7 @@ class PhysicalSecurityAssetBuilder
             // of updating it (reproduced live before adding this).
             $item = new $itemtype();
             $crit = ['assets_assetdefinitions_id' => $definitionId, 'name' => [$name, $iconVariant]];
-            if (!$item->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($item, $crit)) {
                 $item->add(['assets_assetdefinitions_id' => $definitionId, 'name' => $displayName]);
             } elseif ($item->fields['name'] !== $displayName) {
                 $item->update(['id' => $item->getID(), 'name' => $displayName]);

@@ -87,7 +87,7 @@ class RequestTypeTranslationBuilder
             // PhysicalSecurityAssetBuilder — otherwise toggling icons off after a prior run baked
             // one into `name` would never find the row again (still searching for the bare name).
             $type = new RequestType();
-            if (!$type->getFromDBByCrit(['name' => [$englishName, $iconVariant]])) {
+            if (!Lookup::loadFirst($type, ['name' => [$englishName, $iconVariant]])) {
                 continue;
             }
             $id = (int) $type->getID();
@@ -105,7 +105,7 @@ class RequestTypeTranslationBuilder
                 $displayText = $icon !== '' && $withIcons ? trim($icon . ' ' . $text) : $text;
                 $translation = new DropdownTranslation();
                 $crit = ['itemtype' => RequestType::class, 'items_id' => $id, 'language' => $language, 'field' => 'name'];
-                if (!$translation->getFromDBByCrit($crit)) {
+                if (!Lookup::loadFirst($translation, $crit)) {
                     $translation->add($crit + ['value' => $displayText]);
                 } elseif ($translation->fields['value'] !== $displayText) {
                     // DropdownTranslation::prepareInputForUpdate() re-derives whether the update is

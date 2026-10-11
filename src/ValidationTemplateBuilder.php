@@ -101,7 +101,7 @@ class ValidationTemplateBuilder
     private function findCommitteeStepId(): ?int
     {
         $step = new ValidationStep();
-        if ($step->getFromDBByCrit(['name' => self::COMMITTEE_STEP_NAME])) {
+        if (Lookup::loadFirst($step, ['name' => self::COMMITTEE_STEP_NAME])) {
             return (int) $step->getID();
         }
 
@@ -111,7 +111,7 @@ class ValidationTemplateBuilder
     private function getOrCreateTemplate(string $name, string $content, int $validationStepId): int
     {
         $item = new ITILValidationTemplate();
-        if ($item->getFromDBByCrit(['name' => $name])) {
+        if (Lookup::loadFirst($item, ['name' => $name])) {
             return (int) $item->getID();
         }
 

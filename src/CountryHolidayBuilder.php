@@ -263,7 +263,7 @@ class CountryHolidayBuilder
         $date = sprintf('%04d-%02d-%02d', self::HOLIDAY_REFERENCE_YEAR, $month, $day);
 
         $item = new Holiday();
-        if ($item->getFromDBByCrit(['name' => $name, 'entities_id' => 0])) {
+        if (Lookup::loadFirst($item, ['name' => $name, 'entities_id' => 0])) {
             return (int) $item->getID();
         }
 
@@ -285,7 +285,7 @@ class CountryHolidayBuilder
     private function attachToCalendar(int $holidayId, int $calendarId): void
     {
         $link = new Calendar_Holiday();
-        if (!$link->getFromDBByCrit(['calendars_id' => $calendarId, 'holidays_id' => $holidayId])) {
+        if (!Lookup::loadFirst($link, ['calendars_id' => $calendarId, 'holidays_id' => $holidayId])) {
             $link->add(['calendars_id' => $calendarId, 'holidays_id' => $holidayId]);
         }
     }

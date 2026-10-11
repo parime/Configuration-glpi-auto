@@ -395,7 +395,7 @@ class FaqBuilder
     private function getOrCreate(string $name, string $answer): int
     {
         $item = new KnowbaseItem();
-        if ($item->getFromDBByCrit(['name' => $name])) {
+        if (Lookup::loadFirst($item, ['name' => $name])) {
             return (int) $item->getID();
         }
 
@@ -417,7 +417,7 @@ class FaqBuilder
     {
         $link = new Entity_KnowbaseItem();
         $crit = ['knowbaseitems_id' => $knowbaseitemsId, 'entities_id' => 0];
-        if (!$link->getFromDBByCrit($crit)) {
+        if (!Lookup::loadFirst($link, $crit)) {
             $link->add($crit + ['is_recursive' => 1]);
         }
     }
@@ -430,7 +430,7 @@ class FaqBuilder
         foreach ($translations as $language => $fields) {
             $translation = new KnowbaseItemTranslation();
             $crit = ['knowbaseitems_id' => $knowbaseitemsId, 'language' => $language];
-            if (!$translation->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($translation, $crit)) {
                 $translation->add($crit + ['name' => $fields['name'], 'answer' => $fields['answer'], 'users_id' => 0]);
             } elseif ($translation->fields['name'] !== $fields['name'] || $translation->fields['answer'] !== $fields['answer']) {
                 // Same add-only pitfall already fixed on Translations::applyIcon()/applyContent()

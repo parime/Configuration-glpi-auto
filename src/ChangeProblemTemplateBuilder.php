@@ -77,7 +77,7 @@ class ChangeProblemTemplateBuilder
     private function getOrCreateTemplate(string $class, string $name): int
     {
         $template = new $class();
-        if ($template->getFromDBByCrit(['name' => $name, 'entities_id' => 0])) {
+        if (Lookup::loadFirst($template, ['name' => $name, 'entities_id' => 0])) {
             return (int) $template->getID();
         }
 
@@ -97,7 +97,7 @@ class ChangeProblemTemplateBuilder
             return;
         }
         $field = new $class();
-        if (!$field->getFromDBByCrit([$fkField => $templateId, 'num' => $num])) {
+        if (!Lookup::loadFirst($field, [$fkField => $templateId, 'num' => $num])) {
             $field->add([$fkField => $templateId, 'num' => $num]);
         }
     }

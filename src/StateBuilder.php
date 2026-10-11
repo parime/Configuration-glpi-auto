@@ -161,7 +161,7 @@ class StateBuilder
     {
         $missing = [];
         foreach (self::RECOMMENDED_NAMES as $name) {
-            if (!(new State())->getFromDBByCrit(['name' => $name])) {
+            if (!Lookup::loadFirst(new State(), ['name' => $name])) {
                 $missing[] = $name;
             }
         }
@@ -193,7 +193,7 @@ class StateBuilder
     private static function ensureState(array $state, bool $withIcons): int
     {
         $item = new State();
-        if (!$item->getFromDBByCrit(['name' => $state['name']])) {
+        if (!Lookup::loadFirst($item, ['name' => $state['name']])) {
             $id = $item->add([
                 'name' => $state['name'],
                 'comment' => $state['comment'],
@@ -206,7 +206,7 @@ class StateBuilder
 
         foreach (self::VISIBLE_FOR as $itemtype) {
             $visibility = new DropdownVisibility();
-            if (!$visibility->getFromDBByCrit(['itemtype' => State::class, 'items_id' => $stateId, 'visible_itemtype' => $itemtype])) {
+            if (!Lookup::loadFirst($visibility, ['itemtype' => State::class, 'items_id' => $stateId, 'visible_itemtype' => $itemtype])) {
                 $visibility->add([
                     'itemtype' => State::class,
                     'items_id' => $stateId,

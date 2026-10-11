@@ -167,7 +167,7 @@ class CalendarBuilder
         // same scoping every other global dropdown this plugin creates already uses (Holiday,
         // ITILCategory...).
         $calendar = new Calendar();
-        if (!$calendar->getFromDBByCrit(['name' => $name])) {
+        if (!Lookup::loadFirst($calendar, ['name' => $name])) {
             $id = $calendar->add(['name' => $name, 'entities_id' => 0, 'is_recursive' => 1]);
             $calendar->getFromDB($id);
         }
@@ -210,7 +210,7 @@ class CalendarBuilder
     private function addSegment(int $calendarId, int $day, string $begin, string $end): void
     {
         $segment = new CalendarSegment();
-        if (!$segment->getFromDBByCrit(['calendars_id' => $calendarId, 'day' => $day, 'begin' => $begin, 'end' => $end])) {
+        if (!Lookup::loadFirst($segment, ['calendars_id' => $calendarId, 'day' => $day, 'begin' => $begin, 'end' => $end])) {
             $segment->add([
                 'calendars_id' => $calendarId,
                 'day' => $day,

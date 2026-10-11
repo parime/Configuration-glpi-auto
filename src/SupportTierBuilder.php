@@ -96,7 +96,7 @@ class SupportTierBuilder
     private function getOrCreate(string $name): int
     {
         $group = new Group();
-        if ($group->getFromDBByCrit(['name' => $name, 'entities_id' => 0])) {
+        if (Lookup::loadFirst($group, ['name' => $name, 'entities_id' => 0])) {
             return (int) $group->getID();
         }
 

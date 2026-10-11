@@ -106,7 +106,7 @@ class TicketTemplateBuilder
     private function getOrCreateTemplate(string $name): int
     {
         $template = new TicketTemplate();
-        if ($template->getFromDBByCrit(['name' => $name, 'entities_id' => 0])) {
+        if (Lookup::loadFirst($template, ['name' => $name, 'entities_id' => 0])) {
             return (int) $template->getID();
         }
 
@@ -123,7 +123,7 @@ class TicketTemplateBuilder
             return;
         }
         $field = new TicketTemplateMandatoryField();
-        if (!$field->getFromDBByCrit(['tickettemplates_id' => $templateId, 'num' => $num])) {
+        if (!Lookup::loadFirst($field, ['tickettemplates_id' => $templateId, 'num' => $num])) {
             $field->add(['tickettemplates_id' => $templateId, 'num' => $num]);
         }
     }
@@ -134,7 +134,7 @@ class TicketTemplateBuilder
             return;
         }
         $field = new TicketTemplateHiddenField();
-        if (!$field->getFromDBByCrit(['tickettemplates_id' => $templateId, 'num' => $num])) {
+        if (!Lookup::loadFirst($field, ['tickettemplates_id' => $templateId, 'num' => $num])) {
             $field->add(['tickettemplates_id' => $templateId, 'num' => $num]);
         }
     }
@@ -145,7 +145,7 @@ class TicketTemplateBuilder
             return;
         }
         $field = new TicketTemplateHiddenField();
-        if ($field->getFromDBByCrit(['tickettemplates_id' => $templateId, 'num' => $num])) {
+        if (Lookup::loadFirst($field, ['tickettemplates_id' => $templateId, 'num' => $num])) {
             $field->delete(['id' => $field->getID()]);
         }
     }

@@ -59,7 +59,7 @@ class ValidationRoutingBuilder
         }
 
         $rule = new RuleTicket();
-        if ($rule->getFromDBByCrit(['name' => self::RULE_NAME])) {
+        if (Lookup::loadFirst($rule, ['name' => self::RULE_NAME])) {
             return 0;
         }
 

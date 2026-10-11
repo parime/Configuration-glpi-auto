@@ -76,7 +76,7 @@ class DocumentManagementBuilder
         foreach (self::DOCUMENT_CATEGORIES as $node) {
             $item = new DocumentCategory();
             $crit = ['name' => $node['name'], 'documentcategories_id' => 0];
-            if (!$item->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($item, $crit)) {
                 $id = $item->add($crit + ['comment' => $node['comment']]);
                 $item->getFromDB($id);
             }
@@ -89,7 +89,7 @@ class DocumentManagementBuilder
         foreach (self::BUSINESS_CRITICITIES as $node) {
             $item = new BusinessCriticity();
             $crit = ['name' => $node['name'], 'businesscriticities_id' => 0];
-            if (!$item->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($item, $crit)) {
                 $id = $item->add($crit + ['comment' => $node['comment'], 'entities_id' => 0, 'is_recursive' => 1]);
                 $item->getFromDB($id);
             }

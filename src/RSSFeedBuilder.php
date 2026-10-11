@@ -71,7 +71,7 @@ class RSSFeedBuilder
         $count = 0;
         foreach (self::FEEDS as $feedData) {
             $feed = new RSSFeed();
-            if ($feed->getFromDBByCrit(['url' => $feedData['url']])) {
+            if (Lookup::loadFirst($feed, ['url' => $feedData['url']])) {
                 $count++;
                 continue;
             }

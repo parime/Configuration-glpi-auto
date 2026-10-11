@@ -114,7 +114,7 @@ class RecurringTicketLibraryBuilder
     private function getOrCreateTemplate(string $name): int
     {
         $template = new TicketTemplate();
-        if ($template->getFromDBByCrit(['name' => $name, 'entities_id' => 0])) {
+        if (Lookup::loadFirst($template, ['name' => $name, 'entities_id' => 0])) {
             return (int) $template->getID();
         }
 
@@ -133,7 +133,7 @@ class RecurringTicketLibraryBuilder
 
         $field = new TicketTemplatePredefinedField();
         $crit = ['tickettemplates_id' => $templateId, 'num' => $num];
-        if (!$field->getFromDBByCrit($crit)) {
+        if (!Lookup::loadFirst($field, $crit)) {
             $field->add($crit + ['value' => $value]);
         } elseif ($field->fields['value'] !== $value) {
             $field->update($crit + ['id' => (int) $field->getID(), 'value' => $value]);

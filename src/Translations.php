@@ -527,7 +527,7 @@ final class Translations
 
             $translation = new DropdownTranslation();
             $crit = ['itemtype' => $itemtype, 'items_id' => $id, 'language' => $language, 'field' => 'name'];
-            if (!$translation->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($translation, $crit)) {
                 $translation->add($crit + ['value' => $value]);
             } elseif ($translation->fields['value'] !== $value) {
                 // Real bug found live (2026-08-23): this used to only ever add(), never update() —
@@ -583,7 +583,7 @@ final class Translations
         foreach ($translations as $language => $content) {
             $translation = new DropdownTranslation();
             $crit = ['itemtype' => $itemtype, 'items_id' => $id, 'language' => $language, 'field' => 'content'];
-            if (!$translation->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($translation, $crit)) {
                 $translation->add($crit + ['value' => $content]);
             } elseif ($translation->fields['value'] !== $content) {
                 // Same add-only bug already fixed on applyIcon() — see that method's comment.

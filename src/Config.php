@@ -827,7 +827,7 @@ class Config extends Compat\Base\ConfigBase
         }
 
         $superAdmin = new \Profile();
-        if (!$superAdmin->getFromDBByCrit(['name' => 'Super-Admin'])) {
+        if (!Lookup::loadFirst($superAdmin, ['name' => 'Super-Admin'])) {
             return false;
         }
 

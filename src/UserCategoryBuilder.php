@@ -79,7 +79,7 @@ class UserCategoryBuilder
     private function getOrCreate(string $name): int
     {
         $category = new UserCategory();
-        if ($category->getFromDBByCrit(['name' => $name])) {
+        if (Lookup::loadFirst($category, ['name' => $name])) {
             return (int) $category->getID();
         }
 

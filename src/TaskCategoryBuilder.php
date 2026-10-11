@@ -81,7 +81,7 @@ class TaskCategoryBuilder
     {
         $item = new TaskCategory();
         $crit = ['name' => $node['name'], 'taskcategories_id' => 0];
-        if (!$item->getFromDBByCrit($crit)) {
+        if (!Lookup::loadFirst($item, $crit)) {
             $id = $item->add($crit + [
                 'comment' => $node['comment'] ?? '',
                 'entities_id' => 0,

@@ -101,7 +101,7 @@ class BuildingAssetBuilder
         }
 
         $definition = new AssetDefinition();
-        $isNew = !$definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME]);
+        $isNew = !Lookup::loadFirst($definition, ['system_name' => self::SYSTEM_NAME]);
 
         if ($isNew) {
             $capacities = array_map(static fn (string $class): array => ['name' => $class], self::CAPACITIES);
@@ -151,7 +151,7 @@ class BuildingAssetBuilder
         foreach (self::TYPES as $name) {
             $item = new $itemtype();
             $crit = ['name' => $name, 'assets_assetdefinitions_id' => $definitionId];
-            if (!$item->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($item, $crit)) {
                 $item->add($crit);
             }
         }

@@ -82,7 +82,7 @@ class LineOperatorBuilder
     private function getOrCreate(string $name, int $mnc): void
     {
         $operator = new LineOperator();
-        if ($operator->getFromDBByCrit(['name' => $name, 'entities_id' => 0])) {
+        if (Lookup::loadFirst($operator, ['name' => $name, 'entities_id' => 0])) {
             return;
         }
 
