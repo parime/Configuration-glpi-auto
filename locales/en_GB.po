@@ -3853,3 +3853,10 @@ msgstr "Some recommended states are missing"
 
 msgid "Corrigez en un clic : les statuts manquants sont créés comme le fait l'assistant, puis reliés aux déclencheurs d'assetsign encore vides (un réglage existant n'est jamais remplacé)."
 msgstr "Fix in one click: the missing states are created as the wizard does, then linked to the assetsign triggers that are still empty (an existing setting is never replaced)."
+
+#, php-format
+msgid "%d règle(s) de dictionnaire des types d'ordinateur créées."
+msgstr "%d computer type dictionary rule(s) created."
+
+msgid "Un fabricant remonté par l'inventaire sous un autre nom (« Hewlett-Packard », « LENOVO », « Dell Inc. »…) est rattaché à la fiche existante au lieu d'en créer une en double. Une soixantaine de marques sont couvertes, y compris les noms que l'agent lit dans les écrans. Si les types de matériel sont aussi créés (ci-dessous), les types de châssis remontés par l'agent (« Notebook », « Mini Tower »…) sont ramenés aux types en français (« Ordinateur portable », « Ordinateur de bureau »…)."
+msgstr "A manufacturer reported by inventory under another name (“Hewlett-Packard”, “LENOVO”, “Dell Inc.”…) is linked to the existing record instead of creating a duplicate. About sixty brands are covered, including the names the agent reads from monitors. If equipment types are also created (below), the chassis types reported by the agent (“Notebook”, “Mini Tower”…) are mapped to the wizard's types (“Ordinateur portable”, “Ordinateur de bureau”…)."

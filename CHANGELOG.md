@@ -36,6 +36,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Dictionnaires complétés** (issue #297) :
+  - le dictionnaire des fabricants couvre 66 marques au lieu de 29 (Intel, AMD, Fujitsu, Lexmark,
+    Kyocera, Philips, BenQ, Huawei, TP-Link…), dont les noms que l'agent lit dans l'EDID des écrans
+    (« Goldstar Company Ltd » → LG, « Ancor Communications Inc » → ASUS) ;
+  - chaque règle reconnaît aussi les noms qui *commencent* par la marque. Une variante inconnue
+    (« Hewlett-Packard Development Company, L.P. » des imprimantes réseau, « Lenovo (Beijing)
+    Limited ») ne crée plus de fabricant en double. HP et HPE restent bien distincts ;
+  - nouveau dictionnaire des types d'ordinateur : les types de châssis remontés par l'agent
+    (« Notebook », « Laptop », « Mini Tower », « Rack Mount Chassis »…) sont ramenés aux types créés
+    par l'assistant (« Ordinateur portable », « Ordinateur de bureau », « Serveur »…), au lieu de
+    créer des types en anglais à côté ;
+  - relancer l'assistant complète les règles existantes sans les dupliquer. Vérifié par un
+    inventaire réel sur GLPI 12.
 - **Audit : statuts recommandés manquants** (issue #293) : une instance configurée avant le
   21/09/2026 n'avait pas le statut « Détruit » demandé par le workflow de destruction d'assetsign.
   Nouveau contrôle, corrigible en un clic : crée les statuts recommandés absents comme l'assistant

@@ -3948,3 +3948,10 @@ msgstr "Einige empfohlene Status fehlen"
 
 msgid "Corrigez en un clic : les statuts manquants sont créés comme le fait l'assistant, puis reliés aux déclencheurs d'assetsign encore vides (un réglage existant n'est jamais remplacé)."
 msgstr "Mit einem Klick beheben: Die fehlenden Status werden wie im Assistenten angelegt und dann mit den noch leeren assetsign-Auslösern verknüpft (eine bestehende Einstellung wird nie ersetzt)."
+
+#, php-format
+msgid "%d règle(s) de dictionnaire des types d'ordinateur créées."
+msgstr "%d Wörterbuchregel(n) für Computertypen erstellt."
+
+msgid "Un fabricant remonté par l'inventaire sous un autre nom (« Hewlett-Packard », « LENOVO », « Dell Inc. »…) est rattaché à la fiche existante au lieu d'en créer une en double. Une soixantaine de marques sont couvertes, y compris les noms que l'agent lit dans les écrans. Si les types de matériel sont aussi créés (ci-dessous), les types de châssis remontés par l'agent (« Notebook », « Mini Tower »…) sont ramenés aux types en français (« Ordinateur portable », « Ordinateur de bureau »…)."
+msgstr "Ein vom Inventar unter einem anderen Namen gemeldeter Hersteller („Hewlett-Packard“, „LENOVO“, „Dell Inc.“…) wird dem vorhandenen Eintrag zugeordnet, statt ein Duplikat anzulegen. Rund sechzig Marken sind abgedeckt, einschließlich der Namen, die der Agent aus Monitoren ausliest. Werden auch die Gerätetypen erstellt (unten), werden die vom Agenten gemeldeten Gehäusetypen („Notebook“, „Mini Tower“…) den Typen des Assistenten zugeordnet („Ordinateur portable“, „Ordinateur de bureau“…)."
