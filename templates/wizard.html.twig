@@ -1161,7 +1161,7 @@
             <input type="checkbox" name="manufacturer_dictionary_enabled" value="1" class="form-check-input" id="cga-manufacturer-dictionary-enabled" {{ config.manufacturer_dictionary_enabled|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="cga-manufacturer-dictionary-enabled">{{ __('Créer un dictionnaire pour normaliser les variantes de nom (ex. Hewlett-Packard, HP Inc. → HP)', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small mb-0">{{ __('Sans filtrage possible par type de produit (limite native de GLPI, vérifiée) — mais un fabricant remonté par l\'inventaire sous un nom légèrement différent (« Hewlett-Packard » au lieu de « HP ») sera automatiquement rattaché à la même fiche fabricant plutôt que d\'en créer une nouvelle en double.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-0">{{ __('Un fabricant remonté par l\'inventaire sous un autre nom (« Hewlett-Packard », « LENOVO », « Dell Inc. »…) est rattaché à la fiche existante au lieu d\'en créer une en double. Une soixantaine de marques sont couvertes, y compris les noms que l\'agent lit dans les écrans. Si les types de matériel sont aussi créés (ci-dessous), les types de châssis remontés par l\'agent (« Notebook », « Mini Tower »…) sont ramenés aux types en français (« Ordinateur portable », « Ordinateur de bureau »…).', 'configurationglpiauto') }}</p>
         </div>
 
         <div class="form-check form-switch mb-2">

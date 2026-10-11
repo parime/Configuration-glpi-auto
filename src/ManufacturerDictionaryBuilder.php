@@ -17,95 +17,119 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
-use Rule;
-use RuleAction;
-use RuleCriteria;
 use RuleDictionnaryManufacturer;
 
 /**
- * Turns on `manufacturer_dictionary_enabled` into `RuleDictionnaryManufacturer` rows (Configuration
- * > Intitulés > Dictionnaires > Fabricants) — GLPI's native mechanism for normalizing the
- * inconsistent manufacturer strings hardware inventory (dmidecode/WMI/SNMP) actually reports into
- * a single canonical `Manufacturer` (confirmed real: `RuleDictionnaryManufacturer::getActions()`
- * supports the `assign` force_action on the `name` field — the exact mechanism this needs).
+ * Turns on `manufacturer_dictionary_enabled` into `RuleDictionnaryManufacturer` rows (Administration
+ * > Dictionnaires > Fabricants) — GLPI's native mechanism for normalizing the inconsistent
+ * manufacturer strings hardware inventory (dmidecode/WMI/SNMP/EDID) actually reports into a single
+ * canonical `Manufacturer`. The inventory runs every manufacturer name through this dictionary
+ * before looking for an existing one (`CommonDropdown::importExternal()`), so a variant the
+ * dictionary knows never becomes a second manufacturer record.
  *
  * Explicitly re-scoped after user feedback: the project's ROADMAP previously rejected *all*
  * dictionary rules with "nothing to normalize yet on a fresh install without inventory data" — true
- * for logiciels/matériel dictionaries (their variant spellings are whatever a specific org's real
- * hardware happens to report, unknowable in advance), but *not* true here. `ManufacturerBuilder`'s
- * own 29-entry list is already the canonical target; the raw strings real inventory tools report
- * for the biggest vendors (`Hewlett-Packard`, `HP Inc.`, `ASUSTeK Computer Inc.`...) are extremely
- * well-documented and stable across organizations — this doesn't require *this org's* messy data to
- * write rules for, unlike a real per-org software-naming dictionary would.
+ * for software dictionaries (whatever a specific org's real software happens to report), but *not*
+ * true here: the raw strings inventory tools report for the major vendors are well documented and
+ * stable across organizations.
  *
- * One rule per canonical manufacturer that has known messy variants — all 29 as of the second
- * pass (2026-08-13), after a real org's own glpi-agent-populated Manufacturer export surfaced
- * genuine duplicates (e.g. "Acer, Inc" alongside the already-covered "Acer Inc.") and four
- * canonical manufacturers with zero coverage at all (Fortinet/Logitech/Oracle/Red Hat). OR-matched
- * criteria
- * (`Rule::PATTERN_IS`, exact match — deliberately not `PATTERN_CONTAIN`: a substring match on
- * something as short as "LG" or "HP" would misfire on unrelated strings that merely contain those
- * letters) against each known variant, single `assign` action normalizing to the canonical name
- * already created by `ManufacturerBuilder`.
+ * One rule per canonical manufacturer, OR-matched criteria:
+ * - exact names (`Rule::PATTERN_IS`, case-insensitive in GLPI) gathered from real inventories;
+ * - since issue #297, one "starts with the brand" regular expression, so a variant nobody listed
+ *   (« Lenovo (Beijing) Limited », « Hewlett-Packard Development Company, L.P. » reported by
+ *   network printers...) is still caught. Anchored at the start and closed by `\b`, never a plain
+ *   substring match: « LG » or « HP » must not match unrelated names that merely contain those
+ *   letters. HP's expression explicitly excludes HPE and « HP Poly », which have their own rules
+ *   (GLPI stops at the first matching dictionary rule).
  */
 class ManufacturerDictionaryBuilder
 {
     /**
-     * Canonical name (must match `ManufacturerBuilder::MANUFACTURERS`) => real-world variant
-     * strings, gathered from how these vendors actually self-report in firmware/OS inventory data
-     * (dmidecode `sys_vendor`/BIOS vendor strings, Windows WMI `Manufacturer`, SNMP sysDescr) — not
-     * a guess at every possible legal-entity-name permutation.
+     * Canonical name => [exact variants, regex]. The first 29 entries are
+     * `ManufacturerBuilder::MANUFACTURERS`; the others (#297) are brands that show up in almost
+     * every inventory (components, monitors, printers, network) without being in the wizard's
+     * starter list — the dictionary creates them on first import under their canonical name.
      *
-     * @var array<string, array<int, string>>
+     * Variant sources: dmidecode `sys_vendor`/BIOS vendor strings, Windows WMI `Manufacturer`,
+     * SNMP sysDescr, and the EDID vendor names glpi-agent reports for monitors (« Goldstar Company
+     * Ltd » for LG, « Ancor Communications Inc » for ASUS...).
+     *
+     * @var array<string, array{0: list<string>, 1: string}>
      */
-    private const VARIANTS = [
-        'HP' => ['Hewlett-Packard', 'Hewlett Packard', 'HP Inc.', 'HP Inc', 'Hewlett-Packard Company'],
-        'Dell' => ['Dell Inc.', 'Dell Inc', 'Dell Technologies', 'Dell Computer Corporation'],
-        'Lenovo' => ['LENOVO', 'Lenovo Group Limited'],
-        'Apple' => ['Apple Inc.', 'Apple Computer, Inc.'],
-        'Microsoft' => ['Microsoft Corporation'],
-        'ASUS' => ['ASUSTeK Computer Inc.', 'ASUSTeK COMPUTER INC.', 'ASUSTek Computer Inc.'],
-        // 'Acer, Inc' confirmed via a real org's own glpi-agent-populated Manufacturer list (no
-        // period, comma before "Inc" — differs from the two already-covered variants).
-        'Acer' => ['Acer Inc.', 'Acer America Corporation', 'Acer, Inc'],
-        // 'Cisco Systems Inc' (no comma, no trailing period) confirmed the same way — a third real
-        // shape distinct from the two already covered.
-        'Cisco' => ['Cisco Systems, Inc.', 'Cisco Systems', 'Cisco Systems Inc'],
-        // 'Samsung Electric Company' and 'Samsung Electronics Co Ltd' (no periods) confirmed via the
-        // same real org export, alongside the three already-covered dotted/uppercase variants.
-        'Samsung' => ['Samsung Electronics Co., Ltd', 'Samsung Electronics Co., Ltd.', 'SAMSUNG ELECTRONICS', 'Samsung Electric Company', 'Samsung Electronics Co Ltd'],
-        'LG' => ['LG Electronics', 'LGE'],
-        'Epson' => ['Seiko Epson Corporation', 'EPSON'],
-        'Xerox' => ['Xerox Corporation'],
-        'Synology' => ['Synology Inc.', 'Synology Incorporated'],
-        // 'VMware Virtual RAM' confirmed via the same real export — dmidecode's memory-module
-        // manufacturer field on a VM reports this literal string, not a company-name variant, but it
-        // clearly identifies VMware-originated virtual hardware the same way the others identify a
-        // real vendor.
-        'VMware' => ['VMware, Inc.', 'VMware Virtual RAM'],
-        'NetApp' => ['NetApp, Inc.', 'NetApp Inc'],
-        // Below: the remaining 9 of the 29 canonical manufacturers (ManufacturerBuilder::MANUFACTURERS)
-        // that had zero dictionary coverage at all until now — 4 of the 9 (Fortinet/Logitech/Oracle/
-        // Red Hat) confirmed via the same real glpi-agent-populated export as the additions above;
-        // the other 5 are well-documented self-report strings for these vendors, same standard as
-        // the original 15 (not a per-org guess).
-        'Fortinet' => ['Fortinet Inc', 'Fortinet, Inc.'],
-        'Logitech' => ['Logitech, Inc.', 'Logitech International S.A.'],
-        'Oracle' => ['Oracle Corporation', 'Oracle America, Inc.'],
-        'Red Hat' => ['Red Hat, Inc.'],
-        'HPE Aruba' => ['Hewlett Packard Enterprise', 'Aruba Networks', 'Aruba, a Hewlett Packard Enterprise Company', 'HPE'],
-        'Ubiquiti' => ['Ubiquiti Networks, Inc.', 'Ubiquiti Networks Inc', 'Ubiquiti Inc.'],
-        'Netgear' => ['NETGEAR, Inc.', 'NETGEAR Inc'],
-        'Canon' => ['Canon Inc.', 'CANON INC.'],
-        'Brother' => ['Brother Industries, Ltd.', 'Brother Industries Ltd'],
-        'QNAP' => ['QNAP Systems, Inc.', 'QNAP Systems Inc'],
-        // Jabra and Poly are themselves brand names their parent company's inventory-reported name
-        // sometimes replaces — kept distinct per canonical brand (not merged into each other), since
-        // an org's asset list still needs to tell a Jabra headset apart from a Poly one.
-        'Jabra' => ['GN Audio', 'GN Netcom'],
-        'Poly' => ['Plantronics', 'Plantronics, Inc.', 'HP Poly'],
-        'APC' => ['American Power Conversion', 'APC by Schneider Electric'],
-        'Eaton' => ['Eaton Corporation', 'Eaton Corporation plc'],
+    private const RULES = [
+        'HP' => [['Hewlett-Packard', 'Hewlett Packard', 'HP Inc.', 'HP Inc', 'Hewlett-Packard Company', 'Hewlett-Packard Development Company, L.P.', 'HP Development Company, L.P.'], '/^(hp|hewlett[- ]?packard)\b(?!\s*(enterprise|poly)\b)/'],
+        'Dell' => [['Dell Inc.', 'Dell Inc', 'Dell Technologies', 'Dell Computer Corporation'], '/^dell\b/'],
+        'Lenovo' => [['LENOVO', 'Lenovo Group Limited'], '/^lenovo\b/'],
+        'Apple' => [['Apple Inc.', 'Apple Computer, Inc.'], '/^apple\b/'],
+        'Microsoft' => [['Microsoft Corporation'], '/^microsoft\b/'],
+        'ASUS' => [['ASUSTeK Computer Inc.', 'ASUSTeK COMPUTER INC.', 'ASUSTek Computer Inc.', 'Ancor Communications Inc'], '/^(asus|asustek|ancor communications)\b/'],
+        // 'Acer, Inc' confirmed via a real org's own glpi-agent-populated Manufacturer list.
+        'Acer' => [['Acer Inc.', 'Acer America Corporation', 'Acer, Inc', 'Acer Technologies'], '/^acer\b/'],
+        'Cisco' => [['Cisco Systems, Inc.', 'Cisco Systems', 'Cisco Systems Inc'], '/^cisco\b/'],
+        'HPE Aruba' => [['Hewlett Packard Enterprise', 'Aruba Networks', 'Aruba, a Hewlett Packard Enterprise Company', 'HPE'], '/^(hpe|hewlett[- ]?packard enterprise|hp enterprise|aruba)\b/'],
+        'Fortinet' => [['Fortinet Inc', 'Fortinet, Inc.'], '/^fortinet\b/'],
+        'Ubiquiti' => [['Ubiquiti Networks, Inc.', 'Ubiquiti Networks Inc', 'Ubiquiti Inc.'], '/^(ubiquiti|ubnt)\b/'],
+        'Netgear' => [['NETGEAR, Inc.', 'NETGEAR Inc'], '/^netgear\b/'],
+        'Canon' => [['Canon Inc.', 'CANON INC.'], '/^canon\b/'],
+        'Epson' => [['Seiko Epson Corporation', 'EPSON'], '/^(seiko )?epson\b/'],
+        'Brother' => [['Brother Industries, Ltd.', 'Brother Industries Ltd'], '/^brother\b/'],
+        'Xerox' => [['Xerox Corporation'], '/^xerox\b/'],
+        'Samsung' => [['Samsung Electronics Co., Ltd', 'Samsung Electronics Co., Ltd.', 'SAMSUNG ELECTRONICS', 'Samsung Electric Company', 'Samsung Electronics Co Ltd'], '/^samsung\b/'],
+        'LG' => [['LG Electronics', 'LGE', 'Goldstar Company Ltd'], '/^(lg|lge|goldstar)\b/'],
+        'Synology' => [['Synology Inc.', 'Synology Incorporated'], '/^synology\b/'],
+        'QNAP' => [['QNAP Systems, Inc.', 'QNAP Systems Inc'], '/^qnap\b/'],
+        'NetApp' => [['NetApp, Inc.', 'NetApp Inc'], '/^netapp\b/'],
+        'Logitech' => [['Logitech, Inc.', 'Logitech International S.A.'], '/^logitech\b/'],
+        // Jabra and Poly are kept distinct from their parent companies: an asset list still needs
+        // to tell a Jabra headset apart from a Poly one.
+        'Jabra' => [['GN Audio', 'GN Netcom'], '/^(jabra|gn audio|gn netcom)\b/'],
+        'Poly' => [['Plantronics', 'Plantronics, Inc.', 'HP Poly', 'Polycom'], '/^(poly|polycom|plantronics|hp poly)\b/'],
+        'APC' => [['American Power Conversion', 'APC by Schneider Electric'], '/^(apc|american power conversion)\b/'],
+        'Eaton' => [['Eaton Corporation', 'Eaton Corporation plc'], '/^eaton\b/'],
+        // VirtualBox VMs report « innotek GmbH », Oracle's subsidiary that built it.
+        'Oracle' => [['Oracle Corporation', 'Oracle America, Inc.', 'innotek GmbH'], '/^(oracle|innotek)\b/'],
+        // 'VMware Virtual RAM': dmidecode's memory-module manufacturer field on a VM.
+        'VMware' => [['VMware, Inc.', 'VMware Virtual RAM'], '/^vmware\b/'],
+        'Red Hat' => [['Red Hat, Inc.'], '/^red ?hat\b/'],
+
+        // Issue #297 : marques courantes absentes de la liste de départ.
+        'Intel' => [['Intel Corporation', 'Intel(R) Corporation', 'GenuineIntel'], '/^intel\b/'],
+        'AMD' => [['Advanced Micro Devices, Inc.', 'AuthenticAMD'], '/^(amd|advanced micro devices)\b/'],
+        'NVIDIA' => [['NVIDIA Corporation'], '/^nvidia\b/'],
+        'Realtek' => [['Realtek Semiconductor Corp.'], '/^realtek\b/'],
+        'Kingston' => [['Kingston Technology'], '/^kingston\b/'],
+        'Micron' => [['Micron Technology'], '/^micron\b/'],
+        'SK hynix' => [['Hynix Semiconductor', 'SK Hynix'], '/^(sk ?hynix|hynix)\b/'],
+        'Western Digital' => [['WDC'], '/^(western digital|wdc)\b/'],
+        'Seagate' => [['Seagate Technology'], '/^seagate\b/'],
+        'Toshiba' => [['TOSHIBA'], '/^toshiba\b/'],
+        'Fujitsu' => [['FUJITSU', 'FUJITSU CLIENT COMPUTING LIMITED', 'Fujitsu Siemens Computers'], '/^fujitsu\b/'],
+        'Panasonic' => [['Panasonic Corporation'], '/^panasonic\b/'],
+        'Sony' => [['Sony Corporation'], '/^sony\b/'],
+        'MSI' => [['Micro-Star International Co., Ltd.'], '/^(msi|micro-star)\b/'],
+        'Gigabyte' => [['Gigabyte Technology Co., Ltd.'], '/^gigabyte\b/'],
+        'Supermicro' => [['Super Micro Computer, Inc.'], '/^super ?micro\b/'],
+        'Huawei' => [['Huawei Technologies Co., Ltd.'], '/^huawei\b/'],
+        'Juniper' => [['Juniper Networks, Inc.'], '/^juniper\b/'],
+        'TP-Link' => [['TP-LINK Technologies Co., Ltd.'], '/^tp-?link\b/'],
+        'D-Link' => [['D-Link Corporation'], '/^d-?link\b/'],
+        'Zyxel' => [['ZyXEL Communications Corp.'], '/^zyxel\b/'],
+        'Lexmark' => [['Lexmark International'], '/^lexmark\b/'],
+        'Kyocera' => [['KYOCERA Document Solutions Inc.'], '/^kyocera\b/'],
+        'Ricoh' => [['RICOH COMPANY, LTD.'], '/^ricoh\b/'],
+        'Konica Minolta' => [['KONICA MINOLTA'], '/^konica[- ]?minolta\b/'],
+        'Sharp' => [['Sharp Corporation'], '/^sharp\b/'],
+        'Philips' => [['Philips Consumer Electronics Company'], '/^philips\b/'],
+        'ViewSonic' => [['ViewSonic Corporation'], '/^viewsonic\b/'],
+        'BenQ' => [['BenQ Corporation'], '/^benq\b/'],
+        'iiyama' => [['Iiyama North America'], '/^iiyama\b/'],
+        'Eizo' => [['Eizo Nanao Corporation'], '/^eizo\b/'],
+        'AOC' => [['AOC International (USA) Ltd'], '/^aoc\b/'],
+        'NEC' => [['NEC Corporation'], '/^nec\b/'],
+        'Google' => [['Google Inc.', 'Google LLC'], '/^google\b/'],
+        'Xiaomi' => [['Xiaomi Communications Co Ltd'], '/^xiaomi\b/'],
+        'Motorola' => [['Motorola Mobility LLC'], '/^motorola\b/'],
+        'Zebra' => [['Zebra Technologies'], '/^zebra\b/'],
     ];
 
     /**
@@ -117,75 +141,23 @@ class ManufacturerDictionaryBuilder
             return 0;
         }
 
-        $count = 0;
-        foreach (self::VARIANTS as $canonical => $variants) {
-            $this->createRule($canonical, $variants);
-            $count++;
+        foreach (self::RULES as $canonical => [$variants, $regex]) {
+            DictionaryRules::ensure(RuleDictionnaryManufacturer::class, self::getRuleName($canonical), $canonical, $variants, $regex);
         }
 
-        return $count;
+        return count(self::RULES);
     }
 
     /**
-     * @param array<int, string> $variants
+     * @return list<string> noms canoniques couverts par le dictionnaire
      */
-    private function createRule(string $canonical, array $variants): void
+    public static function getCanonicalNames(): array
     {
-        $ruleName = sprintf('Fabricant — normalisation « %s »', $canonical);
-
-        $rule = new Rule();
-        if (Lookup::loadFirst($rule, ['name' => $ruleName])) {
-            // A prior run already created this rule — add only the variants it doesn't have yet,
-            // so expanding VARIANTS (e.g. this file's 2026-08-13 pass) actually benefits an admin
-            // re-running the wizard after a plugin upgrade, not just a genuinely fresh install.
-            $this->addMissingCriteria((int) $rule->getID(), $variants);
-
-            return;
-        }
-
-        $rulesId = $rule->add([
-            'name' => $ruleName,
-            'sub_type' => RuleDictionnaryManufacturer::class,
-            'match' => Rule::OR_MATCHING,
-            'is_active' => 1,
-        ]);
-
-        foreach ($variants as $variant) {
-            (new RuleCriteria())->add([
-                'rules_id' => $rulesId,
-                'criteria' => 'name',
-                'condition' => Rule::PATTERN_IS,
-                'pattern' => $variant,
-            ]);
-        }
-
-        (new RuleAction())->add([
-            'rules_id' => $rulesId,
-            'action_type' => 'assign',
-            'field' => 'name',
-            'value' => $canonical,
-        ]);
+        return array_keys(self::RULES);
     }
 
-    /**
-     * @param array<int, string> $variants
-     */
-    private function addMissingCriteria(int $rulesId, array $variants): void
+    public static function getRuleName(string $canonical): string
     {
-        $existing = [];
-        foreach ((new RuleCriteria())->find(['rules_id' => $rulesId, 'criteria' => 'name']) as $row) {
-            $existing[] = $row['pattern'];
-        }
-
-        foreach ($variants as $variant) {
-            if (!in_array($variant, $existing, true)) {
-                (new RuleCriteria())->add([
-                    'rules_id' => $rulesId,
-                    'criteria' => 'name',
-                    'condition' => Rule::PATTERN_IS,
-                    'pattern' => $variant,
-                ]);
-            }
-        }
+        return sprintf('Fabricant — normalisation « %s »', $canonical);
     }
 }

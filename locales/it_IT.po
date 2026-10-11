@@ -3932,3 +3932,10 @@ msgstr "Mancano alcuni stati consigliati"
 
 msgid "Corrigez en un clic : les statuts manquants sont créés comme le fait l'assistant, puis reliés aux déclencheurs d'assetsign encore vides (un réglage existant n'est jamais remplacé)."
 msgstr "Correggi con un clic: gli stati mancanti vengono creati come fa la procedura guidata, poi collegati ai trigger di assetsign ancora vuoti (un'impostazione esistente non viene mai sostituita)."
+
+#, php-format
+msgid "%d règle(s) de dictionnaire des types d'ordinateur créées."
+msgstr "%d regola/e di dizionario dei tipi di computer creata/e."
+
+msgid "Un fabricant remonté par l'inventaire sous un autre nom (« Hewlett-Packard », « LENOVO », « Dell Inc. »…) est rattaché à la fiche existante au lieu d'en créer une en double. Une soixantaine de marques sont couvertes, y compris les noms que l'agent lit dans les écrans. Si les types de matériel sont aussi créés (ci-dessous), les types de châssis remontés par l'agent (« Notebook », « Mini Tower »…) sont ramenés aux types en français (« Ordinateur portable », « Ordinateur de bureau »…)."
+msgstr "Un produttore rilevato dall'inventario con un altro nome («Hewlett-Packard», «LENOVO», «Dell Inc.»…) viene collegato alla scheda esistente invece di crearne un duplicato. Sono coperti una sessantina di marchi, compresi i nomi che l'agente legge dai monitor. Se vengono creati anche i tipi di apparecchiatura (sotto), i tipi di chassis rilevati dall'agente («Notebook», «Mini Tower»…) vengono ricondotti ai tipi dell'assistente («Ordinateur portable», «Ordinateur de bureau»…)."

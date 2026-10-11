@@ -28,6 +28,7 @@ use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\CertificateTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\ChangeProblemTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\CleanlinessRequestFormBuilder;
+use GlpiPlugin\Configurationglpiauto\ComputerTypeDictionaryBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigHistory;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
@@ -695,6 +696,7 @@ if (isset($_POST['finish'])) {
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $lineOperatorsCreated = (new LineOperatorBuilder())->build($config);
     $assetTypesCreated = (new AssetTypeBuilder())->build($config);
+    $computerTypeDictionaryCreated = (new ComputerTypeDictionaryBuilder())->build($config);
     $softwareLicenseTypesCreated = (new SoftwareLicenseTypeBuilder())->build($config);
     $certificateTypesCreated = (new CertificateTypeBuilder())->build($config);
     $recurringTicketLibraryCreated = (new RecurringTicketLibraryBuilder())->build($config);
@@ -943,6 +945,9 @@ if (isset($_POST['finish'])) {
     }
     if ($manufacturerDictionaryCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de dictionnaire fabricant créées.', 'configurationglpiauto'), $manufacturerDictionaryCreated);
+    }
+    if ($computerTypeDictionaryCreated > 0) {
+        $messages[] = sprintf(__('%d règle(s) de dictionnaire des types d\'ordinateur créées.', 'configurationglpiauto'), $computerTypeDictionaryCreated);
     }
     if ($lineOperatorsCreated > 0) {
         $messages[] = sprintf(__('%d opérateurs téléphoniques créés.', 'configurationglpiauto'), $lineOperatorsCreated);
