@@ -3878,3 +3878,13 @@ msgstr "%d regra(s) de dicionário de tipos de computador criada(s)."
 
 msgid "Un fabricant remonté par l'inventaire sous un autre nom (« Hewlett-Packard », « LENOVO », « Dell Inc. »…) est rattaché à la fiche existante au lieu d'en créer une en double. Une soixantaine de marques sont couvertes, y compris les noms que l'agent lit dans les écrans. Si les types de matériel sont aussi créés (ci-dessous), les types de châssis remontés par l'agent (« Notebook », « Mini Tower »…) sont ramenés aux types en français (« Ordinateur portable », « Ordinateur de bureau »…)."
 msgstr "Um fabricante reportado pelo inventário com outro nome («Hewlett-Packard», «LENOVO», «Dell Inc.»…) é vinculado ao registro existente em vez de criar uma duplicata. Cerca de sessenta marcas são cobertas, incluindo os nomes que o agente lê dos monitores. Se os tipos de equipamento também forem criados (abaixo), os tipos de chassi reportados pelo agente («Notebook», «Mini Tower»…) são associados aos tipos do assistente («Ordinateur portable», «Ordinateur de bureau»…)."
+
+msgid "Interdire les fabricants et éditeurs, logiciels, modèles, types et systèmes d'exploitation en double"
+msgstr "Proibir fabricantes e editoras, softwares, modelos, tipos e sistemas operacionais duplicados"
+
+msgid "GLPI ne le vérifie pas : on peut créer dix fois « Lenovo » à la main, par un import ou par l'API. Avec cette option, une création ou un renommage vers un nom qui existe déjà (aux majuscules, accents et espaces près) est refusé, avec le numéro de l'entrée existante. Un logiciel est en double s'il a le même nom et le même éditeur dans la même entité : chaque entité cliente peut avoir le sien. L'inventaire n'est jamais bloqué : il réutilise déjà les noms existants."
+msgstr "O GLPI não verifica isso: é possível criar «Lenovo» dez vezes, manualmente, por importação ou pela API. Com esta opção, criar ou renomear para um nome que já existe (ignorando maiúsculas, acentos e espaços) é recusado, com o número da entrada existente. Um software é duplicado se tiver o mesmo nome e editora na mesma entidade: cada entidade cliente pode ter o seu. O inventário nunca é bloqueado: ele já reutiliza os nomes existentes."
+
+#, php-format
+msgid "« %1$s » existe déjà (%2$s n° %3$d) : utilisez cette entrée plutôt que d'en créer une en double."
+msgstr "«%1$s» já existe (%2$s n.º %3$d): use essa entrada em vez de criar uma duplicata."

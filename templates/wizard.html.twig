@@ -1165,6 +1165,13 @@
         </div>
 
         <div class="form-check form-switch mb-2">
+          <input type="hidden" name="dropdown_unicity_enabled" value="0">
+          <input type="checkbox" name="dropdown_unicity_enabled" value="1" class="form-check-input" id="cga-dropdown-unicity-enabled" {{ config.dropdown_unicity_enabled|default(1) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-dropdown-unicity-enabled">{{ __('Interdire les fabricants et éditeurs, logiciels, modèles, types et systèmes d\'exploitation en double', 'configurationglpiauto') }}</label>
+        </div>
+        <p class="text-muted small mb-3">{{ __('GLPI ne le vérifie pas : on peut créer dix fois « Lenovo » à la main, par un import ou par l\'API. Avec cette option, une création ou un renommage vers un nom qui existe déjà (aux majuscules, accents et espaces près) est refusé, avec le numéro de l\'entrée existante. Un logiciel est en double s\'il a le même nom et le même éditeur dans la même entité : chaque entité cliente peut avoir le sien. L\'inventaire n\'est jamais bloqué : il réutilise déjà les noms existants.', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
           <input type="hidden" name="line_operators_enabled" value="0">
           <input type="checkbox" name="line_operators_enabled" value="1" class="form-check-input" id="cga-line-operators-enabled" {{ config.line_operators_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-line-operators-enabled">{{ __('Créer les opérateurs téléphoniques français courants', 'configurationglpiauto') }}</label>
