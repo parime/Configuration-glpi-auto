@@ -437,6 +437,9 @@ jobs:
             php vendor/bin/phpunit
           '
 
+      - name: "PHPStan contre les sources de GLPI 12 (méthodes du cœur supprimées)"
+        run: docker exec glpi sh -c 'cd /var/www/glpi/plugins/configurationglpiauto && php vendor/bin/phpstan analyse -c phpstan.glpi12.neon --no-progress --memory-limit=2G'
+
       - name: "Logs GLPI (en cas d'échec)"
         if: failure()
         run: docker logs glpi --tail 200
