@@ -36,6 +36,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Plus de doublons de fabricants, éditeurs, logiciels, modèles, types et systèmes
+  d'exploitation** (issue #298) : nouvelle option de l'assistant (étape 15, active par défaut, y
+  compris après mise à jour). Créer ou renommer une entrée avec un nom qui existe déjà (aux
+  majuscules, accents et espaces près) est refusé, et le message donne le numéro de l'entrée
+  existante. Un logiciel est en double s'il a le même nom et le même éditeur dans la même entité
+  (ou s'il est récursif dans une entité parente). L'inventaire n'est jamais bloqué. Vérifié par
+  des inventaires réels et dans le navigateur sur GLPI 12.
 - **Dictionnaires complétés** (issue #297) :
   - le dictionnaire des fabricants couvre 66 marques au lieu de 29 (Intel, AMD, Fujitsu, Lexmark,
     Kyocera, Philips, BenQ, Huawei, TP-Link…), dont les noms que l'agent lit dans l'EDID des écrans

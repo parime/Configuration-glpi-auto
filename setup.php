@@ -19,6 +19,7 @@ use Glpi\Plugin\Hooks;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigHistory;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
+use GlpiPlugin\Configurationglpiauto\DropdownUnicity;
 use GlpiPlugin\Configurationglpiauto\FuelType;
 
 // Hard runtime requirement: GLPI does not autoload plugin src/ classes on its own.
@@ -70,6 +71,11 @@ function plugin_init_configurationglpiauto(): void
     Plugin::registerClass(Config::class, ['notificationtemplates_types' => true]);
     Plugin::registerClass(FuelType::class);
     Plugin::registerClass(ConfigHistory::class);
+
+    // Issue #298 : pas de fabricant, modele, type ou systeme d'exploitation en double (l'option
+    // de l'assistant est lue au moment de l'ajout, voir DropdownUnicity).
+    $PLUGIN_HOOKS[Hooks::PRE_ITEM_ADD]['configurationglpiauto'] = DropdownUnicity::hooks('preItemAdd');
+    $PLUGIN_HOOKS[Hooks::PRE_ITEM_UPDATE]['configurationglpiauto'] = DropdownUnicity::hooks('preItemUpdate');
 }
 
 /**

@@ -3955,3 +3955,13 @@ msgstr "%d Wörterbuchregel(n) für Computertypen erstellt."
 
 msgid "Un fabricant remonté par l'inventaire sous un autre nom (« Hewlett-Packard », « LENOVO », « Dell Inc. »…) est rattaché à la fiche existante au lieu d'en créer une en double. Une soixantaine de marques sont couvertes, y compris les noms que l'agent lit dans les écrans. Si les types de matériel sont aussi créés (ci-dessous), les types de châssis remontés par l'agent (« Notebook », « Mini Tower »…) sont ramenés aux types en français (« Ordinateur portable », « Ordinateur de bureau »…)."
 msgstr "Ein vom Inventar unter einem anderen Namen gemeldeter Hersteller („Hewlett-Packard“, „LENOVO“, „Dell Inc.“…) wird dem vorhandenen Eintrag zugeordnet, statt ein Duplikat anzulegen. Rund sechzig Marken sind abgedeckt, einschließlich der Namen, die der Agent aus Monitoren ausliest. Werden auch die Gerätetypen erstellt (unten), werden die vom Agenten gemeldeten Gehäusetypen („Notebook“, „Mini Tower“…) den Typen des Assistenten zugeordnet („Ordinateur portable“, „Ordinateur de bureau“…)."
+
+msgid "Interdire les fabricants et éditeurs, logiciels, modèles, types et systèmes d'exploitation en double"
+msgstr "Doppelte Hersteller und Herausgeber, Software, Modelle, Typen und Betriebssysteme verbieten"
+
+msgid "GLPI ne le vérifie pas : on peut créer dix fois « Lenovo » à la main, par un import ou par l'API. Avec cette option, une création ou un renommage vers un nom qui existe déjà (aux majuscules, accents et espaces près) est refusé, avec le numéro de l'entrée existante. Un logiciel est en double s'il a le même nom et le même éditeur dans la même entité : chaque entité cliente peut avoir le sien. L'inventaire n'est jamais bloqué : il réutilise déjà les noms existants."
+msgstr "GLPI prüft das nicht: Man kann „Lenovo“ zehnmal anlegen, von Hand, per Import oder über die API. Mit dieser Option wird das Anlegen oder Umbenennen auf einen bereits vorhandenen Namen (ohne Rücksicht auf Groß-/Kleinschreibung, Akzente und Leerzeichen) abgelehnt, mit der Nummer des vorhandenen Eintrags. Eine Software ist doppelt, wenn sie in derselben Einheit denselben Namen und Herausgeber hat: Jede Kundeneinheit kann ihre eigene haben. Das Inventar wird nie blockiert: Es verwendet vorhandene Namen bereits wieder."
+
+#, php-format
+msgid "« %1$s » existe déjà (%2$s n° %3$d) : utilisez cette entrée plutôt que d'en créer une en double."
+msgstr "„%1$s“ existiert bereits (%2$s Nr. %3$d): Verwenden Sie diesen Eintrag, statt ein Duplikat anzulegen."

@@ -3860,3 +3860,13 @@ msgstr "%d computer type dictionary rule(s) created."
 
 msgid "Un fabricant remonté par l'inventaire sous un autre nom (« Hewlett-Packard », « LENOVO », « Dell Inc. »…) est rattaché à la fiche existante au lieu d'en créer une en double. Une soixantaine de marques sont couvertes, y compris les noms que l'agent lit dans les écrans. Si les types de matériel sont aussi créés (ci-dessous), les types de châssis remontés par l'agent (« Notebook », « Mini Tower »…) sont ramenés aux types en français (« Ordinateur portable », « Ordinateur de bureau »…)."
 msgstr "A manufacturer reported by inventory under another name (“Hewlett-Packard”, “LENOVO”, “Dell Inc.”…) is linked to the existing record instead of creating a duplicate. About sixty brands are covered, including the names the agent reads from monitors. If equipment types are also created (below), the chassis types reported by the agent (“Notebook”, “Mini Tower”…) are mapped to the wizard's types (“Ordinateur portable”, “Ordinateur de bureau”…)."
+
+msgid "Interdire les fabricants et éditeurs, logiciels, modèles, types et systèmes d'exploitation en double"
+msgstr "Forbid duplicate manufacturers and publishers, software, models, types and operating systems"
+
+msgid "GLPI ne le vérifie pas : on peut créer dix fois « Lenovo » à la main, par un import ou par l'API. Avec cette option, une création ou un renommage vers un nom qui existe déjà (aux majuscules, accents et espaces près) est refusé, avec le numéro de l'entrée existante. Un logiciel est en double s'il a le même nom et le même éditeur dans la même entité : chaque entité cliente peut avoir le sien. L'inventaire n'est jamais bloqué : il réutilise déjà les noms existants."
+msgstr "GLPI does not check this: you can create “Lenovo” ten times by hand, through an import or the API. With this option, creating or renaming to a name that already exists (ignoring case, accents and spaces) is refused, with the number of the existing entry. A software is a duplicate if it has the same name and publisher in the same entity: each client entity can have its own. Inventory is never blocked: it already reuses existing names."
+
+#, php-format
+msgid "« %1$s » existe déjà (%2$s n° %3$d) : utilisez cette entrée plutôt que d'en créer une en double."
+msgstr "“%1$s” already exists (%2$s no. %3$d): use that entry instead of creating a duplicate."

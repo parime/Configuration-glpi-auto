@@ -3934,3 +3934,13 @@ msgstr "%d regla(s) de diccionario de tipos de ordenador creada(s)."
 
 msgid "Un fabricant remonté par l'inventaire sous un autre nom (« Hewlett-Packard », « LENOVO », « Dell Inc. »…) est rattaché à la fiche existante au lieu d'en créer une en double. Une soixantaine de marques sont couvertes, y compris les noms que l'agent lit dans les écrans. Si les types de matériel sont aussi créés (ci-dessous), les types de châssis remontés par l'agent (« Notebook », « Mini Tower »…) sont ramenés aux types en français (« Ordinateur portable », « Ordinateur de bureau »…)."
 msgstr "Un fabricante reportado por el inventario con otro nombre («Hewlett-Packard», «LENOVO», «Dell Inc.»…) se vincula a la ficha existente en lugar de crear un duplicado. Se cubren unas sesenta marcas, incluidos los nombres que el agente lee en las pantallas. Si también se crean los tipos de equipo (abajo), los tipos de chasis reportados por el agente («Notebook», «Mini Tower»…) se asignan a los tipos del asistente («Ordinateur portable», «Ordinateur de bureau»…)."
+
+msgid "Interdire les fabricants et éditeurs, logiciels, modèles, types et systèmes d'exploitation en double"
+msgstr "Prohibir fabricantes y editores, programas, modelos, tipos y sistemas operativos duplicados"
+
+msgid "GLPI ne le vérifie pas : on peut créer dix fois « Lenovo » à la main, par un import ou par l'API. Avec cette option, une création ou un renommage vers un nom qui existe déjà (aux majuscules, accents et espaces près) est refusé, avec le numéro de l'entrée existante. Un logiciel est en double s'il a le même nom et le même éditeur dans la même entité : chaque entité cliente peut avoir le sien. L'inventaire n'est jamais bloqué : il réutilise déjà les noms existants."
+msgstr "GLPI no lo comprueba: se puede crear «Lenovo» diez veces, a mano, mediante una importación o la API. Con esta opción, se rechaza crear o renombrar con un nombre que ya existe (sin distinguir mayúsculas, acentos ni espacios), indicando el número de la entrada existente. Un programa está duplicado si tiene el mismo nombre y editor en la misma entidad: cada entidad cliente puede tener el suyo. El inventario nunca se bloquea: ya reutiliza los nombres existentes."
+
+#, php-format
+msgid "« %1$s » existe déjà (%2$s n° %3$d) : utilisez cette entrée plutôt que d'en créer une en double."
+msgstr "«%1$s» ya existe (%2$s n.º %3$d): utilice esa entrada en lugar de crear un duplicado."
