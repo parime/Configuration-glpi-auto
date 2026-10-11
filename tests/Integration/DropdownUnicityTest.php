@@ -58,8 +58,9 @@ final class DropdownUnicityTest extends TestCase
 
         $this->assertFalse((new Manufacturer())->add(['name' => '  ' . strtoupper($this->brand) . ' ']));
         $this->assertFalse((new Manufacturer())->add(['name' => $this->brand]));
-        $this->assertStringContainsString(
-            'n° ' . $id,
+        // Sans dépendre de la langue (« n° 12 » en français, « no. 12 » sur la CI en anglais).
+        $this->assertMatchesRegularExpression(
+            '/\b' . $id . '\)/',
             implode(' ', array_merge(...array_values($_SESSION['MESSAGE_AFTER_REDIRECT']))),
             'Le message indique l\'entrée existante.'
         );
