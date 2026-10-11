@@ -144,38 +144,83 @@ class StateBuilder
             if (!in_array($state['name'], $selected, true)) {
                 continue;
             }
-            $item = new State();
-            if (!$item->getFromDBByCrit(['name' => $state['name']])) {
-                $id = $item->add([
-                    'name' => $state['name'],
-                    'comment' => $state['comment'],
-                    'entities_id' => 0,
-                    'is_recursive' => 1,
-                ]);
-                $item->getFromDB($id);
-            }
-            $stateId = (int) $item->getID();
-
-            foreach (self::VISIBLE_FOR as $itemtype) {
-                $visibility = new DropdownVisibility();
-                if (!$visibility->getFromDBByCrit(['itemtype' => State::class, 'items_id' => $stateId, 'visible_itemtype' => $itemtype])) {
-                    $visibility->add([
-                        'itemtype' => State::class,
-                        'items_id' => $stateId,
-                        'visible_itemtype' => $itemtype,
-                        'is_visible' => 1,
-                    ]);
-                }
-            }
-
-            // Always called (not just when withIcons): an empty icon still refreshes the
-            // DropdownTranslation rows down to the plain translated text, which is how unchecking
-            // the icons box after a prior run actually removes the icon instead of leaving it stuck.
-            Translations::applyIcon(State::class, $stateId, $state['name'], $withIcons ? $state['icon'] : '');
-
+            self::ensureState($state, $withIcons);
             $names[] = $state['name'];
         }
 
         return $names;
+    }
+
+    /**
+     * Recommended states (RECOMMENDED_NAMES) that do not exist yet — e.g. "Détruit", only created by
+     * the wizard since 2026-09-21 (#276), so missing from instances configured before (#293).
+     *
+     * @return string[]
+     */
+    public static function getMissingRecommendedNames(): array
+    {
+        $missing = [];
+        foreach (self::RECOMMENDED_NAMES as $name) {
+            if (!(new State())->getFromDBByCrit(['name' => $name])) {
+                $missing[] = $name;
+            }
+        }
+
+        return $missing;
+    }
+
+    /**
+     * Creates the missing recommended states, exactly as the wizard does (comment, visibility,
+     * translations, icon).
+     *
+     * @return string[] names of the states created
+     */
+    public static function createMissingRecommended(bool $withIcons = true): array
+    {
+        $missing = self::getMissingRecommendedNames();
+        foreach (self::STATES as $state) {
+            if (in_array($state['name'], $missing, true)) {
+                self::ensureState($state, $withIcons);
+            }
+        }
+
+        return $missing;
+    }
+
+    /**
+     * @param array{name: string, comment: string, icon: string} $state
+     */
+    private static function ensureState(array $state, bool $withIcons): int
+    {
+        $item = new State();
+        if (!$item->getFromDBByCrit(['name' => $state['name']])) {
+            $id = $item->add([
+                'name' => $state['name'],
+                'comment' => $state['comment'],
+                'entities_id' => 0,
+                'is_recursive' => 1,
+            ]);
+            $item->getFromDB($id);
+        }
+        $stateId = (int) $item->getID();
+
+        foreach (self::VISIBLE_FOR as $itemtype) {
+            $visibility = new DropdownVisibility();
+            if (!$visibility->getFromDBByCrit(['itemtype' => State::class, 'items_id' => $stateId, 'visible_itemtype' => $itemtype])) {
+                $visibility->add([
+                    'itemtype' => State::class,
+                    'items_id' => $stateId,
+                    'visible_itemtype' => $itemtype,
+                    'is_visible' => 1,
+                ]);
+            }
+        }
+
+        // Always called (not just when withIcons): an empty icon still refreshes the
+        // DropdownTranslation rows down to the plain translated text, which is how unchecking
+        // the icons box after a prior run actually removes the icon instead of leaving it stuck.
+        Translations::applyIcon(State::class, $stateId, $state['name'], $withIcons ? $state['icon'] : '');
+
+        return $stateId;
     }
 }

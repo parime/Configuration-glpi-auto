@@ -117,6 +117,61 @@ class AssetsignTriggerBuilder
     }
 
     /**
+     * Issue #293 : relie les déclencheurs assetsign encore vides aux statuts correspondants (tous
+     * les déclencheurs, sans jamais écraser un réglage existant) — utilisé par l'audit après la
+     * création des statuts recommandés manquants.
+     *
+     * @return int nombre de déclencheurs réglés
+     */
+    public static function linkEmptyTriggers(): int
+    {
+        if (!self::isThirdPartyPluginActive()) {
+            return 0;
+        }
+        $row = self::loadRootRow();
+        if ($row === null) {
+            return 0;
+        }
+
+        global $DB;
+        $updates = [];
+        foreach (self::plan($row, self::loadStateIds(), array_keys(self::TRIGGERS)) as $field => $step) {
+            if ($step['action'] === self::ACTION_SET) {
+                $updates[$field] = json_encode([$step['state_id']]);
+            }
+        }
+        if ($updates !== []) {
+            $DB->update(self::TABLE, $updates + ['date_mod' => date('Y-m-d H:i:s')], ['id' => $row['id']]);
+        }
+
+        return count($updates);
+    }
+
+    /**
+     * Déclencheurs assetsign vides alors que leur statut existe (rien à créer, seulement à relier).
+     *
+     * @return string[] colonnes concernées
+     */
+    public static function getLinkableEmptyTriggers(): array
+    {
+        if (!self::isThirdPartyPluginActive()) {
+            return [];
+        }
+        $row = self::loadRootRow();
+        if ($row === null) {
+            return [];
+        }
+        $fields = [];
+        foreach (self::plan($row, self::loadStateIds(), array_keys(self::TRIGGERS)) as $field => $step) {
+            if ($step['action'] === self::ACTION_SET) {
+                $fields[] = $field;
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
      * Aperçu affiché par l'assistant avant application (tous les déclencheurs, cochés ou non).
      *
      * @return array<string, array{state: string, state_id: int|null, action: string}>

@@ -3919,3 +3919,16 @@ msgstr "Ultimo report inviato il %s"
 
 msgid "Aucun rapport envoyé pour l'instant."
 msgstr "Nessun report ancora inviato."
+
+#, php-format
+msgid "Statuts recommandés absents : %s."
+msgstr "Stati consigliati mancanti: %s."
+
+msgid "Le plugin assetsign ne peut pas déclencher toutes ses fiches (attribution, restitution, don, vente, destruction...) sans ces statuts."
+msgstr "Il plugin assetsign non può attivare tutte le sue schede (assegnazione, restituzione, donazione, vendita, distruzione...) senza questi stati."
+
+msgid "Des statuts recommandés manquent"
+msgstr "Mancano alcuni stati consigliati"
+
+msgid "Corrigez en un clic : les statuts manquants sont créés comme le fait l'assistant, puis reliés aux déclencheurs d'assetsign encore vides (un réglage existant n'est jamais remplacé)."
+msgstr "Correggi con un clic: gli stati mancanti vengono creati come fa la procedura guidata, poi collegati ai trigger di assetsign ancora vuoti (un'impostazione esistente non viene mai sostituita)."
