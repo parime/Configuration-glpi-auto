@@ -31,6 +31,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Audit : statuts recommandés manquants** (issue #293) : une instance configurée avant le
+  21/09/2026 n'avait pas le statut « Détruit » demandé par le workflow de destruction d'assetsign.
+  Nouveau contrôle, corrigible en un clic : crée les statuts recommandés absents comme l'assistant
+  (traductions, icônes, visibilité), puis relie les déclencheurs d'assetsign encore vides, sans
+  écraser un réglage existant.
 - **Rapport d'audit périodique par e-mail** (#285) : nouvelle action automatique `auditreport`
   (désactivée par défaut, hebdomadaire ou mensuelle) qui envoie la synthèse de l'audit de
   configuration via une notification GLPI native, modèle FR/EN et destinataires modifiables :

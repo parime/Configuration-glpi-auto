@@ -3907,3 +3907,16 @@ msgstr "Dernier rapport envoyé le %s"
 
 msgid "Aucun rapport envoyé pour l'instant."
 msgstr "Aucun rapport envoyé pour l'instant."
+
+#, php-format
+msgid "Statuts recommandés absents : %s."
+msgstr "Statuts recommandés absents : %s."
+
+msgid "Le plugin assetsign ne peut pas déclencher toutes ses fiches (attribution, restitution, don, vente, destruction...) sans ces statuts."
+msgstr "Le plugin assetsign ne peut pas déclencher toutes ses fiches (attribution, restitution, don, vente, destruction...) sans ces statuts."
+
+msgid "Des statuts recommandés manquent"
+msgstr "Des statuts recommandés manquent"
+
+msgid "Corrigez en un clic : les statuts manquants sont créés comme le fait l'assistant, puis reliés aux déclencheurs d'assetsign encore vides (un réglage existant n'est jamais remplacé)."
+msgstr "Corrigez en un clic : les statuts manquants sont créés comme le fait l'assistant, puis reliés aux déclencheurs d'assetsign encore vides (un réglage existant n'est jamais remplacé)."
