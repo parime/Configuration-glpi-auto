@@ -3965,3 +3965,17 @@ msgstr "GLPI prüft das nicht: Man kann „Lenovo“ zehnmal anlegen, von Hand, 
 #, php-format
 msgid "« %1$s » existe déjà (%2$s n° %3$d) : utilisez cette entrée plutôt que d'en créer une en double."
 msgstr "„%1$s“ existiert bereits (%2$s Nr. %3$d): Verwenden Sie diesen Eintrag, statt ein Duplikat anzulegen."
+
+msgid "Parc"
+msgstr "Inventar"
+
+#, php-format
+msgid "… et %d autre(s) groupe(s)."
+msgstr "… und %d weitere Gruppe(n)."
+
+#, php-format
+msgid "%d entrée(s) en double (fabricants, modèles, types...)"
+msgstr "%d doppelte(r) Eintrag/Einträge (Hersteller, Modelle, Typen...)"
+
+msgid "Corrigez en un clic : pour chaque groupe, une seule entrée est gardée (le nom exact de la marque s'il existe, sinon la plus ancienne) et tous les matériels, modèles et logiciels qui utilisaient les doublons sont reportés dessus, puis les doublons sont supprimés."
+msgstr "Mit einem Klick beheben: Pro Gruppe wird ein einziger Eintrag behalten (der exakte Markenname, falls vorhanden, sonst der älteste), alle Geräte, Modelle und Software, die die Duplikate nutzten, werden darauf umgestellt, dann werden die Duplikate gelöscht."

@@ -36,6 +36,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Audit : doublons déjà en base, fusion en un clic** (issue #299). Le contrôle signale :
+  - les fabricants et éditeurs en double, même écrits autrement (« Acer », « ACER, Inc. ») ou
+    créés avant le dictionnaire (« Hewlett-Packard Development Company, L.P. » à côté de « HP ») ;
+  - les modèles, types et systèmes d'exploitation de même nom.
+
+  « Corriger » garde une entrée par groupe : le nom exact de la marque s'il existe, sinon la plus
+  ancienne. Les matériels, modèles et logiciels qui utilisaient les doublons sont reportés dessus
+  par le « Remplacer par » natif de GLPI, puis les doublons sont supprimés. Les logiciels ne sont
+  pas fusionnés (versions et installations à réconcilier), seulement bloqués (#298).
 - **Plus de doublons de fabricants, éditeurs, logiciels, modèles, types et systèmes
   d'exploitation** (issue #298) : nouvelle option de l'assistant (étape 15, active par défaut, y
   compris après mise à jour). Créer ou renommer une entrée avec un nom qui existe déjà (aux

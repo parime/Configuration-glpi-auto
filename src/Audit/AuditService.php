@@ -19,6 +19,7 @@ namespace GlpiPlugin\Configurationglpiauto\Audit;
 
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultAdminEmailCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultCredentialsCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\DuplicateDropdownsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\EntitiesWithoutAddressCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\MissingRecommendedStatesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoActiveCalendarCheck;
@@ -49,6 +50,7 @@ final class AuditService
             DefaultAdminEmailCheck::class,
             NoStatesConfiguredCheck::class,
             MissingRecommendedStatesCheck::class,
+            DuplicateDropdownsCheck::class,
             NoActiveCalendarCheck::class,
             NoSlaConfiguredCheck::class,
             NoTicketCategoriesCheck::class,

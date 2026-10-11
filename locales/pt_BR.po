@@ -3888,3 +3888,17 @@ msgstr "O GLPI não verifica isso: é possível criar «Lenovo» dez vezes, manu
 #, php-format
 msgid "« %1$s » existe déjà (%2$s n° %3$d) : utilisez cette entrée plutôt que d'en créer une en double."
 msgstr "«%1$s» já existe (%2$s n.º %3$d): use essa entrada em vez de criar uma duplicata."
+
+msgid "Parc"
+msgstr "Parque"
+
+#, php-format
+msgid "… et %d autre(s) groupe(s)."
+msgstr "… e mais %d grupo(s)."
+
+#, php-format
+msgid "%d entrée(s) en double (fabricants, modèles, types...)"
+msgstr "%d entrada(s) duplicada(s) (fabricantes, modelos, tipos...)"
+
+msgid "Corrigez en un clic : pour chaque groupe, une seule entrée est gardée (le nom exact de la marque s'il existe, sinon la plus ancienne) et tous les matériels, modèles et logiciels qui utilisaient les doublons sont reportés dessus, puis les doublons sont supprimés."
+msgstr "Corrija com um clique: em cada grupo, uma única entrada é mantida (o nome exato da marca, se existir, senão a mais antiga), todos os equipamentos, modelos e softwares que usavam as duplicatas passam para ela e as duplicatas são excluídas."
