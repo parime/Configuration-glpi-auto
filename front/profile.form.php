@@ -57,11 +57,13 @@ if (isset($_POST['add'])) {
     $item->check($_GET['id'], READ);
     $item->getFromDB($_GET['id']);
     if (empty($item->fields['snapshot'])) {
-        Html::displayErrorAndDie(__('Ce profil ne contient aucun Blueprint exploitable.', 'configurationglpiauto'));
+        Session::addMessageAfterRedirect(__('Ce profil ne contient aucun Blueprint exploitable.', 'configurationglpiauto'), false, ERROR);
+        Html::back();
     }
     $decoded = json_decode((string) $item->fields['snapshot'], true);
     if (!is_array($decoded)) {
-        Html::displayErrorAndDie(__('Ce profil ne contient aucun Blueprint exploitable.', 'configurationglpiauto'));
+        Session::addMessageAfterRedirect(__('Ce profil ne contient aucun Blueprint exploitable.', 'configurationglpiauto'), false, ERROR);
+        Html::back();
     }
 
     // Import/Export avancé (issue #117), volet "export sélectif par catégorie" : sans sélection

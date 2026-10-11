@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **GLPI 12** : exporter le Blueprint d'un profil qui n'en contient pas provoquait une erreur 500
+  (`Html::displayErrorAndDie()` supprimée en GLPI 12) ; message d'erreur et retour à la page
+  précédente à la place. La CI analyse désormais aussi le plugin avec PHPStan contre les sources
+  de GLPI 12.
 - **README** : prérequis base de données corrigés (GLPI 11 exige MySQL 8.0+ ou MariaDB 10.6+ et ne
   prend pas en charge PostgreSQL, annoncé à tort) ; ajout de l'audit de configuration et de son
   rapport périodique par e-mail à la liste des fonctionnalités.
