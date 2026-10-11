@@ -106,7 +106,7 @@ class WaitReasonBuilder
         $icon = $withIcons ? $reason['icon'] : '';
 
         $pendingReason = new PendingReason();
-        if ($pendingReason->getFromDBByCrit(['name' => $reason['name'], 'entities_id' => 0])) {
+        if (Lookup::loadFirst($pendingReason, ['name' => $reason['name'], 'entities_id' => 0])) {
             Translations::applyIcon(PendingReason::class, (int) $pendingReason->getID(), $reason['name'], $icon);
             // The linked follow-up/solution templates were created on a prior run, before this
             // branch existed to touch them — re-apply here too so re-running the wizard against
@@ -157,7 +157,7 @@ class WaitReasonBuilder
     private function getOrCreateFollowupTemplate(string $name, string $content): int
     {
         $item = new ITILFollowupTemplate();
-        if (!$item->getFromDBByCrit(['name' => $name, 'entities_id' => 0])) {
+        if (!Lookup::loadFirst($item, ['name' => $name, 'entities_id' => 0])) {
             $id = $item->add([
                 'name' => $name,
                 'content' => $content,
@@ -173,7 +173,7 @@ class WaitReasonBuilder
     private function getOrCreateSolutionTemplate(string $name, string $content): int
     {
         $item = new SolutionTemplate();
-        if (!$item->getFromDBByCrit(['name' => $name, 'entities_id' => 0])) {
+        if (!Lookup::loadFirst($item, ['name' => $name, 'entities_id' => 0])) {
             $id = $item->add([
                 'name' => $name,
                 'content' => $content,

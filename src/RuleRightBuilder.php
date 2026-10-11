@@ -77,7 +77,7 @@ class RuleRightBuilder
         }
 
         $profile = new Profile();
-        if (!$profile->getFromDBByCrit(['name' => (string) ($config->fields['ldap_rights_profile'] ?? '')])) {
+        if (!Lookup::loadFirst($profile, ['name' => (string) ($config->fields['ldap_rights_profile'] ?? '')])) {
             return 0;
         }
         $profileId = (int) $profile->getID();
@@ -106,7 +106,7 @@ class RuleRightBuilder
         $count = 0;
         foreach ($pairs as $pair) {
             $profile = new Profile();
-            if (!$profile->getFromDBByCrit(['name' => $pair['profile']])) {
+            if (!Lookup::loadFirst($profile, ['name' => $pair['profile']])) {
                 continue;
             }
             $this->createFunctionRule($pair['group'], (int) $profile->getID());
@@ -170,7 +170,7 @@ class RuleRightBuilder
             }
 
             $entity = new Entity();
-            if (!$entity->getFromDBByCrit(['name' => $name, 'entities_id' => $parentId])) {
+            if (!Lookup::loadFirst($entity, ['name' => $name, 'entities_id' => $parentId])) {
                 continue;
             }
             $entityId = (int) $entity->getID();
@@ -189,7 +189,7 @@ class RuleRightBuilder
         $ruleName = sprintf('Droits LDAP — %s (entité #%d)', $entityName, $entityId);
 
         $rule = new RuleRight();
-        if ($rule->getFromDBByCrit(['name' => $ruleName])) {
+        if (Lookup::loadFirst($rule, ['name' => $ruleName])) {
             return;
         }
 
@@ -258,7 +258,7 @@ class RuleRightBuilder
         $ruleName = sprintf('Droits LDAP — fonction %s', $groupName);
 
         $rule = new RuleRight();
-        if ($rule->getFromDBByCrit(['name' => $ruleName])) {
+        if (Lookup::loadFirst($rule, ['name' => $ruleName])) {
             return;
         }
 

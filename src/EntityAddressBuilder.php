@@ -80,7 +80,7 @@ class EntityAddressBuilder
         }
 
         $entity = new Entity();
-        if (!$entity->getFromDBByCrit(['name' => $name, 'entities_id' => $parentEntityId])) {
+        if (!Lookup::loadFirst($entity, ['name' => $name, 'entities_id' => $parentEntityId])) {
             return 0;
         }
         $entityId = (int) $entity->getID();

@@ -89,13 +89,13 @@ class ProjectTaskTemplateBuilder
     {
         $type = new ProjectTaskType();
 
-        return $type->getFromDBByCrit(['name' => $name]) ? (int) $type->getID() : 0;
+        return Lookup::loadFirst($type, ['name' => $name]) ? (int) $type->getID() : 0;
     }
 
     private function getOrCreateTemplate(string $name, string $description, int $taskTypeId): int
     {
         $item = new ProjectTaskTemplate();
-        if ($item->getFromDBByCrit(['name' => $name])) {
+        if (Lookup::loadFirst($item, ['name' => $name])) {
             // Self-heals a template left with `projecttasktypes_id = 0` by an earlier run where
             // `ProjectTaxonomyBuilder` hadn't been run yet (the wizard's steps are independent and
             // can be run in any order, or re-run individually) — otherwise that FK stays broken

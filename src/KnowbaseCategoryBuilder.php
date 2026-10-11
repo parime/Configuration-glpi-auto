@@ -70,7 +70,7 @@ class KnowbaseCategoryBuilder
 
         $item = new KnowbaseItemCategory();
         $crit = ['name' => $name, 'knowbaseitemcategories_id' => 0];
-        if (!$item->getFromDBByCrit($crit)) {
+        if (!Lookup::loadFirst($item, $crit)) {
             $id = $item->add($crit + ['entities_id' => 0, 'is_recursive' => 1]);
             $item->getFromDB($id);
         }
@@ -131,7 +131,7 @@ class KnowbaseCategoryBuilder
         }
 
         $visibility = ['knowbaseitems_id' => $itemId, 'entities_id' => 0, 'is_recursive' => 1];
-        if (!(new Entity_KnowbaseItem())->getFromDBByCrit($visibility)) {
+        if (!Lookup::loadFirst(new Entity_KnowbaseItem(), $visibility)) {
             (new Entity_KnowbaseItem())->add($visibility);
         }
 
@@ -140,7 +140,7 @@ class KnowbaseCategoryBuilder
             $value = trim(sprintf('%s %s', $icon, $text));
             $translation = new KnowbaseItemTranslation();
             $crit = ['knowbaseitems_id' => $itemId, 'language' => $language];
-            if (!$translation->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($translation, $crit)) {
                 $translation->add($crit + ['name' => $value, 'answer' => '']);
             } elseif ($translation->fields['name'] !== $value) {
                 $translation->update(['id' => (int) $translation->getID(), 'name' => $value]);

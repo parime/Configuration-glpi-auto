@@ -134,7 +134,7 @@ class ManufacturerDictionaryBuilder
         $ruleName = sprintf('Fabricant — normalisation « %s »', $canonical);
 
         $rule = new Rule();
-        if ($rule->getFromDBByCrit(['name' => $ruleName])) {
+        if (Lookup::loadFirst($rule, ['name' => $ruleName])) {
             // A prior run already created this rule — add only the variants it doesn't have yet,
             // so expanding VARIANTS (e.g. this file's 2026-08-13 pass) actually benefits an admin
             // re-running the wizard after a plugin upgrade, not just a genuinely fresh install.

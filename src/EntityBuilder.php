@@ -110,7 +110,7 @@ class EntityBuilder
     private function getOrCreateChild(int $parentId, string $name): int
     {
         $entity = new Entity();
-        if ($entity->getFromDBByCrit(['name' => $name, 'entities_id' => $parentId])) {
+        if (Lookup::loadFirst($entity, ['name' => $name, 'entities_id' => $parentId])) {
             return (int) $entity->getID();
         }
 

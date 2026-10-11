@@ -100,7 +100,7 @@ class LocationBuilder
         }
 
         $entity = new Entity();
-        if (!$entity->getFromDBByCrit(['name' => $name, 'entities_id' => $parentEntityId])) {
+        if (!Lookup::loadFirst($entity, ['name' => $name, 'entities_id' => $parentEntityId])) {
             return 0;
         }
         $entityId = (int) $entity->getID();
@@ -114,7 +114,7 @@ class LocationBuilder
         if ($data !== []) {
             $location = new Location();
             $crit = ['name' => $name, 'locations_id' => $parentLocationId, 'entities_id' => $entityId];
-            if (!$location->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($location, $crit)) {
                 $id = $location->add($crit + ['is_recursive' => 1] + $data);
                 $location->getFromDB($id);
             } else {
@@ -153,7 +153,7 @@ class LocationBuilder
             $fields = is_array($child['fields'] ?? null) ? $child['fields'] : [];
             $location = new Location();
             $crit = ['name' => $name, 'locations_id' => $parentLocationId, 'entities_id' => $entityId];
-            if (!$location->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($location, $crit)) {
                 $id = $location->add($crit + ['is_recursive' => 1] + $fields);
                 $location->getFromDB($id);
             } else {

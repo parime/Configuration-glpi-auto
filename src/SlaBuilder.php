@@ -195,7 +195,7 @@ class SlaBuilder
             $ruleName = sprintf('SLA standard — entité #%d — %s', $entityId, CommonITILObject::getPriorityName($priority));
 
             $rule = new RuleTicket();
-            if ($rule->getFromDBByCrit(['name' => $ruleName])) {
+            if (Lookup::loadFirst($rule, ['name' => $ruleName])) {
                 continue;
             }
 
@@ -295,7 +295,7 @@ class SlaBuilder
         $slmCalendarId = $astreinte ? 0 : ($calendarId ?? 0);
 
         $slm = new SLM();
-        if (!$slm->getFromDBByCrit(['name' => $name])) {
+        if (!Lookup::loadFirst($slm, ['name' => $name])) {
             $id = $slm->add([
                 'name' => $name,
                 'calendars_id' => $slmCalendarId,
@@ -397,7 +397,7 @@ class SlaBuilder
         $fkField = $class === SlaLevel::class ? 'slas_id' : 'olas_id';
 
         $level = new $class();
-        if ($level->getFromDBByCrit([$fkField => $agreementId, 'name' => $name])) {
+        if (Lookup::loadFirst($level, [$fkField => $agreementId, 'name' => $name])) {
             return (int) $level->getID();
         }
 
@@ -420,7 +420,7 @@ class SlaBuilder
         $actionFkField = $class === SlaLevel::class ? 'slalevels_id' : 'olalevels_id';
 
         $action = new $actionClass();
-        if ($action->getFromDBByCrit([$actionFkField => $levelId, 'field' => $field])) {
+        if (Lookup::loadFirst($action, [$actionFkField => $levelId, 'field' => $field])) {
             return;
         }
 
@@ -457,7 +457,7 @@ class SlaBuilder
     private function getOrCreateLevelAgreement(string $class, int $slmId, int $type, string $name, int $hours, array $extra = []): int
     {
         $agreement = new $class();
-        if ($agreement->getFromDBByCrit(['slms_id' => $slmId, 'type' => $type, 'name' => $name])) {
+        if (Lookup::loadFirst($agreement, ['slms_id' => $slmId, 'type' => $type, 'name' => $name])) {
             return (int) $agreement->getID();
         }
 

@@ -69,7 +69,7 @@ class VipBuilder
     private function getOrCreateGroup(): int
     {
         $group = new Group();
-        if ($group->getFromDBByCrit(['name' => self::GROUP_NAME, 'entities_id' => 0])) {
+        if (Lookup::loadFirst($group, ['name' => self::GROUP_NAME, 'entities_id' => 0])) {
             return (int) $group->getID();
         }
 

@@ -301,7 +301,7 @@ class SolutionLibraryBuilder
     private function getOrCreateType(array $type): int
     {
         $item = new SolutionType();
-        if ($item->getFromDBByCrit(['name' => $type['name']])) {
+        if (Lookup::loadFirst($item, ['name' => $type['name']])) {
             return (int) $item->getID();
         }
 
@@ -320,7 +320,7 @@ class SolutionLibraryBuilder
     private function getOrCreateTemplate(string $name, string $content, int $typeId): int
     {
         $item = new SolutionTemplate();
-        if ($item->getFromDBByCrit(['name' => $name])) {
+        if (Lookup::loadFirst($item, ['name' => $name])) {
             return (int) $item->getID();
         }
 

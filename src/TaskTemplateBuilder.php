@@ -111,13 +111,13 @@ class TaskTemplateBuilder
     {
         $category = new TaskCategory();
 
-        return $category->getFromDBByCrit(['name' => $name, 'taskcategories_id' => 0]) ? (int) $category->getID() : 0;
+        return Lookup::loadFirst($category, ['name' => $name, 'taskcategories_id' => 0]) ? (int) $category->getID() : 0;
     }
 
     private function getOrCreateTemplate(string $name, string $content, int $categoryId): int
     {
         $item = new TaskTemplate();
-        if ($item->getFromDBByCrit(['name' => $name])) {
+        if (Lookup::loadFirst($item, ['name' => $name])) {
             // Self-heals a template left with `taskcategories_id = 0` by an earlier run where
             // `TaskCategoryBuilder` hadn't been run yet (the wizard's steps are independent and can
             // be run in any order, or re-run individually) — see

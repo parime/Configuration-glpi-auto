@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Assistant : plantage en cas de doublon** (« Manufacturer::getFromDBByCrit() expects to get one
+  result, 3 found ») : GLPI autorise des noms en double et MySQL compare sans tenir compte de la
+  casse (« LENOVO » de l'inventaire et « Lenovo » saisi à la main). Les 405 recherches « trouver ou
+  créer » de l'assistant retiennent désormais la plus ancienne ligne (`Lookup::loadFirst()`) au lieu
+  de planter ; vérifié sur GLPI 11 et 12, les 46 étapes passent avec des fabricants en double.
 - **GLPI 12** : exporter le Blueprint d'un profil qui n'en contient pas provoquait une erreur 500
   (`Html::displayErrorAndDie()` supprimée en GLPI 12) ; message d'erreur et retour à la page
   précédente à la place. La CI analyse désormais aussi le plugin avec PHPStan contre les sources

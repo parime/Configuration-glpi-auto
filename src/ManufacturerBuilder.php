@@ -83,7 +83,7 @@ class ManufacturerBuilder
     private function getOrCreate(string $name): int
     {
         $item = new Manufacturer();
-        if ($item->getFromDBByCrit(['name' => $name])) {
+        if (Lookup::loadFirst($item, ['name' => $name])) {
             return (int) $item->getID();
         }
 

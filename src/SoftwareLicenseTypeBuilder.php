@@ -97,7 +97,7 @@ class SoftwareLicenseTypeBuilder
     {
         $item = new SoftwareLicenseType();
         $crit = ['name' => $type['name'], 'softwarelicensetypes_id' => 0];
-        if (!$item->getFromDBByCrit($crit)) {
+        if (!Lookup::loadFirst($item, $crit)) {
             $id = $item->add($crit + [
                 'entities_id' => 0,
                 'is_recursive' => 1,

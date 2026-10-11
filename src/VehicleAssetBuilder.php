@@ -156,7 +156,7 @@ class VehicleAssetBuilder
         $this->seedFuelTypes();
 
         $definition = new AssetDefinition();
-        $isNew = !$definition->getFromDBByCrit(['system_name' => self::SYSTEM_NAME]);
+        $isNew = !Lookup::loadFirst($definition, ['system_name' => self::SYSTEM_NAME]);
 
         if ($isNew) {
             $capacities = array_map(static fn (string $class): array => ['name' => $class], self::CAPACITIES);
@@ -209,7 +209,7 @@ class VehicleAssetBuilder
     {
         foreach (self::FUEL_TYPES as $name) {
             $fuelType = new FuelType();
-            if (!$fuelType->getFromDBByCrit(['name' => $name])) {
+            if (!Lookup::loadFirst($fuelType, ['name' => $name])) {
                 $fuelType->add(['name' => $name]);
             }
         }
@@ -232,7 +232,7 @@ class VehicleAssetBuilder
         foreach (self::TYPES as $name) {
             $item = new $itemtype();
             $crit = ['name' => $name, 'assets_assetdefinitions_id' => $definitionId];
-            if (!$item->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($item, $crit)) {
                 $item->add($crit);
             }
         }

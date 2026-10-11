@@ -95,7 +95,7 @@ class FieldUnicityBuilder
         $name = 'Numéro de série unique — ' . $rule['label'];
 
         $unicity = new FieldUnicity();
-        if ($unicity->getFromDBByCrit(['itemtype' => $rule['itemtype'], 'entities_id' => 0])) {
+        if (Lookup::loadFirst($unicity, ['itemtype' => $rule['itemtype'], 'entities_id' => 0])) {
             return;
         }
 

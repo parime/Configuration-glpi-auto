@@ -25,6 +25,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditReportCron;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditWatchCron;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
+use GlpiPlugin\Configurationglpiauto\Lookup;
 use GlpiPlugin\Configurationglpiauto\NotificationTargetConfig;
 use GlpiPlugin\Configurationglpiauto\Profile;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
@@ -481,7 +482,7 @@ final class Installer
         $DB->update(self::PROFILES_TABLE, ['is_active' => 0], ['type' => ['sme', 'eti', 'enterprise']]);
         $DB->update(self::PROFILES_TABLE, ['name' => 'Installation simple', 'description' => 'Un seul site, pas de sous-structure'], ['type' => 'minimal']);
         $DB->update(self::PROFILES_TABLE, ['name' => 'Plusieurs entreprises clientes', 'description' => 'Vous gérez GLPI pour le compte d\'autres entreprises'], ['type' => 'msp']);
-        if (!(new ConfigurationProfile())->getFromDBByCrit(['type' => 'multi_site'])) {
+        if (!Lookup::loadFirst(new ConfigurationProfile(), ['type' => 'multi_site'])) {
             (new ConfigurationProfile())->add([
                 'name' => 'Plusieurs sites ou services',
                 'type' => 'multi_site',

@@ -94,7 +94,7 @@ class PlanningEventBuilder
         foreach (self::CATEGORIES as $category) {
             $item = new PlanningEventCategory();
             $crit = ['name' => $category['name']];
-            if (!$item->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($item, $crit)) {
                 $id = $item->add($crit + ['color' => $category['color']]);
                 $item->getFromDB($id);
             }
@@ -108,7 +108,7 @@ class PlanningEventBuilder
         foreach (self::TEMPLATES as $template) {
             $item = new PlanningExternalEventTemplate();
             $crit = ['name' => $template['name']];
-            if (!$item->getFromDBByCrit($crit)) {
+            if (!Lookup::loadFirst($item, $crit)) {
                 $item->add($crit + [
                     'text' => $template['text'],
                     'duration' => $template['duration'],

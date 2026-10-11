@@ -134,7 +134,7 @@ class ProjectTaxonomyBuilder
     private function getOrCreate(string $class, string $name, string $comment): int
     {
         $item = new $class();
-        if ($item->getFromDBByCrit(['name' => $name])) {
+        if (Lookup::loadFirst($item, ['name' => $name])) {
             return (int) $item->getID();
         }
 
@@ -144,7 +144,7 @@ class ProjectTaxonomyBuilder
     private function getOrCreateProjectState(string $name, string $color, int $isFinished): int
     {
         $item = new ProjectState();
-        if ($item->getFromDBByCrit(['name' => $name])) {
+        if (Lookup::loadFirst($item, ['name' => $name])) {
             return (int) $item->getID();
         }
 

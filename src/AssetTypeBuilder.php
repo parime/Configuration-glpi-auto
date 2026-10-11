@@ -434,7 +434,7 @@ class AssetTypeBuilder
 
         $item = new $itemtype();
         $crit = $isEntityScoped ? ['name' => $name, 'entities_id' => 0] : ['name' => $name];
-        if ($item->getFromDBByCrit($crit)) {
+        if (Lookup::loadFirst($item, $crit)) {
             return (int) $item->getID();
         }
 

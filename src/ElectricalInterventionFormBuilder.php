@@ -105,13 +105,13 @@ class ElectricalInterventionFormBuilder
     private function resolveItilCategoryId(array $branch): ?int
     {
         $item = new ITILCategory();
-        if (!$item->getFromDBByCrit(['name' => $branch['name'], 'itilcategories_id' => 0])) {
+        if (!Lookup::loadFirst($item, ['name' => $branch['name'], 'itilcategories_id' => 0])) {
             return null;
         }
         $parentId = (int) $item->getID();
 
         foreach (self::CATEGORY_PATH as $name) {
-            if (!$item->getFromDBByCrit(['name' => $name, 'itilcategories_id' => $parentId])) {
+            if (!Lookup::loadFirst($item, ['name' => $name, 'itilcategories_id' => $parentId])) {
                 return null;
             }
             $parentId = (int) $item->getID();
@@ -124,7 +124,7 @@ class ElectricalInterventionFormBuilder
     {
         $item = new FormCategory();
         $name = $branch['icon'] . ' ' . $branch['name'];
-        if (!$item->getFromDBByCrit(['name' => $name, 'forms_categories_id' => 0])) {
+        if (!Lookup::loadFirst($item, ['name' => $name, 'forms_categories_id' => 0])) {
             $id = $item->add([
                 'name' => $name,
                 'forms_categories_id' => 0,
@@ -139,7 +139,7 @@ class ElectricalInterventionFormBuilder
     private function getOrCreateForm(int $formCategoryId, int $itilCategoryId): bool
     {
         $form = new Form();
-        if ($form->getFromDBByCrit(['name' => self::FORM_NAME, 'forms_categories_id' => $formCategoryId])) {
+        if (Lookup::loadFirst($form, ['name' => self::FORM_NAME, 'forms_categories_id' => $formCategoryId])) {
             return true;
         }
 
@@ -172,7 +172,7 @@ class ElectricalInterventionFormBuilder
     private function addQuestions(Form $form): ?array
     {
         $section = new Section();
-        if (!$section->getFromDBByCrit(['forms_forms_id' => $form->getID()])) {
+        if (!Lookup::loadFirst($section, ['forms_forms_id' => $form->getID()])) {
             return null;
         }
         $section->update([
@@ -224,7 +224,7 @@ class ElectricalInterventionFormBuilder
     private function configureDestination(Form $form, int $itilCategoryId, array $questions): void
     {
         $destination = new FormDestination();
-        if (!$destination->getFromDBByCrit(['forms_forms_id' => $form->getID(), 'itemtype' => FormDestinationTicket::class])) {
+        if (!Lookup::loadFirst($destination, ['forms_forms_id' => $form->getID(), 'itemtype' => FormDestinationTicket::class])) {
             return;
         }
 

@@ -213,7 +213,7 @@ class CategoryBuilder
     {
         $item = new ITILCategory();
         $crit = ['name' => $node['name'], 'itilcategories_id' => $parentId];
-        if (!$item->getFromDBByCrit($crit)) {
+        if (!Lookup::loadFirst($item, $crit)) {
             $id = $item->add($crit + [
                 'comment' => $node['comment'] ?? '',
                 'entities_id' => 0,

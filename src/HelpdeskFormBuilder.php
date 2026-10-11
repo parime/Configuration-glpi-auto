@@ -55,7 +55,7 @@ class HelpdeskFormBuilder
         $applied = false;
         $form = new Form();
         foreach (self::NATIVE_FORM_NAMES as $formName) {
-            if (!$form->getFromDBByCrit(['name' => $formName])) {
+            if (!Lookup::loadFirst($form, ['name' => $formName])) {
                 continue;
             }
             foreach ($form->getQuestions() as $question) {

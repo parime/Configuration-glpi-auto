@@ -554,13 +554,13 @@ class NotificationBrandingBuilder
     private function getOrCreateTemplate(array $definition, string $color, ?string $logoDataUri): ?int
     {
         $template = new NotificationTemplate();
-        $isNewTemplate = !$template->getFromDBByCrit(['name' => $definition['name'], 'itemtype' => 'Ticket']);
+        $isNewTemplate = !Lookup::loadFirst($template, ['name' => $definition['name'], 'itemtype' => 'Ticket']);
 
         if (!$isNewTemplate) {
             $templateId = (int) $template->getID();
 
             $marker = new NotificationTemplateTranslation();
-            if ($marker->getFromDBByCrit(['notificationtemplates_id' => $templateId, 'language' => ''])) {
+            if (Lookup::loadFirst($marker, ['notificationtemplates_id' => $templateId, 'language' => ''])) {
                 $existing = (string) ($marker->fields['content_html'] ?? '');
                 if (str_contains($existing, self::MARKER)) {
                     return null;
@@ -579,7 +579,7 @@ class NotificationBrandingBuilder
             $subject = '##ticket.title##';
 
             $translation = new NotificationTemplateTranslation();
-            if ($translation->getFromDBByCrit(['notificationtemplates_id' => $templateId, 'language' => $language])) {
+            if (Lookup::loadFirst($translation, ['notificationtemplates_id' => $templateId, 'language' => $language])) {
                 $translation->update(['id' => $translation->getID(), 'content_html' => $html, 'subject' => $subject]);
             } else {
                 $translation->add([
@@ -603,13 +603,13 @@ class NotificationBrandingBuilder
     private function assignToEvent(string $event, int $templateId): void
     {
         $notification = new Notification();
-        if (!$notification->getFromDBByCrit(['itemtype' => 'Ticket', 'event' => $event])) {
+        if (!Lookup::loadFirst($notification, ['itemtype' => 'Ticket', 'event' => $event])) {
             return;
         }
         $notificationId = (int) $notification->getID();
 
         $join = new Notification_NotificationTemplate();
-        if ($join->getFromDBByCrit(['notifications_id' => $notificationId, 'mode' => 'mailing'])) {
+        if (Lookup::loadFirst($join, ['notifications_id' => $notificationId, 'mode' => 'mailing'])) {
             $join->update(['id' => $join->getID(), 'notificationtemplates_id' => $templateId]);
         } else {
             $join->add([
