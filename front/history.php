@@ -46,9 +46,9 @@ if (isset($_POST['create_checkpoint'])) {
     Html::back();
 }
 
-Html::header(ConfigHistory::getTypeName(2), $_SERVER['PHP_SELF'], 'config', ConfigHistory::class);
+Html::header(ConfigHistory::getTypeName(2), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('history.php'), 'config', ConfigHistory::class);
 
-echo "<form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "' class='card mb-3'>";
+echo "<form method='post' action='" . htmlspecialchars(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('history.php')) . "' class='card mb-3'>";
 echo "<div class='card-body d-flex gap-2 align-items-end'>";
 echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
 echo "<div>";

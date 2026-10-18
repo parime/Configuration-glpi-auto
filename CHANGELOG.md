@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Pages du plugin qui renvoyaient vers l'accueil ou perdaient le formulaire**. Derrière le point
+  d'entrée unique de GLPI 11 et 12 (`public/index.php`), `$_SERVER['PHP_SELF']` vaut
+  « /index.php ». Conséquences :
+  - après « Corriger » ou « Enregistrer », la page d'audit renvoyait à l'accueil de GLPI ;
+  - les formulaires de l'historique (point de sauvegarde), de l'import de Blueprint et des profils
+    de configuration étaient envoyés à `/index.php` et n'étaient jamais traités.
+
+  Les 19 usages (9 pages) visent désormais l'adresse réelle de la page (`FrontUrl`). Vérifié dans
+  le navigateur sur GLPI 12, avant et après.
+
 ## [1.5.0] - 2026-10-11
 
 ### Changed

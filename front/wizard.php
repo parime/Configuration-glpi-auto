@@ -1026,7 +1026,7 @@ if (isset($_POST['finish'])) {
     Html::redirect(ConfigurationProfile::getSearchURL());
 }
 
-Html::header(__('Assistant de configuration', 'configurationglpiauto'), $_SERVER['PHP_SELF'], 'config', ConfigurationProfile::class);
+Html::header(__('Assistant de configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('wizard.php'), 'config', ConfigurationProfile::class);
 
 $config = Config::getConfig();
 $profiles = (new ConfigurationProfile())->find(['is_active' => 1], ['sort_order ASC']);
