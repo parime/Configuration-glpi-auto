@@ -184,6 +184,7 @@ final class Installer
                 `os_dictionary_enabled` tinyint NOT NULL DEFAULT 1,
                 `virtual_printers_ignored` tinyint NOT NULL DEFAULT 1,
                 `software_categories_enabled` tinyint NOT NULL DEFAULT 1,
+                `entity_inventory_rules_enabled` tinyint NOT NULL DEFAULT 0,
                 `audit_ghost_days` int NOT NULL DEFAULT 30,
                 `audit_warranty_days` int NOT NULL DEFAULT 30,
                 `kb_categories_enabled` tinyint NOT NULL DEFAULT 0,
@@ -359,6 +360,8 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'virtual_printers_ignored', 'bool', ['value' => 1]);
             // #304 : catégories des logiciels courants.
             $migration->addField(self::CONFIGS_TABLE, 'software_categories_enabled', 'bool', ['value' => 1]);
+            // #307 : règles d'entité à l'inventaire (plage IP, tag), saisies par entité.
+            $migration->addField(self::CONFIGS_TABLE, 'entity_inventory_rules_enabled', 'bool', ['value' => 0]);
             // #306 : délais des contrôles du parc du mode Audit (jours, 0 = contrôle désactivé).
             $migration->addField(self::CONFIGS_TABLE, 'audit_ghost_days', 'integer', ['value' => 30]);
             $migration->addField(self::CONFIGS_TABLE, 'audit_warranty_days', 'integer', ['value' => 30]);

@@ -42,6 +42,7 @@ use GlpiPlugin\Configurationglpiauto\DoorLockBadgeFormBuilder;
 use GlpiPlugin\Configurationglpiauto\ElectricalInterventionFormBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityAddressBuilder;
 use GlpiPlugin\Configurationglpiauto\EntityBuilder;
+use GlpiPlugin\Configurationglpiauto\EntityInventoryRuleBuilder;
 use GlpiPlugin\Configurationglpiauto\EventSupportFormBuilder;
 use GlpiPlugin\Configurationglpiauto\FaqBuilder;
 use GlpiPlugin\Configurationglpiauto\FieldUnicityBuilder;
@@ -274,6 +275,29 @@ function collectEntityCommsFromPost(): array
  *
  * @return array<string, array<int, array{name: string, fields: array<string, string>, children: array}>>
  */
+/**
+ * Issue #307 : plages IP et tag d'agent saisis pour chaque entité (`entity_inventory_ip_<path>`,
+ * `entity_inventory_tag_<path>`, même encodage de chemin que les autres champs par entité).
+ * Seules les plages IPv4 CIDR valides sont gardées.
+ *
+ * @return array<int|string, array{ranges: list<string>, tag: string}>
+ */
+function collectEntityInventoryFromPost(): array
+{
+    $byPath = [];
+    foreach ($_POST as $key => $value) {
+        if (str_starts_with((string) $key, 'entity_inventory_ip_')) {
+            $path = substr((string) $key, strlen('entity_inventory_ip_'));
+            $byPath[$path]['ranges'] = EntityInventoryRuleBuilder::parseRanges((string) $value);
+        } elseif (str_starts_with((string) $key, 'entity_inventory_tag_')) {
+            $path = substr((string) $key, strlen('entity_inventory_tag_'));
+            $byPath[$path]['tag'] = trim((string) $value);
+        }
+    }
+
+    return array_map(static fn (array $data): array => ['ranges' => $data['ranges'] ?? [], 'tag' => $data['tag'] ?? ''], $byPath);
+}
+
 function collectLocationChildrenFromPost(): array
 {
     $textFields = ['address', 'postcode', 'town', 'state', 'country', 'building', 'room', 'code', 'alias', 'comment'];
@@ -690,6 +714,7 @@ if (isset($_POST['finish'])) {
     // phonenumber/fax/website/email fields, with no Location equivalent.
     $entityCommsByPath = !empty($config->fields['entity_native_address_enabled']) ? collectEntityCommsFromPost() : [];
     $entityAddressesApplied = $canUpdateEntity ? (new EntityAddressBuilder())->build($config, $locationDataByPath, $entityCommsByPath) : 0;
+    $entityInventoryRulesCreated = (new EntityInventoryRuleBuilder())->build($config, collectEntityInventoryFromPost());
     $userCategoriesCreated = (new UserCategoryBuilder())->build($config);
     $fieldUnicityRulesCreated = (new FieldUnicityBuilder())->build($config);
     $rssFeedsCreated = (new RSSFeedBuilder())->build($config);
@@ -957,6 +982,9 @@ if (isset($_POST['finish'])) {
     }
     if ($softwareDictionaryCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de dictionnaire des logiciels créées.', 'configurationglpiauto'), $softwareDictionaryCreated);
+    }
+    if ($entityInventoryRulesCreated > 0) {
+        $messages[] = sprintf(__('%d règle(s) de rattachement à l\'entité (plage IP, tag) créées ou complétées.', 'configurationglpiauto'), $entityInventoryRulesCreated);
     }
     if ($softwareCategoriesCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de catégorie de logiciels créées.', 'configurationglpiauto'), $softwareCategoriesCreated);

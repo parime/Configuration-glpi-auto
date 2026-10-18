@@ -168,6 +168,7 @@
           </div>
           <p class="text-muted small mb-2">{{ __('Reprend l\'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper — ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité.', 'configurationglpiauto') }}</p>
 
+
           <div class="form-check form-switch mb-2">
             <input type="hidden" name="country_holidays_enabled" value="0">
             <input type="checkbox" name="country_holidays_enabled" value="1" class="form-check-input" id="cga-country-holidays-enabled" {{ config.country_holidays_enabled|default(0) ? 'checked' : '' }}>
@@ -180,6 +181,17 @@
           </div>
 
           <div id="cga-locations-tree"></div>
+        </div>
+
+        {# Issue #307 : rattacher les machines inventoriées à leur entité #}
+        <div class="form-check form-switch mb-2 mt-3">
+          <input type="hidden" name="entity_inventory_rules_enabled" value="0">
+          <input type="checkbox" name="entity_inventory_rules_enabled" value="1" class="form-check-input" id="cga-entity-inventory-rules-enabled" {{ config.entity_inventory_rules_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-entity-inventory-rules-enabled"><i class="ti ti-route me-1"></i>{{ __('Rattacher les machines inventoriées à leur entité (plage d\'adresses IP ou tag de l\'agent)', 'configurationglpiauto') }}</label>
+        </div>
+        <div id="cga-entity-inventory-fields" style="display: none;" class="mb-3">
+          <p class="text-muted small mb-2">{{ __('Pour chaque entité : les plages IP du site (ex. 192.168.10.0/24, 10.1.0.0/16) et/ou le tag configuré dans l\'agent GLPI. Une machine qui ne correspond à rien reste dans l\'entité par défaut ; une machine déjà rattachée n\'est pas déplacée. Les règles se retrouvent dans Administration > Règles > Affectation d\'un élément à une entité.', 'configurationglpiauto') }}</p>
+          <div id="cga-entity-inventory-panels"></div>
         </div>
       </div>
 
@@ -2399,6 +2411,7 @@
     entityCommsRow.appendChild(emailInput);
     panel.appendChild(entityCommsRow);
 
+
     function clearSuggestions() {
       suggestions.innerHTML = '';
       suggestions.style.display = 'none';
@@ -2689,6 +2702,49 @@
 
   // Rebuilt only when the tree's total node count (all depths) actually changed, so revisiting
   // this step doesn't collapse panels or wipe fields already typed deeper in the tree.
+  // Issue #307 : une ligne par entité (nom, plages IP, tag), même chemin que les autres champs
+  // par entité (`entity_inventory_ip_0-1`...). Reconstruite seulement si l'arbre a changé.
+  var entityInventoryPanelsRoot = document.getElementById('cga-entity-inventory-panels');
+  function buildEntityInventoryRow(node, path, depth, container) {
+    var row = document.createElement('div');
+    row.className = 'd-flex flex-wrap align-items-center gap-2 mb-1';
+    row.style.marginLeft = (depth * 20) + 'px';
+    var label = document.createElement('span');
+    label.className = depth === 0 ? 'fw-bold' : '';
+    label.style.minWidth = '180px';
+    label.textContent = (depth > 0 ? '↳ ' : '') + (node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}");
+    row.appendChild(label);
+    var ipInput = cgaMakeInput('entity_inventory_ip_' + path, "{{ __('Plages IP (ex. 192.168.10.0/24)', 'configurationglpiauto')|e('js') }}");
+    ipInput.style.maxWidth = '280px';
+    var tagInput = cgaMakeInput('entity_inventory_tag_' + path, "{{ __('Tag de l\'agent', 'configurationglpiauto')|e('js') }}");
+    tagInput.style.maxWidth = '180px';
+    row.appendChild(ipInput);
+    row.appendChild(tagInput);
+    container.appendChild(row);
+    (node.children || []).forEach(function (child, i) {
+      buildEntityInventoryRow(child, path + '-' + i, depth + 1, container);
+    });
+  }
+  function renderEntityInventoryPanels() {
+    var tree = (window.cgaTree || []);
+    var totalNodes = cgaCountTreeNodes(tree);
+    if (entityInventoryPanelsRoot.dataset.nodeCount == totalNodes) {
+      return;
+    }
+    entityInventoryPanelsRoot.dataset.nodeCount = String(totalNodes);
+    entityInventoryPanelsRoot.innerHTML = '';
+    if (!tree.length) {
+      var hint = document.createElement('p');
+      hint.className = 'text-muted small';
+      hint.textContent = "{{ __('Définissez d\'abord vos entités à l\'étape 2 : sans entité, toutes les machines restent dans l\'entité racine.', 'configurationglpiauto')|e('js') }}";
+      entityInventoryPanelsRoot.appendChild(hint);
+      return;
+    }
+    tree.forEach(function (node, i) {
+      buildEntityInventoryRow(node, String(i), 0, entityInventoryPanelsRoot);
+    });
+  }
+
   function renderLocationsTree() {
     var tree = (window.cgaTree || []);
     var nodes = tree.length ? tree : [{ name: "{{ __('Entité racine', 'configurationglpiauto')|e('js') }}", children: [] }];
@@ -2888,6 +2944,7 @@
       el.style.display = entityNativeAddressEnabledInput.checked ? '' : 'none';
     });
   });
+  wireSimpleToggle('cga-entity-inventory-rules-enabled', 'cga-entity-inventory-fields');
   var manufacturersEnabledInput = wireSimpleToggle('cga-manufacturers-enabled', 'cga-manufacturers-fields');
   var lineOperatorsEnabledInput = wireSimpleToggle('cga-line-operators-enabled', 'cga-line-operators-fields');
   var assetTypesEnabledInput = wireSimpleToggle('cga-asset-types-enabled', 'cga-asset-types-fields');
@@ -3740,6 +3797,7 @@
     }
     if (currentStep === 3) {
       renderLocationsTree();
+      renderEntityInventoryPanels();
     }
   }
 
