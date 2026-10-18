@@ -17,7 +17,11 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use Rule;
+use RuleAction;
+use RuleCollection;
 use RuleSoftwareCategory;
+use RuleSoftwareCategoryCollection;
 use SoftwareCategory;
 
 /**
@@ -37,6 +41,9 @@ use SoftwareCategory;
  */
 class SoftwareCategoryBuilder
 {
+    /** Début du nom des règles « Catégories de logiciels » créées par l'assistant. */
+    public const RULE_PREFIX = 'Catégorie de logiciel « ';
+
     /** @var array<string, string> clé => nom de la catégorie GLPI */
     public const CATEGORIES = [
         'browser' => 'Navigateurs',
@@ -113,7 +120,7 @@ class SoftwareCategoryBuilder
         foreach ($dictionaryRuleIds as $label => $rulesId) {
             $key = self::SOFTWARE[$label] ?? null;
             if ($key !== null && $categoryIds[$key] > 0) {
-                DictionaryRules::ensureAction($rulesId, 'softwarecategories_id', (string) $categoryIds[$key]);
+                self::alignCategoryAction($rulesId, $categoryIds[$key]);
             }
         }
 
@@ -131,7 +138,7 @@ class SoftwareCategoryBuilder
             }
             $rulesId = DictionaryRules::ensure(
                 RuleSoftwareCategory::class,
-                sprintf('Catégorie de logiciel « %s »', $name),
+                sprintf(self::RULE_PREFIX . '%s »', $name),
                 (string) $categoryIds[$key],
                 [],
                 array_shift($patterns),
@@ -139,14 +146,67 @@ class SoftwareCategoryBuilder
                 'softwarecategories_id'
             );
             foreach ($patterns as $pattern) {
-                DictionaryRules::ensure(RuleSoftwareCategory::class, sprintf('Catégorie de logiciel « %s »', $name), (string) $categoryIds[$key], [], $pattern, 'assign', 'softwarecategories_id');
+                DictionaryRules::ensure(RuleSoftwareCategory::class, sprintf(self::RULE_PREFIX . '%s »', $name), (string) $categoryIds[$key], [], $pattern, 'assign', 'softwarecategories_id');
             }
             if ($rulesId > 0) {
+                self::alignCategoryAction($rulesId, $categoryIds[$key]);
                 $count++;
             }
         }
+        self::moveBeforeOtherRules();
 
         return $count;
+    }
+
+    /**
+     * Les règles « Catégories de logiciels » s'arrêtent à la première qui correspond. GLPI fournit
+     * « Import category from inventory tool », qui correspond à tout logiciel : placée avant, elle
+     * empêchait nos règles de classer un logiciel créé à la main. Nos règles passent donc avant
+     * toute autre (GLPI ou administrateur), dans leur ordre actuel ; les autres restent après.
+     */
+    private static function moveBeforeOtherRules(): void
+    {
+        global $DB;
+
+        $mine = [];
+        $firstOther = null;
+        $rows = $DB->request([
+            'SELECT' => ['id', 'name'],
+            'FROM'   => Rule::getTable(),
+            'WHERE'  => ['sub_type' => RuleSoftwareCategory::class],
+            'ORDER'  => 'ranking ASC',
+        ]);
+        foreach ($rows as $row) {
+            if (str_starts_with((string) $row['name'], self::RULE_PREFIX)) {
+                if ($firstOther !== null) {
+                    $mine[] = (int) $row['id'];
+                }
+            } elseif ($firstOther === null) {
+                $firstOther = (int) $row['id'];
+            }
+        }
+        $collection = new RuleSoftwareCategoryCollection();
+        foreach ($mine as $rulesId) {
+            $collection->moveRule($rulesId, (int) $firstOther, RuleCollection::MOVE_BEFORE);
+        }
+    }
+
+    /**
+     * Aligne l'action « Catégorie » d'une règle sur la catégorie actuelle. Quand une catégorie est
+     * supprimée, GLPI désactive les règles qui la visent : si la catégorie référencée n'existe plus
+     * (elle vient d'être recréée), la règle est réactivée. Une règle désactivée volontairement,
+     * dont la catégorie existe toujours, reste désactivée.
+     */
+    private static function alignCategoryAction(int $rulesId, int $categoryId): void
+    {
+        $action = new RuleAction();
+        if (Lookup::loadFirst($action, ['rules_id' => $rulesId, 'field' => 'softwarecategories_id'])) {
+            $previous = (int) $action->fields['value'];
+            if ($previous !== $categoryId && !(new SoftwareCategory())->getFromDB($previous)) {
+                (new Rule())->update(['id' => $rulesId, 'is_active' => 1]);
+            }
+        }
+        DictionaryRules::ensureAction($rulesId, 'softwarecategories_id', (string) $categoryId);
     }
 
     private static function getOrCreateCategory(string $name): int

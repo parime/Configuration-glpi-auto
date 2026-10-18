@@ -157,8 +157,14 @@ final class KnowbaseCategoryBuilderTest extends TestCase
         $id = $this->findCategoryIds()[0];
         $this->assertStringStartsWith('📋', (string) $this->frenchTranslation($id));
 
-        $builder->build($this->buildConfig(true, ['qualite'], icons: false));
+        try {
+            $builder->build($this->buildConfig(true, ['qualite'], icons: false));
 
-        $this->assertSame(self::BRANCH_NAME, $this->frenchTranslation($id));
+            $this->assertSame(self::BRANCH_NAME, $this->frenchTranslation($id));
+        } finally {
+            // Remet l'icône : sans cela, la branche « Qualité, QHSE & Conformité » restait sans
+            // icône dans la FAQ de l'instance partagée sur laquelle tournent les tests.
+            $builder->build($this->buildConfig(true, ['qualite'], icons: true));
+        }
     }
 }

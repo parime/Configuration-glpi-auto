@@ -80,6 +80,10 @@ final class SlaBuilderTest extends TestCase
 
     public function testBuildUsesTheFixedSlmNameAndForcesNoCalendarForAstreinte(): void
     {
+        if ((new SLM())->getFromDBByCrit(['name' => 'SLA standard'])) {
+            // Le constructeur ne réécrit jamais un SLM existant (même convention que les délais).
+            $this->markTestSkipped('« SLA standard » existe déjà sur cette instance partagée.');
+        }
         (new SlaBuilder())->build($this->buildConfig(['sla_astreinte' => 1]), 999999);
 
         $slm = new SLM();

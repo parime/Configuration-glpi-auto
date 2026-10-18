@@ -22,6 +22,7 @@ use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\SoftwareCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareDictionaryBuilder;
 use PHPUnit\Framework\TestCase;
+use Rule;
 use RuleDictionnarySoftwareCollection;
 use RuleSoftwareCategoryCollection;
 use Software;
@@ -46,6 +47,79 @@ final class SoftwareCategoryBuilderTest extends TestCase
         $category = new SoftwareCategory();
 
         return $category->getFromDBByCrit(['name' => $name, 'softwarecategories_id' => 0]) ? (int) $category->getID() : 0;
+    }
+
+    /**
+     * Supprimer une catégorie fait désactiver par GLPI les règles qui la visent : relancer
+     * l'assistant recrée la catégorie, réaligne les règles sur elle et les réactive.
+     */
+    public function testRerunningRepairsRulesAfterACategoryWasDeleted(): void
+    {
+        global $DB;
+
+        $this->build();
+        // GLPI désactive aussi, par ricochet, d'autres règles (dont sa règle native « Import
+        // category from inventory tool ») : leur état est restauré en fin de test.
+        $states = [];
+        foreach ($DB->request(['SELECT' => ['id', 'is_active'], 'FROM' => Rule::getTable(), 'WHERE' => ['sub_type' => ['RuleSoftwareCategory', 'RuleDictionnarySoftware']]]) as $row) {
+            $states[(int) $row['id']] = (int) $row['is_active'];
+        }
+        try {
+            $this->assertCategoryRulesAreRepaired();
+        } finally {
+            foreach ($states as $id => $active) {
+                $DB->update(Rule::getTable(), ['is_active' => $active], ['id' => $id]);
+            }
+        }
+    }
+
+    private function assertCategoryRulesAreRepaired(): void
+    {
+        $category = new SoftwareCategory();
+        $category->getFromDB(self::categoryId('Sécurité'));
+        $category->delete(['id' => $category->getID()], true);
+        $rule = new Rule();
+        $this->assertTrue($rule->getFromDBByCrit(['name' => 'Catégorie de logiciel « Sécurité »']));
+        $this->assertSame(0, (int) $rule->fields['is_active'], 'GLPI désactive la règle orpheline');
+
+        $this->build();
+
+        $rule->getFromDB($rule->getID());
+        $this->assertSame(1, (int) $rule->fields['is_active']);
+        $result = (new RuleSoftwareCategoryCollection())->processAllRules([], [], ['name' => 'Kaspersky Endpoint Security 12.3', 'manufacturers_id' => 0]);
+        $this->assertSame(self::categoryId('Sécurité'), (int) ($result['softwarecategories_id'] ?? 0));
+        $inventory = (new RuleDictionnarySoftwareCollection())->processAllRules([
+            'name' => 'Kaspersky Endpoint Security 12.3 for Windows', 'manufacturer' => 0, 'old_version' => null, 'entities_id' => 0, '_system_category' => null,
+        ]);
+        $this->assertSame('Kaspersky Endpoint Security', $inventory['name'] ?? null);
+        $this->assertSame(self::categoryId('Sécurité'), (int) ($inventory['softwarecategories_id'] ?? 0));
+    }
+
+    /**
+     * La collection s’arrête à la première règle qui correspond : une règle qui accepte tout
+     * logiciel (comme « Import category from inventory tool » de GLPI) ne doit pas passer devant.
+     */
+    public function testCategoryRulesComeBeforeACatchAllRule(): void
+    {
+        $catchAll = new Rule();
+        $catchAllId = (int) $catchAll->add(['name' => 'PHPUnit attrape-tout ' . mt_rand(), 'sub_type' => 'RuleSoftwareCategory', 'match' => Rule::AND_MATCHING, 'is_active' => 1, 'ranking' => 0]);
+        (new \RuleCriteria())->add(['rules_id' => $catchAllId, 'criteria' => 'name', 'condition' => Rule::REGEX_MATCH, 'pattern' => '/.*/']);
+        (new \RuleAction())->add(['rules_id' => $catchAllId, 'action_type' => 'assign', 'field' => 'softwarecategories_id', 'value' => 0]);
+        try {
+            // Placée en tête, devant les règles de l'assistant déjà créées.
+            $this->build();
+            global $DB;
+            $first = $DB->request(['SELECT' => ['id'], 'FROM' => Rule::getTable(), 'WHERE' => ['sub_type' => 'RuleSoftwareCategory'], 'ORDER' => 'ranking ASC', 'LIMIT' => 1])->current();
+            (new RuleSoftwareCategoryCollection())->moveRule($catchAllId, (int) $first['id'], \RuleCollection::MOVE_BEFORE);
+            $top = $DB->request(['SELECT' => ['id'], 'FROM' => Rule::getTable(), 'WHERE' => ['sub_type' => 'RuleSoftwareCategory'], 'ORDER' => 'ranking ASC', 'LIMIT' => 1])->current();
+            $this->assertSame($catchAllId, (int) $top['id'], 'précondition : attrape-tout en tête');
+
+            $this->build();
+            $result = (new RuleSoftwareCategoryCollection())->processAllRules([], [], ['name' => 'Kaspersky Endpoint Security 12.3', 'manufacturers_id' => 0]);
+            $this->assertSame(self::categoryId('Sécurité'), (int) ($result['softwarecategories_id'] ?? 0));
+        } finally {
+            (new \RuleSoftwareCategory())->delete(['id' => $catchAllId], true);
+        }
     }
 
     public function testEveryDictionarySoftwareHasACategory(): void

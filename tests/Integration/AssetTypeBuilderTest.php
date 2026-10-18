@@ -29,13 +29,34 @@ use PHPUnit\Framework\TestCase;
  */
 final class AssetTypeBuilderTest extends TestCase
 {
+    /** @var array<string, true> itemtype + nom des types qui existaient avant le test */
+    private array $existing = [];
+
+    protected function setUp(): void
+    {
+        foreach (AssetTypeBuilder::getTypesPreview() as $itemtype => $types) {
+            foreach ($types as $type) {
+                if ((new $itemtype())->getFromDBByCrit(['name' => $type['name']])) {
+                    $this->existing[$itemtype . "\0" . $type['name']] = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * Ne purge que les types créés par le test : purger une catégorie de logiciel déjà présente
+     * (créée par l'assistant) ferait désactiver par GLPI les règles du dictionnaire qui la
+     * référencent, et casserait les tests suivants sur une instance partagée.
+     */
     protected function tearDown(): void
     {
         foreach (AssetTypeBuilder::getTypesPreview() as $itemtype => $types) {
             foreach ($types as $type) {
+                if (isset($this->existing[$itemtype . "\0" . $type['name']])) {
+                    continue;
+                }
                 $item = new $itemtype();
-                $crit = ['name' => $type['name']];
-                if ($item->getFromDBByCrit($crit)) {
+                if ($item->getFromDBByCrit(['name' => $type['name']])) {
                     $item->delete(['id' => $item->getID()], true);
                 }
             }

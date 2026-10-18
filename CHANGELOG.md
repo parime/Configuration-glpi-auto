@@ -67,6 +67,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     inventaires réels sur GLPI 12 (Windows en français et en anglais) : un seul système, une seule
     architecture, et seules les vraies imprimantes importées.
 
+### Fixed
+
+- **Catégories de logiciels créés à la main** : les règles « Catégorie de logiciel » ne s'appliquaient
+  jamais quand la règle native de GLPI « Import category from inventory tool » était active (elle
+  correspond à tout logiciel et la collection s'arrête à la première règle). Les règles de l'assistant
+  passent désormais avant toute autre règle de catégorie.
+- **Catégorie de logiciel supprimée puis recréée** : GLPI désactive les règles qui la visaient. Relancer
+  l'assistant réaligne désormais l'action de ces règles sur la nouvelle catégorie et les réactive (une
+  règle désactivée volontairement, dont la catégorie existe toujours, reste désactivée).
+- **Assistant, étape SMTP** : les champs n'étaient jamais pré-remplis depuis la configuration de GLPI ;
+  **profils** : la redirection vers la restauration recevait une racine vide. `$CFG_GLPI` n'était pas
+  déclarée globale dans ces deux pages (l'avertissement PHPStan qui le signalait était masqué).
+- **Tests d'intégration** : plusieurs tests modifiaient durablement l'instance partagée (purge de
+  catégories préexistantes, règles d'entité jamais supprimées, icône de la FAQ « Qualité, QHSE &
+  Conformité » retirée). Ils restaurent désormais l'état d'origine.
+
 ## [1.6.0] - 2026-10-18
 
 ### Fixed

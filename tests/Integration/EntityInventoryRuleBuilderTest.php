@@ -31,6 +31,34 @@ use RuleImportEntityCollection;
  */
 final class EntityInventoryRuleBuilderTest extends TestCase
 {
+    /**
+     * Les plages IP des tests sont fixes : une règle laissée par un passage précédent capterait la
+     * machine avant celle du test. Les règles « PHPUnit » sont purgées avant et après chaque test.
+     */
+    protected function setUp(): void
+    {
+        self::purgeTestRules();
+    }
+
+    protected function tearDown(): void
+    {
+        self::purgeTestRules();
+    }
+
+    private static function purgeTestRules(): void
+    {
+        global $DB;
+
+        $rows = $DB->request([
+            'SELECT' => ['id'],
+            'FROM'   => Rule::getTable(),
+            'WHERE'  => ['sub_type' => RuleImportEntity::class, 'name' => ['LIKE', '%PHPUnit%']],
+        ]);
+        foreach ($rows as $row) {
+            (new RuleImportEntity())->delete(['id' => (int) $row['id']], true);
+        }
+    }
+
     private function entity(string $name): int
     {
         return (int) (new Entity())->add(['name' => $name . ' ' . mt_rand(100000, 999999), 'entities_id' => 0]);

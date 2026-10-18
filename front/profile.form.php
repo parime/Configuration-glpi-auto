@@ -20,6 +20,10 @@ use GlpiPlugin\Configurationglpiauto\Blueprint\FieldGroupLabel;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
+// Les pages front sont incluses depuis une méthode du routeur GLPI : $CFG_GLPI n'y est
+// visible qu'après une déclaration globale explicite.
+global $CFG_GLPI;
+
 $item = new ConfigurationProfile();
 
 if (isset($_POST['add'])) {

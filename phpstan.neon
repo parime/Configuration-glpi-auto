@@ -61,13 +61,6 @@ parameters:
             path: front/blueprint_import.php
             reportUnmatched: false
         -
-            # `$CFG_GLPI` est une globale peuplée par le bootstrap GLPI avant l'inclusion de tout
-            # front-controller — jamais définie localement dans ce fichier (comme dans tous les
-            # `front/*.php` de ce plugin), donc invisible pour l'analyse statique isolée d'un seul
-            # fichier sans stub de variables globales.
-            identifier: variable.undefined
-            path: front/profile.form.php
-        -
             # Dette de typage connue, jamais des bugs : ce plugin n'annote pas encore le type de
             # valeur de chaque tableau imbriqué partout (`array` plutôt que `array<string, mixed>`
             # etc.) — un vrai chantier de précision de type à mener séparément, pas quelque chose à

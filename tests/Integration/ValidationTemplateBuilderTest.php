@@ -72,6 +72,10 @@ final class ValidationTemplateBuilderTest extends TestCase
 
     public function testCommitteeTemplateIsLinkedToTheCommitteeValidationStepWhenItExists(): void
     {
+        if ((new ITILValidationTemplate())->getFromDBByCrit(['name' => self::COMMITTEE_NAME])) {
+            // Le constructeur ne réécrit jamais un modèle existant : seul un premier passage le relie.
+            $this->markTestSkipped('Le modèle « Validation comité » existe déjà sur cette instance partagée.');
+        }
         (new ValidationTemplateBuilder())->build($this->buildConfig(true));
 
         $step = new ValidationStep();
