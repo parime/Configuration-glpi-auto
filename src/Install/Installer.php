@@ -180,6 +180,7 @@ final class Installer
                 `manufacturer_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `manufacturer_dictionary_enabled` tinyint NOT NULL DEFAULT 0,
                 `dropdown_unicity_enabled` tinyint NOT NULL DEFAULT 1,
+                `software_dictionary_enabled` tinyint NOT NULL DEFAULT 1,
                 `kb_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `kb_faq_enabled` tinyint NOT NULL DEFAULT 0,
                 `document_management_enabled` tinyint NOT NULL DEFAULT 0,
@@ -346,6 +347,8 @@ final class Installer
             // #298 : actif aussi sur une instance mise à jour — refuser un fabricant ou un modèle
             // en double n'enlève rien à personne, et c'est ce que l'administrateur attend.
             $migration->addField(self::CONFIGS_TABLE, 'dropdown_unicity_enabled', 'bool', ['value' => 1]);
+            // #303 : coché par défaut, mais rien n'est créé avant que l'administrateur relance l'assistant.
+            $migration->addField(self::CONFIGS_TABLE, 'software_dictionary_enabled', 'bool', ['value' => 1]);
             $migration->addField(self::CONFIGS_TABLE, 'kb_categories_enabled', 'bool', ['value' => 0]);
             // #143/#144: explicit default 1 (unlike the plain addField()-with-no-value precedent
             // above) — this seeds two ready-to-read FAQ articles, not an empty structure an admin

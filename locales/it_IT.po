@@ -3963,3 +3963,13 @@ msgstr "%d voce/i duplicata/e (produttori, modelli, tipi...)"
 
 msgid "Corrigez en un clic : pour chaque groupe, une seule entrée est gardée (le nom exact de la marque s'il existe, sinon la plus ancienne) et tous les matériels, modèles et logiciels qui utilisaient les doublons sont reportés dessus, puis les doublons sont supprimés."
 msgstr "Correggi con un clic: per ogni gruppo viene mantenuta una sola voce (il nome esatto del marchio se esiste, altrimenti la più vecchia), tutte le apparecchiature, i modelli e i software che usavano i duplicati vengono spostati su di essa, poi i duplicati vengono eliminati."
+
+#, php-format
+msgid "%d règle(s) de dictionnaire des logiciels créées."
+msgstr "%d regola/e di dizionario del software creata/e."
+
+msgid "Créer un dictionnaire des logiciels courants (une seule fiche par logiciel)"
+msgstr "Creare un dizionario dei software comuni (una sola scheda per software)"
+
+msgid "L'agent remonte « Mozilla Firefox (x64 fr) », « Mozilla Firefox 131.0 (x64 en-US) »… : sans dictionnaire, GLPI crée un logiciel par variante et le nombre d'installations ou de licences devient faux. Le nom est ramené à « Mozilla Firefox », la version reste dans la version du logiciel. Java, Python et Visual C++ gardent leur version majeure, car plusieurs s'installent côte à côte."
+msgstr "L'agente rileva «Mozilla Firefox (x64 fr)», «Mozilla Firefox 131.0 (x64 en-US)»…: senza dizionario, GLPI crea un software per variante e il numero di installazioni o di licenze diventa sbagliato. Il nome viene ricondotto a «Mozilla Firefox», la versione resta nella versione del software. Java, Python e Visual C++ mantengono la versione principale, perché diverse si installano affiancate."

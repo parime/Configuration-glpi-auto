@@ -1171,6 +1171,15 @@
         </div>
         <p class="text-muted small mb-3">{{ __('GLPI ne le vérifie pas : on peut créer dix fois « Lenovo » à la main, par un import ou par l\'API. Avec cette option, une création ou un renommage vers un nom qui existe déjà (aux majuscules, accents et espaces près) est refusé, avec le numéro de l\'entrée existante. Un logiciel est en double s\'il a le même nom et le même éditeur dans la même entité : chaque entité cliente peut avoir le sien. L\'inventaire n\'est jamais bloqué : il réutilise déjà les noms existants.', 'configurationglpiauto') }}</p>
 
+        {# Issue #303 #}
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="software_dictionary_enabled" value="0">
+          <input type="checkbox" name="software_dictionary_enabled" value="1" class="form-check-input" id="cga-software-dictionary-enabled" {{ config.software_dictionary_enabled|default(1) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-software-dictionary-enabled">{{ __('Créer un dictionnaire des logiciels courants (une seule fiche par logiciel)', 'configurationglpiauto') }}</label>
+        </div>
+        <p class="text-muted small mb-1">{{ __('L\'agent remonte « Mozilla Firefox (x64 fr) », « Mozilla Firefox 131.0 (x64 en-US) »… : sans dictionnaire, GLPI crée un logiciel par variante et le nombre d\'installations ou de licences devient faux. Le nom est ramené à « Mozilla Firefox », la version reste dans la version du logiciel. Java, Python et Visual C++ gardent leur version majeure, car plusieurs s\'installent côte à côte.', 'configurationglpiauto') }}</p>
+        <p class="text-muted small mb-3">{{ software_dictionary_preview|default([])|join(', ') }}</p>
+
         <div class="form-check form-switch mb-2">
           <input type="hidden" name="line_operators_enabled" value="0">
           <input type="checkbox" name="line_operators_enabled" value="1" class="form-check-input" id="cga-line-operators-enabled" {{ config.line_operators_enabled|default(0) ? 'checked' : '' }}>
