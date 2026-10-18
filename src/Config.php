@@ -231,6 +231,8 @@ class Config extends Compat\Base\ConfigBase
             'manufacturer_dictionary_enabled' => 1,
             'dropdown_unicity_enabled' => 1,
             'software_dictionary_enabled' => 1,
+            'audit_ghost_days' => 30,
+            'audit_warranty_days' => 30,
             'kb_categories_enabled' => 1,
             'kb_faq_enabled' => 1,
             'document_management_enabled' => 1,

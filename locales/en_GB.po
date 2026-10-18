@@ -3894,3 +3894,110 @@ msgstr "Create a dictionary of common software (a single record per software)"
 
 msgid "L'agent remonte « Mozilla Firefox (x64 fr) », « Mozilla Firefox 131.0 (x64 en-US) »… : sans dictionnaire, GLPI crée un logiciel par variante et le nombre d'installations ou de licences devient faux. Le nom est ramené à « Mozilla Firefox », la version reste dans la version du logiciel. Java, Python et Visual C++ gardent leur version majeure, car plusieurs s'installent côte à côte."
 msgstr "The agent reports “Mozilla Firefox (x64 fr)”, “Mozilla Firefox 131.0 (x64 en-US)”…: without a dictionary, GLPI creates one software per variant and installation or licence counts become wrong. The name is brought back to “Mozilla Firefox”; the version stays in the software version. Java, Python and Visual C++ keep their major version, since several are installed side by side."
+
+#, php-format
+msgid "… et %d autre(s)"
+msgstr "… and %d other(s)"
+
+msgid "Aucun nouveau ticket : les matériels concernés ont déjà un ticket ouvert."
+msgstr "No new ticket: the equipment concerned already has an open ticket."
+
+msgid "Créer les tickets"
+msgstr "Create the tickets"
+
+#, php-format
+msgid "%1$s (dernier inventaire le %2$s)"
+msgstr "%1$s (last inventory on %2$s)"
+
+msgid "Perdu, volé, en panne, ou sorti du parc sans être déclaré ? « Créer les tickets » ouvre un ticket par matériel, lié à lui, pour que l'équipe vérifie. Rien n'est modifié sur le matériel. Le délai se règle plus bas, dans « Contrôles du parc »."
+msgstr "Lost, stolen, broken, or removed from the fleet without being declared? “Create the tickets” opens one ticket per item, linked to it, for the team to check. Nothing is changed on the equipment. The delay is set below, in “Fleet checks”."
+
+msgid "personne"
+msgstr "nobody"
+
+#, php-format
+msgid "%1$s ne remonte plus à l'inventaire depuis le %2$s. Utilisateur dans GLPI : %3$s."
+msgstr "%1$s has not reported to inventory since %2$s. User in GLPI: %3$s."
+
+msgid "Vérifiez si le matériel est perdu, volé, en panne, ou sorti du parc sans être déclaré, puis mettez à jour sa fiche. Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n'a été modifiée."
+msgstr "Check whether the equipment is lost, stolen, broken, or removed from the fleet without being declared, then update its record. This ticket was opened by the Audit mode of Configuration GLPI Auto: no equipment data was changed."
+
+#, php-format
+msgid "Garanties : %1$d expirée(s), %2$d expirent dans les %3$d jours"
+msgstr "Warranties: %1$d expired, %2$d expiring within %3$d days"
+
+#, php-format
+msgid "%1$s (fin le %2$s)"
+msgstr "%1$s (ends on %2$s)"
+
+msgid "Prolonger la garantie, prévoir le remplacement, ou accepter le risque ? « Créer les tickets » ouvre un ticket regroupant ces matériels, lié à chacun. Rien n'est modifié sur le matériel. Le délai se règle plus bas, dans « Contrôles du parc »."
+msgstr "Extend the warranty, plan the replacement, or accept the risk? “Create the tickets” opens one ticket grouping this equipment, linked to each item. Nothing is changed on the equipment. The delay is set below, in “Fleet checks”."
+
+#, php-format
+msgid "%1$s : fin de garantie le %2$s"
+msgstr "%1$s: warranty ends on %2$s"
+
+msgid "Ces matériels en service ont une garantie expirée ou qui expire bientôt :"
+msgstr "This equipment in service has an expired or soon-to-expire warranty:"
+
+msgid "Pour chacun : prolonger la garantie, prévoir le remplacement, ou accepter le risque. Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n'a été modifiée."
+msgstr "For each: extend the warranty, plan the replacement, or accept the risk. This ticket was opened by the Audit mode of Configuration GLPI Auto: no equipment data was changed."
+
+msgid "statut"
+msgstr "status"
+
+msgid "lieu"
+msgstr "location"
+
+msgid "utilisateur (statut « Attribué »)"
+msgstr "user (status “Assigned”)"
+
+#, php-format
+msgid "%1$s (sans %2$s)"
+msgstr "%1$s (no %2$s)"
+
+msgid "Sans statut, sans lieu ou « Attribué » sans utilisateur : ce matériel échappe aux recherches et aux rapports. « Créer les tickets » ouvre un ticket regroupant ces matériels, lié à chacun. Rien n'est complété automatiquement."
+msgstr "No status, no location, or “Assigned” without a user: this equipment escapes searches and reports. “Create the tickets” opens one ticket grouping this equipment, linked to each item. Nothing is filled in automatically."
+
+#, php-format
+msgid "%1$s : sans %2$s"
+msgstr "%1$s: no %2$s"
+
+msgid "Ces matériels sont incomplets dans GLPI :"
+msgstr "This equipment is incomplete in GLPI:"
+
+msgid "Complétez chaque fiche (statut, lieu, utilisateur). Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n'a été modifiée."
+msgstr "Complete each record (status, location, user). This ticket was opened by the Audit mode of Configuration GLPI Auto: no equipment data was changed."
+
+msgid "Contrôles du parc enregistrés."
+msgstr "Fleet checks saved."
+
+msgid "Contrôles du parc"
+msgstr "Fleet checks"
+
+msgid "Ces contrôles ne modifient jamais le matériel : « Créer les tickets » ouvre des tickets liés au matériel concerné, que l'équipe traite. Mettre 0 désactive un contrôle."
+msgstr "These checks never change the equipment: “Create the tickets” opens tickets linked to the equipment concerned, for the team to handle. Setting 0 disables a check."
+
+msgid "Matériel qui ne remonte plus à l'inventaire depuis (jours)"
+msgstr "Equipment not reporting to inventory for (days)"
+
+msgid "Garanties qui expirent dans (jours)"
+msgstr "Warranties expiring within (days)"
+
+#, php-format
+msgid "%1$d matériel ne remonte plus à l'inventaire depuis %2$d jours"
+msgid_plural "%1$d matériels ne remontent plus à l'inventaire depuis %2$d jours"
+msgstr[0] "%1$d item has not reported to inventory for %2$d days"
+msgstr[1] "%1$d items have not reported to inventory for %2$d days"
+
+#, php-format
+msgid "%d matériel à compléter"
+msgid_plural "%d matériels à compléter"
+msgstr[0] "%d item to complete"
+msgstr[1] "%d items to complete"
+
+#, php-format
+msgid "%d ticket ouvert."
+msgid_plural "%d tickets ouverts."
+msgstr[0] "%d ticket opened."
+msgstr[1] "%d tickets opened."

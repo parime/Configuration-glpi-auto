@@ -23,6 +23,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Audit du parc, avec création de tickets** (issue #306). Trois nouveaux contrôles dans le mode
+  Audit, inclus dans le rapport périodique par e-mail :
+  - **matériel qui ne remonte plus à l'inventaire** depuis X jours (30 par défaut), hors statuts
+    « hors parc » (en stock, donné, vendu, détruit, volé / perdu, retour fournisseur) ;
+  - **garanties** expirées ou qui expirent dans les X jours, sur du matériel en service ;
+  - **matériel incomplet** : sans statut, sans lieu, ou « Attribué » sans utilisateur.
+
+  Le bouton « Créer les tickets » ouvre un ticket par machine qui ne remonte plus, et un ticket
+  groupé pour les garanties comme pour le matériel incomplet. Chaque ticket est lié aux matériels
+  concernés. Il n'y a pas de doublon tant qu'un ticket du même contrôle reste ouvert, et le
+  matériel n'est jamais modifié. Les délais se règlent dans le nouvel encadré « Contrôles du
+  parc » de la page d'audit (0 = contrôle désactivé).
 - **Dictionnaire des logiciels** (issue #303) : une seule fiche par logiciel malgré les variantes
   de nom remontées par l'agent. Par exemple, « Mozilla Firefox (x64 fr) » et « Mozilla Firefox
   131.0 (x64 en-US) » deviennent tous deux « Mozilla Firefox ». La version reste dans la version
