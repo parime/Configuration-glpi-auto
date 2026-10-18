@@ -9,6 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Revue de tous les dictionnaires** (issue #315).
+  - **Systèmes d'exploitation** : GLPI enregistre le nom complet remonté par l'agent, dans la
+    langue du poste. Les éditions Windows françaises sont ramenées à leur nom anglais
+    (« Microsoft Windows 11 Professionnel » → « Microsoft Windows 11 Pro », Famille → Home,
+    Entreprise → Enterprise, Éducation → Education, LTSC…). Ubuntu, RHEL, Rocky, AlmaLinux,
+    CentOS et macOS sont ramenés à leur version majeure : « Ubuntu 22.04.4 LTS » devient
+    « Ubuntu 22.04 LTS ».
+  - **Architectures** : « 64 bits », « 64-bit », « amd64 » → « x86_64 » ; idem pour x86 et ARM64.
+  - **Imprimantes virtuelles** : « Microsoft Print to PDF », XPS, OneNote, Fax, imprimantes PDF et
+    imprimantes redirigées par le Bureau à distance ne sont plus importées comme fausses
+    imprimantes. Rien n'est supprimé de ce qui existe déjà.
+  - **Logiciels** : 90 règles au lieu de 60. S'ajoutent Office en licence perpétuelle (éditions
+    françaises → nom anglais, année conservée), les runtimes .NET (une fiche par version majeure
+    et par architecture), les antivirus d'entreprise, les outils Dell, HP et Lenovo, et les
+    messageries.
+  - **Volontairement non couverts** : les modèles (des milliers de références propres à chaque
+    parc), les versions d'OS (déjà normalisées par l'agent), les types d'écran, de périphérique et
+    de téléphone (non remontés par l'agent).
+  - Deux nouvelles options à l'étape 15 de l'assistant, cochées par défaut. Vérifié par deux
+    inventaires réels sur GLPI 12 (Windows en français et en anglais) : un seul système, une seule
+    architecture, et seules les vraies imprimantes importées.
+
 ## [1.6.0] - 2026-10-18
 
 ### Fixed

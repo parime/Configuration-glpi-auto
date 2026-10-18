@@ -39,8 +39,10 @@ final class DictionaryRules
      *        options « si »), pour rattraper les variantes que la liste exacte ne connaît pas
      * @param string $canonical nom attribué ; avec $actionType = 'regex_result', « #0 » reprend le
      *        premier groupe capturé par $regex (issue #303 : « Java 8 Update 401 » -> « Java 8 »)
+     * @param string $actionField champ modifié par la règle : le nom, ou « _ignore_import » (valeur
+     *        « 1 ») pour écarter l'élément à l'import (issue #315 : imprimantes virtuelles)
      */
-    public static function ensure(string $subType, string $ruleName, string $canonical, array $exactNames, ?string $regex = null, string $actionType = 'assign'): void
+    public static function ensure(string $subType, string $ruleName, string $canonical, array $exactNames, ?string $regex = null, string $actionType = 'assign', string $actionField = 'name'): void
     {
         $criteria = [];
         foreach ($exactNames as $name) {
@@ -68,7 +70,7 @@ final class DictionaryRules
         (new RuleAction())->add([
             'rules_id' => $rulesId,
             'action_type' => $actionType,
-            'field' => 'name',
+            'field' => $actionField,
             'value' => $canonical,
         ]);
     }

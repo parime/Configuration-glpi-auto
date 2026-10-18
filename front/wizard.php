@@ -70,11 +70,13 @@ use GlpiPlugin\Configurationglpiauto\NewScreenFormBuilder;
 use GlpiPlugin\Configurationglpiauto\NonConformityFormBuilder;
 use GlpiPlugin\Configurationglpiauto\NotificationBrandingBuilder;
 use GlpiPlugin\Configurationglpiauto\OfficeSuppliesFormBuilder;
+use GlpiPlugin\Configurationglpiauto\OperatingSystemDictionaryBuilder;
 use GlpiPlugin\Configurationglpiauto\PaletteBuilder;
 use GlpiPlugin\Configurationglpiauto\PasswordResetFormBuilder;
 use GlpiPlugin\Configurationglpiauto\PhysicalSecurityAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\PlanningEventBuilder;
 use GlpiPlugin\Configurationglpiauto\PreventiveMaintenanceFormBuilder;
+use GlpiPlugin\Configurationglpiauto\PrinterDictionaryBuilder;
 use GlpiPlugin\Configurationglpiauto\ProfessionalPhoneFormBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\ProjectTaxonomyBuilder;
@@ -696,6 +698,8 @@ if (isset($_POST['finish'])) {
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
     $softwareDictionaryCreated = (new SoftwareDictionaryBuilder())->build($config);
+    $osDictionaryCreated = (new OperatingSystemDictionaryBuilder())->build($config);
+    $printerDictionaryCreated = (new PrinterDictionaryBuilder())->build($config);
     $lineOperatorsCreated = (new LineOperatorBuilder())->build($config);
     $assetTypesCreated = (new AssetTypeBuilder())->build($config);
     $computerTypeDictionaryCreated = (new ComputerTypeDictionaryBuilder())->build($config);
@@ -951,6 +955,12 @@ if (isset($_POST['finish'])) {
     if ($softwareDictionaryCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de dictionnaire des logiciels créées.', 'configurationglpiauto'), $softwareDictionaryCreated);
     }
+    if ($osDictionaryCreated > 0) {
+        $messages[] = sprintf(__('%d règle(s) de dictionnaire des systèmes d\'exploitation créées.', 'configurationglpiauto'), $osDictionaryCreated);
+    }
+    if ($printerDictionaryCreated > 0) {
+        $messages[] = sprintf(__('%d règle(s) pour ignorer les imprimantes virtuelles créées.', 'configurationglpiauto'), $printerDictionaryCreated);
+    }
     if ($computerTypeDictionaryCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de dictionnaire des types d\'ordinateur créées.', 'configurationglpiauto'), $computerTypeDictionaryCreated);
     }
@@ -1087,6 +1097,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'validation_templates_preview' => ValidationTemplateBuilder::getLibraryPreview(),
     'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
     'software_dictionary_preview' => SoftwareDictionaryBuilder::getPreview(),
+    'virtual_printers_preview' => PrinterDictionaryBuilder::getPreview(),
     'line_operators_preview' => LineOperatorBuilder::getOperatorsPreview(),
     'asset_types_preview' => AssetTypeBuilder::getTypesPreview(),
     'software_license_types_preview' => SoftwareLicenseTypeBuilder::getTypesPreview(),

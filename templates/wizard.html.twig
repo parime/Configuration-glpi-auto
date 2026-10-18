@@ -1180,6 +1180,22 @@
         <p class="text-muted small mb-1">{{ __('L\'agent remonte « Mozilla Firefox (x64 fr) », « Mozilla Firefox 131.0 (x64 en-US) »… : sans dictionnaire, GLPI crée un logiciel par variante et le nombre d\'installations ou de licences devient faux. Le nom est ramené à « Mozilla Firefox », la version reste dans la version du logiciel. Java, Python et Visual C++ gardent leur version majeure, car plusieurs s\'installent côte à côte.', 'configurationglpiauto') }}</p>
         <p class="text-muted small mb-3">{{ software_dictionary_preview|default([])|join(', ') }}</p>
 
+        {# Issue #315 #}
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="os_dictionary_enabled" value="0">
+          <input type="checkbox" name="os_dictionary_enabled" value="1" class="form-check-input" id="cga-os-dictionary-enabled" {{ config.os_dictionary_enabled|default(1) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-os-dictionary-enabled">{{ __('Créer un dictionnaire des systèmes d\'exploitation et des architectures', 'configurationglpiauto') }}</label>
+        </div>
+        <p class="text-muted small mb-3">{{ __('GLPI enregistre le nom complet du système, dans la langue du poste : « Microsoft Windows 11 Professionnel » et « Microsoft Windows 11 Pro » font deux systèmes, « Ubuntu 22.04.3 LTS » et « 22.04.4 LTS » aussi. Les éditions Windows sont ramenées à leur nom anglais, les distributions Linux et macOS à leur version majeure, et « 64 bits », « 64-bit », « amd64 » deviennent « x86_64 ».', 'configurationglpiauto') }}</p>
+
+        <div class="form-check form-switch mb-2">
+          <input type="hidden" name="virtual_printers_ignored" value="0">
+          <input type="checkbox" name="virtual_printers_ignored" value="1" class="form-check-input" id="cga-virtual-printers-ignored" {{ config.virtual_printers_ignored|default(1) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-virtual-printers-ignored">{{ __('Ne pas importer les imprimantes virtuelles des postes', 'configurationglpiauto') }}</label>
+        </div>
+        <p class="text-muted small mb-1">{{ __('Chaque poste remonte ses imprimantes virtuelles (PDF, XPS, OneNote, Fax, imprimantes redirigées par le Bureau à distance) : elles deviennent autant de fausses imprimantes dans le parc. Elles sont écartées aux prochains inventaires ; rien n\'est supprimé de ce qui existe déjà.', 'configurationglpiauto') }}</p>
+        <p class="text-muted small mb-3">{{ virtual_printers_preview|default([])|join(', ') }}</p>
+
         <div class="form-check form-switch mb-2">
           <input type="hidden" name="line_operators_enabled" value="0">
           <input type="checkbox" name="line_operators_enabled" value="1" class="form-check-input" id="cga-line-operators-enabled" {{ config.line_operators_enabled|default(0) ? 'checked' : '' }}>
