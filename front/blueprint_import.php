@@ -64,9 +64,9 @@ if (isset($_POST['import'])) {
     Html::redirect(ConfigurationProfile::getFormURL() . '?id=' . $profile->getID());
 }
 
-Html::header(__('Importer un Blueprint', 'configurationglpiauto'), $_SERVER['PHP_SELF'], 'config', ConfigurationProfile::class);
+Html::header(__('Importer un Blueprint', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('blueprint_import.php'), 'config', ConfigurationProfile::class);
 
-echo "<form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "' enctype='multipart/form-data' class='card'>";
+echo "<form method='post' action='" . htmlspecialchars(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('blueprint_import.php')) . "' enctype='multipart/form-data' class='card'>";
 echo "<div class='card-body'>";
 echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
 echo "<div class='mb-3'>";

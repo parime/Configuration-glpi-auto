@@ -76,10 +76,10 @@ if (isset($_POST['add'])) {
     } elseif (isset($_GET['all'])) {
         $content = $item->fields['snapshot'];
     } else {
-        Html::header(__('Exporter ce Blueprint', 'configurationglpiauto'), $_SERVER['PHP_SELF'], 'config', ConfigurationProfile::class);
+        Html::header(__('Exporter ce Blueprint', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php'), 'config', ConfigurationProfile::class);
         echo "<div class='card'><div class='card-body'>";
         echo "<p class='text-muted'>" . __('Choisissez les réglages à inclure dans le fichier exporté, ou exportez l\'intégralité de la configuration.', 'configurationglpiauto') . "</p>";
-        echo "<form method='get' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "'>";
+        echo "<form method='get' action='" . htmlspecialchars(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php')) . "'>";
         echo Html::hidden('id', ['value' => $_GET['id']]);
         echo Html::hidden('export_snapshot', ['value' => 1]);
         $groups = [];
@@ -98,7 +98,7 @@ if (isset($_POST['add'])) {
         }
         echo "<div class='d-flex gap-2 mt-3'>";
         echo "<button type='submit' class='btn btn-primary'><i class='ti ti-download'></i> " . __('Exporter la sélection', 'configurationglpiauto') . "</button>";
-        $exportAllUrl = $_SERVER['PHP_SELF'] . '?id=' . (int) $_GET['id'] . '&export_snapshot=1&all=1';
+        $exportAllUrl = \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php') . '?id=' . (int) $_GET['id'] . '&export_snapshot=1&all=1';
         echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($exportAllUrl) . "'><i class='ti ti-download'></i> " . __('Exporter l\'intégralité', 'configurationglpiauto') . "</a>";
         echo "</div>";
         echo "</form></div></div>";
@@ -114,12 +114,12 @@ if (isset($_POST['add'])) {
     exit;
 } else {
     Session::checkRight(ConfigurationProfile::$rightname, READ);
-    Html::header(ConfigurationProfile::getTypeName(1), $_SERVER['PHP_SELF'], 'config', ConfigurationProfile::class);
+    Html::header(ConfigurationProfile::getTypeName(1), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php'), 'config', ConfigurationProfile::class);
     $id = (int) ($_GET['id'] ?? 0);
     if ($id > 0) {
         $item->getFromDB($id);
         echo "<div class='mb-3 d-flex gap-2'>";
-        echo "<form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "' class='d-inline'>";
+        echo "<form method='post' action='" . htmlspecialchars(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php')) . "' class='d-inline'>";
         echo Html::hidden('id', ['value' => $id]);
         echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
         echo "<button type='submit' name='save_snapshot' value='1' class='btn btn-outline-primary'>";
@@ -127,14 +127,14 @@ if (isset($_POST['add'])) {
         echo "</button>";
         echo "</form>";
         if (!empty($item->fields['snapshot'])) {
-            echo "<form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "' class='d-inline'>";
+            echo "<form method='post' action='" . htmlspecialchars(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php')) . "' class='d-inline'>";
             echo Html::hidden('id', ['value' => $id]);
             echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
             echo "<button type='submit' name='apply_snapshot' value='1' class='btn btn-outline-primary'>";
             echo "<i class='ti ti-wand'></i> " . __('Appliquer ce Blueprint (via l\'assistant)', 'configurationglpiauto');
             echo "</button>";
             echo "</form>";
-            $exportUrl = $_SERVER['PHP_SELF'] . '?id=' . $id . '&export_snapshot=1';
+            $exportUrl = \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php') . '?id=' . $id . '&export_snapshot=1';
             echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($exportUrl) . "'>";
             echo "<i class='ti ti-download'></i> " . __('Exporter ce Blueprint (JSON)', 'configurationglpiauto');
             echo "</a>";

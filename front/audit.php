@@ -36,7 +36,7 @@ if (isset($_POST['fix'])) {
         Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
     }
 
-    Html::redirect($_SERVER['PHP_SELF']);
+    Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
 }
 
 // Issue #285 : réglages du rapport d'audit périodique par e-mail. La fréquence est celle de la
@@ -86,10 +86,10 @@ if (isset($_POST['save_report']) || isset($_POST['send_report_now'])) {
         Session::addMessageAfterRedirect(__('Réglages du rapport d\'audit enregistrés.', 'configurationglpiauto'));
     }
 
-    Html::redirect($_SERVER['PHP_SELF']);
+    Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
 }
 
-Html::header(__('Audit de configuration', 'configurationglpiauto'), $_SERVER['PHP_SELF'], 'config', ConfigurationProfile::class);
+Html::header(__('Audit de configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'), 'config', ConfigurationProfile::class);
 
 $findings = AuditService::runAll();
 
