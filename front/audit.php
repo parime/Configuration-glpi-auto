@@ -51,7 +51,7 @@ if (isset($_POST['save_park'])) {
     ]);
     Session::addMessageAfterRedirect(__('Contrôles du parc enregistrés.', 'configurationglpiauto'));
 
-    Html::redirect($_SERVER['PHP_SELF']);
+    Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
 }
 
 // Issue #285 : réglages du rapport d'audit périodique par e-mail. La fréquence est celle de la
