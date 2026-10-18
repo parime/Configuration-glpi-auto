@@ -45,7 +45,9 @@ final class AssetsignTriggerBuilderTest extends TestCase
 
     public function testReturnsZeroAndNoPreviewWhenAssetsignIsNotActive(): void
     {
-        $this->assertFalse(AssetsignTriggerBuilder::isThirdPartyPluginActive(), 'This test instance has no assetsign plugin.');
+        if (AssetsignTriggerBuilder::isThirdPartyPluginActive()) {
+            $this->markTestSkipped('assetsign est actif sur cette instance : cas couvert en CI, sans assetsign.');
+        }
 
         $this->assertSame(0, (new AssetsignTriggerBuilder())->build($this->buildConfig(true)));
         $this->assertSame([], AssetsignTriggerBuilder::preview());

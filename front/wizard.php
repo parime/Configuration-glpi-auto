@@ -129,6 +129,10 @@ use GlpiPlugin\Configurationglpiauto\WebsiteUpdateFormBuilder;
 use GlpiPlugin\Configurationglpiauto\WifiAccessFormBuilder;
 use GlpiPlugin\Configurationglpiauto\WorkplaceSafetyFormBuilder;
 
+// Les pages front sont incluses depuis une méthode du routeur GLPI : $CFG_GLPI n'y est
+// visible qu'après une déclaration globale explicite.
+global $CFG_GLPI;
+
 /**
  * Validates an uploaded entity logo and returns it as a `data:` URI, or null if missing/invalid.
  * `getimagesize()` reads the actual image header rather than trusting the browser-supplied MIME
