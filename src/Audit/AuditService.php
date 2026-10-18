@@ -20,6 +20,7 @@ namespace GlpiPlugin\Configurationglpiauto\Audit;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultAdminEmailCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultCredentialsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DuplicateDropdownsCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\DuplicateSoftwareCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\EntitiesWithoutAddressCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\GhostAssetsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\IncompleteAssetsCheck;
@@ -55,6 +56,7 @@ final class AuditService
             NoStatesConfiguredCheck::class,
             MissingRecommendedStatesCheck::class,
             DuplicateDropdownsCheck::class,
+            DuplicateSoftwareCheck::class,
             GhostAssetsCheck::class,
             WarrantyCheck::class,
             IncompleteAssetsCheck::class,

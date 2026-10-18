@@ -4110,3 +4110,20 @@ msgid "%d logiciel sans catégorie peut être classé"
 msgid_plural "%d logiciels sans catégorie peuvent être classés"
 msgstr[0] "%d logiciel sans catégorie peut être classé"
 msgstr[1] "%d logiciels sans catégorie peuvent être classés"
+
+#, php-format
+msgid "%1$s%2$s : %3$d fiche(s) en trop, %4$d installation(s) à reporter"
+msgstr "%1$s%2$s : %3$d fiche(s) en trop, %4$d installation(s) à reporter"
+
+#, php-format
+msgid "« Fusionner » garde la plus ancienne fiche de chaque logiciel et y reporte les versions, les %d installation(s), les licences, documents et tickets des doublons, puis supprime les doublons. Aucune installation n'est perdue."
+msgstr "« Fusionner » garde la plus ancienne fiche de chaque logiciel et y reporte les versions, les %d installation(s), les licences, documents et tickets des doublons, puis supprime les doublons. Aucune installation n'est perdue."
+
+msgid "Fusionner"
+msgstr "Fusionner"
+
+#, php-format
+msgid "%d logiciel en double"
+msgid_plural "%d logiciels en double"
+msgstr[0] "%d logiciel en double"
+msgstr[1] "%d logiciels en double"

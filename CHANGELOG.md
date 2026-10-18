@@ -11,6 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Audit : fusion des logiciels en double** (issue #305). Le contrôle détecte les logiciels de
+  même nom, même éditeur et même entité. Sa description sert d'aperçu : fiches en trop et nombre
+  d'installations à reporter. « Fusionner » garde la plus ancienne fiche et y reporte versions,
+  installations, licences, documents et tickets, puis supprime les doublons.
+  - Une même version présente des deux côtés est réunie en une seule.
+  - Une machine qui avait les deux garde une seule installation.
+  - Aucune installation n'est perdue. GLPI ne déplace pas lui-même les versions et licences d'un
+    logiciel supprimé : la fusion le fait avant la suppression.
+
+  Vérifié dans le navigateur sur GLPI 12.
 - **Catégories de logiciels automatiques** (issue #304). 13 catégories (Navigateurs, Bureautique,
   Communication et messagerie, Sécurité, Accès distant et VPN, Outils d'administration,
   Développement, Environnements d'exécution, Outils constructeur…) pour les 90 logiciels du
