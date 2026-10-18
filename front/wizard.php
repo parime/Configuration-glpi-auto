@@ -95,6 +95,7 @@ use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\SmtpBuilder;
 use GlpiPlugin\Configurationglpiauto\SocialMediaPostFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareBugFormBuilder;
+use GlpiPlugin\Configurationglpiauto\SoftwareCategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareDictionaryBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareInstallFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareLicenseFormBuilder;
@@ -697,7 +698,9 @@ if (isset($_POST['finish'])) {
     $marketplaceRegistrationSaved = $canUpdateCoreConfig ? (new MarketplaceBuilder())->build((string) ($_POST['glpi_network_registration_key'] ?? '')) : 0;
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
-    $softwareDictionaryCreated = (new SoftwareDictionaryBuilder())->build($config);
+    $softwareDictionary = new SoftwareDictionaryBuilder();
+    $softwareDictionaryCreated = $softwareDictionary->build($config);
+    $softwareCategoriesCreated = (new SoftwareCategoryBuilder())->build($config, SoftwareDictionaryBuilder::getRegexByLabel(), $softwareDictionary->getRuleIds());
     $osDictionaryCreated = (new OperatingSystemDictionaryBuilder())->build($config);
     $printerDictionaryCreated = (new PrinterDictionaryBuilder())->build($config);
     $lineOperatorsCreated = (new LineOperatorBuilder())->build($config);
@@ -954,6 +957,9 @@ if (isset($_POST['finish'])) {
     }
     if ($softwareDictionaryCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de dictionnaire des logiciels créées.', 'configurationglpiauto'), $softwareDictionaryCreated);
+    }
+    if ($softwareCategoriesCreated > 0) {
+        $messages[] = sprintf(__('%d règle(s) de catégorie de logiciels créées.', 'configurationglpiauto'), $softwareCategoriesCreated);
     }
     if ($osDictionaryCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de dictionnaire des systèmes d\'exploitation créées.', 'configurationglpiauto'), $osDictionaryCreated);

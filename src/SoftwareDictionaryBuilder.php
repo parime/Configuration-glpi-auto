@@ -153,17 +153,21 @@ class SoftwareDictionaryBuilder
         'Microsoft Visual C++ Redistributable (année, architecture)' => ['/^(microsoft visual c\+\+ \d{4}(?:-\d{4})? redistributable \(x(?:64|86)\))/', '#0'],
     ];
 
+    /** @var array<string, int> libellé => id de la règle du dictionnaire, après build() */
+    private array $ruleIds = [];
+
     /**
      * @return int Number of dictionary rules created/reused.
      */
     public function build(Config $config): int
     {
+        $this->ruleIds = [];
         if (empty($config->fields['software_dictionary_enabled'])) {
             return 0;
         }
 
         foreach (self::RULES as $label => [$regex, $name]) {
-            DictionaryRules::ensure(
+            $this->ruleIds[$label] = DictionaryRules::ensure(
                 RuleDictionnarySoftware::class,
                 sprintf('Logiciel — normalisation « %s »', $label),
                 $name,
@@ -174,6 +178,23 @@ class SoftwareDictionaryBuilder
         }
 
         return count(self::RULES);
+    }
+
+    /**
+     * @return array<string, int> libellé => id de la règle du dictionnaire (issue #304 : la
+     *         catégorie s'ajoute à ces règles)
+     */
+    public function getRuleIds(): array
+    {
+        return $this->ruleIds;
+    }
+
+    /**
+     * @return array<string, string> libellé => expression
+     */
+    public static function getRegexByLabel(): array
+    {
+        return array_map(static fn (array $rule): string => $rule[0], self::RULES);
     }
 
     /**

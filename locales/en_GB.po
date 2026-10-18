@@ -4021,3 +4021,25 @@ msgstr "Do not import the computers' virtual printers"
 
 msgid "Chaque poste remonte ses imprimantes virtuelles (PDF, XPS, OneNote, Fax, imprimantes redirigées par le Bureau à distance) : elles deviennent autant de fausses imprimantes dans le parc. Elles sont écartées aux prochains inventaires ; rien n'est supprimé de ce qui existe déjà."
 msgstr "Each computer reports its virtual printers (PDF, XPS, OneNote, Fax, printers redirected by Remote Desktop): they become as many fake printers in the fleet. They are left out of the next inventories; nothing already existing is deleted."
+
+#, php-format
+msgid "%d règle(s) de catégorie de logiciels créées."
+msgstr "%d software category rule(s) created."
+
+msgid "Classer automatiquement les logiciels courants (navigateurs, bureautique, sécurité...)"
+msgstr "Automatically categorise common software (browsers, office, security...)"
+
+msgid "Crée 13 catégories de logiciels et les règles qui y rangent les logiciels courants, à l'inventaire comme à la création manuelle. Une catégorie choisie à la main n'est jamais remplacée. Pour les logiciels déjà en base, le mode Audit propose « Classer »."
+msgstr "Creates 13 software categories and the rules that file common software into them, at inventory as well as on manual creation. A category chosen by hand is never replaced. For software already in the database, the Audit mode offers “Categorise”."
+
+msgid "Les règles « Catégories de logiciels » de l'assistant savent les classer (navigateurs, bureautique, sécurité...). « Classer » leur applique la catégorie trouvée, sans toucher aux logiciels qui en ont déjà une."
+msgstr "The wizard's “Software categories” rules can file them (browsers, office, security...). “Categorise” applies the category found, without touching software that already has one."
+
+msgid "Classer"
+msgstr "Categorise"
+
+#, php-format
+msgid "%d logiciel sans catégorie peut être classé"
+msgid_plural "%d logiciels sans catégorie peuvent être classés"
+msgstr[0] "%d uncategorised software can be categorised"
+msgstr[1] "%d uncategorised software can be categorised"

@@ -29,6 +29,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoSlaConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoStatesConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoTicketCategoriesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NotificationsDisabledCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\UncategorizedSoftwareCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\WarrantyCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\WeakPasswordPolicyCheck;
 use LogicException;
@@ -57,6 +58,7 @@ final class AuditService
             GhostAssetsCheck::class,
             WarrantyCheck::class,
             IncompleteAssetsCheck::class,
+            UncategorizedSoftwareCheck::class,
             NoActiveCalendarCheck::class,
             NoSlaConfiguredCheck::class,
             NoTicketCategoriesCheck::class,
