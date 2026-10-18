@@ -21,6 +21,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Les 19 usages (9 pages) visent désormais l'adresse réelle de la page (`FrontUrl`). Vérifié dans
   le navigateur sur GLPI 12, avant et après.
 
+### Added
+
+- **Dictionnaire des logiciels** (issue #303) : une seule fiche par logiciel malgré les variantes
+  de nom remontées par l'agent. Par exemple, « Mozilla Firefox (x64 fr) » et « Mozilla Firefox
+  131.0 (x64 en-US) » deviennent tous deux « Mozilla Firefox ». La version reste dans la version
+  du logiciel. Le nombre d'installations et le suivi des licences redeviennent justes.
+  - 60 règles pour les logiciels courants : navigateurs, bureautique, PDF, compression, visioconférence, accès
+    distant et VPN, outils d'administration, agents d'inventaire.
+  - Java, Python et Visual C++ gardent la partie qui les distingue (« Java 8 », « Python 3.12 »,
+    « … 2015-2022 Redistributable (x64) » / « (x86) »), car plusieurs s'installent côte à côte.
+  - Les éditions et modules différents restent séparés : Firefox ESR, Edge WebView2, Edge Update,
+    Acrobat et Acrobat Reader, TeamViewer Host, packs d'aide LibreOffice, extension Outlook de
+    Zoom.
+  - Option à l'étape 15 de l'assistant (cochée par défaut). Vérifié par deux inventaires réels sur
+    GLPI 12 : un seul logiciel par nom, présent sur les deux machines.
+
 ## [1.5.0] - 2026-10-11
 
 ### Changed

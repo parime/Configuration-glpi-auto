@@ -93,6 +93,7 @@ use GlpiPlugin\Configurationglpiauto\SlaBuilder;
 use GlpiPlugin\Configurationglpiauto\SmtpBuilder;
 use GlpiPlugin\Configurationglpiauto\SocialMediaPostFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareBugFormBuilder;
+use GlpiPlugin\Configurationglpiauto\SoftwareDictionaryBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareInstallFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareLicenseFormBuilder;
 use GlpiPlugin\Configurationglpiauto\SoftwareLicenseTypeBuilder;
@@ -694,6 +695,7 @@ if (isset($_POST['finish'])) {
     $marketplaceRegistrationSaved = $canUpdateCoreConfig ? (new MarketplaceBuilder())->build((string) ($_POST['glpi_network_registration_key'] ?? '')) : 0;
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
     $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
+    $softwareDictionaryCreated = (new SoftwareDictionaryBuilder())->build($config);
     $lineOperatorsCreated = (new LineOperatorBuilder())->build($config);
     $assetTypesCreated = (new AssetTypeBuilder())->build($config);
     $computerTypeDictionaryCreated = (new ComputerTypeDictionaryBuilder())->build($config);
@@ -946,6 +948,9 @@ if (isset($_POST['finish'])) {
     if ($manufacturerDictionaryCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de dictionnaire fabricant créées.', 'configurationglpiauto'), $manufacturerDictionaryCreated);
     }
+    if ($softwareDictionaryCreated > 0) {
+        $messages[] = sprintf(__('%d règle(s) de dictionnaire des logiciels créées.', 'configurationglpiauto'), $softwareDictionaryCreated);
+    }
     if ($computerTypeDictionaryCreated > 0) {
         $messages[] = sprintf(__('%d règle(s) de dictionnaire des types d\'ordinateur créées.', 'configurationglpiauto'), $computerTypeDictionaryCreated);
     }
@@ -1081,6 +1086,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'followup_library_preview' => FollowupLibraryBuilder::getLibraryPreview(),
     'validation_templates_preview' => ValidationTemplateBuilder::getLibraryPreview(),
     'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
+    'software_dictionary_preview' => SoftwareDictionaryBuilder::getPreview(),
     'line_operators_preview' => LineOperatorBuilder::getOperatorsPreview(),
     'asset_types_preview' => AssetTypeBuilder::getTypesPreview(),
     'software_license_types_preview' => SoftwareLicenseTypeBuilder::getTypesPreview(),
