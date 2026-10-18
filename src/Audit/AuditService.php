@@ -21,12 +21,15 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultAdminEmailCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultCredentialsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DuplicateDropdownsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\EntitiesWithoutAddressCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\GhostAssetsCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\IncompleteAssetsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\MissingRecommendedStatesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoActiveCalendarCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoSlaConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoStatesConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoTicketCategoriesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NotificationsDisabledCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\WarrantyCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\WeakPasswordPolicyCheck;
 use LogicException;
 
@@ -51,6 +54,9 @@ final class AuditService
             NoStatesConfiguredCheck::class,
             MissingRecommendedStatesCheck::class,
             DuplicateDropdownsCheck::class,
+            GhostAssetsCheck::class,
+            WarrantyCheck::class,
+            IncompleteAssetsCheck::class,
             NoActiveCalendarCheck::class,
             NoSlaConfiguredCheck::class,
             NoTicketCategoriesCheck::class,

@@ -60,13 +60,40 @@
               <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
               <input type="hidden" name="fix" value="{{ finding.checkKey }}">
               <button type="submit" class="btn btn-sm btn-primary">
-                <i class="ti ti-tool me-1"></i>{{ __('Corriger', 'configurationglpiauto') }}
+                {% if finding.fixLabel %}<i class="ti ti-ticket me-1"></i>{{ finding.fixLabel }}{% else %}<i class="ti ti-tool me-1"></i>{{ __('Corriger', 'configurationglpiauto') }}{% endif %}
               </button>
             </form>
           {% endif %}
         </div>
       {% endfor %}
     {% endif %}
+  </div>
+</div>
+
+{# Issue #306 : délais des contrôles du parc #}
+{% set park = park|default({'ghost_days': 30, 'warranty_days': 30}) %}
+<div class="card mt-3">
+  <div class="card-header">
+    <h3 class="card-title"><i class="ti ti-devices-search me-2"></i>{{ __('Contrôles du parc', 'configurationglpiauto') }}</h3>
+  </div>
+  <div class="card-body">
+    <p class="text-muted">{{ __('Ces contrôles ne modifient jamais le matériel : « Créer les tickets » ouvre des tickets liés au matériel concerné, que l\'équipe traite. Mettre 0 désactive un contrôle.', 'configurationglpiauto') }}</p>
+    <form method="post" action="{{ config('root_doc') }}/plugins/configurationglpiauto/front/audit.php" class="row g-3 align-items-end">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+      <div class="col-md-5">
+        <label class="form-label" for="cga-ghost-days"><i class="ti ti-ghost me-1"></i>{{ __('Matériel qui ne remonte plus à l\'inventaire depuis (jours)', 'configurationglpiauto') }}</label>
+        <input type="number" min="0" max="3650" class="form-control" name="audit_ghost_days" id="cga-ghost-days" value="{{ park.ghost_days }}" {{ can_fix ? '' : 'disabled' }}>
+      </div>
+      <div class="col-md-5">
+        <label class="form-label" for="cga-warranty-days"><i class="ti ti-shield-check me-1"></i>{{ __('Garanties qui expirent dans (jours)', 'configurationglpiauto') }}</label>
+        <input type="number" min="0" max="3650" class="form-control" name="audit_warranty_days" id="cga-warranty-days" value="{{ park.warranty_days }}" {{ can_fix ? '' : 'disabled' }}>
+      </div>
+      {% if can_fix %}
+        <div class="col-md-2">
+          <button type="submit" name="save_park" value="1" class="btn btn-primary w-100"><i class="ti ti-device-floppy me-1"></i>{{ __('Enregistrer', 'configurationglpiauto') }}</button>
+        </div>
+      {% endif %}
+    </form>
   </div>
 </div>
 

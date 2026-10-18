@@ -3973,3 +3973,110 @@ msgstr "Creare un dizionario dei software comuni (una sola scheda per software)"
 
 msgid "L'agent remonte « Mozilla Firefox (x64 fr) », « Mozilla Firefox 131.0 (x64 en-US) »… : sans dictionnaire, GLPI crée un logiciel par variante et le nombre d'installations ou de licences devient faux. Le nom est ramené à « Mozilla Firefox », la version reste dans la version du logiciel. Java, Python et Visual C++ gardent leur version majeure, car plusieurs s'installent côte à côte."
 msgstr "L'agente rileva «Mozilla Firefox (x64 fr)», «Mozilla Firefox 131.0 (x64 en-US)»…: senza dizionario, GLPI crea un software per variante e il numero di installazioni o di licenze diventa sbagliato. Il nome viene ricondotto a «Mozilla Firefox», la versione resta nella versione del software. Java, Python e Visual C++ mantengono la versione principale, perché diverse si installano affiancate."
+
+#, php-format
+msgid "… et %d autre(s)"
+msgstr "… e altri %d"
+
+msgid "Aucun nouveau ticket : les matériels concernés ont déjà un ticket ouvert."
+msgstr "Nessun nuovo ticket: l'attrezzatura interessata ha già un ticket aperto."
+
+msgid "Créer les tickets"
+msgstr "Crea i ticket"
+
+#, php-format
+msgid "%1$s (dernier inventaire le %2$s)"
+msgstr "%1$s (ultimo inventario il %2$s)"
+
+msgid "Perdu, volé, en panne, ou sorti du parc sans être déclaré ? « Créer les tickets » ouvre un ticket par matériel, lié à lui, pour que l'équipe vérifie. Rien n'est modifié sur le matériel. Le délai se règle plus bas, dans « Contrôles du parc »."
+msgstr "Smarrito, rubato, guasto o uscito dal parco senza essere dichiarato? «Crea i ticket» apre un ticket per apparecchiatura, collegato a essa, perché il team verifichi. Nulla viene modificato sull'attrezzatura. Il termine si imposta più in basso, in «Controlli del parco»."
+
+msgid "personne"
+msgstr "nessuno"
+
+#, php-format
+msgid "%1$s ne remonte plus à l'inventaire depuis le %2$s. Utilisateur dans GLPI : %3$s."
+msgstr "%1$s non viene più rilevato dall'inventario dal %2$s. Utente in GLPI: %3$s."
+
+msgid "Vérifiez si le matériel est perdu, volé, en panne, ou sorti du parc sans être déclaré, puis mettez à jour sa fiche. Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n'a été modifiée."
+msgstr "Verifica se l'attrezzatura è smarrita, rubata, guasta o uscita dal parco senza essere dichiarata, poi aggiorna la sua scheda. Questo ticket è stato aperto dalla modalità Audit di Configuration GLPI Auto: nessun dato dell'attrezzatura è stato modificato."
+
+#, php-format
+msgid "Garanties : %1$d expirée(s), %2$d expirent dans les %3$d jours"
+msgstr "Garanzie: %1$d scaduta/e, %2$d scadono entro %3$d giorni"
+
+#, php-format
+msgid "%1$s (fin le %2$s)"
+msgstr "%1$s (termina il %2$s)"
+
+msgid "Prolonger la garantie, prévoir le remplacement, ou accepter le risque ? « Créer les tickets » ouvre un ticket regroupant ces matériels, lié à chacun. Rien n'est modifié sur le matériel. Le délai se règle plus bas, dans « Contrôles du parc »."
+msgstr "Prolungare la garanzia, prevedere la sostituzione o accettare il rischio? «Crea i ticket» apre un ticket che raggruppa queste apparecchiature, collegato a ciascuna. Nulla viene modificato sull'attrezzatura. Il termine si imposta più in basso, in «Controlli del parco»."
+
+#, php-format
+msgid "%1$s : fin de garantie le %2$s"
+msgstr "%1$s: fine garanzia il %2$s"
+
+msgid "Ces matériels en service ont une garantie expirée ou qui expire bientôt :"
+msgstr "Queste apparecchiature in servizio hanno una garanzia scaduta o in scadenza:"
+
+msgid "Pour chacun : prolonger la garantie, prévoir le remplacement, ou accepter le risque. Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n'a été modifiée."
+msgstr "Per ciascuna: prolungare la garanzia, prevedere la sostituzione o accettare il rischio. Questo ticket è stato aperto dalla modalità Audit di Configuration GLPI Auto: nessun dato dell'attrezzatura è stato modificato."
+
+msgid "statut"
+msgstr "stato"
+
+msgid "lieu"
+msgstr "luogo"
+
+msgid "utilisateur (statut « Attribué »)"
+msgstr "utente (stato «Assegnato»)"
+
+#, php-format
+msgid "%1$s (sans %2$s)"
+msgstr "%1$s (senza %2$s)"
+
+msgid "Sans statut, sans lieu ou « Attribué » sans utilisateur : ce matériel échappe aux recherches et aux rapports. « Créer les tickets » ouvre un ticket regroupant ces matériels, lié à chacun. Rien n'est complété automatiquement."
+msgstr "Senza stato, senza luogo o «Assegnato» senza utente: queste apparecchiature sfuggono a ricerche e report. «Crea i ticket» apre un ticket che le raggruppa, collegato a ciascuna. Nulla viene completato automaticamente."
+
+#, php-format
+msgid "%1$s : sans %2$s"
+msgstr "%1$s: senza %2$s"
+
+msgid "Ces matériels sont incomplets dans GLPI :"
+msgstr "Queste apparecchiature sono incomplete in GLPI:"
+
+msgid "Complétez chaque fiche (statut, lieu, utilisateur). Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n'a été modifiée."
+msgstr "Completa ogni scheda (stato, luogo, utente). Questo ticket è stato aperto dalla modalità Audit di Configuration GLPI Auto: nessun dato dell'attrezzatura è stato modificato."
+
+msgid "Contrôles du parc enregistrés."
+msgstr "Controlli del parco salvati."
+
+msgid "Contrôles du parc"
+msgstr "Controlli del parco"
+
+msgid "Ces contrôles ne modifient jamais le matériel : « Créer les tickets » ouvre des tickets liés au matériel concerné, que l'équipe traite. Mettre 0 désactive un contrôle."
+msgstr "Questi controlli non modificano mai l'attrezzatura: «Crea i ticket» apre ticket collegati alle apparecchiature interessate, gestiti dal team. 0 disattiva un controllo."
+
+msgid "Matériel qui ne remonte plus à l'inventaire depuis (jours)"
+msgstr "Attrezzatura non più rilevata dall'inventario da (giorni)"
+
+msgid "Garanties qui expirent dans (jours)"
+msgstr "Garanzie in scadenza entro (giorni)"
+
+#, php-format
+msgid "%1$d matériel ne remonte plus à l'inventaire depuis %2$d jours"
+msgid_plural "%1$d matériels ne remontent plus à l'inventaire depuis %2$d jours"
+msgstr[0] "%1$d apparecchiatura non è più rilevata dall'inventario da %2$d giorni"
+msgstr[1] "%1$d apparecchiature non sono più rilevate dall'inventario da %2$d giorni"
+
+#, php-format
+msgid "%d matériel à compléter"
+msgid_plural "%d matériels à compléter"
+msgstr[0] "%d apparecchiatura da completare"
+msgstr[1] "%d apparecchiature da completare"
+
+#, php-format
+msgid "%d ticket ouvert."
+msgid_plural "%d tickets ouverts."
+msgstr[0] "%d ticket aperto."
+msgstr[1] "%d ticket aperti."

@@ -39,6 +39,21 @@ if (isset($_POST['fix'])) {
     Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
 }
 
+// Issue #306 : délais des contrôles du parc (jours, 0 = contrôle désactivé).
+if (isset($_POST['save_park'])) {
+    Session::checkRight(Config::$rightname, UPDATE);
+
+    $config = Config::getConfig();
+    $config->update([
+        'id'                  => $config->getID(),
+        'audit_ghost_days'    => max(0, min(3650, (int) ($_POST['audit_ghost_days'] ?? 30))),
+        'audit_warranty_days' => max(0, min(3650, (int) ($_POST['audit_warranty_days'] ?? 30))),
+    ]);
+    Session::addMessageAfterRedirect(__('Contrôles du parc enregistrés.', 'configurationglpiauto'));
+
+    Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
+}
+
 // Issue #285 : réglages du rapport d'audit périodique par e-mail. La fréquence est celle de la
 // tâche planifiée GLPI elle-même (désactivée / hebdomadaire / mensuelle), pour qu'elle reste
 // cohérente avec Configuration > Actions automatiques.
@@ -151,6 +166,10 @@ if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_D
         'notifications_on'   => !empty($CFG_GLPI['use_notifications']) && !empty($CFG_GLPI['notifications_mailing']),
     ],
     'findings'              => $findings,
+    'park'                  => [
+        'ghost_days'    => (int) ($config->fields['audit_ghost_days'] ?? 30),
+        'warranty_days' => (int) ($config->fields['audit_warranty_days'] ?? 30),
+    ],
     'can_fix'               => Session::haveRight(Config::$rightname, UPDATE),
     'csrf_token'            => Session::getNewCSRFToken(),
     'new_critical_message'  => $newCriticalMessage,
