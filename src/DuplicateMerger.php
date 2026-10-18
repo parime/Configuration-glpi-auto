@@ -34,8 +34,8 @@ use Software;
  * - Autres listes du blocage (modèles, types, systèmes d'exploitation) : même nom au sens de la
  *   base (casse, accents, espaces), comme le blocage. Des modèles « OptiPlex 7090 » et « OptiPlex
  *   7090 Tower » restent distincts.
- * - Logiciels : non fusionnés ici (versions et installations à réconcilier, hors du mécanisme
- *   « remplacer par » de GLPI).
+ * - Logiciels : fusionnés à part (SoftwareMerger, #305), car leurs versions et installations sont
+ *   hors du mécanisme « remplacer par » de GLPI.
  *
  * La fusion passe par la suppression native avec `_replace_by` (le choix « Remplacer par » de
  * GLPI) : toutes les références (matériels, modèles, logiciels, composants...) sont reportées sur

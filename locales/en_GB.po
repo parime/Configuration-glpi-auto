@@ -4043,3 +4043,20 @@ msgid "%d logiciel sans catégorie peut être classé"
 msgid_plural "%d logiciels sans catégorie peuvent être classés"
 msgstr[0] "%d uncategorised software can be categorised"
 msgstr[1] "%d uncategorised software can be categorised"
+
+#, php-format
+msgid "%1$s%2$s : %3$d fiche(s) en trop, %4$d installation(s) à reporter"
+msgstr "%1$s%2$s: %3$d extra record(s), %4$d installation(s) to move"
+
+#, php-format
+msgid "« Fusionner » garde la plus ancienne fiche de chaque logiciel et y reporte les versions, les %d installation(s), les licences, documents et tickets des doublons, puis supprime les doublons. Aucune installation n'est perdue."
+msgstr "“Merge” keeps the oldest record of each software and moves the duplicates' versions, the %d installation(s), licences, documents and tickets onto it, then deletes the duplicates. No installation is lost."
+
+msgid "Fusionner"
+msgstr "Merge"
+
+#, php-format
+msgid "%d logiciel en double"
+msgid_plural "%d logiciels en double"
+msgstr[0] "%d duplicate software"
+msgstr[1] "%d duplicate software"
