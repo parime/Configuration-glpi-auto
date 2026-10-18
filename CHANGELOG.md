@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-10-18
+
 ### Fixed
 
 - **Pages du plugin qui renvoyaient vers l'accueil ou perdaient le formulaire**. Derrière le point
