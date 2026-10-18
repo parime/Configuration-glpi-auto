@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Rattacher les machines inventoriées à leur entité** (issue #307), à l'étape 3 de
+  l'assistant. Pour chaque entité de l'arborescence, on saisit les plages IP du site
+  (192.168.10.0/24…) et/ou le tag configuré dans l'agent GLPI. L'assistant crée les règles natives
+  d'affectation d'un élément à une entité (critères « Adresse IP est dans le réseau » et « Tag
+  d'inventaire »), placées avant les règles de l'administrateur.
+  - Une machine qui ne correspond à rien reste dans l'entité par défaut.
+  - Une machine déjà rattachée n'est pas déplacée.
+  - Relancer l'assistant complète les règles sans doublon.
+
+  Vérifié par de vrais inventaires sur GLPI 12 : une machine dans la plage IP et une machine avec
+  le tag arrivent dans la bonne entité, une machine hors plage reste à la racine.
 - **Audit : fusion des logiciels en double** (issue #305). Le contrôle détecte les logiciels de
   même nom, même éditeur et même entité. Sa description sert d'aperçu : fiches en trop et nombre
   d'installations à reporter. « Fusionner » garde la plus ancienne fiche et y reporte versions,

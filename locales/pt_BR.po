@@ -4078,3 +4078,22 @@ msgid "%d logiciel en double"
 msgid_plural "%d logiciels en double"
 msgstr[0] "%d software duplicado"
 msgstr[1] "%d softwares duplicados"
+
+#, php-format
+msgid "%d règle(s) de rattachement à l'entité (plage IP, tag) créées ou complétées."
+msgstr "%d regra(s) de atribuição à entidade (faixa IP, tag) criada(s) ou completada(s)."
+
+msgid "Rattacher les machines inventoriées à leur entité (plage d'adresses IP ou tag de l'agent)"
+msgstr "Atribuir os computadores inventariados à sua entidade (faixa de endereços IP ou tag do agente)"
+
+msgid "Pour chaque entité : les plages IP du site (ex. 192.168.10.0/24, 10.1.0.0/16) et/ou le tag configuré dans l'agent GLPI. Une machine qui ne correspond à rien reste dans l'entité par défaut ; une machine déjà rattachée n'est pas déplacée. Les règles se retrouvent dans Administration > Règles > Affectation d'un élément à une entité."
+msgstr "Para cada entidade: as faixas IP do site (ex. 192.168.10.0/24, 10.1.0.0/16) e/ou a tag configurada no agente GLPI. Um computador que não corresponde a nada fica na entidade padrão; um computador já atribuído não é movido. As regras ficam em Administração > Regras > Atribuição de um item a uma entidade."
+
+msgid "Plages IP (ex. 192.168.10.0/24)"
+msgstr "Faixas IP (ex. 192.168.10.0/24)"
+
+msgid "Tag de l'agent"
+msgstr "Tag do agente"
+
+msgid "Définissez d'abord vos entités à l'étape 2 : sans entité, toutes les machines restent dans l'entité racine."
+msgstr "Defina primeiro as suas entidades na etapa 2: sem entidades, todos os computadores ficam na entidade raiz."

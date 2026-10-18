@@ -4155,3 +4155,22 @@ msgid "%d logiciel en double"
 msgid_plural "%d logiciels en double"
 msgstr[0] "%d doppelte Software"
 msgstr[1] "%d doppelte Softwareprodukte"
+
+#, php-format
+msgid "%d règle(s) de rattachement à l'entité (plage IP, tag) créées ou complétées."
+msgstr "%d Einheitenzuordnungsregel(n) (IP-Bereich, Tag) erstellt oder ergänzt."
+
+msgid "Rattacher les machines inventoriées à leur entité (plage d'adresses IP ou tag de l'agent)"
+msgstr "Inventarisierte Rechner ihrer Einheit zuordnen (IP-Adressbereich oder Agent-Tag)"
+
+msgid "Pour chaque entité : les plages IP du site (ex. 192.168.10.0/24, 10.1.0.0/16) et/ou le tag configuré dans l'agent GLPI. Une machine qui ne correspond à rien reste dans l'entité par défaut ; une machine déjà rattachée n'est pas déplacée. Les règles se retrouvent dans Administration > Règles > Affectation d'un élément à une entité."
+msgstr "Für jede Einheit: die IP-Bereiche des Standorts (z. B. 192.168.10.0/24, 10.1.0.0/16) und/oder das im GLPI-Agenten konfigurierte Tag. Ein Rechner ohne Treffer bleibt in der Standardeinheit; ein bereits zugeordneter Rechner wird nicht verschoben. Die Regeln finden sich unter Verwaltung > Regeln > Zuordnung eines Elements zu einer Einheit."
+
+msgid "Plages IP (ex. 192.168.10.0/24)"
+msgstr "IP-Bereiche (z. B. 192.168.10.0/24)"
+
+msgid "Tag de l'agent"
+msgstr "Agent-Tag"
+
+msgid "Définissez d'abord vos entités à l'étape 2 : sans entité, toutes les machines restent dans l'entité racine."
+msgstr "Legen Sie zuerst Ihre Einheiten in Schritt 2 an: Ohne Einheiten bleiben alle Rechner in der Stammeinheit."
