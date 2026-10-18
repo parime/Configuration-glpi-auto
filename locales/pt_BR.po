@@ -4019,3 +4019,23 @@ msgid "%d ticket ouvert."
 msgid_plural "%d tickets ouverts."
 msgstr[0] "%d ticket aberto."
 msgstr[1] "%d tickets abertos."
+
+#, php-format
+msgid "%d règle(s) de dictionnaire des systèmes d'exploitation créées."
+msgstr "%d regra(s) de dicionário de sistemas operacionais criada(s)."
+
+#, php-format
+msgid "%d règle(s) pour ignorer les imprimantes virtuelles créées."
+msgstr "%d regra(s) para ignorar impressoras virtuais criada(s)."
+
+msgid "Créer un dictionnaire des systèmes d'exploitation et des architectures"
+msgstr "Criar um dicionário de sistemas operacionais e arquiteturas"
+
+msgid "GLPI enregistre le nom complet du système, dans la langue du poste : « Microsoft Windows 11 Professionnel » et « Microsoft Windows 11 Pro » font deux systèmes, « Ubuntu 22.04.3 LTS » et « 22.04.4 LTS » aussi. Les éditions Windows sont ramenées à leur nom anglais, les distributions Linux et macOS à leur version majeure, et « 64 bits », « 64-bit », « amd64 » deviennent « x86_64 »."
+msgstr "O GLPI registra o nome completo do sistema, no idioma do computador: «Microsoft Windows 11 Professionnel» e «Microsoft Windows 11 Pro» viram dois sistemas, assim como «Ubuntu 22.04.3 LTS» e «22.04.4 LTS». As edições do Windows são reduzidas ao nome em inglês, as distribuições Linux e o macOS à versão principal, e «64 bits», «64-bit», «amd64» passam a «x86_64»."
+
+msgid "Ne pas importer les imprimantes virtuelles des postes"
+msgstr "Não importar as impressoras virtuais dos computadores"
+
+msgid "Chaque poste remonte ses imprimantes virtuelles (PDF, XPS, OneNote, Fax, imprimantes redirigées par le Bureau à distance) : elles deviennent autant de fausses imprimantes dans le parc. Elles sont écartées aux prochains inventaires ; rien n'est supprimé de ce qui existe déjà."
+msgstr "Cada computador reporta as suas impressoras virtuais (PDF, XPS, OneNote, Fax, impressoras redirecionadas pela Área de Trabalho Remota): elas viram outras tantas impressoras falsas no parque. São descartadas nos próximos inventários; nada do que já existe é excluído."

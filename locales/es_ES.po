@@ -4075,3 +4075,23 @@ msgid "%d ticket ouvert."
 msgid_plural "%d tickets ouverts."
 msgstr[0] "%d ticket abierto."
 msgstr[1] "%d tickets abiertos."
+
+#, php-format
+msgid "%d règle(s) de dictionnaire des systèmes d'exploitation créées."
+msgstr "%d regla(s) de diccionario de sistemas operativos creada(s)."
+
+#, php-format
+msgid "%d règle(s) pour ignorer les imprimantes virtuelles créées."
+msgstr "%d regla(s) para ignorar las impresoras virtuales creada(s)."
+
+msgid "Créer un dictionnaire des systèmes d'exploitation et des architectures"
+msgstr "Crear un diccionario de sistemas operativos y arquitecturas"
+
+msgid "GLPI enregistre le nom complet du système, dans la langue du poste : « Microsoft Windows 11 Professionnel » et « Microsoft Windows 11 Pro » font deux systèmes, « Ubuntu 22.04.3 LTS » et « 22.04.4 LTS » aussi. Les éditions Windows sont ramenées à leur nom anglais, les distributions Linux et macOS à leur version majeure, et « 64 bits », « 64-bit », « amd64 » deviennent « x86_64 »."
+msgstr "GLPI registra el nombre completo del sistema, en el idioma del equipo: «Microsoft Windows 11 Professionnel» y «Microsoft Windows 11 Pro» son dos sistemas, igual que «Ubuntu 22.04.3 LTS» y «22.04.4 LTS». Las ediciones de Windows se reducen a su nombre en inglés, las distribuciones Linux y macOS a su versión principal, y «64 bits», «64-bit», «amd64» pasan a «x86_64»."
+
+msgid "Ne pas importer les imprimantes virtuelles des postes"
+msgstr "No importar las impresoras virtuales de los equipos"
+
+msgid "Chaque poste remonte ses imprimantes virtuelles (PDF, XPS, OneNote, Fax, imprimantes redirigées par le Bureau à distance) : elles deviennent autant de fausses imprimantes dans le parc. Elles sont écartées aux prochains inventaires ; rien n'est supprimé de ce qui existe déjà."
+msgstr "Cada equipo reporta sus impresoras virtuales (PDF, XPS, OneNote, Fax, impresoras redirigidas por Escritorio remoto): se convierten en otras tantas impresoras falsas en el parque. Se descartan en los próximos inventarios; no se elimina nada de lo que ya existe."

@@ -4001,3 +4001,23 @@ msgid "%d ticket ouvert."
 msgid_plural "%d tickets ouverts."
 msgstr[0] "%d ticket opened."
 msgstr[1] "%d tickets opened."
+
+#, php-format
+msgid "%d règle(s) de dictionnaire des systèmes d'exploitation créées."
+msgstr "%d operating system dictionary rule(s) created."
+
+#, php-format
+msgid "%d règle(s) pour ignorer les imprimantes virtuelles créées."
+msgstr "%d rule(s) to ignore virtual printers created."
+
+msgid "Créer un dictionnaire des systèmes d'exploitation et des architectures"
+msgstr "Create an operating system and architecture dictionary"
+
+msgid "GLPI enregistre le nom complet du système, dans la langue du poste : « Microsoft Windows 11 Professionnel » et « Microsoft Windows 11 Pro » font deux systèmes, « Ubuntu 22.04.3 LTS » et « 22.04.4 LTS » aussi. Les éditions Windows sont ramenées à leur nom anglais, les distributions Linux et macOS à leur version majeure, et « 64 bits », « 64-bit », « amd64 » deviennent « x86_64 »."
+msgstr "GLPI records the full system name, in the computer's language: “Microsoft Windows 11 Professionnel” and “Microsoft Windows 11 Pro” make two systems, as do “Ubuntu 22.04.3 LTS” and “22.04.4 LTS”. Windows editions are brought back to their English name, Linux distributions and macOS to their major version, and “64 bits”, “64-bit”, “amd64” become “x86_64”."
+
+msgid "Ne pas importer les imprimantes virtuelles des postes"
+msgstr "Do not import the computers' virtual printers"
+
+msgid "Chaque poste remonte ses imprimantes virtuelles (PDF, XPS, OneNote, Fax, imprimantes redirigées par le Bureau à distance) : elles deviennent autant de fausses imprimantes dans le parc. Elles sont écartées aux prochains inventaires ; rien n'est supprimé de ce qui existe déjà."
+msgstr "Each computer reports its virtual printers (PDF, XPS, OneNote, Fax, printers redirected by Remote Desktop): they become as many fake printers in the fleet. They are left out of the next inventories; nothing already existing is deleted."

@@ -111,6 +111,42 @@ class SoftwareDictionaryBuilder
         // Agents d'inventaire
         'GLPI Agent' => ['/^glpi[ -]agent\b/', 'GLPI Agent'],
         'FusionInventory Agent' => ['/^fusioninventory[ -]agent\b/', 'FusionInventory Agent'],
+        // Issue #315 : Office et outils Microsoft en licence perpétuelle — éditions françaises
+        // ramenées au nom anglais des contrats, année conservée (#0).
+        'Microsoft Office Professional Plus (année)' => ['/^microsoft office (?:professionnel|professional) plus (\d{4})\b/', 'Microsoft Office Professional Plus #0'],
+        'Microsoft Office Standard (année)' => ['/^microsoft office standard (\d{4})\b/', 'Microsoft Office Standard #0'],
+        'Microsoft Office Home and Business (année)' => ['/^microsoft office (?:famille et petite entreprise|home and business) (\d{4})\b/', 'Microsoft Office Home and Business #0'],
+        'Microsoft Office Home and Student (année)' => ['/^microsoft office (?:famille et (?:e|é|É)tudiant|home and student) (\d{4})\b/', 'Microsoft Office Home and Student #0'],
+        'Microsoft Visio / Project Professional (année)' => ['/^microsoft (visio|project) (?:professionnel|professional) (\d{4})\b/', 'Microsoft #0 Professional #1'],
+        // Runtimes .NET : version majeure et architecture conservées, pas une fiche par correctif.
+        'Microsoft .NET Runtime (version majeure, architecture)' => ['/^(microsoft \.net runtime) - (\d+)\.\d+\.\d+ \((x64|x86|arm64)\)/', '#0 #1 (#2)'],
+        'Microsoft Windows Desktop Runtime (version majeure, architecture)' => ['/^(microsoft windows desktop runtime) - (\d+)\.\d+\.\d+ \((x64|x86|arm64)\)/', '#0 #1 (#2)'],
+        'Microsoft ASP.NET Core (version majeure, architecture)' => ['/^(microsoft asp\.net core) (\d+)\.\d+\.\d+ - shared framework \((x64|x86|arm64)\)/', '#0 #1 Shared Framework (#2)'],
+        // Sécurité des postes
+        'Kaspersky Endpoint Security' => ['/^kaspersky endpoint security\b/', 'Kaspersky Endpoint Security'],
+        'ESET Endpoint Security' => ['/^eset endpoint security\b/', 'ESET Endpoint Security'],
+        'ESET Endpoint Antivirus' => ['/^eset endpoint antivirus\b/', 'ESET Endpoint Antivirus'],
+        'ESET Management Agent' => ['/^eset management agent\b/', 'ESET Management Agent'],
+        'Sophos Endpoint Agent' => ['/^sophos endpoint agent\b/', 'Sophos Endpoint Agent'],
+        'Bitdefender Endpoint Security Tools' => ['/^bitdefender endpoint security tools\b/', 'Bitdefender Endpoint Security Tools'],
+        'Trend Micro Apex One' => ['/^trend micro apex one\b/', 'Trend Micro Apex One'],
+        'SentinelOne Agent' => ['/^sentinel ?(one )?agent\b/', 'SentinelOne Agent'],
+        'CrowdStrike Falcon Sensor' => ['/^crowdstrike( windows)? (falcon )?sensor\b/', 'CrowdStrike Falcon Sensor'],
+        // Outils des constructeurs
+        'Dell Command | Update' => ['/^dell command \| update\b/', 'Dell Command | Update'],
+        'Dell SupportAssist' => ['/^dell supportassist\b(?! os recovery)/', 'Dell SupportAssist'],
+        'HP Support Assistant' => ['/^hp support assistant\b/', 'HP Support Assistant'],
+        'Lenovo Vantage' => ['/^lenovo vantage\b/', 'Lenovo Vantage'],
+        'Lenovo System Update' => ['/^lenovo system update\b/', 'Lenovo System Update'],
+        // Messageries et divers
+        'Skype for Business' => ['/^(skype for business|skype entreprise)\b/', 'Skype for Business'],
+        'Skype' => ['/^skype\b/', 'Skype'],
+        'WhatsApp' => ['/^whatsapp\b/', 'WhatsApp'],
+        'Discord' => ['/^discord\b/', 'Discord'],
+        'Spotify' => ['/^spotify\b/', 'Spotify'],
+        'iTunes' => ['/^itunes\b/', 'iTunes'],
+        'Adobe Creative Cloud' => ['/^adobe creative cloud\b/', 'Adobe Creative Cloud'],
+        'Google Earth Pro' => ['/^google earth pro\b/', 'Google Earth Pro'],
         // Environnements d'exécution : la partie qui distingue deux logiciels est conservée (#0).
         'Java (version majeure)' => ['/^(java \d+)\b/', '#0'],
         'Python (version majeure.mineure)' => ['/^(python \d+\.\d+)\b/', '#0'],
@@ -133,7 +169,7 @@ class SoftwareDictionaryBuilder
                 $name,
                 [],
                 $regex,
-                $name === '#0' ? 'regex_result' : 'assign'
+                str_contains($name, '#') ? 'regex_result' : 'assign'
             );
         }
 
