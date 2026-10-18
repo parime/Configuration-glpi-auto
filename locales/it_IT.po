@@ -4100,3 +4100,25 @@ msgstr "Non importare le stampanti virtuali dei computer"
 
 msgid "Chaque poste remonte ses imprimantes virtuelles (PDF, XPS, OneNote, Fax, imprimantes redirigées par le Bureau à distance) : elles deviennent autant de fausses imprimantes dans le parc. Elles sont écartées aux prochains inventaires ; rien n'est supprimé de ce qui existe déjà."
 msgstr "Ogni computer rileva le proprie stampanti virtuali (PDF, XPS, OneNote, Fax, stampanti reindirizzate da Desktop remoto): diventano altrettante stampanti fittizie nel parco. Vengono escluse dai prossimi inventari; nulla di quanto esiste già viene eliminato."
+
+#, php-format
+msgid "%d règle(s) de catégorie de logiciels créées."
+msgstr "%d regola/e di categoria del software creata/e."
+
+msgid "Classer automatiquement les logiciels courants (navigateurs, bureautique, sécurité...)"
+msgstr "Classificare automaticamente i software comuni (browser, ufficio, sicurezza...)"
+
+msgid "Crée 13 catégories de logiciels et les règles qui y rangent les logiciels courants, à l'inventaire comme à la création manuelle. Une catégorie choisie à la main n'est jamais remplacée. Pour les logiciels déjà en base, le mode Audit propose « Classer »."
+msgstr "Crea 13 categorie di software e le regole che vi collocano i software comuni, sia all'inventario sia alla creazione manuale. Una categoria scelta a mano non viene mai sostituita. Per i software già presenti, la modalità Audit propone «Classifica»."
+
+msgid "Les règles « Catégories de logiciels » de l'assistant savent les classer (navigateurs, bureautique, sécurité...). « Classer » leur applique la catégorie trouvée, sans toucher aux logiciels qui en ont déjà une."
+msgstr "Le regole «Categorie software» dell'assistente sanno classificarli (browser, ufficio, sicurezza...). «Classifica» applica la categoria trovata, senza toccare i software che ne hanno già una."
+
+msgid "Classer"
+msgstr "Classifica"
+
+#, php-format
+msgid "%d logiciel sans catégorie peut être classé"
+msgid_plural "%d logiciels sans catégorie peuvent être classés"
+msgstr[0] "%d software senza categoria può essere classificato"
+msgstr[1] "%d software senza categoria possono essere classificati"

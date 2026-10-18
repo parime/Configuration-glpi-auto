@@ -41,8 +41,9 @@ final class DictionaryRules
      *        premier groupe capturé par $regex (issue #303 : « Java 8 Update 401 » -> « Java 8 »)
      * @param string $actionField champ modifié par la règle : le nom, ou « _ignore_import » (valeur
      *        « 1 ») pour écarter l'élément à l'import (issue #315 : imprimantes virtuelles)
+     * @return int id de la règle (0 si elle n'a pas pu être créée)
      */
-    public static function ensure(string $subType, string $ruleName, string $canonical, array $exactNames, ?string $regex = null, string $actionType = 'assign', string $actionField = 'name'): void
+    public static function ensure(string $subType, string $ruleName, string $canonical, array $exactNames, ?string $regex = null, string $actionType = 'assign', string $actionField = 'name'): int
     {
         $criteria = [];
         foreach ($exactNames as $name) {
@@ -56,7 +57,7 @@ final class DictionaryRules
         if (Lookup::loadFirst($rule, ['name' => $ruleName, 'sub_type' => $subType])) {
             self::addMissingCriteria((int) $rule->getID(), $criteria);
 
-            return;
+            return (int) $rule->getID();
         }
 
         $rulesId = (int) $rule->add([
@@ -73,6 +74,28 @@ final class DictionaryRules
             'field' => $actionField,
             'value' => $canonical,
         ]);
+
+        return $rulesId;
+    }
+
+    /**
+     * Issue #304 : ajoute à une règle une action sur un autre champ (ex. la catégorie d'un
+     * logiciel), ou met sa valeur à jour si l'action existe déjà.
+     */
+    public static function ensureAction(int $rulesId, string $field, string $value, string $actionType = 'assign'): void
+    {
+        if ($rulesId <= 0) {
+            return;
+        }
+        $action = new RuleAction();
+        if (Lookup::loadFirst($action, ['rules_id' => $rulesId, 'field' => $field])) {
+            if ((string) $action->fields['value'] !== $value) {
+                $action->update(['id' => $action->getID(), 'value' => $value]);
+            }
+
+            return;
+        }
+        $action->add(['rules_id' => $rulesId, 'action_type' => $actionType, 'field' => $field, 'value' => $value]);
     }
 
     /**

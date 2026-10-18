@@ -11,6 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Catégories de logiciels automatiques** (issue #304). 13 catégories (Navigateurs, Bureautique,
+  Communication et messagerie, Sécurité, Accès distant et VPN, Outils d'administration,
+  Développement, Environnements d'exécution, Outils constructeur…) pour les 90 logiciels du
+  dictionnaire :
+  - **à l'inventaire**, la catégorie arrive avec le nom normalisé : c'est le dictionnaire des
+    logiciels qui la donne, GLPI n'appliquant pas ses règles de catégorie à l'inventaire ;
+  - **à la création manuelle**, par les règles natives « Catégories de logiciels » ;
+  - **pour les logiciels déjà en base**, un nouveau contrôle d'audit propose « Classer ». Il ne
+    touche qu'aux logiciels sans catégorie.
+
+  Une catégorie choisie à la main n'est jamais remplacée. Option à l'étape 15 de l'assistant
+  (cochée par défaut). Vérifié par un inventaire réel sur GLPI 12 : Kaspersky dans Sécurité,
+  WinRAR dans Utilitaires, .NET dans Environnements d'exécution, logiciel maison sans catégorie.
 - **Revue de tous les dictionnaires** (issue #315).
   - **Systèmes d'exploitation** : GLPI enregistre le nom complet remonté par l'agent, dans la
     langue du poste. Les éditions Windows françaises sont ramenées à leur nom anglais
