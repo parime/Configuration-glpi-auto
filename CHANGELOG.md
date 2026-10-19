@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-10-19
+
 ### Added
 
 - **Rattacher les machines inventoriées à leur entité** (issue #307), à l'étape 3 de
