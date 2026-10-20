@@ -19,7 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     une entité (`rule_import`, et jamais vers une entité hors du périmètre de l'opérateur), des
     dictionnaires et catégories de logiciels (`rule_dictionnary_*`, `rule_softwarecategories`),
     des contrôles d'unicité (`config`), avant d'affecter un calendrier à une entité (`entity`) et
-    avant d'écrire la configuration d'assetsign (`plugin_assetsign_config`). L'avertissement de
+    avant d'écrire la configuration d'assetsign (`plugin_assetsign_config`) ou de créer un type
+    d'actif personnalisé (véhicules, serveurs, bâtiments… : `config`). L'avertissement de
     pré-déploiement liste ces droits ;
   - l'audit de configuration (consultation de toute l'instance, corrections par fusion/purge,
     envoi du rapport par e-mail) exige en plus le droit natif `config` (READ pour consulter,
@@ -31,6 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI : règles Semgrep propres au projet (`.semgrep/`), bloquantes, qui détectent ces classes de
   défaut (droit global au lieu de droit + entité, `entities_id` venant de la requête, `|raw`,
   builder privilégié non conditionné à un droit natif).
+- CI : test de contrôle d'accès de bout en bout sur une instance GLPI vierge (profil détenant
+  seulement les droits du plugin : audit refusé, aucune écriture d'objet natif privilégié par
+  l'assistant), contrôle d'autorisation obligatoire sur chaque point d'entrée, et
+  `dependency-review` sur les PR. C'est ce test qui a révélé la création de types d'actif
+  personnalisés sans le droit `config`.
 
 ## [1.7.0] - 2026-10-19
 

@@ -33,6 +33,11 @@ rules:
           - pattern: (new SmtpBuilder())->$F(...)
           - pattern: (new DashboardBuilder())->$F(...)
           - pattern: (new NotificationBrandingBuilder())->$F(...)
+          - pattern: (new PhysicalSecurityAssetBuilder())->$F(...)
+          - pattern: (new FireSafetyAssetBuilder())->$F(...)
+          - pattern: (new BuildingAssetBuilder())->$F(...)
+          - pattern: (new ServerAssetBuilder())->$F(...)
+          - pattern: (new VehicleAssetBuilder())->$F(...)
       - pattern-not-inside: "$C ? $X : $Y"
       - pattern-not-inside: $C && $X
 
@@ -48,6 +53,11 @@ rules:
       include: ["/src/**/*.php"]
       exclude:
         - /src/Install/Installer.php
+        - /src/PhysicalSecurityAssetBuilder.php
+        - /src/FireSafetyAssetBuilder.php
+        - /src/BuildingAssetBuilder.php
+        - /src/ServerAssetBuilder.php
+        - /src/VehicleAssetBuilder.php
         - /src/ValidationRoutingBuilder.php
         - /src/SoftwareCategoryBuilder.php
         - /src/SmtpBuilder.php
@@ -63,6 +73,12 @@ rules:
         - /src/Audit/Checks/NotificationsDisabledCheck.php
         - /src/AssetsignTriggerBuilder.php
     pattern-either:
+      # Nouveau type d'actif personnalise (AssetDefinition::$rightname = 'config').
+      - patterns:
+          - pattern-inside: |
+              $D = new AssetDefinition();
+              ...
+          - pattern: $D->add(...)
       - pattern: new RuleAction()
       - pattern: new \RuleAction()
       - pattern: new RuleCriteria()

@@ -621,14 +621,16 @@ if (isset($_POST['finish'])) {
 
     $categoriesCreated = (new CategoryBuilder())->build($config);
     // Runs right after CategoryBuilder: triggered by the same "Flotte Automobile" branch checkbox,
-    // no dedicated toggle of its own.
-    $vehicleAssetCreated = (new VehicleAssetBuilder())->build($config);
-    $serverAssetCreated = (new ServerAssetBuilder())->build($config);
-    $buildingAssetCreated = (new BuildingAssetBuilder())->build($config);
+    // no dedicated toggle of its own. These five create custom asset types (Glpi\Asset\AssetDefinition,
+    // whose $rightname is the native 'config' right): a new instance-wide itemtype, its profile
+    // rights and core's default inventory import rules for it — never on this plugin's right alone.
+    $vehicleAssetCreated = $canUpdateCoreConfig ? (new VehicleAssetBuilder())->build($config) : 0;
+    $serverAssetCreated = $canUpdateCoreConfig ? (new ServerAssetBuilder())->build($config) : 0;
+    $buildingAssetCreated = $canUpdateCoreConfig ? (new BuildingAssetBuilder())->build($config) : 0;
     // Unlike the three builders above, each also needs its own dedicated toggle checked (not just
     // the branch) — see FireSafetyAssetBuilder/PhysicalSecurityAssetBuilder docblocks for why.
-    $fireSafetyAssetCreated = (new FireSafetyAssetBuilder())->build($config);
-    $physicalSecurityAssetCreated = (new PhysicalSecurityAssetBuilder())->build($config);
+    $fireSafetyAssetCreated = $canUpdateCoreConfig ? (new FireSafetyAssetBuilder())->build($config) : 0;
+    $physicalSecurityAssetCreated = $canUpdateCoreConfig ? (new PhysicalSecurityAssetBuilder())->build($config) : 0;
     $servicesCreated = (new ServiceCatalogBuilder())->build($config);
     // Runs right after ServiceCatalogBuilder: same self-service catalog, one dedicated pilot
     // service with real typed questions and a computed ticket title instead of the generic

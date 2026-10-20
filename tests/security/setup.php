@@ -46,6 +46,7 @@ if (($argv[1] ?? '') === 'snapshot') {
     }
     $snapshot['fieldunicities'] = countElementsInTable('glpi_fieldunicities');
     $snapshot['entities'] = countElementsInTable('glpi_entities');
+    $snapshot['assetdefinitions'] = countElementsInTable('glpi_assets_assetdefinitions');
     $snapshot['core:palette'] = (string) (\Config::getConfigurationValues('core', ['palette'])['palette'] ?? '');
     if ($DB->tableExists('glpi_plugin_assetsign_configs')) {
         foreach ($DB->request(['FROM' => 'glpi_plugin_assetsign_configs', 'WHERE' => ['entities_id' => 0]]) as $row) {
