@@ -991,12 +991,22 @@ class Config extends Compat\Base\ConfigBase
      * (pas un appel HTTP direct), via `Compat\Http` (GLPI 11 et 12) : réutilise la gestion de
      * proxy/timeout/erreurs déjà établie par le cœur GLPI pour ce type d'appel.
      *
+     * Opt-in : aucun appel sortant tant que l'action automatique native « checkupdate » de GLPI
+     * (Configuration > Actions automatiques, désactivée par défaut) n'est pas activée — un
+     * administrateur qui refuse la vérification de mise à jour de GLPI lui-même refuse aussi
+     * celle-ci, sans réglage supplémentaire propre au plugin.
+     *
      * @return string|null Numéro de version (sans le "v" du tag), ou null si l'appel a échoué
-     *         (pas de connexion, API GitHub indisponible...).
+     *         (pas de connexion, API GitHub indisponible...) ou si la vérification est désactivée.
      */
     public static function getLatestGithubVersion(): ?string
     {
         global $GLPI_CACHE;
+
+        $checkUpdate = new \CronTask();
+        if (!$checkUpdate->getFromDBbyName('CronTask', 'checkupdate') || (int) $checkUpdate->fields['state'] === \CronTask::STATE_DISABLE) {
+            return null;
+        }
 
         $cacheKey = 'plugin_configurationglpiauto_latest_github_version';
         $cached = $GLPI_CACHE->get($cacheKey);

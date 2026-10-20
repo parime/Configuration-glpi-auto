@@ -4174,3 +4174,35 @@ msgstr "Agent-Tag"
 
 msgid "Définissez d'abord vos entités à l'étape 2 : sans entité, toutes les machines restent dans l'entité racine."
 msgstr "Legen Sie zuerst Ihre Einheiten in Schritt 2 an: Ohne Einheiten bleiben alle Rechner in der Stammeinheit."
+
+#: front/wizard.php
+msgid "Gérer les règles métier pour les tickets"
+msgstr "Geschäftsregeln für Tickets verwalten"
+
+#: front/wizard.php
+msgid "nécessaire à l'affectation automatique des SLA/OLA et au circuit de validation"
+msgstr "erforderlich für die automatische SLA/OLA-Zuweisung und den Genehmigungsablauf"
+
+#: front/wizard.php
+msgid "Gérer les règles d'affectation d'un élément à une entité"
+msgstr "Regeln für die Zuordnung eines Elements zu einer Einheit verwalten"
+
+#: front/wizard.php
+msgid "nécessaire au rattachement des machines inventoriées par plage IP ou tag"
+msgstr "erforderlich, um inventarisierte Rechner nach IP-Bereich oder Tag zuzuordnen"
+
+#: front/wizard.php
+msgid "Gérer les dictionnaires et les catégories de logiciels"
+msgstr "Wörterbücher und Softwarekategorien verwalten"
+
+#: front/wizard.php
+msgid "chaque dictionnaire (fabricants, logiciels, systèmes d'exploitation, imprimantes, types d'ordinateurs) est ignoré si le droit correspondant manque"
+msgstr "jedes Wörterbuch (Hersteller, Software, Betriebssysteme, Drucker, Computertypen) wird übersprungen, wenn das entsprechende Recht fehlt"
+
+#: front/wizard.php
+msgid "Modifier la configuration d'assetsign"
+msgstr "Konfiguration von assetsign ändern"
+
+#: front/wizard.php
+msgid "nécessaire pour relier les déclencheurs d'assetsign aux statuts créés"
+msgstr "erforderlich, um die Auslöser von assetsign mit den erstellten Status zu verknüpfen"

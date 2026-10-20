@@ -4158,3 +4158,35 @@ msgstr "Tag dell'agente"
 
 msgid "Définissez d'abord vos entités à l'étape 2 : sans entité, toutes les machines restent dans l'entité racine."
 msgstr "Definisci prima le tue entità al passo 2: senza entità, tutti i computer restano nell'entità radice."
+
+#: front/wizard.php
+msgid "Gérer les règles métier pour les tickets"
+msgstr "Gestire le regole di business per i ticket"
+
+#: front/wizard.php
+msgid "nécessaire à l'affectation automatique des SLA/OLA et au circuit de validation"
+msgstr "necessario per l'assegnazione automatica degli SLA/OLA e il flusso di approvazione"
+
+#: front/wizard.php
+msgid "Gérer les règles d'affectation d'un élément à une entité"
+msgstr "Gestire le regole di assegnazione di un elemento a un'entità"
+
+#: front/wizard.php
+msgid "nécessaire au rattachement des machines inventoriées par plage IP ou tag"
+msgstr "necessario per collegare le macchine inventariate per intervallo IP o tag"
+
+#: front/wizard.php
+msgid "Gérer les dictionnaires et les catégories de logiciels"
+msgstr "Gestire i dizionari e le categorie di software"
+
+#: front/wizard.php
+msgid "chaque dictionnaire (fabricants, logiciels, systèmes d'exploitation, imprimantes, types d'ordinateurs) est ignoré si le droit correspondant manque"
+msgstr "ogni dizionario (produttori, software, sistemi operativi, stampanti, tipi di computer) viene ignorato se manca il diritto corrispondente"
+
+#: front/wizard.php
+msgid "Modifier la configuration d'assetsign"
+msgstr "Modificare la configurazione di assetsign"
+
+#: front/wizard.php
+msgid "nécessaire pour relier les déclencheurs d'assetsign aux statuts créés"
+msgstr "necessario per collegare i trigger di assetsign agli stati creati"

@@ -300,6 +300,101 @@ jobs:
       - run: semgrep ci --config auto
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+      # Regles propres aux plugins GLPI (.semgrep/) : droit global vs droit + entite, entites
+      # lues dans la requete, |raw Twig, ecritures privilegiees sans droit natif. Bloquant (--error),
+      # et local : ne depend ni du token Semgrep ni du registre de regles en ligne.
+      - name: "Semgrep - regles securite GLPI du projet"
+        run: semgrep scan --config .semgrep/ --error --metrics=off
+      # Chaque point d'entree front/ajax doit appeler un controle d'autorisation explicite, ou
+      # figurer avec sa justification dans .github/security-entrypoints-allowlist.txt.
+      - name: "Points d'entree : controle d'autorisation present"
+        run: sh .github/scripts/check-entrypoints-auth.sh
+
+  # Bloque une PR qui ajoute ou met a jour une dependance (composer, actions) ayant un avis de
+  # securite connu - avant la fusion, la ou Dependabot ne previent qu'apres coup.
+  dependency-review:
+    name: "Dependency Review"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
+      - name: "Dependency review"
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0 (SHA pinned)
+        with:
+          fail-on-severity: moderate
+
+  # Test de controle d'acces de bout en bout, sur une instance GLPI vierge : un profil qui ne
+  # detient que les droits de ce plugin (la delegation que src/Profile.php prevoit) ne doit ni
+  # ouvrir l'audit, ni faire ecrire par l'assistant le moindre objet natif privilegie (regles,
+  # unicites, entites, palette, configuration d'assetsign), et calendar_days reste du JSON.
+  # Couvre dynamiquement ce que .semgrep/ ne detecte que par motifs (revue de securite 1.3.0).
+  access-control:
+    name: "Controle d'acces de bout en bout (profil delegue)"
+    runs-on: ubuntu-latest
+    needs: ci
+    env:
+      GLPI_IMAGE: glpi/glpi:11.0.11
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
+
+      - name: "Demarre MariaDB et GLPI (auto-installation via l'image officielle)"
+        run: |
+          docker network create cga-access
+          docker run -d --name mariadb --network cga-access \
+            -e MARIADB_ROOT_PASSWORD=glpi_password -e MARIADB_DATABASE=glpidb \
+            -e MARIADB_USER=glpi_user -e MARIADB_PASSWORD=glpi_password mariadb:11
+          for i in $(seq 1 30); do
+            docker exec mariadb mariadb-admin ping -h 127.0.0.1 -u root -pglpi_password --silent && break
+            sleep 2
+          done
+          docker run -d --name glpi --network cga-access -p 8080:80 \
+            -e TIMEZONE=Europe/Paris -e GLPI_DB_HOST=mariadb -e GLPI_DB_PORT=3306 -e GLPI_DB_NAME=glpidb \
+            -e GLPI_DB_USER=glpi_user -e GLPI_DB_PASSWORD=glpi_password "$GLPI_IMAGE"
+          ready=0
+          for i in $(seq 1 60); do
+            docker exec glpi test -f /var/glpi/config/config_db.php && { ready=1; break; }
+            sleep 5
+          done
+          [ "$ready" = 1 ] || { docker logs glpi --tail 200; exit 1; }
+          # config_db.php apparait avant la fin de l'installation de la base par l'image : attendre
+          # que la console GLPI soit utilisable (sinon "update of the GLPI database is necessary").
+          ready=0
+          for i in $(seq 1 60); do
+            docker exec -u www-data glpi php /var/www/glpi/bin/console plugin:list >/dev/null 2>&1 && { ready=1; break; }
+            sleep 5
+          done
+          [ "$ready" = 1 ] || { docker logs glpi --tail 200; exit 1; }
+
+      # Dependances installees sur le runner (PHP/Composer preinstalles), pas dans le conteneur
+      # GLPI : son acces reseau sortant s'est revele intermittent (« Network is unreachable »).
+      - name: "Installe les dependances de production"
+        run: composer install --no-dev --no-interaction --prefer-dist --no-progress
+
+      - name: "Installe et active le plugin"
+        run: |
+          docker exec glpi mkdir -p /var/www/glpi/plugins/configurationglpiauto
+          docker cp ./. glpi:/var/www/glpi/plugins/configurationglpiauto
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/configurationglpiauto
+          docker exec -u www-data glpi sh -c '
+            cd /var/www/glpi && php bin/console plugin:install configurationglpiauto -u glpi -n && php bin/console plugin:activate configurationglpiauto -n
+          '
+
+      - name: "Matrice d'acces : profil delegue puis super-admin"
+        run: |
+          run() { docker exec -u www-data glpi php /var/www/glpi/plugins/configurationglpiauto/tests/security/setup.php "$@" | tail -1; }
+          run
+          before=$(run snapshot)
+          bash tests/security/access-matrix.sh http://localhost:8080 delegate securite-delegue 'Secrev#2026'
+          after=$(run snapshot)
+          if [ "$before" != "$after" ]; then
+            echo "::error::l'assistant a ecrit des objets natifs privilegies pour un profil sans droit natif"
+            echo "avant : $before"; echo "apres : $after"
+            exit 1
+          fi
+          echo "OK  aucun objet natif privilegie ecrit par le profil delegue"
+          bash tests/security/access-matrix.sh http://localhost:8080 admin glpi glpi
 
   dependabot:
     name: "Dependabot Security"
@@ -483,7 +578,7 @@ jobs:
     runs-on: ubuntu-latest
     # `ci` : la CI officielle GLPI (installation + tests sur chaque PHP/base de la matrice) - absente
     # jusqu'au 8 octobre 2026, une PR pouvait donc etre fusionnee avec ces jobs en echec.
-    needs: [ci, phpstan, php-cs-fixer, phpunit, trivy, semgrep, dependabot, validation, locales, glpi12, php-compat]
+    needs: [ci, phpstan, php-cs-fixer, phpunit, trivy, semgrep, dependabot, validation, locales, glpi12, php-compat, access-control]
 
     steps:
       - name: "All checks passed"

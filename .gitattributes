@@ -31,3 +31,5 @@
 /phpunit.xml.dist export-ignore
 /tools export-ignore
 /ROADMAP_original.md export-ignore
+
+/.semgrep export-ignore

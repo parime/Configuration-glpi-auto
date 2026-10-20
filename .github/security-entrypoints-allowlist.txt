@@ -1,0 +1,2 @@
+# Points d'entree autorises sans Session::checkRight()/checkLoginUser()/->check(), lus par
+# .github/scripts/check-entrypoints-auth.sh. Format : chemin : justification (obligatoire).

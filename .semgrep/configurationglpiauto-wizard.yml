@@ -1,0 +1,92 @@
+# Regles propres a l'assistant (front/wizard.php) : le droit du plugin est delegable a un profil
+# non super-admin (voir src/Profile.php), donc toute ecriture privilegiee qu'il declenche (regles
+# GLPI actives, configuration coeur, entites, configuration d'un autre plugin) doit en plus etre
+# conditionnee au droit NATIF correspondant (revue de securite marketplace 1.3.0, HIGH n°1).
+
+rules:
+  - id: cga-privileged-builder-without-native-right
+    languages: [php]
+    severity: ERROR
+    message: >-
+      Builder privilegie appele sans condition sur un droit natif GLPI ($canXxx = Session::haveRight(...)).
+      Le droit propre au plugin ne suffit pas : conditionner l'appel ($canXxx ? (new X())->build(...) : 0).
+    paths:
+      include: ["/front/wizard.php"]
+    patterns:
+      - pattern-either:
+          - pattern: (new RuleRightBuilder())->$F(...)
+          - pattern: (new EntityBuilder())->$F(...)
+          - pattern: (new EntityAddressBuilder())->$F(...)
+          - pattern: (new EntityInventoryRuleBuilder())->$F(...)
+          - pattern: (new ValidationRoutingBuilder())->$F(...)
+          - pattern: (new FieldUnicityBuilder())->$F(...)
+          - pattern: (new ManufacturerDictionaryBuilder())->$F(...)
+          - pattern: (new SoftwareDictionaryBuilder())->$F(...)
+          - pattern: (new OperatingSystemDictionaryBuilder())->$F(...)
+          - pattern: (new PrinterDictionaryBuilder())->$F(...)
+          - pattern: (new ComputerTypeDictionaryBuilder())->$F(...)
+          - pattern: (new SoftwareCategoryBuilder())->$F(...)
+          - pattern: (new AssetsignTriggerBuilder())->$F(...)
+          - pattern: (new MarketplaceBuilder())->$F(...)
+          - pattern: (new PaletteBuilder())->$F(...)
+          - pattern: (new GeneralSettingsBuilder())->$F(...)
+          - pattern: (new SmtpBuilder())->$F(...)
+          - pattern: (new DashboardBuilder())->$F(...)
+          - pattern: (new NotificationBrandingBuilder())->$F(...)
+          - pattern: (new PhysicalSecurityAssetBuilder())->$F(...)
+          - pattern: (new FireSafetyAssetBuilder())->$F(...)
+          - pattern: (new BuildingAssetBuilder())->$F(...)
+          - pattern: (new ServerAssetBuilder())->$F(...)
+          - pattern: (new VehicleAssetBuilder())->$F(...)
+      - pattern-not-inside: "$C ? $X : $Y"
+      - pattern-not-inside: $C && $X
+
+  - id: cga-privileged-write-needs-native-right-review
+    languages: [php]
+    severity: ERROR
+    message: >-
+      Nouvelle ecriture privilegiee (regle GLPI, configuration coeur, entite ou configuration
+      d'assetsign) dans une classe qui n'a pas encore ete revue. Verifier que son appel est
+      conditionne au droit natif correspondant (front/wizard.php, front/audit.php), puis ajouter
+      ce fichier a la liste `exclude` de cette regle.
+    paths:
+      include: ["/src/**/*.php"]
+      exclude:
+        - /src/Install/Installer.php
+        - /src/PhysicalSecurityAssetBuilder.php
+        - /src/FireSafetyAssetBuilder.php
+        - /src/BuildingAssetBuilder.php
+        - /src/ServerAssetBuilder.php
+        - /src/VehicleAssetBuilder.php
+        - /src/ValidationRoutingBuilder.php
+        - /src/SoftwareCategoryBuilder.php
+        - /src/SmtpBuilder.php
+        - /src/SlaBuilder.php
+        - /src/RuleRightBuilder.php
+        - /src/PaletteBuilder.php
+        - /src/MarketplaceBuilder.php
+        - /src/GeneralSettingsBuilder.php
+        - /src/FieldUnicityBuilder.php
+        - /src/EntityInventoryRuleBuilder.php
+        - /src/DictionaryRules.php
+        - /src/CalendarBuilder.php
+        - /src/Audit/Checks/NotificationsDisabledCheck.php
+        - /src/AssetsignTriggerBuilder.php
+    pattern-either:
+      # Nouveau type d'actif personnalise (AssetDefinition::$rightname = 'config').
+      - patterns:
+          - pattern-inside: |
+              $D = new AssetDefinition();
+              ...
+          - pattern: $D->add(...)
+      - pattern: new RuleAction()
+      - pattern: new \RuleAction()
+      - pattern: new RuleCriteria()
+      - pattern: new \RuleCriteria()
+      - pattern: new FieldUnicity()
+      - pattern: \Config::setConfigurationValues('core', ...)
+      - pattern: Config::setConfigurationValues('core', ...)
+      - pattern: (new Entity())->update(...)
+      - pattern: (new \Entity())->update(...)
+      - pattern: $DB->update('glpi_entities', ...)
+      - pattern: $DB->update(self::TABLE, ...)

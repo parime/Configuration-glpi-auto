@@ -418,6 +418,29 @@ function checkDeploymentRights(): array
             'ok' => Session::haveRight('config', UPDATE),
             'hint' => __('nécessaire aux réglages généraux (étape 14)', 'configurationglpiauto'),
         ],
+        [
+            'label' => __('Gérer les règles métier pour les tickets', 'configurationglpiauto'),
+            'ok' => Session::haveRight('rule_ticket', UPDATE),
+            'hint' => __('nécessaire à l\'affectation automatique des SLA/OLA et au circuit de validation', 'configurationglpiauto'),
+        ],
+        [
+            'label' => __('Gérer les règles d\'affectation d\'un élément à une entité', 'configurationglpiauto'),
+            'ok' => Session::haveRight('rule_import', UPDATE),
+            'hint' => __('nécessaire au rattachement des machines inventoriées par plage IP ou tag', 'configurationglpiauto'),
+        ],
+        [
+            'label' => __('Gérer les dictionnaires et les catégories de logiciels', 'configurationglpiauto'),
+            'ok' => Session::haveRight('rule_dictionnary_dropdown', UPDATE)
+                && Session::haveRight('rule_dictionnary_software', UPDATE)
+                && Session::haveRight('rule_dictionnary_printer', UPDATE)
+                && Session::haveRight('rule_softwarecategories', UPDATE),
+            'hint' => __('chaque dictionnaire (fabricants, logiciels, systèmes d\'exploitation, imprimantes, types d\'ordinateurs) est ignoré si le droit correspondant manque', 'configurationglpiauto'),
+        ],
+        ...(AssetsignTriggerBuilder::isThirdPartyPluginActive() ? [[
+            'label' => __('Modifier la configuration d\'assetsign', 'configurationglpiauto'),
+            'ok' => Session::haveRight('plugin_assetsign_config', UPDATE),
+            'hint' => __('nécessaire pour relier les déclencheurs d\'assetsign aux statuts créés', 'configurationglpiauto'),
+        ]] : []),
     ];
 }
 
@@ -436,6 +459,19 @@ if (isset($_POST['finish'])) {
     $canUpdateEntity = Session::haveRight('entity', UPDATE);
     $canManageLdapRules = Session::haveRight('rule_ldap', UPDATE);
     $canUpdateCoreConfig = Session::haveRight('config', UPDATE);
+    // Same principle, for every other kind of native GLPI rule the wizard creates: each rule
+    // family has its own core right (RuleTicket::$rightname, RuleImportEntity::$rightname, the
+    // dictionaries'...), and an active rule applies instance-wide to every future ticket or
+    // inventory — never something this plugin's own right alone should be able to create.
+    $canManageTicketRules = Session::haveRight('rule_ticket', UPDATE);
+    $canManageImportRules = Session::haveRight('rule_import', UPDATE);
+    $canManageDropdownDictionaries = Session::haveRight('rule_dictionnary_dropdown', UPDATE);
+    $canManageSoftwareDictionary = Session::haveRight('rule_dictionnary_software', UPDATE);
+    $canManagePrinterDictionary = Session::haveRight('rule_dictionnary_printer', UPDATE);
+    $canManageSoftwareCategoryRules = Session::haveRight('rule_softwarecategories', UPDATE);
+    // assetsign-glpi's own configuration right (its Profile::RIGHT_CONFIG): AssetsignTriggerBuilder
+    // writes that plugin's configuration table directly, bypassing its own controllers.
+    $canUpdateAssetsignConfig = Session::haveRight('plugin_assetsign_config', UPDATE);
 
     $config = Config::getConfig();
     // Fonctionnalité de Rollback (issue #114) : capture l'état COURANT (avant écrasement) comme
@@ -558,8 +594,16 @@ if (isset($_POST['finish'])) {
         }
     }
 
-    if ($calendarMap !== []) {
-        $calendarBuilder->assignMap($calendarMap);
+    // Assigning a calendar writes glpi_entities.calendars_id (native 'entity' UPDATE, within the
+    // operator's own scope); assigning SLAs creates RuleTicket rows (native 'rule_ticket').
+    $assignableCalendarMap = $canUpdateEntity
+        ? array_filter($calendarMap, static fn (int $entityId): bool => Session::haveAccessToEntity($entityId), ARRAY_FILTER_USE_KEY)
+        : [];
+    if (!$canManageTicketRules) {
+        $slaMap = [];
+    }
+    if ($assignableCalendarMap !== []) {
+        $calendarBuilder->assignMap($assignableCalendarMap);
     }
     if ($slaMap !== []) {
         $slaBuilder->assignMap($slaMap, $tierGroupIds, $entityIdToTierGroupIds);
@@ -577,14 +621,16 @@ if (isset($_POST['finish'])) {
 
     $categoriesCreated = (new CategoryBuilder())->build($config);
     // Runs right after CategoryBuilder: triggered by the same "Flotte Automobile" branch checkbox,
-    // no dedicated toggle of its own.
-    $vehicleAssetCreated = (new VehicleAssetBuilder())->build($config);
-    $serverAssetCreated = (new ServerAssetBuilder())->build($config);
-    $buildingAssetCreated = (new BuildingAssetBuilder())->build($config);
+    // no dedicated toggle of its own. These five create custom asset types (Glpi\Asset\AssetDefinition,
+    // whose $rightname is the native 'config' right): a new instance-wide itemtype, its profile
+    // rights and core's default inventory import rules for it — never on this plugin's right alone.
+    $vehicleAssetCreated = $canUpdateCoreConfig ? (new VehicleAssetBuilder())->build($config) : 0;
+    $serverAssetCreated = $canUpdateCoreConfig ? (new ServerAssetBuilder())->build($config) : 0;
+    $buildingAssetCreated = $canUpdateCoreConfig ? (new BuildingAssetBuilder())->build($config) : 0;
     // Unlike the three builders above, each also needs its own dedicated toggle checked (not just
     // the branch) — see FireSafetyAssetBuilder/PhysicalSecurityAssetBuilder docblocks for why.
-    $fireSafetyAssetCreated = (new FireSafetyAssetBuilder())->build($config);
-    $physicalSecurityAssetCreated = (new PhysicalSecurityAssetBuilder())->build($config);
+    $fireSafetyAssetCreated = $canUpdateCoreConfig ? (new FireSafetyAssetBuilder())->build($config) : 0;
+    $physicalSecurityAssetCreated = $canUpdateCoreConfig ? (new PhysicalSecurityAssetBuilder())->build($config) : 0;
     $servicesCreated = (new ServiceCatalogBuilder())->build($config);
     // Runs right after ServiceCatalogBuilder: same self-service catalog, one dedicated pilot
     // service with real typed questions and a computed ticket title instead of the generic
@@ -662,7 +708,7 @@ if (isset($_POST['finish'])) {
     }
     $statesCreated = (new StateBuilder())->build($config);
     // Issue #283 : après StateBuilder, qui crée les statuts auxquels les déclencheurs renvoient.
-    $assetsignTriggersSet = (new AssetsignTriggerBuilder())->build($config);
+    $assetsignTriggersSet = $canUpdateAssetsignConfig ? (new AssetsignTriggerBuilder())->build($config) : 0;
     $waitReasonsCreated = (new WaitReasonBuilder())->build($config);
     $ruleRightBuilder = new RuleRightBuilder();
     $ldapRulesCreated = $canManageLdapRules ? $ruleRightBuilder->build($config) : 0;
@@ -713,28 +759,31 @@ if (isset($_POST['finish'])) {
     $satisfactionSurveyCreated = (new SatisfactionSurveyBuilder())->build($config);
     $vipGroupCreated = (new VipBuilder())->build($config);
     $tagsCreated = (new TagBuilder())->build($config);
-    $validationRoutingCreated = (new ValidationRoutingBuilder())->build($config);
+    $validationRoutingCreated = $canManageTicketRules ? (new ValidationRoutingBuilder())->build($config) : 0;
     // Reuses $locationDataByPath (same physical address, no reason to type it twice) plus its own
     // phonenumber/fax/website/email fields, with no Location equivalent.
     $entityCommsByPath = !empty($config->fields['entity_native_address_enabled']) ? collectEntityCommsFromPost() : [];
     $entityAddressesApplied = $canUpdateEntity ? (new EntityAddressBuilder())->build($config, $locationDataByPath, $entityCommsByPath) : 0;
-    $entityInventoryRulesCreated = (new EntityInventoryRuleBuilder())->build($config, collectEntityInventoryFromPost());
+    $entityInventoryRulesCreated = $canManageImportRules ? (new EntityInventoryRuleBuilder())->build($config, collectEntityInventoryFromPost()) : 0;
     $userCategoriesCreated = (new UserCategoryBuilder())->build($config);
-    $fieldUnicityRulesCreated = (new FieldUnicityBuilder())->build($config);
+    // FieldUnicity::$rightname is the native 'config' right (instance-wide uniqueness rules).
+    $fieldUnicityRulesCreated = $canUpdateCoreConfig ? (new FieldUnicityBuilder())->build($config) : 0;
     $rssFeedsCreated = (new RSSFeedBuilder())->build($config);
     // Never stored in $config (our own table has no field-level encryption) — read straight from
     // POST, forwarded directly to GLPI core's own encrypted config store.
     $marketplaceRegistrationSaved = $canUpdateCoreConfig ? (new MarketplaceBuilder())->build((string) ($_POST['glpi_network_registration_key'] ?? '')) : 0;
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
-    $manufacturerDictionaryCreated = (new ManufacturerDictionaryBuilder())->build($config);
+    $manufacturerDictionaryCreated = $canManageDropdownDictionaries ? (new ManufacturerDictionaryBuilder())->build($config) : 0;
     $softwareDictionary = new SoftwareDictionaryBuilder();
-    $softwareDictionaryCreated = $softwareDictionary->build($config);
-    $softwareCategoriesCreated = (new SoftwareCategoryBuilder())->build($config, SoftwareDictionaryBuilder::getRegexByLabel(), $softwareDictionary->getRuleIds());
-    $osDictionaryCreated = (new OperatingSystemDictionaryBuilder())->build($config);
-    $printerDictionaryCreated = (new PrinterDictionaryBuilder())->build($config);
+    $softwareDictionaryCreated = $canManageSoftwareDictionary ? $softwareDictionary->build($config) : 0;
+    $softwareCategoriesCreated = $canManageSoftwareCategoryRules
+        ? (new SoftwareCategoryBuilder())->build($config, SoftwareDictionaryBuilder::getRegexByLabel(), $softwareDictionary->getRuleIds())
+        : 0;
+    $osDictionaryCreated = $canManageDropdownDictionaries ? (new OperatingSystemDictionaryBuilder())->build($config) : 0;
+    $printerDictionaryCreated = $canManagePrinterDictionary ? (new PrinterDictionaryBuilder())->build($config) : 0;
     $lineOperatorsCreated = (new LineOperatorBuilder())->build($config);
     $assetTypesCreated = (new AssetTypeBuilder())->build($config);
-    $computerTypeDictionaryCreated = (new ComputerTypeDictionaryBuilder())->build($config);
+    $computerTypeDictionaryCreated = $canManageDropdownDictionaries ? (new ComputerTypeDictionaryBuilder())->build($config) : 0;
     $softwareLicenseTypesCreated = (new SoftwareLicenseTypeBuilder())->build($config);
     $certificateTypesCreated = (new CertificateTypeBuilder())->build($config);
     $recurringTicketLibraryCreated = (new RecurringTicketLibraryBuilder())->build($config);
@@ -840,7 +889,7 @@ if (isset($_POST['finish'])) {
     $messages[] = empty($created)
         ? __('Aucune entité à créer (mode mono-entité, ou arborescence vide).', 'configurationglpiauto')
         : sprintf(__('Structure créée : %s.', 'configurationglpiauto'), EntityBuilder::describe($created));
-    if ($calendarMap !== []) {
+    if ($assignableCalendarMap !== []) {
         $messages[] = __('Calendrier créé et assigné.', 'configurationglpiauto');
     }
     if ($countryCalendarForkCount > 0) {

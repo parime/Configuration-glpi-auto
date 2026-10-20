@@ -15,6 +15,7 @@
  * -------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
 Session::checkRight(ConfigurationProfile::$rightname, READ);
@@ -28,10 +29,13 @@ echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['r
 echo "<i class='ti ti-wand'></i> " . __('Lancer l\'assistant de configuration', 'configurationglpiauto');
 echo "</a>";
 // Issue #112 ("Mode Audit avancé") : même emplacement/style que le bouton assistant ci-dessus,
-// pas de nouvelle entrée de menu séparée.
-echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/audit.php') . "'>";
-echo "<i class='ti ti-stethoscope'></i> " . __('Lancer l\'audit', 'configurationglpiauto');
-echo "</a>";
+// pas de nouvelle entrée de menu séparée. Masqué sans le droit natif 'config' READ, que
+// front/audit.php exige (audit de toute l'instance).
+if (Session::haveRight(Config::$rightname, READ) && Session::haveRight('config', READ)) {
+    echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/audit.php') . "'>";
+    echo "<i class='ti ti-stethoscope'></i> " . __('Lancer l\'audit', 'configurationglpiauto');
+    echo "</a>";
+}
 // Issue #113 ("Système de Blueprints") : même emplacement/style que les boutons ci-dessus.
 if (ConfigurationProfile::canCreate()) {
     echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/blueprint_import.php') . "'>";
