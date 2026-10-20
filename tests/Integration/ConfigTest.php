@@ -535,14 +535,38 @@ final class ConfigTest extends TestCase
     {
         global $GLPI_CACHE;
         $GLPI_CACHE->delete(self::GITHUB_VERSION_CACHE_KEY);
+        $this->setCoreUpdateCheckState(\CronTask::STATE_DISABLE);
+    }
+
+    /** GLPI's own "checkupdate" automatic action, which the GitHub version check is opted into. */
+    private function setCoreUpdateCheckState(int $state): void
+    {
+        $task = new \CronTask();
+        if ($task->getFromDBbyName('CronTask', 'checkupdate')) {
+            $task->update(['id' => $task->getID(), 'state' => $state]);
+        }
     }
 
     public function testGetLatestGithubVersionReturnsTheCachedVersionWithoutHittingTheNetwork(): void
     {
         global $GLPI_CACHE;
+        $this->setCoreUpdateCheckState(\CronTask::STATE_WAITING);
         $GLPI_CACHE->set(self::GITHUB_VERSION_CACHE_KEY, '9.9.9', DAY_TIMESTAMP);
 
         $this->assertSame('9.9.9', Config::getLatestGithubVersion());
+    }
+
+    /**
+     * Opt-in (security review 1.3.0, LOW "unsolicited outbound request"): with GLPI's own update
+     * check disabled — its default — nothing is returned, even from cache, and nothing is fetched.
+     */
+    public function testGetLatestGithubVersionIsSkippedWhileCoreUpdateCheckIsDisabled(): void
+    {
+        global $GLPI_CACHE;
+        $this->setCoreUpdateCheckState(\CronTask::STATE_DISABLE);
+        $GLPI_CACHE->set(self::GITHUB_VERSION_CACHE_KEY, '9.9.9', DAY_TIMESTAMP);
+
+        $this->assertNull(Config::getLatestGithubVersion());
     }
 
     /**

@@ -1,0 +1,87 @@
+# Regles Semgrep propres aux plugins GLPI, en complement de `semgrep ci --config auto` (qui ne
+# connait pas la semantique des droits GLPI). Chaque regle encode une classe de defaut deja
+# relevee par la revue de securite de la marketplace GLPI : un droit global (Session::haveRight)
+# ne dit rien de l'entite d'un enregistrement, et une entite lue dans la requete doit toujours
+# etre confrontee a la session.
+#
+# Lancement local : docker run --rm -v "$PWD:/src" semgrep/semgrep semgrep scan --config .semgrep/ --error
+# Faux positif averé : `// nosemgrep: <id>` sur la ligne, avec un commentaire qui justifie.
+
+rules:
+  - id: glpi-access-decision-from-global-right
+    languages: [php]
+    severity: ERROR
+    message: >-
+      Decision d'acces prise sur le seul droit global ($V = Session::haveRight(...)) : ce droit ne
+      verifie pas l'entite de l'enregistrement charge. Utiliser $item->can($id, READ|UPDATE), qui
+      controle droit ET entite (CommonDBTM::canViewItem/canUpdateItem).
+    paths:
+      include: ["/front/*.php", "/ajax/*.php"]
+    patterns:
+      - pattern-inside: |
+          $V = Session::haveRight(...);
+          ...
+      - pattern-either:
+          - pattern: |
+              if (<... !$V ...>) { ... throw new $E(...); }
+          - pattern: |
+              if (<... !$V ...>) { ... Html::displayRightError(...); }
+
+  - id: glpi-request-entity-without-access-check
+    languages: [php]
+    severity: ERROR
+    message: >-
+      entities_id lu dans la requete sans Session::haveAccessToEntity() : n'importe quelle entite
+      de l'instance peut etre visee en changeant la valeur envoyee.
+    paths:
+      include: ["/front/*.php", "/ajax/*.php"]
+    patterns:
+      - pattern-either:
+          - pattern: $X = (int) ($_POST['entities_id'] ?? $D);
+          - pattern: $X = (int) ($_GET['entities_id'] ?? $D);
+          - pattern: $X = (int) ($_REQUEST['entities_id'] ?? $D);
+          - pattern: $X = (int) $_POST['entities_id'];
+          - pattern: $X = (int) $_GET['entities_id'];
+      - pattern-not-inside: |
+          $X = $Y;
+          ...
+          if (<... Session::haveAccessToEntity($X) ...>) { ... }
+
+  - id: glpi-request-entity-in-array
+    languages: [php]
+    severity: ERROR
+    message: >-
+      entities_id passe directement depuis la requete : le valider d'abord avec
+      Session::haveAccessToEntity() dans une variable.
+    paths:
+      include: ["/front/*.php", "/ajax/*.php"]
+    pattern-either:
+      - pattern: "[..., 'entities_id' => <... $_POST['entities_id'] ...>, ...]"
+      - pattern: "[..., 'entities_id' => <... $_GET['entities_id'] ...>, ...]"
+      - pattern: "[..., 'entities_id' => <... $_REQUEST['entities_id'] ...>, ...]"
+
+  - id: glpi-twig-raw-output
+    languages: [generic]
+    severity: ERROR
+    message: >-
+      `|raw` desactive l'echappement Twig. Autorise seulement apres json_encode (dans un <script>),
+      e('js'), ou sur une variable *_html / *_dropdown produite par le coeur GLPI. Tout autre
+      contenu doit etre purifie en PHP (RichText::getSafeHtml) et la variable nommee *_safe_html.
+    paths:
+      include: ["/templates/**/*.twig"]
+    patterns:
+      - pattern-regex: '\{\{[^}]*\|\s*raw[^}]*\}\}'
+      - pattern-not-regex: '\{\{[^}]*\|\s*json_encode\s*\|\s*raw[^}]*\}\}'
+      - pattern-not-regex: '\{\{\s*\w+_(html|dropdown)\s*\|\s*raw\s*\}\}'
+
+  - id: glpi-csv-cell-from-user-input
+    languages: [php]
+    severity: WARNING
+    message: >-
+      Cellule CSV ecrite telle quelle : un texte saisi par un utilisateur commencant par = + - @
+      est execute comme formule par le tableur. Prefixer d'une apostrophe ces valeurs.
+    patterns:
+      - pattern: fputcsv($F, [..., $L[$K], ...], ...)
+      - metavariable-regex:
+          metavariable: $K
+          regex: (comment|description|name|content|reason|title)

@@ -20,12 +20,17 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditService;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
-// Même droit que l'assistant de configuration (front/wizard.php) : l'audit lit/corrige l'état
-// général de GLPI, pas une frontière d'accès propre à ce plugin.
+// L'audit lit et corrige l'état général de toute l'instance (parc de toutes les entités, comptes par
+// défaut, configuration cœur) : le droit propre au plugin, délégable à un profil non super-admin
+// (voir Profile.php), ne suffit pas — le droit natif GLPI 'config' est exigé en plus, READ pour
+// consulter, UPDATE pour corriger (fusions/purges de logiciels et d'intitulés, réglages cœur,
+// tickets ouverts dans n'importe quelle entité) ou envoyer le rapport hors de GLPI par e-mail.
 Session::checkRight(Config::$rightname, READ);
+Session::checkRight('config', READ);
 
 if (isset($_POST['fix'])) {
     Session::checkRight(Config::$rightname, UPDATE);
+    Session::checkRight('config', UPDATE);
 
     $checkKey = (string) $_POST['fix'];
 
@@ -42,6 +47,7 @@ if (isset($_POST['fix'])) {
 // Issue #306 : délais des contrôles du parc (jours, 0 = contrôle désactivé).
 if (isset($_POST['save_park'])) {
     Session::checkRight(Config::$rightname, UPDATE);
+    Session::checkRight('config', UPDATE);
 
     $config = Config::getConfig();
     $config->update([
@@ -62,6 +68,7 @@ $reportTaskFound = $reportTask->getFromDBbyName(AuditReportCron::class, AuditRep
 
 if (isset($_POST['save_report']) || isset($_POST['send_report_now'])) {
     Session::checkRight(Config::$rightname, UPDATE);
+    Session::checkRight('config', UPDATE);
 
     $config = Config::getConfig();
     $config->update([
@@ -170,7 +177,7 @@ if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_D
         'ghost_days'    => (int) ($config->fields['audit_ghost_days'] ?? 30),
         'warranty_days' => (int) ($config->fields['audit_warranty_days'] ?? 30),
     ],
-    'can_fix'               => Session::haveRight(Config::$rightname, UPDATE),
+    'can_fix'               => Session::haveRight(Config::$rightname, UPDATE) && Session::haveRight('config', UPDATE),
     'csrf_token'            => Session::getNewCSRFToken(),
     'new_critical_message'  => $newCriticalMessage,
 ]);

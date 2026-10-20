@@ -135,6 +135,14 @@ try {
         // that check could still redirect the client to an internal address (HTTP clients follow
         // redirects by default), reopening the same SSRF this proxy exists to prevent.
         'follow_redirects' => false,
+        // ...and only the address it resolved to at that moment: connect to that exact IP, so a
+        // short-TTL DNS record cannot answer the check with a public address and the actual
+        // request with an internal one (DNS rebinding).
+        'resolve' => [
+            'host' => (string) $endpointHost,
+            'port' => (int) (parse_url($endpoint, PHP_URL_PORT) ?: 443),
+            'ip'   => (string) $resolvedIp,
+        ],
     ]);
 
     $results = json_decode($body, true) ?? [];

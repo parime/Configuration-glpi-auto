@@ -300,6 +300,11 @@ jobs:
       - run: semgrep ci --config auto
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+      # Regles propres aux plugins GLPI (.semgrep/) : droit global vs droit + entite, entites
+      # lues dans la requete, |raw Twig, ecritures privilegiees sans droit natif. Bloquant (--error),
+      # et local : ne depend ni du token Semgrep ni du registre de regles en ligne.
+      - name: "Semgrep - regles securite GLPI du projet"
+        run: semgrep scan --config .semgrep/ --error --metrics=off
 
   dependabot:
     name: "Dependabot Security"

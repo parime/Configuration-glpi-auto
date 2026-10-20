@@ -4153,3 +4153,35 @@ msgstr "Etiqueta del agente"
 
 msgid "Définissez d'abord vos entités à l'étape 2 : sans entité, toutes les machines restent dans l'entité racine."
 msgstr "Defina primero sus entidades en el paso 2: sin entidades, todos los equipos se quedan en la entidad raíz."
+
+#: front/wizard.php
+msgid "Gérer les règles métier pour les tickets"
+msgstr "Gestionar las reglas de negocio para los tiques"
+
+#: front/wizard.php
+msgid "nécessaire à l'affectation automatique des SLA/OLA et au circuit de validation"
+msgstr "necesario para la asignación automática de SLA/OLA y el circuito de validación"
+
+#: front/wizard.php
+msgid "Gérer les règles d'affectation d'un élément à une entité"
+msgstr "Gestionar las reglas de asignación de un elemento a una entidad"
+
+#: front/wizard.php
+msgid "nécessaire au rattachement des machines inventoriées par plage IP ou tag"
+msgstr "necesario para vincular los equipos inventariados por rango de IP o etiqueta"
+
+#: front/wizard.php
+msgid "Gérer les dictionnaires et les catégories de logiciels"
+msgstr "Gestionar los diccionarios y las categorías de software"
+
+#: front/wizard.php
+msgid "chaque dictionnaire (fabricants, logiciels, systèmes d'exploitation, imprimantes, types d'ordinateurs) est ignoré si le droit correspondant manque"
+msgstr "cada diccionario (fabricantes, software, sistemas operativos, impresoras, tipos de ordenador) se omite si falta el derecho correspondiente"
+
+#: front/wizard.php
+msgid "Modifier la configuration d'assetsign"
+msgstr "Modificar la configuración de assetsign"
+
+#: front/wizard.php
+msgid "nécessaire pour relier les déclencheurs d'assetsign aux statuts créés"
+msgstr "necesario para vincular los disparadores de assetsign a los estados creados"

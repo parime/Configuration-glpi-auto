@@ -4079,3 +4079,35 @@ msgstr "Agent tag"
 
 msgid "Définissez d'abord vos entités à l'étape 2 : sans entité, toutes les machines restent dans l'entité racine."
 msgstr "Define your entities in step 2 first: without entities, all computers stay in the root entity."
+
+#: front/wizard.php
+msgid "Gérer les règles métier pour les tickets"
+msgstr "Manage business rules for tickets"
+
+#: front/wizard.php
+msgid "nécessaire à l'affectation automatique des SLA/OLA et au circuit de validation"
+msgstr "needed for automatic SLA/OLA assignment and the approval workflow"
+
+#: front/wizard.php
+msgid "Gérer les règles d'affectation d'un élément à une entité"
+msgstr "Manage rules for assigning an item to an entity"
+
+#: front/wizard.php
+msgid "nécessaire au rattachement des machines inventoriées par plage IP ou tag"
+msgstr "needed to attach inventoried machines by IP range or tag"
+
+#: front/wizard.php
+msgid "Gérer les dictionnaires et les catégories de logiciels"
+msgstr "Manage dictionaries and software categories"
+
+#: front/wizard.php
+msgid "chaque dictionnaire (fabricants, logiciels, systèmes d'exploitation, imprimantes, types d'ordinateurs) est ignoré si le droit correspondant manque"
+msgstr "each dictionary (manufacturers, software, operating systems, printers, computer types) is skipped if the matching right is missing"
+
+#: front/wizard.php
+msgid "Modifier la configuration d'assetsign"
+msgstr "Update the assetsign configuration"
+
+#: front/wizard.php
+msgid "nécessaire pour relier les déclencheurs d'assetsign aux statuts créés"
+msgstr "needed to link assetsign triggers to the created statuses"

@@ -24,6 +24,7 @@ use RuleCollection;
 use RuleCriteria;
 use RuleImportEntity;
 use RuleImportEntityCollection;
+use Session;
 
 /**
  * Issue #307 : rattacher chaque machine inventoriée à la bonne entité, d'après sa plage d'adresses
@@ -99,7 +100,9 @@ class EntityInventoryRuleBuilder
 
         $count = 0;
         $data = $byPath[$path] ?? ['ranges' => [], 'tag' => ''];
-        if ($data['ranges'] !== [] || $data['tag'] !== '') {
+        // Resolved by name: an entity of the same name may already exist outside the operator's
+        // own scope — never route inventoried machines into an entity they cannot access.
+        if (($data['ranges'] !== [] || $data['tag'] !== '') && Session::haveAccessToEntity($entityId)) {
             $this->ensureRule($entityId, (string) $entity->fields['completename'], $data['ranges'], $data['tag']);
             $count = 1;
         }
