@@ -367,18 +367,17 @@ jobs:
           done
           [ "$ready" = 1 ] || { docker logs glpi --tail 200; exit 1; }
 
+      # Dependances installees sur le runner (PHP/Composer preinstalles), pas dans le conteneur
+      # GLPI : son acces reseau sortant s'est revele intermittent (« Network is unreachable »).
+      - name: "Installe les dependances de production"
+        run: composer install --no-dev --no-interaction --prefer-dist --no-progress
+
       - name: "Installe et active le plugin"
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           docker exec glpi mkdir -p /var/www/glpi/plugins/configurationglpiauto
           docker cp ./. glpi:/var/www/glpi/plugins/configurationglpiauto
           docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/configurationglpiauto
           docker exec -u www-data glpi sh -c '
-            export COMPOSER_HOME=/tmp/composer-home
-            cd /tmp && php -r "copy(\"https://getcomposer.org/installer\", \"composer-setup.php\");" \
-              && php composer-setup.php --quiet --install-dir=/tmp --filename=composer.phar
-            cd /var/www/glpi/plugins/configurationglpiauto && php /tmp/composer.phar install --no-dev --no-interaction --prefer-dist --no-progress
             cd /var/www/glpi && php bin/console plugin:install configurationglpiauto -u glpi -n && php bin/console plugin:activate configurationglpiauto -n
           '
 
