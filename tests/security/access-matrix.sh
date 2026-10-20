@@ -1,4 +1,20 @@
 #!/usr/bin/env bash
+
+#
+# -------------------------------------------------------------------------
+# Configuration GLPI Auto plugin for GLPI
+# Copyright (C) 2026 Vincent GUILLOTTE
+# https://github.com/parime/Configuration-glpi-auto
+# -------------------------------------------------------------------------
+# LICENSE
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version. See LICENSE for the full text.
+# -------------------------------------------------------------------------
+#
+
 # Matrice de controle d'acces de bout en bout (vraies requetes HTTP, vraie session GLPI).
 #
 # Usage : access-matrix.sh <url GLPI> <delegate|admin> <login> <mot de passe>
