@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.1] - 2026-10-20
+
 ### Security
 
 - **Revue de sécurité marketplace, re-vérification sur 1.7.0.** Les
