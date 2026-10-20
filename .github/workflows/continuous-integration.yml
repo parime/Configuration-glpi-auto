@@ -358,6 +358,14 @@ jobs:
             sleep 5
           done
           [ "$ready" = 1 ] || { docker logs glpi --tail 200; exit 1; }
+          # config_db.php apparait avant la fin de l'installation de la base par l'image : attendre
+          # que la console GLPI soit utilisable (sinon "update of the GLPI database is necessary").
+          ready=0
+          for i in $(seq 1 60); do
+            docker exec -u www-data glpi php /var/www/glpi/bin/console plugin:list >/dev/null 2>&1 && { ready=1; break; }
+            sleep 5
+          done
+          [ "$ready" = 1 ] || { docker logs glpi --tail 200; exit 1; }
 
       - name: "Installe et active le plugin"
         env:
