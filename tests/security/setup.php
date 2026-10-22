@@ -24,6 +24,9 @@
  * Usage (en www-data, depuis la racine GLPI) :
  *   php plugins/configurationglpiauto/tests/security/setup.php           cree le profil et le compte
  *   php plugins/configurationglpiauto/tests/security/setup.php snapshot  instantane des objets natifs
+ *   php plugins/configurationglpiauto/tests/security/setup.php xss       charge XSS dans chaque champ
+ *   php plugins/configurationglpiauto/tests/security/setup.php uploads   nombre de profils
+ *   php plugins/configurationglpiauto/tests/security/setup.php blueprint fichier Blueprint piege
  */
 
 require dirname(__DIR__, 4) . '/vendor/autoload.php';
@@ -65,6 +68,36 @@ if (($argv[1] ?? '') === 'xss') {
         'fueltype' => (int) (new \GlpiPlugin\Configurationglpiauto\FuelType())->add(['name' => $canary, 'comment' => $canary]),
     ];
     echo json_encode($ids), "\n";
+    exit(0);
+}
+
+if (($argv[1] ?? '') === 'uploads') {
+    // Etat observe par tests/security/upload-check.sh : profils (blueprints importes), taille du
+    // contenu stocke pour le dernier, service de geocodage configure.
+    $table = \GlpiPlugin\Configurationglpiauto\ConfigurationProfile::getTable();
+    $latest = $DB->request(['SELECT' => ['snapshot'], 'FROM' => $table, 'ORDER' => 'id DESC', 'LIMIT' => 1])->current();
+    echo json_encode([
+        'profiles' => countElementsInTable($table),
+        'latest'   => strlen((string) ($latest['snapshot'] ?? '')),
+        'endpoint' => (string) \GlpiPlugin\Configurationglpiauto\Config::getConfig()->fields['location_geocoding_endpoint'],
+    ]), "\n";
+    exit(0);
+}
+
+if (($argv[1] ?? '') === 'blueprint') {
+    // Fichier Blueprint piege televerse par tests/security/upload-check.sh : charges XSS sous les
+    // noms de colonnes et dans le nom, champs propres a l'instance, service de geocodage interne.
+    $config = \GlpiPlugin\Configurationglpiauto\Config::getConfig();
+    $blueprint = \GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer::export(
+        $config->fields,
+        "<svg/onload=alert('xss-canary')>",
+        PLUGIN_CONFIGURATIONGLPIAUTO_VERSION
+    );
+    $blueprint['config']['calendar_days'] = '0;alert(document.cookie)//';
+    $blueprint['config']['calendar_day_hours'] = '1;alert(1)//';
+    $blueprint['config']['location_geocoding_endpoint'] = 'http://169.254.169.254';
+    $blueprint['config']['id'] = 999999;
+    echo json_encode($blueprint), "\n";
     exit(0);
 }
 

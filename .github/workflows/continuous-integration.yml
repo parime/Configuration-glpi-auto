@@ -409,6 +409,14 @@ jobs:
           xss=$(docker exec -u www-data glpi php /var/www/glpi/plugins/configurationglpiauto/tests/security/setup.php xss | tail -1)
           bash tests/security/xss-check.sh http://localhost:8080 "$xss"
 
+      # Import de Blueprint de bout en bout : fichiers malveillants refuses sans erreur serveur,
+      # Blueprint piege neutralise une fois restaure, donnees hors format jamais stockees.
+      - name: "Test des televersements (import de Blueprint)"
+        run: |
+          setup="docker exec -u www-data glpi php /var/www/glpi/plugins/configurationglpiauto/tests/security/setup.php"
+          $setup > /dev/null
+          bash tests/security/upload-check.sh http://localhost:8080 "$setup uploads" "$setup blueprint"
+
   dependabot:
     name: "Dependabot Security"
     runs-on: ubuntu-latest

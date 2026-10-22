@@ -18,6 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   blueprint piégé (charges XSS) est neutralisé une fois restauré. Le super-admin garde tout. Test
   XSS de bout en bout : charge piégée dans chaque champ texte libre, restituée échappée. La CI
   échoue si une nouvelle page n'y figure pas, sauf justification (`tests/security/not-covered.txt`).
+- **Test de l'import de Blueprint de bout en bout** : import refusé sans droit ; script PHP,
+  image ou JSON qui n'est pas un Blueprint refusés sans erreur serveur ; Blueprint piégé (charges
+  XSS, champs propres à l'instance, géocodage vers une adresse interne) neutralisé une fois
+  restauré.
+- **Import de Blueprint** : seul le format Blueprint est conservé. Toute autre donnée du fichier
+  (y compris plusieurs Mo sans rapport) était stockée telle quelle dans le profil. Trouvé par le
+  nouveau test.
 
 ## [1.7.1] - 2026-10-20
 
