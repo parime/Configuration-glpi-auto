@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.2] - 2026-10-22
+
 ### Security
 
 - **Test de contrôle d'accès étendu à toutes les pages** : la matrice de bout en bout couvre
