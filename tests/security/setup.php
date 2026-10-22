@@ -58,32 +58,73 @@ if (($argv[1] ?? '') === 'snapshot') {
     exit(0);
 }
 
-$profile = new Profile();
-if (!$profile->getFromDBByCrit(['name' => 'Securite - delegue assistant'])) {
-    $profile->add(['name' => 'Securite - delegue assistant', 'interface' => 'central']);
-}
-$profileId = (int) $profile->getID();
-ProfileRight::updateProfileRights($profileId, [
-    'plugin_configurationglpiauto_config'  => ALLSTANDARDRIGHT,
-    'plugin_configurationglpiauto_profile' => ALLSTANDARDRIGHT,
+$account = static function (string $login, string $profileName, array $rights) use ($DB): int {
+    $profile = new Profile();
+    if (!$profile->getFromDBByCrit(['name' => $profileName])) {
+        $profile->add(['name' => $profileName, 'interface' => 'central']);
+    }
+    $profileId = (int) $profile->getID();
+    ProfileRight::updateProfileRights($profileId, $rights);
+
+    $user = new User();
+    if (!$user->getFromDBbyName($login)) {
+        $user->add([
+            'name' => $login, 'password' => 'Secrev#2026', 'password2' => 'Secrev#2026',
+            'entities_id' => 0, '_profiles_id' => 0,
+        ]);
+    }
+    $userId = (int) $user->getID();
+    $DB->delete('glpi_profiles_users', ['users_id' => $userId]);
+    $DB->insert('glpi_profiles_users', [
+        'users_id' => $userId, 'profiles_id' => $profileId, 'entities_id' => 0,
+        'is_recursive' => 1, 'is_dynamic' => 0, 'is_default_profile' => 1,
+    ]);
+    $DB->update('glpi_users', ['profiles_id' => $profileId], ['id' => $userId]);
+
+    return $userId;
+};
+
+$noNativeRight = [
     'config' => 0, 'entity' => 0, 'rule_ldap' => 0, 'rule_ticket' => 0, 'rule_import' => 0,
     'rule_dictionnary_dropdown' => 0, 'rule_dictionnary_software' => 0,
     'rule_dictionnary_printer' => 0, 'rule_softwarecategories' => 0,
-]);
+];
+// Délégué : tous les droits de ce plugin, aucun droit natif privilégié.
+$account('securite-delegue', 'Securite - delegue assistant', [
+    'plugin_configurationglpiauto_config'  => ALLSTANDARDRIGHT,
+    'plugin_configurationglpiauto_profile' => ALLSTANDARDRIGHT,
+] + $noNativeRight);
+// Sans droit : aucun droit sur ce plugin, chaque page doit lui être refusée.
+$account('securite-sans-droit', 'Securite - sans droit assistant', [
+    'plugin_configurationglpiauto_config'  => 0,
+    'plugin_configurationglpiauto_profile' => 0,
+] + $noNativeRight);
 
-$user = new User();
-if (!$user->getFromDBbyName('securite-delegue')) {
-    $user->add([
-        'name' => 'securite-delegue', 'password' => 'Secrev#2026', 'password2' => 'Secrev#2026',
-        'entities_id' => 0, '_profiles_id' => 0,
-    ]);
-}
-$userId = (int) $user->getID();
-$DB->delete('glpi_profiles_users', ['users_id' => $userId]);
-$DB->insert('glpi_profiles_users', [
-    'users_id' => $userId, 'profiles_id' => $profileId, 'entities_id' => 0,
-    'is_recursive' => 1, 'is_dynamic' => 0, 'is_default_profile' => 1,
-]);
-$DB->update('glpi_users', ['profiles_id' => $profileId], ['id' => $userId]);
+// Service de géocodage pointé vers une adresse interne : le proxy doit refuser de l'appeler (SSRF).
+$config = \GlpiPlugin\Configurationglpiauto\Config::getConfig();
+$DB->update(
+    \GlpiPlugin\Configurationglpiauto\Config::getTable(),
+    ['location_geocoding_endpoint' => 'https://127.0.0.1'],
+    ['id' => $config->getID()]
+);
+$config->getFromDB($config->getID());
 
-echo json_encode(['user' => 'securite-delegue']), "\n";
+// Blueprint piégé : charges XSS sous les noms de COLONNES (contournement de prepareInput() de la
+// 1.3.0). Restauré via front/history_restore.php, il doit être neutralisé.
+$blueprint = \GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer::export(
+    $config->fields,
+    'Blueprint securite',
+    PLUGIN_CONFIGURATIONGLPIAUTO_VERSION
+);
+$blueprint['config']['calendar_days'] = '0;alert(document.cookie)//';
+$blueprint['config']['calendar_day_hours'] = '1;alert(1)//';
+$profileItem = new \GlpiPlugin\Configurationglpiauto\ConfigurationProfile();
+$ids = [
+    'profile' => (int) $profileItem->add([
+        'name' => 'Blueprint securite', 'type' => 'custom', 'snapshot' => json_encode($blueprint),
+    ]),
+    'history' => \GlpiPlugin\Configurationglpiauto\ConfigHistory::captureManual($config, 'Point securite'),
+    'fueltype' => (int) (new \GlpiPlugin\Configurationglpiauto\FuelType())->add(['name' => 'Carburant securite']),
+];
+
+echo json_encode($ids), "\n";
