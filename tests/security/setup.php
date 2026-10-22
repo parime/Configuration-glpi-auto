@@ -38,6 +38,36 @@ if (!(new Auth())->login('glpi', 'glpi', false)) {
 
 global $DB;
 
+if (($argv[1] ?? '') === 'xss') {
+    // Charge piegee dans chaque champ texte libre (configuration, arborescence d'entites, type de
+    // carburant, point d'historique, blueprint) : tests/security/xss-check.sh verifie qu'aucune
+    // page ne la restitue telle quelle. Affiche les ids des objets pieges en JSON.
+    $canary = "<svg/onload=alert('xss-canary')>";
+    $config = \GlpiPlugin\Configurationglpiauto\Config::getConfig();
+    $DB->update(\GlpiPlugin\Configurationglpiauto\Config::getTable(), [
+        'calendar_name'              => $canary,
+        'ldap_rights_group_template' => $canary,
+        'entity_tree'                => json_encode([['name' => $canary, 'children' => [['name' => $canary, 'children' => []]]]]),
+    ], ['id' => $config->getID()]);
+    $config->getFromDB($config->getID());
+    $blueprint = \GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer::export(
+        $config->fields,
+        $canary,
+        PLUGIN_CONFIGURATIONGLPIAUTO_VERSION
+    );
+    $profileItem = new \GlpiPlugin\Configurationglpiauto\ConfigurationProfile();
+    $ids = [
+        'profile'  => (int) $profileItem->add([
+            'name' => $canary, 'description' => $canary, 'comment' => $canary, 'type' => 'custom',
+            'snapshot' => json_encode($blueprint),
+        ]),
+        'history'  => \GlpiPlugin\Configurationglpiauto\ConfigHistory::captureManual($config, $canary),
+        'fueltype' => (int) (new \GlpiPlugin\Configurationglpiauto\FuelType())->add(['name' => $canary, 'comment' => $canary]),
+    ];
+    echo json_encode($ids), "\n";
+    exit(0);
+}
+
 if (($argv[1] ?? '') === 'snapshot') {
     // Ce que l'assistant ne doit jamais ecrire sans le droit natif correspondant.
     $snapshot = [];

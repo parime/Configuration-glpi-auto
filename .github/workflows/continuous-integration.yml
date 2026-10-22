@@ -401,6 +401,14 @@ jobs:
           echo "OK  aucun objet natif privilegie ecrit par le profil delegue"
           bash tests/security/access-matrix.sh http://localhost:8080 admin glpi glpi "$ids"
 
+      # Test XSS de bout en bout : une charge piegee dans chaque champ texte libre (configuration,
+      # arborescence d'entites, carburant, historique, blueprint), aucune page ne doit la restituer
+      # sans echappement.
+      - name: "Test XSS (charge piegee dans chaque champ texte libre)"
+        run: |
+          xss=$(docker exec -u www-data glpi php /var/www/glpi/plugins/configurationglpiauto/tests/security/setup.php xss | tail -1)
+          bash tests/security/xss-check.sh http://localhost:8080 "$xss"
+
   dependabot:
     name: "Dependabot Security"
     runs-on: ubuntu-latest

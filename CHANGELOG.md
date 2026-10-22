@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   les 10 pages du plugin avec trois profils. Sans droit sur le plugin, chaque page est refusée.
   Avec les seuls droits du plugin, les pages sont utilisables, l'audit est refusé, l'assistant
   n'écrit aucun objet natif privilégié, un géocodage vers une adresse interne est refusé et un
-  blueprint piégé (charges XSS) est neutralisé une fois restauré. Le super-admin garde tout. La CI
+  blueprint piégé (charges XSS) est neutralisé une fois restauré. Le super-admin garde tout. Test
+  XSS de bout en bout : charge piégée dans chaque champ texte libre, restituée échappée. La CI
   échoue si une nouvelle page n'y figure pas, sauf justification (`tests/security/not-covered.txt`).
 
 ## [1.7.1] - 2026-10-20
