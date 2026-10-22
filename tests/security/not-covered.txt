@@ -1,0 +1,4 @@
+# Pages de front/ et ajax/ volontairement absentes de tests/security/access-matrix.sh, avec la
+# raison. Lu par .github/scripts/check-security-matrix-coverage.sh. Format : chemin : justification.
+#
+# Aucune entree pour l'instant : toutes les pages sont testees.

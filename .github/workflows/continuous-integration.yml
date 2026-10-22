@@ -248,7 +248,7 @@ jobs:
       - name: "Upload coverage to Codecov"
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
@@ -309,6 +309,10 @@ jobs:
       # figurer avec sa justification dans .github/security-entrypoints-allowlist.txt.
       - name: "Points d'entree : controle d'autorisation present"
         run: sh .github/scripts/check-entrypoints-auth.sh
+      # Chaque page front/ajax doit figurer dans la matrice d'acces de bout en bout
+      # (tests/security/access-matrix.sh), ou etre justifiee dans tests/security/not-covered.txt.
+      - name: "Matrice d'acces : toutes les pages couvertes"
+        run: sh .github/scripts/check-security-matrix-coverage.sh
 
   # Bloque une PR qui ajoute ou met a jour une dependance (composer, actions) ayant un avis de
   # securite connu - avant la fusion, la ou Dependabot ne previent qu'apres coup.
@@ -381,12 +385,13 @@ jobs:
             cd /var/www/glpi && php bin/console plugin:install configurationglpiauto -u glpi -n && php bin/console plugin:activate configurationglpiauto -n
           '
 
-      - name: "Matrice d'acces : profil delegue puis super-admin"
+      - name: "Matrice d'acces : sans droit, delegue, puis super-admin"
         run: |
           run() { docker exec -u www-data glpi php /var/www/glpi/plugins/configurationglpiauto/tests/security/setup.php "$@" | tail -1; }
-          run
+          ids=$(run); echo "$ids"
+          bash tests/security/access-matrix.sh http://localhost:8080 none securite-sans-droit 'Secrev#2026' "$ids"
           before=$(run snapshot)
-          bash tests/security/access-matrix.sh http://localhost:8080 delegate securite-delegue 'Secrev#2026'
+          bash tests/security/access-matrix.sh http://localhost:8080 delegate securite-delegue 'Secrev#2026' "$ids"
           after=$(run snapshot)
           if [ "$before" != "$after" ]; then
             echo "::error::l'assistant a ecrit des objets natifs privilegies pour un profil sans droit natif"
@@ -394,7 +399,23 @@ jobs:
             exit 1
           fi
           echo "OK  aucun objet natif privilegie ecrit par le profil delegue"
-          bash tests/security/access-matrix.sh http://localhost:8080 admin glpi glpi
+          bash tests/security/access-matrix.sh http://localhost:8080 admin glpi glpi "$ids"
+
+      # Test XSS de bout en bout : une charge piegee dans chaque champ texte libre (configuration,
+      # arborescence d'entites, carburant, historique, blueprint), aucune page ne doit la restituer
+      # sans echappement.
+      - name: "Test XSS (charge piegee dans chaque champ texte libre)"
+        run: |
+          xss=$(docker exec -u www-data glpi php /var/www/glpi/plugins/configurationglpiauto/tests/security/setup.php xss | tail -1)
+          bash tests/security/xss-check.sh http://localhost:8080 "$xss"
+
+      # Import de Blueprint de bout en bout : fichiers malveillants refuses sans erreur serveur,
+      # Blueprint piege neutralise une fois restaure, donnees hors format jamais stockees.
+      - name: "Test des televersements (import de Blueprint)"
+        run: |
+          setup="docker exec -u www-data glpi php /var/www/glpi/plugins/configurationglpiauto/tests/security/setup.php"
+          $setup > /dev/null
+          bash tests/security/upload-check.sh http://localhost:8080 "$setup uploads" "$setup blueprint"
 
   dependabot:
     name: "Dependabot Security"

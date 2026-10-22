@@ -53,6 +53,13 @@ if (isset($_POST['import'])) {
         ? trim((string) $_POST['name'])
         : ($decoded['profile_name'] ?? __('Blueprint importé', 'configurationglpiauto'));
 
+    // Seul le format Blueprint est conservé : sans ce filtre, n'importe quelle clé du fichier
+    // (y compris plusieurs Mo de données sans rapport) était stockée telle quelle dans le profil.
+    $decoded['config'] = array_intersect_key($decoded['config'], Config::getDefaults());
+    $decoded = array_intersect_key(
+        $decoded,
+        array_flip(['format_version', 'plugin_version', 'exported_at', 'profile_name', 'config'])
+    );
     $profile = new ConfigurationProfile();
     $profile->add([
         'name'     => $name,
