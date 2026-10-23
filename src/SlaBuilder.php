@@ -83,6 +83,103 @@ class SlaBuilder
     private const SLM_NAME = 'SLA standard';
 
     /**
+     * Issue #322 : par défaut, un SLM/SLA déjà créé n'est jamais modifié (« créer sans écraser ») ;
+     * activé explicitement depuis l'assistant, son calendrier et ses délais sont réalignés sur la
+     * configuration.
+     */
+    private bool $updateExisting = false;
+
+    public function setUpdateExisting(bool $updateExisting): self
+    {
+        $this->updateExisting = $updateExisting;
+
+        return $this;
+    }
+
+    /**
+     * Issue #322 : écarts entre la configuration choisie et le SLM partagé déjà créé (calendrier,
+     * délais TTO/TTR des SLA, et des OLA si activés), pour l'aperçu de l'assistant. Seuls les
+     * éléments existants sont comparés : un élément absent sera simplement créé.
+     *
+     * @return list<array{item: string, current: string, expected: string}>
+     */
+    public function previewChanges(Config $config, ?int $calendarId, string $slmName = self::SLM_NAME): array
+    {
+        if (empty($config->fields['sla_enabled'])) {
+            return [];
+        }
+        $slm = new SLM();
+        if (!Lookup::loadFirst($slm, ['name' => $slmName])) {
+            return [];
+        }
+
+        $changes = [];
+        $expectedCalendar = !empty($config->fields['sla_astreinte']) ? 0 : ($calendarId ?? 0);
+        if ((int) $slm->fields['calendars_id'] !== $expectedCalendar) {
+            $changes[] = [
+                'item'     => sprintf(__('Calendrier du niveau de service « %s »', 'configurationglpiauto'), $slmName),
+                'current'  => self::calendarLabel((int) $slm->fields['calendars_id']),
+                'expected' => self::calendarLabel($expectedCalendar),
+            ];
+        }
+
+        $tiers = $config->getSlaTiers();
+        $olaTiers = $config->getOlaTiers();
+        foreach (Config::PRIORITY_LEVELS as $priority) {
+            $label = CommonITILObject::getPriorityName($priority);
+            $tier = $tiers[$priority] ?? ['tto_hours' => 4, 'ttr_hours' => 48];
+            $expected = [
+                [SLA::class, SLM::TTO, sprintf(__('Prise en charge — %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours']],
+                [SLA::class, SLM::TTR, sprintf(__('Résolution — %s', 'configurationglpiauto'), $label), (int) $tier['ttr_hours']],
+            ];
+            if (!empty($config->fields['ola_enabled'])) {
+                $olaTier = $olaTiers[$priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
+                $expected[] = [OLA::class, SLM::TTO, sprintf(__('OLA prise en charge — %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours']];
+                $expected[] = [OLA::class, SLM::TTR, sprintf(__('OLA résolution — %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours']];
+            }
+            foreach ($expected as [$class, $type, $name, $hours]) {
+                $agreement = new $class();
+                if (!Lookup::loadFirst($agreement, ['slms_id' => $slm->getID(), 'type' => $type, 'name' => $name])) {
+                    continue;
+                }
+                if (!self::hasDelay($agreement->fields, $hours)) {
+                    $changes[] = [
+                        'item'     => $name,
+                        'current'  => self::delayLabel((int) $agreement->fields['number_time'], (string) $agreement->fields['definition_time']),
+                        'expected' => self::delayLabel($hours, 'hour'),
+                    ];
+                }
+            }
+        }
+
+        return $changes;
+    }
+
+    /**
+     * @param array<string, mixed> $fields
+     */
+    private static function hasDelay(array $fields, int $hours): bool
+    {
+        return (int) $fields['number_time'] === $hours && (string) $fields['definition_time'] === 'hour';
+    }
+
+    private static function delayLabel(int $number, string $unit): string
+    {
+        return match ($unit) {
+            'minute' => sprintf(_n('%d minute', '%d minutes', $number), $number),
+            'day'    => sprintf(_n('%d day', '%d days', $number), $number),
+            default  => sprintf(_n('%d hour', '%d hours', $number), $number),
+        };
+    }
+
+    private static function calendarLabel(int $calendarId): string
+    {
+        return $calendarId === 0
+            ? __('Aucun (24h/24, 7j/7)', 'configurationglpiauto')
+            : \Dropdown::getDropdownName('glpi_calendars', $calendarId);
+    }
+
+    /**
      * @param array{n1: int, n2: int, n3: int}|array{}|null $tierGroupIds `SupportTierBuilder::build()`'s result, or null if escalation-to-tier is off entirely.
      * @return array<int, array{tto: int, ttr: int, ola_tto: ?int, ola_ttr: ?int}>|null Keyed by priority level (Config::PRIORITY_LEVELS).
      */
@@ -302,6 +399,8 @@ class SlaBuilder
                 'use_ticket_calendar' => 0,
             ]);
             $slm->getFromDB($id);
+        } elseif ($this->updateExisting && (int) $slm->fields['calendars_id'] !== $slmCalendarId) {
+            $slm->update(['id' => $slm->getID(), 'calendars_id' => $slmCalendarId]);
         }
         $slmId = (int) $slm->getID();
 
@@ -458,6 +557,10 @@ class SlaBuilder
     {
         $agreement = new $class();
         if (Lookup::loadFirst($agreement, ['slms_id' => $slmId, 'type' => $type, 'name' => $name])) {
+            if ($this->updateExisting && !self::hasDelay($agreement->fields, $hours)) {
+                $agreement->update(['id' => $agreement->getID(), 'number_time' => $hours, 'definition_time' => 'hour']);
+            }
+
             return (int) $agreement->getID();
         }
 

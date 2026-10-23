@@ -401,4 +401,58 @@ final class SlaBuilderTest extends TestCase
         $this->assertNotFalse($action);
         $this->assertSame('6', (string) $action['value']);
     }
+
+    /**
+     * Issue #322 : relancer l'assistant ne modifie jamais un SLA existant, sauf option explicite ;
+     * l'aperçu liste les écarts avant application.
+     */
+    public function testExistingSlasAreOnlyUpdatedWhenExplicitlyRequestedAndThePreviewShowsTheGaps(): void
+    {
+        $clientName = $this->uniqueClientName();
+        $slmName = sprintf('SLA — %s', $clientName);
+        $initial = Config::getDefaultSlaTiers();
+        $changed = $initial;
+        $priority = Config::PRIORITY_LEVELS[0];
+        $changed[$priority]['ttr_hours'] = (int) $initial[$priority]['ttr_hours'] + 5;
+
+        $ids = (new SlaBuilder())->buildFromOverride($clientName, $this->sla(['tiers' => $initial]));
+        $config = $this->buildConfig(['sla_tiers' => json_encode($changed), 'sla_astreinte' => 1]);
+
+        $preview = (new SlaBuilder())->previewChanges($config, null, $slmName);
+        $this->assertCount(1, $preview, 'Seul le délai de résolution modifié diffère (astreinte : pas de calendrier).');
+        $this->assertStringContainsString((string) ($changed[$priority]['ttr_hours']), $preview[0]['expected']);
+
+        (new SlaBuilder())->buildFromOverride($clientName, $this->sla(['tiers' => $changed]));
+        $sla = new SLA();
+        $sla->getFromDB($ids[$priority]['ttr']);
+        $this->assertSame((int) $initial[$priority]['ttr_hours'], (int) $sla->fields['number_time'], 'Par défaut, un SLA existant n\'est jamais modifié.');
+
+        (new SlaBuilder())->setUpdateExisting(true)->buildFromOverride($clientName, $this->sla(['tiers' => $changed, 'astreinte' => true]));
+        $sla->getFromDB($ids[$priority]['ttr']);
+        $this->assertSame((int) $changed[$priority]['ttr_hours'], (int) $sla->fields['number_time']);
+        $this->assertSame([], (new SlaBuilder())->previewChanges($config, null, $slmName), 'Plus d\'écart après mise à jour.');
+    }
+
+    public function testUpdatingExistingSlasRealignsTheCalendar(): void
+    {
+        $clientName = $this->uniqueClientName();
+        (new SlaBuilder())->buildFromOverride($clientName, $this->sla(['astreinte' => true]));
+        $slm = new SLM();
+        $slm->getFromDBByCrit(['name' => sprintf('SLA — %s', $clientName)]);
+        $this->assertSame(0, (int) $slm->fields['calendars_id']);
+
+        $calendarId = (int) (new \Calendar())->add(['name' => 'PHPUnit SLA ' . uniqid(), 'entities_id' => 0, 'is_recursive' => 1]);
+        try {
+            (new SlaBuilder())->buildFromOverride($clientName, $this->sla(), $calendarId);
+            $slm->getFromDB($slm->getID());
+            $this->assertSame(0, (int) $slm->fields['calendars_id'], 'Sans l\'option, le calendrier reste inchangé.');
+
+            (new SlaBuilder())->setUpdateExisting(true)->buildFromOverride($clientName, $this->sla(), $calendarId);
+            $slm->getFromDB($slm->getID());
+            $this->assertSame($calendarId, (int) $slm->fields['calendars_id']);
+        } finally {
+            $slm->update(['id' => $slm->getID(), 'calendars_id' => 0]);
+            (new \Calendar())->delete(['id' => $calendarId], true);
+        }
+    }
 }

@@ -4129,3 +4129,45 @@ msgstr "Run the wizard again (step “General & Tools”, dictionaries and softw
 
 msgid "Si ce n'est pas volontaire (une suppression de catégorie, par exemple, désactive les règles qui la visent), réactivez-les depuis leur fiche ou relancez l'assistant."
 msgstr "If this is not intentional (deleting a category, for example, disables the rules targeting it), re-enable them from their form or run the wizard again."
+msgid "SLA déjà créés"
+msgstr "Existing SLAs"
+
+msgid "Les SLA existants correspondent à la configuration enregistrée (ou n'existent pas encore)."
+msgstr "The existing SLAs match the saved configuration (or do not exist yet)."
+
+msgid "Différences entre les SLA existants et la configuration enregistrée :"
+msgstr "Differences between the existing SLAs and the saved configuration:"
+
+msgid "Élément"
+msgstr "Item"
+
+msgid "Actuel"
+msgstr "Current"
+
+msgid "Après mise à jour"
+msgstr "After update"
+
+msgid "Mettre à jour les SLA existants (calendrier et délais)"
+msgstr "Update existing SLAs (calendar and delays)"
+
+msgid "Désactivé par défaut : relancer l'assistant crée ce qui manque sans jamais modifier un SLA existant. Cochée, cette option réaligne le calendrier et les délais des SLA (et OLA) existants sur ce formulaire ; les tickets déjà ouverts gardent leurs échéances. L'aperçu ci-dessus compare avec la configuration de la dernière exécution, pas avec les modifications en cours dans ce formulaire."
+msgstr "Off by default: running the wizard again creates what is missing without ever changing an existing SLA. When checked, this option realigns the calendar and delays of existing SLAs (and OLAs) with this form; tickets already open keep their due dates. The preview above compares with the configuration of the last run, not with the changes in progress in this form."
+
+#, php-format
+msgid "Calendrier du niveau de service « %s »"
+msgstr "Calendar of service level \"%s\""
+
+msgid "Aucun (24h/24, 7j/7)"
+msgstr "None (24/7)"
+
+msgid "Créer des niveaux de service (SLM)"
+msgstr "Create service levels (SLM)"
+
+msgid "nécessaire aux SLA, OLA et à leurs niveaux d'escalade (étape SLA)"
+msgstr "required for SLAs, OLAs and their escalation levels (SLA step)"
+
+msgid "Créer des calendriers"
+msgstr "Create calendars"
+
+msgid "nécessaire aux horaires ouvrés et jours fériés (étape Calendrier)"
+msgstr "required for business hours and public holidays (Calendar step)"

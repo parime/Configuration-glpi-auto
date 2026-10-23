@@ -328,6 +328,31 @@
               <label class="form-check-label" for="cga-sla-astreinte">{{ __('Astreinte (couverture 24h/24, 7j/7 — le délai continue de courir en dehors des horaires ouvrés)', 'configurationglpiauto') }}</label>
             </div>
 
+            {# Issue #322 : un SLM/SLA deja cree n'est jamais modifie, sauf demande explicite. #}
+            <div class="card card-sm mb-3">
+              <div class="card-body">
+                <div class="fw-bold mb-1">{{ __('SLA déjà créés', 'configurationglpiauto') }}</div>
+                {% if sla_changes is empty %}
+                  <p class="text-muted small mb-2">{{ __('Les SLA existants correspondent à la configuration enregistrée (ou n\'existent pas encore).', 'configurationglpiauto') }}</p>
+                {% else %}
+                  <p class="small mb-1">{{ __('Différences entre les SLA existants et la configuration enregistrée :', 'configurationglpiauto') }}</p>
+                  <table class="table table-sm small mb-2">
+                    <thead><tr><th>{{ __('Élément', 'configurationglpiauto') }}</th><th>{{ __('Actuel', 'configurationglpiauto') }}</th><th>{{ __('Après mise à jour', 'configurationglpiauto') }}</th></tr></thead>
+                    <tbody>
+                      {% for change in sla_changes %}
+                        <tr><td>{{ change.item }}</td><td>{{ change.current }}</td><td>{{ change.expected }}</td></tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                {% endif %}
+                <div class="form-check form-switch mb-0">
+                  <input type="checkbox" name="sla_update_existing" value="1" class="form-check-input" id="cga-sla-update-existing"{{ can_update_slm ? '' : ' disabled' }}>
+                  <label class="form-check-label" for="cga-sla-update-existing">{{ __('Mettre à jour les SLA existants (calendrier et délais)', 'configurationglpiauto') }}</label>
+                </div>
+                <p class="text-muted small mb-0">{{ __('Désactivé par défaut : relancer l\'assistant crée ce qui manque sans jamais modifier un SLA existant. Cochée, cette option réaligne le calendrier et les délais des SLA (et OLA) existants sur ce formulaire ; les tickets déjà ouverts gardent leurs échéances. L\'aperçu ci-dessus compare avec la configuration de la dernière exécution, pas avec les modifications en cours dans ce formulaire.', 'configurationglpiauto') }}</p>
+              </div>
+            </div>
+
             <div class="form-check form-switch mb-2">
               <input type="hidden" name="ola_enabled" value="0">
               <input

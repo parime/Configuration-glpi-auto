@@ -4203,3 +4203,45 @@ msgstr "Vuelva a ejecutar el asistente (paso «General y herramientas», diccion
 
 msgid "Si ce n'est pas volontaire (une suppression de catégorie, par exemple, désactive les règles qui la visent), réactivez-les depuis leur fiche ou relancez l'assistant."
 msgstr "Si no es intencionado (eliminar una categoría, por ejemplo, desactiva las reglas que apuntan a ella), reactívelas desde su ficha o vuelva a ejecutar el asistente."
+msgid "SLA déjà créés"
+msgstr "SLA ya creados"
+
+msgid "Les SLA existants correspondent à la configuration enregistrée (ou n'existent pas encore)."
+msgstr "Los SLA existentes coinciden con la configuración guardada (o aún no existen)."
+
+msgid "Différences entre les SLA existants et la configuration enregistrée :"
+msgstr "Diferencias entre los SLA existentes y la configuración guardada:"
+
+msgid "Élément"
+msgstr "Elemento"
+
+msgid "Actuel"
+msgstr "Actual"
+
+msgid "Après mise à jour"
+msgstr "Tras la actualización"
+
+msgid "Mettre à jour les SLA existants (calendrier et délais)"
+msgstr "Actualizar los SLA existentes (calendario y plazos)"
+
+msgid "Désactivé par défaut : relancer l'assistant crée ce qui manque sans jamais modifier un SLA existant. Cochée, cette option réaligne le calendrier et les délais des SLA (et OLA) existants sur ce formulaire ; les tickets déjà ouverts gardent leurs échéances. L'aperçu ci-dessus compare avec la configuration de la dernière exécution, pas avec les modifications en cours dans ce formulaire."
+msgstr "Desactivado por defecto: volver a ejecutar el asistente crea lo que falta sin modificar nunca un SLA existente. Marcada, esta opción realinea el calendario y los plazos de los SLA (y OLA) existentes con este formulario; los tickets ya abiertos conservan sus vencimientos. La vista previa anterior compara con la configuración de la última ejecución, no con los cambios en curso en este formulario."
+
+#, php-format
+msgid "Calendrier du niveau de service « %s »"
+msgstr "Calendario del nivel de servicio «%s»"
+
+msgid "Aucun (24h/24, 7j/7)"
+msgstr "Ninguno (24/7)"
+
+msgid "Créer des niveaux de service (SLM)"
+msgstr "Crear niveles de servicio (SLM)"
+
+msgid "nécessaire aux SLA, OLA et à leurs niveaux d'escalade (étape SLA)"
+msgstr "necesario para los SLA, OLA y sus niveles de escalado (paso SLA)"
+
+msgid "Créer des calendriers"
+msgstr "Crear calendarios"
+
+msgid "nécessaire aux horaires ouvrés et jours fériés (étape Calendrier)"
+msgstr "necesario para el horario laboral y los días festivos (paso Calendario)"

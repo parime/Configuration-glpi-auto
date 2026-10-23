@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **Niveaux de service et calendriers créés par l'assistant** : ils exigent désormais les droits
+  natifs GLPI correspondants (`slm`, `calendar`), comme les règles et la configuration depuis la
+  1.7.1. Un profil disposant seulement du droit délégué de ce plugin créait le SLM « SLA standard »,
+  ses SLA/OLA et leurs niveaux d'escalade (vérifié par contre-épreuve sur GLPI 11.0.11). Ajouté à
+  la vérification des droits de l'assistant et au test d'accès de bout en bout.
+
 ### Added
 
 - **Audit : règles de dictionnaire désactivées ou orphelines** (issue #323). Une règle de
@@ -17,6 +25,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   un lien vers chaque règle et la marche à suivre (relancer l'assistant). Aucune réactivation
   automatique : une désactivation peut être volontaire. Les règles de GLPI et de l'administrateur ne
   sont pas jugées.
+- **Assistant : mise à jour des SLA existants** (issue #322). Relancer l'assistant ne modifie
+  toujours pas un SLM ou un SLA existant par défaut ; l'étape SLA affiche désormais les écarts
+  (calendrier, délais de prise en charge et de résolution, OLA) et une option explicite « Mettre
+  à jour les SLA existants », désactivée par défaut, qui exige le droit de modification des
+  niveaux de service.
 
 ## [1.7.2] - 2026-10-22
 

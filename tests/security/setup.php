@@ -110,6 +110,9 @@ if (($argv[1] ?? '') === 'snapshot') {
     $snapshot['fieldunicities'] = countElementsInTable('glpi_fieldunicities');
     $snapshot['entities'] = countElementsInTable('glpi_entities');
     $snapshot['assetdefinitions'] = countElementsInTable('glpi_assets_assetdefinitions');
+    $snapshot['slms'] = countElementsInTable('glpi_slms');
+    $snapshot['slas'] = countElementsInTable('glpi_slas') + countElementsInTable('glpi_olas');
+    $snapshot['calendars'] = countElementsInTable('glpi_calendars');
     $snapshot['core:palette'] = (string) (\Config::getConfigurationValues('core', ['palette'])['palette'] ?? '');
     if ($DB->tableExists('glpi_plugin_assetsign_configs')) {
         foreach ($DB->request(['FROM' => 'glpi_plugin_assetsign_configs', 'WHERE' => ['entities_id' => 0]]) as $row) {
@@ -150,7 +153,7 @@ $account = static function (string $login, string $profileName, array $rights) u
 $noNativeRight = [
     'config' => 0, 'entity' => 0, 'rule_ldap' => 0, 'rule_ticket' => 0, 'rule_import' => 0,
     'rule_dictionnary_dropdown' => 0, 'rule_dictionnary_software' => 0,
-    'rule_dictionnary_printer' => 0, 'rule_softwarecategories' => 0,
+    'rule_dictionnary_printer' => 0, 'rule_softwarecategories' => 0, 'slm' => 0, 'calendar' => 0,
 ];
 // Délégué : tous les droits de ce plugin, aucun droit natif privilégié.
 $account('securite-delegue', 'Securite - delegue assistant', [
