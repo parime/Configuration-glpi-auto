@@ -19,6 +19,7 @@ namespace GlpiPlugin\Configurationglpiauto\Audit;
 
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultAdminEmailCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultCredentialsCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\DictionaryRulesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DuplicateDropdownsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DuplicateSoftwareCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\EntitiesWithoutAddressCheck;
@@ -66,6 +67,7 @@ final class AuditService
             NoTicketCategoriesCheck::class,
             DefaultCredentialsCheck::class,
             WeakPasswordPolicyCheck::class,
+            DictionaryRulesCheck::class,
         ];
     }
 

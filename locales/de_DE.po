@@ -4206,3 +4206,21 @@ msgstr "Konfiguration von assetsign ändern"
 #: front/wizard.php
 msgid "nécessaire pour relier les déclencheurs d'assetsign aux statuts créés"
 msgstr "erforderlich, um die Auslöser von assetsign mit den erstellten Status zu verknüpfen"
+
+#, php-format
+msgid "%d règle de catégorie de logiciel vise une catégorie supprimée"
+msgid_plural "%d règles de catégorie de logiciel visent une catégorie supprimée"
+msgstr[0] "%d Softwarekategorie-Regel verweist auf eine gelöschte Kategorie"
+msgstr[1] "%d Softwarekategorie-Regeln verweisen auf eine gelöschte Kategorie"
+
+#, php-format
+msgid "%d règle de dictionnaire de l'assistant est désactivée"
+msgid_plural "%d règles de dictionnaire de l'assistant sont désactivées"
+msgstr[0] "%d Wörterbuchregel des Assistenten ist deaktiviert"
+msgstr[1] "%d Wörterbuchregeln des Assistenten sind deaktiviert"
+
+msgid "Relancez l'assistant (étape « Général & Outils », dictionnaires et catégories de logiciels) : il recrée les catégories manquantes et réactive les règles concernées. Aucune réactivation automatique ici."
+msgstr "Führen Sie den Assistenten erneut aus (Schritt „Allgemein & Werkzeuge“, Wörterbücher und Softwarekategorien): Er erstellt die fehlenden Kategorien neu und aktiviert die betroffenen Regeln wieder. Hier erfolgt keine automatische Reaktivierung."
+
+msgid "Si ce n'est pas volontaire (une suppression de catégorie, par exemple, désactive les règles qui la visent), réactivez-les depuis leur fiche ou relancez l'assistant."
+msgstr "Falls dies nicht beabsichtigt ist (das Löschen einer Kategorie deaktiviert zum Beispiel die Regeln, die auf sie verweisen), aktivieren Sie sie in ihrem Formular wieder oder führen Sie den Assistenten erneut aus."

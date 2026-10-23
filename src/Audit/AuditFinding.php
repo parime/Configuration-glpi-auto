@@ -41,7 +41,10 @@ final class AuditFinding
         public readonly bool $fixable = false,
         // Issue #306 : libellé du bouton de correction quand « Corriger » serait trompeur (ex.
         // « Créer les tickets » : la correction ouvre des tickets, elle ne modifie rien).
-        public readonly ?string $fixLabel = null
+        public readonly ?string $fixLabel = null,
+        // Issue #323 : liens vers les éléments concernés (libellé => URL), affichés sous le constat.
+        /** @var array<string, string> */
+        public readonly array $links = []
     ) {
     }
 }
