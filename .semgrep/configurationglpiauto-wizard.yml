@@ -71,6 +71,8 @@ rules:
         - /src/DictionaryRules.php
         - /src/CalendarBuilder.php
         - /src/Audit/Checks/NotificationsDisabledCheck.php
+        # Lecture seule des actions de regle (cible supprimee ?), aucune ecriture (issue #323).
+        - /src/Audit/Checks/DictionaryRulesCheck.php
         - /src/AssetsignTriggerBuilder.php
     pattern-either:
       # Nouveau type d'actif personnalise (AssetDefinition::$rightname = 'config').

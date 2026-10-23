@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Audit : règles de dictionnaire désactivées ou orphelines** (issue #323). Une règle de
+  catégorie de logiciel de l'assistant qui vise une catégorie supprimée (GLPI la désactive alors) est
+  signalée en avertissement, une règle de dictionnaire de l'assistant désactivée en information, avec
+  un lien vers chaque règle et la marche à suivre (relancer l'assistant). Aucune réactivation
+  automatique : une désactivation peut être volontaire. Les règles de GLPI et de l'administrateur ne
+  sont pas jugées.
+
 ## [1.7.2] - 2026-10-22
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

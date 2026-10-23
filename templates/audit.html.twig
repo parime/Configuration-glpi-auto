@@ -54,6 +54,11 @@
             <strong>{{ finding.title }}</strong>
             <p class="mb-1">{{ finding.description }}</p>
             <p class="mb-0 small">{{ finding.recommendation }}</p>
+            {% if finding.links is not empty %}
+              <ul class="mb-0 mt-1 small">
+                {% for label, url in finding.links %}<li><a href="{{ url }}">{{ label }}</a></li>{% endfor %}
+              </ul>
+            {% endif %}
           </div>
           {% if finding.fixable and can_fix %}
             <form method="post" action="{{ config('root_doc') }}/plugins/configurationglpiauto/front/audit.php" class="flex-shrink-0">

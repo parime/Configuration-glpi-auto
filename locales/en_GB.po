@@ -4111,3 +4111,21 @@ msgstr "Update the assetsign configuration"
 #: front/wizard.php
 msgid "nécessaire pour relier les déclencheurs d'assetsign aux statuts créés"
 msgstr "needed to link assetsign triggers to the created statuses"
+
+#, php-format
+msgid "%d règle de catégorie de logiciel vise une catégorie supprimée"
+msgid_plural "%d règles de catégorie de logiciel visent une catégorie supprimée"
+msgstr[0] "%d software category rule targets a deleted category"
+msgstr[1] "%d software category rules target a deleted category"
+
+#, php-format
+msgid "%d règle de dictionnaire de l'assistant est désactivée"
+msgid_plural "%d règles de dictionnaire de l'assistant sont désactivées"
+msgstr[0] "%d dictionary rule from the wizard is disabled"
+msgstr[1] "%d dictionary rules from the wizard are disabled"
+
+msgid "Relancez l'assistant (étape « Général & Outils », dictionnaires et catégories de logiciels) : il recrée les catégories manquantes et réactive les règles concernées. Aucune réactivation automatique ici."
+msgstr "Run the wizard again (step “General & Tools”, dictionaries and software categories): it recreates the missing categories and re-enables the rules concerned. No automatic re-enabling here."
+
+msgid "Si ce n'est pas volontaire (une suppression de catégorie, par exemple, désactive les règles qui la visent), réactivez-les depuis leur fiche ou relancez l'assistant."
+msgstr "If this is not intentional (deleting a category, for example, disables the rules targeting it), re-enable them from their form or run the wizard again."
