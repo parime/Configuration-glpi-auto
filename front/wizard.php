@@ -424,6 +424,16 @@ function checkDeploymentRights(): array
             'hint' => __('nécessaire à l\'affectation automatique des SLA/OLA et au circuit de validation', 'configurationglpiauto'),
         ],
         [
+            'label' => __('Créer des niveaux de service (SLM)', 'configurationglpiauto'),
+            'ok' => Session::haveRight('slm', CREATE),
+            'hint' => __('nécessaire aux SLA, OLA et à leurs niveaux d\'escalade (étape SLA)', 'configurationglpiauto'),
+        ],
+        [
+            'label' => __('Créer des calendriers', 'configurationglpiauto'),
+            'ok' => Session::haveRight('calendar', CREATE),
+            'hint' => __('nécessaire aux horaires ouvrés et jours fériés (étape Calendrier)', 'configurationglpiauto'),
+        ],
+        [
             'label' => __('Gérer les règles d\'affectation d\'un élément à une entité', 'configurationglpiauto'),
             'ok' => Session::haveRight('rule_import', UPDATE),
             'hint' => __('nécessaire au rattachement des machines inventoriées par plage IP ou tag', 'configurationglpiauto'),
@@ -472,6 +482,11 @@ if (isset($_POST['finish'])) {
     // assetsign-glpi's own configuration right (its Profile::RIGHT_CONFIG): AssetsignTriggerBuilder
     // writes that plugin's configuration table directly, bypassing its own controllers.
     $canUpdateAssetsignConfig = Session::haveRight('plugin_assetsign_config', UPDATE);
+    // Niveaux de service (SLM, SLA, OLA et leurs niveaux d'escalade) et calendriers : objets
+    // natifs appliqués à tous les tickets de l'instance, chacun avec son droit GLPI (SLM::$rightname,
+    // Calendar::$rightname) — jamais sur le seul droit délégable de ce plugin.
+    $canManageSlm = Session::haveRight('slm', CREATE);
+    $canManageCalendars = Session::haveRight('calendar', CREATE);
 
     $config = Config::getConfig();
     // Fonctionnalité de Rollback (issue #114) : capture l'état COURANT (avant écrasement) comme
@@ -508,8 +523,12 @@ if (isset($_POST['finish'])) {
     // Built eagerly (not lazily on first use) so every client that falls back to the shared
     // calendar/SLA gets the *same* pairing regardless of which order clients are processed in —
     // build() is idempotent and a cheap no-op when calendar_enabled/sla_enabled is off.
-    $sharedCalendarId = $calendarBuilder->build($config);
-    $sharedSlaIds = $slaBuilder->build(
+    // Issue #322 : mise à jour explicite (case « Mettre à jour les SLA existants », jamais
+    // enregistrée) des SLM/SLA déjà créés, qui sinon ne sont jamais modifiés ; exige le droit de
+    // modification des niveaux de service.
+    $slaBuilder->setUpdateExisting(!empty($_POST['sla_update_existing']) && Session::haveRight('slm', UPDATE));
+    $sharedCalendarId = $canManageCalendars ? $calendarBuilder->build($config) : null;
+    $sharedSlaIds = !$canManageSlm ? null : $slaBuilder->build(
         $config,
         $sharedCalendarId,
         $tierGroupIds,
@@ -532,7 +551,7 @@ if (isset($_POST['finish'])) {
         }
 
         $calendarId = $calendarOverride !== null
-            ? $calendarBuilder->buildFromOverride($result['name'], $calendarOverride)
+            ? ($canManageCalendars ? $calendarBuilder->buildFromOverride($result['name'], $calendarOverride) : null)
             : $sharedCalendarId;
 
         // One calendar *per country* (not per site) whenever this top-level entity's own Location
@@ -548,7 +567,7 @@ if (isset($_POST['finish'])) {
         // idempotent on name" convention this class already uses for the plugin-wide shared
         // calendar, not a new inconsistency.
         $explicitCountry = trim((string) ($locationDataByPath[$i]['country'] ?? ''));
-        if ($calendarId !== null && $explicitCountry !== '') {
+        if ($canManageCalendars && $calendarId !== null && $explicitCountry !== '') {
             $baseSettings = $calendarOverride ?? [
                 'enabled' => true,
                 'days' => $config->getCalendarDays(),
@@ -577,7 +596,7 @@ if (isset($_POST['finish'])) {
         $clientAutoN2N3 = $escalationOverride !== null ? !empty($escalationOverride['auto_n2_n3']) : !empty($config->fields['escalation_auto_n2_n3']);
         $entityIdToTierGroupIds[$result['entities_id']] = $clientTierGroupIds;
 
-        $slaIds = $slaOverride !== null
+        $slaIds = !$canManageSlm ? null : ($slaOverride !== null
             ? $slaBuilder->buildFromOverride(
                 $result['name'],
                 $slaOverride,
@@ -588,7 +607,7 @@ if (isset($_POST['finish'])) {
                 $clientAutoN1N2,
                 $clientAutoN2N3
             )
-            : $sharedSlaIds;
+            : $sharedSlaIds);
         if ($slaIds !== null) {
             $slaMap[$result['entities_id']] = $slaIds;
         }
@@ -1177,6 +1196,9 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
         static fn (\Glpi\UI\Theme $theme) => ['key' => $theme->getKey(), 'name' => $theme->getName(), 'is_dark' => $theme->isDarkTheme()],
         \Glpi\UI\ThemeManager::getInstance()->getCoreThemes()
     ),
+    // Issue #322
+    'sla_changes'      => (new SlaBuilder())->previewChanges($config, CalendarBuilder::findShared($config)),
+    'can_update_slm'   => Session::haveRight('slm', UPDATE),
     'task_categories_preview' => TaskCategoryBuilder::getCategoriesPreview(),
     'task_templates_preview' => TaskTemplateBuilder::getLibraryPreview(),
     'solution_library_preview' => SolutionLibraryBuilder::getLibraryPreview(),

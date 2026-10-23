@@ -58,6 +58,25 @@ use Entity;
 class CalendarBuilder
 {
     /**
+     * Issue #322 : calendrier partagé que build() utiliserait, sans rien créer ni modifier (aperçu
+     * des écarts de SLA dans l'assistant).
+     */
+    public static function findShared(Config $config): ?int
+    {
+        if (empty($config->fields['calendar_enabled'])) {
+            return null;
+        }
+        $calendar = new Calendar();
+
+        return Lookup::loadFirst($calendar, ['name' => self::sharedName($config)]) ? (int) $calendar->getID() : null;
+    }
+
+    private static function sharedName(Config $config): string
+    {
+        return trim((string) ($config->fields['calendar_name'] ?? '')) ?: __('Horaires standard', 'configurationglpiauto');
+    }
+
+    /**
      * @return int|null The calendar's ID, or null if calendars aren't enabled in $config.
      */
     public function build(Config $config): ?int
@@ -66,7 +85,7 @@ class CalendarBuilder
             return null;
         }
 
-        $name = trim((string) ($config->fields['calendar_name'] ?? '')) ?: __('Horaires standard', 'configurationglpiauto');
+        $name = self::sharedName($config);
         $days = $config->getCalendarDays();
         $begin = (string) ($config->fields['calendar_begin'] ?? '08:00');
         $end = (string) ($config->fields['calendar_end'] ?? '18:00');
