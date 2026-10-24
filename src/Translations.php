@@ -181,6 +181,15 @@ final class Translations
         'Accessoires' => ['en_GB' => 'Accessories', 'de_DE' => 'Zubehör', 'it_IT' => 'Accessori', 'es_ES' => 'Accesorios', 'pt_BR' => 'Acessórios'],
 
         'Imprimante / Copieur' => ['en_GB' => 'Printer / Copier', 'de_DE' => 'Drucker / Kopierer', 'it_IT' => 'Stampante / Fotocopiatrice', 'es_ES' => 'Impresora / Fotocopiadora', 'pt_BR' => 'Impressora / Copiadora'],
+        'Étiquettes & Codes-barres' => ['en_GB' => 'Labels & Barcodes', 'de_DE' => 'Etiketten & Barcodes', 'it_IT' => 'Etichette e Codici a barre', 'es_ES' => 'Etiquetas y Códigos de barras', 'pt_BR' => 'Etiquetas e Códigos de barras'],
+        'Application métier' => ['en_GB' => 'Business application', 'de_DE' => 'Fachanwendung', 'it_IT' => 'Applicazione gestionale', 'es_ES' => 'Aplicación de negocio', 'pt_BR' => 'Aplicação de negócio'],
+        'Données & Corrections' => ['en_GB' => 'Data & Corrections', 'de_DE' => 'Daten & Korrekturen', 'it_IT' => 'Dati e Correzioni', 'es_ES' => 'Datos y Correcciones', 'pt_BR' => 'Dados e Correções'],
+        'Extractions & Rapports' => ['en_GB' => 'Extracts & Reports', 'de_DE' => 'Auszüge & Berichte', 'it_IT' => 'Estrazioni e Report', 'es_ES' => 'Extracciones e Informes', 'pt_BR' => 'Extrações e Relatórios'],
+        'Évolutions' => ['en_GB' => 'Enhancements', 'de_DE' => 'Weiterentwicklungen', 'it_IT' => 'Evoluzioni', 'es_ES' => 'Evoluciones', 'pt_BR' => 'Evoluções'],
+        'Interfaces & Traitements' => ['en_GB' => 'Interfaces & Batch jobs', 'de_DE' => 'Schnittstellen & Verarbeitungen', 'it_IT' => 'Interfacce ed Elaborazioni', 'es_ES' => 'Interfaces y Procesos', 'pt_BR' => 'Interfaces e Processamentos'],
+        'Paramétrage' => ['en_GB' => 'Configuration', 'de_DE' => 'Einrichtung', 'it_IT' => 'Configurazione', 'es_ES' => 'Configuración', 'pt_BR' => 'Configuração'],
+        'Périphériques & Supports amovibles' => ['en_GB' => 'Peripherals & Removable media', 'de_DE' => 'Peripheriegeräte & Wechselmedien', 'it_IT' => 'Periferiche e Supporti rimovibili', 'es_ES' => 'Periféricos y Soportes extraíbles', 'pt_BR' => 'Periféricos e Mídias removíveis'],
+        'Demande non retenue' => ['en_GB' => 'Request not accepted', 'de_DE' => 'Anfrage nicht angenommen', 'it_IT' => 'Richiesta non accolta', 'es_ES' => 'Solicitud no aceptada', 'pt_BR' => 'Solicitação não aceita'],
         'Scanner' => ['en_GB' => 'Scanner', 'de_DE' => 'Scanner', 'it_IT' => 'Scanner', 'es_ES' => 'Escáner', 'pt_BR' => 'Scanner'],
         'Incidents matériel' => ['en_GB' => 'Hardware issues', 'de_DE' => 'Hardware-Störungen', 'it_IT' => 'Problemi hardware', 'es_ES' => 'Incidencias de hardware', 'pt_BR' => 'Problemas de hardware'],
 

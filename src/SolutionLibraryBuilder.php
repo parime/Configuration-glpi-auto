@@ -205,6 +205,20 @@ class SolutionLibraryBuilder
                         'pt_BR' => self::GREETING_PT . "\n\nEste chamado é duplicado de uma solicitação já em andamento.\n\nChamado de referência: \n\nAtenciosamente,",
                     ],
                 ],
+                // Issue #346 : demande d'évolution ou de service refusée après étude (tickets réels
+                // clôturés « non retenue ») — une clôture sans intervention, comme le doublon.
+                [
+                    'name' => 'Demande non retenue',
+                    'icon' => '🚫',
+                    'content' => self::GREETING . "\n\nAprès étude, votre demande n'a pas été retenue.\n\nMotif : \n\nN'hésitez pas à nous recontacter si le contexte évolue.\n\nCordialement,",
+                    'translations' => [
+                        'en_GB' => self::GREETING_EN . "\n\nAfter review, your request has not been accepted.\n\nReason: \n\nFeel free to contact us again if the situation changes.\n\nKind regards,",
+                        'de_DE' => self::GREETING_DE . "\n\nNach Prüfung wurde Ihre Anfrage nicht angenommen.\n\nGrund: \n\nBitte kontaktieren Sie uns erneut, wenn sich die Lage ändert.\n\nMit freundlichen Grüßen,",
+                        'it_IT' => self::GREETING_IT . "\n\nDopo l'analisi, la vostra richiesta non è stata accolta.\n\nMotivo: \n\nNon esitate a ricontattarci se il contesto cambia.\n\nCordiali saluti,",
+                        'es_ES' => self::GREETING_ES . "\n\nTras su estudio, su solicitud no ha sido aceptada.\n\nMotivo: \n\nNo dude en volver a contactarnos si la situación cambia.\n\nAtentamente,",
+                        'pt_BR' => self::GREETING_PT . "\n\nApós análise, sua solicitação não foi aceita.\n\nMotivo: \n\nNão hesite em nos contatar novamente se o contexto mudar.\n\nAtenciosamente,",
+                    ],
+                ],
                 // 11e gabarit — forum GLPI officiel (topic 294630, utilisateur alecomte demandant un
                 // statut/bouton dédié pour rejeter un ticket mal formulé ; réponse du contributeur
                 // LaDenrée : pas besoin de toucher au workflow natif, un gabarit de solution type

@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **13 nouveaux formulaires du catalogue de services** (issue #346), tirés de catégories de demandes
+  récurrentes en support infrastructure et en application métier : accès à un dossier partagé,
+  compte bloqué, restauration de données, périphérique USB, impression d'étiquettes, demande d'un
+  partenaire externe, correction de données, extraction ou rapport, demande d'évolution, erreur
+  d'interface, nouveau site ou entrepôt, mouvement de stock en masse, modèle d'étiquette. Questions
+  typées et conditionnelles, titre de ticket calculé, catégorie et type de ticket fixés.
+  - L'accès à un dossier partagé, la correction de données et le mouvement de stock en masse
+    demandent une **approbation** : le demandeur désigne la personne qui valide, et le ticket naît
+    avec une approbation à son nom.
+  - Nouvelles catégories : « Application métier » (Données & Corrections, Extractions & Rapports,
+    Évolutions, Interfaces & Traitements, Paramétrage), « Étiquettes & Codes-barres » (Impression) et
+    « Périphériques & Supports amovibles » (Sécurité SI), traduites dans les 6 langues.
+  - Nouveau gabarit de solution « Demande non retenue » (catégorie Informationnel).
+
 ## [1.8.0] - 2026-10-24
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

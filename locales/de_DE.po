@@ -4266,3 +4266,168 @@ msgstr "Kalender erstellen"
 
 msgid "nécessaire aux horaires ouvrés et jours fériés (étape Calendrier)"
 msgstr "erforderlich für Geschäftszeiten und Feiertage (Schritt Kalender)"
+
+msgid "Dossier ou partage concerné"
+msgstr "Betroffener Ordner oder Freigabe"
+
+msgid "Chemin complet tel qu'affiché dans l'explorateur, ou nom du dossier."
+msgstr "Vollständiger Pfad wie im Explorer angezeigt, oder Ordnername."
+
+msgid "Responsable du dossier (approbateur)"
+msgstr "Verantwortlicher des Ordners (Genehmiger)"
+
+msgid "Date de fin d'accès (si temporaire)"
+msgstr "Enddatum des Zugriffs (falls befristet)"
+
+msgid "Justification"
+msgstr "Begründung"
+
+msgid "Compte concerné"
+msgstr "Betroffenes Konto"
+
+msgid "Quelle application ?"
+msgstr "Welche Anwendung?"
+
+msgid "Message d'erreur affiché"
+msgstr "Angezeigte Fehlermeldung"
+
+msgid "Que faut-il restaurer ?"
+msgstr "Was muss wiederhergestellt werden?"
+
+msgid "Emplacement (chemin, serveur, application)"
+msgstr "Speicherort (Pfad, Server, Anwendung)"
+
+msgid "Date de la version souhaitée"
+msgstr "Datum der gewünschten Version"
+
+msgid "Urgence"
+msgstr "Dringlichkeit"
+
+msgid "Précisions (noms de fichiers, cause de la perte)"
+msgstr "Details (Dateinamen, Ursache des Verlusts)"
+
+msgid "Demande"
+msgstr "Anfrage"
+
+msgid "Périphérique (type, marque, numéro de série)"
+msgstr "Gerät (Typ, Marke, Seriennummer)"
+
+msgid "Durée"
+msgstr "Dauer"
+
+msgid "Imprimante concernée (nom ou emplacement)"
+msgstr "Betroffener Drucker (Name oder Standort)"
+
+msgid "Application qui lance l'impression"
+msgstr "Anwendung, die den Druck startet"
+
+msgid "Modèle d'étiquette"
+msgstr "Etikettenvorlage"
+
+msgid "Symptôme"
+msgstr "Symptom"
+
+msgid "Photo ou exemple de l'étiquette"
+msgstr "Foto oder Beispiel des Etiketts"
+
+msgid "Partenaire"
+msgstr "Partner"
+
+msgid "Objet"
+msgstr "Gegenstand"
+
+msgid "Échéance demandée par le partenaire"
+msgstr "Vom Partner gesetzte Frist"
+
+msgid "Demande qui revient chaque année ?"
+msgstr "Wiederholt sich diese Anfrage jedes Jahr?"
+
+msgid "Demande du partenaire (pièce jointe)"
+msgstr "Anfrage des Partners (Anhang)"
+
+msgid "Enregistrement concerné (numéro, référence)"
+msgstr "Betroffener Datensatz (Nummer, Referenz)"
+
+msgid "Valeur attendue"
+msgstr "Erwarteter Wert"
+
+msgid "Responsable qui valide la correction"
+msgstr "Verantwortlicher, der die Korrektur genehmigt"
+
+msgid "La correction ne sera faite qu'après son approbation dans le ticket."
+msgstr "Die Korrektur erfolgt erst nach der Genehmigung im Ticket."
+
+msgid "Capture d'écran ou fichier"
+msgstr "Bildschirmfoto oder Datei"
+
+msgid "Données souhaitées"
+msgstr "Gewünschte Daten"
+
+msgid "Filtres (période, site, client, statut…)"
+msgstr "Filter (Zeitraum, Standort, Kunde, Status…)"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Destinataires"
+msgstr "Empfänger"
+
+msgid "Application concernée"
+msgstr "Betroffene Anwendung"
+
+msgid "Besoin métier"
+msgstr "Fachlicher Bedarf"
+
+msgid "Gain attendu (temps, erreurs évitées, chiffre)"
+msgstr "Erwarteter Nutzen (Zeit, vermiedene Fehler, Umsatz)"
+
+msgid "Utilisateurs concernés"
+msgstr "Betroffene Benutzer"
+
+msgid "Interface ou traitement (import, échange partenaire, lot de nuit…)"
+msgstr "Schnittstelle oder Verarbeitung (Import, Partneraustausch, Nachtlauf…)"
+
+msgid "Date de l'erreur"
+msgstr "Datum des Fehlers"
+
+msgid "Message d'erreur"
+msgstr "Fehlermeldung"
+
+msgid "Volume touché (commandes, lignes, fichiers)"
+msgstr "Betroffenes Volumen (Aufträge, Zeilen, Dateien)"
+
+msgid "Impact"
+msgstr "Auswirkung"
+
+msgid "Fichier ou journal"
+msgstr "Datei oder Protokoll"
+
+msgid "Nom du site ou de l'entrepôt"
+msgstr "Name des Standorts oder Lagers"
+
+msgid "Date de démarrage"
+msgstr "Startdatum"
+
+msgid "Paramétrage à prévoir"
+msgstr "Vorzusehende Einrichtung"
+
+msgid "Responsable du site"
+msgstr "Standortverantwortlicher"
+
+msgid "Fichier des articles et quantités"
+msgstr "Datei mit Artikeln und Mengen"
+
+msgid "Responsable qui valide le mouvement"
+msgstr "Verantwortlicher, der die Bewegung genehmigt"
+
+msgid "Modèle à modifier"
+msgstr "Zu ändernde Vorlage"
+
+msgid "Informations à faire figurer"
+msgstr "Anzuzeigende Informationen"
+
+msgid "Format (dimensions, imprimante)"
+msgstr "Format (Abmessungen, Drucker)"
+
+msgid "Exemple ou maquette"
+msgstr "Beispiel oder Entwurf"

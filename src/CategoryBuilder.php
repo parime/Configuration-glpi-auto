@@ -61,12 +61,22 @@ class CategoryBuilder
                 ['name' => 'Imprimante / Copieur'],
                 ['name' => 'Scanner'],
                 ['name' => 'Incidents matériel', 'comment' => 'Bourrage, Toner'],
+                ['name' => 'Étiquettes & Codes-barres', 'comment' => 'Imprimantes thermiques, modèles d\'étiquettes'],
             ]],
             ['icon' => '📦', 'name' => 'Logiciels & Applications', 'children' => [
                 ['name' => 'Installation / Désinstallation'],
                 ['name' => 'Mise à jour & Patch'],
                 ['name' => 'Licences & Clés'],
                 ['name' => 'Bug / Dysfonctionnement'],
+            ]],
+            // Issue #346 : demandes propres aux applications métier (ERP, gestion de stock, d'atelier…),
+            // tirées de catégories de tickets réels, sans aucune donnée de ces tickets.
+            ['icon' => '🏭', 'name' => 'Application métier', 'children' => [
+                ['name' => 'Données & Corrections', 'comment' => 'Correction en base, mouvements de stock en masse'],
+                ['name' => 'Extractions & Rapports'],
+                ['name' => 'Évolutions'],
+                ['name' => 'Interfaces & Traitements', 'comment' => 'Imports, échanges partenaires, traitements de nuit'],
+                ['name' => 'Paramétrage', 'comment' => 'Nouveau site, entrepôt, utilisateurs'],
             ]],
             ['icon' => '🟧', 'name' => 'Messagerie & Collaboration', 'children' => [
                 ['name' => 'Messagerie', 'comment' => 'Outlook'],
@@ -103,6 +113,7 @@ class CategoryBuilder
                 ['name' => 'Indisponibilité / Malware / Ransomware'],
                 ['name' => 'Compte compromis / Fuite de données'],
                 ['name' => 'Certificats SSL'],
+                ['name' => 'Périphériques & Supports amovibles', 'comment' => 'Clés USB, disques externes'],
                 ['name' => 'Vulnérabilités', 'comment' => 'Suivi CVE et remédiation, cf. plugin glpi-vulnerability-manager s\'il est actif'],
             ]],
         ]],

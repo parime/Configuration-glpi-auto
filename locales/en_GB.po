@@ -4171,3 +4171,168 @@ msgstr "Create calendars"
 
 msgid "nécessaire aux horaires ouvrés et jours fériés (étape Calendrier)"
 msgstr "required for business hours and public holidays (Calendar step)"
+
+msgid "Dossier ou partage concerné"
+msgstr "Folder or share concerned"
+
+msgid "Chemin complet tel qu'affiché dans l'explorateur, ou nom du dossier."
+msgstr "Full path as shown in the file explorer, or folder name."
+
+msgid "Responsable du dossier (approbateur)"
+msgstr "Folder owner (approver)"
+
+msgid "Date de fin d'accès (si temporaire)"
+msgstr "Access end date (if temporary)"
+
+msgid "Justification"
+msgstr "Justification"
+
+msgid "Compte concerné"
+msgstr "Account concerned"
+
+msgid "Quelle application ?"
+msgstr "Which application?"
+
+msgid "Message d'erreur affiché"
+msgstr "Error message displayed"
+
+msgid "Que faut-il restaurer ?"
+msgstr "What needs to be restored?"
+
+msgid "Emplacement (chemin, serveur, application)"
+msgstr "Location (path, server, application)"
+
+msgid "Date de la version souhaitée"
+msgstr "Date of the version wanted"
+
+msgid "Urgence"
+msgstr "Urgency"
+
+msgid "Précisions (noms de fichiers, cause de la perte)"
+msgstr "Details (file names, cause of the loss)"
+
+msgid "Demande"
+msgstr "Request"
+
+msgid "Périphérique (type, marque, numéro de série)"
+msgstr "Device (type, brand, serial number)"
+
+msgid "Durée"
+msgstr "Duration"
+
+msgid "Imprimante concernée (nom ou emplacement)"
+msgstr "Printer concerned (name or location)"
+
+msgid "Application qui lance l'impression"
+msgstr "Application that starts the printing"
+
+msgid "Modèle d'étiquette"
+msgstr "Label template"
+
+msgid "Symptôme"
+msgstr "Symptom"
+
+msgid "Photo ou exemple de l'étiquette"
+msgstr "Photo or sample of the label"
+
+msgid "Partenaire"
+msgstr "Partner"
+
+msgid "Objet"
+msgstr "Subject"
+
+msgid "Échéance demandée par le partenaire"
+msgstr "Deadline set by the partner"
+
+msgid "Demande qui revient chaque année ?"
+msgstr "Does this request come back every year?"
+
+msgid "Demande du partenaire (pièce jointe)"
+msgstr "Partner's request (attachment)"
+
+msgid "Enregistrement concerné (numéro, référence)"
+msgstr "Record concerned (number, reference)"
+
+msgid "Valeur attendue"
+msgstr "Expected value"
+
+msgid "Responsable qui valide la correction"
+msgstr "Manager who approves the correction"
+
+msgid "La correction ne sera faite qu'après son approbation dans le ticket."
+msgstr "The correction will only be made after their approval in the ticket."
+
+msgid "Capture d'écran ou fichier"
+msgstr "Screenshot or file"
+
+msgid "Données souhaitées"
+msgstr "Data wanted"
+
+msgid "Filtres (période, site, client, statut…)"
+msgstr "Filters (period, site, customer, status…)"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Destinataires"
+msgstr "Recipients"
+
+msgid "Application concernée"
+msgstr "Application concerned"
+
+msgid "Besoin métier"
+msgstr "Business need"
+
+msgid "Gain attendu (temps, erreurs évitées, chiffre)"
+msgstr "Expected benefit (time, errors avoided, revenue)"
+
+msgid "Utilisateurs concernés"
+msgstr "Users concerned"
+
+msgid "Interface ou traitement (import, échange partenaire, lot de nuit…)"
+msgstr "Interface or job (import, partner exchange, nightly batch…)"
+
+msgid "Date de l'erreur"
+msgstr "Date of the error"
+
+msgid "Message d'erreur"
+msgstr "Error message"
+
+msgid "Volume touché (commandes, lignes, fichiers)"
+msgstr "Volume affected (orders, lines, files)"
+
+msgid "Impact"
+msgstr "Impact"
+
+msgid "Fichier ou journal"
+msgstr "File or log"
+
+msgid "Nom du site ou de l'entrepôt"
+msgstr "Name of the site or warehouse"
+
+msgid "Date de démarrage"
+msgstr "Start date"
+
+msgid "Paramétrage à prévoir"
+msgstr "Configuration to plan"
+
+msgid "Responsable du site"
+msgstr "Site manager"
+
+msgid "Fichier des articles et quantités"
+msgstr "File of items and quantities"
+
+msgid "Responsable qui valide le mouvement"
+msgstr "Manager who approves the movement"
+
+msgid "Modèle à modifier"
+msgstr "Template to change"
+
+msgid "Informations à faire figurer"
+msgstr "Information to show"
+
+msgid "Format (dimensions, imprimante)"
+msgstr "Format (size, printer)"
+
+msgid "Exemple ou maquette"
+msgstr "Sample or mock-up"
