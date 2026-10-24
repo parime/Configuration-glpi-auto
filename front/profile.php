@@ -42,6 +42,12 @@ if (ConfigurationProfile::canCreate()) {
     echo "<i class='ti ti-upload'></i> " . __('Importer un Blueprint (JSON)', 'configurationglpiauto');
     echo "</a>";
 }
+// Issue #345 : import de tickets Jira (CSV), mêmes droits que la page elle-même.
+if (Session::haveRight(Config::$rightname, UPDATE) && Session::haveRight(Ticket::$rightname, CREATE)) {
+    echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/jiraimport.php') . "'>";
+    echo "<i class='ti ti-transfer-in'></i> " . __('Importer depuis Jira (CSV)', 'configurationglpiauto');
+    echo "</a>";
+}
 // Issue #114 ("Fonctionnalité de Rollback") : même emplacement/style que les boutons ci-dessus.
 echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/history.php') . "'>";
 echo "<i class='ti ti-history'></i> " . __('Historique & Rollback', 'configurationglpiauto');

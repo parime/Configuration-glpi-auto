@@ -69,9 +69,9 @@ done
 P=$BASE/plugins/configurationglpiauto/front
 A=$BASE/plugins/configurationglpiauto/ajax
 case "$ROLE" in
-  none)     OPEN=403; AUDIT=403; AUDIT_FIX=403 ;;
-  delegate) OPEN=200; AUDIT=403; AUDIT_FIX=403 ;;
-  *)        OPEN=200; AUDIT=200; AUDIT_FIX=302 ;;
+  none)     OPEN=403; AUDIT=403; AUDIT_FIX=403; JIRA=403 ;;
+  delegate) OPEN=200; AUDIT=403; AUDIT_FIX=403; JIRA=403 ;;
+  *)        OPEN=200; AUDIT=200; AUDIT_FIX=302; JIRA=200 ;;
 esac
 
 # --- Chaque page du plugin : refusee sans droit, utilisable avec ---
@@ -80,6 +80,8 @@ expect "front/profile.php"                      $OPEN "$(code "$P/profile.php")"
 expect "front/profile.form.php (blueprint)"     $OPEN "$(code "$P/profile.form.php?id=$(id profile)")"
 expect "front/blueprint_import.php"             $OPEN "$(code "$P/blueprint_import.php")"
 expect "front/history.php"                      $OPEN "$(code "$P/history.php")"
+# Issue #345 : import Jira, exige aussi le droit natif de creer des tickets (absent du delegue).
+expect "front/jiraimport.php"                   $JIRA "$(code "$P/jiraimport.php")"
 expect "front/history_restore.php (historique)" $OPEN "$(code "$P/history_restore.php?id=$(id history)")"
 expect "front/fueltype.php"                     $OPEN "$(code "$P/fueltype.php")"
 expect "front/fueltype.form.php"                $OPEN "$(code "$P/fueltype.form.php?id=$(id fueltype)")"

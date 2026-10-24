@@ -4403,3 +4403,121 @@ msgstr "Format (dimensions, imprimante)"
 
 msgid "Exemple ou maquette"
 msgstr "Exemple ou maquette"
+
+#, php-format
+msgid "%1$s : ticket %2$d mis à jour"
+msgstr "%1$s : ticket %2$d mis à jour"
+
+#, php-format
+msgid "%s : création du ticket impossible"
+msgstr "%s : création du ticket impossible"
+
+#, php-format
+msgid "%1$s : ticket %2$d créé"
+msgstr "%1$s : ticket %2$d créé"
+
+#, php-format
+msgid "Importé de Jira : %s"
+msgstr "Importé de Jira : %s"
+
+#, php-format
+msgid "Auteur Jira : %s"
+msgstr "Auteur Jira : %s"
+
+msgid "Demande non retenue (importé de Jira)."
+msgstr "Demande non retenue (importé de Jira)."
+
+msgid "Choisissez un export CSV de Jira (20 Mo au plus) et une entité à laquelle vous avez accès."
+msgstr "Choisissez un export CSV de Jira (20 Mo au plus) et une entité à laquelle vous avez accès."
+
+msgid "Fichier d'import expiré : recommencez."
+msgstr "Fichier d'import expiré : recommencez."
+
+msgid "Importer depuis Jira"
+msgstr "Importer depuis Jira"
+
+msgid "Nouveau"
+msgstr "Nouveau"
+
+msgid "En cours (attribué)"
+msgstr "En cours (attribué)"
+
+msgid "En attente"
+msgstr "En attente"
+
+msgid "Résolu"
+msgstr "Résolu"
+
+msgid "Clos"
+msgstr "Clos"
+
+msgid "Clos — « Demande non retenue »"
+msgstr "Clos — « Demande non retenue »"
+
+msgid "Incident"
+msgstr "Incident"
+
+#, php-format
+msgid "Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour."
+msgstr "Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour."
+
+msgid "Journal de l'import"
+msgstr "Journal de l'import"
+
+msgid "Voir les tickets"
+msgstr "Voir les tickets"
+
+msgid "Dans Jira, exportez les tickets en CSV (« Toutes les colonnes »). L'import se fait en deux temps : un aperçu à blanc, sans rien écrire, où vous vérifiez les correspondances de statuts et de types, puis l'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n'est envoyée."
+msgstr "Dans Jira, exportez les tickets en CSV (« Toutes les colonnes »). L'import se fait en deux temps : un aperçu à blanc, sans rien écrire, où vous vérifiez les correspondances de statuts et de types, puis l'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n'est envoyée."
+
+msgid "Export CSV de Jira"
+msgstr "Export CSV de Jira"
+
+msgid "Entité des tickets"
+msgstr "Entité des tickets"
+
+msgid "Aperçu (rien n'est écrit)"
+msgstr "Aperçu (rien n'est écrit)"
+
+#, php-format
+msgid "%1$d ticket(s) lus, dont %2$d déjà importé(s) (mis à jour plutôt que recréés). Entité : %3$s."
+msgstr "%1$d ticket(s) lus, dont %2$d déjà importé(s) (mis à jour plutôt que recréés). Entité : %3$s."
+
+msgid "En-tête sans colonnes « Clé » et « Résumé » : ce n'est pas un export Jira."
+msgstr "En-tête sans colonnes « Clé » et « Résumé » : ce n'est pas un export Jira."
+
+msgid "Fichier vide."
+msgstr "Fichier vide."
+
+msgid "Ligne sans clé ou sans résumé : ignorée."
+msgstr "Ligne sans clé ou sans résumé : ignorée."
+
+#, php-format
+msgid "Ligne %1$d : %2$s"
+msgstr "Ligne %1$d : %2$s"
+
+msgid "Statuts Jira"
+msgstr "Statuts Jira"
+
+msgid "Types de ticket Jira"
+msgstr "Types de ticket Jira"
+
+msgid "Personnes"
+msgstr "Personnes"
+
+#, php-format
+msgid "%1$d reconnue(s) dans GLPI, %2$d inconnue(s)."
+msgstr "%1$d reconnue(s) dans GLPI, %2$d inconnue(s)."
+
+msgid "Inconnues (aucun compte créé ; le ticket sera importé sans elles, leurs commentaires gardent leur nom) :"
+msgstr "Inconnues (aucun compte créé ; le ticket sera importé sans elles, leurs commentaires gardent leur nom) :"
+
+#, php-format
+msgid "Importer %d ticket(s)"
+msgstr "Importer %d ticket(s)"
+
+msgid "Annuler"
+msgstr "Annuler"
+
+msgid "Importer depuis Jira (CSV)"
+msgstr "Importer depuis Jira (CSV)"

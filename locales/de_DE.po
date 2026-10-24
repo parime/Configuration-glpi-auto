@@ -4431,3 +4431,121 @@ msgstr "Format (Abmessungen, Drucker)"
 
 msgid "Exemple ou maquette"
 msgstr "Beispiel oder Entwurf"
+
+#, php-format
+msgid "%1$s : ticket %2$d mis à jour"
+msgstr "%1$s: Ticket %2$d aktualisiert"
+
+#, php-format
+msgid "%s : création du ticket impossible"
+msgstr "%s: Ticket konnte nicht erstellt werden"
+
+#, php-format
+msgid "%1$s : ticket %2$d créé"
+msgstr "%1$s: Ticket %2$d erstellt"
+
+#, php-format
+msgid "Importé de Jira : %s"
+msgstr "Aus Jira importiert: %s"
+
+#, php-format
+msgid "Auteur Jira : %s"
+msgstr "Jira-Autor: %s"
+
+msgid "Demande non retenue (importé de Jira)."
+msgstr "Anfrage nicht angenommen (aus Jira importiert)."
+
+msgid "Choisissez un export CSV de Jira (20 Mo au plus) et une entité à laquelle vous avez accès."
+msgstr "Wählen Sie einen Jira-CSV-Export (höchstens 20 MB) und eine Einheit, auf die Sie Zugriff haben."
+
+msgid "Fichier d'import expiré : recommencez."
+msgstr "Importdatei abgelaufen: bitte erneut beginnen."
+
+msgid "Importer depuis Jira"
+msgstr "Aus Jira importieren"
+
+msgid "Nouveau"
+msgstr "Neu"
+
+msgid "En cours (attribué)"
+msgstr "In Bearbeitung (zugewiesen)"
+
+msgid "En attente"
+msgstr "Wartend"
+
+msgid "Résolu"
+msgstr "Gelöst"
+
+msgid "Clos"
+msgstr "Geschlossen"
+
+msgid "Clos — « Demande non retenue »"
+msgstr "Geschlossen — „Anfrage nicht angenommen“"
+
+msgid "Incident"
+msgstr "Störung"
+
+#, php-format
+msgid "Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour."
+msgstr "Import abgeschlossen: %1$d Ticket(s) erstellt, %2$d aktualisiert."
+
+msgid "Journal de l'import"
+msgstr "Importprotokoll"
+
+msgid "Voir les tickets"
+msgstr "Tickets anzeigen"
+
+msgid "Dans Jira, exportez les tickets en CSV (« Toutes les colonnes »). L'import se fait en deux temps : un aperçu à blanc, sans rien écrire, où vous vérifiez les correspondances de statuts et de types, puis l'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n'est envoyée."
+msgstr "Exportieren Sie in Jira die Vorgänge als CSV („Alle Felder“). Der Import erfolgt in zwei Schritten: eine Vorschau ohne Schreiben, in der Sie die Zuordnung von Status und Typen prüfen, dann der Import. Personen werden über E-Mail-Adresse oder Namen erkannt; eine unbekannte Person wird gemeldet, nie angelegt. Ein erneuter Import derselben Datei aktualisiert die Tickets, statt sie neu zu erstellen. Es werden keine Benachrichtigungen gesendet."
+
+msgid "Export CSV de Jira"
+msgstr "Jira-CSV-Export"
+
+msgid "Entité des tickets"
+msgstr "Einheit der Tickets"
+
+msgid "Aperçu (rien n'est écrit)"
+msgstr "Vorschau (nichts wird geschrieben)"
+
+#, php-format
+msgid "%1$d ticket(s) lus, dont %2$d déjà importé(s) (mis à jour plutôt que recréés). Entité : %3$s."
+msgstr "%1$d Ticket(s) gelesen, davon %2$d bereits importiert (aktualisiert statt neu erstellt). Einheit: %3$s."
+
+msgid "En-tête sans colonnes « Clé » et « Résumé » : ce n'est pas un export Jira."
+msgstr "Kopfzeile ohne Spalten „Schlüssel“ und „Zusammenfassung“: kein Jira-Export."
+
+msgid "Fichier vide."
+msgstr "Leere Datei."
+
+msgid "Ligne sans clé ou sans résumé : ignorée."
+msgstr "Zeile ohne Schlüssel oder Zusammenfassung: übersprungen."
+
+#, php-format
+msgid "Ligne %1$d : %2$s"
+msgstr "Zeile %1$d: %2$s"
+
+msgid "Statuts Jira"
+msgstr "Jira-Status"
+
+msgid "Types de ticket Jira"
+msgstr "Jira-Vorgangstypen"
+
+msgid "Personnes"
+msgstr "Personen"
+
+#, php-format
+msgid "%1$d reconnue(s) dans GLPI, %2$d inconnue(s)."
+msgstr "%1$d in GLPI erkannt, %2$d unbekannt."
+
+msgid "Inconnues (aucun compte créé ; le ticket sera importé sans elles, leurs commentaires gardent leur nom) :"
+msgstr "Unbekannt (kein Konto erstellt; das Ticket wird ohne sie importiert, ihre Kommentare behalten ihren Namen):"
+
+#, php-format
+msgid "Importer %d ticket(s)"
+msgstr "%d Ticket(s) importieren"
+
+msgid "Annuler"
+msgstr "Abbrechen"
+
+msgid "Importer depuis Jira (CSV)"
+msgstr "Aus Jira importieren (CSV)"
