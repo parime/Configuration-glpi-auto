@@ -4410,3 +4410,121 @@ msgstr "Formato (dimensiones, impresora)"
 
 msgid "Exemple ou maquette"
 msgstr "Ejemplo o maqueta"
+
+#, php-format
+msgid "%1$s : ticket %2$d mis à jour"
+msgstr "%1$s: ticket %2$d actualizado"
+
+#, php-format
+msgid "%s : création du ticket impossible"
+msgstr "%s: no se pudo crear el ticket"
+
+#, php-format
+msgid "%1$s : ticket %2$d créé"
+msgstr "%1$s: ticket %2$d creado"
+
+#, php-format
+msgid "Importé de Jira : %s"
+msgstr "Importado de Jira: %s"
+
+#, php-format
+msgid "Auteur Jira : %s"
+msgstr "Autor en Jira: %s"
+
+msgid "Demande non retenue (importé de Jira)."
+msgstr "Solicitud no aceptada (importado de Jira)."
+
+msgid "Choisissez un export CSV de Jira (20 Mo au plus) et une entité à laquelle vous avez accès."
+msgstr "Elija una exportación CSV de Jira (20 MB como máximo) y una entidad a la que tenga acceso."
+
+msgid "Fichier d'import expiré : recommencez."
+msgstr "Archivo de importación caducado: vuelva a empezar."
+
+msgid "Importer depuis Jira"
+msgstr "Importar desde Jira"
+
+msgid "Nouveau"
+msgstr "Nuevo"
+
+msgid "En cours (attribué)"
+msgstr "En curso (asignado)"
+
+msgid "En attente"
+msgstr "En espera"
+
+msgid "Résolu"
+msgstr "Resuelto"
+
+msgid "Clos"
+msgstr "Cerrado"
+
+msgid "Clos — « Demande non retenue »"
+msgstr "Cerrado — «Solicitud no aceptada»"
+
+msgid "Incident"
+msgstr "Incidencia"
+
+#, php-format
+msgid "Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour."
+msgstr "Importación terminada: %1$d ticket(s) creado(s), %2$d actualizado(s)."
+
+msgid "Journal de l'import"
+msgstr "Registro de la importación"
+
+msgid "Voir les tickets"
+msgstr "Ver los tickets"
+
+msgid "Dans Jira, exportez les tickets en CSV (« Toutes les colonnes »). L'import se fait en deux temps : un aperçu à blanc, sans rien écrire, où vous vérifiez les correspondances de statuts et de types, puis l'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n'est envoyée."
+msgstr "En Jira, exporte las incidencias en CSV («Todos los campos»). La importación se hace en dos pasos: una vista previa sin escribir nada, donde comprueba las correspondencias de estados y tipos, y luego la importación. Las personas se reconocen por dirección de correo o por nombre; una persona desconocida se señala, nunca se crea. Volver a importar el mismo archivo actualiza los tickets en lugar de recrearlos. No se envía ninguna notificación."
+
+msgid "Export CSV de Jira"
+msgstr "Exportación CSV de Jira"
+
+msgid "Entité des tickets"
+msgstr "Entidad de los tickets"
+
+msgid "Aperçu (rien n'est écrit)"
+msgstr "Vista previa (no se escribe nada)"
+
+#, php-format
+msgid "%1$d ticket(s) lus, dont %2$d déjà importé(s) (mis à jour plutôt que recréés). Entité : %3$s."
+msgstr "%1$d ticket(s) leídos, de los cuales %2$d ya importados (actualizados en lugar de recreados). Entidad: %3$s."
+
+msgid "En-tête sans colonnes « Clé » et « Résumé » : ce n'est pas un export Jira."
+msgstr "Encabezado sin columnas «Clave» y «Resumen»: no es una exportación de Jira."
+
+msgid "Fichier vide."
+msgstr "Archivo vacío."
+
+msgid "Ligne sans clé ou sans résumé : ignorée."
+msgstr "Línea sin clave o sin resumen: ignorada."
+
+#, php-format
+msgid "Ligne %1$d : %2$s"
+msgstr "Línea %1$d: %2$s"
+
+msgid "Statuts Jira"
+msgstr "Estados de Jira"
+
+msgid "Types de ticket Jira"
+msgstr "Tipos de incidencia de Jira"
+
+msgid "Personnes"
+msgstr "Personas"
+
+#, php-format
+msgid "%1$d reconnue(s) dans GLPI, %2$d inconnue(s)."
+msgstr "%1$d reconocida(s) en GLPI, %2$d desconocida(s)."
+
+msgid "Inconnues (aucun compte créé ; le ticket sera importé sans elles, leurs commentaires gardent leur nom) :"
+msgstr "Desconocidas (no se crea ninguna cuenta; el ticket se importa sin ellas, sus comentarios conservan su nombre):"
+
+#, php-format
+msgid "Importer %d ticket(s)"
+msgstr "Importar %d ticket(s)"
+
+msgid "Annuler"
+msgstr "Cancelar"
+
+msgid "Importer depuis Jira (CSV)"
+msgstr "Importar desde Jira (CSV)"

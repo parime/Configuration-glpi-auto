@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Import depuis Jira (CSV)** (issue #345, phase 1), bouton sur la page du plugin : export CSV de Jira
+  (en-têtes anglais ou français, colonnes répétées, dates Jira), **aperçu à blanc** avec les
+  correspondances de statuts et de types proposées puis modifiables (« Att. retour client » → En
+  attente, « Non retenu » → Clos avec la solution « Demande non retenue »…), personnes reconnues par
+  e-mail ou par nom, jamais créées. Commentaires repris en suivis, dates d'origine conservées, clé
+  Jira gardée comme identifiant externe : réimporter met à jour au lieu de dupliquer et n'ajoute que
+  les nouveaux commentaires. Aucune notification pendant l'import. Exige le droit de modifier la
+  configuration du plugin et le droit natif de créer des tickets.
 - **13 nouveaux formulaires du catalogue de services** (issue #346), tirés de catégories de demandes
   récurrentes en support infrastructure et en application métier : accès à un dossier partagé,
   compte bloqué, restauration de données, périphérique USB, impression d'étiquettes, demande d'un

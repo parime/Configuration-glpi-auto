@@ -47,6 +47,9 @@ final class Installer
 
     private const HISTORY_TABLE = 'glpi_plugin_configurationglpiauto_history';
 
+    // Issue #345 : cle Jira -> ticket GLPI importe (un nouvel import met a jour au lieu de recreer).
+    private const JIRA_IMPORTS_TABLE = 'glpi_plugin_configurationglpiauto_jiraimports';
+
     public function install(Migration $migration): bool
     {
         global $DB;
@@ -490,6 +493,30 @@ final class Installer
             }
         }
 
+        if (!$DB->tableExists(self::JIRA_IMPORTS_TABLE)) {
+            $charset   = DBConnection::getDefaultCharset();
+            $collation = DBConnection::getDefaultCollation();
+            $keySign   = DBConnection::getDefaultPrimaryKeySignOption();
+
+            $query = "CREATE TABLE `" . self::JIRA_IMPORTS_TABLE . "` (
+                `id` int {$keySign} NOT NULL AUTO_INCREMENT,
+                `jira_key` varchar(100) NOT NULL,
+                `tickets_id` int {$keySign} NOT NULL DEFAULT 0,
+                `last_comment_date` timestamp NULL DEFAULT NULL,
+                `date_creation` timestamp NULL DEFAULT NULL,
+                `date_mod` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `jira_key` (`jira_key`),
+                KEY `tickets_id` (`tickets_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
+
+            if (!$DB->doQuery($query)) {
+                \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s\n", self::JIRA_IMPORTS_TABLE, $DB->error()));
+
+                return false;
+            }
+        }
+
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
         // pratiques que n'importe quel profil peut suivre — retires de la liste des profils
         // proposes (Sprint 11, voir ConfigurationProfile::getSuggestedDefaults()). Desactivation,
@@ -701,6 +728,7 @@ final class Installer
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::CONFIGS_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::FUELTYPES_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::HISTORY_TABLE . "`");
+        $DB->doQuery("DROP TABLE IF EXISTS `" . self::JIRA_IMPORTS_TABLE . "`");
 
         Profile::uninstall();
 
