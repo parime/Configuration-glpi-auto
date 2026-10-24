@@ -86,6 +86,7 @@ use GlpiPlugin\Configurationglpiauto\RecurringTicketLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\RecyclingRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\RelocationArchivingFormBuilder;
 use GlpiPlugin\Configurationglpiauto\RemoteWorkFormBuilder;
+use GlpiPlugin\Configurationglpiauto\RequestFormLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\RequestTypeTranslationBuilder;
 use GlpiPlugin\Configurationglpiauto\RSSFeedBuilder;
 use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
@@ -725,6 +726,9 @@ if (isset($_POST['finish'])) {
             $catalogSmartFormsUpgraded++;
         }
     }
+    // Issue #346 : 13 formulaires décrits par des données (support infrastructure et application
+    // métier), mêmes conditions que les builders ci-dessus.
+    $catalogSmartFormsUpgraded += (new RequestFormLibraryBuilder())->build($config);
     $statesCreated = (new StateBuilder())->build($config);
     // Issue #283 : après StateBuilder, qui crée les statuts auxquels les déclencheurs renvoient.
     $assetsignTriggersSet = $canUpdateAssetsignConfig ? (new AssetsignTriggerBuilder())->build($config) : 0;

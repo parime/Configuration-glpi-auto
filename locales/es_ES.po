@@ -4245,3 +4245,168 @@ msgstr "Crear calendarios"
 
 msgid "nécessaire aux horaires ouvrés et jours fériés (étape Calendrier)"
 msgstr "necesario para el horario laboral y los días festivos (paso Calendario)"
+
+msgid "Dossier ou partage concerné"
+msgstr "Carpeta o recurso compartido afectado"
+
+msgid "Chemin complet tel qu'affiché dans l'explorateur, ou nom du dossier."
+msgstr "Ruta completa tal como aparece en el explorador, o nombre de la carpeta."
+
+msgid "Responsable du dossier (approbateur)"
+msgstr "Responsable de la carpeta (aprobador)"
+
+msgid "Date de fin d'accès (si temporaire)"
+msgstr "Fecha de fin del acceso (si es temporal)"
+
+msgid "Justification"
+msgstr "Justificación"
+
+msgid "Compte concerné"
+msgstr "Cuenta afectada"
+
+msgid "Quelle application ?"
+msgstr "¿Qué aplicación?"
+
+msgid "Message d'erreur affiché"
+msgstr "Mensaje de error mostrado"
+
+msgid "Que faut-il restaurer ?"
+msgstr "¿Qué hay que restaurar?"
+
+msgid "Emplacement (chemin, serveur, application)"
+msgstr "Ubicación (ruta, servidor, aplicación)"
+
+msgid "Date de la version souhaitée"
+msgstr "Fecha de la versión deseada"
+
+msgid "Urgence"
+msgstr "Urgencia"
+
+msgid "Précisions (noms de fichiers, cause de la perte)"
+msgstr "Detalles (nombres de archivo, causa de la pérdida)"
+
+msgid "Demande"
+msgstr "Solicitud"
+
+msgid "Périphérique (type, marque, numéro de série)"
+msgstr "Periférico (tipo, marca, número de serie)"
+
+msgid "Durée"
+msgstr "Duración"
+
+msgid "Imprimante concernée (nom ou emplacement)"
+msgstr "Impresora afectada (nombre o ubicación)"
+
+msgid "Application qui lance l'impression"
+msgstr "Aplicación que lanza la impresión"
+
+msgid "Modèle d'étiquette"
+msgstr "Plantilla de etiqueta"
+
+msgid "Symptôme"
+msgstr "Síntoma"
+
+msgid "Photo ou exemple de l'étiquette"
+msgstr "Foto o ejemplo de la etiqueta"
+
+msgid "Partenaire"
+msgstr "Socio"
+
+msgid "Objet"
+msgstr "Asunto"
+
+msgid "Échéance demandée par le partenaire"
+msgstr "Plazo solicitado por el socio"
+
+msgid "Demande qui revient chaque année ?"
+msgstr "¿Solicitud que se repite cada año?"
+
+msgid "Demande du partenaire (pièce jointe)"
+msgstr "Solicitud del socio (adjunto)"
+
+msgid "Enregistrement concerné (numéro, référence)"
+msgstr "Registro afectado (número, referencia)"
+
+msgid "Valeur attendue"
+msgstr "Valor esperado"
+
+msgid "Responsable qui valide la correction"
+msgstr "Responsable que aprueba la corrección"
+
+msgid "La correction ne sera faite qu'après son approbation dans le ticket."
+msgstr "La corrección solo se realizará tras su aprobación en el ticket."
+
+msgid "Capture d'écran ou fichier"
+msgstr "Captura de pantalla o archivo"
+
+msgid "Données souhaitées"
+msgstr "Datos deseados"
+
+msgid "Filtres (période, site, client, statut…)"
+msgstr "Filtros (periodo, sede, cliente, estado…)"
+
+msgid "Format"
+msgstr "Formato"
+
+msgid "Destinataires"
+msgstr "Destinatarios"
+
+msgid "Application concernée"
+msgstr "Aplicación afectada"
+
+msgid "Besoin métier"
+msgstr "Necesidad de negocio"
+
+msgid "Gain attendu (temps, erreurs évitées, chiffre)"
+msgstr "Beneficio esperado (tiempo, errores evitados, facturación)"
+
+msgid "Utilisateurs concernés"
+msgstr "Usuarios afectados"
+
+msgid "Interface ou traitement (import, échange partenaire, lot de nuit…)"
+msgstr "Interfaz o proceso (importación, intercambio con socio, lote nocturno…)"
+
+msgid "Date de l'erreur"
+msgstr "Fecha del error"
+
+msgid "Message d'erreur"
+msgstr "Mensaje de error"
+
+msgid "Volume touché (commandes, lignes, fichiers)"
+msgstr "Volumen afectado (pedidos, líneas, archivos)"
+
+msgid "Impact"
+msgstr "Impacto"
+
+msgid "Fichier ou journal"
+msgstr "Archivo o registro"
+
+msgid "Nom du site ou de l'entrepôt"
+msgstr "Nombre de la sede o del almacén"
+
+msgid "Date de démarrage"
+msgstr "Fecha de inicio"
+
+msgid "Paramétrage à prévoir"
+msgstr "Configuración a prever"
+
+msgid "Responsable du site"
+msgstr "Responsable de la sede"
+
+msgid "Fichier des articles et quantités"
+msgstr "Archivo de artículos y cantidades"
+
+msgid "Responsable qui valide le mouvement"
+msgstr "Responsable que aprueba el movimiento"
+
+msgid "Modèle à modifier"
+msgstr "Plantilla a modificar"
+
+msgid "Informations à faire figurer"
+msgstr "Información que debe figurar"
+
+msgid "Format (dimensions, imprimante)"
+msgstr "Formato (dimensiones, impresora)"
+
+msgid "Exemple ou maquette"
+msgstr "Ejemplo o maqueta"

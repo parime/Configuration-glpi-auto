@@ -4238,3 +4238,168 @@ msgstr "Créer des calendriers"
 
 msgid "nécessaire aux horaires ouvrés et jours fériés (étape Calendrier)"
 msgstr "nécessaire aux horaires ouvrés et jours fériés (étape Calendrier)"
+
+msgid "Dossier ou partage concerné"
+msgstr "Dossier ou partage concerné"
+
+msgid "Chemin complet tel qu'affiché dans l'explorateur, ou nom du dossier."
+msgstr "Chemin complet tel qu'affiché dans l'explorateur, ou nom du dossier."
+
+msgid "Responsable du dossier (approbateur)"
+msgstr "Responsable du dossier (approbateur)"
+
+msgid "Date de fin d'accès (si temporaire)"
+msgstr "Date de fin d'accès (si temporaire)"
+
+msgid "Justification"
+msgstr "Justification"
+
+msgid "Compte concerné"
+msgstr "Compte concerné"
+
+msgid "Quelle application ?"
+msgstr "Quelle application ?"
+
+msgid "Message d'erreur affiché"
+msgstr "Message d'erreur affiché"
+
+msgid "Que faut-il restaurer ?"
+msgstr "Que faut-il restaurer ?"
+
+msgid "Emplacement (chemin, serveur, application)"
+msgstr "Emplacement (chemin, serveur, application)"
+
+msgid "Date de la version souhaitée"
+msgstr "Date de la version souhaitée"
+
+msgid "Urgence"
+msgstr "Urgence"
+
+msgid "Précisions (noms de fichiers, cause de la perte)"
+msgstr "Précisions (noms de fichiers, cause de la perte)"
+
+msgid "Demande"
+msgstr "Demande"
+
+msgid "Périphérique (type, marque, numéro de série)"
+msgstr "Périphérique (type, marque, numéro de série)"
+
+msgid "Durée"
+msgstr "Durée"
+
+msgid "Imprimante concernée (nom ou emplacement)"
+msgstr "Imprimante concernée (nom ou emplacement)"
+
+msgid "Application qui lance l'impression"
+msgstr "Application qui lance l'impression"
+
+msgid "Modèle d'étiquette"
+msgstr "Modèle d'étiquette"
+
+msgid "Symptôme"
+msgstr "Symptôme"
+
+msgid "Photo ou exemple de l'étiquette"
+msgstr "Photo ou exemple de l'étiquette"
+
+msgid "Partenaire"
+msgstr "Partenaire"
+
+msgid "Objet"
+msgstr "Objet"
+
+msgid "Échéance demandée par le partenaire"
+msgstr "Échéance demandée par le partenaire"
+
+msgid "Demande qui revient chaque année ?"
+msgstr "Demande qui revient chaque année ?"
+
+msgid "Demande du partenaire (pièce jointe)"
+msgstr "Demande du partenaire (pièce jointe)"
+
+msgid "Enregistrement concerné (numéro, référence)"
+msgstr "Enregistrement concerné (numéro, référence)"
+
+msgid "Valeur attendue"
+msgstr "Valeur attendue"
+
+msgid "Responsable qui valide la correction"
+msgstr "Responsable qui valide la correction"
+
+msgid "La correction ne sera faite qu'après son approbation dans le ticket."
+msgstr "La correction ne sera faite qu'après son approbation dans le ticket."
+
+msgid "Capture d'écran ou fichier"
+msgstr "Capture d'écran ou fichier"
+
+msgid "Données souhaitées"
+msgstr "Données souhaitées"
+
+msgid "Filtres (période, site, client, statut…)"
+msgstr "Filtres (période, site, client, statut…)"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Destinataires"
+msgstr "Destinataires"
+
+msgid "Application concernée"
+msgstr "Application concernée"
+
+msgid "Besoin métier"
+msgstr "Besoin métier"
+
+msgid "Gain attendu (temps, erreurs évitées, chiffre)"
+msgstr "Gain attendu (temps, erreurs évitées, chiffre)"
+
+msgid "Utilisateurs concernés"
+msgstr "Utilisateurs concernés"
+
+msgid "Interface ou traitement (import, échange partenaire, lot de nuit…)"
+msgstr "Interface ou traitement (import, échange partenaire, lot de nuit…)"
+
+msgid "Date de l'erreur"
+msgstr "Date de l'erreur"
+
+msgid "Message d'erreur"
+msgstr "Message d'erreur"
+
+msgid "Volume touché (commandes, lignes, fichiers)"
+msgstr "Volume touché (commandes, lignes, fichiers)"
+
+msgid "Impact"
+msgstr "Impact"
+
+msgid "Fichier ou journal"
+msgstr "Fichier ou journal"
+
+msgid "Nom du site ou de l'entrepôt"
+msgstr "Nom du site ou de l'entrepôt"
+
+msgid "Date de démarrage"
+msgstr "Date de démarrage"
+
+msgid "Paramétrage à prévoir"
+msgstr "Paramétrage à prévoir"
+
+msgid "Responsable du site"
+msgstr "Responsable du site"
+
+msgid "Fichier des articles et quantités"
+msgstr "Fichier des articles et quantités"
+
+msgid "Responsable qui valide le mouvement"
+msgstr "Responsable qui valide le mouvement"
+
+msgid "Modèle à modifier"
+msgstr "Modèle à modifier"
+
+msgid "Informations à faire figurer"
+msgstr "Informations à faire figurer"
+
+msgid "Format (dimensions, imprimante)"
+msgstr "Format (dimensions, imprimante)"
+
+msgid "Exemple ou maquette"
+msgstr "Exemple ou maquette"
