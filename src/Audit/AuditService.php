@@ -26,6 +26,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\EntitiesWithoutAddressCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\GhostAssetsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\IncompleteAssetsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\MissingRecommendedStatesCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\NetworkConsistencyCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoActiveCalendarCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoSlaConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoStatesConfiguredCheck;
@@ -61,6 +62,8 @@ final class AuditService
             GhostAssetsCheck::class,
             WarrantyCheck::class,
             IncompleteAssetsCheck::class,
+            // Issue #344 : adresses en double, réseaux qui se chevauchent, VLAN sans réseau.
+            NetworkConsistencyCheck::class,
             UncategorizedSoftwareCheck::class,
             NoActiveCalendarCheck::class,
             NoSlaConfiguredCheck::class,

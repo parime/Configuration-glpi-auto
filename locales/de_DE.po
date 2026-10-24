@@ -4695,3 +4695,43 @@ msgstr "Adressplan (Netze und VLANs)"
 
 msgid "Une fois les lieux créés, déclarez leurs réseaux IP et VLAN, ou importez-les depuis un tableau :"
 msgstr "Sobald die Orte angelegt sind, erfassen Sie ihre IP-Netze und VLANs oder importieren Sie sie aus einer Tabelle:"
+
+msgid "Une même adresse sur deux équipements provoque des coupures difficiles à diagnostiquer. Vérifiez l'attribution (réservation DHCP, adresse fixe recopiée, ancien équipement encore inventorié) ; une adresse virtuelle partagée volontairement (cluster, VRRP) peut être ignorée."
+msgstr "Dieselbe Adresse auf zwei Geräten verursacht schwer zu diagnostizierende Ausfälle. Prüfen Sie die Zuweisung (DHCP-Reservierung, kopierte feste Adresse, altes, noch inventarisiertes Gerät); eine bewusst geteilte virtuelle Adresse (Cluster, VRRP) kann ignoriert werden."
+
+#, php-format
+msgid "%1$s et %2$s"
+msgstr "%1$s und %2$s"
+
+msgid "Deux sites ou un partenaire relié par VPN qui utilisent la même plage ne peuvent pas communiquer correctement. Renumérotez l'un des réseaux, ou mettez en place une traduction d'adresses, puis corrigez le plan d'adressage."
+msgstr "Zwei Standorte oder ein per VPN verbundener Partner mit demselben Bereich können nicht richtig kommunizieren. Nummerieren Sie eines der Netze um oder richten Sie eine Adressumsetzung ein, und korrigieren Sie dann den Adressplan."
+
+msgid "Associez chaque VLAN à son réseau IP (onglet VLAN du réseau, ou plan d'adressage) pour que le schéma réseau reste complet."
+msgstr "Ordnen Sie jedes VLAN seinem IP-Netz zu (Reiter VLAN des Netzes oder Adressplan), damit der Netzplan vollständig bleibt."
+
+msgid "Le plan d'adressage est incomplet, ou l'équipement est dans un réseau inattendu. Déclarez le réseau manquant (plan d'adressage) ou vérifiez l'équipement."
+msgstr "Der Adressplan ist unvollständig oder das Gerät befindet sich in einem unerwarteten Netz. Erfassen Sie das fehlende Netz (Adressplan) oder prüfen Sie das Gerät."
+
+#, php-format
+msgid "%d adresse IP portée par plusieurs éléments"
+msgid_plural "%d adresses IP portées par plusieurs éléments"
+msgstr[0] "%d IP-Adresse wird von mehreren Elementen verwendet"
+msgstr[1] "%d IP-Adressen werden von mehreren Elementen verwendet"
+
+#, php-format
+msgid "%d paire de réseaux IP qui se chevauchent"
+msgid_plural "%d paires de réseaux IP qui se chevauchent"
+msgstr[0] "%d Paar sich überschneidender IP-Netze"
+msgstr[1] "%d Paare sich überschneidender IP-Netze"
+
+#, php-format
+msgid "%d VLAN sans réseau IP associé"
+msgid_plural "%d VLAN sans réseau IP associé"
+msgstr[0] "%d VLAN ohne zugeordnetes IP-Netz"
+msgstr[1] "%d VLANs ohne zugeordnetes IP-Netz"
+
+#, php-format
+msgid "%d adresse inventoriée hors de tout réseau déclaré"
+msgid_plural "%d adresses inventoriées hors de tout réseau déclaré"
+msgstr[0] "%d inventarisierte Adresse außerhalb aller erfassten Netze"
+msgstr[1] "%d inventarisierte Adressen außerhalb aller erfassten Netze"
