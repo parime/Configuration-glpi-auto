@@ -113,6 +113,8 @@ if (($argv[1] ?? '') === 'snapshot') {
     $snapshot['slms'] = countElementsInTable('glpi_slms');
     $snapshot['slas'] = countElementsInTable('glpi_slas') + countElementsInTable('glpi_olas');
     $snapshot['calendars'] = countElementsInTable('glpi_calendars');
+    $snapshot['vlans'] = countElementsInTable('glpi_vlans');
+    $snapshot['ipnetworks'] = countElementsInTable('glpi_ipnetworks');
     $snapshot['core:palette'] = (string) (\Config::getConfigurationValues('core', ['palette'])['palette'] ?? '');
     if ($DB->tableExists('glpi_plugin_assetsign_configs')) {
         foreach ($DB->request(['FROM' => 'glpi_plugin_assetsign_configs', 'WHERE' => ['entities_id' => 0]]) as $row) {

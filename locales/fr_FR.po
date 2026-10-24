@@ -4521,3 +4521,149 @@ msgstr "Annuler"
 
 msgid "Importer depuis Jira (CSV)"
 msgstr "Importer depuis Jira (CSV)"
+
+msgid "Plan d'adressage"
+msgstr "Plan d'adressage"
+
+#, php-format
+msgid "Plan d'adressage — site : %1$s, rôle : %2$s"
+msgstr "Plan d'adressage — site : %1$s, rôle : %2$s"
+
+#, php-format
+msgid "Ligne %1$d : GLPI a refusé le réseau %2$s."
+msgstr "Ligne %1$d : GLPI a refusé le réseau %2$s."
+
+msgid "Postes de travail"
+msgstr "Postes de travail"
+
+msgid "Serveurs"
+msgstr "Serveurs"
+
+msgid "Téléphonie (voix)"
+msgstr "Téléphonie (voix)"
+
+msgid "Imprimantes et équipements"
+msgstr "Imprimantes et équipements"
+
+msgid "Administration"
+msgstr "Administration"
+
+msgid "Invités"
+msgstr "Invités"
+
+msgid "DMZ"
+msgstr "DMZ"
+
+msgid "Site manquant."
+msgstr "Site manquant."
+
+msgid "Site inconnu : créez d'abord ce lieu dans GLPI (étape « Lieux » de l'assistant)."
+msgstr "Site inconnu : créez d'abord ce lieu dans GLPI (étape « Lieux » de l'assistant)."
+
+msgid "Numéro de VLAN hors de la plage 1 à 4094."
+msgstr "Numéro de VLAN hors de la plage 1 à 4094."
+
+msgid "Ni VLAN ni réseau sur cette ligne."
+msgstr "Ni VLAN ni réseau sur cette ligne."
+
+msgid "Réseau illisible : notation attendue 192.0.2.0/24."
+msgstr "Réseau illisible : notation attendue 192.0.2.0/24."
+
+#, php-format
+msgid "Ce n'est pas l'adresse du réseau : vouliez-vous %s ?"
+msgstr "Ce n'est pas l'adresse du réseau : vouliez-vous %s ?"
+
+msgid "La passerelle n'est pas dans ce réseau."
+msgstr "La passerelle n'est pas dans ce réseau."
+
+msgid "Passerelle indiquée sans réseau."
+msgstr "Passerelle indiquée sans réseau."
+
+#, php-format
+msgid "Chevauche le réseau de la ligne %s."
+msgstr "Chevauche le réseau de la ligne %s."
+
+msgid "Retour"
+msgstr "Retour"
+
+msgid "Déclarez les réseaux IP et VLAN de chaque site. Ils sont créés comme objets natifs de GLPI (Configuration > Intitulés > VLAN, et Réseaux IP), reliés entre eux et rattachés à l'entité du site. Relancer l'import met à jour les noms au lieu de dupliquer."
+msgstr "Déclarez les réseaux IP et VLAN de chaque site. Ils sont créés comme objets natifs de GLPI (Configuration > Intitulés > VLAN, et Réseaux IP), reliés entre eux et rattachés à l'entité du site. Relancer l'import met à jour les noms au lieu de dupliquer."
+
+#, php-format
+msgid "%1$d VLAN créé(s), %2$d mis à jour ; %3$d réseau(x) créé(s), %4$d mis à jour."
+msgstr "%1$d VLAN créé(s), %2$d mis à jour ; %3$d réseau(x) créé(s), %4$d mis à jour."
+
+msgid "Tableau du plan"
+msgstr "Tableau du plan"
+
+msgid "Colonnes : site, VLAN, nom, réseau, passerelle, rôle. Copiez-collez depuis un tableur (la première ligne peut porter les titres), ou choisissez un fichier CSV."
+msgstr "Colonnes : site, VLAN, nom, réseau, passerelle, rôle. Copiez-collez depuis un tableur (la première ligne peut porter les titres), ou choisissez un fichier CSV."
+
+msgid "Fichier CSV"
+msgstr "Fichier CSV"
+
+msgid "Modèle pour un nouveau site"
+msgstr "Modèle pour un nouveau site"
+
+msgid "Un VLAN et un réseau /24 par usage : postes, serveurs, voix, imprimantes, administration, invités isolés, DMZ. Le tableau est rempli pour être relu et modifié avant l'aperçu."
+msgstr "Un VLAN et un réseau /24 par usage : postes, serveurs, voix, imprimantes, administration, invités isolés, DMZ. Le tableau est rempli pour être relu et modifié avant l'aperçu."
+
+msgid "Site"
+msgstr "Site"
+
+msgid "Réseau du site (/16)"
+msgstr "Réseau du site (/16)"
+
+msgid "Indiquez un site et un réseau IPv4 en /16, par exemple 10.20.0.0/16."
+msgstr "Indiquez un site et un réseau IPv4 en /16, par exemple 10.20.0.0/16."
+
+msgid "Remplir le tableau"
+msgstr "Remplir le tableau"
+
+#, php-format
+msgid "%d ligne(s) valide(s)"
+msgstr "%d ligne(s) valide(s)"
+
+#, php-format
+msgid "%d ligne(s) en erreur, ignorée(s)"
+msgstr "%d ligne(s) en erreur, ignorée(s)"
+
+#, php-format
+msgid "Seules les %d premières lignes sont lues."
+msgstr "Seules les %d premières lignes sont lues."
+
+msgid "Créer les lignes valides"
+msgstr "Créer les lignes valides"
+
+msgid "Ligne"
+msgstr "Ligne"
+
+msgid "VLAN"
+msgstr "VLAN"
+
+msgid "Nom"
+msgstr "Nom"
+
+msgid "Réseau"
+msgstr "Réseau"
+
+msgid "Passerelle"
+msgstr "Passerelle"
+
+msgid "Résultat"
+msgstr "Résultat"
+
+msgid "à créer"
+msgstr "à créer"
+
+msgid "nom mis à jour"
+msgstr "nom mis à jour"
+
+msgid "déjà à jour"
+msgstr "déjà à jour"
+
+msgid "Plan d'adressage (réseaux et VLAN)"
+msgstr "Plan d'adressage (réseaux et VLAN)"
+
+msgid "Une fois les lieux créés, déclarez leurs réseaux IP et VLAN, ou importez-les depuis un tableau :"
+msgstr "Une fois les lieux créés, déclarez leurs réseaux IP et VLAN, ou importez-les depuis un tableau :"

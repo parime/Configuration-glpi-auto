@@ -139,6 +139,9 @@
       <div class="cga-wizard-step" data-step="3" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 3 : {{ __('Lieux', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Optionnel : associez une adresse (ou plus) à une entité de l\'arborescence — rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, aucun lieu créé, comme sur une installation GLPI neuve.', 'configurationglpiauto') }}</p>
+        {# Issue #343 : le plan d'adressage (réseaux IP et VLAN) se déclare par site, une fois les lieux créés. #}
+        <p class="small"><i class="ti ti-network me-1"></i>{{ __('Une fois les lieux créés, déclarez leurs réseaux IP et VLAN, ou importez-les depuis un tableau :', 'configurationglpiauto') }}
+          <a href="{{ config('root_doc') }}/plugins/configurationglpiauto/front/addressplan.php" target="_blank" rel="noopener">{{ __('Plan d\'adressage (réseaux et VLAN)', 'configurationglpiauto') }}</a></p>
 
         <div class="form-check form-switch mb-2">
           <input type="hidden" name="locations_enabled" value="0">

@@ -69,9 +69,9 @@ done
 P=$BASE/plugins/configurationglpiauto/front
 A=$BASE/plugins/configurationglpiauto/ajax
 case "$ROLE" in
-  none)     OPEN=403; AUDIT=403; AUDIT_FIX=403; JIRA=403 ;;
-  delegate) OPEN=200; AUDIT=403; AUDIT_FIX=403; JIRA=403 ;;
-  *)        OPEN=200; AUDIT=200; AUDIT_FIX=302; JIRA=200 ;;
+  none)     OPEN=403; AUDIT=403; AUDIT_FIX=403; JIRA=403; NET=403 ;;
+  delegate) OPEN=200; AUDIT=403; AUDIT_FIX=403; JIRA=403; NET=403 ;;
+  *)        OPEN=200; AUDIT=200; AUDIT_FIX=302; JIRA=200; NET=200 ;;
 esac
 
 # --- Chaque page du plugin : refusee sans droit, utilisable avec ---
@@ -82,6 +82,9 @@ expect "front/blueprint_import.php"             $OPEN "$(code "$P/blueprint_impo
 expect "front/history.php"                      $OPEN "$(code "$P/history.php")"
 # Issue #345 : import Jira, exige aussi le droit natif de creer des tickets (absent du delegue).
 expect "front/jiraimport.php"                   $JIRA "$(code "$P/jiraimport.php")"
+# Issue #343 : plan d'adressage, exige aussi les droits natifs sur les VLAN et reseaux IP.
+expect "front/addressplan.php"                  $NET "$(code "$P/addressplan.php")"
+expect "front/addressplan.php (creation)"       $NET "$(code -d "import=1&plan=Securite%091%09Securite%09192.0.2.0/24&_glpi_csrf_token=$(csrf)" "$P/addressplan.php")"
 expect "front/history_restore.php (historique)" $OPEN "$(code "$P/history_restore.php?id=$(id history)")"
 expect "front/fueltype.php"                     $OPEN "$(code "$P/fueltype.php")"
 expect "front/fueltype.form.php"                $OPEN "$(code "$P/fueltype.form.php?id=$(id fueltype)")"
