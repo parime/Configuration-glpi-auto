@@ -162,6 +162,11 @@ jobs:
         run: |
           vendor/bin/php-cs-fixer fix --dry-run --diff --allow-risky=yes
 
+      # Exigences de revue du Marketplace GLPI : pas de SQL brut hors installation, et HTML ecrit en
+      # PHP qui ne peut que baisser (les nouveaux ecrans s'ecrivent en Twig). Voir le script.
+      - name: "Marketplace GLPI : SQL brut et Twig"
+        run: php .github/scripts/check-marketplace-readiness.php
+
   locales:
     name: "Locale Completeness"
     runs-on: ubuntu-latest
