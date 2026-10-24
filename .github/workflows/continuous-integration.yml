@@ -313,6 +313,10 @@ jobs:
       # (tests/security/access-matrix.sh), ou etre justifiee dans tests/security/not-covered.txt.
       - name: "Matrice d'acces : toutes les pages couvertes"
         run: sh .github/scripts/check-security-matrix-coverage.sh
+      # Exigences de revue du Marketplace GLPI : pas de SQL brut hors installation, et HTML ecrit en
+      # PHP qui ne peut que baisser (les nouveaux ecrans s'ecrivent en Twig). Voir le script.
+      - name: "Marketplace GLPI : SQL brut et Twig"
+        run: php .github/scripts/check-marketplace-readiness.php
 
   # Bloque une PR qui ajoute ou met a jour une dependance (composer, actions) ayant un avis de
   # securite connu - avant la fusion, la ou Dependabot ne previent qu'apres coup.
