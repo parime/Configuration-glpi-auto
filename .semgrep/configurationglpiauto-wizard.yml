@@ -74,6 +74,9 @@ rules:
         # Lecture seule des actions de regle (cible supprimee ?), aucune ecriture (issue #323).
         - /src/Audit/Checks/DictionaryRulesCheck.php
         - /src/AssetsignTriggerBuilder.php
+        # Issue #345 : coupe les notifications EN MEMOIRE le temps de l'import (retablies dans un
+        # finally), jamais en base ; front/jiraimport.php exige le droit natif ticket CREATE.
+        - /src/Jira/JiraImporter.php
     pattern-either:
       # Nouveau type d'actif personnalise (AssetDefinition::$rightname = 'config').
       - patterns:
