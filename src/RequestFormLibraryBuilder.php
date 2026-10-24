@@ -345,7 +345,7 @@ class RequestFormLibraryBuilder
      */
     public static function getFormNames(): array
     {
-        return array_values(array_map(static fn(array $form): string => $form['name'], self::definitions()));
+        return array_values(array_map(static fn (array $form): string => $form['name'], self::definitions()));
     }
 
     /**

@@ -60,7 +60,13 @@ final class RequestFormLibraryBuilderTest extends TestCase
         foreach ($this->tmpFiles as $file) {
             @unlink($file);
         }
-        unset($_POST);
+        // Seules les clés posées par uploadedFile() : $_POST doit rester un tableau pour les tests
+        // suivants (Request::createFromGlobals()).
+        foreach (array_keys($_POST) as $key) {
+            if (str_starts_with((string) $key, '_prefix_')) {
+                unset($_POST[$key]);
+            }
+        }
     }
 
     private function buildConfig(): Config
