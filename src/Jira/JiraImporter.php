@@ -75,8 +75,11 @@ final class JiraImporter
     public static function forgetPending(): void
     {
         $file = (string) ($_SESSION[self::SESSION_KEY]['file'] ?? '');
-        if ($file !== '' && is_file($file)) {
-            @unlink($file);
+        // Seul un fichier créé par storePending() (dossier temporaire de GLPI, nom imposé) est supprimé.
+        $isOurs = preg_match('/^jira-import-[0-9a-f]{16}\.csv$/', basename($file)) === 1
+            && realpath(dirname($file)) === realpath(GLPI_TMP_DIR);
+        if ($isOurs && is_file($file)) {
+            @unlink($file); // nosemgrep: php.lang.security.unlink-use.unlink-use
         }
         unset($_SESSION[self::SESSION_KEY]);
     }
