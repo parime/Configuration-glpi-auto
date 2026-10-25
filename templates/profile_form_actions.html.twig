@@ -1,0 +1,34 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Actions d'un profil de configuration : Blueprint enregistré, appliqué ou exporté (issue #355 : passé de PHP à Twig) #}
+<div class="mb-3 d-flex gap-2">
+   <form method="post" action="{{ action }}" class="d-inline">
+      <input type="hidden" name="id" value="{{ profile_id }}">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" name="save_snapshot" value="1" class="btn btn-outline-primary"><i class="ti ti-device-floppy"></i> {{ __('Enregistrer la configuration actuelle comme Blueprint', 'configurationglpiauto') }}</button>
+   </form>
+   {% if has_snapshot %}
+      <form method="post" action="{{ action }}" class="d-inline">
+         <input type="hidden" name="id" value="{{ profile_id }}">
+         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+         <button type="submit" name="apply_snapshot" value="1" class="btn btn-outline-primary"><i class="ti ti-wand"></i> {{ __('Appliquer ce Blueprint (via l\'assistant)', 'configurationglpiauto') }}</button>
+      </form>
+      <a class="btn btn-outline-primary" href="{{ export_url }}"><i class="ti ti-download"></i> {{ __('Exporter ce Blueprint (JSON)', 'configurationglpiauto') }}</a>
+   {% endif %}
+</div>
+{% if has_snapshot %}
+   <div class="alert alert-warning">{{ __('Ce fichier peut contenir des informations propres à votre organisation (adresses d\'entités...) : vérifiez son contenu avant de le partager.', 'configurationglpiauto') }}</div>
+{% endif %}

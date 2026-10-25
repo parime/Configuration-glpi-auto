@@ -1,0 +1,36 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #117 : export sélectif d'un Blueprint, réglages groupés par catégorie (issue #355 : passé de PHP à Twig) #}
+<div class="card"><div class="card-body">
+   <p class="text-muted">{{ __('Choisissez les réglages à inclure dans le fichier exporté, ou exportez l\'intégralité de la configuration.', 'configurationglpiauto') }}</p>
+   <form method="get" action="{{ action }}">
+      <input type="hidden" name="id" value="{{ profile_id }}">
+      <input type="hidden" name="export_snapshot" value="1">
+      {% for group in groups %}
+         <h3 class="mt-3">{{ group.label }}</h3>
+         {% for field in group.fields %}
+            <div class="form-check">
+               <input class="form-check-input" type="checkbox" name="fields[]" value="{{ field }}" id="field_{{ field }}" checked>
+               <label class="form-check-label" for="field_{{ field }}"><code>{{ field }}</code></label>
+            </div>
+         {% endfor %}
+      {% endfor %}
+      <div class="d-flex gap-2 mt-3">
+         <button type="submit" class="btn btn-primary"><i class="ti ti-download"></i> {{ __('Exporter la sélection', 'configurationglpiauto') }}</button>
+         <a class="btn btn-outline-primary" href="{{ export_all_url }}"><i class="ti ti-download"></i> {{ __('Exporter l\'intégralité', 'configurationglpiauto') }}</a>
+      </div>
+   </form>
+</div></div>

@@ -56,6 +56,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Profils** : après « Ajouter », la fiche du profil créé s'ouvre (comme les formulaires natifs)
+  au lieu d'un formulaire vide.
 - **Profils homonymes** : importer plusieurs fois le même Blueprint créait autant de profils du même
   nom, indiscernables à l'étape 1 de l'assistant. Un nom déjà pris reçoit désormais « (2) », « (3) »…
   et l'import le signale.
