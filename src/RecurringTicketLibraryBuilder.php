@@ -77,6 +77,31 @@ class RecurringTicketLibraryBuilder
                 . "- Tester sur un périmètre restreint avant déploiement large si possible\n"
                 . "- Documenter les mises à jour appliquées et les éventuels incidents",
         ],
+        // Issue #340 : revues récurrentes d'hygiène informatique.
+        [
+            'name' => 'Revue annuelle des privilèges d\'accès',
+            'content' => "Revue annuelle des comptes à privilèges (ISO 27001 A.5.18, A.8.2).\n\n"
+                . "- Lister les comptes administrateurs (domaine, serveurs, GLPI, applications, cloud)\n"
+                . "- Faire confirmer chaque privilège par le responsable de la personne ou de l'application\n"
+                . "- Retirer les privilèges non justifiés et vérifier l'authentification multifacteur\n"
+                . "- Joindre la liste validée à ce ticket comme preuve de la revue",
+        ],
+        [
+            'name' => 'Test de restauration des sauvegardes',
+            'content' => "Test périodique de restauration (ISO 27001 A.8.13).\n\n"
+                . "- Choisir un jeu de données ou une machine représentatif (pas toujours le même)\n"
+                . "- Restaurer dans un environnement isolé, sans écraser la production\n"
+                . "- Vérifier l'intégrité des données restaurées et mesurer la durée de restauration\n"
+                . "- Comparer cette durée à l'objectif de reprise (RTO) et consigner le résultat dans ce ticket",
+        ],
+        [
+            'name' => 'Revue des comptes de service',
+            'content' => "Revue des comptes techniques et de service.\n\n"
+                . "- Lister les comptes de service (applications, tâches planifiées, connecteurs, API)\n"
+                . "- Vérifier pour chacun le propriétaire, l'usage et les droits accordés\n"
+                . "- Renouveler les mots de passe ou secrets anciens et retirer les droits interactifs inutiles\n"
+                . "- Désactiver les comptes sans propriétaire ou sans usage",
+        ],
     ];
 
     /**

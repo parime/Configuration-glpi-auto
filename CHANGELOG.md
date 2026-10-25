@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Gabarits « cyber »** (issue #340) :
+  - trois gabarits de tâche d'hygiène informatique, en 6 langues : nettoyage d'un poste infecté,
+    accueil d'un prestataire externe, revue des privilèges d'accès ;
+  - trois modèles de tickets récurrents : revue annuelle des privilèges d'accès, test de
+    restauration des sauvegardes, revue des comptes de service.
+
 - **FAQ : 12 fiches de bonnes pratiques de sécurité** (issue #321), ajoutées à la FAQ du portail
   (case « Ajouter des articles de FAQ ») en 6 langues. Elles couvrent : mot de passe robuste, ne
   jamais partager son mot de passe, verrouiller sa session, moindre privilège, authentification
@@ -50,6 +56,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Profils homonymes** : importer plusieurs fois le même Blueprint créait autant de profils du même
+  nom, indiscernables à l'étape 1 de l'assistant. Un nom déjà pris reçoit désormais « (2) », « (3) »…
+  et l'import le signale.
 - Après l'import d'un Blueprint, et avec le bouton « Ajouter » de la liste des profils, la
   redirection menait à une page inexistante (`configurationprofile.form.php`). Elle mène désormais
   à la fiche du profil.

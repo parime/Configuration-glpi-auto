@@ -4795,3 +4795,7 @@ msgstr "Betriebssysteme"
 
 msgid "Visibles dans la FAQ du portail libre-service : comment utiliser le catalogue de services, comment signaler un incident ou faire une demande, et 12 fiches de bonnes pratiques de sécurité (mot de passe, hameçonnage, mises à jour, que faire en cas d'incident...)."
 msgstr "In den FAQ des Self-Service-Portals sichtbar: wie man den Servicekatalog nutzt, wie man einen Vorfall meldet oder eine Anfrage stellt, und 12 Artikel zu guter Sicherheitspraxis (Passwörter, Phishing, Updates, was bei einem Vorfall zu tun ist...)."
+
+#, php-format
+msgid "Un profil s'appelait déjà « %1$s » : le nouveau profil s'appelle « %2$s »."
+msgstr "Ein Profil hieß bereits „%1$s“: Das neue Profil heißt „%2$s“."
