@@ -69,6 +69,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Écrans en Twig** (issue #355, exigence du Marketplace GLPI) : import Jira, fiche profil et export
+  sélectif de Blueprint, import de Blueprint. Le HTML écrit en PHP passe de 211 à moins de 100 chaînes.
 - La barre de boutons de la page du plugin est rendue en Twig (exigence du Marketplace GLPI) : le
   HTML écrit en PHP passe de 231 à 211 chaînes.
 
