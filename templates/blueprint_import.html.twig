@@ -1,0 +1,31 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Import d'un Blueprint (JSON) comme nouveau profil (issue #355 : passé de PHP à Twig) #}
+<form method="post" action="{{ action }}" enctype="multipart/form-data" class="card">
+   <div class="card-body">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+      <div class="mb-3">
+         <label class="form-label" for="cga-blueprint-file">{{ __('Fichier Blueprint (.json)', 'configurationglpiauto') }}</label>
+         <input type="file" id="cga-blueprint-file" name="blueprint_file" accept=".json,application/json" class="form-control" required>
+      </div>
+      <div class="mb-3">
+         <label class="form-label" for="cga-blueprint-name">{{ __('Nom du profil (facultatif, repris du fichier sinon)', 'configurationglpiauto') }}</label>
+         <input type="text" id="cga-blueprint-name" name="name" class="form-control">
+      </div>
+      <div class="alert alert-warning">{{ __('N\'importez que des fichiers Blueprint dont vous connaissez la provenance : ce fichier reconfigurera votre instance une fois appliqué via l\'assistant.', 'configurationglpiauto') }}</div>
+      <button type="submit" name="import" value="1" class="btn btn-primary"><i class="ti ti-upload"></i> {{ __('Importer') }}</button>
+   </div>
+</form>

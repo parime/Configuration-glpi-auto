@@ -1,6 +1,5 @@
 # Chaines HTML ecrites en PHP, par fichier (genere par check-marketplace-readiness.php).
 # Ces nombres ne peuvent que baisser : les nouveaux ecrans s'ecrivent en Twig (templates/).
-front/blueprint_import.php 19
 front/history.php 12
 src/Audit/Checks/GhostAssetsCheck.php 3
 src/Audit/Checks/IncompleteAssetsCheck.php 7
