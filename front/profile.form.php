@@ -15,6 +15,7 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
 use GlpiPlugin\Configurationglpiauto\Blueprint\FieldGroupLabel;
 use GlpiPlugin\Configurationglpiauto\Config;
@@ -28,7 +29,11 @@ $item = new ConfigurationProfile();
 
 if (isset($_POST['add'])) {
     $item->check(-1, CREATE, $_POST);
-    $item->add($_POST);
+    $newID = $item->add($_POST);
+    // Comme les formulaires natifs : retour sur le profil créé plutôt que sur un formulaire vide.
+    if ($newID && $_SESSION['glpibackcreated']) {
+        Html::redirect($item->getLinkURL());
+    }
     Html::back();
 } elseif (isset($_POST['update'])) {
     $item->check($_POST['id'], UPDATE);
@@ -81,31 +86,22 @@ if (isset($_POST['add'])) {
         $content = $item->fields['snapshot'];
     } else {
         Html::header(__('Exporter ce Blueprint', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php'), 'config', ConfigurationProfile::class);
-        echo "<div class='card'><div class='card-body'>";
-        echo "<p class='text-muted'>" . __('Choisissez les réglages à inclure dans le fichier exporté, ou exportez l\'intégralité de la configuration.', 'configurationglpiauto') . "</p>";
-        echo "<form method='get' action='" . htmlspecialchars(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php')) . "'>";
-        echo Html::hidden('id', ['value' => $_GET['id']]);
-        echo Html::hidden('export_snapshot', ['value' => 1]);
         $groups = [];
         foreach (array_keys($decoded['config'] ?? []) as $field) {
             $groups[FieldGroupLabel::for($field)][] = $field;
         }
         ksort($groups);
-        foreach ($groups as $groupLabel => $groupFields) {
-            echo "<h3 class='mt-3'>" . htmlspecialchars($groupLabel) . "</h3>";
-            foreach ($groupFields as $field) {
-                echo "<div class='form-check'>";
-                echo "<input class='form-check-input' type='checkbox' name='fields[]' value='" . htmlspecialchars($field) . "' id='field_" . htmlspecialchars($field) . "' checked>";
-                echo "<label class='form-check-label' for='field_" . htmlspecialchars($field) . "'><code>" . htmlspecialchars($field) . "</code></label>";
-                echo "</div>";
-            }
-        }
-        echo "<div class='d-flex gap-2 mt-3'>";
-        echo "<button type='submit' class='btn btn-primary'><i class='ti ti-download'></i> " . __('Exporter la sélection', 'configurationglpiauto') . "</button>";
-        $exportAllUrl = \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php') . '?id=' . (int) $_GET['id'] . '&export_snapshot=1&all=1';
-        echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($exportAllUrl) . "'><i class='ti ti-download'></i> " . __('Exporter l\'intégralité', 'configurationglpiauto') . "</a>";
-        echo "</div>";
-        echo "</form></div></div>";
+        $formUrl = \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php');
+        TemplateRenderer::getInstance()->display('@configurationglpiauto/profile_export.html.twig', [
+            'action'         => $formUrl,
+            'profile_id'     => (int) $_GET['id'],
+            'groups'         => array_map(
+                static fn (string $label, array $fields): array => ['label' => $label, 'fields' => $fields],
+                array_keys($groups),
+                array_values($groups)
+            ),
+            'export_all_url' => $formUrl . '?id=' . (int) $_GET['id'] . '&export_snapshot=1&all=1',
+        ]);
         Html::footer();
         exit;
     }
@@ -122,33 +118,13 @@ if (isset($_POST['add'])) {
     $id = (int) ($_GET['id'] ?? 0);
     if ($id > 0) {
         $item->getFromDB($id);
-        echo "<div class='mb-3 d-flex gap-2'>";
-        echo "<form method='post' action='" . htmlspecialchars(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php')) . "' class='d-inline'>";
-        echo Html::hidden('id', ['value' => $id]);
-        echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
-        echo "<button type='submit' name='save_snapshot' value='1' class='btn btn-outline-primary'>";
-        echo "<i class='ti ti-device-floppy'></i> " . __('Enregistrer la configuration actuelle comme Blueprint', 'configurationglpiauto');
-        echo "</button>";
-        echo "</form>";
-        if (!empty($item->fields['snapshot'])) {
-            echo "<form method='post' action='" . htmlspecialchars(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php')) . "' class='d-inline'>";
-            echo Html::hidden('id', ['value' => $id]);
-            echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
-            echo "<button type='submit' name='apply_snapshot' value='1' class='btn btn-outline-primary'>";
-            echo "<i class='ti ti-wand'></i> " . __('Appliquer ce Blueprint (via l\'assistant)', 'configurationglpiauto');
-            echo "</button>";
-            echo "</form>";
-            $exportUrl = \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php') . '?id=' . $id . '&export_snapshot=1';
-            echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($exportUrl) . "'>";
-            echo "<i class='ti ti-download'></i> " . __('Exporter ce Blueprint (JSON)', 'configurationglpiauto');
-            echo "</a>";
-        }
-        echo "</div>";
-        if (!empty($item->fields['snapshot'])) {
-            echo "<div class='alert alert-warning'>";
-            echo __('Ce fichier peut contenir des informations propres à votre organisation (adresses d\'entités...) : vérifiez son contenu avant de le partager.', 'configurationglpiauto');
-            echo "</div>";
-        }
+        $formUrl = \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php');
+        TemplateRenderer::getInstance()->display('@configurationglpiauto/profile_form_actions.html.twig', [
+            'action'       => $formUrl,
+            'profile_id'   => $id,
+            'has_snapshot' => !empty($item->fields['snapshot']),
+            'export_url'   => $formUrl . '?id=' . $id . '&export_snapshot=1',
+        ]);
     }
     $item->showForm($id);
     Html::footer();
