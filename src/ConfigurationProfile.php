@@ -121,13 +121,48 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
         if (empty($input['type']) || !array_key_exists($input['type'], self::getTypes())) {
             $input['type'] = 'custom';
         }
+        // Deux profils du même nom sont indiscernables à l'étape 1 de l'assistant (importer deux
+        // fois le même Blueprint en créait autant de copies homonymes).
+        if (isset($input['name'])) {
+            $input['name'] = self::availableName((string) $input['name']);
+        }
 
         return $input;
     }
 
     public function prepareInputForUpdate($input)
     {
-        return $this->prepareInputForAdd($input);
+        if (empty($input['type']) || !array_key_exists($input['type'], self::getTypes())) {
+            $input['type'] = 'custom';
+        }
+        if (isset($input['name'])) {
+            $input['name'] = self::availableName((string) $input['name'], (int) ($input['id'] ?? $this->getID()));
+        }
+
+        return $input;
+    }
+
+    /**
+     * Nom libre pour un profil : le nom demandé, ou « nom (2) », « nom (3) »… s'il est déjà pris
+     * par un autre profil.
+     */
+    public static function availableName(string $name, int $exceptId = 0): string
+    {
+        $name = trim($name);
+        $taken = static function (string $candidate) use ($exceptId): bool {
+            $criteria = ['name' => $candidate];
+            if ($exceptId > 0) {
+                $criteria['NOT'] = ['id' => $exceptId];
+            }
+
+            return countElementsInTable(self::getTable(), $criteria) > 0;
+        };
+        $candidate = $name;
+        for ($i = 2; $taken($candidate); $i++) {
+            $candidate = sprintf('%s (%d)', $name, $i);
+        }
+
+        return $candidate;
     }
 
     /**

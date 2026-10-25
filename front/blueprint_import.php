@@ -68,6 +68,13 @@ if (isset($_POST['import'])) {
     ]);
 
     Session::addMessageAfterRedirect(__('Blueprint importé comme nouveau profil.', 'configurationglpiauto'));
+    if ($profile->fields['name'] !== $name) {
+        Session::addMessageAfterRedirect(htmlescape(sprintf(
+            __('Un profil s\'appelait déjà « %1$s » : le nouveau profil s\'appelle « %2$s ».', 'configurationglpiauto'),
+            $name,
+            $profile->fields['name']
+        )), false, WARNING);
+    }
     Html::redirect(ConfigurationProfile::getFormURL() . '?id=' . $profile->getID());
 }
 

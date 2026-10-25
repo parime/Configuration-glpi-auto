@@ -64,11 +64,11 @@ final class TaskTemplateBuilderTest extends TestCase
         $this->assertSame(0, $count);
     }
 
-    public function testBuildEnsuresAllThreeTemplatesExistLinkedToTheRightCategory(): void
+    public function testBuildEnsuresAllTemplatesExistLinkedToTheRightCategory(): void
     {
         $count = (new TaskTemplateBuilder())->build($this->buildConfig(true));
 
-        $this->assertSame(3, $count);
+        $this->assertSame(count(TaskTemplateBuilder::getLibraryPreview()), $count);
 
         $category = new TaskCategory();
         $category->getFromDBByCrit(['name' => self::CATEGORY_NAME, 'taskcategories_id' => 0]);
@@ -80,13 +80,30 @@ final class TaskTemplateBuilderTest extends TestCase
         $this->assertStringContainsString('CHECKLIST ONBOARDING', $template->fields['content']);
     }
 
+    /**
+     * Issue #340 : gabarits d'hygiène informatique, rangés dans « Sécurité & Audit ».
+     */
+    public function testSecurityHygieneTemplatesAreCreatedInTheSecurityCategory(): void
+    {
+        (new TaskTemplateBuilder())->build($this->buildConfig(true));
+
+        $category = new TaskCategory();
+        $this->assertTrue($category->getFromDBByCrit(['name' => 'Sécurité & Audit', 'taskcategories_id' => 0]));
+        $template = new TaskTemplate();
+        $this->assertTrue($template->getFromDBByCrit(['name' => 'Sécurité — Nettoyage d\'un poste infecté']));
+        $this->assertSame((int) $category->getID(), (int) $template->fields['taskcategories_id']);
+        $this->assertStringContainsString('Isoler le poste du réseau', $template->fields['content']);
+        $this->assertTrue((new TaskTemplate())->getFromDBByCrit(['name' => 'Sécurité — Accueil d\'un prestataire externe']));
+        $this->assertTrue((new TaskTemplate())->getFromDBByCrit(['name' => 'Sécurité — Revue des privilèges d\'accès']));
+    }
+
     public function testBuildIsIdempotentAndDoesNotDuplicateTemplates(): void
     {
         $builder = new TaskTemplateBuilder();
         $builder->build($this->buildConfig(true));
         $second = $builder->build($this->buildConfig(true));
 
-        $this->assertSame(3, $second);
+        $this->assertSame(count(TaskTemplateBuilder::getLibraryPreview()), $second);
 
         global $DB;
         $count = $DB->request(['FROM' => TaskTemplate::getTable(), 'WHERE' => ['name' => self::NAME]])->count();

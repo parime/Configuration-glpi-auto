@@ -79,11 +79,16 @@ final class RecurringTicketLibraryBuilderTest extends TestCase
      */
     public function testNeverActivatesTicketRecurrent(): void
     {
+        global $DB;
+        // Compare avant / après : l'instance peut déjà avoir des tickets récurrents (autres plugins).
+        $count = static fn (): int => (int) $DB->request([
+            'COUNT' => 'c',
+            'FROM'  => 'glpi_ticketrecurrents',
+        ])->current()['c'];
+        $before = $count();
         (new RecurringTicketLibraryBuilder())->build($this->buildConfig(true));
 
-        global $DB;
-        $count = $DB->request(['COUNT' => 'c', 'FROM' => 'glpi_ticketrecurrents'])->current()['c'];
-        $this->assertSame(0, $count);
+        $this->assertSame($before, $count());
     }
 
     public function testBuildIsIdempotent(): void
