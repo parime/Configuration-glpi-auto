@@ -1,0 +1,65 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #338 : récapitulatif avant le déploiement direct de la configuration chargée. #}
+<div class="card">
+  <div class="card-header">
+    <h2 class="card-title"><i class="ti ti-rocket me-2"></i>{{ __('Déployer la configuration', 'configurationglpiauto') }}</h2>
+  </div>
+  <div class="card-body">
+    <p>{{ __('La configuration chargée (Blueprint importé ou sauvegarde restaurée) va être déployée exactement comme avec le bouton « Terminer » de l\'assistant : entités, catégories, statuts, SLA, formulaires et réglages activés ci-dessous. Les éléments déjà présents sont réutilisés, rien n\'est supprimé.', 'configurationglpiauto') }}</p>
+
+    <h3 class="mt-3">{{ __('Ce qui sera déployé', 'configurationglpiauto') }}</h3>
+    {% if entities > 0 %}
+      <p><i class="ti ti-sitemap me-1"></i>{{ _n('%d entité de premier niveau (client ou site)', '%d entités de premier niveau (clients ou sites)', entities, 'configurationglpiauto')|format(entities) }}</p>
+    {% endif %}
+    {% if groups is empty %}
+      <div class="alert alert-warning"><i class="ti ti-alert-triangle me-1"></i>{{ __('Aucune fonctionnalité n\'est activée dans cette configuration.', 'configurationglpiauto') }}</div>
+    {% else %}
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        {% for label, names in groups %}
+          <span class="badge bg-blue-lt" title="{{ names|join(', ') }}"><i class="ti ti-check me-1"></i>{{ label }} ({{ names|length }})</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <h3 class="mt-3">{{ __('Vos droits GLPI', 'configurationglpiauto') }}</h3>
+    <ul class="list-unstyled">
+      {% for right in rights %}
+        <li class="mb-1">
+          {% if right.ok %}
+            <i class="ti ti-circle-check text-green me-1"></i>{{ right.label }}
+          {% else %}
+            <i class="ti ti-alert-triangle text-orange me-1"></i><strong>{{ right.label }}</strong>
+            <span class="text-muted">— {{ __('manquant : partie ignorée', 'configurationglpiauto') }} ({{ right.hint }})</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <form method="post" action="{{ wizard_url }}" class="mt-3">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+      {% for name, value in fields %}
+        <input type="hidden" name="{{ name }}" value="{{ value }}">
+      {% endfor %}
+      <div class="d-flex gap-2">
+        <button type="submit" name="finish" value="1" class="btn btn-primary" onclick="return confirm('{{ __('Lancer le déploiement maintenant ?', 'configurationglpiauto')|e('js') }}');">
+          <i class="ti ti-rocket me-1"></i>{{ __('Déployer maintenant', 'configurationglpiauto') }}
+        </button>
+        <a href="{{ wizard_url }}" class="btn btn-outline-secondary"><i class="ti ti-wand me-1"></i>{{ __('Revoir dans l\'assistant', 'configurationglpiauto') }}</a>
+        <a href="{{ restore_url }}" class="btn btn-link">{{ __('Annuler', 'configurationglpiauto') }}</a>
+      </div>
+    </form>
+  </div>
+</div>

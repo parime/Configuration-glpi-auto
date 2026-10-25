@@ -55,6 +55,12 @@ final class FieldGroupLabel
             'country' => __('Jours fériés', 'configurationglpiauto'), 'vip' => __('Groupe VIP', 'configurationglpiauto'), 'tag' => __('Étiquettes', 'configurationglpiauto'), 'fire' => __('Sécurité incendie', 'configurationglpiauto'),
             'physical' => __('Sécurité physique', 'configurationglpiauto'), 'general' => __('Réglages généraux', 'configurationglpiauto'), 'financial' => __('Informations financières', 'configurationglpiauto'),
             'inventory' => __('Inventaire', 'configurationglpiauto'), 'request' => __('Types de requête', 'configurationglpiauto'),
+            // Issue #338 : préfixes affichés bruts jusque-là (« Os », « Dropdown »...) dans le récapitulatif du déploiement.
+            'custom' => __('Personnalisation', 'configurationglpiauto'), 'support' => __('Groupes de support', 'configurationglpiauto'),
+            'dashboard' => __('Tableaux de bord', 'configurationglpiauto'), 'audit' => __('Audit de configuration', 'configurationglpiauto'),
+            'locations' => __('Lieux', 'configurationglpiauto'), 'manufacturers' => __('Fabricants', 'configurationglpiauto'),
+            'os' => __('Systèmes d\'exploitation','configurationglpiauto'), 'dropdown' => __('Unicité des intitulés', 'configurationglpiauto'),
+            'assetsign' => __('Déclencheurs assetsign', 'configurationglpiauto'),
         ];
     }
 

@@ -46,10 +46,10 @@ if (!is_array($decoded)) {
     Html::back();
 }
 
-if (isset($_POST['restore_all']) || isset($_POST['restore_selected'])) {
+if (isset($_POST['restore_all']) || isset($_POST['restore_selected']) || isset($_POST['restore_and_deploy'])) {
     Session::checkRight(Config::$rightname, UPDATE);
 
-    $onlyFields = isset($_POST['restore_selected'])
+    $onlyFields = isset($_POST['restore_selected']) || isset($_POST['restore_and_deploy'])
         ? array_map('strval', (array) ($_POST['fields'] ?? []))
         : null;
 
@@ -60,6 +60,10 @@ if (isset($_POST['restore_all']) || isset($_POST['restore_selected'])) {
     $fields = BlueprintSerializer::import($decoded, Config::getDefaults(), $onlyFields);
     $config->update($fields + ['id' => $config->getID()]);
 
+    // Issue #338 : enchaîne directement sur le récapitulatif du déploiement.
+    if (isset($_POST['restore_and_deploy'])) {
+        Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('deploy.php'));
+    }
     Session::addMessageAfterRedirect(__('Restauration appliquée. Vérifiez chaque étape avant de valider.', 'configurationglpiauto'));
     Html::redirect(ConfigurationProfile::getSearchURL());
 }
@@ -91,6 +95,8 @@ $autoCorrections = BlueprintSerializer::diff($fullyDefaulted, $sanitized);
     'groups'           => $groups,
     'auto_corrections' => $autoCorrections,
     'csrf_token'       => Session::getNewCSRFToken(),
+    'deploy_url'       => \GlpiPlugin\Configurationglpiauto\FrontUrl::get('deploy.php'),
+    'can_deploy'       => Session::haveRight(Config::$rightname, UPDATE),
 ]);
 
 Html::footer();

@@ -54,6 +54,18 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
         return $dir . '/plugins/configurationglpiauto/front/wizard.php';
     }
 
+    // Le coeur deduirait "front/configurationprofile.form.php" du nom de la classe, page qui
+    // n'existe pas : la fiche est front/profile.form.php (retour apres import d'un Blueprint,
+    // bouton « Ajouter » de la liste).
+    public static function getFormURL($full = true)
+    {
+        global $CFG_GLPI;
+
+        $dir = $full ? $CFG_GLPI['root_doc'] : '';
+
+        return $dir . '/plugins/configurationglpiauto/front/profile.form.php';
+    }
+
     public static function getTypeName($nb = 0): string
     {
         return _n('Profil de configuration', 'Profils de configuration', $nb, 'configurationglpiauto');

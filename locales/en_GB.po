@@ -4640,3 +4640,60 @@ msgid "%d adresse inventoriée hors de tout réseau déclaré"
 msgid_plural "%d adresses inventoriées hors de tout réseau déclaré"
 msgstr[0] "%d inventoried address outside any declared network"
 msgstr[1] "%d inventoried addresses outside any declared network"
+
+msgid "Déployer la configuration"
+msgstr "Deploy the configuration"
+
+msgid "La configuration chargée (Blueprint importé ou sauvegarde restaurée) va être déployée exactement comme avec le bouton « Terminer » de l'assistant : entités, catégories, statuts, SLA, formulaires et réglages activés ci-dessous. Les éléments déjà présents sont réutilisés, rien n'est supprimé."
+msgstr "The loaded configuration (imported Blueprint or restored backup) will be deployed exactly as with the wizard's \"Finish\" button: entities, categories, statuses, SLAs, forms and the settings enabled below. Existing items are reused, nothing is deleted."
+
+msgid "Ce qui sera déployé"
+msgstr "What will be deployed"
+
+msgid "Aucune fonctionnalité n'est activée dans cette configuration."
+msgstr "No feature is enabled in this configuration."
+
+msgid "Vos droits GLPI"
+msgstr "Your GLPI rights"
+
+msgid "manquant : partie ignorée"
+msgstr "missing: this part is skipped"
+
+msgid "Lancer le déploiement maintenant ?"
+msgstr "Start the deployment now?"
+
+msgid "Déployer maintenant"
+msgstr "Deploy now"
+
+msgid "Revoir dans l'assistant"
+msgstr "Review in the wizard"
+
+msgid "Déployer cette configuration"
+msgstr "Deploy this configuration"
+
+msgid "Applique la sélection puis affiche le récapitulatif du déploiement, sans repasser par l'assistant"
+msgstr "Applies the selection, then shows the deployment summary, without going through the wizard again"
+
+msgid "Appliquer la sélection et déployer"
+msgstr "Apply the selection and deploy"
+
+#, php-format
+msgid "%d entité de premier niveau (client ou site)"
+msgid_plural "%d entités de premier niveau (clients ou sites)"
+msgstr[0] "%d top-level entity (client or site)"
+msgstr[1] "%d top-level entities (clients or sites)"
+
+msgid "Groupes de support"
+msgstr "Support groups"
+
+msgid "Tableaux de bord"
+msgstr "Dashboards"
+
+msgid "Unicité des intitulés"
+msgstr "Unique dropdown names"
+
+msgid "Déclencheurs assetsign"
+msgstr "assetsign triggers"
+
+msgid "Systèmes d'exploitation"
+msgstr "Operating systems"

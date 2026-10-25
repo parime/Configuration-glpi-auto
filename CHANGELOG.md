@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Déploiement direct d'un Blueprint, mode MSP** (issue #338) : une configuration exportée d'une
+  instance se déploie sur une autre sans repasser par les étapes de l'assistant :
+  - à l'application d'un Blueprint, le nouveau bouton **« Appliquer la sélection et déployer »**
+    enchaîne sur un écran récapitulatif. Une configuration déjà identique propose directement
+    « Déployer cette configuration » ;
+  - le **récapitulatif** indique le nombre d'entités de premier niveau (clients ou sites), les
+    fonctionnalités activées par thème et les droits GLPI natifs du compte. Un droit manquant
+    signale la partie qui sera ignorée ;
+  - « Déployer maintenant » (avec confirmation) lance exactement le déploiement du bouton
+    « Terminer » de l'assistant : mêmes contrôles, même historique pour annuler, rien n'est
+    supprimé.
 - **Plan d'adressage : réseaux IP et VLAN par site** (issue #343), bouton « Plan d'adressage (réseaux
   et VLAN) » sur la page du plugin, et lien depuis l'étape « Lieux » de l'assistant :
   - tableau collé depuis un tableur ou fichier CSV (site, VLAN, nom, réseau, passerelle, rôle ;
@@ -28,6 +39,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   chevauchent sans être rattachés l'un à l'autre (même plage dans deux entités, partenaire relié
   par VPN), VLAN sans réseau IP, adresses inventoriées hors de tout réseau déclaré. Chaque constat
   renvoie vers les éléments concernés ; rien n'est corrigé automatiquement.
+
+### Fixed
+
+- Après l'import d'un Blueprint, et avec le bouton « Ajouter » de la liste des profils, la
+  redirection menait à une page inexistante (`configurationprofile.form.php`). Elle mène désormais
+  à la fiche du profil.
+- Le regroupement des réglages (écran d'application et récapitulatif) affichait certains préfixes
+  bruts (« Os », « Dropdown », « Locations »…). Ils ont maintenant un libellé traduit.
 
 ### Changed
 
