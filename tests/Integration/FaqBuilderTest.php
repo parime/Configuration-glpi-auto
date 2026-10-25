@@ -19,6 +19,7 @@ namespace GlpiPlugin\Configurationglpiauto\Tests\Integration;
 
 use Entity_KnowbaseItem;
 use GlpiPlugin\Configurationglpiauto\Config;
+use GlpiPlugin\Configurationglpiauto\Faq\HygieneArticlesFr;
 use GlpiPlugin\Configurationglpiauto\FaqBuilder;
 use KnowbaseItem;
 use KnowbaseItemTranslation;
@@ -34,9 +35,19 @@ final class FaqBuilderTest extends TestCase
         "Signaler un incident ou faire une demande : quelle différence et comment s'y prendre",
     ];
 
+    /**
+     * Articles d'usage, puis (issue #321) les fiches de bonnes pratiques de sécurité.
+     *
+     * @return list<string>
+     */
+    private static function names(): array
+    {
+        return array_merge(self::NAMES, array_column(HygieneArticlesFr::ARTICLES, 'name'));
+    }
+
     protected function tearDown(): void
     {
-        foreach (self::NAMES as $name) {
+        foreach (self::names() as $name) {
             $item = new KnowbaseItem();
             if ($item->getFromDBByCrit(['name' => $name])) {
                 $id = (int) $item->getID();
@@ -70,9 +81,9 @@ final class FaqBuilderTest extends TestCase
         $config->fields = array_merge(Config::getDefaults(), ['kb_faq_enabled' => 1]);
 
         $created = (new FaqBuilder())->build($config);
-        $this->assertSame(2, $created);
+        $this->assertSame(count(self::names()), $created);
 
-        foreach (self::NAMES as $name) {
+        foreach (self::names() as $name) {
             $item = new KnowbaseItem();
             $this->assertTrue($item->getFromDBByCrit(['name' => $name]));
             $this->assertSame(1, (int) $item->fields['is_faq']);

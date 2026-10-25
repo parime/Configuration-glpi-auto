@@ -4792,3 +4792,6 @@ msgstr "assetsign-Auslöser"
 
 msgid "Systèmes d'exploitation"
 msgstr "Betriebssysteme"
+
+msgid "Visibles dans la FAQ du portail libre-service : comment utiliser le catalogue de services, comment signaler un incident ou faire une demande, et 12 fiches de bonnes pratiques de sécurité (mot de passe, hameçonnage, mises à jour, que faire en cas d'incident...)."
+msgstr "In den FAQ des Self-Service-Portals sichtbar: wie man den Servicekatalog nutzt, wie man einen Vorfall meldet oder eine Anfrage stellt, und 12 Artikel zu guter Sicherheitspraxis (Passwörter, Phishing, Updates, was bei einem Vorfall zu tun ist...)."
