@@ -18,7 +18,6 @@
 namespace GlpiPlugin\Configurationglpiauto\Tests\Unit;
 
 use GlpiPlugin\Configurationglpiauto\Faq\HygieneArticles;
-use GlpiPlugin\Configurationglpiauto\Faq\HygieneArticlesFr;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,7 +39,7 @@ final class HygieneArticlesTest extends TestCase
         $this->assertCount(12, $articles);
 
         foreach ($articles as $index => $article) {
-            $this->assertSame(HygieneArticlesFr::ARTICLES[$index]['name'], $article['name']);
+            $this->assertSame(HygieneArticles::forLanguage('fr_FR')[$index]['name'], $article['name']);
             $this->assertSame(['en_GB', 'de_DE', 'it_IT', 'es_ES', 'pt_BR'], array_keys($article['translations']));
             foreach ($article['translations'] as $language => $translation) {
                 $this->assertNotSame('', trim($translation['name']), "$language #$index");

@@ -19,7 +19,7 @@ namespace GlpiPlugin\Configurationglpiauto\Tests\Integration;
 
 use Entity_KnowbaseItem;
 use GlpiPlugin\Configurationglpiauto\Config;
-use GlpiPlugin\Configurationglpiauto\Faq\HygieneArticlesFr;
+use GlpiPlugin\Configurationglpiauto\Faq\HygieneArticles;
 use GlpiPlugin\Configurationglpiauto\FaqBuilder;
 use KnowbaseItem;
 use KnowbaseItemTranslation;
@@ -42,7 +42,7 @@ final class FaqBuilderTest extends TestCase
      */
     private static function names(): array
     {
-        return array_merge(self::NAMES, array_column(HygieneArticlesFr::ARTICLES, 'name'));
+        return array_merge(self::NAMES, array_column(HygieneArticles::forLanguage('fr_FR'), 'name'));
     }
 
     protected function tearDown(): void

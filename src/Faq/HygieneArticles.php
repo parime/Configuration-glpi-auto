@@ -20,19 +20,27 @@ namespace GlpiPlugin\Configurationglpiauto\Faq;
 /**
  * Issue #321 : fiches de bonnes pratiques de sécurité (mot de passe, verrouillage, hameçonnage,
  * mises à jour...), ajoutées à la FAQ du portail avec ses deux articles d'usage (FaqBuilder).
- * Le texte source est en français ; chaque langue est une classe à part, dans le même ordre, pour
- * qu'une traduction se relise et se corrige sans toucher aux autres.
+ * Le contenu est dans data/faq-hygiene/<langue>.json (texte source en français, même ordre dans
+ * chaque langue) : un contenu éditorial, pas du HTML d'écran écrit en PHP.
  */
 final class HygieneArticles
 {
-    /** Langue GLPI => classe portant la traduction. */
-    private const TRANSLATIONS = [
-        'en_GB' => HygieneArticlesEn::class,
-        'de_DE' => HygieneArticlesDe::class,
-        'it_IT' => HygieneArticlesIt::class,
-        'es_ES' => HygieneArticlesEs::class,
-        'pt_BR' => HygieneArticlesPtBr::class,
-    ];
+    private const SOURCE = 'fr_FR';
+
+    private const TRANSLATIONS = ['en_GB', 'de_DE', 'it_IT', 'es_ES', 'pt_BR'];
+
+    /**
+     * Articles d'une langue, dans l'ordre du texte source.
+     *
+     * @return list<array{name: string, answer: string}>
+     */
+    public static function forLanguage(string $language): array
+    {
+        $file = dirname(__DIR__, 2) . '/data/faq-hygiene/' . basename($language) . '.json';
+        $decoded = is_file($file) ? json_decode((string) file_get_contents($file), true) : null;
+
+        return is_array($decoded) ? array_values($decoded) : [];
+    }
 
     /**
      * Même forme que FaqBuilder::ARTICLES.
@@ -41,11 +49,17 @@ final class HygieneArticles
      */
     public static function all(): array
     {
+        $translated = [];
+        foreach (self::TRANSLATIONS as $language) {
+            $translated[$language] = self::forLanguage($language);
+        }
         $articles = [];
-        foreach (HygieneArticlesFr::ARTICLES as $index => $source) {
+        foreach (self::forLanguage(self::SOURCE) as $index => $source) {
             $translations = [];
-            foreach (self::TRANSLATIONS as $language => $class) {
-                $translations[$language] = $class::ARTICLES[$index];
+            foreach ($translated as $language => $list) {
+                if (isset($list[$index])) {
+                    $translations[$language] = $list[$index];
+                }
             }
             $articles[] = $source + ['translations' => $translations];
         }
