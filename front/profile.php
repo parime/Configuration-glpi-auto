@@ -15,49 +15,35 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Application\View\TemplateRenderer;
+use GlpiPlugin\Configurationglpiauto\AddressPlan\AddressPlanImporter;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
+use GlpiPlugin\Configurationglpiauto\FrontUrl;
 
 Session::checkRight(ConfigurationProfile::$rightname, READ);
 
-Html::header(ConfigurationProfile::getTypeName(2), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.php'), 'config', ConfigurationProfile::class);
+Html::header(ConfigurationProfile::getTypeName(2), FrontUrl::get('profile.php'), 'config', ConfigurationProfile::class);
 
-// Search::show() alone generates no create link (same pitfall documented on remise-glpi).
-global $CFG_GLPI;
-echo "<div class='mb-3 d-flex gap-2'>";
-echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/wizard.php') . "'>";
-echo "<i class='ti ti-wand'></i> " . __('Lancer l\'assistant de configuration', 'configurationglpiauto');
-echo "</a>";
-// Issue #112 ("Mode Audit avancé") : même emplacement/style que le bouton assistant ci-dessus,
-// pas de nouvelle entrée de menu séparée. Masqué sans le droit natif 'config' READ, que
-// front/audit.php exige (audit de toute l'instance).
-if (Session::haveRight(Config::$rightname, READ) && Session::haveRight('config', READ)) {
-    echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/audit.php') . "'>";
-    echo "<i class='ti ti-stethoscope'></i> " . __('Lancer l\'audit', 'configurationglpiauto');
-    echo "</a>";
-}
-// Issue #113 ("Système de Blueprints") : même emplacement/style que les boutons ci-dessus.
-if (ConfigurationProfile::canCreate()) {
-    echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/blueprint_import.php') . "'>";
-    echo "<i class='ti ti-upload'></i> " . __('Importer un Blueprint (JSON)', 'configurationglpiauto');
-    echo "</a>";
-}
-// Issue #345 : import de tickets Jira (CSV), mêmes droits que la page elle-même.
-if (Session::haveRight(Config::$rightname, UPDATE) && Session::haveRight(Ticket::$rightname, CREATE)) {
-    echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/jiraimport.php') . "'>";
-    echo "<i class='ti ti-transfer-in'></i> " . __('Importer depuis Jira (CSV)', 'configurationglpiauto');
-    echo "</a>";
-}
-// Issue #114 ("Fonctionnalité de Rollback") : même emplacement/style que les boutons ci-dessus.
-echo "<a class='btn btn-outline-primary' href='" . htmlspecialchars($CFG_GLPI['root_doc'] . '/plugins/configurationglpiauto/front/history.php') . "'>";
-echo "<i class='ti ti-history'></i> " . __('Historique & Rollback', 'configurationglpiauto');
-echo "</a>";
-if (ConfigurationProfile::canCreate()) {
-    echo "<a class='btn btn-primary' href='" . htmlspecialchars(ConfigurationProfile::getFormURL()) . "'>";
-    echo "<i class='ti ti-plus'></i> " . __('Ajouter');
-    echo "</a>";
-}
-echo "</div>";
+// Search::show() alone generates no create link (same pitfall documented on remise-glpi). Chaque
+// bouton n'apparaît qu'avec les droits que sa page exige.
+TemplateRenderer::getInstance()->display('@configurationglpiauto/profile_actions.html.twig', [
+    'wizard_url'       => FrontUrl::get('wizard.php'),
+    // Issue #112 : audit de toute l'instance, exige aussi le droit natif 'config' en lecture.
+    'audit_url'        => Session::haveRight(Config::$rightname, READ) && Session::haveRight('config', READ)
+        ? FrontUrl::get('audit.php') : null,
+    // Issue #113 : import d'un Blueprint.
+    'blueprint_url'    => ConfigurationProfile::canCreate() ? FrontUrl::get('blueprint_import.php') : null,
+    // Issue #345 : import de tickets Jira (CSV).
+    'jira_url'         => Session::haveRight(Config::$rightname, UPDATE) && Session::haveRight(Ticket::$rightname, CREATE)
+        ? FrontUrl::get('jiraimport.php') : null,
+    // Issue #343 : plan d'adressage (réseaux IP et VLAN par site).
+    'address_plan_url' => Session::haveRight(Config::$rightname, UPDATE) && AddressPlanImporter::canImport()
+        ? FrontUrl::get('addressplan.php') : null,
+    // Issue #114 : historique et retour arrière.
+    'history_url'      => FrontUrl::get('history.php'),
+    'add_url'          => ConfigurationProfile::canCreate() ? ConfigurationProfile::getFormURL() : null,
+]);
 
 Search::show(ConfigurationProfile::class);
 

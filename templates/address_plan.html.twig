@@ -1,0 +1,122 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #343 : plan d'adressage — réseaux IP et VLAN par site, collés depuis un tableur ou importés en CSV #}
+<div class="container-fluid">
+   <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+      <h2 class="mb-0"><i class="ti ti-network me-1"></i>{{ __('Plan d\'adressage', 'configurationglpiauto') }}</h2>
+      <a class="btn btn-outline-secondary ms-auto" href="{{ back_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Retour', 'configurationglpiauto') }}</a>
+   </div>
+
+   <div class="alert alert-info">
+      <i class="ti ti-info-circle me-1"></i>{{ __('Déclarez les réseaux IP et VLAN de chaque site. Ils sont créés comme objets natifs de GLPI (Configuration > Intitulés > VLAN, et Réseaux IP), reliés entre eux et rattachés à l\'entité du site. Relancer l\'import met à jour les noms au lieu de dupliquer.', 'configurationglpiauto') }}
+   </div>
+
+   {% if result %}
+      <div class="alert {{ result.errors is empty ? 'alert-success' : 'alert-warning' }}">
+         <i class="ti ti-circle-check me-1"></i>{{ __('%1$d VLAN créé(s), %2$d mis à jour ; %3$d réseau(x) créé(s), %4$d mis à jour.', 'configurationglpiauto')|format(result.vlans_created, result.vlans_updated, result.networks_created, result.networks_updated) }}
+         {% for error in result.errors %}<div>{{ error }}</div>{% endfor %}
+      </div>
+   {% endif %}
+
+   <div class="row g-3">
+      <div class="col-lg-8">
+         <div class="card h-100">
+            <div class="card-header"><h3 class="card-title"><i class="ti ti-table-import me-1"></i>{{ __('Tableau du plan', 'configurationglpiauto') }}</h3></div>
+            <div class="card-body">
+               <form method="post" action="{{ action }}" enctype="multipart/form-data">
+                  <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                  <p class="text-muted small mb-2">{{ __('Colonnes : site, VLAN, nom, réseau, passerelle, rôle. Copiez-collez depuis un tableur (la première ligne peut porter les titres), ou choisissez un fichier CSV.', 'configurationglpiauto') }}</p>
+                  <textarea class="form-control font-monospace" name="plan" rows="12" aria-label="{{ __('Tableau du plan', 'configurationglpiauto') }}" placeholder="site&#9;vlan&#9;nom&#9;reseau&#9;passerelle&#9;role&#10;Siège&#9;10&#9;Postes&#9;192.0.2.0/24&#9;192.0.2.1&#9;workstations">{{ text }}</textarea>
+                  <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+                     <input type="file" class="form-control w-auto" name="plan_file" accept=".csv,.txt,text/csv,text/plain" aria-label="{{ __('Fichier CSV', 'configurationglpiauto') }}">
+                     <button type="submit" name="preview" value="1" class="btn btn-primary"><i class="ti ti-eye me-1"></i>{{ __('Aperçu', 'configurationglpiauto') }}</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-4">
+         <div class="card h-100">
+            <div class="card-header"><h3 class="card-title"><i class="ti ti-template me-1"></i>{{ __('Modèle pour un nouveau site', 'configurationglpiauto') }}</h3></div>
+            <div class="card-body">
+               <form method="post" action="{{ action }}">
+                  <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                  <p class="text-muted small">{{ __('Un VLAN et un réseau /24 par usage : postes, serveurs, voix, imprimantes, administration, invités isolés, DMZ. Le tableau est rempli pour être relu et modifié avant l\'aperçu.', 'configurationglpiauto') }}</p>
+                  <label class="form-label" for="template_site">{{ __('Site', 'configurationglpiauto') }}</label>
+                  <input type="text" class="form-control mb-2" id="template_site" name="template_site" value="{{ template_site }}" list="cga-sites" required>
+                  <datalist id="cga-sites">{% for site in sites %}<option value="{{ site }}">{% endfor %}</datalist>
+                  <label class="form-label" for="template_base">{{ __('Réseau du site (/16)', 'configurationglpiauto') }}</label>
+                  <input type="text" class="form-control mb-2" id="template_base" name="template_base" value="{{ template_base }}" placeholder="10.20.0.0/16" required>
+                  {% if template_error %}<div class="text-danger small mb-2">{{ __('Indiquez un site et un réseau IPv4 en /16, par exemple 10.20.0.0/16.', 'configurationglpiauto') }}</div>{% endif %}
+                  <button type="submit" name="make_template" value="1" class="btn btn-outline-primary"><i class="ti ti-wand me-1"></i>{{ __('Remplir le tableau', 'configurationglpiauto') }}</button>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   {% if rows is not null %}
+      <div class="card mt-3">
+         <div class="card-header d-flex flex-wrap align-items-center gap-2">
+            <h3 class="card-title mb-0"><i class="ti ti-list-check me-1"></i>{{ __('Aperçu', 'configurationglpiauto') }}</h3>
+            <span class="badge bg-green-lt">{{ __('%d ligne(s) valide(s)', 'configurationglpiauto')|format(valid_count) }}</span>
+            {% if valid_count < rows|length %}<span class="badge bg-red-lt">{{ __('%d ligne(s) en erreur, ignorée(s)', 'configurationglpiauto')|format(rows|length - valid_count) }}</span>{% endif %}
+            {% if truncated %}<span class="badge bg-orange-lt">{{ __('Seules les %d premières lignes sont lues.', 'configurationglpiauto')|format(max_rows) }}</span>{% endif %}
+            {% if valid_count > 0 %}
+               <form method="post" action="{{ action }}" class="ms-auto">
+                  <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                  <textarea name="plan" hidden>{{ text }}</textarea>
+                  <button type="submit" name="import" value="1" class="btn btn-success"><i class="ti ti-check me-1"></i>{{ __('Créer les lignes valides', 'configurationglpiauto') }}</button>
+               </form>
+            {% endif %}
+         </div>
+         <div class="table-responsive">
+            <table class="table table-vcenter card-table">
+               <thead>
+                  <tr>
+                     <th>{{ __('Ligne', 'configurationglpiauto') }}</th>
+                     <th>{{ __('Site', 'configurationglpiauto') }}</th>
+                     <th>{{ __('VLAN', 'configurationglpiauto') }}</th>
+                     <th>{{ __('Nom', 'configurationglpiauto') }}</th>
+                     <th>{{ __('Réseau', 'configurationglpiauto') }}</th>
+                     <th>{{ __('Passerelle', 'configurationglpiauto') }}</th>
+                     <th>{{ __('Résultat', 'configurationglpiauto') }}</th>
+                  </tr>
+               </thead>
+               <tbody>
+               {% set labels = {'create': __('à créer', 'configurationglpiauto'), 'update': __('nom mis à jour', 'configurationglpiauto'), 'same': __('déjà à jour', 'configurationglpiauto')} %}
+               {% set classes = {'create': 'bg-green-lt', 'update': 'bg-blue-lt', 'same': 'bg-secondary-lt'} %}
+               {% for row in rows %}
+                  <tr class="{{ row.messages is empty ? '' : 'table-danger' }}">
+                     <td>{{ row.line }}</td>
+                     <td>{{ row.site_label }}</td>
+                     <td>{{ row.vlan }}</td>
+                     <td>{{ row.name }}</td>
+                     <td>{% if row.network %}<code>{{ row.network }}</code>{% endif %}</td>
+                     <td>{{ row.gateway }}</td>
+                     <td>
+                        {% for message in row.messages %}<div class="text-danger"><i class="ti ti-alert-circle me-1"></i>{{ message }}</div>{% endfor %}
+                        {% if row.vlan_action %}<span class="badge {{ classes[row.vlan_action] }} me-1">{{ __('VLAN', 'configurationglpiauto') }} : {{ labels[row.vlan_action] }}</span>{% endif %}
+                        {% if row.network_action %}<span class="badge {{ classes[row.network_action] }}">{{ __('Réseau', 'configurationglpiauto') }} : {{ labels[row.network_action] }}</span>{% endif %}
+                     </td>
+                  </tr>
+               {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   {% endif %}
+</div>

@@ -1,0 +1,35 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Barre d'actions de la liste des profils de configuration (front/profile.php) #}
+<div class="mb-3 d-flex flex-wrap gap-2">
+   <a class="btn btn-outline-primary" href="{{ wizard_url }}"><i class="ti ti-wand"></i> {{ __('Lancer l\'assistant de configuration', 'configurationglpiauto') }}</a>
+   {% if audit_url %}
+      <a class="btn btn-outline-primary" href="{{ audit_url }}"><i class="ti ti-stethoscope"></i> {{ __('Lancer l\'audit', 'configurationglpiauto') }}</a>
+   {% endif %}
+   {% if blueprint_url %}
+      <a class="btn btn-outline-primary" href="{{ blueprint_url }}"><i class="ti ti-upload"></i> {{ __('Importer un Blueprint (JSON)', 'configurationglpiauto') }}</a>
+   {% endif %}
+   {% if jira_url %}
+      <a class="btn btn-outline-primary" href="{{ jira_url }}"><i class="ti ti-transfer-in"></i> {{ __('Importer depuis Jira (CSV)', 'configurationglpiauto') }}</a>
+   {% endif %}
+   {% if address_plan_url %}
+      <a class="btn btn-outline-primary" href="{{ address_plan_url }}"><i class="ti ti-network"></i> {{ __('Plan d\'adressage (réseaux et VLAN)', 'configurationglpiauto') }}</a>
+   {% endif %}
+   <a class="btn btn-outline-primary" href="{{ history_url }}"><i class="ti ti-history"></i> {{ __('Historique & Rollback', 'configurationglpiauto') }}</a>
+   {% if add_url %}
+      <a class="btn btn-primary" href="{{ add_url }}"><i class="ti ti-plus"></i> {{ __('Ajouter') }}</a>
+   {% endif %}
+</div>

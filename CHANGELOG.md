@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Plan d'adressage : réseaux IP et VLAN par site** (issue #343), bouton « Plan d'adressage (réseaux
+  et VLAN) » sur la page du plugin, et lien depuis l'étape « Lieux » de l'assistant :
+  - tableau collé depuis un tableur ou fichier CSV (site, VLAN, nom, réseau, passerelle, rôle ;
+    titres français ou anglais, ou colonnes dans cet ordre) ;
+  - **aperçu** ligne par ligne avant toute création : VLAN hors 1-4094, réseau illisible ou qui
+    n'est pas l'adresse du réseau (avec la correction proposée), passerelle hors du réseau, site
+    inconnu, réseaux qui se chevauchent dans le tableau. Les lignes en erreur sont ignorées ;
+  - création des objets **natifs** de GLPI : VLAN (Configuration > Intitulés > VLAN) et réseaux IP,
+    reliés entre eux et rattachés à l'entité du site. Relancer l'import met à jour les noms au
+    lieu de dupliquer ;
+  - **modèle pour un nouveau site** à partir d'un /16 : un VLAN et un /24 par usage (postes,
+    serveurs, voix, imprimantes, administration, invités isolés, DMZ), à relire avant création.
+
+### Changed
+
+- La barre de boutons de la page du plugin est rendue en Twig (exigence du Marketplace GLPI) : le
+  HTML écrit en PHP passe de 231 à 211 chaînes.
+
 ## [1.9.0] - 2026-10-24
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
