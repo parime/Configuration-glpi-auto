@@ -59,7 +59,7 @@ final class FieldGroupLabel
             'custom' => __('Personnalisation', 'configurationglpiauto'), 'support' => __('Groupes de support', 'configurationglpiauto'),
             'dashboard' => __('Tableaux de bord', 'configurationglpiauto'), 'audit' => __('Audit de configuration', 'configurationglpiauto'),
             'locations' => __('Lieux', 'configurationglpiauto'), 'manufacturers' => __('Fabricants', 'configurationglpiauto'),
-            'os' => __('Systèmes d\'exploitation','configurationglpiauto'), 'dropdown' => __('Unicité des intitulés', 'configurationglpiauto'),
+            'os' => __('Systèmes d\'exploitation', 'configurationglpiauto'), 'dropdown' => __('Unicité des intitulés', 'configurationglpiauto'),
             'assetsign' => __('Déclencheurs assetsign', 'configurationglpiauto'),
         ];
     }
