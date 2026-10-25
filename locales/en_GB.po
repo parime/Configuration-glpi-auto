@@ -4697,3 +4697,6 @@ msgstr "assetsign triggers"
 
 msgid "Systèmes d'exploitation"
 msgstr "Operating systems"
+
+msgid "Visibles dans la FAQ du portail libre-service : comment utiliser le catalogue de services, comment signaler un incident ou faire une demande, et 12 fiches de bonnes pratiques de sécurité (mot de passe, hameçonnage, mises à jour, que faire en cas d'incident...)."
+msgstr "Visible in the self-service portal FAQ: how to use the service catalog, how to report an issue or make a request, and 12 security good-practice articles (passwords, phishing, updates, what to do in case of an incident...)."

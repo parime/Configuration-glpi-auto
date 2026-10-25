@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **FAQ : 12 fiches de bonnes pratiques de sécurité** (issue #321), ajoutées à la FAQ du portail
+  (case « Ajouter des articles de FAQ ») en 6 langues. Elles couvrent : mot de passe robuste, ne
+  jamais partager son mot de passe, verrouiller sa session, moindre privilège, authentification
+  multifacteur, hameçonnage, clés USB, mises à jour, télétravail et VPN, où enregistrer ses
+  documents, données personnelles (RGPD), et que faire en cas d'incident. Textes rédigés pour le
+  plugin.
+- Test de compilation de tous les gabarits Twig : une apostrophe non échappée cassait l'assistant
+  sans être détectée.
 - **Déploiement direct d'un Blueprint, mode MSP** (issue #338) : une configuration exportée d'une
   instance se déploie sur une autre sans repasser par les étapes de l'assistant :
   - à l'application d'un Blueprint, le nouveau bouton **« Appliquer la sélection et déployer »**

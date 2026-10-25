@@ -18,6 +18,7 @@
 namespace GlpiPlugin\Configurationglpiauto;
 
 use Entity_KnowbaseItem;
+use GlpiPlugin\Configurationglpiauto\Faq\HygieneArticles;
 use KnowbaseItem;
 use KnowbaseItemTranslation;
 
@@ -371,7 +372,7 @@ class FaqBuilder
         }
 
         $count = 0;
-        foreach (self::ARTICLES as $article) {
+        foreach (self::articles() as $article) {
             $id = $this->getOrCreate($article['name'], $article['answer']);
             $this->ensureVisibleToEveryEntity($id);
             $this->applyTranslations($id, $article['translations']);
@@ -382,13 +383,23 @@ class FaqBuilder
     }
 
     /**
+     * Articles d'usage du portail, puis (issue #321) les fiches de bonnes pratiques de sécurité.
+     *
+     * @return list<array{name: string, answer: string, translations: array<string, array{name: string, answer: string}>}>
+     */
+    private static function articles(): array
+    {
+        return array_merge(self::ARTICLES, HygieneArticles::all());
+    }
+
+    /**
      * @return array<int, array{name: string, answer: string}>
      */
     public static function getArticlesPreview(): array
     {
         return array_map(
             static fn (array $article): array => ['name' => $article['name'], 'answer' => $article['answer']],
-            self::ARTICLES
+            self::articles()
         );
     }
 
