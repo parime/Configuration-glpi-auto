@@ -1,0 +1,66 @@
+{# Issue #345 : import de tickets Jira (export CSV), en deux temps (issue #355 : passé de PHP à Twig) #}
+<div class="card"><div class="card-body">
+   <h3 class="card-title"><i class="ti ti-transfer-in me-1"></i>{{ __('Importer depuis Jira', 'configurationglpiauto') }}</h3>
+
+   {% if step == 'result' %}
+      <div class="alert alert-success">{{ __('Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour.', 'configurationglpiauto')|format(result.created, result.updated) }}</div>
+      {% for error in result.errors %}<div class="alert alert-danger py-2">{{ error }}</div>{% endfor %}
+      <details><summary>{{ __('Journal de l\'import', 'configurationglpiauto') }}</summary><pre class="small">{{ result.log|join("\n") }}</pre></details>
+      <a class="btn btn-outline-primary mt-3" href="{{ tickets_url }}">{{ __('Voir les tickets', 'configurationglpiauto') }}</a>
+
+   {% elseif step == 'upload' %}
+      {# Étape 1 : fichier et entité. #}
+      <p>{{ __('Dans Jira, exportez les tickets en CSV (« Toutes les colonnes »). L\'import se fait en deux temps : un aperçu à blanc, sans rien écrire, où vous vérifiez les correspondances de statuts et de types, puis l\'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n\'est envoyée.', 'configurationglpiauto') }}</p>
+      <form method="post" enctype="multipart/form-data" action="{{ url }}" class="row g-3 align-items-end">
+         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+         <div class="col-md-5"><label class="form-label" for="jira_csv">{{ __('Export CSV de Jira', 'configurationglpiauto') }}</label><input type="file" id="jira_csv" name="jira_csv" accept=".csv,text/csv" class="form-control" required></div>
+         <div class="col-md-4"><div class="form-label">{{ __('Entité des tickets', 'configurationglpiauto') }}</div>{{ entity_dropdown|raw }}</div>
+         <div class="col-md-3"><button type="submit" name="upload" value="1" class="btn btn-primary"><i class="ti ti-eye me-1"></i>{{ __('Aperçu (rien n\'est écrit)', 'configurationglpiauto') }}</button></div>
+      </form>
+
+   {% else %}
+      {# Étape 2 : aperçu à blanc et correspondances. #}
+      <div class="alert alert-info">{{ __('%1$d ticket(s) lus, dont %2$d déjà importé(s) (mis à jour plutôt que recréés). Entité : %3$s.', 'configurationglpiauto')|format(preview.total, preview.already_imported, entity_name) }}</div>
+      {% for error in parse_errors %}<div class="alert alert-warning py-2">{{ __('Ligne %1$d : %2$s', 'configurationglpiauto')|format(error.line, error.label) }}</div>{% endfor %}
+      <form method="post" action="{{ url }}">
+         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+         <div class="row g-4">
+            <div class="col-lg-6">
+               <h4>{{ __('Statuts Jira', 'configurationglpiauto') }}</h4>
+               <table class="table table-sm align-middle">
+                  {% for jira_status, default in preview.statuses %}
+                     <tr>
+                        <td>{{ jira_status }} <span class="badge bg-secondary-lt">{{ preview.summary.statuses[jira_status] }}</span></td>
+                        <td><select name="status_map[{{ jira_status }}]" class="form-select form-select-sm" aria-label="{{ jira_status }}">
+                           {% for value, label in status_labels %}<option value="{{ value }}" {{ value ~ '' == default ~ '' ? 'selected' }}>{{ label }}</option>{% endfor %}
+                        </select></td>
+                     </tr>
+                  {% endfor %}
+               </table>
+            </div>
+            <div class="col-lg-6">
+               <h4>{{ __('Types de ticket Jira', 'configurationglpiauto') }}</h4>
+               <table class="table table-sm align-middle">
+                  {% for jira_type, default in preview.types %}
+                     <tr>
+                        <td>{{ jira_type }} <span class="badge bg-secondary-lt">{{ preview.summary.types[jira_type] }}</span></td>
+                        <td><select name="type_map[{{ jira_type }}]" class="form-select form-select-sm" aria-label="{{ jira_type }}">
+                           {% for value, label in type_labels %}<option value="{{ value }}" {{ value == default ? 'selected' }}>{{ label }}</option>{% endfor %}
+                        </select></td>
+                     </tr>
+                  {% endfor %}
+               </table>
+            </div>
+         </div>
+         <h4 class="mt-3">{{ __('Personnes', 'configurationglpiauto') }}</h4>
+         <p>{{ __('%1$d reconnue(s) dans GLPI, %2$d inconnue(s).', 'configurationglpiauto')|format(preview.people_found|length, preview.people_missing|length) }}</p>
+         {% if preview.people_missing is not empty %}
+            <div class="alert alert-warning py-2">{{ __('Inconnues (aucun compte créé ; le ticket sera importé sans elles, leurs commentaires gardent leur nom) :', 'configurationglpiauto') }} {{ preview.people_missing|join(', ') }}</div>
+         {% endif %}
+         <div class="d-flex gap-2 mt-3">
+            <button type="submit" name="import" value="1" class="btn btn-primary"><i class="ti ti-transfer-in me-1"></i>{{ __('Importer %d ticket(s)', 'configurationglpiauto')|format(preview.total) }}</button>
+            <button type="submit" name="cancel" value="1" class="btn btn-outline-secondary" formnovalidate>{{ __('Annuler', 'configurationglpiauto') }}</button>
+         </div>
+      </form>
+   {% endif %}
+</div></div>

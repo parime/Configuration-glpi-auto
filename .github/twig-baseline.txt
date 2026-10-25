@@ -2,7 +2,6 @@
 # Ces nombres ne peuvent que baisser : les nouveaux ecrans s'ecrivent en Twig (templates/).
 front/blueprint_import.php 19
 front/history.php 12
-front/jiraimport.php 60
 src/Audit/Checks/GhostAssetsCheck.php 3
 src/Audit/Checks/IncompleteAssetsCheck.php 7
 src/Audit/Checks/WarrantyCheck.php 7

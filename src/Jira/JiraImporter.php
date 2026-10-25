@@ -293,6 +293,9 @@ final class JiraImporter
         if ($ticketsId <= 0) {
             return 0;
         }
+        // Le ticket importé auparavant a pu être supprimé dans GLPI : sa correspondance, restée en
+        // place, bloquait la nouvelle (jira_key est unique) et faisait échouer tout le réimport.
+        $DB->delete(self::TABLE, ['jira_key' => $key]);
         $DB->insert(self::TABLE, [
             'jira_key'      => $key,
             'tickets_id'    => $ticketsId,
