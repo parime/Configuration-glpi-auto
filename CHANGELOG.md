@@ -23,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     lieu de dupliquer ;
   - **modèle pour un nouveau site** à partir d'un /16 : un VLAN et un /24 par usage (postes,
     serveurs, voix, imprimantes, administration, invités isolés, DMZ), à relire avant création.
+- **Audit : cohérence du réseau** (issue #344), nouveau domaine « Réseau » de l'audit, à partir de
+  l'inventaire et du plan d'adressage : adresse IP portée par plusieurs éléments, réseaux IP qui se
+  chevauchent sans être rattachés l'un à l'autre (même plage dans deux entités, partenaire relié
+  par VPN), VLAN sans réseau IP, adresses inventoriées hors de tout réseau déclaré. Chaque constat
+  renvoie vers les éléments concernés ; rien n'est corrigé automatiquement.
 
 ### Changed
 

@@ -4674,3 +4674,43 @@ msgstr "Plan de direccionamiento (redes y VLAN)"
 
 msgid "Une fois les lieux créés, déclarez leurs réseaux IP et VLAN, ou importez-les depuis un tableau :"
 msgstr "Una vez creadas las ubicaciones, declare sus redes IP y VLAN, o impórtelas desde una tabla:"
+
+msgid "Une même adresse sur deux équipements provoque des coupures difficiles à diagnostiquer. Vérifiez l'attribution (réservation DHCP, adresse fixe recopiée, ancien équipement encore inventorié) ; une adresse virtuelle partagée volontairement (cluster, VRRP) peut être ignorée."
+msgstr "La misma dirección en dos equipos provoca cortes difíciles de diagnosticar. Compruebe la asignación (reserva DHCP, dirección fija copiada, equipo antiguo aún inventariado); una dirección virtual compartida a propósito (clúster, VRRP) puede ignorarse."
+
+#, php-format
+msgid "%1$s et %2$s"
+msgstr "%1$s y %2$s"
+
+msgid "Deux sites ou un partenaire relié par VPN qui utilisent la même plage ne peuvent pas communiquer correctement. Renumérotez l'un des réseaux, ou mettez en place une traduction d'adresses, puis corrigez le plan d'adressage."
+msgstr "Dos sitios, o un socio conectado por VPN, que usan el mismo rango no pueden comunicarse correctamente. Renumere una de las redes o configure una traducción de direcciones, y luego corrija el plan de direccionamiento."
+
+msgid "Associez chaque VLAN à son réseau IP (onglet VLAN du réseau, ou plan d'adressage) pour que le schéma réseau reste complet."
+msgstr "Asocie cada VLAN a su red IP (pestaña VLAN de la red, o plan de direccionamiento) para que el esquema de red siga completo."
+
+msgid "Le plan d'adressage est incomplet, ou l'équipement est dans un réseau inattendu. Déclarez le réseau manquant (plan d'adressage) ou vérifiez l'équipement."
+msgstr "El plan de direccionamiento está incompleto, o el equipo está en una red inesperada. Declare la red que falta (plan de direccionamiento) o revise el equipo."
+
+#, php-format
+msgid "%d adresse IP portée par plusieurs éléments"
+msgid_plural "%d adresses IP portées par plusieurs éléments"
+msgstr[0] "%d dirección IP usada por varios elementos"
+msgstr[1] "%d direcciones IP usadas por varios elementos"
+
+#, php-format
+msgid "%d paire de réseaux IP qui se chevauchent"
+msgid_plural "%d paires de réseaux IP qui se chevauchent"
+msgstr[0] "%d par de redes IP que se solapan"
+msgstr[1] "%d pares de redes IP que se solapan"
+
+#, php-format
+msgid "%d VLAN sans réseau IP associé"
+msgid_plural "%d VLAN sans réseau IP associé"
+msgstr[0] "%d VLAN sin red IP asociada"
+msgstr[1] "%d VLAN sin red IP asociada"
+
+#, php-format
+msgid "%d adresse inventoriée hors de tout réseau déclaré"
+msgid_plural "%d adresses inventoriées hors de tout réseau déclaré"
+msgstr[0] "%d dirección inventariada fuera de toda red declarada"
+msgstr[1] "%d direcciones inventariadas fuera de toda red declarada"

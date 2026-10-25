@@ -4600,3 +4600,43 @@ msgstr "Address plan (networks and VLANs)"
 
 msgid "Une fois les lieux créés, déclarez leurs réseaux IP et VLAN, ou importez-les depuis un tableau :"
 msgstr "Once the locations are created, declare their IP networks and VLANs, or import them from a table:"
+
+msgid "Une même adresse sur deux équipements provoque des coupures difficiles à diagnostiquer. Vérifiez l'attribution (réservation DHCP, adresse fixe recopiée, ancien équipement encore inventorié) ; une adresse virtuelle partagée volontairement (cluster, VRRP) peut être ignorée."
+msgstr "The same address on two devices causes outages that are hard to diagnose. Check the assignment (DHCP reservation, copied static address, old device still inventoried); a deliberately shared virtual address (cluster, VRRP) can be ignored."
+
+#, php-format
+msgid "%1$s et %2$s"
+msgstr "%1$s and %2$s"
+
+msgid "Deux sites ou un partenaire relié par VPN qui utilisent la même plage ne peuvent pas communiquer correctement. Renumérotez l'un des réseaux, ou mettez en place une traduction d'adresses, puis corrigez le plan d'adressage."
+msgstr "Two sites, or a partner connected by VPN, using the same range cannot communicate properly. Renumber one of the networks, or set up address translation, then fix the address plan."
+
+msgid "Associez chaque VLAN à son réseau IP (onglet VLAN du réseau, ou plan d'adressage) pour que le schéma réseau reste complet."
+msgstr "Link each VLAN to its IP network (VLAN tab of the network, or address plan) so that the network diagram stays complete."
+
+msgid "Le plan d'adressage est incomplet, ou l'équipement est dans un réseau inattendu. Déclarez le réseau manquant (plan d'adressage) ou vérifiez l'équipement."
+msgstr "The address plan is incomplete, or the device is in an unexpected network. Declare the missing network (address plan) or check the device."
+
+#, php-format
+msgid "%d adresse IP portée par plusieurs éléments"
+msgid_plural "%d adresses IP portées par plusieurs éléments"
+msgstr[0] "%d IP address held by several items"
+msgstr[1] "%d IP addresses held by several items"
+
+#, php-format
+msgid "%d paire de réseaux IP qui se chevauchent"
+msgid_plural "%d paires de réseaux IP qui se chevauchent"
+msgstr[0] "%d pair of overlapping IP networks"
+msgstr[1] "%d pairs of overlapping IP networks"
+
+#, php-format
+msgid "%d VLAN sans réseau IP associé"
+msgid_plural "%d VLAN sans réseau IP associé"
+msgstr[0] "%d VLAN without an associated IP network"
+msgstr[1] "%d VLANs without an associated IP network"
+
+#, php-format
+msgid "%d adresse inventoriée hors de tout réseau déclaré"
+msgid_plural "%d adresses inventoriées hors de tout réseau déclaré"
+msgstr[0] "%d inventoried address outside any declared network"
+msgstr[1] "%d inventoried addresses outside any declared network"
