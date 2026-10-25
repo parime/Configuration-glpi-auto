@@ -139,6 +139,30 @@ final class JiraImporterTest extends TestCase
     }
 
     /**
+     * Un ticket importé puis supprimé dans GLPI : le réimport recrée le ticket. Sa correspondance
+     * restée en place (jira_key unique) faisait échouer tout l'import.
+     */
+    public function testReimportAfterTheImportedTicketWasDeleted(): void
+    {
+        $issues = JiraCsvParser::parse($this->csv())['issues'];
+        $importer = new JiraImporter();
+        $preview = $importer->preview($issues);
+        $importer->import($issues, $preview['statuses'], $preview['types'], 0);
+        $deleted = $importer->findTicket($this->prefix . '-1');
+        (new Ticket())->delete(['id' => $deleted], true);
+
+        $again = new JiraImporter();
+        $this->assertSame(2, $again->preview($issues)['already_imported']);
+        $result = $again->import($issues, $preview['statuses'], $preview['types'], 0);
+        $this->assertSame([], $result['errors']);
+        $this->assertSame(1, $result['created']);
+        $this->assertSame(2, $result['updated']);
+        $recreated = $again->findTicket($this->prefix . '-1');
+        $this->assertGreaterThan(0, $recreated);
+        $this->assertNotSame($deleted, $recreated);
+    }
+
+    /**
      * Solution « Demande non retenue », ou suivi équivalent quand GLPI refuse la solution
      * (catégorie obligatoire sur certaines instances).
      */
