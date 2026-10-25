@@ -15,6 +15,7 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
@@ -80,24 +81,8 @@ if (isset($_POST['import'])) {
 
 Html::header(__('Importer un Blueprint', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('blueprint_import.php'), 'config', ConfigurationProfile::class);
 
-echo "<form method='post' action='" . htmlspecialchars(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('blueprint_import.php')) . "' enctype='multipart/form-data' class='card'>";
-echo "<div class='card-body'>";
-echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
-echo "<div class='mb-3'>";
-echo "<label class='form-label'>" . __('Fichier Blueprint (.json)', 'configurationglpiauto') . "</label>";
-echo "<input type='file' name='blueprint_file' accept='.json,application/json' class='form-control' required>";
-echo "</div>";
-echo "<div class='mb-3'>";
-echo "<label class='form-label'>" . __('Nom du profil (facultatif, repris du fichier sinon)', 'configurationglpiauto') . "</label>";
-echo "<input type='text' name='name' class='form-control'>";
-echo "</div>";
-echo "<div class='alert alert-warning'>";
-echo __('N\'importez que des fichiers Blueprint dont vous connaissez la provenance : ce fichier reconfigurera votre instance une fois appliqué via l\'assistant.', 'configurationglpiauto');
-echo "</div>";
-echo "<button type='submit' name='import' value='1' class='btn btn-primary'>";
-echo "<i class='ti ti-upload'></i> " . __('Importer');
-echo "</button>";
-echo "</div>";
-echo "</form>";
+TemplateRenderer::getInstance()->display('@configurationglpiauto/blueprint_import.html.twig', [
+    'action' => \GlpiPlugin\Configurationglpiauto\FrontUrl::get('blueprint_import.php'),
+]);
 
 Html::footer();
