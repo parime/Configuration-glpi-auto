@@ -4735,3 +4735,60 @@ msgid "%d adresse inventoriée hors de tout réseau déclaré"
 msgid_plural "%d adresses inventoriées hors de tout réseau déclaré"
 msgstr[0] "%d inventarisierte Adresse außerhalb aller erfassten Netze"
 msgstr[1] "%d inventarisierte Adressen außerhalb aller erfassten Netze"
+
+msgid "Déployer la configuration"
+msgstr "Konfiguration bereitstellen"
+
+msgid "La configuration chargée (Blueprint importé ou sauvegarde restaurée) va être déployée exactement comme avec le bouton « Terminer » de l'assistant : entités, catégories, statuts, SLA, formulaires et réglages activés ci-dessous. Les éléments déjà présents sont réutilisés, rien n'est supprimé."
+msgstr "Die geladene Konfiguration (importierter Blueprint oder wiederhergestellte Sicherung) wird genau wie mit der Schaltfläche „Fertigstellen“ des Assistenten bereitgestellt: Entitäten, Kategorien, Status, SLAs, Formulare und die unten aktivierten Einstellungen. Vorhandene Elemente werden wiederverwendet, nichts wird gelöscht."
+
+msgid "Ce qui sera déployé"
+msgstr "Was bereitgestellt wird"
+
+msgid "Aucune fonctionnalité n'est activée dans cette configuration."
+msgstr "In dieser Konfiguration ist keine Funktion aktiviert."
+
+msgid "Vos droits GLPI"
+msgstr "Ihre GLPI-Rechte"
+
+msgid "manquant : partie ignorée"
+msgstr "fehlt: dieser Teil wird übersprungen"
+
+msgid "Lancer le déploiement maintenant ?"
+msgstr "Bereitstellung jetzt starten?"
+
+msgid "Déployer maintenant"
+msgstr "Jetzt bereitstellen"
+
+msgid "Revoir dans l'assistant"
+msgstr "Im Assistenten prüfen"
+
+msgid "Déployer cette configuration"
+msgstr "Diese Konfiguration bereitstellen"
+
+msgid "Applique la sélection puis affiche le récapitulatif du déploiement, sans repasser par l'assistant"
+msgstr "Wendet die Auswahl an und zeigt dann die Zusammenfassung der Bereitstellung, ohne erneut den Assistenten zu durchlaufen"
+
+msgid "Appliquer la sélection et déployer"
+msgstr "Auswahl anwenden und bereitstellen"
+
+#, php-format
+msgid "%d entité de premier niveau (client ou site)"
+msgid_plural "%d entités de premier niveau (clients ou sites)"
+msgstr[0] "%d Entität der obersten Ebene (Kunde oder Standort)"
+msgstr[1] "%d Entitäten der obersten Ebene (Kunden oder Standorte)"
+
+msgid "Groupes de support"
+msgstr "Support-Gruppen"
+
+msgid "Tableaux de bord"
+msgstr "Dashboards"
+
+msgid "Unicité des intitulés"
+msgstr "Eindeutige Bezeichnungen"
+
+msgid "Déclencheurs assetsign"
+msgstr "assetsign-Auslöser"
+
+msgid "Systèmes d'exploitation"
+msgstr "Betriebssysteme"

@@ -57,7 +57,7 @@ P=$BASE/plugins/configurationglpiauto/front
 for url in wizard.php profile.php "profile.form.php?id=$(id profile)" "profile.form.php?id=$(id profile)&export_snapshot=1" \
   history.php "history_restore.php?id=$(id history)" \
   "history_restore.php?itemtype=GlpiPlugin%5CConfigurationglpiauto%5CConfigurationProfile&id=$(id profile)" \
-  fueltype.php "fueltype.form.php?id=$(id fueltype)" audit.php blueprint_import.php; do
+  fueltype.php "fueltype.form.php?id=$(id fueltype)" audit.php blueprint_import.php deploy.php; do
   check "front/$url" "$P/$url"
 done
 

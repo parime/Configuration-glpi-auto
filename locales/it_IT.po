@@ -4719,3 +4719,60 @@ msgid "%d adresse inventoriée hors de tout réseau déclaré"
 msgid_plural "%d adresses inventoriées hors de tout réseau déclaré"
 msgstr[0] "%d indirizzo inventariato fuori da ogni rete dichiarata"
 msgstr[1] "%d indirizzi inventariati fuori da ogni rete dichiarata"
+
+msgid "Déployer la configuration"
+msgstr "Distribuisci la configurazione"
+
+msgid "La configuration chargée (Blueprint importé ou sauvegarde restaurée) va être déployée exactement comme avec le bouton « Terminer » de l'assistant : entités, catégories, statuts, SLA, formulaires et réglages activés ci-dessous. Les éléments déjà présents sont réutilisés, rien n'est supprimé."
+msgstr "La configurazione caricata (Blueprint importato o backup ripristinato) verrà distribuita esattamente come con il pulsante «Termina» della procedura guidata: entità, categorie, stati, SLA, moduli e impostazioni attivate qui sotto. Gli elementi già presenti vengono riutilizzati, nulla viene eliminato."
+
+msgid "Ce qui sera déployé"
+msgstr "Cosa verrà distribuito"
+
+msgid "Aucune fonctionnalité n'est activée dans cette configuration."
+msgstr "Nessuna funzionalità è attivata in questa configurazione."
+
+msgid "Vos droits GLPI"
+msgstr "I tuoi diritti GLPI"
+
+msgid "manquant : partie ignorée"
+msgstr "mancante: questa parte viene ignorata"
+
+msgid "Lancer le déploiement maintenant ?"
+msgstr "Avviare la distribuzione adesso?"
+
+msgid "Déployer maintenant"
+msgstr "Distribuisci ora"
+
+msgid "Revoir dans l'assistant"
+msgstr "Rivedi nella procedura guidata"
+
+msgid "Déployer cette configuration"
+msgstr "Distribuisci questa configurazione"
+
+msgid "Applique la sélection puis affiche le récapitulatif du déploiement, sans repasser par l'assistant"
+msgstr "Applica la selezione e poi mostra il riepilogo della distribuzione, senza ripassare dalla procedura guidata"
+
+msgid "Appliquer la sélection et déployer"
+msgstr "Applica la selezione e distribuisci"
+
+#, php-format
+msgid "%d entité de premier niveau (client ou site)"
+msgid_plural "%d entités de premier niveau (clients ou sites)"
+msgstr[0] "%d entità di primo livello (cliente o sede)"
+msgstr[1] "%d entità di primo livello (clienti o sedi)"
+
+msgid "Groupes de support"
+msgstr "Gruppi di supporto"
+
+msgid "Tableaux de bord"
+msgstr "Dashboard"
+
+msgid "Unicité des intitulés"
+msgstr "Unicità delle denominazioni"
+
+msgid "Déclencheurs assetsign"
+msgstr "Trigger di assetsign"
+
+msgid "Systèmes d'exploitation"
+msgstr "Sistemi operativi"

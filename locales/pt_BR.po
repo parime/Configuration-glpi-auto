@@ -4658,3 +4658,60 @@ msgid "%d adresse inventoriée hors de tout réseau déclaré"
 msgid_plural "%d adresses inventoriées hors de tout réseau déclaré"
 msgstr[0] "%d endereço inventariado fora de qualquer rede declarada"
 msgstr[1] "%d endereços inventariados fora de qualquer rede declarada"
+
+msgid "Déployer la configuration"
+msgstr "Implantar a configuração"
+
+msgid "La configuration chargée (Blueprint importé ou sauvegarde restaurée) va être déployée exactement comme avec le bouton « Terminer » de l'assistant : entités, catégories, statuts, SLA, formulaires et réglages activés ci-dessous. Les éléments déjà présents sont réutilisés, rien n'est supprimé."
+msgstr "A configuração carregada (Blueprint importado ou backup restaurado) será implantada exatamente como com o botão «Concluir» do assistente: entidades, categorias, status, SLAs, formulários e as configurações ativadas abaixo. Os itens existentes são reutilizados, nada é excluído."
+
+msgid "Ce qui sera déployé"
+msgstr "O que será implantado"
+
+msgid "Aucune fonctionnalité n'est activée dans cette configuration."
+msgstr "Nenhuma funcionalidade está ativada nesta configuração."
+
+msgid "Vos droits GLPI"
+msgstr "Seus direitos no GLPI"
+
+msgid "manquant : partie ignorée"
+msgstr "ausente: esta parte é ignorada"
+
+msgid "Lancer le déploiement maintenant ?"
+msgstr "Iniciar a implantação agora?"
+
+msgid "Déployer maintenant"
+msgstr "Implantar agora"
+
+msgid "Revoir dans l'assistant"
+msgstr "Revisar no assistente"
+
+msgid "Déployer cette configuration"
+msgstr "Implantar esta configuração"
+
+msgid "Applique la sélection puis affiche le récapitulatif du déploiement, sans repasser par l'assistant"
+msgstr "Aplica a seleção e depois mostra o resumo da implantação, sem passar novamente pelo assistente"
+
+msgid "Appliquer la sélection et déployer"
+msgstr "Aplicar a seleção e implantar"
+
+#, php-format
+msgid "%d entité de premier niveau (client ou site)"
+msgid_plural "%d entités de premier niveau (clients ou sites)"
+msgstr[0] "%d entidade de primeiro nível (cliente ou site)"
+msgstr[1] "%d entidades de primeiro nível (clientes ou sites)"
+
+msgid "Groupes de support"
+msgstr "Grupos de suporte"
+
+msgid "Tableaux de bord"
+msgstr "Painéis"
+
+msgid "Unicité des intitulés"
+msgstr "Unicidade dos nomes"
+
+msgid "Déclencheurs assetsign"
+msgstr "Gatilhos do assetsign"
+
+msgid "Systèmes d'exploitation"
+msgstr "Sistemas operacionais"

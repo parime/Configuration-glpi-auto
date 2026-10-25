@@ -47,6 +47,9 @@
         <i class="ti ti-info-circle me-1"></i>
         {{ __('Cette configuration est déjà identique à la configuration actuelle — rien à restaurer.', 'configurationglpiauto') }}
       </div>
+      {% if can_deploy %}
+        <a href="{{ deploy_url }}" class="btn btn-primary"><i class="ti ti-rocket me-1"></i>{{ __('Déployer cette configuration', 'configurationglpiauto') }}</a>
+      {% endif %}
     {% else %}
       <form method="post" action="{{ config('root_doc') }}/plugins/configurationglpiauto/front/history_restore.php">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
@@ -80,6 +83,11 @@
           <button type="submit" name="restore_all" value="1" class="btn btn-outline-primary">
             <i class="ti ti-history me-1"></i>{{ __('Restaurer intégralement', 'configurationglpiauto') }}
           </button>
+          {% if can_deploy %}
+            <button type="submit" name="restore_and_deploy" value="1" class="btn btn-success" title="{{ __('Applique la sélection puis affiche le récapitulatif du déploiement, sans repasser par l\'assistant', 'configurationglpiauto') }}">
+              <i class="ti ti-rocket me-1"></i>{{ __('Appliquer la sélection et déployer', 'configurationglpiauto') }}
+            </button>
+          {% endif %}
         </div>
       </form>
     {% endif %}

@@ -86,6 +86,8 @@ expect "front/jiraimport.php"                   $JIRA "$(code "$P/jiraimport.php
 expect "front/addressplan.php"                  $NET "$(code "$P/addressplan.php")"
 expect "front/addressplan.php (creation)"       $NET "$(code -d "import=1&plan=Securite%091%09Securite%09192.0.2.0/24&_glpi_csrf_token=$(csrf)" "$P/addressplan.php")"
 expect "front/history_restore.php (historique)" $OPEN "$(code "$P/history_restore.php?id=$(id history)")"
+# Issue #338 : recapitulatif du deploiement direct (le deploiement lui-meme reste wizard.php).
+expect "front/deploy.php"                       $OPEN "$(code "$P/deploy.php")"
 expect "front/fueltype.php"                     $OPEN "$(code "$P/fueltype.php")"
 expect "front/fueltype.form.php"                $OPEN "$(code "$P/fueltype.form.php?id=$(id fueltype)")"
 expect "front/audit.php (consultation)"         $AUDIT "$(code "$P/audit.php")"
