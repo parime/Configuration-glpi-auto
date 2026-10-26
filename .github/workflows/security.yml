@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   security:
-    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1
+    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.0.1
     with:
       plugin-key: configurationglpiauto
       seed-command: php plugins/configurationglpiauto/tests/security/setup.php
