@@ -1,0 +1,17 @@
+# Contrôles de sécurité communs à tous les plugins GLPI (parime/glpi-plugin-security) : règles
+# Semgrep, onglets sans droit, cibles de notification, restes après désinstallation.
+name: Sécurité commune
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  security:
+    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1
+    with:
+      plugin-key: configurationglpiauto
+      seed-command: php plugins/configurationglpiauto/tests/security/setup.php

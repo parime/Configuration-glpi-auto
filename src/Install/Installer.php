@@ -724,6 +724,16 @@ final class Installer
             (new NotificationTemplate())->delete(['id' => $row['id']], true);
         }
 
+        // Lignes des tables du cœur rattachées aux objets du plugin (contrôle commun
+        // parime/glpi-plugin-security) : historique, préférences d'affichage, notes, recherches
+        // enregistrées, liens de documents (par la classe du cœur).
+        $pluginItemtype = ['LIKE', 'GlpiPlugin\\\\Configurationglpiauto\\\\%'];
+        (new \Document_Item())->deleteByCriteria(['itemtype' => $pluginItemtype], true);
+        foreach (['glpi_displaypreferences', 'glpi_notepads', 'glpi_savedsearches'] as $table) {
+            $DB->delete($table, ['itemtype' => $pluginItemtype]);
+        }
+        $DB->delete('glpi_logs', ['OR' => [['itemtype' => $pluginItemtype], ['itemtype_link' => $pluginItemtype]]]);
+
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::PROFILES_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::CONFIGS_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::FUELTYPES_TABLE . "`");
