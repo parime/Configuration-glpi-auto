@@ -192,20 +192,27 @@ jobs:
           sed -i "s/^## \[${VERSION}\] .*/&\n\n- Publiée dans le catalogue de la marketplace GLPI (\`configurationglpiauto.xml\`)./" CHANGELOG.md
 
           BRANCH="chore/marketplace-xml-${VERSION}"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH"
-          git add configurationglpiauto.xml CHANGELOG.md
-          git commit -m "chore: add version ${VERSION} to the marketplace catalogue"
-          git push origin "$BRANCH"
+          # Commit created through the GitHub API, not git: GitHub signs it, as required by the
+          # "signed commits" rule on main. Same base as before: the tagged commit.
+          MESSAGE="chore: add version ${VERSION} to the marketplace catalogue"
+          REPO="${GITHUB_REPOSITORY}"
+          TREE_ITEMS='[]'
+          for FILE in configurationglpiauto.xml CHANGELOG.md; do
+            BLOB=$(jq -n --rawfile c <(base64 -w0 "$FILE") '{content: $c, encoding: "base64"}' \
+              | gh api "repos/${REPO}/git/blobs" --input - --jq .sha)
+            TREE_ITEMS=$(jq --arg p "$FILE" --arg s "$BLOB" '. + [{path: $p, mode: "100644", type: "blob", sha: $s}]' <<< "$TREE_ITEMS")
+          done
+          BASE_TREE=$(gh api "repos/${REPO}/git/commits/${GITHUB_SHA}" --jq .tree.sha)
+          TREE=$(jq -n --arg b "$BASE_TREE" --argjson t "$TREE_ITEMS" '{base_tree: $b, tree: $t}' \
+            | gh api "repos/${REPO}/git/trees" --input - --jq .sha)
+          COMMIT=$(jq -n --arg m "$MESSAGE" --arg t "$TREE" --arg p "${GITHUB_SHA}" '{message: $m, tree: $t, parents: [$p]}' \
+            | gh api "repos/${REPO}/git/commits" --input - --jq .sha)
+          gh api "repos/${REPO}/git/refs" -f ref="refs/heads/${BRANCH}" -f sha="$COMMIT" > /dev/null
 
-          gh pr create --title "chore: add version ${VERSION} to the marketplace catalogue" \
-            --body "Automatic update after release ${GITHUB_REF_NAME}. Merge once CI is green." \
+          gh pr create --title "$MESSAGE" \
+            --body "Automatic update after release ${GITHUB_REF_NAME}. Opened by the bot: click « Approve workflows to run » to run the required checks, then approve and merge." \
             --base main --head "$BRANCH"
 
-          # A PR/push made with the default GITHUB_TOKEN does not trigger pull_request workflows
-          # (GitHub Actions anti-recursion guard -- same limitation already documented in
-          # auto-tag.yml for release.yml itself) -- explicitly re-trigger CI so the PR's required
-          # check actually runs instead of sitting pending forever.
-          gh workflow run continuous-integration.yml --ref "$BRANCH"
-          gh workflow run security.yml --ref "$BRANCH"
+          # A PR opened with the GITHUB_TOKEN does not start its pull_request workflows, and runs
+          # re-triggered by hand do not count for main's protection: the required checks start
+          # with "Approve workflows to run" on the PR.
