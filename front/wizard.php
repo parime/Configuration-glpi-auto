@@ -53,6 +53,7 @@ use GlpiPlugin\Configurationglpiauto\FuelCardFormBuilder;
 use GlpiPlugin\Configurationglpiauto\FurnitureRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\GrcmanagerCisoGroupBuilder;
+use GlpiPlugin\Configurationglpiauto\GrcmanagerPeriodicReviewBuilder;
 use GlpiPlugin\Configurationglpiauto\HeatingClimateFormBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\InstrumentCalibrationFormBuilder;
@@ -730,6 +731,8 @@ if (isset($_POST['finish'])) {
     $satisfactionSurveyCreated = (new SatisfactionSurveyBuilder())->build($config);
     $vipGroupCreated = (new VipBuilder())->build($config);
     $grcmanagerCisoGroupSet = (new GrcmanagerCisoGroupBuilder())->build($config);
+    // Après le groupe RSSI, à qui les revues sont attribuées.
+    $grcmanagerReviewsActivated = (new GrcmanagerPeriodicReviewBuilder())->build($config);
     $tagsCreated = (new TagBuilder())->build($config);
     $validationRoutingCreated = $canManageTicketRules ? (new ValidationRoutingBuilder())->build($config) : 0;
     // Reuses $locationDataByPath (same physical address, no reason to type it twice) plus its own
@@ -1079,6 +1082,12 @@ if (isset($_POST['finish'])) {
     }
     if ($grcmanagerCisoGroupSet > 0) {
         $messages[] = __('Groupe "RSSI" créé et déclaré dans GRC Manager.', 'configurationglpiauto');
+    }
+    if ($grcmanagerReviewsActivated > 0) {
+        $messages[] = sprintf(
+            __('%d revue(s) périodique(s) activée(s) dans GRC Manager (tickets récurrents).', 'configurationglpiauto'),
+            $grcmanagerReviewsActivated
+        );
     }
     if ($tagsCreated > 0) {
         $messages[] = sprintf(__('%d tag(s) créé(s) (plugin Tag).', 'configurationglpiauto'), $tagsCreated);

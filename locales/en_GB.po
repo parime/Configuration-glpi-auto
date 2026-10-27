@@ -4713,3 +4713,13 @@ msgstr "GRC Manager plugin detected — create the \"RSSI\" (CISO) group and set
 
 msgid "Ses membres liront les documents de tous les audits internes et les copies de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la configuration de GRC Manager."
 msgstr "Its members will read the documents of every internal audit and the quiz copies of trainings. No effect if a CISO group is already chosen in the GRC Manager configuration."
+
+#, php-format
+msgid "%d revue(s) périodique(s) activée(s) dans GRC Manager (tickets récurrents)."
+msgstr "%d periodic review(s) activated in GRC Manager (recurring tickets)."
+
+msgid "Activer les revues périodiques du SMSI de GRC Manager"
+msgstr "Activate GRC Manager's periodic ISMS reviews"
+
+msgid "Droits d'accès, comptes à privilèges, matrice des flux, registre des risques, tests de restauration et de continuité… : un ticket récurrent par revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà actives ne sont pas modifiées."
+msgstr "Access rights, privileged accounts, network flow matrix, risk register, restore and continuity tests…: one recurring ticket per review, at the recommended frequency, assigned to the CISO group. Reviews already active are left unchanged."
