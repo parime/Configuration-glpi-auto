@@ -208,3 +208,4 @@ jobs:
           # auto-tag.yml for release.yml itself) -- explicitly re-trigger CI so the PR's required
           # check actually runs instead of sitting pending forever.
           gh workflow run continuous-integration.yml --ref "$BRANCH"
+          gh workflow run security.yml --ref "$BRANCH"
