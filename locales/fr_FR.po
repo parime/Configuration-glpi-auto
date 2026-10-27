@@ -4771,3 +4771,12 @@ msgstr "Visibles dans la FAQ du portail libre-service : comment utiliser le cata
 #, php-format
 msgid "Un profil s'appelait déjà « %1$s » : le nouveau profil s'appelle « %2$s »."
 msgstr "Un profil s'appelait déjà « %1$s » : le nouveau profil s'appelle « %2$s »."
+
+msgid "Groupe \"RSSI\" créé et déclaré dans GRC Manager."
+msgstr "Groupe \"RSSI\" créé et déclaré dans GRC Manager."
+
+msgid "Plugin GRC Manager détecté — créer le groupe \"RSSI\" et le déclarer dans GRC Manager"
+msgstr "Plugin GRC Manager détecté — créer le groupe \"RSSI\" et le déclarer dans GRC Manager"
+
+msgid "Ses membres liront les documents de tous les audits internes et les copies de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la configuration de GRC Manager."
+msgstr "Ses membres liront les documents de tous les audits internes et les copies de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la configuration de GRC Manager."

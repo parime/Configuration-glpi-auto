@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Groupe RSSI de GRC Manager** (issue #339, première partie) : quand le plugin GRC Manager est actif,
+  l'assistant propose de créer le groupe « RSSI » et de le déclarer comme groupe RSSI de GRC Manager
+  (lecture des documents de tous les audits internes et des copies de quiz des formations). Sans
+  effet si un groupe RSSI est déjà choisi dans GRC Manager.
+
 ## [1.11.0] - 2026-10-27
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

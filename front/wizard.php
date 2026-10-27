@@ -52,6 +52,7 @@ use GlpiPlugin\Configurationglpiauto\FollowupLibraryBuilder;
 use GlpiPlugin\Configurationglpiauto\FuelCardFormBuilder;
 use GlpiPlugin\Configurationglpiauto\FurnitureRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
+use GlpiPlugin\Configurationglpiauto\GrcmanagerCisoGroupBuilder;
 use GlpiPlugin\Configurationglpiauto\HeatingClimateFormBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\InstrumentCalibrationFormBuilder;
@@ -728,6 +729,7 @@ if (isset($_POST['finish'])) {
     $countryHolidaysCreated = (new CountryHolidayBuilder())->build($config, $countryByPath, $calendarIdByPath);
     $satisfactionSurveyCreated = (new SatisfactionSurveyBuilder())->build($config);
     $vipGroupCreated = (new VipBuilder())->build($config);
+    $grcmanagerCisoGroupSet = (new GrcmanagerCisoGroupBuilder())->build($config);
     $tagsCreated = (new TagBuilder())->build($config);
     $validationRoutingCreated = $canManageTicketRules ? (new ValidationRoutingBuilder())->build($config) : 0;
     // Reuses $locationDataByPath (same physical address, no reason to type it twice) plus its own
@@ -1075,6 +1077,9 @@ if (isset($_POST['finish'])) {
     if ($vipGroupCreated > 0) {
         $messages[] = __('Groupe "VIP" créé et activé (plugin VIP).', 'configurationglpiauto');
     }
+    if ($grcmanagerCisoGroupSet > 0) {
+        $messages[] = __('Groupe "RSSI" créé et déclaré dans GRC Manager.', 'configurationglpiauto');
+    }
     if ($tagsCreated > 0) {
         $messages[] = sprintf(__('%d tag(s) créé(s) (plugin Tag).', 'configurationglpiauto'), $tagsCreated);
     }
@@ -1197,6 +1202,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     ] : null,
     'satisfaction_plugin_active' => SatisfactionSurveyBuilder::isThirdPartyPluginActive(),
     'vip_plugin_active' => VipBuilder::isThirdPartyPluginActive(),
+    'grcmanager_plugin_active' => GrcmanagerCisoGroupBuilder::isGrcmanagerActive(),
     'tag_plugin_active' => TagBuilder::isThirdPartyPluginActive(),
     'assetsign_plugin_active' => AssetsignTriggerBuilder::isThirdPartyPluginActive(),
     'assetsign_trigger_preview' => AssetsignTriggerBuilder::preview(),

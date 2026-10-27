@@ -4783,3 +4783,12 @@ msgstr "Visibili nelle FAQ del portale self-service: come usare il catalogo dei 
 #, php-format
 msgid "Un profil s'appelait déjà « %1$s » : le nouveau profil s'appelle « %2$s »."
 msgstr "Un profilo si chiamava già «%1$s»: il nuovo profilo si chiama «%2$s»."
+
+msgid "Groupe \"RSSI\" créé et déclaré dans GRC Manager."
+msgstr "Gruppo \"RSSI\" (CISO) creato e dichiarato in GRC Manager."
+
+msgid "Plugin GRC Manager détecté — créer le groupe \"RSSI\" et le déclarer dans GRC Manager"
+msgstr "Plugin GRC Manager rilevato — creare il gruppo \"RSSI\" (CISO) e dichiararlo in GRC Manager"
+
+msgid "Ses membres liront les documents de tous les audits internes et les copies de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la configuration de GRC Manager."
+msgstr "I suoi membri leggeranno i documenti di tutti gli audit interni e le copie dei quiz delle formazioni. Nessun effetto se un gruppo CISO è già scelto nella configurazione di GRC Manager."
