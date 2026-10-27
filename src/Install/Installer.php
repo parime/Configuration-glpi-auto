@@ -222,6 +222,7 @@ final class Installer
                 `tag_library_enabled` tinyint NOT NULL DEFAULT 0,
                 `assetsign_triggers_enabled` tinyint NOT NULL DEFAULT 0,
                 `assetsign_trigger_fields` text,
+                `grcmanager_ciso_group_enabled` tinyint NOT NULL DEFAULT 0,
                 `validation_supervisor_routing_enabled` tinyint NOT NULL DEFAULT 0,
                 `fire_safety_assets_enabled` tinyint NOT NULL DEFAULT 0,
                 `fire_safety_asset_icons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -418,6 +419,8 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'physical_security_assets_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'physical_security_asset_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'request_type_icons_enabled', 'bool', ['value' => 0]);
+            // Issue #339 : décoché à la mise à jour, comme les autres intégrations de plugins.
+            $migration->addField(self::CONFIGS_TABLE, 'grcmanager_ciso_group_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'inventory_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'certificate_types_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'certificate_type_icons_enabled', 'bool', ['value' => 0]);
