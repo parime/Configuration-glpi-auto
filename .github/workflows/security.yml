@@ -5,8 +5,7 @@ name: Sécurité commune
 on:
   push:
   pull_request:
-  # Relancé par release.yml sur la PR du catalogue, ouverte avec le GITHUB_TOKEN (qui ne
-  # déclenche pas pull_request) : sans cela, les vérifications requises restent « en attente ».
+  # Lancement manuel possible (onglet Actions), par exemple pour revérifier une branche.
   workflow_dispatch:
 
 permissions:
