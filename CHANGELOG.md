@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.11.0] - 2026-10-27
 
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
 ### Added
 
 - **Onglet « Configuration GLPI Auto » dans les profils** (Administration > Profils) : matrice des
