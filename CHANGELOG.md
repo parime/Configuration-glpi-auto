@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Sans le dossier `vendor/` (archive incomplète, clone sans `composer install --no-dev`), le plugin
+  refuse de s'installer avec un message clair au lieu de provoquer une erreur fatale sur chaque page de
+  GLPI (note de la revue de sécurité de la marketplace).
+
 ## [1.12.0] - 2026-10-27
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

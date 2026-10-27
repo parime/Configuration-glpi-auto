@@ -25,7 +25,11 @@ use GlpiPlugin\Configurationglpiauto\FuelType;
 // Hard runtime requirement: GLPI does not autoload plugin src/ classes on its own.
 // `composer install --no-dev` must be run after cloning, and any release package must bundle
 // vendor/ — same constraint documented on the sibling glpi-vulnerability-manager plugin.
-require_once __DIR__ . '/vendor/autoload.php';
+// Sans vendor/ (archive incomplète, clone sans `composer install --no-dev`), le plugin refuse de
+// s'installer avec un message (check_prerequisites) au lieu d'une erreur fatale à chaque page.
+if (is_readable(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
 
 define('PLUGIN_CONFIGURATIONGLPIAUTO_VERSION', '1.12.0');
 define('PLUGIN_CONFIGURATIONGLPIAUTO_MIN_GLPI', '11.0.0');
@@ -109,6 +113,11 @@ function plugin_version_configurationglpiauto(): array
  */
 function plugin_configurationglpiauto_check_prerequisites(): bool
 {
+    if (!is_readable(__DIR__ . '/vendor/autoload.php')) {
+        echo 'Dépendances manquantes : exécutez « composer install --no-dev » dans le dossier du plugin.';
+        return false;
+    }
+
     if (version_compare(PHP_VERSION, PLUGIN_CONFIGURATIONGLPIAUTO_MIN_PHP, '<')) {
         echo sprintf('Cette version du plugin nécessite PHP %s minimum.', PLUGIN_CONFIGURATIONGLPIAUTO_MIN_PHP);
         return false;
