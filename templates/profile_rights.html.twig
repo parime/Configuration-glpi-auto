@@ -1,0 +1,6 @@
+{# Profile tab: core rights matrix, saved by the core front/profile.form.php #}
+{% extends 'pages/admin/profile/base_tab.html.twig' %}
+
+{% block content %}
+    {% do item.displayRightsChoiceMatrix(rights, {canedit: can_edit, title: title}) %}
+{% endblock %}

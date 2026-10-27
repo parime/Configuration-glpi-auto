@@ -17,14 +17,19 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use Glpi\Application\View\TemplateRenderer;
+
 /**
  * Declares this plugin's rights in GLPI's standard profile matrix (Administration > Profils).
  * Deliberately a dedicated right rather than reusing GLPI's core 'config' right: 'config' only
  * grants READ/UPDATE (it models a per-entity singleton), never CREATE/PURGE — confirmed against a
  * real GLPI 11 instance while validating the profile CRUD screens, where "Ajouter" 403'd for the
  * built-in super-admin user despite it having full 'config' access.
+ *
+ * Also the plugin's tab on GLPI profiles: the core rights matrix, saved by the core
+ * front/profile.form.php (core 'profile' right), so both rights can be granted from the UI.
  */
-class Profile
+class Profile extends \CommonGLPI
 {
     public const RIGHT_PROFILE = 'plugin_configurationglpiauto_profile';
 
@@ -62,6 +67,64 @@ class Profile
         foreach ($rows as $row) {
             \ProfileRight::updateProfileRights((int) $row['id'], array_fill_keys(self::ALL_RIGHTS, ALLSTANDARDRIGHT));
         }
+    }
+
+    public function getTabNameForItem(\CommonGLPI $item, $withtemplate = 0)
+    {
+        return self::canManage($item) ? self::createTabEntry(self::pluginName(), 0, null, 'ti ti-settings-automation') : '';
+    }
+
+    public static function displayTabContentForItem(\CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    {
+        // ajax/common.tabs.php serves the content without calling getTabNameForItem().
+        if (!self::canManage($item)) {
+            return false;
+        }
+        TemplateRenderer::getInstance()->display('@configurationglpiauto/profile_rights.html.twig', [
+            'item'   => $item,
+            'title'  => self::pluginName(),
+            'rights' => self::getRightsMatrix(),
+        ]);
+
+        return true;
+    }
+
+    /**
+     * One row per plugin right (shared "profile-right" check: every right must be listed here).
+     *
+     * @return list<array<string, mixed>>
+     */
+    public static function getRightsMatrix(): array
+    {
+        return [
+            [
+                'itemtype' => ConfigurationProfile::class,
+                'label'    => ConfigurationProfile::getTypeName(\Session::getPluralNumber()),
+                'field'    => self::RIGHT_PROFILE,
+            ],
+            [
+                'itemtype' => Config::class,
+                'label'    => Config::getTypeName(),
+                'field'    => self::RIGHT_CONFIG,
+            ],
+        ];
+    }
+
+    private static function pluginName(): string
+    {
+        return (string) (plugin_version_configurationglpiauto()['name'] ?? 'Configuration GLPI Auto');
+    }
+
+    /**
+     * Core 'profile' right, plus access to the plugin: rights over a module are not delegated by
+     * someone who cannot see it. Simplified-interface profiles never reach the plugin.
+     */
+    private static function canManage(\CommonGLPI $item): bool
+    {
+        return $item instanceof \Profile && !$item->isNewItem()
+            && ($item->fields['interface'] ?? '') === 'central'
+            && \Profile::canView()
+            && (\Session::haveRight(self::RIGHT_PROFILE, READ) || \Session::haveRight(self::RIGHT_CONFIG, READ));
     }
 
     public static function uninstall(): void

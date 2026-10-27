@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Onglet « Configuration GLPI Auto » dans les profils** (Administration > Profils) : matrice des
+  droits du plugin (profils de configuration, configuration). Ils n'étaient réglables qu'en base,
+  hors Super-Admin. Visible avec le droit « Profils » du cœur et l'accès au plugin. Contrôle commun
+  « profile-right » (glpi-plugin-security v1.1.0).
+
 ### Fixed
 
 - **Désinstallation complète** : l'historique, les préférences d'affichage, notes, recherches
