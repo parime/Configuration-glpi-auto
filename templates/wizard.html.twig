@@ -1171,7 +1171,13 @@
             <input type="checkbox" name="grcmanager_ciso_group_enabled" value="1" class="form-check-input" id="cga-grcmanager-ciso-group-enabled" {{ config.grcmanager_ciso_group_enabled|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="cga-grcmanager-ciso-group-enabled">{{ __('Plugin GRC Manager détecté — créer le groupe "RSSI" et le déclarer dans GRC Manager', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small mb-0">{{ __('Ses membres liront les documents de tous les audits internes et les copies de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la configuration de GRC Manager.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Ses membres liront les documents de tous les audits internes et les copies de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la configuration de GRC Manager.', 'configurationglpiauto') }}</p>
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="grcmanager_periodic_reviews_enabled" value="0">
+            <input type="checkbox" name="grcmanager_periodic_reviews_enabled" value="1" class="form-check-input" id="cga-grcmanager-periodic-reviews-enabled" {{ config.grcmanager_periodic_reviews_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-grcmanager-periodic-reviews-enabled">{{ __('Activer les revues périodiques du SMSI de GRC Manager', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-0">{{ __('Droits d\'accès, comptes à privilèges, matrice des flux, registre des risques, tests de restauration et de continuité… : un ticket récurrent par revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà actives ne sont pas modifiées.', 'configurationglpiauto') }}</p>
         {% endif %}
 
         {# Visible uniquement si le plugin tiers "Tag" est installé ET activé — aucune trace dans
