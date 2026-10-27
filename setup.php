@@ -66,6 +66,8 @@ function plugin_init_configurationglpiauto(): void
     $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['configurationglpiauto'] = 'front/wizard.php';
 
     Plugin::registerClass(ConfigurationProfile::class);
+    // Onglet des profils GLPI : attribuer les droits du plugin depuis l'interface.
+    Plugin::registerClass(\GlpiPlugin\Configurationglpiauto\Profile::class, ['addtabon' => ['Profile']]);
     // Issue #285 : `notificationtemplates_types` rend la ligne de configuration porteuse de la
     // notification « Rapport d'audit périodique » (voir NotificationTargetConfig).
     Plugin::registerClass(Config::class, ['notificationtemplates_types' => true]);
