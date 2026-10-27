@@ -4723,3 +4723,19 @@ msgstr "Activate GRC Manager's periodic ISMS reviews"
 
 msgid "Droits d'accès, comptes à privilèges, matrice des flux, registre des risques, tests de restauration et de continuité… : un ticket récurrent par revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà actives ne sont pas modifiées."
 msgstr "Access rights, privileged accounts, network flow matrix, risk register, restore and continuity tests…: one recurring ticket per review, at the recommended frequency, assigned to the CISO group. Reviews already active are left unchanged."
+
+#, php-format
+msgid "%d réglage(s) d'assetsign renseigné(s) (entreprise, lien de la charte)."
+msgstr "%d assetsign setting(s) filled in (company, charter link)."
+
+msgid "Plugin assetsign détecté — renseigner l'entreprise et le lien de la charte informatique"
+msgstr "assetsign plugin detected — fill in the company and the IT charter link"
+
+msgid "L'entreprise apparaît en tête des PDF de remise ; le lien de la charte est le prérequis des campagnes de charte d'assetsign. Seuls les réglages encore vides dans assetsign sont renseignés."
+msgstr "The company appears at the top of handover PDFs; the charter link is required by assetsign's charter campaigns. Only settings still empty in assetsign are filled in."
+
+msgid "Entreprise"
+msgstr "Company"
+
+msgid "Lien de la charte informatique"
+msgstr "IT charter link"

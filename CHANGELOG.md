@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   revues périodiques du SMSI de GRC Manager (droits d'accès, comptes à privilèges, matrice des flux,
   registre des risques, tests de restauration…) à leur fréquence recommandée, attribuées au groupe
   RSSI : un ticket récurrent natif par revue. Les revues déjà actives ne sont pas modifiées.
+- **Réglages d'assetsign** (issue #339) : quand le plugin assetsign est actif, l'assistant renseigne
+  l'entreprise (en tête des PDF de remise, par défaut la première entité de l'arborescence) et le lien
+  de la charte informatique (prérequis des campagnes de charte). Seuls les réglages encore vides dans
+  assetsign sont renseignés.
 
 ## [1.11.0] - 2026-10-27
 

@@ -4790,3 +4790,19 @@ msgstr "Activer les revues périodiques du SMSI de GRC Manager"
 
 msgid "Droits d'accès, comptes à privilèges, matrice des flux, registre des risques, tests de restauration et de continuité… : un ticket récurrent par revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà actives ne sont pas modifiées."
 msgstr "Droits d'accès, comptes à privilèges, matrice des flux, registre des risques, tests de restauration et de continuité… : un ticket récurrent par revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà actives ne sont pas modifiées."
+
+#, php-format
+msgid "%d réglage(s) d'assetsign renseigné(s) (entreprise, lien de la charte)."
+msgstr "%d réglage(s) d'assetsign renseigné(s) (entreprise, lien de la charte)."
+
+msgid "Plugin assetsign détecté — renseigner l'entreprise et le lien de la charte informatique"
+msgstr "Plugin assetsign détecté — renseigner l'entreprise et le lien de la charte informatique"
+
+msgid "L'entreprise apparaît en tête des PDF de remise ; le lien de la charte est le prérequis des campagnes de charte d'assetsign. Seuls les réglages encore vides dans assetsign sont renseignés."
+msgstr "L'entreprise apparaît en tête des PDF de remise ; le lien de la charte est le prérequis des campagnes de charte d'assetsign. Seuls les réglages encore vides dans assetsign sont renseignés."
+
+msgid "Entreprise"
+msgstr "Entreprise"
+
+msgid "Lien de la charte informatique"
+msgstr "Lien de la charte informatique"

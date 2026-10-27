@@ -4802,3 +4802,19 @@ msgstr "Attivare le revisioni periodiche dell'SGSI di GRC Manager"
 
 msgid "Droits d'accès, comptes à privilèges, matrice des flux, registre des risques, tests de restauration et de continuité… : un ticket récurrent par revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà actives ne sont pas modifiées."
 msgstr "Diritti di accesso, account privilegiati, matrice dei flussi, registro dei rischi, test di ripristino e di continuità…: un ticket ricorrente per revisione, alla frequenza raccomandata, assegnato al gruppo CISO. Le revisioni già attive non vengono modificate."
+
+#, php-format
+msgid "%d réglage(s) d'assetsign renseigné(s) (entreprise, lien de la charte)."
+msgstr "%d impostazione/i di assetsign compilata/e (azienda, link alla carta)."
+
+msgid "Plugin assetsign détecté — renseigner l'entreprise et le lien de la charte informatique"
+msgstr "Plugin assetsign rilevato — compilare l'azienda e il link alla carta informatica"
+
+msgid "L'entreprise apparaît en tête des PDF de remise ; le lien de la charte est le prérequis des campagnes de charte d'assetsign. Seuls les réglages encore vides dans assetsign sont renseignés."
+msgstr "L'azienda compare in testa ai PDF di consegna; il link alla carta è necessario per le campagne di carta di assetsign. Vengono compilate solo le impostazioni ancora vuote in assetsign."
+
+msgid "Entreprise"
+msgstr "Azienda"
+
+msgid "Lien de la charte informatique"
+msgstr "Link alla carta informatica"
