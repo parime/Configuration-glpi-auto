@@ -4787,3 +4787,29 @@ msgstr "Plugin GRC Manager detectado — crear el grupo \"RSSI\" (CISO) y declar
 
 msgid "Ses membres liront les documents de tous les audits internes et les copies de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la configuration de GRC Manager."
 msgstr "Sus miembros leerán los documentos de todas las auditorías internas y las copias de los cuestionarios de las formaciones. Sin efecto si ya se ha elegido un grupo CISO en la configuración de GRC Manager."
+
+#, php-format
+msgid "%d revue(s) périodique(s) activée(s) dans GRC Manager (tickets récurrents)."
+msgstr "%d revisión(es) periódica(s) activada(s) en GRC Manager (tickets recurrentes)."
+
+msgid "Activer les revues périodiques du SMSI de GRC Manager"
+msgstr "Activar las revisiones periódicas del SGSI de GRC Manager"
+
+msgid "Droits d'accès, comptes à privilèges, matrice des flux, registre des risques, tests de restauration et de continuité… : un ticket récurrent par revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà actives ne sont pas modifiées."
+msgstr "Derechos de acceso, cuentas privilegiadas, matriz de flujos, registro de riesgos, pruebas de restauración y de continuidad…: un ticket recurrente por revisión, con la frecuencia recomendada, asignado al grupo CISO. Las revisiones ya activas no se modifican."
+
+#, php-format
+msgid "%d réglage(s) d'assetsign renseigné(s) (entreprise, lien de la charte)."
+msgstr "%d ajuste(s) de assetsign completado(s) (empresa, enlace de la carta)."
+
+msgid "Plugin assetsign détecté — renseigner l'entreprise et le lien de la charte informatique"
+msgstr "Plugin assetsign detectado — completar la empresa y el enlace de la carta informática"
+
+msgid "L'entreprise apparaît en tête des PDF de remise ; le lien de la charte est le prérequis des campagnes de charte d'assetsign. Seuls les réglages encore vides dans assetsign sont renseignés."
+msgstr "La empresa aparece en la cabecera de los PDF de entrega; el enlace de la carta es necesario para las campañas de carta de assetsign. Solo se completan los ajustes aún vacíos en assetsign."
+
+msgid "Entreprise"
+msgstr "Empresa"
+
+msgid "Lien de la charte informatique"
+msgstr "Enlace de la carta informática"

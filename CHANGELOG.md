@@ -11,10 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Groupe RSSI de GRC Manager** (issue #339, première partie) : quand le plugin GRC Manager est actif,
+- **Groupe RSSI de GRC Manager** (issue #339) : quand le plugin GRC Manager est actif,
   l'assistant propose de créer le groupe « RSSI » et de le déclarer comme groupe RSSI de GRC Manager
   (lecture des documents de tous les audits internes et des copies de quiz des formations). Sans
   effet si un groupe RSSI est déjà choisi dans GRC Manager.
+- **Revues périodiques de GRC Manager** (issue #339) : option facultative de l'assistant qui active les
+  revues périodiques du SMSI de GRC Manager (droits d'accès, comptes à privilèges, matrice des flux,
+  registre des risques, tests de restauration…) à leur fréquence recommandée, attribuées au groupe
+  RSSI : un ticket récurrent natif par revue. Les revues déjà actives ne sont pas modifiées.
+- **Réglages d'assetsign** (issue #339) : quand le plugin assetsign est actif, l'assistant renseigne
+  l'entreprise (en tête des PDF de remise, par défaut la première entité de l'arborescence) et le lien
+  de la charte informatique (prérequis des campagnes de charte). Seuls les réglages encore vides dans
+  assetsign sont renseignés.
 
 ## [1.11.0] - 2026-10-27
 

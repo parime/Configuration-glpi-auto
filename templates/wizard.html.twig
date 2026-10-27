@@ -1163,6 +1163,27 @@
           <p class="text-muted small mb-0">{{ __('Crée un groupe natif "VIP" (à ne pas confondre avec un groupe de techniciens) et le marque comme groupe VIP auprès du plugin : ajoutez-y les personnes ou groupes prioritaires (direction, actionnaires...) dont les tickets doivent être mis en évidence.', 'configurationglpiauto') }}</p>
         {% endif %}
 
+        {# Issue #339 : visible uniquement si le plugin jumeau assetsign est installé ET activé. #}
+        {% if assetsign_setup_available %}
+          <hr class="my-3">
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="assetsign_setup_enabled" value="0">
+            <input type="checkbox" name="assetsign_setup_enabled" value="1" class="form-check-input" id="cga-assetsign-setup-enabled" {{ config.assetsign_setup_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-assetsign-setup-enabled"><i class="ti ti-signature me-1"></i>{{ __('Plugin assetsign détecté — renseigner l\'entreprise et le lien de la charte informatique', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-2">{{ __('L\'entreprise apparaît en tête des PDF de remise ; le lien de la charte est le prérequis des campagnes de charte d\'assetsign. Seuls les réglages encore vides dans assetsign sont renseignés.', 'configurationglpiauto') }}</p>
+          <div class="row g-2 mb-0" style="max-width: 760px;">
+            <div class="col-md-5">
+              <label class="form-label small" for="cga-assetsign-company-name">{{ __('Entreprise', 'configurationglpiauto') }}</label>
+              <input type="text" name="assetsign_company_name" id="cga-assetsign-company-name" class="form-control" maxlength="255" value="{{ config.assetsign_company_name }}" placeholder="{{ assetsign_default_company }}">
+            </div>
+            <div class="col-md-7">
+              <label class="form-label small" for="cga-assetsign-charter-url">{{ __('Lien de la charte informatique', 'configurationglpiauto') }}</label>
+              <input type="url" name="assetsign_charter_url" id="cga-assetsign-charter-url" class="form-control" maxlength="255" value="{{ config.assetsign_charter_url }}" placeholder="https://">
+            </div>
+          </div>
+        {% endif %}
+
         {# Issue #339 : visible uniquement si le plugin jumeau GRC Manager est installé ET activé. #}
         {% if grcmanager_plugin_active %}
           <hr class="my-3">
@@ -1171,7 +1192,13 @@
             <input type="checkbox" name="grcmanager_ciso_group_enabled" value="1" class="form-check-input" id="cga-grcmanager-ciso-group-enabled" {{ config.grcmanager_ciso_group_enabled|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="cga-grcmanager-ciso-group-enabled">{{ __('Plugin GRC Manager détecté — créer le groupe "RSSI" et le déclarer dans GRC Manager', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small mb-0">{{ __('Ses membres liront les documents de tous les audits internes et les copies de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la configuration de GRC Manager.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Ses membres liront les documents de tous les audits internes et les copies de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la configuration de GRC Manager.', 'configurationglpiauto') }}</p>
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="grcmanager_periodic_reviews_enabled" value="0">
+            <input type="checkbox" name="grcmanager_periodic_reviews_enabled" value="1" class="form-check-input" id="cga-grcmanager-periodic-reviews-enabled" {{ config.grcmanager_periodic_reviews_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-grcmanager-periodic-reviews-enabled">{{ __('Activer les revues périodiques du SMSI de GRC Manager', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-0">{{ __('Droits d\'accès, comptes à privilèges, matrice des flux, registre des risques, tests de restauration et de continuité… : un ticket récurrent par revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà actives ne sont pas modifiées.', 'configurationglpiauto') }}</p>
         {% endif %}
 
         {# Visible uniquement si le plugin tiers "Tag" est installé ET activé — aucune trace dans

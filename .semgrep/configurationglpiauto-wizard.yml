@@ -74,6 +74,10 @@ rules:
         # Lecture seule des actions de regle (cible supprimee ?), aucune ecriture (issue #323).
         - /src/Audit/Checks/DictionaryRulesCheck.php
         - /src/AssetsignTriggerBuilder.php
+        # Issue #339 : appelés seulement avec le droit de configuration du plugin concerné
+        # (plugin_assetsign_config / plugin_grcmanager en modification, front/wizard.php).
+        - /src/AssetsignSetupBuilder.php
+        - /src/GrcmanagerCisoGroupBuilder.php
         # Issue #345 : coupe les notifications EN MEMOIRE le temps de l'import (retablies dans un
         # finally), jamais en base ; front/jiraimport.php exige le droit natif ticket CREATE.
         - /src/Jira/JiraImporter.php
@@ -91,6 +95,8 @@ rules:
       - pattern: new FieldUnicity()
       - pattern: \Config::setConfigurationValues('core', ...)
       - pattern: Config::setConfigurationValues('core', ...)
+      # Configuration d'un autre plugin (contexte plugin:xxx) : même revue.
+      - pattern: \Config::setConfigurationValues($CTX, ...)
       - pattern: (new Entity())->update(...)
       - pattern: (new \Entity())->update(...)
       - pattern: $DB->update('glpi_entities', ...)

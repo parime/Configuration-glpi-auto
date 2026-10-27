@@ -17,6 +17,7 @@
 
 use GlpiPlugin\Configurationglpiauto\AbroadMissionFormBuilder;
 use GlpiPlugin\Configurationglpiauto\AccessBadgeFormBuilder;
+use GlpiPlugin\Configurationglpiauto\AssetsignSetupBuilder;
 use GlpiPlugin\Configurationglpiauto\AssetsignTriggerBuilder;
 use GlpiPlugin\Configurationglpiauto\AssetTypeBuilder;
 use GlpiPlugin\Configurationglpiauto\AuditRequestFormBuilder;
@@ -53,6 +54,7 @@ use GlpiPlugin\Configurationglpiauto\FuelCardFormBuilder;
 use GlpiPlugin\Configurationglpiauto\FurnitureRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\GrcmanagerCisoGroupBuilder;
+use GlpiPlugin\Configurationglpiauto\GrcmanagerPeriodicReviewBuilder;
 use GlpiPlugin\Configurationglpiauto\HeatingClimateFormBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\InstrumentCalibrationFormBuilder;
@@ -431,6 +433,9 @@ if (isset($_POST['finish'])) {
     // assetsign-glpi's own configuration right (its Profile::RIGHT_CONFIG): AssetsignTriggerBuilder
     // writes that plugin's configuration table directly, bypassing its own controllers.
     $canUpdateAssetsignConfig = Session::haveRight('plugin_assetsign_config', UPDATE);
+    // Issue #339 : le groupe RSSI de GRC Manager est l'audience des documents d'audit et des copies
+    // de quiz ; le désigner exige le même droit que la page de configuration de GRC Manager.
+    $canUpdateGrcmanagerConfig = Session::haveRight('plugin_grcmanager', UPDATE);
     // Niveaux de service (SLM, SLA, OLA et leurs niveaux d'escalade) et calendriers : objets
     // natifs appliqués à tous les tickets de l'instance, chacun avec son droit GLPI (SLM::$rightname,
     // Calendar::$rightname) — jamais sur le seul droit délégable de ce plugin.
@@ -729,7 +734,10 @@ if (isset($_POST['finish'])) {
     $countryHolidaysCreated = (new CountryHolidayBuilder())->build($config, $countryByPath, $calendarIdByPath);
     $satisfactionSurveyCreated = (new SatisfactionSurveyBuilder())->build($config);
     $vipGroupCreated = (new VipBuilder())->build($config);
-    $grcmanagerCisoGroupSet = (new GrcmanagerCisoGroupBuilder())->build($config);
+    $grcmanagerCisoGroupSet = $canUpdateGrcmanagerConfig ? (new GrcmanagerCisoGroupBuilder())->build($config) : 0;
+    // Après le groupe RSSI, à qui les revues sont attribuées.
+    $grcmanagerReviewsActivated = (new GrcmanagerPeriodicReviewBuilder())->build($config);
+    $assetsignSettingsSet = $canUpdateAssetsignConfig ? (new AssetsignSetupBuilder())->build($config) : 0;
     $tagsCreated = (new TagBuilder())->build($config);
     $validationRoutingCreated = $canManageTicketRules ? (new ValidationRoutingBuilder())->build($config) : 0;
     // Reuses $locationDataByPath (same physical address, no reason to type it twice) plus its own
@@ -1080,6 +1088,18 @@ if (isset($_POST['finish'])) {
     if ($grcmanagerCisoGroupSet > 0) {
         $messages[] = __('Groupe "RSSI" créé et déclaré dans GRC Manager.', 'configurationglpiauto');
     }
+    if ($assetsignSettingsSet > 0) {
+        $messages[] = sprintf(
+            __('%d réglage(s) d\'assetsign renseigné(s) (entreprise, lien de la charte).', 'configurationglpiauto'),
+            $assetsignSettingsSet
+        );
+    }
+    if ($grcmanagerReviewsActivated > 0) {
+        $messages[] = sprintf(
+            __('%d revue(s) périodique(s) activée(s) dans GRC Manager (tickets récurrents).', 'configurationglpiauto'),
+            $grcmanagerReviewsActivated
+        );
+    }
     if ($tagsCreated > 0) {
         $messages[] = sprintf(__('%d tag(s) créé(s) (plugin Tag).', 'configurationglpiauto'), $tagsCreated);
     }
@@ -1203,6 +1223,8 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'satisfaction_plugin_active' => SatisfactionSurveyBuilder::isThirdPartyPluginActive(),
     'vip_plugin_active' => VipBuilder::isThirdPartyPluginActive(),
     'grcmanager_plugin_active' => GrcmanagerCisoGroupBuilder::isGrcmanagerActive(),
+    'assetsign_setup_available' => AssetsignSetupBuilder::isAvailable(),
+    'assetsign_default_company' => AssetsignSetupBuilder::defaultCompanyName($config),
     'tag_plugin_active' => TagBuilder::isThirdPartyPluginActive(),
     'assetsign_plugin_active' => AssetsignTriggerBuilder::isThirdPartyPluginActive(),
     'assetsign_trigger_preview' => AssetsignTriggerBuilder::preview(),
