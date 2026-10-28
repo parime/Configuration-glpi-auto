@@ -27,6 +27,7 @@ use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\Lookup;
 use GlpiPlugin\Configurationglpiauto\NotificationTargetConfig;
+use GlpiPlugin\Configurationglpiauto\PluginTemplate;
 use GlpiPlugin\Configurationglpiauto\Profile;
 use GlpiPlugin\Configurationglpiauto\StateBuilder;
 use Migration;
@@ -809,12 +810,7 @@ final class Installer
                     . $t['todo'] . rtrim($t['sep']) . "\n##FOREACHproblems##- [##problem.severity##] ##problem.title## (##problem.domain##)\n"
                     . "  " . $t['reco'] . $t['sep'] . "##problem.recommendation##\n##ENDFOREACHproblems##\n"
                     . $t['link'] . $t['sep'] . "##audit.url##",
-                'content_html'             => '<p><strong>' . $t['intro'] . '</strong></p>'
-                    . '<p>' . $t['summary'] . '<br>##audit.evolution##</p>'
-                    . '<p><strong>' . $t['todo'] . '</strong></p><ul>##FOREACHproblems##'
-                    . '<li><strong>[##problem.severity##] ##problem.title##</strong> (##problem.domain##)<br>'
-                    . $t['reco'] . $t['sep'] . '##problem.recommendation##</li>##ENDFOREACHproblems##</ul>'
-                    . '<p><a href="##audit.url##">' . $t['link'] . '</a></p>',
+                'content_html'             => PluginTemplate::render('notifications/audit_report.html.twig', ['t' => $t]),
             ]);
         }
 

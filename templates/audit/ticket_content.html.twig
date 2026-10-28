@@ -1,0 +1,2 @@
+{# Contenu d'un ticket ouvert par le mode Audit (#355), voir ParkAudit::ticketContent() : une seule ligne, le contenu est stocké tel quel. -#}
+<p>{{ intro }}</p>{% if lines is not empty %}<ul>{% for line in lines %}<li>{{ line }}</li>{% endfor %}</ul>{% endif %}<p>{{ outro }}</p>

@@ -133,12 +133,16 @@ final class GhostAssetsCheck implements AuditCheckInterface
                 continue;
             }
             $user = (int) $row['users_id'] > 0 ? getUserName((int) $row['users_id']) : __('personne', 'configurationglpiauto');
-            $html = '<p>' . htmlescape(sprintf(
-                __('%1$s ne remonte plus à l\'inventaire depuis le %2$s. Utilisateur dans GLPI : %3$s.', 'configurationglpiauto'),
-                ParkAudit::label($itemtype, $row),
-                ParkAudit::date($row['last_inventory_update']),
-                $user
-            )) . '</p><p>' . htmlescape(__('Vérifiez si le matériel est perdu, volé, en panne, ou sorti du parc sans être déclaré, puis mettez à jour sa fiche. Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n\'a été modifiée.', 'configurationglpiauto')) . '</p>';
+            $html = ParkAudit::ticketContent(
+                sprintf(
+                    __('%1$s ne remonte plus à l\'inventaire depuis le %2$s. Utilisateur dans GLPI : %3$s.', 'configurationglpiauto'),
+                    ParkAudit::label($itemtype, $row),
+                    ParkAudit::date($row['last_inventory_update']),
+                    $user
+                ),
+                [],
+                __('Vérifiez si le matériel est perdu, volé, en panne, ou sorti du parc sans être déclaré, puis mettez à jour sa fiche. Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n\'a été modifiée.', 'configurationglpiauto')
+            );
             $ticketsId = ParkAudit::openTicket(
                 self::TICKET_PREFIX . ' : ' . ($row['name'] ?: '#' . $row['id']),
                 $html,

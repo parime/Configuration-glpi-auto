@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- HTML écrit en PHP passé dans des gabarits Twig (#355, revue de la marketplace GLPI) : formulaire
+  de point de sauvegarde (historique), tickets ouverts par le mode Audit (garanties, matériels
+  incomplets, matériels fantômes), habillage des e-mails de tickets, modèle du rapport d'audit
+  périodique. Les deux articles d'usage de la FAQ du portail sont rangés dans
+  `data/faq-portal/<langue>.json`, comme les fiches de bonnes pratiques. Contenu identique, à
+  l'encodage près des apostrophes (`&#039;`) ; l'habillage des e-mails échappe désormais aussi
+  ses libellés. Reste l'import Jira (4 chaînes).
 - Revues périodiques de GRC Manager : la classe est appelée sous son nouveau nom
   (`GlpiPlugin\Grcmanager\PeriodicReview`, GRC Manager 2.17), et sous l'ancien
   (`PluginGrcmanagerPeriodicReview`) avec les versions précédentes. L'ancien nom n'est gardé par

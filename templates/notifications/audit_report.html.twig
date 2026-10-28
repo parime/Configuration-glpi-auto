@@ -1,0 +1,4 @@
+{#- Corps HTML du modèle de notification « Rapport d'audit périodique » (#355), créé à l'installation
+ # (Installer). Une seule ligne : le contenu est stocké tel quel. Les ##balises## de GLPI sont
+ # remplacées à l'envoi. -#}
+<p><strong>{{ t.intro }}</strong></p><p>{{ t.summary }}<br>##audit.evolution##</p><p><strong>{{ t.todo }}</strong></p><ul>##FOREACHproblems##<li><strong>[##problem.severity##] ##problem.title##</strong> (##problem.domain##)<br>{{ t.reco }}{{ t.sep }}##problem.recommendation##</li>##ENDFOREACHproblems##</ul><p><a href="##audit.url##">{{ t.link }}</a></p>
