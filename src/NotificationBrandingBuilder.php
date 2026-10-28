@@ -623,56 +623,25 @@ class NotificationBrandingBuilder
     private function buildHtml(array $definition, array $labels, string $color, ?string $logoDataUri): string
     {
         [$r, $g, $b] = $this->hexToRgb($color);
-        $ctaFg = (0.299 * $r + 0.587 * $g + 0.114 * $b) > 149 ? '#1e293b' : '#ffffff';
 
-        $logoBlock = $logoDataUri !== null
-            ? '<img src="' . htmlspecialchars($logoDataUri, ENT_QUOTES, 'UTF-8') . '" alt="" style="max-height:32px;margin-bottom:12px;display:block;">'
-            : '';
-
-        $metaLabel = $labels[$definition['meta_label']];
-
-        $rowsHtml = '';
-        foreach ($definition['rows'] as [$labelKey, $tag]) {
-            $rowsHtml .= '<tr>'
-                . '<td style="background:#fafafa;padding:10px 14px;font-family:Arial,sans-serif;font-size:12px;color:#999999;border-bottom:1px solid #eeeeee;width:160px;">' . $labels[$labelKey] . '</td>'
-                . '<td style="background:#ffffff;padding:10px 14px;font-family:Arial,sans-serif;font-size:13px;color:#1a1a2e;border-bottom:1px solid #eeeeee;">' . $tag . '</td>'
-                . '</tr>';
-        }
-
-        $highlightHtml = '';
-        if ($definition['highlight_label'] !== null) {
-            $highlightHtml = '<div style="font-size:10px;color:' . $color . ';letter-spacing:3px;text-transform:uppercase;font-family:Arial,sans-serif;margin:24px 0 12px;">' . $labels[$definition['highlight_label']] . '</div>'
-                . '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
-                . '<td width="4" style="background:' . $color . ';border-radius:4px;">&nbsp;</td>'
-                . '<td style="background:#f9f9fb;padding:16px 20px;border-radius:0 8px 8px 0;font-family:Arial,sans-serif;font-size:14px;color:#333333;line-height:1.8;">' . $definition['highlight_tag'] . '</td>'
-                . '</tr></table>';
-        }
-
-        return self::MARKER . "\n"
-            . '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f5;padding:30px 0;"><tr><td align="center">'
-            . '<table width="600" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:12px;overflow:hidden;">'
-            . '<tr><td style="background:#1a1a2e;padding:30px 36px 24px 36px;">'
-            . $logoBlock
-            . '<div style="border-left:4px solid ' . $color . ';padding-left:16px;">'
-            . '<a href="##ticket.url##" style="color:#ffffff;text-decoration:none;font-size:20px;font-weight:bold;font-family:Arial,sans-serif;">##ticket.title##</a>'
-            . '</div>'
-            . '<div style="margin-top:16px;padding-left:20px;">'
-            . '<span style="background:rgba(255,255,255,0.1);border:1px solid ' . $color . ';color:' . $color . ';font-size:11px;padding:4px 12px;border-radius:20px;font-family:Arial,sans-serif;"><strong>##ticket.id##</strong></span>'
-            . '&nbsp;&nbsp;<span style="color:#888888;font-size:12px;font-family:Arial,sans-serif;">' . $metaLabel . ' ' . $definition['meta_tag'] . '</span>'
-            . '</div></td></tr>'
-            . '<tr><td style="padding:32px 36px;background:#ffffff;">'
-            . '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius:8px;overflow:hidden;border:1px solid #eeeeee;">'
-            . $rowsHtml
-            . '</table>'
-            . $highlightHtml
-            . '</td></tr>'
-            . '<tr><td align="center" style="background:' . $color . ';padding:18px 36px;">'
-            . '<a href="' . $definition['cta_tag'] . '" style="color:' . $ctaFg . ';text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;">' . $labels[$definition['cta_label']] . '</a>'
-            . '</td></tr>'
-            . '<tr><td align="center" style="background:#f8f8fa;padding:12px 36px;border-top:1px solid #eeeeee;">'
-            . '<span style="font-family:Arial,sans-serif;font-size:11px;color:#bbbbbb;">##ticket.id## &nbsp;·&nbsp; <a href="##ticket.url##" style="color:' . $color . ';text-decoration:none;">' . $labels['access_glpi'] . '</a></span>'
-            . '</td></tr>'
-            . '</table></td></tr></table>';
+        return PluginTemplate::render('notifications/branding.html.twig', [
+            'color'       => $color,
+            'cta_fg'      => (0.299 * $r + 0.587 * $g + 0.114 * $b) > 149 ? '#1e293b' : '#ffffff',
+            'logo'        => $logoDataUri,
+            'meta_label'  => $labels[$definition['meta_label']],
+            'meta_tag'    => $definition['meta_tag'],
+            'rows'        => array_map(
+                static fn (array $row): array => ['label' => $labels[$row[0]], 'tag' => $row[1]],
+                $definition['rows']
+            ),
+            'highlight'   => $definition['highlight_label'] === null ? null : [
+                'label' => $labels[$definition['highlight_label']],
+                'tag'   => $definition['highlight_tag'],
+            ],
+            'cta_tag'     => $definition['cta_tag'],
+            'cta_label'   => $labels[$definition['cta_label']],
+            'access_glpi' => $labels['access_glpi'],
+        ]);
     }
 
     /**

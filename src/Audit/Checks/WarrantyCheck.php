@@ -128,20 +128,27 @@ final class WarrantyCheck implements AuditCheckInterface
     public function fix(): void
     {
         $toLink = [];
-        $lines = '';
+        $lines = [];
         foreach (self::findItems() as $i) {
             if (ParkAudit::openTicketFor($i['itemtype'], (int) $i['row']['id'], self::TICKET_PREFIX) !== null) {
                 continue;
             }
             $toLink[] = ['itemtype' => $i['itemtype'], 'items_id' => (int) $i['row']['id']];
-            $lines .= '<li>' . htmlescape(sprintf(__('%1$s : fin de garantie le %2$s', 'configurationglpiauto'), ParkAudit::label($i['itemtype'], $i['row']), ParkAudit::date($i['end']))) . '</li>';
+            $lines[] = sprintf(
+                __('%1$s : fin de garantie le %2$s', 'configurationglpiauto'),
+                ParkAudit::label($i['itemtype'], $i['row']),
+                ParkAudit::date($i['end'])
+            );
         }
         if ($toLink === []) {
             ParkAudit::reportCreated(0);
             return;
         }
-        $html = '<p>' . htmlescape(__('Ces matériels en service ont une garantie expirée ou qui expire bientôt :', 'configurationglpiauto')) . '</p><ul>' . $lines . '</ul>'
-            . '<p>' . htmlescape(__('Pour chacun : prolonger la garantie, prévoir le remplacement, ou accepter le risque. Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n\'a été modifiée.', 'configurationglpiauto')) . '</p>';
+        $html = ParkAudit::ticketContent(
+            __('Ces matériels en service ont une garantie expirée ou qui expire bientôt :', 'configurationglpiauto'),
+            $lines,
+            __('Pour chacun : prolonger la garantie, prévoir le remplacement, ou accepter le risque. Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n\'a été modifiée.', 'configurationglpiauto')
+        );
         ParkAudit::reportCreated(ParkAudit::openTicket(self::TICKET_PREFIX . ' (' . date('Y-m-d') . ')', $html, $toLink, 0) > 0 ? 1 : 0);
     }
 }

@@ -1,0 +1,29 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Historique de la configuration : création d'un point de sauvegarde manuel (#355, ex-HTML écrit
+   dans front/history.php). #}
+<form method="post" action="{{ action }}" class="card mb-3">
+  <div class="card-body d-flex gap-2 align-items-end">
+    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+    <div>
+      <label class="form-label">{{ __('Label du point de sauvegarde', 'configurationglpiauto') }}</label>
+      <input type="text" name="label" class="form-control" required>
+    </div>
+    <button type="submit" name="create_checkpoint" value="1" class="btn btn-outline-primary">
+      <i class="ti ti-device-floppy"></i> {{ __('Créer un point de sauvegarde', 'configurationglpiauto') }}
+    </button>
+  </div>
+</form>

@@ -20,6 +20,7 @@ namespace GlpiPlugin\Configurationglpiauto\Audit;
 use CommonDBTM;
 use CommonITILObject;
 use Computer;
+use GlpiPlugin\Configurationglpiauto\PluginTemplate;
 use Html;
 use Item_Ticket;
 use Monitor;
@@ -125,6 +126,21 @@ final class ParkAudit
         ])->current();
 
         return $row === null ? null : (int) $row['id'];
+    }
+
+    /**
+     * Contenu HTML d'un ticket d'audit : introduction, liste facultative, conclusion (#355 : gabarit
+     * Twig, échappement automatique identique à htmlescape()).
+     *
+     * @param list<string> $lines
+     */
+    public static function ticketContent(string $intro, array $lines, string $outro): string
+    {
+        return PluginTemplate::render('audit/ticket_content.html.twig', [
+            'intro' => $intro,
+            'lines' => $lines,
+            'outro' => $outro,
+        ]);
     }
 
     /**

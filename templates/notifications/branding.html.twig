@@ -1,0 +1,21 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{#- Habillage HTML d'un modèle de notification de ticket (#355), voir NotificationBrandingBuilder::buildHtml().
+ # Première ligne : le repère NotificationBrandingBuilder::MARKER, qui signale un modèle créé par le plugin.
+ # Le reste tient sur une ligne : le contenu est stocké tel quel dans le modèle. Les ##balises## de GLPI
+ # sont remplacées à l'envoi. -#}
+<!-- configurationglpiauto:notification-branding -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f5;padding:30px 0;"><tr><td align="center"><table width="600" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:12px;overflow:hidden;"><tr><td style="background:#1a1a2e;padding:30px 36px 24px 36px;">{% if logo is not null %}<img src="{{ logo }}" alt="" style="max-height:32px;margin-bottom:12px;display:block;">{% endif %}<div style="border-left:4px solid {{ color }};padding-left:16px;"><a href="##ticket.url##" style="color:#ffffff;text-decoration:none;font-size:20px;font-weight:bold;font-family:Arial,sans-serif;">##ticket.title##</a></div><div style="margin-top:16px;padding-left:20px;"><span style="background:rgba(255,255,255,0.1);border:1px solid {{ color }};color:{{ color }};font-size:11px;padding:4px 12px;border-radius:20px;font-family:Arial,sans-serif;"><strong>##ticket.id##</strong></span>&nbsp;&nbsp;<span style="color:#888888;font-size:12px;font-family:Arial,sans-serif;">{{ meta_label }} {{ meta_tag }}</span></div></td></tr><tr><td style="padding:32px 36px;background:#ffffff;"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius:8px;overflow:hidden;border:1px solid #eeeeee;">{% for row in rows %}<tr><td style="background:#fafafa;padding:10px 14px;font-family:Arial,sans-serif;font-size:12px;color:#999999;border-bottom:1px solid #eeeeee;width:160px;">{{ row.label }}</td><td style="background:#ffffff;padding:10px 14px;font-family:Arial,sans-serif;font-size:13px;color:#1a1a2e;border-bottom:1px solid #eeeeee;">{{ row.tag }}</td></tr>{% endfor %}</table>{% if highlight is not null %}<div style="font-size:10px;color:{{ color }};letter-spacing:3px;text-transform:uppercase;font-family:Arial,sans-serif;margin:24px 0 12px;">{{ highlight.label }}</div><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="4" style="background:{{ color }};border-radius:4px;">&nbsp;</td><td style="background:#f9f9fb;padding:16px 20px;border-radius:0 8px 8px 0;font-family:Arial,sans-serif;font-size:14px;color:#333333;line-height:1.8;">{{ highlight.tag }}</td></tr></table>{% endif %}</td></tr><tr><td align="center" style="background:{{ color }};padding:18px 36px;"><a href="{{ cta_tag }}" style="color:{{ cta_fg }};text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;">{{ cta_label }}</a></td></tr><tr><td align="center" style="background:#f8f8fa;padding:12px 36px;border-top:1px solid #eeeeee;"><span style="font-family:Arial,sans-serif;font-size:11px;color:#bbbbbb;">##ticket.id## &nbsp;·&nbsp; <a href="##ticket.url##" style="color:{{ color }};text-decoration:none;">{{ access_glpi }}</a></span></td></tr></table></td></tr></table>

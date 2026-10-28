@@ -122,20 +122,27 @@ final class IncompleteAssetsCheck implements AuditCheckInterface
     public function fix(): void
     {
         $toLink = [];
-        $lines = '';
+        $lines = [];
         foreach (self::findItems() as $i) {
             if (ParkAudit::openTicketFor($i['itemtype'], (int) $i['row']['id'], self::TICKET_PREFIX) !== null) {
                 continue;
             }
             $toLink[] = ['itemtype' => $i['itemtype'], 'items_id' => (int) $i['row']['id']];
-            $lines .= '<li>' . htmlescape(sprintf(__('%1$s : sans %2$s', 'configurationglpiauto'), ParkAudit::label($i['itemtype'], $i['row']), implode(', ', $i['missing']))) . '</li>';
+            $lines[] = sprintf(
+                __('%1$s : sans %2$s', 'configurationglpiauto'),
+                ParkAudit::label($i['itemtype'], $i['row']),
+                implode(', ', $i['missing'])
+            );
         }
         if ($toLink === []) {
             ParkAudit::reportCreated(0);
             return;
         }
-        $html = '<p>' . htmlescape(__('Ces matériels sont incomplets dans GLPI :', 'configurationglpiauto')) . '</p><ul>' . $lines . '</ul>'
-            . '<p>' . htmlescape(__('Complétez chaque fiche (statut, lieu, utilisateur). Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n\'a été modifiée.', 'configurationglpiauto')) . '</p>';
+        $html = ParkAudit::ticketContent(
+            __('Ces matériels sont incomplets dans GLPI :', 'configurationglpiauto'),
+            $lines,
+            __('Complétez chaque fiche (statut, lieu, utilisateur). Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n\'a été modifiée.', 'configurationglpiauto')
+        );
         ParkAudit::reportCreated(ParkAudit::openTicket(self::TICKET_PREFIX . ' (' . date('Y-m-d') . ')', $html, $toLink, 0) > 0 ? 1 : 0);
     }
 }

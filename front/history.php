@@ -15,6 +15,7 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigHistory;
 
@@ -48,18 +49,9 @@ if (isset($_POST['create_checkpoint'])) {
 
 Html::header(ConfigHistory::getTypeName(2), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('history.php'), 'config', ConfigHistory::class);
 
-echo "<form method='post' action='" . htmlspecialchars(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('history.php')) . "' class='card mb-3'>";
-echo "<div class='card-body d-flex gap-2 align-items-end'>";
-echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
-echo "<div>";
-echo "<label class='form-label'>" . __('Label du point de sauvegarde', 'configurationglpiauto') . "</label>";
-echo "<input type='text' name='label' class='form-control' required>";
-echo "</div>";
-echo "<button type='submit' name='create_checkpoint' value='1' class='btn btn-outline-primary'>";
-echo "<i class='ti ti-device-floppy'></i> " . __('Créer un point de sauvegarde', 'configurationglpiauto');
-echo "</button>";
-echo "</div>";
-echo "</form>";
+TemplateRenderer::getInstance()->display('@configurationglpiauto/history_checkpoint.html.twig', [
+    'action' => \GlpiPlugin\Configurationglpiauto\FrontUrl::get('history.php'),
+]);
 
 Search::show(ConfigHistory::class);
 
