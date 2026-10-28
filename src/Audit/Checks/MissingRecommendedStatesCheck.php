@@ -63,7 +63,8 @@ final class MissingRecommendedStatesCheck implements AuditCheckInterface
                 implode(', ', $missing)
             );
         }
-        if ($unlinked !== [] || ($missing !== [] && AssetsignTriggerBuilder::isThirdPartyPluginActive())) {
+        // Sans déclencheur vide, des statuts manquent forcément (retour anticipé ci-dessus).
+        if ($unlinked !== [] || AssetsignTriggerBuilder::isThirdPartyPluginActive()) {
             $parts[] = __(
                 'Le plugin assetsign ne peut pas déclencher toutes ses fiches (attribution, restitution, don, vente, destruction...) sans ces statuts.',
                 'configurationglpiauto'
