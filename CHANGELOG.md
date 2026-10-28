@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Analyse statique (#324) : les exceptions PHPStan sur les gardes défensives (`?? défaut`,
+  `is_array()`, comparaisons sur des constantes) ne valent plus que pour les fichiers relus un
+  par un ; un nouveau cas ailleurs fait échouer la CI au lieu d'être masqué. Aucune ne cachait de
+  bogue.
+
 ### Fixed
 
 - Sans le dossier `vendor/` (archive incomplète, clone sans `composer install --no-dev`), le plugin

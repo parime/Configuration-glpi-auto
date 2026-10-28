@@ -75,21 +75,39 @@ parameters:
             # données runtime moins fiables que ce que le type statique local suggère (un Blueprint
             # exporté par une version antérieure du plugin, un POST forgé...), jamais du code mort
             # dangereux à retirer en masse.
+            # Issue #324 : limitée aux fichiers relus un par un (15 gardes, aucune ne cachait de
+            # bogue) ; un nouveau cas ailleurs fait échouer l'analyse et doit être relu.
             identifier: nullCoalesce.offset
+            paths:
+                - src/CountryHolidayBuilder.php
+                - src/EntityAddressBuilder.php
+                - src/LocationBuilder.php
+                - src/PlanningEventBuilder.php
+                - src/RequestTypeTranslationBuilder.php
+                - src/RuleRightBuilder.php
+                - src/ServiceCatalogBuilder.php
+                - src/SlaBuilder.php
         -
             # Même nature que nullCoalesce.offset ci-dessus (`empty($ICONS[$name] ?? ...)`-style
             # gardes sur des tableaux constants d'icônes) — légitime contre un futur désalignement
             # entre deux constantes censées partager les mêmes clés.
             identifier: empty.offset
+            paths:
+                - src/FireSafetyAssetBuilder.php
+                - src/PhysicalSecurityAssetBuilder.php
         -
             # RequestTypeTranslationBuilder::ICONS/TRANSLATIONS sont deux constantes déclarées
             # séparément mais censées rester synchronisées (mêmes clés) — la garde `!== ''` protège
             # contre un futur désalignement (une entrée ajoutée à l'une sans l'autre), PHPStan ne
             # peut prouver "toujours vrai" qu'avec l'état ACTUEL des deux tableaux.
             identifier: notIdentical.alwaysTrue
+            path: src/RequestTypeTranslationBuilder.php
         -
             # LocationBuilder/RuleRightBuilder : `is_array($node['children'] ?? null)` reste une
             # garde légitime avant de descendre récursivement dans un arbre reconstruit depuis
             # `Config::getEntityTree()` (JSON stocké en base, potentiellement écrit par une version
             # antérieure du plugin) — jamais du code mort dangereux à retirer.
             identifier: function.alreadyNarrowedType
+            paths:
+                - src/LocationBuilder.php
+                - src/RuleRightBuilder.php
