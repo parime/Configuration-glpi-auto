@@ -1,2 +1,17 @@
-{# Contenu d'un ticket ouvert par le mode Audit (#355), voir ParkAudit::ticketContent() : une seule ligne, le contenu est stocké tel quel. -#}
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{#- Contenu d'un ticket ouvert par le mode Audit (#355), voir ParkAudit::ticketContent() : une seule ligne, le contenu est stocké tel quel. -#}
 <p>{{ intro }}</p>{% if lines is not empty %}<ul>{% for line in lines %}<li>{{ line }}</li>{% endfor %}</ul>{% endif %}<p>{{ outro }}</p>
