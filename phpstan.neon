@@ -103,6 +103,12 @@ parameters:
             identifier: notIdentical.alwaysTrue
             path: src/RequestTypeTranslationBuilder.php
         -
+            # GRC Manager, plugin facultatif, n'est pas chargé pour l'analyse : PHPStan voit ses
+            # classes inexistantes et class_exists() toujours faux. À l'exécution, c'est vrai dès que
+            # le plugin est installé (nouveau nom depuis GRC Manager 2.17, ancien avant).
+            identifier: function.impossibleType
+            path: src/GrcmanagerPeriodicReviewBuilder.php
+        -
             # LocationBuilder/RuleRightBuilder : `is_array($node['children'] ?? null)` reste une
             # garde légitime avant de descendre récursivement dans un arbre reconstruit depuis
             # `Config::getEntityTree()` (JSON stocké en base, potentiellement écrit par une version
