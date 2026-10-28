@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Revues périodiques de GRC Manager : la classe est appelée sous son nouveau nom
+  (`GlpiPlugin\Grcmanager\PeriodicReview`, GRC Manager 2.17), et sous l'ancien
+  (`PluginGrcmanagerPeriodicReview`) avec les versions précédentes. L'ancien nom n'est gardé par
+  GRC Manager que comme alias temporaire.
 - Analyse statique (#324) : les exceptions PHPStan sur les gardes défensives (`?? défaut`,
   `is_array()`, comparaisons sur des constantes) ne valent plus que pour les fichiers relus un
   par un ; un nouveau cas ailleurs fait échouer la CI au lieu d'être masqué. Aucune ne cachait de

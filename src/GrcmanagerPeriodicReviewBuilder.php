@@ -23,7 +23,7 @@ namespace GlpiPlugin\Configurationglpiauto;
  * restauration…) à leur fréquence par défaut, attribuées au groupe RSSI de GRC Manager.
  *
  * Activer une revue crée un gabarit et un ticket récurrent natifs de GLPI : c'est la logique propre
- * de GRC Manager (PluginGrcmanagerPeriodicReview::activate(), droits et attribution compris), donc
+ * de GRC Manager (PeriodicReview::activate(), droits et attribution compris), donc
  * appelée telle quelle, et seulement si le plugin est actif et ses classes chargées. Option
  * facultative (décochée par défaut) : elle crée des tickets récurrents, comme les autres options
  * qui changent le flux des tickets.
@@ -33,7 +33,11 @@ namespace GlpiPlugin\Configurationglpiauto;
  */
 class GrcmanagerPeriodicReviewBuilder
 {
-    private const REVIEW_CLASS = 'PluginGrcmanagerPeriodicReview';
+    /**
+     * GRC Manager 2.17 range ses classes dans src/ (issue #293 de ce plugin) : le nouveau nom
+     * d'abord, l'ancien pour les versions précédentes (il reste un alias, mais pas indéfiniment).
+     */
+    private const REVIEW_CLASSES = ['GlpiPlugin\\Grcmanager\\PeriodicReview', 'PluginGrcmanagerPeriodicReview'];
     private const CATALOG_CLASS = 'GlpiPlugin\\Grcmanager\\Services\\Review\\PeriodicReviewCatalog';
 
     /**
@@ -44,9 +48,9 @@ class GrcmanagerPeriodicReviewBuilder
         if (empty($config->fields['grcmanager_periodic_reviews_enabled']) || !self::isAvailable()) {
             return 0;
         }
-        $reviewClass = self::REVIEW_CLASS;
+        $reviewClass = self::reviewClass();
         $catalogClass = self::CATALOG_CLASS;
-        if (!$reviewClass::canManage()) {
+        if ($reviewClass === null || !$reviewClass::canManage()) {
             return 0;
         }
         $groupsId = self::cisoGroupId();
@@ -67,8 +71,19 @@ class GrcmanagerPeriodicReviewBuilder
     public static function isAvailable(): bool
     {
         return GrcmanagerCisoGroupBuilder::isGrcmanagerActive()
-            && class_exists(self::REVIEW_CLASS)
+            && self::reviewClass() !== null
             && class_exists(self::CATALOG_CLASS);
+    }
+
+    private static function reviewClass(): ?string
+    {
+        foreach (self::REVIEW_CLASSES as $class) {
+            if (class_exists($class)) {
+                return $class;
+            }
+        }
+
+        return null;
     }
 
     private static function cisoGroupId(): int
