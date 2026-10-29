@@ -107,7 +107,9 @@ parameters:
             # classes inexistantes et class_exists() toujours faux. À l'exécution, c'est vrai dès que
             # le plugin est installé (nouveau nom depuis GRC Manager 2.17, ancien avant).
             identifier: function.impossibleType
-            path: src/GrcmanagerPeriodicReviewBuilder.php
+            paths:
+                - src/GrcmanagerPeriodicReviewBuilder.php
+                - src/GrcmanagerRiskCatalogBuilder.php
         -
             # LocationBuilder/RuleRightBuilder : `is_array($node['children'] ?? null)` reste une
             # garde légitime avant de descendre récursivement dans un arbre reconstruit depuis

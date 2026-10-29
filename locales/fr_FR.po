@@ -4806,3 +4806,16 @@ msgstr "Entreprise"
 
 msgid "Lien de la charte informatique"
 msgstr "Lien de la charte informatique"
+
+#, php-format
+msgid "%d risque(s) type(s) ajouté(s) au registre de GRC Manager, à évaluer."
+msgstr "%d risque(s) type(s) ajouté(s) au registre de GRC Manager, à évaluer."
+
+msgid "Amorcer le registre des risques de GRC Manager avec les risques types d'infrastructure"
+msgstr "Amorcer le registre des risques de GRC Manager avec les risques types d'infrastructure"
+
+msgid "Ajouter aussi les risques types des systèmes d'IA (ISO/IEC 27090)"
+msgstr "Ajouter aussi les risques types des systèmes d'IA (ISO/IEC 27090)"
+
+msgid "Point de départ de l'appréciation des risques ISO 27001 : chaque risque type est créé « identifié », avec ses menaces, les questions à se poser et les mesures de l'Annexe A liées, à évaluer ensuite. Un risque type déjà importé n'est jamais recréé. Nécessite le droit de création sur le registre des risques."
+msgstr "Point de départ de l'appréciation des risques ISO 27001 : chaque risque type est créé « identifié », avec ses menaces, les questions à se poser et les mesures de l'Annexe A liées, à évaluer ensuite. Un risque type déjà importé n'est jamais recréé. Nécessite le droit de création sur le registre des risques."
