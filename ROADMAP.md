@@ -17,12 +17,11 @@ Devenir **la référence Open Source** pour l'initialisation, la standardisation
 
 Un seul paquet couvre GLPI 11 et GLPI 12 : la couche `src/Compat/` résout la redéclaration typée de
 `$rightname` (cf. [glpi-project/glpi#25399](https://github.com/glpi-project/glpi/issues/25399)) et
-`MAX_GLPI` vaut `12.99.99`. Installation et suite d'intégration vérifiées en CI sur GLPI 12.0.0
-(version finale du 7 octobre 2026), chargement des classes vérifié sous PHP 8.3 à 8.5.
+`MAX_GLPI` vaut `12.99.99`. Installation et suite d'intégration vérifiées en CI sur GLPI 12.0.1 et
+11.0.12 à chaque PR, chargement des classes vérifié sous PHP 8.2 à 8.5.
 
-Reste ouvert (#284) : bug du cœur GLPI 12 sur les questions « Élément » des formulaires
-(`AssociatedItemsFieldStrategy::isValidAnswer()` lit encore `items_id` au lieu de `items_ids`),
-toujours présent dans 12.0.0 — à signaler en amont après accord du mainteneur.
+Bug du cœur GLPI 12.0.0 sur les questions « Élément » des formulaires (l'élément choisi n'était pas
+lié au ticket) : signalé en amont (glpi-project/glpi#25903), corrigé dans GLPI 12.0.1 (#284).
 
 ---
 

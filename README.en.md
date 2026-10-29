@@ -96,13 +96,14 @@ All other screenshots (all 19 steps in detail) are in the [tutorial](docs/TUTORI
 - PHP 8.2+
 - GLPI 11.0+ or GLPI 12 (one package for both versions, it adapts at load time)
 
-On GLPI 12 (checked in CI on GLPI 12.0.0, final release of 7 October 2026):
+On GLPI 12 (checked in CI on GLPI 12.0.1, on every PR):
 
 - "knowledge base categories" become container articles under the root article (GLPI 12
   removed categories);
 - each OLA is attached to the "Support N1" group (GLPI 12 requires a group per OLA);
-- known limitation, in GLPI core (still present in 12.0.0): the item picked in a form's "Item" question
-  (vehicle, room, equipment) is not linked to the created ticket yet.
+- GLPI 12.0.1 or later recommended: on 12.0.0, the item picked in a form's "Item" question (vehicle,
+  room, equipment) was not linked to the created ticket (GLPI core bug, glpi-project/glpi#25903, fixed
+  in 12.0.1). GLPI 11 is not affected.
 - Database: the one required by GLPI 11 (MySQL 8.0+ or MariaDB 10.6+); GLPI does not support
   PostgreSQL
 
