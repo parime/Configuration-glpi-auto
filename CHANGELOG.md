@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.14.0] - 2026-10-29
 
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
 ### Added
 
 - Assistant, intégration GRC Manager (#339) : amorcer le registre des risques de GRC Manager avec
