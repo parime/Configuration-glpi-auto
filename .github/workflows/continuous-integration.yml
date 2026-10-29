@@ -62,7 +62,7 @@ jobs:
     # meme recette que le plugin jumeau assetsign-glpi (`.github/workflows/ci.yml`), qui l'a
     # eprouvee la premiere.
     env:
-      GLPI_IMAGE: glpi/glpi:11.0.11
+      GLPI_IMAGE: glpi/glpi:11.0.12
 
     steps:
       - name: "Checkout code"
@@ -343,7 +343,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: ci
     env:
-      GLPI_IMAGE: glpi/glpi:11.0.11
+      GLPI_IMAGE: glpi/glpi:11.0.12
     steps:
       - name: "Checkout code"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep github-actions-mutable-action-tag)
@@ -487,7 +487,7 @@ jobs:
     # compatibilite GLPI 12 (src/Compat/) pourrait regresser silencieusement.
     # Meme recette que le plugin jumeau glpi-iso27001-management (job real-glpi12-install).
     env:
-      GLPI12_IMAGE: glpi/glpi:12.0.0
+      GLPI12_IMAGE: glpi/glpi:12.0.1
 
     steps:
       - name: "Checkout code"
@@ -580,7 +580,7 @@ jobs:
 
       - name: Extrait le code de GLPI 11 et GLPI 12 des images officielles
         run: |
-          for v in 11.0.11 12.0.0; do
+          for v in 11.0.12 12.0.1; do
             docker create --name "glpi-$v" "glpi/glpi:$v"
             mkdir -p "/tmp/glpi-$v"
             docker cp "glpi-$v:/var/www/glpi/src" "/tmp/glpi-$v/src"
@@ -591,8 +591,8 @@ jobs:
         # GLPI 11 : PHP 8.2 a 8.5 ; GLPI 12 : PHP 8.3 a 8.5.
         run: |
           status=0
-          for combo in "8.2 11.0.11" "8.3 11.0.11" "8.4 11.0.11" "8.5 11.0.11" \
-                       "8.3 12.0.0" "8.4 12.0.0" "8.5 12.0.0"; do
+          for combo in "8.2 11.0.12" "8.3 11.0.12" "8.4 11.0.12" "8.5 11.0.12" \
+                       "8.3 12.0.1" "8.4 12.0.1" "8.5 12.0.1"; do
             set -- $combo
             docker run --rm -v "$PWD:/p" -v "/tmp/glpi-$2:/g" "php:$1-cli" \
               php /p/.github/scripts/compat-smoke.php /g /p || status=1

@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Compatibilité GLPI 12 revérifiée sur GLPI 12.0.1 (#284) : installation des trois plugins, suite
+  d'intégration (655 tests). La CI teste désormais GLPI 12.0.1 et 11.0.12 (au lieu de 12.0.0 et
+  11.0.11). Le bug du cœur sur les questions « Élément » des formulaires (élément non lié au ticket,
+  glpi-project/glpi#25903) est corrigé dans GLPI 12.0.1 : la limite connue est retirée du README,
+  GLPI 12.0.1 ou plus récent est conseillé.
+
 ## [1.13.1] - 2026-10-29
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
