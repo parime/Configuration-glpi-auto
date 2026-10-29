@@ -4834,3 +4834,16 @@ msgstr "Unternehmen"
 
 msgid "Lien de la charte informatique"
 msgstr "Link zur IT-Richtlinie"
+
+#, php-format
+msgid "%d risque(s) type(s) ajouté(s) au registre de GRC Manager, à évaluer."
+msgstr "%d Musterrisiko/-risiken zum GRC-Manager-Register hinzugefügt, zu bewerten."
+
+msgid "Amorcer le registre des risques de GRC Manager avec les risques types d'infrastructure"
+msgstr "Das Risikoregister von GRC Manager mit den Muster-Infrastrukturrisiken vorbefüllen"
+
+msgid "Ajouter aussi les risques types des systèmes d'IA (ISO/IEC 27090)"
+msgstr "Auch die Musterrisiken von KI-Systemen hinzufügen (ISO/IEC 27090)"
+
+msgid "Point de départ de l'appréciation des risques ISO 27001 : chaque risque type est créé « identifié », avec ses menaces, les questions à se poser et les mesures de l'Annexe A liées, à évaluer ensuite. Un risque type déjà importé n'est jamais recréé. Nécessite le droit de création sur le registre des risques."
+msgstr "Ausgangspunkt der Risikobeurteilung nach ISO 27001: Jedes Musterrisiko wird als „identifiziert“ angelegt, mit seinen Bedrohungen, den zu stellenden Fragen und den zugehörigen Maßnahmen aus Anhang A, und ist anschließend zu bewerten. Ein bereits importiertes Musterrisiko wird nie erneut angelegt. Erfordert das Erstellungsrecht für das Risikoregister."

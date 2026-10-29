@@ -55,6 +55,7 @@ use GlpiPlugin\Configurationglpiauto\FurnitureRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use GlpiPlugin\Configurationglpiauto\GrcmanagerCisoGroupBuilder;
 use GlpiPlugin\Configurationglpiauto\GrcmanagerPeriodicReviewBuilder;
+use GlpiPlugin\Configurationglpiauto\GrcmanagerRiskCatalogBuilder;
 use GlpiPlugin\Configurationglpiauto\HeatingClimateFormBuilder;
 use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use GlpiPlugin\Configurationglpiauto\InstrumentCalibrationFormBuilder;
@@ -737,6 +738,8 @@ if (isset($_POST['finish'])) {
     $grcmanagerCisoGroupSet = $canUpdateGrcmanagerConfig ? (new GrcmanagerCisoGroupBuilder())->build($config) : 0;
     // Après le groupe RSSI, à qui les revues sont attribuées.
     $grcmanagerReviewsActivated = (new GrcmanagerPeriodicReviewBuilder())->build($config);
+    // Droit de création du registre des risques vérifié par le builder.
+    $grcmanagerRisksImported = (new GrcmanagerRiskCatalogBuilder())->build($config);
     $assetsignSettingsSet = $canUpdateAssetsignConfig ? (new AssetsignSetupBuilder())->build($config) : 0;
     $tagsCreated = (new TagBuilder())->build($config);
     $validationRoutingCreated = $canManageTicketRules ? (new ValidationRoutingBuilder())->build($config) : 0;
@@ -1100,6 +1103,12 @@ if (isset($_POST['finish'])) {
             $grcmanagerReviewsActivated
         );
     }
+    if ($grcmanagerRisksImported > 0) {
+        $messages[] = sprintf(
+            __('%d risque(s) type(s) ajouté(s) au registre de GRC Manager, à évaluer.', 'configurationglpiauto'),
+            $grcmanagerRisksImported
+        );
+    }
     if ($tagsCreated > 0) {
         $messages[] = sprintf(__('%d tag(s) créé(s) (plugin Tag).', 'configurationglpiauto'), $tagsCreated);
     }
@@ -1223,6 +1232,8 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'satisfaction_plugin_active' => SatisfactionSurveyBuilder::isThirdPartyPluginActive(),
     'vip_plugin_active' => VipBuilder::isThirdPartyPluginActive(),
     'grcmanager_plugin_active' => GrcmanagerCisoGroupBuilder::isGrcmanagerActive(),
+    'grcmanager_risk_catalog_available' => GrcmanagerRiskCatalogBuilder::isAvailable(),
+    'grcmanager_ai_risks_available' => GrcmanagerRiskCatalogBuilder::hasAiRisks(),
     'assetsign_setup_available' => AssetsignSetupBuilder::isAvailable(),
     'assetsign_default_company' => AssetsignSetupBuilder::defaultCompanyName($config),
     'tag_plugin_active' => TagBuilder::isThirdPartyPluginActive(),
