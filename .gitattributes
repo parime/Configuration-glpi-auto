@@ -33,3 +33,7 @@
 /ROADMAP_original.md export-ignore
 
 /.semgrep export-ignore
+/.editorconfig export-ignore
+/.phpstan-bootstrap.php export-ignore
+/phpstan.glpi12.neon export-ignore
+/phpunit.xml export-ignore
