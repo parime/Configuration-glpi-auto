@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.13.0] - 2026-10-29
 
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
 ### Changed
 
 - HTML écrit en PHP passé dans des gabarits Twig (#355, revue de la marketplace GLPI) : formulaire
