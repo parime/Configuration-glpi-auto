@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.13.1] - 2026-10-29
+
+### Fixed
+
+- Archive publiée : les fichiers de développement `.editorconfig`, `.phpstan-bootstrap.php`,
+  `phpstan.glpi12.neon` et `phpunit.xml` n'y figurent plus (présents depuis la 1.12.0, sans effet
+  sur le fonctionnement). Contrôle commun de l'archive à chaque PR (glpi-plugin-security v1.4.0).
+
 ## [1.13.0] - 2026-10-29
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
