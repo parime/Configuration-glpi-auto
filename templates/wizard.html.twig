@@ -1198,7 +1198,22 @@
             <input type="checkbox" name="grcmanager_periodic_reviews_enabled" value="1" class="form-check-input" id="cga-grcmanager-periodic-reviews-enabled" {{ config.grcmanager_periodic_reviews_enabled|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="cga-grcmanager-periodic-reviews-enabled">{{ __('Activer les revues périodiques du SMSI de GRC Manager', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small mb-0">{{ __('Droits d\'accès, comptes à privilèges, matrice des flux, registre des risques, tests de restauration et de continuité… : un ticket récurrent par revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà actives ne sont pas modifiées.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Droits d\'accès, comptes à privilèges, matrice des flux, registre des risques, tests de restauration et de continuité… : un ticket récurrent par revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà actives ne sont pas modifiées.', 'configurationglpiauto') }}</p>
+          {% if grcmanager_risk_catalog_available %}
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="grcmanager_risk_catalog_enabled" value="0">
+            <input type="checkbox" name="grcmanager_risk_catalog_enabled" value="1" class="form-check-input" id="cga-grcmanager-risk-catalog-enabled" {{ config.grcmanager_risk_catalog_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-grcmanager-risk-catalog-enabled">{{ __('Amorcer le registre des risques de GRC Manager avec les risques types d\'infrastructure', 'configurationglpiauto') }}</label>
+          </div>
+          {% if grcmanager_ai_risks_available %}
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="grcmanager_ai_risks_enabled" value="0">
+            <input type="checkbox" name="grcmanager_ai_risks_enabled" value="1" class="form-check-input" id="cga-grcmanager-ai-risks-enabled" {{ config.grcmanager_ai_risks_enabled|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-grcmanager-ai-risks-enabled">{{ __('Ajouter aussi les risques types des systèmes d\'IA (ISO/IEC 27090)', 'configurationglpiauto') }}</label>
+          </div>
+          {% endif %}
+          <p class="text-muted small mb-0">{{ __('Point de départ de l\'appréciation des risques ISO 27001 : chaque risque type est créé « identifié », avec ses menaces, les questions à se poser et les mesures de l\'Annexe A liées, à évaluer ensuite. Un risque type déjà importé n\'est jamais recréé. Nécessite le droit de création sur le registre des risques.', 'configurationglpiauto') }}</p>
+          {% endif %}
         {% endif %}
 
         {# Visible uniquement si le plugin tiers "Tag" est installé ET activé — aucune trace dans

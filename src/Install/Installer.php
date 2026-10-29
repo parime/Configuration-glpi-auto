@@ -225,6 +225,8 @@ final class Installer
                 `assetsign_trigger_fields` text,
                 `grcmanager_ciso_group_enabled` tinyint NOT NULL DEFAULT 0,
                 `grcmanager_periodic_reviews_enabled` tinyint NOT NULL DEFAULT 0,
+                `grcmanager_risk_catalog_enabled` tinyint NOT NULL DEFAULT 0,
+                `grcmanager_ai_risks_enabled` tinyint NOT NULL DEFAULT 0,
                 `assetsign_setup_enabled` tinyint NOT NULL DEFAULT 0,
                 `assetsign_company_name` varchar(255) NOT NULL DEFAULT '',
                 `assetsign_charter_url` varchar(255) NOT NULL DEFAULT '',
@@ -427,6 +429,9 @@ final class Installer
             // Issue #339 : décoché à la mise à jour, comme les autres intégrations de plugins.
             $migration->addField(self::CONFIGS_TABLE, 'grcmanager_ciso_group_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'grcmanager_periodic_reviews_enabled', 'bool', ['value' => 0]);
+            // Issue #339 : risques types du catalogue de GRC Manager dans son registre (opt-in).
+            $migration->addField(self::CONFIGS_TABLE, 'grcmanager_risk_catalog_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'grcmanager_ai_risks_enabled', 'bool', ['value' => 0]);
             // Issue #339 : entreprise et lien de la charte pour assetsign.
             $migration->addField(self::CONFIGS_TABLE, 'assetsign_setup_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'assetsign_company_name', 'string', ['value' => '']);

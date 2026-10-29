@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Assistant, intégration GRC Manager (#339) : amorcer le registre des risques de GRC Manager avec
+  les risques types de son catalogue (infrastructure ; systèmes d'IA ISO/IEC 27090 en option,
+  GRC Manager 2.17 et suivants). Point de départ de l'appréciation des risques ISO 27001 : chaque
+  risque est créé « identifié », avec ses menaces, ses questions et ses mesures de l'Annexe A, à
+  évaluer ensuite. Décoché par défaut ; nécessite le droit de création sur le registre des risques ;
+  un risque type déjà importé n'est jamais recréé.
+
 ### Changed
 
 - Compatibilité GLPI 12 revérifiée sur GLPI 12.0.1 (#284) : installation des trois plugins, suite
