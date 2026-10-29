@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.13.0] - 2026-10-29
+
 ### Changed
 
 - HTML écrit en PHP passé dans des gabarits Twig (#355, revue de la marketplace GLPI) : formulaire
