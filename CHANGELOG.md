@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Arrivées et départs** (issue grcmanager #362) : les identifiants des gabarits de tâche et des
+  catégories d'arrivée et de départ créés par l'assistant sont enregistrés dans la configuration de
+  GLPI (contexte `plugin:configurationglpiauto`, clés `arrival_tasktemplates_id`,
+  `arrival_itilcategories_id`, `departure_tasktemplates_id`, `departure_itilcategories_id`). Le
+  plugin assetsign les réutilise pour ses tickets d'arrivée et de départ. À la mise à jour, les
+  objets déjà créés par une version antérieure sont retrouvés une fois et enregistrés.
+
 ## [1.14.0] - 2026-10-29
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

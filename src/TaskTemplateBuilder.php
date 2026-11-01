@@ -37,6 +37,7 @@ class TaskTemplateBuilder
     private const TEMPLATES = [
         [
             'name' => 'Onboarding — Arrivée collaborateur',
+            'staff_movement' => 'arrival',
             'icon' => '🆕',
             'category' => 'Gestion des comptes utilisateurs',
             'content' => "CHECKLIST ONBOARDING\n\n- Créer le compte et la messagerie\n- Configurer le poste de travail et les périphériques\n- Installer les logiciels métier et licences nécessaires\n- Configurer les accès applicatifs et VPN si besoin\n- Remettre le matériel et le guide utilisateur\n- Valider les accès avec le collaborateur",
@@ -50,6 +51,7 @@ class TaskTemplateBuilder
         ],
         [
             'name' => 'Offboarding — Départ collaborateur',
+            'staff_movement' => 'departure',
             'icon' => '🚪',
             'category' => 'Gestion des comptes utilisateurs',
             'content' => "CHECKLIST OFFBOARDING\n\n- Désactiver le compte et la messagerie\n- Révoquer les accès VPN et applicatifs\n- Récupérer et reconditionner le matériel\n- Archiver ou transférer les données\n- Résilier les licences nominatives\n- Mettre à jour le statut de l'équipement dans GLPI",
@@ -129,6 +131,10 @@ class TaskTemplateBuilder
         $count = 0;
         foreach (self::TEMPLATES as $template) {
             $templateId = $this->getOrCreateTemplate($template['name'], $template['content'], $this->findCategoryId($template['category']));
+            // grcmanager #362 : repérable par identifiant par les autres plugins (assetsign).
+            if (isset($template['staff_movement'])) {
+                StaffMovement::record($template['staff_movement'], TaskTemplate::class, $templateId);
+            }
             // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior
             // run actually strips them instead of leaving old rows stuck.
             Translations::applyIcon(TaskTemplate::class, $templateId, $template['name'], $withIcons ? $template['icon'] : '');
