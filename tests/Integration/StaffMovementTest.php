@@ -79,10 +79,15 @@ final class StaffMovementTest extends TestCase
         StaffMovement::recordExisting();
         $this->assertSame((int) $template->getID(), StaffMovement::ids()['departure']['tasktemplates_id']);
 
-        // Un identifiant enregistré n'est pas remplacé par un objet homonyme.
-        StaffMovement::record('departure', TaskTemplate::class, (int) $template->getID());
+        // Un identifiant enregistré n'est pas remplacé par un objet homonyme créé ensuite.
+        $homonym = new TaskTemplate();
+        $homonymId = (int) $homonym->add([
+            'name' => 'Offboarding — Départ collaborateur', 'content' => 'Copie', 'entities_id' => 0, 'is_recursive' => 1,
+        ]);
         StaffMovement::recordExisting();
-        $this->assertSame((int) $template->getID(), StaffMovement::ids()['departure']['tasktemplates_id']);
+        $stored = CoreConfig::getConfigurationValues('plugin:configurationglpiauto', ['departure_tasktemplates_id']);
+        $this->assertNotSame($homonymId, (int) $stored['departure_tasktemplates_id']);
+        $homonym->delete(['id' => $homonymId], true);
 
         // Objet supprimé : l'identifiant enregistré ne pointe plus vers rien, 0 est renvoyé.
         StaffMovement::record('departure', TaskTemplate::class, 999999999);
