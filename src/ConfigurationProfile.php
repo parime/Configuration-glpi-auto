@@ -86,6 +86,26 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
         ];
     }
 
+    /**
+     * Noms et descriptions des profils livrés : enregistrés en français à l'installation, ils
+     * sont traduits à l'affichage (un utilisateur polonais voyait « Installation simple »). Un
+     * texte modifié par l'administrateur s'affiche tel quel.
+     */
+    public static function translateDefaultText(string $text): string
+    {
+        $known = [
+            'Installation simple'                                  => __('Installation simple', 'configurationglpiauto'),
+            'Un seul site, pas de sous-structure'                  => __('Un seul site, pas de sous-structure', 'configurationglpiauto'),
+            'Plusieurs sites ou services'                          => __('Plusieurs sites ou services', 'configurationglpiauto'),
+            'Une seule entreprise, plusieurs équipes ou sites'     => __('Une seule entreprise, plusieurs équipes ou sites', 'configurationglpiauto'),
+            'Plusieurs entreprises clientes'                       => __('Plusieurs entreprises clientes', 'configurationglpiauto'),
+            'Vous gérez GLPI pour le compte d\'autres entreprises' => __('Vous gérez GLPI pour le compte d\'autres entreprises', 'configurationglpiauto'),
+            'Personnalisé'                                         => __('Personnalisé', 'configurationglpiauto'),
+            'Je configure tout moi-même'                           => __('Je configure tout moi-même', 'configurationglpiauto'),
+        ];
+        return $known[$text] ?? $text;
+    }
+
     // rawSearchOptions() (pas getSearchOptions(), final dans CommonDBTM) : sinon la liste
     // s'affiche sans colonnes ni en-tetes : meme correctif que sur remise-glpi et
     // glpi-vulnerability-manager (piege documente sur les deux plugins jumeaux).

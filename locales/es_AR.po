@@ -5255,3 +5255,21 @@ msgstr ""
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Número de inventario o nombre del puesto actual"
+
+msgid "Un seul site, pas de sous-structure"
+msgstr "Un único sitio, sin subestructura"
+
+msgid "Plusieurs sites ou services"
+msgstr "Varios sitios o servicios"
+
+msgid "Une seule entreprise, plusieurs équipes ou sites"
+msgstr "Una sola empresa, varios equipos o sitios"
+
+msgid "Plusieurs entreprises clientes"
+msgstr "Varias empresas cliente"
+
+msgid "Vous gérez GLPI pour le compte d'autres entreprises"
+msgstr "Gestiona GLPI por cuenta de otras empresas"
+
+msgid "Je configure tout moi-même"
+msgstr "Lo configuro todo yo mismo"
