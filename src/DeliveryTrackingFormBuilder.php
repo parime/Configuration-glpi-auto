@@ -44,7 +44,7 @@ use ITILCategory;
  *
  * A single structured field, no conditional branch : a reference number is genuinely the whole point
  * of this service (it's what the recipient looks up to answer the request), so one mandatory
- * ShortText plus the free-text escape hatch is enough — there's no natural second axis to branch on.
+ * ShortText plus the free-text escape hatch is enough: there's no natural second axis to branch on.
  * Also carries the "Précisions complémentaires" free-text field every class in this generalization
  * batch adds last, replacing the generic Description field these smart forms no longer have.
  */

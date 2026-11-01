@@ -111,7 +111,7 @@ class SoftwareDictionaryBuilder
         // Agents d'inventaire
         'GLPI Agent' => ['/^glpi[ -]agent\b/', 'GLPI Agent'],
         'FusionInventory Agent' => ['/^fusioninventory[ -]agent\b/', 'FusionInventory Agent'],
-        // Issue #315 : Office et outils Microsoft en licence perpétuelle — éditions françaises
+        // Issue #315 : Office et outils Microsoft en licence perpétuelle : éditions françaises
         // ramenées au nom anglais des contrats, année conservée (#0).
         'Microsoft Office Professional Plus (année)' => ['/^microsoft office (?:professionnel|professional) plus (\d{4})\b/', 'Microsoft Office Professional Plus #0'],
         'Microsoft Office Standard (année)' => ['/^microsoft office standard (\d{4})\b/', 'Microsoft Office Standard #0'],
@@ -169,7 +169,7 @@ class SoftwareDictionaryBuilder
         foreach (self::RULES as $label => [$regex, $name]) {
             $this->ruleIds[$label] = DictionaryRules::ensure(
                 RuleDictionnarySoftware::class,
-                sprintf('Logiciel — normalisation « %s »', $label),
+                sprintf('Logiciel: normalisation « %s »', $label),
                 $name,
                 [],
                 $regex,

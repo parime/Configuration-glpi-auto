@@ -69,29 +69,29 @@ use Ticket;
  * Real conditional visibility, same `Question::visibility_strategy = VISIBLE_IF` +
  * `Glpi\Form\Condition\ConditionData` mechanism as `MeetingRoomFormBuilder`/`VpnAccessFormBuilder` :
  * whether a third party is involved (`tiers`) decides whether their contact details are worth asking
- * for at all — a single-vehicle incident has no third party to describe, so `coordTiers` only shows
+ * for at all: a single-vehicle incident has no third party to describe, so `coordTiers` only shows
  * up when `tiers` is answered "Oui" (see those classes' docblocks for the full radio-option-value
- * reasoning). An optional photo upload (`QuestionTypeFile`, not mandatory — some incidents are
+ * reasoning). An optional photo upload (`QuestionTypeFile`, not mandatory: some incidents are
  * reported before photos can be taken) is also included, since damage claims are the one case in
  * this generalization where visual evidence materially helps whoever processes the ticket. Every
  * smart form in this generalization also gets a final free-text "Précisions complémentaires"
  * question as an escape hatch, replacing the generic Description field these forms no longer have;
  * here it's placed after the photo upload, both last.
  *
- * Computed title only references the always-answered `vehicule` and `dateSinistre` — never `tiers`,
- * `coordTiers`, or the optional photos — same reasoning as `MeetingRoomFormBuilder` : the conditional
+ * Computed title only references the always-answered `vehicule` and `dateSinistre` - never `tiers`,
+ * `coordTiers`, or the optional photos: same reasoning as `MeetingRoomFormBuilder` : the conditional
  * field is empty whenever its branch wasn't taken, so folding it into the title would render blank
  * half the time. "<form name> - <vehicule> - <dateSinistre>", tag-built via
  * `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
  *
  * **Second pass (advanced question types)** : "Véhicule concerné (immatriculation)" used to be free
- * ShortText — this plugin's own `VehicleAssetBuilder` already turns every selected "flotte" branch
+ * ShortText: this plugin's own `VehicleAssetBuilder` already turns every selected "flotte" branch
  * into a real custom GLPI asset (`AssetDefinition` system_name `Vehicule`, unconditionally, no
- * separate toggle — exactly the same single `flotte`-branch gate this form itself already requires),
+ * separate toggle: exactly the same single `flotte`-branch gate this form itself already requires),
  * so the plate number the requester used to type by hand is now a `QuestionTypeItem` pointing at that
  * *real* vehicle record. Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`) so the incident ticket
  * carries a genuine linked asset, not a string. `resolveVehicleItemtype()` still defensively falls
- * back to the original ShortText if the `Vehicule` definition can't be found (belt-and-braces only —
+ * back to the original ShortText if the `Vehicule` definition can't be found (belt-and-braces only -
  * both gates are identical so this should never actually happen once the wizard has run once, same
  * "never assume, always check `getFromDBByCrit()`" discipline as the rest of this codebase).
  *
@@ -134,7 +134,7 @@ class VehicleIncidentFormBuilder
 
     private const CATEGORY_PATH = ['Sinistres & Carrosserie'];
 
-    // Matches `VehicleAssetBuilder::SYSTEM_NAME` — resolved by name rather than shared code, same
+    // Matches `VehicleAssetBuilder::SYSTEM_NAME` - resolved by name rather than shared code, same
     // "each builder resolves a sibling's output independently" convention as e.g.
     // `AbroadMissionFormBuilder` resolving `CategoryBuilder`'s own output.
     private const VEHICLE_ASSET_SYSTEM_NAME = 'Vehicule';
@@ -245,12 +245,12 @@ class VehicleIncidentFormBuilder
 
     /**
      * Resolves `VehicleAssetBuilder`'s own custom asset class by its stable `system_name`. Uses
-     * `AssetDefinition::getAssetClassName()` — confirmed by reading GLPI 11 core
+     * `AssetDefinition::getAssetClassName()` - confirmed by reading GLPI 11 core
      * (`Glpi\Asset\AssetDefinition`) that this, not `getAssetTypeClassName()` (which is the
-     * definition's own native "Type" *dropdown* class, `getAssetClassName() . 'Type'` — the one
+     * definition's own native "Type" *dropdown* class, `getAssetClassName() . 'Type'` - the one
      * `VehicleAssetBuilder::seedTypes()` itself uses, for a different purpose), is the definition's
      * actual concrete asset item class : `getAssetClassName()`'s own docblock reads "Get the
-     * definition's concrete asset class name." Returns null if the definition doesn't exist yet —
+     * definition's concrete asset class name." Returns null if the definition doesn't exist yet -
      * defensive only, see class docblock.
      */
     private function resolveVehicleItemtype(): ?string
@@ -294,7 +294,7 @@ class VehicleIncidentFormBuilder
                 selectable_tree_root: false,
             ))->jsonSerialize()),
         ] : [
-            // Fallback if VehicleAssetBuilder's definition can't be found — see class docblock.
+            // Fallback if VehicleAssetBuilder's definition can't be found: see class docblock.
             'forms_sections_id' => $sectionId,
             'name' => __('Véhicule concerné (immatriculation)', 'configurationglpiauto'),
             'type' => QuestionTypeShortText::class,
@@ -379,7 +379,7 @@ class VehicleIncidentFormBuilder
         ]);
 
         // $tiers est déjà vérifié plus haut (retour anticipé juste après sa création, nécessaire
-        // avant de lire $tiers->fields['uuid']) — le revérifier ici serait toujours faux (PHPStan
+        // avant de lire $tiers->fields['uuid']) : le revérifier ici serait toujours faux (PHPStan
         // l'a confirmé) puisque ce point du code n'est jamais atteint sinon.
         if (
             !$vehicule->getID() || !$dateSinistre->getID() || !$immobilise->getID()
@@ -417,7 +417,7 @@ class VehicleIncidentFormBuilder
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
             // "vehicule" is the only QuestionTypeItem/QuestionTypeUserDevice question on this form
-            // (when the AssetDefinition lookup succeeded) — LAST_VALID_ANSWER unambiguously means
+            // (when the AssetDefinition lookup succeeded): LAST_VALID_ANSWER unambiguously means
             // that answer; a no-op (no associated item set) on the ShortText fallback path.
             AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
                 strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],

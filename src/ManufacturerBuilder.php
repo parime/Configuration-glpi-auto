@@ -21,17 +21,17 @@ use Manufacturer;
 
 /**
  * Turns on `manufacturers_enabled` into a real `Manufacturer` list (Configuration > Intitulés >
- * Général > "Fabricants") — GLPI ships none by default, yet every asset (`Computer`, `Monitor`,
+ * Général > "Fabricants") : GLPI ships none by default, yet every asset (`Computer`, `Monitor`,
  * `NetworkEquipment`...) has a `manufacturers_id` field pointing here. Unlike category/service
- * names elsewhere in this plugin, vendor-neutral phrasing doesn't apply — a manufacturer list's
+ * names elsewhere in this plugin, vendor-neutral phrasing doesn't apply: a manufacturer list's
  * entire purpose *is* naming real vendors, not describing a generic function.
  *
  * Broad, generic hardware/software vendor coverage (computers, network, printers, mobile,
- * software publishers) rather than a specific organization's actual supplier list — a starting
+ * software publishers) rather than a specific organization's actual supplier list: a starting
  * point the admin trims or extends, same philosophy as every other list in this plugin.
  *
  * Icons (optional, `manufacturer_icons_enabled`) are grouped *by product category* (computers,
- * network, printers...) rather than a distinct icon per brand — there's no established per-brand
+ * network, printers...) rather than a distinct icon per brand: there's no established per-brand
  * emoji convention to draw from, and inventing one would look arbitrary. `Manufacturer extends
  * CommonDropdown` (confirmed in GLPI source), so the same `DropdownTranslation` icon-prepend
  * mechanism already used by `StateBuilder`/`CategoryBuilder` applies here too.

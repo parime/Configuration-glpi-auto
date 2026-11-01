@@ -20,21 +20,21 @@ namespace GlpiPlugin\Configurationglpiauto;
 /**
  * Configuration SMTP avancée (issue #121) : contrairement à tous les autres `*Builder` de ce
  * plugin, celui-ci n'écrit JAMAIS dans la table `Config` propre au plugin, ni via
- * `BlueprintSerializer`/`ConfigHistory` — il écrit directement dans la configuration native GLPI
+ * `BlueprintSerializer`/`ConfigHistory` - il écrit directement dans la configuration native GLPI
  * (`\Config::setConfigurationValues('core', ...)`). Décision de sécurité délibérée : `Config`/
  * `BlueprintSerializer` stockent leurs colonnes en clair et les exportent telles quelles dans un
- * fichier `.json` téléchargeable (voir le Système de Blueprints, #113) — un mot de passe SMTP qui
+ * fichier `.json` téléchargeable (voir le Système de Blueprints, #113) : un mot de passe SMTP qui
  * transiterait par là fuiterait dans chaque export de Blueprint, chaque entrée d'historique
  * automatique (#114). GLPI cœur chiffre déjà `smtp_passwd` via `GLPIKey` dès que
- * `setConfigurationValues()` est appelé (confirmé en lisant `src/Config.php`) — cette classe ne
+ * `setConfigurationValues()` est appelé (confirmé en lisant `src/Config.php`) : cette classe ne
  * réimplémente aucun chiffrement, elle ne fait qu'assembler le tableau d'entrée et le lui passer.
  *
  * "Gestion des certificats" (texte de l'issue) : GLPI cœur n'expose qu'un seul réglage ici,
- * `smtp_check_certificate` (vérification du certificat TLS du serveur, oui/non) — aucune vraie
+ * `smtp_check_certificate` (vérification du certificat TLS du serveur, oui/non) : aucune vraie
  * gestion de certificats clients n'existe dans GLPI, et rien n'indique un besoin réel pour
  * l'authentification SMTP sortante. Construire davantage ici serait de l'invention de périmètre.
- * "Tests de connectivité" : `\NotificationMailing::testNotification()` (GLPI cœur) fait déjà ça —
- * envoie un vrai email de test et retourne un résultat exploitable — mais teste la configuration
+ * "Tests de connectivité" : `\NotificationMailing::testNotification()` (GLPI cœur) fait déjà ça -
+ * envoie un vrai email de test et retourne un résultat exploitable : mais teste la configuration
  * ENREGISTRÉE (`$CFG_GLPI`), jamais un formulaire en cours de saisie ; voir `front/wizard.php`
  * pour le lien vers l'écran natif GLPI où ce test existe déjà, plutôt qu'un test réimplémenté ici
  * sur des valeurs pas encore appliquées.
@@ -45,7 +45,7 @@ final class SmtpBuilder
      * @param array<string, mixed> $input Typiquement `$_POST` du bloc "finish" de
      *     `front/wizard.php`.
      * @return bool `true` si la configuration SMTP a réellement été appliquée (l'étape était
-     *     cochée), `false` sinon — même convention de retour que les autres `*Builder` de ce
+     *     cochée), `false` sinon : même convention de retour que les autres `*Builder` de ce
      *     plugin pour alimenter le message de fin de course.
      */
     public function build(array $input): bool
@@ -64,7 +64,7 @@ final class SmtpBuilder
         ];
 
         // Même règle que Config::handleSmtpInput() côté cœur GLPI (confirmé en le lisant) : un mot
-        // de passe vide dans le formulaire n'écrase jamais le secret déjà enregistré — seul un
+        // de passe vide dans le formulaire n'écrase jamais le secret déjà enregistré : seul un
         // nouveau mot de passe réellement saisi, ou la case "Effacer" explicitement cochée,
         // modifie la valeur stockée (chiffrée) en base.
         if (!empty($input['smtp_passwd'])) {

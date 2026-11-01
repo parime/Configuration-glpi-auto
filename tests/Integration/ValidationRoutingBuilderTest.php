@@ -24,19 +24,19 @@ use Ticket;
 use User;
 
 /**
- * Runs against a real GLPI instance — exercises the actual RuleTicket engine end to end (not just
+ * Runs against a real GLPI instance: exercises the actual RuleTicket engine end to end (not just
  * the rule's own rows), since that's the only way to confirm `responsible_id_validate` really
  * routes to the requester's `users_id_supervisor`.
  *
  * Confirmed live (docker-compose.test.yml) before writing this test that GLPI 11 stores the
  * resolved validation target on `glpi_ticketvalidations.itemtype_target`/`items_id_target`
- * ("User"/<supervisor id>) — the older `users_id_validate` column is left at 0, not populated by
+ * ("User"/<supervisor id>): the older `users_id_validate` column is left at 0, not populated by
  * this action. Discovered by inspecting the real row rather than assumed from an older GLPI
  * version's behavior.
  */
 final class ValidationRoutingBuilderTest extends TestCase
 {
-    private const RULE_NAME = 'Validation automatique — supérieur hiérarchique du demandeur';
+    private const RULE_NAME = 'Validation automatique : supérieur hiérarchique du demandeur';
 
     /** @var int[] */
     private array $userIdsToDelete = [];
@@ -128,7 +128,7 @@ final class ValidationRoutingBuilderTest extends TestCase
 
         $supervisorId = $this->addUser('phpunit_supervisor');
         $requesterId = $this->addUser('phpunit_requester', $supervisorId);
-        $ticketId = $this->addDemandTicket($requesterId, 'PHPUnit — demande avec superviseur');
+        $ticketId = $this->addDemandTicket($requesterId, 'PHPUnit : demande avec superviseur');
 
         $rows = $this->validationTargets($ticketId);
 
@@ -143,7 +143,7 @@ final class ValidationRoutingBuilderTest extends TestCase
         (new ValidationRoutingBuilder())->build($this->buildConfig(true));
 
         $requesterId = $this->addUser('phpunit_requester_no_supervisor');
-        $ticketId = $this->addDemandTicket($requesterId, 'PHPUnit — demande sans superviseur');
+        $ticketId = $this->addDemandTicket($requesterId, 'PHPUnit: demande sans superviseur');
 
         $this->assertCount(0, $this->validationTargets($ticketId));
     }

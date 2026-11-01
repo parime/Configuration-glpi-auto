@@ -45,7 +45,7 @@ if (isset($_POST['add'])) {
     Html::redirect(ConfigurationProfile::getSearchURL());
 } elseif (isset($_POST['save_snapshot'])) {
     // Capture l'état RÉEL actuel de Config (le singleton que front/wizard.php lit/écrit) dans le
-    // Blueprint de ce profil — jamais l'inverse (voir apply_snapshot), donc jamais de risque
+    // Blueprint de ce profil : jamais l'inverse (voir apply_snapshot), donc jamais de risque
     // d'écraser silencieusement la configuration réelle depuis cet écran.
     $item->check($_POST['id'], UPDATE);
     $config = Config::getConfig();
@@ -55,7 +55,7 @@ if (isset($_POST['add'])) {
     Html::back();
 } elseif (isset($_POST['apply_snapshot'])) {
     // Import/Export avancé (issue #117), volet "conflict resolution" : n'applique plus directement
-    // ici — redirige vers l'écran de diff+application sélective déjà construit pour la restauration
+    // ici : redirige vers l'écran de diff+application sélective déjà construit pour la restauration
     // d'historique (front/history_restore.php, #114), généralisé pour accepter aussi un
     // ConfigurationProfile. Jamais un écrasement complet sans revue, même principe que le choix
     // d'un profil à l'étape 1 de l'assistant existant.
@@ -76,7 +76,7 @@ if (isset($_POST['add'])) {
     }
 
     // Import/Export avancé (issue #117), volet "export sélectif par catégorie" : sans sélection
-    // explicite, affiche un écran de choix plutôt que de télécharger tout de suite — "Tout
+    // explicite, affiche un écran de choix plutôt que de télécharger tout de suite - "Tout
     // exporter" reproduit exactement le comportement précédent (fichier complet).
     if (isset($_GET['fields'])) {
         $onlyFields = array_map('strval', (array) $_GET['fields']);

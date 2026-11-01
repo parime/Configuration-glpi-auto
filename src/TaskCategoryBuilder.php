@@ -21,10 +21,10 @@ use TaskCategory;
 
 /**
  * Turns on `task_categories_enabled` into a flat `TaskCategory` list (Configuration > Intitulés >
- * Assistance > "Catégories de tâches") — describes what *kind of work* a technician's task was
+ * Assistance > "Catégories de tâches") : describes what *kind of work* a technician's task was
  * (diagnostic, install, config, escalation...), independent of `ITILCategory` (`CategoryBuilder`,
  * which describes what the *ticket* is about). GLPI ships none of these by default. Flat, not a
- * tree like `ITILCategory` — inspired by a real production GLPI export's own task-category list,
+ * tree like `ITILCategory` - inspired by a real production GLPI export's own task-category list,
  * which was itself flat; nothing about "kind of technician work" naturally nests the way topical
  * ticket categories (IT > Poste de travail > Portable) do.
  *

@@ -33,7 +33,7 @@ use PHPUnit\Framework\TestCase;
 use Ticket;
 
 /**
- * Same "real submission, real assertion" pattern as `VideoSurveillanceFormBuilderTest` — but this
+ * Same "real submission, real assertion" pattern as `VideoSurveillanceFormBuilderTest` - but this
  * builder's own docblock is explicit that, unlike `VideoSurveillanceFormBuilder`, its `batiment`
  * branch does NOT imply `securite` : the optional "Équipement concerné" question requires BOTH
  * branches selected AND `physical_security_assets_enabled`, checked independently
@@ -63,7 +63,7 @@ final class DoorLockBadgeFormBuilderTest extends TestCase
 
         // See VideoSurveillanceFormBuilderTest's tearDown docblock: unlike "Vehicule"/"Local",
         // "SecuritePhysique" has its own dedicated create/delete-cycle test file
-        // (`PhysicalSecurityAssetBuilderTest`) that assumes a clean slate — this suite must delete it
+        // (`PhysicalSecurityAssetBuilderTest`) that assumes a clean slate: this suite must delete it
         // every time, mirroring FireSafetyAssetBuilderTest's own tearDown exactly.
         if (!empty($this->equipmentIdsToDelete)) {
             $equipmentClass = $this->equipmentClassName();
@@ -195,7 +195,7 @@ final class DoorLockBadgeFormBuilderTest extends TestCase
     public function testReferencedEquipmentIsAssociatedOnTheTicket(): void
     {
         $form = $this->buildForm();
-        $equipmentId = $this->addRealEquipment('PHPUnit — Serrure électronique porte B12');
+        $equipmentId = $this->addRealEquipment('PHPUnit : Serrure électronique porte B12');
         $localisationId = $this->questionIdByRank($form, 0);
         $natureId = $this->questionIdByRank($form, 1);
         $equipementQId = $this->questionIdByRank($form, 2);
@@ -220,7 +220,7 @@ final class DoorLockBadgeFormBuilderTest extends TestCase
 
     /**
      * Most door/lock problems are on mechanical hardware that was never referenced as a
-     * `SecuritePhysique` asset in the first place — leaving the optional question unanswered must
+     * `SecuritePhysique` asset in the first place: leaving the optional question unanswered must
      * not silently associate a stale or wrong item.
      */
     public function testUnreferencedEquipmentAssociatesNoItem(): void

@@ -102,7 +102,7 @@ final class JiraCsvTest extends TestCase
             ['status' => 'To Do', 'type' => 'Bug', 'project' => ''],
         ]);
         $this->assertSame(['Done' => 2, 'To Do' => 1], $summary['statuses']);
-        $this->assertSame(['Support' => 2, '—' => 1], $summary['projects']);
+        $this->assertSame(['Support' => 2, '-' => 1], $summary['projects']);
         $this->assertSame(['camille durand', 'durand camille'], JiraMapping::nameKeys('Camille Durand'));
         $this->assertSame([], JiraMapping::nameKeys(' '));
     }

@@ -22,12 +22,12 @@ use ValidationStep;
 
 /**
  * Turns on `validation_templates_enabled` into a real `ITILValidationTemplate` library
- * (Configuration > Intitulés > Assistance > "Gabarits de validation") — ready-to-use validation
+ * (Configuration > Intitulés > Assistance > "Gabarits de validation") : ready-to-use validation
  * request messages, so a technician submitting a ticket for approval doesn't write the same
  * explanation from scratch every time. GLPI ships none by default.
  *
  * "Validation comité" is linked to the "Validation comité (2/3)" `ValidationStep` if it exists
- * (`GeneralSettingsBuilder`'s `committee_validation_enabled`, Sprint 25/26) — looked up by name,
+ * (`GeneralSettingsBuilder`'s `committee_validation_enabled`, Sprint 25/26): looked up by name,
  * silently left on GLPI's default "Validation" step otherwise, same defensive lookup pattern used
  * throughout this plugin (e.g. `GeneralSettingsBuilder::projectTaskStateMapping()`): never guess
  * an ID, skip the wiring rather than link to the wrong step.

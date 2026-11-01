@@ -22,7 +22,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
 
 /**
- * `glpi_entities.address` — une entité sans adresse renseignée est un constat, jamais une donnée à
+ * `glpi_entities.address` - une entité sans adresse renseignée est un constat, jamais une donnée à
  * inventer à sa place (une fausse adresse serait pire que son absence, notamment pour des documents
  * générés ou des obligations réglementaires) : cette vérification n'est donc jamais corrigible
  * automatiquement (`canFix()` retourne toujours faux), contrairement à

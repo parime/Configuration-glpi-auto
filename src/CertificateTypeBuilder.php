@@ -21,9 +21,9 @@ use CertificateType;
 
 /**
  * Turns on `certificate_types_enabled` into real `CertificateType` rows (Configuration > Intitulés
- * > Actifs > "Types de certificat") — GLPI ships none by default (confirmed empty on a fresh
+ * > Actifs > "Types de certificat"): GLPI ships none by default (confirmed empty on a fresh
  * install), even though `Certificate` itself, expiration tracking, and its own notification target
- * (`NotificationTargetCertificate`) are all native since GLPI 10 — same "native table, zero
+ * (`NotificationTargetCertificate`) are all native since GLPI 10: same "native table, zero
  * defaults" gap this plugin already fills for `Manufacturer`/`SoftwareLicenseType`/asset "Types".
  *
  * Added in response to #151 ("étudier ce que recommandent ITIL et ISO 27001 en matière de gestion
@@ -31,18 +31,18 @@ use CertificateType;
  * frameworks' asset-management guidance before picking this specifically, rather than inventing a
  * new custom asset type speculatively. ISO 27001 Annex A explicitly calls out cryptographic
  * material (certificates, keys) as an asset category requiring its own inventory and expiry
- * tracking (A.8.24, "Use of cryptography") — GLPI already has the exact native mechanism for this
+ * tracking (A.8.24, "Use of cryptography"): GLPI already has the exact native mechanism for this
  * (`Certificate` + `NotificationTargetCertificate`'s expiration alerts), it's just never seeded with
  * any starting categories, unlike almost every other native "Types" table this plugin already
  * covers. No *new* custom asset type needed here (unlike `VehicleAssetBuilder`/
  * `FireSafetyAssetBuilder`): `Certificate` is already a first-class native asset, this only fills
- * its empty dropdown — unlike vehicles/fire-safety/physical-security equipment, which had no native
+ * its empty dropdown: unlike vehicles/fire-safety/physical-security equipment, which had no native
  * GLPI table to seed at all.
  *
- * `CertificateType extends CommonType` (confirmed in GLPI source) — a flat `CommonDropdown` like
+ * `CertificateType extends CommonType` (confirmed in GLPI source): a flat `CommonDropdown` like
  * `Manufacturer`, not a tree like `SoftwareLicenseType`, so this follows `ManufacturerBuilder`'s
  * shape. `entities_id`/`is_recursive` set explicitly (confirmed present via `DESCRIBE
- * glpi_certificatetypes`, unlike `Manufacturer` which GLPI defaults on its own) — same as
+ * glpi_certificatetypes`, unlike `Manufacturer` which GLPI defaults on its own): same as
  * `SoftwareLicenseTypeBuilder`/`StateBuilder`.
  */
 class CertificateTypeBuilder

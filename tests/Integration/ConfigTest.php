@@ -25,13 +25,13 @@ use User;
 
 /**
  * `Config` is a real singleton row (id=1) this instance's actual live plugin configuration lives
- * in — every other test in this suite deliberately avoids ever calling the real `add()`/`update()`
+ * in: every other test in this suite deliberately avoids ever calling the real `add()`/`update()`
  * on it, and so does this one: `prepareInputForAdd()`/`prepareInputForUpdate()` are pure
- * array-in/array-out sanitization (confirmed by reading `prepareInput()` — no `$this->fields`
+ * array-in/array-out sanitization (confirmed by reading `prepareInput()` - no `$this->fields`
  * access, no DB call), so calling them directly on a fresh `new Config()` exercises the exact same
  * logic the real form submission does, without ever touching the live row. The plain getters
  * (`getSlaTiers()`, `getEntityTree()`...) are tested the same way every other builder test already
- * reads a `Config` — by setting `->fields` directly.
+ * reads a `Config` - by setting `->fields` directly.
  */
 final class ConfigTest extends TestCase
 {
@@ -60,7 +60,7 @@ final class ConfigTest extends TestCase
         $this->assertMatchesRegularExpression('/^#[0-9a-fA-F]{6}$/', $defaults['branding_primary_color']);
 
         $branches = json_decode($defaults['category_branches'], true);
-        $this->assertSame(Config::CATEGORY_BRANCH_KEYS, $branches, 'A fresh install suggests every branch — the admin trims afterward.');
+        $this->assertSame(Config::CATEGORY_BRANCH_KEYS, $branches, 'A fresh install suggests every branch: the admin trims afterward.');
 
         $stateNames = json_decode($defaults['state_names'], true);
         $this->assertSame(StateBuilder::getStateNames(), $stateNames);
@@ -96,7 +96,7 @@ final class ConfigTest extends TestCase
 
     public function testGetSlaTiersFillsInMissingLevelsFromTheDefaultTable(): void
     {
-        // Only priority 6 provided — every other level must fall back to DEFAULT_SLA_TIERS.
+        // Only priority 6 provided: every other level must fall back to DEFAULT_SLA_TIERS.
         $config = $this->configWithFields(['sla_tiers' => json_encode(['6' => ['tto_hours' => 2, 'ttr_hours' => 6]])]);
 
         $tiers = $config->getSlaTiers();
@@ -146,7 +146,7 @@ final class ConfigTest extends TestCase
         $this->assertSame([['group' => 'DSI', 'profile' => 'Admin']], $config->getLdapFunctionRights());
     }
 
-    // --- prepareInput() sanitization, exercised directly (no DB write — see class docblock) ---
+    // --- prepareInput() sanitization, exercised directly (no DB write: see class docblock) ---
 
     public function testPrepareInputResetsAnInvalidEntityModeToMono(): void
     {
@@ -198,7 +198,7 @@ final class ConfigTest extends TestCase
     }
 
     /**
-     * Per-client `settings` (calendar/SLA/escalation overrides) only survive at depth 1 — a
+     * Per-client `settings` (calendar/SLA/escalation overrides) only survive at depth 1: a
      * sub-entity always inherits from its parent, so a deeper one carrying its own override would
      * be ambiguous and is dropped silently rather than kept.
      */
@@ -221,7 +221,7 @@ final class ConfigTest extends TestCase
     }
 
     /**
-     * `settings.sla`/`settings.escalation` round-trip through their own sanitizers — tiers filled
+     * `settings.sla`/`settings.escalation` round-trip through their own sanitizers: tiers filled
      * in from defaults, booleans coerced.
      */
     public function testPrepareInputSanitizesPerClientSlaAndEscalationOverrides(): void
@@ -308,7 +308,7 @@ final class ConfigTest extends TestCase
     /**
      * Same root cause, `entity_tree`: `prepareInput()` only ever sanitized `entity_tree_json` (the
      * form field), so a request naming the column (`entity_tree`) directly skipped `sanitizeTree()`
-     * entirely — no depth cap, no name trimming. Never rendered `|raw` (only `|json_encode`), so not
+     * entirely: no depth cap, no name trimming. Never rendered `|raw` (only `|json_encode`), so not
      * itself an XSS sink, but the same structural bypass.
      */
     public function testPrepareInputRenormalizesEntityTreeWhenTheColumnNameIsSubmittedDirectly(): void
@@ -322,7 +322,7 @@ final class ConfigTest extends TestCase
 
     /**
      * `sla_tiers`/`ola_tiers` had the same column-vs-form-field bypass (a bare `is_array()` guard
-     * let a scalar through) — not currently reachable via any `|raw` sink (only read back through
+     * let a scalar through): not currently reachable via any `|raw` sink (only read back through
      * `getSlaTiers()`, which re-sanitizes on every read), but fixed for the same structural reason.
      */
     public function testPrepareInputRenormalizesSlaTiersWhenAScalarIsSubmitted(): void
@@ -385,10 +385,10 @@ final class ConfigTest extends TestCase
 
     /**
      * Regression guard (documented directly in the class): `category_branches` reaches
-     * `prepareInput()` in two different shapes — a real array from the wizard form, or the
+     * `prepareInput()` in two different shapes: a real array from the wizard form, or the
      * JSON-encoded string `getDefaults()` uses to seed a fresh row via `add()`'s own
      * `prepareInputForAdd()` call. `(array) $string` would wrap the whole string as one bogus
-     * element instead of decoding it — a fresh install would silently get zero branches selected.
+     * element instead of decoding it: a fresh install would silently get zero branches selected.
      */
     public function testPrepareInputAcceptsCategoryBranchesAsBothARealArrayAndAJsonString(): void
     {
@@ -439,7 +439,7 @@ final class ConfigTest extends TestCase
      * plugin's own right (`plugin_configurationglpiauto_config`) is deliberately delegatable to a
      * non-super-admin profile (see Profile.php), but `ldap_rights_profile` feeds directly into a
      * `RuleRight` that auto-assigns whichever profile is named here to any LDAP-imported user
-     * matching the configured group — unrestricted, a delegated operator could grant themselves
+     * matching the configured group: unrestricted, a delegated operator could grant themselves
      * "Super-Admin" via a group they already belong to. Impersonates a real non-super-admin user by
      * swapping only `$_SESSION['glpiID']` (not a full `Auth::login()`, which would reset session
      * keys other tests in this same process depend on) and restores it in `finally`.
@@ -464,7 +464,7 @@ final class ConfigTest extends TestCase
 
     /**
      * Same restriction, exercised through the per-row function-rights sanitizer rather than the
-     * single `ldap_rights_profile` field — the row is dropped entirely (not downgraded to "Admin",
+     * single `ldap_rights_profile` field: the row is dropped entirely (not downgraded to "Admin",
      * unlike the single-field case above) since `sanitizeLdapFunctionRights()` already drops any
      * row failing its whitelist check rather than substituting a default.
      */
@@ -525,7 +525,7 @@ final class ConfigTest extends TestCase
         $this->assertSame($addResult, $updateResult);
     }
 
-    // --- getLatestGithubVersion(): cache-hit paths only — the live GitHub API call itself is left
+    // --- getLatestGithubVersion(): cache-hit paths only: the live GitHub API call itself is left
     // out of this automated suite's scope, same reasoning already documented in RSSFeedBuilderTest
     // / CountryHolidayBuilderTest for a different third-party service this plugin depends on. ---
 
@@ -558,7 +558,7 @@ final class ConfigTest extends TestCase
 
     /**
      * Opt-in (security review 1.3.0, LOW "unsolicited outbound request"): with GLPI's own update
-     * check disabled — its default — nothing is returned, even from cache, and nothing is fetched.
+     * check disabled: its default: nothing is returned, even from cache, and nothing is fetched.
      */
     public function testGetLatestGithubVersionIsSkippedWhileCoreUpdateCheckIsDisabled(): void
     {
@@ -571,7 +571,7 @@ final class ConfigTest extends TestCase
 
     /**
      * An empty string is the deliberate "the last live call failed" cache sentinel (see the
-     * method's own docblock) — cached as `''`, returned to the caller as `null`.
+     * method's own docblock): cached as `''`, returned to the caller as `null`.
      */
     public function testGetLatestGithubVersionReturnsNullWhenTheCachedSentinelIsEmpty(): void
     {

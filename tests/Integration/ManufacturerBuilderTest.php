@@ -66,12 +66,12 @@ final class ManufacturerBuilderTest extends TestCase
         global $DB;
         foreach (self::SAMPLE_NAMES as $name) {
             $count = $DB->request(['FROM' => Manufacturer::getTable(), 'WHERE' => ['name' => $name]])->count();
-            $this->assertSame(1, $count, "Exactly one '$name' manufacturer must exist — no duplicate.");
+            $this->assertSame(1, $count, "Exactly one '$name' manufacturer must exist: no duplicate.");
         }
     }
 
     /**
-     * Icons here are grouped by product category (💻/🌐/🖨️...), not per-brand — same
+     * Icons here are grouped by product category (💻/🌐/🖨️...), not per-brand: same
      * `Translations::applyIcon()` toggle regression guard as every other icon-capable builder.
      */
     public function testTogglingIconsOnThenOffUpdatesTheTranslation(): void

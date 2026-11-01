@@ -22,7 +22,7 @@ use GlpiPlugin\Configurationglpiauto\ConfigHistory;
 use PHPUnit\Framework\TestCase;
 
 /**
- * `Config` est le vrai singleton où vit la configuration réelle de cette instance — même
+ * `Config` est le vrai singleton où vit la configuration réelle de cette instance : même
  * discipline que `BlueprintWorkflowTest`/`ConfigTest` : lecture seule (`Config::getConfig()`), on
  * n'appelle jamais `update()` dessus ici, donc exécuter cette suite ne laisse jamais l'instance
  * partagée dans un état différent de celui trouvé au départ. Les lignes `ConfigHistory` créées ici
@@ -74,7 +74,7 @@ final class ConfigHistoryTest extends TestCase
     }
 
     /**
-     * `captureAutomatic()` purges automatic rows beyond its cap on every call — inserts more than
+     * `captureAutomatic()` purges automatic rows beyond its cap on every call: inserts more than
      * the cap via repeated calls and confirms the count never grows unbounded, only the most recent
      * rows survive.
      */
@@ -83,7 +83,7 @@ final class ConfigHistoryTest extends TestCase
         $config = Config::getConfig();
 
         // MAX_AUTOMATIC_ENTRIES is private on purpose (an implementation detail, not a public
-        // contract) — 25 repeated captures is comfortably above any reasonable cap without the test
+        // contract): 25 repeated captures is comfortably above any reasonable cap without the test
         // needing to know the exact number.
         for ($i = 0; $i < 25; $i++) {
             ConfigHistory::captureAutomatic($config);

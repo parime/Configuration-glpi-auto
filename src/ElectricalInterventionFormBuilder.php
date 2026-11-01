@@ -51,7 +51,7 @@ use ITILCategory;
  * a final free-text "Précisions complémentaires" question as an escape hatch, replacing the generic
  * Description field these forms no longer have.
  *
- * Computed title only references the always-visible `localisation` answer — "<form name> -
+ * Computed title only references the always-visible `localisation` answer - "<form name> -
  * <localisation>", tag-built via `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
  */
 class ElectricalInterventionFormBuilder

@@ -21,7 +21,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
 
 /**
- * `glpi_slas` — aucun SLA défini signifie qu'aucun engagement de délai n'est suivi sur les
+ * `glpi_slas` - aucun SLA défini signifie qu'aucun engagement de délai n'est suivi sur les
  * tickets, un des piliers ITIL de la gestion des incidents. Jamais corrigée automatiquement :
  * les délais cibles (temps de résolution, d'escalade N1-N3...) sont des engagements propres à
  * l'organisation, pas une valeur générique que ce plugin pourrait proposer à la place d'un humain

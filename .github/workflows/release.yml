@@ -3,7 +3,7 @@ name: Release
 # Triggers on a version tag (vX.Y.Z): installs production dependencies, builds the plugin's
 # distribution archive, verifies it actually installs on a fresh GLPI instance, then publishes
 # the GitHub Release with that archive attached and auto-generated notes. Modeled on the release
-# workflow already validated on the sibling glpi-vulnerability-manager plugin — no Packagist
+# workflow already validated on the sibling glpi-vulnerability-manager plugin: no Packagist
 # publish, no Discord webhook, no docs site: none of that infrastructure exists for this plugin,
 # and a previous version of this workflow assumed it did, which would have failed on first use.
 on:
@@ -58,7 +58,7 @@ jobs:
         # git archive (not a plain zip of the checkout): built exactly from what's committed at
         # the tag, automatically excluding anything marked export-ignore in .gitattributes
         # (tests/, .github/, CI/quality config...). vendor/ isn't versioned (see .gitignore) so
-        # git archive can't include it — copied explicitly from the production install above.
+        # git archive can't include it: copied explicitly from the production install above.
         # configurationglpiauto/ prefix: the archive must extract directly under plugins/ on a
         # GLPI instance.
         run: |

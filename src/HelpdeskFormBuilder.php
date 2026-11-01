@@ -22,25 +22,25 @@ use Glpi\Form\Form;
 
 /**
  * Hides Urgency/Observers/Location on GLPI 11's native self-service forms ("Report an issue" /
- * "Request a service", `Glpi\Form\Form` ids 1/2) — a distinct system from `TicketTemplate` and its
+ * "Request a service", `Glpi\Form\Form` ids 1/2): a distinct system from `TicketTemplate` and its
  * hidden/mandatory fields (`TicketTemplateBuilder`). Confirmed by testing the real Self-Service
  * portal: it renders through this newer Form/Question engine (`/Helpdesk`), not the classic
- * `front/ticket.form.php` ITILTemplate flow — so `TicketTemplateHiddenField` has no effect there at
+ * `front/ticket.form.php` ITILTemplate flow: so `TicketTemplateHiddenField` has no effect there at
  * all, however it's configured.
  *
  * Urgency specifically: base users have no visibility into actual business impact and consistently
- * rate their own issue as urgent (a well-documented ITSM anti-pattern) — better decided by the
+ * rate their own issue as urgent (a well-documented ITSM anti-pattern): better decided by the
  * service desk during triage, or derived from the selected category, than asked of the requester.
  *
  * `Question::visibility_strategy`/`conditions` only support ALWAYS_VISIBLE / VISIBLE_IF / HIDDEN_IF
- * (`Glpi\Form\Condition\VisibilityStrategy`) — there's no plain "always hidden". Confirmed in
+ * (`Glpi\Form\Condition\VisibilityStrategy`): there's no plain "always hidden". Confirmed in
  * `Engine::computeConditions()`: an empty `conditions` array evaluates to `false`. Combined with
  * `VISIBLE_IF` (`mustBeVisible($conditions_result)` returns `$conditions_result` as-is), an empty
- * condition list is therefore permanently hidden — no dummy/always-false condition needed.
+ * condition list is therefore permanently hidden: no dummy/always-false condition needed.
  */
 class HelpdeskFormBuilder
 {
-    // GLPI's own native form names — stored in English in the DB regardless of UI language (the
+    // GLPI's own native form names: stored in English in the DB regardless of UI language (the
     // literal string doubles as a translation key, same pattern already seen on ProjectState).
     private const NATIVE_FORM_NAMES = ['Report an issue', 'Request a service'];
 

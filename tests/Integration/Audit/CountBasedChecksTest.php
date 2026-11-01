@@ -30,14 +30,14 @@ use PHPUnit\Framework\TestCase;
  * `glpi_itilcategories`). Deliberately NOT forced into either branch here: this suite runs against
  * the same shared, persistent instance as every other Integration test in this plugin, and whether
  * these tables already have rows depends on which other suites (StateBuilderTest,
- * CalendarBuilderTest, SlaBuilderTest, CategoryBuilderTest...) happened to run first — true on the
+ * CalendarBuilderTest, SlaBuilderTest, CategoryBuilderTest...) happened to run first: true on the
  * shared dev instance, NOT guaranteed on a fresh CI database where PHPUnit's execution order is
  * unspecified. Forcibly emptying real shared tables to exercise the "problem detected" branch would
  * also be destructive to other suites' and any real organization's own data.
  *
  * What IS safely verifiable regardless of table state or execution order: each check runs without
  * error, returns at most one finding (never one row per missing item), and never claims to be
- * fixable — none of these four can guess what the right states/calendar/SLA/categories should be
+ * fixable: none of these four can guess what the right states/calendar/SLA/categories should be
  * for a given organization (see each class's own docblock).
  */
 final class CountBasedChecksTest extends TestCase

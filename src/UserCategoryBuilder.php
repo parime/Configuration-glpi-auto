@@ -20,19 +20,19 @@ namespace GlpiPlugin\Configurationglpiauto;
 use UserCategory;
 
 /**
- * Turns on `user_categories_enabled` into real `UserCategory` rows (`glpi_usercategories`) — GLPI
+ * Turns on `user_categories_enabled` into real `UserCategory` rows (`glpi_usercategories`): GLPI
  * ships this dropdown empty by default. Confirmed a genuine, non-cosmetic field before building
  * anything: `usercategories_id` on `User` is importable straight from an LDAP/AD attribute
  * (`AuthLDAP::category_field`), used as a notification-targeting criterion
  * (`NotificationTargetCommonITILObject`), and as a statistics breakdown dimension (`Stat.php`).
  *
- * A generic HR-style classification of *who someone is* to the organization — independent of GLPI
- * profiles/rights (which govern *what they can do*) — stable and universal enough to generalize,
+ * A generic HR-style classification of *who someone is* to the organization: independent of GLPI
+ * profiles/rights (which govern *what they can do*): stable and universal enough to generalize,
  * same reasoning as `PendingReason`/`State`: any organization, regardless of size or sector, has
  * some mix of permanent staff and non-permanent people passing through.
  *
  * A flat, global dropdown (no `entities_id`/`is_recursive` columns on `glpi_usercategories` at
- * all, confirmed in its own schema) — same shape as `ManufacturerBuilder`'s target, unlike most
+ * all, confirmed in its own schema): same shape as `ManufacturerBuilder`'s target, unlike most
  * other builders in this plugin.
  */
 class UserCategoryBuilder

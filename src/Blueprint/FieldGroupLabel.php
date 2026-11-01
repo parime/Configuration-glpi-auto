@@ -19,7 +19,7 @@ namespace GlpiPlugin\Configurationglpiauto\Blueprint;
 
 /**
  * Regroupement purement visuel des champs `Config` par préfixe de nom (calculé, jamais une table
- * de correspondance figée à maintenir face à chaque nouveau champ) — utilisé par l'écran de
+ * de correspondance figée à maintenir face à chaque nouveau champ) : utilisé par l'écran de
  * restauration (`front/history_restore.php`, issue #114) et l'export sélectif (`front/
  * profile.form.php`, issue #117). Extrait dans sa propre classe plutôt que dupliqué dans les deux
  * fichiers : ~40 libellés traduits à maintenir à un seul endroit, pas deux copies qui pourraient
@@ -32,7 +32,7 @@ final class FieldGroupLabel
     /**
      * Une méthode plutôt qu'une `const` : chaque libellé doit rester un argument littéral direct
      * d'un appel `__(...)` pour que `vendor/bin/extract-locales` puisse le découvrir statiquement
-     * (une constante de classe ne peut pas contenir d'appel de fonction) — sinon un nouveau préfixe
+     * (une constante de classe ne peut pas contenir d'appel de fonction) : sinon un nouveau préfixe
      * ajouté plus tard resterait silencieusement non traduit, sans que la vérification CI
      * "Locale Completeness" ne le détecte jamais.
      *

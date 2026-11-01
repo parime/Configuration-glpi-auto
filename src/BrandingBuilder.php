@@ -22,41 +22,41 @@ use Entity;
 /**
  * Turns a Config's branding settings (primary color, and per-entity logo) into real per-entity CSS
  * overrides, using GLPI's own built-in `Entity::enable_custom_css`/`custom_css_code` mechanism
- * (Configuration > Entités > onglet général, "Personnalisation CSS") — no file writes, no touching
+ * (Configuration > Entités > onglet général, "Personnalisation CSS") : no file writes, no touching
  * GLPI's own static assets, just data already natively supported by GLPI for exactly this purpose.
  * Color can also be set independently per top-level entity (`applyPerClientColors()`) rather than
- * one shared color for all — the same per-entity-panel pattern `entity_logos_enabled` already uses.
+ * one shared color for all: the same per-entity-panel pattern `entity_logos_enabled` already uses.
  *
  * Color and logo are two independent toggles (`branding_enabled`/`entity_logos_enabled`) that can
  * both write into the *same* `custom_css_code` field, so each writes its own block delimited by a
- * comment marker (`mergeCssBlock()`) rather than blindly overwriting the whole field — re-running
+ * comment marker (`mergeCssBlock()`) rather than blindly overwriting the whole field: re-running
  * one doesn't erase the other, and neither clobbers anything an admin might have added by hand
  * outside those markers.
  *
  * Fifth completeness audit (Sprint 35, 2026-08-12) replaced the earlier version of this class, which
  * only touched `--tblr-primary`/`--tblr-primary-rgb` (buttons/links) and `--glpi-logo`/
- * `--glpi-logo-reduced` (sidebar logo, expanded/collapsed) — guessed one variable at a time across
+ * `--glpi-logo-reduced` (sidebar logo, expanded/collapsed): guessed one variable at a time across
  * several sprints, never checked against the full list. Confirmed directly in this GLPI 11.0.8
  * install's own `css/includes/_base.scss` (not just researched) which variables exist and how they
  * derive from each other:
  * - `--glpi-logo`/`--glpi-logo-reduced` are themselves aliases of `--glpi-logo-light`/
- *   `--glpi-logo-light-reduced` (`--glpi-logo: var(--glpi-logo-light);`) — overriding only the alias
+ *   `--glpi-logo-light-reduced` (`--glpi-logo: var(--glpi-logo-light);`): overriding only the alias
  *   left `--glpi-logo-dark`/`-dark-reduced` (referenced directly by some rules, not just through the
  *   alias) and the two login-page variables (`--glpi-logo-light-login`/`-dark-login`,
- *   `.page-anonymous .glpi-logo` hardcodes the `-dark-login` one) completely untouched — an admin's
+ *   `.page-anonymous .glpi-logo` hardcodes the `-dark-login` one) completely untouched: an admin's
  *   uploaded logo never appeared on the login screen.
  * - `--tblr-primary-darken` (`color-mix(in srgb, var(--tblr-primary), black 10%)`) and
  *   `--glpi-mainmenu-active-bg`/`--glpi-illustrations-*` (all `color-mix()`/`hsl(from ...)` derived
  *   from `--glpi-mainmenu-bg`) don't need overriding at all: CSS custom properties resolve at
  *   used-value time, so once the variable they reference is overridden, they recompute automatically
- *   — confirmed by reading the derivation chain, not assumed.
+ *   - confirmed by reading the derivation chain, not assumed.
  * - The wizard's own live preview (`cga-branding-preview-header`) has always simulated the *sidebar*
  *   turning the chosen color, but the implementation only ever recolored buttons/links
- *   (`--tblr-primary`) — `--glpi-mainmenu-bg` (the actual sidebar background) was never touched,
+ *   (`--tblr-primary`) - `--glpi-mainmenu-bg` (the actual sidebar background) was never touched,
  *   a real promise/result mismatch. Now applies the same color there too, with `--glpi-mainmenu-fg`/
  *   `-fg-muted` recomputed for contrast the same way `--tblr-primary-fg` already is.
  *
- * Embedded as a `data:` URI (base64) rather than uploaded as a `Document` — self-contained in the
+ * Embedded as a `data:` URI (base64) rather than uploaded as a `Document` - self-contained in the
  * same field GLPI already stores this kind of customization in, no separate file storage/serving
  * path to keep in sync.
  */
@@ -67,11 +67,11 @@ class BrandingBuilder
     private const LOGO_BLOCK_KEY = 'branding-logo';
 
     /**
-     * Both `glpi_entities.custom_css_code` and `mailing_signature` are MySQL `TEXT` columns —
+     * Both `glpi_entities.custom_css_code` and `mailing_signature` are MySQL `TEXT` columns -
      * 65 535 bytes max each, confirmed via `SHOW COLUMNS`, not assumed. Margin kept below the hard
      * limit for two reasons: `mb_strlen(..., '8bit')` below counts the *current* PHP-string byte
      * length, but MySQL enforces the limit on the byte length *after* charset conversion into the
-     * column's own charset (utf8mb4 here) — normally identical for already-UTF-8 PHP strings, this
+     * column's own charset (utf8mb4 here): normally identical for already-UTF-8 PHP strings, this
      * margin absorbs any edge-case drift instead of chasing the exact boundary.
      */
     private const TEXT_COLUMN_MAX_BYTES = 65000;
@@ -79,7 +79,7 @@ class BrandingBuilder
     /** @var int[] Entity IDs whose logo was skipped by the last {@see applyLogos()} call (too large to fit). */
     private array $skippedLogoEntityIds = [];
 
-    // GLPI's own default foreground for --tblr-primary-fg (css/includes/_base.scss) — reused here
+    // GLPI's own default foreground for --tblr-primary-fg (css/includes/_base.scss): reused here
     // as the "dark text" half of the contrast choice so a custom color close to GLPI's own default
     // still resolves to the exact same foreground GLPI ships, not a slightly different dark tone.
     private const DARK_FG = '#1e293b';
@@ -94,7 +94,7 @@ class BrandingBuilder
         if (empty($config->fields['branding_enabled'])) {
             // Active undo, same bug class already fixed on PaletteBuilder (real bug, 2026-08-20):
             // unchecking "Personnaliser la couleur principale" must remove a color block a previous
-            // run already wrote into custom_css_code, not just stop re-writing it — the CSS itself
+            // run already wrote into custom_css_code, not just stop re-writing it: the CSS itself
             // is otherwise never retired and stays visually applied forever, reported live by the
             // user re-running the wizard after unchecking this exact toggle.
             foreach ($entityIds as $entityId) {
@@ -117,7 +117,7 @@ class BrandingBuilder
     /**
      * Same "active undo" fix as {@see apply()}, for the logo side: `entity_logos_enabled` being
      * unchecked skips calling {@see applyLogos()} entirely in `front/wizard.php`, which left a
-     * previously-applied logo block stuck in `custom_css_code` forever — same bug, same fix.
+     * previously-applied logo block stuck in `custom_css_code` forever: same bug, same fix.
      *
      * @param int[] $entityIds
      * @return int Number of entities whose logo block was actually removed (already-empty entities
@@ -157,7 +157,7 @@ class BrandingBuilder
 
     /**
      * Entity IDs whose logo the last {@see applyLogos()} call could not apply because the resulting
-     * CSS would not fit in `custom_css_code` (see {@see TEXT_COLUMN_MAX_BYTES}) — the wizard surfaces
+     * CSS would not fit in `custom_css_code` (see {@see TEXT_COLUMN_MAX_BYTES}): the wizard surfaces
      * this as a clear message instead of the upload silently doing nothing.
      *
      * @return int[]
@@ -169,7 +169,7 @@ class BrandingBuilder
 
     /**
      * Same mechanism as `apply()`, one independent color per entity instead of the single shared
-     * one — for an MSP/multi-site admin who wants each client/site to keep its own brand color
+     * one: for an MSP/multi-site admin who wants each client/site to keep its own brand color
      * rather than all of them matching. Deliberately a separate method (not a variant of `apply()`)
      * following the same "per-client is an independent path, not a parameter on the shared one"
      * shape already established by `applyLogos()` alongside `apply()`.
@@ -191,7 +191,7 @@ class BrandingBuilder
 
     /**
      * Overrides both Tabler's (GLPI's admin theme) primary-color variables (buttons, links) *and*
-     * the sidebar/header background (`--glpi-mainmenu-*`) with the same admin-chosen color — the
+     * the sidebar/header background (`--glpi-mainmenu-*`) with the same admin-chosen color: the
      * wizard's own preview already simulates the sidebar turning that color, this makes the real
      * result match it. Foreground text color is recomputed for each background rather than left at
      * GLPI's own default (`--tblr-primary-fg`/`--glpi-mainmenu-fg` assume GLPI's own default
@@ -214,7 +214,7 @@ class BrandingBuilder
     }
 
     /**
-     * Perceptual (not full WCAG-contrast-ratio) luminance heuristic — matches the weighting
+     * Perceptual (not full WCAG-contrast-ratio) luminance heuristic: matches the weighting
      * (`0.299R + 0.587G + 0.114B`) commonly used for this exact "pick readable text for an arbitrary
      * background" problem; a full WCAG relative-luminance/contrast-ratio computation would be more
      * rigorous but is overkill for a binary black-or-white choice.
@@ -230,17 +230,17 @@ class BrandingBuilder
      * Overrides every logo-related CSS custom property GLPI 11 exposes with the same uploaded
      * image: the sidebar/header alias (`--glpi-logo`/`-reduced`) *and* the "light"/"dark" source
      * variables it points to (some rules reference `--glpi-logo-dark`/`-dark-reduced` directly,
-     * bypassing the alias — confirmed in `_base.scss`), plus the two login-page variables
+     * bypassing the alias: confirmed in `_base.scss`), plus the two login-page variables
      * (`--glpi-logo-light-login`/`-dark-login`, `.page-anonymous .glpi-logo` hardcodes the latter).
      * One logo image can't be optimized for every one of those backgrounds at once, so this
      * deliberately favors "the custom logo is visible everywhere" over "each variant has ideal
-     * contrast" — still strictly better than the previous behavior, where the login screen and any
+     * contrast" - still strictly better than the previous behavior, where the login screen and any
      * rule bypassing the `--glpi-logo` alias silently kept GLPI's own default logo.
      *
      * `background-size: contain` is mandatory here, not cosmetic: confirmed in GLPI's own
      * `_base.scss`, the expanded-sidebar `.page .glpi-logo` rule sets a fixed 100×55px box with
      * `background: var(--glpi-logo) no-repeat` and *no* `background-size` at all (unlike the
-     * collapsed-sidebar `.glpi-logo` rule, which already sets `background-size: contain`) — GLPI's
+     * collapsed-sidebar `.glpi-logo` rule, which already sets `background-size: contain`): GLPI's
      * own shipped logo images happen to be pre-cropped to exactly that ratio, but an admin-uploaded
      * logo of arbitrary dimensions renders at its native size and overflows the box uncropped
      * (confirmed visually: a tall/wide logo spills over the menu below it). `!important` needed to
@@ -250,11 +250,11 @@ class BrandingBuilder
     {
         $escaped = str_replace('"', '\\"', $dataUri);
 
-        // The `data:` URI is written ONCE, into its own custom property (`--cga-logo-url`) — every
+        // The `data:` URI is written ONCE, into its own custom property (`--cga-logo-url`): every
         // GLPI logo variable below then *references* it via `var()` instead of repeating the raw
         // (often tens of KB) URI literally. A real bug caught in production (2026-08-17): the
         // previous version repeated the escaped URI inline in all 8 declarations, inflating the
-        // stored CSS to ~8x the logo's own base64 size — enough to overflow `custom_css_code`
+        // stored CSS to ~8x the logo's own base64 size: enough to overflow `custom_css_code`
         // (a MySQL `TEXT` column, 65 535 bytes max) for almost any real-world logo file, crashing
         // wizard finalization with an unhandled "Data too long for column" SQL error instead of
         // just failing to apply the logo. `var()` substitution at used-value time makes this
@@ -275,12 +275,12 @@ class BrandingBuilder
 
     /**
      * Replaces this plugin's own previously-written block for `$blockKey` (if any) and appends the
-     * new one — never touches content outside its own markers, so color/logo/any future
+     * new one: never touches content outside its own markers, so color/logo/any future
      * CSS-writing feature and an admin's own manual additions all coexist safely across reruns.
      */
     /**
      * @return bool False if the merged block would not fit in `custom_css_code` (see
-     *              {@see TEXT_COLUMN_MAX_BYTES}) — the entity is left untouched in that case, this
+     *              {@see TEXT_COLUMN_MAX_BYTES}): the entity is left untouched in that case, this
      *              never writes a value MySQL would reject.
      */
     private function mergeCssBlock(int $entityId, string $blockKey, string $css): bool
@@ -300,7 +300,7 @@ class BrandingBuilder
         // Checked BEFORE writing, not caught from a DBmysql exception after the fact: a rejected
         // UPDATE here previously surfaced as a raw, unhandled MySQL "Data too long for column" error
         // that took down the *entire* wizard finalization request (confirmed live) rather than just
-        // skipping this one entity's logo — every other builder call after this one in wizard.php
+        // skipping this one entity's logo: every other builder call after this one in wizard.php
         // never even ran.
         if (mb_strlen($merged, '8bit') > self::TEXT_COLUMN_MAX_BYTES) {
             return false;
@@ -318,7 +318,7 @@ class BrandingBuilder
     /**
      * Shared by {@see mergeCssBlock()} and {@see removeCssBlock()}: strips this plugin's own
      * previously-written block for `$blockKey` (if any) out of `$existing`, leaving everything else
-     * — the other block, any CSS an admin added by hand outside the markers — untouched.
+     * - the other block, any CSS an admin added by hand outside the markers: untouched.
      */
     private function stripCssBlock(string $existing, string $blockKey): string
     {
@@ -332,7 +332,7 @@ class BrandingBuilder
     /**
      * Active-undo counterpart of {@see mergeCssBlock()}: removes this plugin's own block for
      * `$blockKey`, if present, instead of writing a new one. `enable_custom_css` is deliberately left
-     * alone even once nothing plugin-written remains — it's a general "use custom CSS at all" toggle
+     * alone even once nothing plugin-written remains: it's a general "use custom CSS at all" toggle
      * that may also cover CSS an admin added by hand outside these markers, not something this
      * builder ever turned on for reasons unrelated to `$blockKey`'s own content, so it's not this
      * builder's place to turn it back off either.

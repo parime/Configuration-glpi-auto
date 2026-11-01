@@ -142,7 +142,7 @@ global $CFG_GLPI;
 /**
  * Validates an uploaded entity logo and returns it as a `data:` URI, or null if missing/invalid.
  * `getimagesize()` reads the actual image header rather than trusting the browser-supplied MIME
- * type. SVG is deliberately not in the allow-list — it can carry an embedded `<script>`, and while
+ * type. SVG is deliberately not in the allow-list: it can carry an embedded `<script>`, and while
  * that wouldn't execute rendered as a CSS `background-image`, excluding it removes the question
  * entirely rather than relying on that distinction being reliable across browsers.
  *
@@ -155,7 +155,7 @@ function buildEntityLogoDataUri(array $file): ?string
     }
 
     // 1 MB cap: this ends up base64-encoded (~33% larger) inside custom_css_code, a plain text
-    // field — keeps the entity row (and every page load that renders this CSS) reasonably sized.
+    // field: keeps the entity row (and every page load that renders this CSS) reasonably sized.
     if (($file['size'] ?? 0) > 1_000_000 || ($file['tmp_name'] ?? '') === '') {
         return null;
     }
@@ -178,10 +178,10 @@ function buildEntityLogoDataUri(array $file): ?string
  * Validates a GPS coordinate/altitude typed or auto-filled on the Lieux step (`ajax/geocode.php`
  * normally fills latitude/longitude from Nominatim, but the fields stay plain editable text
  * inputs, so a hand-typed or pasted value is just as possible; altitude is always manual, no
- * geocoding service returns elevation) — same "trust nothing free-text" reasoning already applied
+ * geocoding service returns elevation): same "trust nothing free-text" reasoning already applied
  * to `branding_primary_color`/`native_palette`/`location_geocoding_endpoint`. No digit-count cap
  * before the decimal point: latitude/longitude never exceed 3 digits by definition, but altitude
- * routinely does (a 2000m mountain site is a 4-digit value) — the `$max` range check is what
+ * routinely does (a 2000m mountain site is a 4-digit value): the `$max` range check is what
  * actually bounds each field, not the string shape. Returns '' (silently dropped by the caller)
  * rather than throwing: same "never block finishing the wizard over an optional field" posture as
  * everywhere else in this file.
@@ -198,19 +198,19 @@ function sanitizeCoordinate(string $value, float $max): string
 
 /**
  * Collects every `location_<field>_<path>` field the "Lieux" step's JS may have submitted, for
- * *any* node of the entity tree (not just the top-level ones) — `<path>` is the node's own
+ * *any* node of the entity tree (not just the top-level ones) - `<path>` is the node's own
  * root-to-node child-index chain joined by `-` (e.g. `"1-0"`), the same encoding
  * `LocationBuilder::buildNode()` computes while walking `Config::getEntityTree()`, so a path here
  * always lines up with the exact node it was typed against. Scans `$_POST` directly rather than
  * looping over a known list of paths: unlike `entity_color_N`/`entity_logo_N` (always exactly one
  * entry per top-level node), nothing on this side knows in advance which paths exist deeper in the
- * tree — only the wizard's own JS, which only ever renders inputs for nodes an admin has actually
+ * tree: only the wizard's own JS, which only ever renders inputs for nodes an admin has actually
  * expanded.
  *
  * @return array<int|string, array<string, string>> Path => non-empty fields only (a node with
  *         nothing filled in has no entry at all, matching `LocationBuilder`'s "no data, no
  *         Location" rule). A root-level path ("0") is a plain numeric-string key, which PHP
- *         normalizes to an int array key on access — hence `int|string`, not just `string`.
+ *         normalizes to an int array key on access: hence `int|string`, not just `string`.
  */
 function collectLocationDataFromPost(): array
 {
@@ -244,7 +244,7 @@ function collectLocationDataFromPost(): array
 }
 
 /**
- * Collects every `entity_comms_<field>_<path>` field — `Entity`'s own `phonenumber`/`fax`/
+ * Collects every `entity_comms_<field>_<path>` field - `Entity`'s own `phonenumber`/`fax`/
  * `website`/`email`, fields `Location` has no equivalent of, so they can't be folded into
  * `collectLocationDataFromPost()`'s reused address data. Same path-based scan, only rendered by
  * the wizard's JS when `entity_native_address_enabled` is checked.
@@ -271,11 +271,11 @@ function collectEntityCommsFromPost(): array
 
 /**
  * Collects every `location_children_<path>` hidden field the "Lieux" step's JS may have submitted
- * — one JSON blob per entity path, holding whatever purely manual sub-locations (building/floor/
+ * - one JSON blob per entity path, holding whatever purely manual sub-locations (building/floor/
  * room, no entity of their own) the admin freely added/removed via that path's own tree editor.
  * Unlike `collectLocationDataFromPost()` (fixed, statically-known field set per path), this tree's
  * *shape* is entirely admin-driven, so it's serialized as JSON client-side rather than a a growing
- * set of flat named inputs — same reasoning `_entity_structure_fields.html.twig` already uses for
+ * set of flat named inputs: same reasoning `_entity_structure_fields.html.twig` already uses for
  * `entity_tree_json`.
  *
  * Recursively re-sanitizes every node server-side rather than trusting the submitted JSON shape:
@@ -355,13 +355,13 @@ function collectLocationChildrenFromPost(): array
 }
 
 /**
- * Read-only environment checks specific to what *this wizard* is about to do — GLPI's own
+ * Read-only environment checks specific to what *this wizard* is about to do: GLPI's own
  * installer already validated its own PHP/MySQL version requirements before this plugin could
  * even run, so re-checking those would be pointless duplication. Scoped instead to the two things
  * this plugin's own file-writing features need and that genuinely vary by hosting environment
  * (confirmed the hard way this session: a permissions slip on `GLPI_CACHE_DIR` after an
  * out-of-band `rm -rf` produced a site-wide 500, not a wizard-specific failure). Informational
- * only — never blocks continuing, matches every other "starting point, not a decision" toggle in
+ * only: never blocks continuing, matches every other "starting point, not a decision" toggle in
  * this wizard.
  *
  * @return array<int, array{label: string, ok: bool, hint: string}>
@@ -372,17 +372,17 @@ function checkEnvironmentPrerequisites(): array
         [
             'label' => __('Dossier des palettes personnalisées inscriptible', 'configurationglpiauto'),
             'ok' => is_dir(GLPI_THEMES_DIR) && is_writable(GLPI_THEMES_DIR),
-            'hint' => sprintf(__('nécessaire à la palette personnalisée (étape 17) — vérifiez les droits sur %s', 'configurationglpiauto'), GLPI_THEMES_DIR),
+            'hint' => sprintf(__('nécessaire à la palette personnalisée (étape 17) : vérifiez les droits sur %s', 'configurationglpiauto'), GLPI_THEMES_DIR),
         ],
         [
             'label' => __('Dossier de cache GLPI inscriptible', 'configurationglpiauto'),
             'ok' => is_dir(GLPI_CACHE_DIR) && is_writable(GLPI_CACHE_DIR),
-            'hint' => sprintf(__('nécessaire au bon fonctionnement général de GLPI — vérifiez les droits sur %s', 'configurationglpiauto'), GLPI_CACHE_DIR),
+            'hint' => sprintf(__('nécessaire au bon fonctionnement général de GLPI : vérifiez les droits sur %s', 'configurationglpiauto'), GLPI_CACHE_DIR),
         ],
         [
             'label' => __('Extension GD ou Imagick disponible', 'configurationglpiauto'),
             'ok' => extension_loaded('gd') || extension_loaded('imagick'),
-            'hint' => __('utile pour valider les logos uploadés (étape 17) — ni l\'une ni l\'autre n\'est chargée', 'configurationglpiauto'),
+            'hint' => __('utile pour valider les logos uploadés (étape 17) : ni l\'une ni l\'autre n\'est chargée', 'configurationglpiauto'),
         ],
     ];
 }
@@ -390,11 +390,11 @@ function checkEnvironmentPrerequisites(): array
 /**
  * Mode Dry Run amélioré (issue #115), volet "validation pré-déploiement" : ce sont les 4 mêmes
  * vérifications `Session::haveRight()` déjà faites plus bas dans le bloc `finish` (POST) pour
- * décider quelles fonctionnalités exécuter — dupliquées ici (peu coûteuses, sans effet de bord)
+ * décider quelles fonctionnalités exécuter : dupliquées ici (peu coûteuses, sans effet de bord)
  * plutôt que refactorées, pour ne jamais toucher ce chemin d'écriture déjà en production. Sans
  * cet avertissement, un opérateur dont le droit propre à ce plugin est délégué (voir Profile.php)
  * mais qui ne détient pas le droit natif GLPI correspondant remplit tout l'assistant sans jamais
- * savoir qu'une fonctionnalité entière sera silencieusement ignorée à l'étape "finish" — le
+ * savoir qu'une fonctionnalité entière sera silencieusement ignorée à l'étape "finish" - le
  * message de fin de course ne distingue pas "0 parce que non coché" de "0 parce que droit
  * manquant". Même forme/esprit que checkEnvironmentPrerequisites() ci-dessus : informationnel,
  * jamais bloquant.
@@ -413,7 +413,7 @@ if (isset($_POST['finish'])) {
 
     // This plugin's own right is deliberately delegatable to a non-super-admin profile (see
     // Profile.php), but several of the GLPI objects the wizard writes are core-privileged
-    // (creating entities, LDAP right-assignment rules, instance-wide config) — gated here on
+    // (creating entities, LDAP right-assignment rules, instance-wide config): gated here on
     // the matching native GLPI right in addition to the check above, so a delegated operator
     // without that specific core right gets that one feature silently skipped (see the
     // corresponding falsy-count message below) rather than the wizard granting it anyway.
@@ -424,7 +424,7 @@ if (isset($_POST['finish'])) {
     // Same principle, for every other kind of native GLPI rule the wizard creates: each rule
     // family has its own core right (RuleTicket::$rightname, RuleImportEntity::$rightname, the
     // dictionaries'...), and an active rule applies instance-wide to every future ticket or
-    // inventory — never something this plugin's own right alone should be able to create.
+    // inventory: never something this plugin's own right alone should be able to create.
     $canManageTicketRules = Session::haveRight('rule_ticket', UPDATE);
     $canManageImportRules = Session::haveRight('rule_import', UPDATE);
     $canManageDropdownDictionaries = Session::haveRight('rule_dictionnary_dropdown', UPDATE);
@@ -439,13 +439,13 @@ if (isset($_POST['finish'])) {
     $canUpdateGrcmanagerConfig = Session::haveRight('plugin_grcmanager', UPDATE);
     // Niveaux de service (SLM, SLA, OLA et leurs niveaux d'escalade) et calendriers : objets
     // natifs appliqués à tous les tickets de l'instance, chacun avec son droit GLPI (SLM::$rightname,
-    // Calendar::$rightname) — jamais sur le seul droit délégable de ce plugin.
+    // Calendar::$rightname) : jamais sur le seul droit délégable de ce plugin.
     $canManageSlm = Session::haveRight('slm', CREATE);
     $canManageCalendars = Session::haveRight('calendar', CREATE);
 
     $config = Config::getConfig();
     // Fonctionnalité de Rollback (issue #114) : capture l'état COURANT (avant écrasement) comme
-    // point d'historique automatique — voir ConfigHistory::captureAutomatic().
+    // point d'historique automatique : voir ConfigHistory::captureAutomatic().
     ConfigHistory::captureAutomatic($config);
     $config->update($_POST + ['id' => $config->getID()]);
 
@@ -458,7 +458,7 @@ if (isset($_POST['finish'])) {
     // One pass over the top-level nodes (= MSP clients), pairing each EntityBuilder result with
     // its matching entity_tree node (same order/index) to check for a per-client calendar/SLA
     // override (Config::sanitizeTree()'s `settings.calendar`/`settings.sla`). No override on a
-    // node → falls back to the plugin-wide shared calendar/SLA, built once and reused (lazy) —
+    // node → falls back to the plugin-wide shared calendar/SLA, built once and reused (lazy) -
     // same net effect as before this existed. Mono-entité/empty tree ($created empty) has no tree
     // node to pair with, so it always uses the shared path against the root entity, unchanged.
     $tree = $config->getEntityTree();
@@ -466,17 +466,17 @@ if (isset($_POST['finish'])) {
     $slaBuilder = new SlaBuilder();
 
     // Collected here (rather than after this loop, where it used to live) so the calendar-building
-    // loop below can already tell, per top-level path, whether a country was explicitly typed —
+    // loop below can already tell, per top-level path, whether a country was explicitly typed -
     // see the "Fork a country-specific calendar" block inside that loop.
     $locationDataByPath = !empty($config->fields['locations_enabled']) ? collectLocationDataFromPost() : [];
 
-    // Built once, shared by every client unless overridden below — a client's own
+    // Built once, shared by every client unless overridden below: a client's own
     // settings.escalation only ever changes whether/how escalation applies, never the group
     // identities themselves (see SupportTierBuilder's docblock on that scope choice).
     $tierGroupIds = (new SupportTierBuilder())->build($config) ?: null;
 
     // Built eagerly (not lazily on first use) so every client that falls back to the shared
-    // calendar/SLA gets the *same* pairing regardless of which order clients are processed in —
+    // calendar/SLA gets the *same* pairing regardless of which order clients are processed in -
     // build() is idempotent and a cheap no-op when calendar_enabled/sla_enabled is off.
     // Issue #322 : mise à jour explicite (case « Mettre à jour les SLA existants », jamais
     // enregistrée) des SLM/SLA déjà créés, qui sinon ne sont jamais modifiés ; exige le droit de
@@ -510,15 +510,15 @@ if (isset($_POST['finish'])) {
             : $sharedCalendarId;
 
         // One calendar *per country* (not per site) whenever this top-level entity's own Location
-        // has an explicitly typed country — real bug reported by the user: a shared calendar used
+        // has an explicitly typed country: real bug reported by the user: a shared calendar used
         // by every entity meant a German site's public holidays landed on the exact same calendar
         // object as the French sites', invisibly mixed in together, and re-checking the wrong
         // (GLPI-native "Default") calendar made it look like nothing had been created at all. Named
-        // by country alone ("Horaires — <Pays>"), not "<site> — <Pays>": every site sharing the same
+        // by country alone ("Horaires - <Pays>"), not "<site> - <Pays>": every site sharing the same
         // country reuses the *same* calendar object (buildFromOverride() is idempotent by name), on
         // explicit user request ("je veux un calendrier par pays") rather than one calendar per
         // site with the country just appended to its name. Whichever site is processed first for a
-        // given country determines that shared calendar's hours — same "first submission wins,
+        // given country determines that shared calendar's hours: same "first submission wins,
         // idempotent on name" convention this class already uses for the plugin-wide shared
         // calendar, not a new inconsistency.
         $explicitCountry = trim((string) ($locationDataByPath[$i]['country'] ?? ''));
@@ -545,7 +545,7 @@ if (isset($_POST['finish'])) {
         }
 
         // A client override can only ever narrow escalation (opt this client out, or change which
-        // hops are automatic) — it never invents tier groups of its own, see SupportTierBuilder.
+        // hops are automatic): it never invents tier groups of its own, see SupportTierBuilder.
         $clientTierGroupIds = $escalationOverride !== null && empty($escalationOverride['enabled']) ? null : $tierGroupIds;
         $clientAutoN1N2 = $escalationOverride !== null ? !empty($escalationOverride['auto_n1_n2']) : !empty($config->fields['escalation_auto_n1_n2']);
         $clientAutoN2N3 = $escalationOverride !== null ? !empty($escalationOverride['auto_n2_n3']) : !empty($config->fields['escalation_auto_n2_n3']);
@@ -597,12 +597,12 @@ if (isset($_POST['finish'])) {
     // Runs right after CategoryBuilder: triggered by the same "Flotte Automobile" branch checkbox,
     // no dedicated toggle of its own. These five create custom asset types (Glpi\Asset\AssetDefinition,
     // whose $rightname is the native 'config' right): a new instance-wide itemtype, its profile
-    // rights and core's default inventory import rules for it — never on this plugin's right alone.
+    // rights and core's default inventory import rules for it: never on this plugin's right alone.
     $vehicleAssetCreated = $canUpdateCoreConfig ? (new VehicleAssetBuilder())->build($config) : 0;
     $serverAssetCreated = $canUpdateCoreConfig ? (new ServerAssetBuilder())->build($config) : 0;
     $buildingAssetCreated = $canUpdateCoreConfig ? (new BuildingAssetBuilder())->build($config) : 0;
     // Unlike the three builders above, each also needs its own dedicated toggle checked (not just
-    // the branch) — see FireSafetyAssetBuilder/PhysicalSecurityAssetBuilder docblocks for why.
+    // the branch): see FireSafetyAssetBuilder/PhysicalSecurityAssetBuilder docblocks for why.
     $fireSafetyAssetCreated = $canUpdateCoreConfig ? (new FireSafetyAssetBuilder())->build($config) : 0;
     $physicalSecurityAssetCreated = $canUpdateCoreConfig ? (new PhysicalSecurityAssetBuilder())->build($config) : 0;
     $servicesCreated = (new ServiceCatalogBuilder())->build($config);
@@ -629,7 +629,7 @@ if (isset($_POST['finish'])) {
     // only 2 of the original ~50 services deliberately plain (see ServiceCatalogBuilder's docblock
     // for why those two specifically). Looped + counted here rather than one variable/message per
     // builder like the six above: at 42 builders, a message per service would flood the wizard's
-    // summary panel — the aggregate count below is more useful to read at a glance.
+    // summary panel: the aggregate count below is more useful to read at a glance.
     $catalogSmartFormBuilders = [
         new SoftwareInstallFormBuilder(),
         new SoftwareBugFormBuilder(),
@@ -703,15 +703,15 @@ if (isset($_POST['finish'])) {
     $locationsCreated = (new LocationBuilder())->build($config, $locationDataByPath, $locationChildrenByPath);
     // Scans only the top-level Location panels' own country field, not child locations' (bâtiment/
     // étage/salle very rarely differ from their parent's country). Keys preserved (not
-    // array_column(), which would re-index 0..n and lose the path) — CountryHolidayBuilder needs
+    // array_column(), which would re-index 0..n and lose the path): CountryHolidayBuilder needs
     // the path to resolve each country to the right calendar below.
     $countryByPath = array_filter(array_map(static fn (array $d) => $d['country'] ?? null, $locationDataByPath));
     // Every top-level client/site with no country typed for its own path (locations disabled
-    // entirely, or the field just left blank) defaults to France — same "automatic per-country
+    // entirely, or the field just left blank) defaults to France: same "automatic per-country
     // closures" request that removed the old calendar_holidays_enabled checkbox (see
     // CountryHolidayBuilder's docblock): the common case (no address ever entered) should still
     // get French public holidays out of the box, not none at all just because Locations wasn't
-    // used. A path that *did* type a real (even if unrecognized) country is left alone — an admin
+    // used. A path that *did* type a real (even if unrecognized) country is left alone: an admin
     // who explicitly said "Germany" never gets silently defaulted back to France.
     $topLevelCount = $created !== [] ? count($created) : 1;
     for ($i = 0; $i < $topLevelCount; $i++) {
@@ -721,7 +721,7 @@ if (isset($_POST['finish'])) {
         }
     }
     // Each path's calendar is its top-level ancestor's (a path is root-to-node indices joined by
-    // "-", e.g. "1-0" — see LocationBuilder's own docblock); sub-entities inherit their calendar
+    // "-", e.g. "1-0" - see LocationBuilder's own docblock); sub-entities inherit their calendar
     // from that ancestor (Entity::CONFIG_PARENT), so resolving down to it is enough regardless of
     // how deep the location itself is nested. $created is empty in mono-entité/no-tree mode, same
     // fallback to entity 0 as the calendar-building loop above.
@@ -752,7 +752,7 @@ if (isset($_POST['finish'])) {
     // FieldUnicity::$rightname is the native 'config' right (instance-wide uniqueness rules).
     $fieldUnicityRulesCreated = $canUpdateCoreConfig ? (new FieldUnicityBuilder())->build($config) : 0;
     $rssFeedsCreated = (new RSSFeedBuilder())->build($config);
-    // Never stored in $config (our own table has no field-level encryption) — read straight from
+    // Never stored in $config (our own table has no field-level encryption): read straight from
     // POST, forwarded directly to GLPI core's own encrypted config store.
     $marketplaceRegistrationSaved = $canUpdateCoreConfig ? (new MarketplaceBuilder())->build((string) ($_POST['glpi_network_registration_key'] ?? '')) : 0;
     $manufacturersCreated = (new ManufacturerBuilder())->build($config);
@@ -783,7 +783,7 @@ if (isset($_POST['finish'])) {
 
     // The login screen (no active session yet) falls back to the *root* entity's custom CSS
     // (confirmed in GLPI core: Glpi\Application\View\Extension\FrontEndAssetsExtension::customCss()
-    // reads $_SESSION['glpiactive_entity'] when set, entity 0 otherwise) — so without this, the
+    // reads $_SESSION['glpiactive_entity'] when set, entity 0 otherwise): so without this, the
     // color chosen here would never reach the login page in any multi-entity mode, since
     // $entityIds only lists the top-level *client* entities there, never entity 0 itself. Only
     // added outside MSP mode: an MSP's unauthenticated login page has no single "the" client color
@@ -796,14 +796,14 @@ if (isset($_POST['finish'])) {
     $brandingBuilder = new BrandingBuilder();
     $perClientColorsCreated = 0;
     $brandingApplied = false;
-    // Writes glpi_entities.custom_css_code/mailing_signature — native GLPI 'entity' UPDATE right,
+    // Writes glpi_entities.custom_css_code/mailing_signature: native GLPI 'entity' UPDATE right,
     // not just this plugin's own, gates all of it (see the $canUpdateEntity comment above).
     if ($canUpdateEntity) {
         // Per-client color only makes sense once there's more than one top-level entity to actually
         // differentiate ($entityIds === [0] in mono-entité/empty-tree, same guard EntityLogos already
         // relies on implicitly through its own per-node panel loop). The root entity (login-page
         // fallback, added to $colorEntityIds above outside MSP mode) is deliberately never part of
-        // $entityIds itself, so it keeps the *shared* color below regardless of this toggle — an
+        // $entityIds itself, so it keeps the *shared* color below regardless of this toggle: an
         // unauthenticated login page has no single "the" client color to show any more than it did
         // before this feature existed.
         if (!empty($config->fields['branding_per_client_enabled']) && $entityIds !== [0]) {
@@ -842,12 +842,12 @@ if (isset($_POST['finish'])) {
         }
     }
 
-    // Reuses whatever color/logo were already collected above for the UI — root entity's own logo
+    // Reuses whatever color/logo were already collected above for the UI: root entity's own logo
     // if one was uploaded (matches the login-page fallback logic just above), the shared primary
     // color (not a per-client one: GLPI notification templates aren't entity-scoped the way
     // custom_css_code is, one shared set of branded templates for the whole instance).
     // Rewrites 23 native ticket notification templates instance-wide and writes GLPI core config
-    // (palette/general settings) — native 'config' UPDATE right, not just this plugin's own.
+    // (palette/general settings): native 'config' UPDATE right, not just this plugin's own.
     $notificationBrandingCreated = $canUpdateCoreConfig ? (new NotificationBrandingBuilder())->apply(
         $config,
         (string) ($config->fields['branding_primary_color'] ?? '#206bc4'),
@@ -858,7 +858,7 @@ if (isset($_POST['finish'])) {
 
     $generalSettingsApplied = $canUpdateCoreConfig && (new GeneralSettingsBuilder())->apply($config);
     // Configuration SMTP avancée (issue #121) : écrit directement dans la configuration native
-    // GLPI ($_POST, jamais $config->fields) — voir la docblock de SmtpBuilder pour la raison
+    // GLPI ($_POST, jamais $config->fields) : voir la docblock de SmtpBuilder pour la raison
     // (jamais faire transiter un mot de passe par Config/BlueprintSerializer/ConfigHistory).
     $smtpApplied = $canUpdateCoreConfig && (new SmtpBuilder())->build($_POST);
     // Guide ITIL complet (issue #124) : crée un tableau de bord GLPI natif (objet partagé "core"),
@@ -953,7 +953,7 @@ if (isset($_POST['finish'])) {
     $skippedLogoCount = count($brandingBuilder->getSkippedLogoEntityIds());
     if ($skippedLogoCount > 0) {
         $messages[] = sprintf(
-            __('%d logo(s) trop volumineux pour être appliqué(s) — utilisez un fichier plus léger (idéalement sous 40 Ko) ou configurez-le manuellement depuis Configuration > Entités > onglet Général.', 'configurationglpiauto'),
+            __('%d logo(s) trop volumineux pour être appliqué(s) : utilisez un fichier plus léger (idéalement sous 40 Ko) ou configurez-le manuellement depuis Configuration > Entités > onglet Général.', 'configurationglpiauto'),
             $skippedLogoCount,
         );
     }
@@ -1156,7 +1156,7 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'modes'            => Config::getModes(),
     'max_levels'       => Config::MAX_LEVELS,
     'entity_tree'      => $config->getEntityTree(),
-    // Sanitizing accessors, not the raw $config->fields row above — these two are rendered |raw
+    // Sanitizing accessors, not the raw $config->fields row above: these two are rendered |raw
     // (as bare JS array/object literals) further down, so they must never carry an unvalidated
     // value (see Config::getCalendarDays()/getCalendarDayHours(), which re-decode and re-validate
     // on every read regardless of what's actually stored).
@@ -1209,16 +1209,16 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'faq_articles_preview' => FaqBuilder::getArticlesPreview(),
     'marketplace_recommended_plugins' => MarketplaceBuilder::getRecommendedPluginsPreview(),
     // Read straight from GLPI core's own encrypted store, matching the native "Enregistrement"
-    // page's own behavior — never mirrored into this plugin's own config table (see
+    // page's own behavior: never mirrored into this plugin's own config table (see
     // MarketplaceBuilder). Only ever decrypted for an operator who actually holds the native
-    // 'config' UPDATE right (same right the native page itself requires) — a holder of just this
+    // 'config' UPDATE right (same right the native page itself requires): a holder of just this
     // plugin's own READ right otherwise gets an empty field; leaving it blank on submit is a
     // no-op for MarketplaceBuilder::build(), never wipes an existing key.
     'glpi_network_registration_key' => Session::haveRight('config', UPDATE) ? \GLPINetwork::getRegistrationKey() : '',
     // Configuration SMTP avancée (issue #121) : lu directement depuis la configuration native GLPI
     // déjà chargée globalement, jamais mirroré dans la table Config propre au plugin (même
     // raisonnement que glpi_network_registration_key ci-dessus). Le mot de passe lui-même n'est
-    // JAMAIS renvoyé au navigateur — seul un booléen "un mot de passe est déjà enregistré", même
+    // JAMAIS renvoyé au navigateur : seul un booléen "un mot de passe est déjà enregistré", même
     // convention que l'écran natif GLPI (front/notificationmailingsetting.form.php).
     'smtp_defaults' => Session::haveRight('config', UPDATE) ? [
         'mode' => (int) ($CFG_GLPI['smtp_mode'] ?? MAIL_MAIL),

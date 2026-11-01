@@ -193,7 +193,7 @@ final class ParkAudit
 
     public static function date(?string $value): string
     {
-        return $value === null || $value === '' ? '—' : (string) Html::convDate(substr($value, 0, 10));
+        return $value === null || $value === '' ? '-' : (string) Html::convDate(substr($value, 0, 10));
     }
 
     /** Message de fin de correction (nombre de tickets ouverts). */

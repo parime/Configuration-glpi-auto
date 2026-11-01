@@ -31,40 +31,40 @@ use SlaLevelAction;
 use SLM;
 
 /**
- * Turns a Config's SLA settings into a real GLPI SLM ("Niveau de service" — the named container)
- * with one TTO/TTR pair of SLA entries *per GLPI priority level* (see Config::PRIORITY_LEVELS —
+ * Turns a Config's SLA settings into a real GLPI SLM ("Niveau de service" - the named container)
+ * with one TTO/TTR pair of SLA entries *per GLPI priority level* (see Config::PRIORITY_LEVELS -
  * confirmed by research this sprint that real ITSM practice defines SLAs per priority, not one
  * flat delay for every ticket), then assigns them to new tickets in the given entities.
- * Deliberately simple: flat delays per level, not the full escalation-level engine (SlaLevel) —
+ * Deliberately simple: flat delays per level, not the full escalation-level engine (SlaLevel) -
  * that's a distinct, considerably heavier feature to build later if actually needed. Idempotent:
  * reuses an SLM/SLA/rule of the same name instead of duplicating.
  *
- * Also builds OLA (Operational Level Agreement — the *internal* commitment between the helpdesk
+ * Also builds OLA (Operational Level Agreement: the *internal* commitment between the helpdesk
  * and support teams that has to land before the SLA deadline for the SLA to actually be met) when
  * enabled, in the *same* SLM as the SLA: confirmed in GLPI core that OLA extends the same
  * LevelAgreement base class as SLA and attaches to the same `slms_id`, so one "Niveau de service"
- * naturally carries both — no second container needed.
+ * naturally carries both: no second container needed.
  *
  * Unlike Calendar (a direct Entity::calendars_id field), GLPI has no per-entity "default SLA"
- * field at all — confirmed by reading Entity.php: the `slas_id_tto`/`slas_id_ttr` (and
+ * field at all: confirmed by reading Entity.php: the `slas_id_tto`/`slas_id_ttr` (and
  * `olas_id_tto`/`olas_id_ttr`) fields live on glpi_tickets, only ever set by the business-rules
  * engine (RuleTicket). So assignment here means creating a real RuleTicket ("entity is X and
- * priority is Y" → "assign this level's SLA/OLA"), not an Entity update — `priority` is a
+ * priority is Y" → "assign this level's SLA/OLA"), not an Entity update - `priority` is a
  * documented RuleTicket criterion (RuleCommonITILObject.php), the same mechanism GLPI's own docs
  * describe for priority-based SLA assignment.
  *
  * Since Sprint 28, also builds the escalation-level engine this class's docblock used to flag as
  * deliberately out of scope: one `SlaLevel` per TTR (and one `OlaLevel` per OLA TTR, if OLA is
- * enabled) that fires a configurable percentage of the delay before the deadline — confirmed in
+ * enabled) that fires a configurable percentage of the delay before the deadline: confirmed in
  * GLPI source (`Ticket.php` calls `SlaLevel::getFirstSlaLevel()`/`(new SLA)->addLevelToDo()`
  * automatically whenever an SLA/OLA is assigned to a ticket, and the native `slaticket`/
- * `olaticket` CronTasks that process due levels are active by default — no extra wiring needed,
+ * `olaticket` CronTasks that process due levels are active by default: no extra wiring needed,
  * same "just works once created" pattern as this class's own `RuleTicket` rows). One action is
  * raising the ticket's priority one step (`sla_escalation_enabled`, skips the already-highest
- * priority — nothing higher to escalate to).
+ * priority: nothing higher to escalate to).
  *
  * Since Sprint 34, also reassigns the ticket to the next support tier's `Group` (N1 → N2 → N3,
- * see `SupportTierBuilder`) when `escalation_enabled`/`$tierGroupIds` is passed in — reversing
+ * see `SupportTierBuilder`) when `escalation_enabled`/`$tierGroupIds` is passed in: reversing
  * Sprint 28's "reassigning to a group was left out" note: the group names are no longer invented
  * per-org guesses, they're the generic, researched N1/N2/N3 convention the user explicitly asked
  * for. Confirmed in GLPI source (`SlaLevel extends LevelAgreementLevel extends RuleTicket`, so
@@ -72,9 +72,9 @@ use SLM;
  * `_groups_id_assign`) that a `SlaLevelAction`/`OlaLevelAction` can carry this action just like the
  * existing `priority` one. Two independent hops, each with its own toggle
  * (`escalation_auto_n1_n2`/`escalation_auto_n2_n3`): N1→N2 rides the *same* before-breach level as
- * the priority raise (an extra action on it, applied to *every* priority including the max — unlike
+ * the priority raise (an extra action on it, applied to *every* priority including the max: unlike
  * the priority action, there's nothing wrong with reassigning an already-Major ticket's group); N2→N3
- * fires on a *second*, distinct level at the deadline itself (`execution_time = 0` — "still
+ * fires on a *second*, distinct level at the deadline itself (`execution_time = 0` - "still
  * unresolved when the SLA breached, escalate further"). New tickets start assigned to N1 via an
  * extra `RuleAction` on `assignOne()`'s own `RuleTicket` (same ONADD rule, no new one).
  */
@@ -129,13 +129,13 @@ class SlaBuilder
             $label = CommonITILObject::getPriorityName($priority);
             $tier = $tiers[$priority] ?? ['tto_hours' => 4, 'ttr_hours' => 48];
             $expected = [
-                [SLA::class, SLM::TTO, sprintf(__('Prise en charge — %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours']],
-                [SLA::class, SLM::TTR, sprintf(__('Résolution — %s', 'configurationglpiauto'), $label), (int) $tier['ttr_hours']],
+                [SLA::class, SLM::TTO, sprintf(__('Prise en charge - %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours']],
+                [SLA::class, SLM::TTR, sprintf(__('Résolution - %s', 'configurationglpiauto'), $label), (int) $tier['ttr_hours']],
             ];
             if (!empty($config->fields['ola_enabled'])) {
                 $olaTier = $olaTiers[$priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
-                $expected[] = [OLA::class, SLM::TTO, sprintf(__('OLA prise en charge — %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours']];
-                $expected[] = [OLA::class, SLM::TTR, sprintf(__('OLA résolution — %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours']];
+                $expected[] = [OLA::class, SLM::TTO, sprintf(__('OLA prise en charge - %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours']];
+                $expected[] = [OLA::class, SLM::TTR, sprintf(__('OLA résolution - %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours']];
             }
             foreach ($expected as [$class, $type, $name, $hours]) {
                 $agreement = new $class();
@@ -211,7 +211,7 @@ class SlaBuilder
 
     /**
      * Same as build(), but for one client's own SLA/OLA override (see Config::sanitizeTree()'s
-     * per-client `settings.sla`) instead of the plugin-wide shared settings — named after the
+     * per-client `settings.sla`) instead of the plugin-wide shared settings: named after the
      * client so it doesn't collide with the shared SLM or another client's. Escalation (priority
      * *and* tier) is passed in from the caller's already-resolved values (plugin-wide default or
      * this client's own `settings.escalation` override), not read from $sla.
@@ -235,7 +235,7 @@ class SlaBuilder
         }
 
         return $this->buildSlm(
-            sprintf(__('SLA — %s', 'configurationglpiauto'), $clientName),
+            sprintf(__('SLA - %s', 'configurationglpiauto'), $clientName),
             $sla['tiers'],
             !empty($sla['astreinte']),
             !empty($sla['ola_enabled']),
@@ -265,7 +265,7 @@ class SlaBuilder
      * Per-client variant of assignToEntities(): different SLAs per entity instead of the same
      * set for all of them. `$entityIdToTierGroupIds` is similarly per-entity (a client's own
      * `settings.escalation` override can opt out of N1-assignment even where the shared config has
-     * it on) — entities missing from it fall back to `$defaultTierGroupIds`.
+     * it on): entities missing from it fall back to `$defaultTierGroupIds`.
      *
      * @param array<int, array<int, array{tto: int, ttr: int, ola_tto: ?int, ola_ttr: ?int}>> $entityIdToSlaIds
      * @param array{n1: int, n2: int, n3: int}|array{}|null $defaultTierGroupIds
@@ -280,8 +280,8 @@ class SlaBuilder
     }
 
     /**
-     * Creates one RuleTicket per (entity × priority level) — "this entity AND this priority" →
-     * "assign this level's SLA (and OLA, if present)" — idempotent by rule name.
+     * Creates one RuleTicket per (entity × priority level) - "this entity AND this priority" →
+     * "assign this level's SLA (and OLA, if present)" - idempotent by rule name.
      *
      * @param array<int, array{tto: int, ttr: int, ola_tto: ?int, ola_ttr: ?int}> $slaIdsByPriority
      * @param array{n1: int, n2: int, n3: int}|array{}|null $tierGroupIds
@@ -289,7 +289,7 @@ class SlaBuilder
     private function assignOne(int $entityId, array $slaIdsByPriority, ?array $tierGroupIds = null): void
     {
         foreach ($slaIdsByPriority as $priority => $ids) {
-            $ruleName = sprintf('SLA standard — entité #%d — %s', $entityId, CommonITILObject::getPriorityName($priority));
+            $ruleName = sprintf('SLA standard : entité #%d - %s', $entityId, CommonITILObject::getPriorityName($priority));
 
             $rule = new RuleTicket();
             if (Lookup::loadFirst($rule, ['name' => $ruleName])) {
@@ -303,7 +303,7 @@ class SlaBuilder
                 'condition' => RuleTicket::ONADD,
                 'is_active' => 1,
                 // Without this, GLPI's RuleCollection only evaluates the rule for its own
-                // entities_id (root, 0) — never for a ticket created in any sub-entity like the
+                // entities_id (root, 0): never for a ticket created in any sub-entity like the
                 // ones this plugin creates. Confirmed by creating a real ticket in a sub-entity
                 // and finding slas_id_tto/slas_id_ttr stayed 0 without this flag.
                 'is_recursive' => 1,
@@ -386,7 +386,7 @@ class SlaBuilder
         bool $autoN2N3 = false
     ): array {
         // Astreinte = couverture 24h/24, 7j/7 : GLPI interprete calendars_id=0 comme "pas de
-        // calendrier", donc le SLA continue de courir en dehors des horaires ouvres — c'est le
+        // calendrier", donc le SLA continue de courir en dehors des horaires ouvres : c'est le
         // meme mecanisme que le cas "aucun calendrier construit" ci-dessous, juste voulu cette
         // fois plutot que par defaut.
         $slmCalendarId = $astreinte ? 0 : ($calendarId ?? 0);
@@ -411,15 +411,15 @@ class SlaBuilder
             $tier = $tiers[$priority] ?? ['tto_hours' => 4, 'ttr_hours' => 48];
             $label = CommonITILObject::getPriorityName($priority);
 
-            $ttoId = $this->getOrCreateLevelAgreement(SLA::class, $slmId, SLM::TTO, sprintf(__('Prise en charge — %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours']);
-            $ttrId = $this->getOrCreateLevelAgreement(SLA::class, $slmId, SLM::TTR, sprintf(__('Résolution — %s', 'configurationglpiauto'), $label), (int) $tier['ttr_hours']);
+            $ttoId = $this->getOrCreateLevelAgreement(SLA::class, $slmId, SLM::TTO, sprintf(__('Prise en charge - %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours']);
+            $ttrId = $this->getOrCreateLevelAgreement(SLA::class, $slmId, SLM::TTR, sprintf(__('Résolution - %s', 'configurationglpiauto'), $label), (int) $tier['ttr_hours']);
 
             $olaTtoId = null;
             $olaTtrId = null;
             if ($olaEnabled) {
                 $olaTier = $olaTiers[$priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
-                $olaTtoId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTO, sprintf(__('OLA prise en charge — %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours'], $olaExtra);
-                $olaTtrId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTR, sprintf(__('OLA résolution — %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours'], $olaExtra);
+                $olaTtoId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTO, sprintf(__('OLA prise en charge - %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours'], $olaExtra);
+                $olaTtrId = $this->getOrCreateLevelAgreement(OLA::class, $slmId, SLM::TTR, sprintf(__('OLA résolution - %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours'], $olaExtra);
             }
 
             if ($escalationEnabled || $tierGroupIds !== null) {
@@ -439,8 +439,8 @@ class SlaBuilder
     /**
      * Up to two escalation levels on a TTR SLA/OLA row:
      * - The "before breach" level, at `$thresholdPercent`% of the delay elapsed, created whenever
-     *   `$escalationEnabled` (priority-raise, skips the already-highest priority — nothing higher
-     *   to escalate to) or `$autoN1N2` (N1 → N2 group reassignment, applied to *every* priority —
+     *   `$escalationEnabled` (priority-raise, skips the already-highest priority: nothing higher
+     *   to escalate to) or `$autoN1N2` (N1 → N2 group reassignment, applied to *every* priority -
      *   unlike the priority raise, reassigning an already-Major ticket's group is still useful).
      * - A second, "at breach" level (`execution_time = 0`), created only if `$autoN2N3`: "still
      *   unresolved when the SLA/OLA actually breached → escalate further to N3", every priority.
@@ -472,7 +472,7 @@ class SlaBuilder
             // long before the TTO/TTR date). $thresholdPercent% elapsed = (100-$thresholdPercent)%
             // of the delay still remaining when this fires.
             $executionTime = -(int) round($ttrHours * 3600 * ((100 - $thresholdPercent) / 100));
-            $levelId = $this->getOrCreateLevel($class, $agreementId, sprintf(__('Escalade — %s', 'configurationglpiauto'), CommonITILObject::getPriorityName($priority)), $executionTime);
+            $levelId = $this->getOrCreateLevel($class, $agreementId, sprintf(__('Escalade - %s', 'configurationglpiauto'), CommonITILObject::getPriorityName($priority)), $executionTime);
 
             if ($raisePriority) {
                 $this->addLevelAction($class, $levelId, 'priority', $priority + 1);
@@ -483,7 +483,7 @@ class SlaBuilder
         }
 
         if ($assignN3) {
-            $levelId = $this->getOrCreateLevel($class, $agreementId, sprintf(__('Escalade N3 — %s', 'configurationglpiauto'), CommonITILObject::getPriorityName($priority)), 0);
+            $levelId = $this->getOrCreateLevel($class, $agreementId, sprintf(__('Escalade N3 - %s', 'configurationglpiauto'), CommonITILObject::getPriorityName($priority)), 0);
             $this->addLevelAction($class, $levelId, '_groups_id_assign', $tierGroupIds['n3']);
         }
     }
@@ -533,7 +533,7 @@ class SlaBuilder
 
     /**
      * GLPI 12 makes an OLA the commitment of one assignable group (`OLA::prepareInputForAdd()`
-     * rejects `groups_id = 0`): the N1 tier, i.e. the team that takes incoming tickets — the
+     * rejects `groups_id = 0`): the N1 tier, i.e. the team that takes incoming tickets: the
      * tier's own group when escalation already built it, else created/reused on its own. GLPI 11
      * has no such column.
      *

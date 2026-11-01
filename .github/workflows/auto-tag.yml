@@ -7,7 +7,7 @@ name: Auto-tag de version
 # v0.63.0 et v0.63.1 ont toutes les deux du etre taguees manuellement le
 # meme jour, faute de ce mecanisme). Repris tel quel du meme workflow deja
 # en place sur le plugin jumeau assetsign-glpi (seule la constante de
-# version change) — separation volontaire : ce fichier ne fait QUE decider
+# version change) : separation volontaire : ce fichier ne fait QUE decider
 # s'il faut taguer, toute la validation (build, install reelle sur GLPI,
 # publication) reste dans release.yml.
 #

@@ -36,7 +36,7 @@ use Ticket;
  * `MeetingRoomFormBuilderTest` : the chosen vehicle must show up as a genuine `Item_Ticket` link on
  * the resulting ticket, and the ticket must genuinely be a Request (`Ticket::DEMAND_TYPE`), not just
  * a form that saves without error. Also the first test to confirm this builder's own
- * `RequestTypeField::SPECIFIC_VALUE` wiring actually sticks — `VehicleIncidentFormBuilderTest` never
+ * `RequestTypeField::SPECIFIC_VALUE` wiring actually sticks - `VehicleIncidentFormBuilderTest` never
  * needed to check this (its own ticket type comes from the form's default, not an explicit
  * `RequestTypeField`).
  */
@@ -69,7 +69,7 @@ final class FuelCardFormBuilderTest extends TestCase
         }
 
         // See VehicleIncidentFormBuilderTest's tearDown docblock: "Vehicule" is a real, shared,
-        // pre-existing asset type — never delete it, never clearDefinitionsCache().
+        // pre-existing asset type: never delete it, never clearDefinitionsCache().
     }
 
     private function buildConfig(): Config
@@ -166,7 +166,7 @@ final class FuelCardFormBuilderTest extends TestCase
     public function testVehicleIsAssociatedAndTicketIsADemand(): void
     {
         $form = $this->buildForm();
-        $vehicleId = $this->addRealVehicle('PHPUnit — Peugeot Partner');
+        $vehicleId = $this->addRealVehicle('PHPUnit: Peugeot Partner');
         $vehiculeId = $this->questionIdByRank($form, 0);
         $typeId = $this->questionIdByRank($form, 1);
         $motifId = $this->questionIdByRank($form, 2);
@@ -192,7 +192,7 @@ final class FuelCardFormBuilderTest extends TestCase
     public function testTicketTitleReflectsTypeAndVehicle(): void
     {
         $form = $this->buildForm();
-        $vehicleId = $this->addRealVehicle('PHPUnit — Renault Master');
+        $vehicleId = $this->addRealVehicle('PHPUnit: Renault Master');
         $vehiculeId = $this->questionIdByRank($form, 0);
         $typeId = $this->questionIdByRank($form, 1);
         $motifId = $this->questionIdByRank($form, 2);
@@ -205,6 +205,6 @@ final class FuelCardFormBuilderTest extends TestCase
         ]);
 
         $this->assertStringContainsString('Badge de recharge électrique', $ticket->fields['name']);
-        $this->assertStringContainsString('PHPUnit — Renault Master', $ticket->fields['name']);
+        $this->assertStringContainsString('PHPUnit: Renault Master', $ticket->fields['name']);
     }
 }

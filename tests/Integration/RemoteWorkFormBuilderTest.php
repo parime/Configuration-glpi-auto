@@ -33,8 +33,8 @@ use User;
 
 /**
  * Same real-submission proof as `LeaveRequestFormBuilderTest` for the identical
- * `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring — see that class's docblock for the full
- * reasoning. Submits the "Aménagement des horaires" branch (neither conditional field triggered) —
+ * `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring: see that class's docblock for the full
+ * reasoning. Submits the "Aménagement des horaires" branch (neither conditional field triggered) -
  * the observer mechanism is orthogonal to which motif was picked, so the simplest valid submission
  * is enough to exercise it.
  */

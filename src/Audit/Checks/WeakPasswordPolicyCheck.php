@@ -22,7 +22,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
 
 /**
- * `Config::getConfigurationValues('core', [...])` — les mêmes clés que GLPI cœur utilise lui-même
+ * `Config::getConfigurationValues('core', [...])` - les mêmes clés que GLPI cœur utilise lui-même
  * pour valider un nouveau mot de passe (voir `User::checkPassword()`). 8 caractères est retenu
  * comme plancher largement reconnu (ANSSI/NIST), pas une valeur propre à une organisation : cette
  * vérification ne signale que ce qui est *en dessous* de ce plancher, jamais une valeur exacte à

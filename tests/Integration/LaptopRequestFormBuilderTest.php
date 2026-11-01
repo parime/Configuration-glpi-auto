@@ -32,7 +32,7 @@ use Ticket;
 
 /**
  * Same real-submission proof as `SoftwareBugFormBuilderTest` for the `QuestionTypeUserDevice` +
- * `AssociatedItemsField` pattern — see that class's docblock for the raw-answer-format gotcha
+ * `AssociatedItemsField` pattern: see that class's docblock for the raw-answer-format gotcha
  * ("<Itemtype>_<id>" string, not the `{itemtype, items_id}` array `QuestionTypeItem` expects). Also
  * confirms the "poste actuel" question's own conditional visibility (only shown/mandatory on the
  * "Remplacement" motif) doesn't break the association wiring.
@@ -148,7 +148,7 @@ final class LaptopRequestFormBuilderTest extends TestCase
     public function testReplacedComputerIsAssociatedOnTheTicket(): void
     {
         $form = $this->buildForm();
-        $computerId = $this->addRealComputerForUser('PHPUnit — Poste à remplacer', 2);
+        $computerId = $this->addRealComputerForUser('PHPUnit : Poste à remplacer', 2);
         $motifId = $this->questionIdByRank($form, 0);
         $posteId = $this->questionIdByRank($form, 1);
 
@@ -171,7 +171,7 @@ final class LaptopRequestFormBuilderTest extends TestCase
 
     /**
      * "Premier équipement" (no existing machine to replace) never shows the device question at
-     * all — this must not silently associate a stale or wrong item.
+     * all: this must not silently associate a stale or wrong item.
      */
     public function testFirstEquipmentMotifAssociatesNoItem(): void
     {

@@ -21,40 +21,40 @@ use Calendar_Holiday;
 use Holiday;
 
 /**
- * Turns the countries typed into the wizard's own Location address fields (step "Lieux") — or the
- * default of France when none is typed — into real fixed-date `Holiday` rows (native GLPI,
+ * Turns the countries typed into the wizard's own Location address fields (step "Lieux"): or the
+ * default of France when none is typed: into real fixed-date `Holiday` rows (native GLPI,
  * `is_perpetual = 1`), attached to the right calendar automatically. Explicitly scoped to "only
  * for countries where we actually have real data" (the user's own requirement): a country typed
  * in free text that this class doesn't recognize, or that the public holidays API doesn't cover,
  * is silently skipped rather than guessed.
  *
- * France is handled through this exact same mechanism, not a separate hardcoded path — a prior
+ * France is handled through this exact same mechanism, not a separate hardcoded path: a prior
  * version had a fixed 8-holiday list wired to its own `calendar_holidays_enabled` checkbox,
  * independent of any actual detected country (it would attach *French* holidays to a *German*
  * site's calendar just because the checkbox was on). Replaced on explicit user request ("gérer les
- * fermetures de manière automatique selon le pays") — `front/wizard.php` now defaults every
+ * fermetures de manière automatique selon le pays") - `front/wizard.php` now defaults every
  * top-level client/site with no country typed (or Locations disabled entirely) to France before
  * calling this class, so the common case (no address ever entered) still gets French holidays out
  * of the box, while a real detected country always wins. Confirmed live that Nager.Date's French
  * fixed-date results are identical to the old hardcoded list (same 8 names/dates), so this is a
  * pure "same output, from live data instead of a hardcoded copy" change, not a behavior regression.
  *
- * Data source: Nager.Date (`https://date.nager.at`), a free public holidays API — confirmed live
+ * Data source: Nager.Date (`https://date.nager.at`), a free public holidays API: confirmed live
  * (real, current French holidays returned) and confirmed to cover ~100 countries
  * (`/api/v3/AvailableCountries`) before committing to this design, not assumed. Called server-side
- * only, at wizard-submission time — same GLPI core HTTP client (`Compat\Http`) already used by
+ * only, at wizard-submission time: same GLPI core HTTP client (`Compat\Http`) already used by
  * `ajax/geocode.php` (honours GLPI's own configured outbound proxy), not a new client-facing
  * endpoint.
  *
- * GLPI's `Holiday.is_perpetual` only repeats a fixed month/day every year — there is no
+ * GLPI's `Holiday.is_perpetual` only repeats a fixed month/day every year: there is no
  * "recompute from Easter" mechanism. Nager.Date returns concrete per-year dates, not a recurrence
  * rule, so this class determines which holidays are actually fixed-date empirically: it fetches
- * two consecutive years and keeps only the holidays whose month/day is identical in both — a
+ * two consecutive years and keeps only the holidays whose month/day is identical in both: a
  * movable holiday (Easter Monday, Ascension...) will differ and gets silently dropped, same
  * simplification for every country including France (whose 3 movable holidays are dropped exactly
  * like the old hardcoded list already excluded them).
  *
- * Also filters on Nager.Date's own `global` flag, nationwide-only — confirmed live for Germany
+ * Also filters on Nager.Date's own `global` flag, nationwide-only: confirmed live for Germany
  * that several returned holidays are region/state-specific ("Heilige Drei Könige",
  * "Mariä Himmelfahrt", "Weltkindertag"...), `global: false`. Creating those unqualified would
  * misrepresent a Land-only holiday as if the whole country observed it.
@@ -62,14 +62,14 @@ use Holiday;
  * Attaches each created/reused holiday to the right calendar(s) via `Calendar_Holiday`. "Right
  * calendar" is resolved by the caller (`front/wizard.php`), not this class: a Location's country
  * is known per wizard-tree *path* (`location_country_<path>`), while a calendar is only ever
- * assigned per *top-level* entity (shared, or one per MSP client) — `wizard.php` already has both
+ * assigned per *top-level* entity (shared, or one per MSP client) - `wizard.php` already has both
  * pieces (`$calendarMap`, keyed by entity ID) at the point it calls this class, so it resolves each
  * path down to its top-level ancestor's calendar ID and passes `$calendarIdByPath` alongside the
  * country names. A path with no resolvable calendar (calendars disabled entirely) still gets its
  * holidays created, just not linked to anything.
  *
  * The free-text country name typed on a Location has to be mapped to an ISO 3166-1 alpha-2 code
- * for the API — Nager.Date itself covers 204 countries (confirmed live via its own
+ * for the API: Nager.Date itself covers 204 countries (confirmed live via its own
  * `/api/v3/AvailableCountries`), but `COUNTRY_CODES` only maps the ones this plugin can actually
  * recognize by free-text name: the full European Union plus the UK/Switzerland/Norway/Iceland
  * (confirmed one by one against Nager.Date's list, on explicit user request for full multi-country
@@ -127,7 +127,7 @@ class CountryHolidayBuilder
 
     /**
      * Canonical French display name per ISO code, for the "(Pays)" suffix on a created holiday's
-     * name — kept separate from `COUNTRY_CODES` (which maps every recognized synonym to a code)
+     * name: kept separate from `COUNTRY_CODES` (which maps every recognized synonym to a code)
      * so the label is always the one proper spelling regardless of which synonym the admin typed.
      *
      * @var array<string, string>
@@ -149,7 +149,7 @@ class CountryHolidayBuilder
      * @param array<int|string, string> $countryByPath Raw free-text country values typed on Location
      *        address fields, keyed by the same wizard-tree path as `location_country_<path>`.
      * @param array<int|string, int> $calendarIdByPath Calendar to attach each path's country holidays
-     *        to, keyed by the same paths — resolved by the caller from `$calendarMap` (see class
+     *        to, keyed by the same paths: resolved by the caller from `$calendarMap` (see class
      *        docblock). A path absent here (or whose country isn't recognized) still creates the
      *        holidays, just doesn't attach them to anything.
      *
@@ -184,7 +184,7 @@ class CountryHolidayBuilder
 
     /**
      * @param int[] $calendarIds Every calendar this country's holidays should be linked to (can be
-     *        empty — holidays are still created, just left unattached).
+     *        empty: holidays are still created, just left unattached).
      */
     private function buildForCountry(string $isoCode, array $calendarIds): int
     {
@@ -202,7 +202,7 @@ class CountryHolidayBuilder
         $count = 0;
         foreach ($yearA as $holiday) {
             if (($holiday['global'] ?? false) !== true) {
-                // Regional/state-specific holiday (Nager.Date's own `global` flag) — confirmed live
+                // Regional/state-specific holiday (Nager.Date's own `global` flag): confirmed live
                 // for Germany: "Heilige Drei Könige"/"Mariä Himmelfahrt"/"Weltkindertag" etc. are
                 // only observed in specific Länder, not nationwide. Creating them unqualified as if
                 // they applied to the whole country would misrepresent them, the same class of
@@ -213,7 +213,7 @@ class CountryHolidayBuilder
 
             $monthDay = substr($holiday['date'], 5, 5);
             if (!isset($yearBMonthDays[$monthDay])) {
-                continue; // Movable date (Easter-linked...) — same simplification as for France.
+                continue; // Movable date (Easter-linked...): same simplification as for France.
             }
 
             $holidayId = $this->getOrCreateHoliday($holiday['localName'], $isoCode, (int) substr($monthDay, 0, 2), (int) substr($monthDay, 3, 2));
@@ -257,7 +257,7 @@ class CountryHolidayBuilder
         // No "(France)" suffix, unlike every other country: this plugin's own default/home
         // market, and matching the exact plain names the older, now-removed
         // `CalendarBuilder::attachFrenchHolidays()` already used ("Jour de l'An", not
-        // "Jour de l'an (France)") — an admin's own country doesn't need the tag a foreign one
+        // "Jour de l'an (France)"): an admin's own country doesn't need the tag a foreign one
         // benefits from for clarity.
         $name = $isoCode === 'FR' ? $localName : sprintf('%s (%s)', $localName, self::COUNTRY_LABELS[$isoCode] ?? $isoCode);
         $date = sprintf('%04d-%02d-%02d', self::HOLIDAY_REFERENCE_YEAR, $month, $day);

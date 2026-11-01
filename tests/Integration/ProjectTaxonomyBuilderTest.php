@@ -68,7 +68,7 @@ final class ProjectTaxonomyBuilderTest extends TestCase
 
     /**
      * `ProjectState` is a real GLPI native table (3 rows shipped by default: New/Processing/
-     * Closed) — this plugin adds 3 more (#155). Confirms the additions land with the right
+     * Closed): this plugin adds 3 more (#155). Confirms the additions land with the right
      * color/is_finished, and that GLPI's 3 native rows are left untouched (found by name, never
      * re-created).
      */
@@ -107,7 +107,7 @@ final class ProjectTaxonomyBuilderTest extends TestCase
 
     /**
      * Regression guard for #178: unchecking "Ajouter des icônes" and re-running the wizard used to
-     * never remove icons already written on a prior run — `build()` skipped the `applyIcon()` call
+     * never remove icons already written on a prior run - `build()` skipped the `applyIcon()` call
      * entirely instead of calling it with an empty icon.
      */
     public function testTogglingIconsOffRemovesAPreviouslyAppliedIcon(): void

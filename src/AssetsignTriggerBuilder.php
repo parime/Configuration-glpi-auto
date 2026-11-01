@@ -19,7 +19,7 @@ namespace GlpiPlugin\Configurationglpiauto;
 
 /**
  * Issue #283 : quand le plugin jumeau assetsign-glpi est installé et actif, relie ses
- * déclencheurs « changement d'État » aux statuts créés par StateBuilder — sinon l'administrateur
+ * déclencheurs « changement d'État » aux statuts créés par StateBuilder : sinon l'administrateur
  * devait refaire cette correspondance à la main dans Assetsign & signature > Configuration.
  *
  * Contrat : la table `glpi_plugin_assetsign_configs` (une ligne par entité, la ligne racine
@@ -32,7 +32,7 @@ namespace GlpiPlugin\Configurationglpiauto;
  * l'instance de recette, vérifiée en base. « Attente restitution » et non « En stock » pour la
  * restitution : assetsign ne crée une fiche déclenchée par un État que si un utilisateur est
  * encore affecté au matériel (Assetsign::handleStateBasedTrigger()), or le passage en stock
- * s'accompagne en général du retrait de l'utilisateur — cas déjà couvert par le déclencheur
+ * s'accompagne en général du retrait de l'utilisateur : cas déjà couvert par le déclencheur
  * « désaffectation » d'assetsign lui-même.
  *
  * Idempotent et non destructif : un déclencheur déjà réglé (liste non vide) n'est jamais modifié,
@@ -118,7 +118,7 @@ class AssetsignTriggerBuilder
 
     /**
      * Issue #293 : relie les déclencheurs assetsign encore vides aux statuts correspondants (tous
-     * les déclencheurs, sans jamais écraser un réglage existant) — utilisé par l'audit après la
+     * les déclencheurs, sans jamais écraser un réglage existant) : utilisé par l'audit après la
      * création des statuts recommandés manquants.
      *
      * @return int nombre de déclencheurs réglés

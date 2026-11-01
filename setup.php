@@ -24,7 +24,7 @@ use GlpiPlugin\Configurationglpiauto\FuelType;
 
 // Hard runtime requirement: GLPI does not autoload plugin src/ classes on its own.
 // `composer install --no-dev` must be run after cloning, and any release package must bundle
-// vendor/ — same constraint documented on the sibling glpi-vulnerability-manager plugin.
+// vendor/ - same constraint documented on the sibling glpi-vulnerability-manager plugin.
 // Sans vendor/ (archive incomplète, clone sans `composer install --no-dev`), le plugin refuse de
 // s'installer avec un message (check_prerequisites) au lieu d'une erreur fatale à chaque page.
 if (is_readable(__DIR__ . '/vendor/autoload.php')) {
@@ -51,11 +51,11 @@ function plugin_init_configurationglpiauto(): void
     }
 
     // Format attendu par le coeur GLPI : une liste plate de classes par categorie (pas
-    // ['types'=>[...],'icon'=>...]) — meme piege deja documente sur remise-glpi.
+    // ['types'=>[...],'icon'=>...]) : meme piege deja documente sur remise-glpi.
     //
     // Categorie 'config' (menu natif "Configuration" de GLPI), pas 'admin' : ce CRUD ne gere que
     // les modeles de profil de configuration propres au plugin (donnees utilisees par l'etape 1
-    // de l'assistant), rien qui touche Utilisateurs/Groupes/Entites/Regles — le classer dans
+    // de l'assistant), rien qui touche Utilisateurs/Groupes/Entites/Regles : le classer dans
     // "Administration" melangeait un ecran propre au plugin avec les reglages natifs de GLPI.
     // Retour utilisateur direct sur ce placement, corrige ici.
     $PLUGIN_HOOKS[Hooks::MENU_TOADD]['configurationglpiauto'] = [
@@ -64,7 +64,7 @@ function plugin_init_configurationglpiauto(): void
 
     // Icone "Configurer" sur la ligne du plugin dans Configuration > Plugins. Pointe vers
     // l'assistant complet (meme page que le menu principal, cf. ConfigurationProfile::
-    // getSearchURL()) — l'ancien formulaire a une seule page (front/config.php, entity_mode +
+    // getSearchURL()) : l'ancien formulaire a une seule page (front/config.php, entity_mode +
     // entity_tree seulement, sans calendrier/SLA/personnalisation) a ete retire pour ne pas
     // laisser deux points d'entree incoherents (Sprint 11).
     $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['configurationglpiauto'] = 'front/wizard.php';

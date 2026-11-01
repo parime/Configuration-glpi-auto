@@ -38,7 +38,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\WeakPasswordPolicyCheck;
 use LogicException;
 
 /**
- * Registre + orchestrateur des vérifications d'audit (issue #112, "Mode Audit avancé") —
+ * Registre + orchestrateur des vérifications d'audit (issue #112, "Mode Audit avancé") -
  * contrairement à `front/wizard.php` qui appelle chaque `*Builder` explicitement par son nom, ce
  * registre est générique : ajouter une future vérification ne demande qu'une nouvelle classe
  * implémentant `AuditCheckInterface` et une ligne dans `getRegisteredChecks()`, jamais de
@@ -93,7 +93,7 @@ final class AuditService
 
     /**
      * @throws LogicException Si `$checkKey` est inconnue ou que la vérification correspondante ne
-     *         propose pas de correction (`canFix()` faux) — jamais une correction silencieusement
+     *         propose pas de correction (`canFix()` faux) : jamais une correction silencieusement
      *         ignorée, l'appelant doit savoir que rien ne s'est passé.
      */
     public static function fix(string $checkKey): void

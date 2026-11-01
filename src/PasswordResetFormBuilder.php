@@ -56,17 +56,17 @@ use User;
  * smart forms no longer have.
  *
  * **Second pass (advanced question types)** : "Identifiant ou compte concerné" used to be free
- * ShortText — replaced with `QuestionTypeItem` restricted to `User::class` (confirmed a first-class
+ * ShortText: replaced with `QuestionTypeItem` restricted to `User::class` (confirmed a first-class
  * supported itemtype for this question type: `QuestionTypeItem` special-cases `User::class` directly
  * in `getDefaultValueItemId()`), so the requester (or someone resetting a password on behalf of a
  * colleague) picks the *real* GLPI account from a searchable dropdown instead of typing a login that
- * IT then has to match by hand — no risk of a typo pointing support at the wrong or a nonexistent
+ * IT then has to match by hand: no risk of a typo pointing support at the wrong or a nonexistent
  * account. `User` is a native GLPI itemtype, not one of this plugin's own custom assets, so no
  * existence check is needed the way the custom-asset conversions elsewhere in this pass require.
  * `RequestTypeField` pinned to `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no question asked) : being
  * locked out of an account is a broken-access incident, not a scheduling request.
  *
- * Deliberately did NOT add a `QuestionTypeUrgency` question — see `SoftwareBugFormBuilder`'s docblock
+ * Deliberately did NOT add a `QuestionTypeUrgency` question: see `SoftwareBugFormBuilder`'s docblock
  * for the full reasoning (self-rated urgency is a documented anti-pattern this plugin already avoids
  * elsewhere); the "Motif" radio (oublié / verrouillé / autre) already gives support the signal that
  * matters.
@@ -197,7 +197,7 @@ class PasswordResetFormBuilder
         ]);
         $sectionId = (int) $section->getID();
 
-        // Was a free-text ShortText — replaced with QuestionTypeItem(User), see class docblock.
+        // Was a free-text ShortText: replaced with QuestionTypeItem(User), see class docblock.
         $identifiant = new Question();
         $identifiant->add([
             'forms_sections_id' => $sectionId,

@@ -18,7 +18,7 @@
 namespace GlpiPlugin\Configurationglpiauto\Audit;
 
 /**
- * One constat produit par une vérification d'audit (issue #112, "Mode Audit avancé") — objet
+ * One constat produit par une vérification d'audit (issue #112, "Mode Audit avancé") : objet
  * valeur immuable, jamais construit à partir d'une supposition : chaque champ reflète un état
  * réellement observé en base (voir les classes de `Audit\Checks\`), jamais une valeur devinée à la
  * place de l'administrateur.

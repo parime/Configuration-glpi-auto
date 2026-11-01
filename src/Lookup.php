@@ -23,7 +23,7 @@ use CommonDBTM;
  * Recherche « trouver ou créer » tolérante aux doublons.
  *
  * `CommonDBTM::getFromDBByCrit()` lève une `TooManyResultsException` (GLPI 11 et 12) dès que plus
- * d'une ligne correspond — or GLPI autorise des noms en double, et les comparaisons MySQL ignorent la
+ * d'une ligne correspond : or GLPI autorise des noms en double, et les comparaisons MySQL ignorent la
  * casse : un fabricant « LENOVO » remonté par l'inventaire et un « Lenovo » saisi à la main suffisaient
  * à faire planter l'assistant. Ici, la plus ancienne ligne (plus petit identifiant) est retenue.
  */

@@ -21,7 +21,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
 
 /**
- * `glpi_calendars` — GLPI n'en crée aucun par défaut sur une instance fraîche. Sans au moins un
+ * `glpi_calendars` - GLPI n'en crée aucun par défaut sur une instance fraîche. Sans au moins un
  * calendrier, les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées correctement.
  * Jamais corrigée automatiquement : quels jours/horaires ouvrés créer dépend entièrement de
  * l'organisation, ce plugin ne peut pas les deviner (voir `CalendarBuilder`, qui les rend

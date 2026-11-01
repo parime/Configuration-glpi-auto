@@ -21,7 +21,7 @@ use GlpiPlugin\Configurationglpiauto\EntityBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Covers only EntityBuilder's two pure static helpers (describe(), topEntityIds()) — every other
+ * Covers only EntityBuilder's two pure static helpers (describe(), topEntityIds()): every other
  * class in this plugin extends/instantiates a GLPI core class (CommonDBTM, Entity, Calendar...)
  * that only exists inside a running GLPI instance, so it can't be unit-tested outside one.
  * CalendarBuilder/AssetTypeBuilder/ValidationRoutingBuilder now have real coverage instead under

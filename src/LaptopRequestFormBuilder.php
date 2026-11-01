@@ -67,12 +67,12 @@ use Ticket;
  *
  * **Second pass (advanced question types)** : the "which machine is being replaced" follow-up used
  * to be free ShortText (a make/model/inventory number typed by hand, easy to get wrong or leave
- * ambiguous). Replaced with `QuestionTypeUserDevice` — the requester picks their own real
+ * ambiguous). Replaced with `QuestionTypeUserDevice` - the requester picks their own real
  * Computer/Monitor/... GLPI already has affected to them
- * (`CommonItilObject_Item::getMyDevices()`) — kept mandatory (same as the ShortText it replaces) and
+ * (`CommonItilObject_Item::getMyDevices()`): kept mandatory (same as the ShortText it replaces) and
  * under the exact same `VISIBLE_IF` condition. Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`)
  * so IT gets a genuine linked asset on the ticket, not a string to go look up by hand. `RequestTypeField`
- * pinned to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked) — an equipment request is
+ * pinned to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked): an equipment request is
  * unambiguously a request, not an incident.
  */
 class LaptopRequestFormBuilder
@@ -227,7 +227,7 @@ class LaptopRequestFormBuilder
             value: self::REMPLACEMENT_OPTION_KEY,
         );
 
-        // Was a free-text ShortText ("Numéro d'inventaire ou nom du poste actuel") — replaced with
+        // Was a free-text ShortText ("Numéro d'inventaire ou nom du poste actuel") : replaced with
         // QuestionTypeUserDevice so the requester points at their own real GLPI-tracked machine
         // instead of typing a name/number by hand. See class docblock.
         $posteActuel = new Question();
@@ -285,7 +285,7 @@ class LaptopRequestFormBuilder
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
             // "posteActuel" is the only QuestionTypeUserDevice/QuestionTypeItem question on this
-            // form (only answered on the replacement branch) — LAST_VALID_ANSWER is a no-op when
+            // form (only answered on the replacement branch): LAST_VALID_ANSWER is a no-op when
             // it wasn't answered (first/supplementary equipment), a real linked item when it was.
             AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
                 strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],

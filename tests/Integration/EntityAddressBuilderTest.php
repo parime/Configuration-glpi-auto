@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * `EntityAddressBuilder` resolves each entity independently by walking `Config::getEntityTree()`
- * itself (same path encoding as `LocationBuilder::buildNode()`) — it never relies on
+ * itself (same path encoding as `LocationBuilder::buildNode()`): it never relies on
  * `EntityBuilder` having run first, but the entities still need to actually exist in the DB for
  * anything to be found, so this suite creates them via `EntityBuilder` up front, exactly like an
  * admin would have via the wizard's earlier "Entités" step.

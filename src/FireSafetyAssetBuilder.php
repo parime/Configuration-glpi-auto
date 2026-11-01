@@ -31,42 +31,42 @@ use Glpi\Asset\CustomFieldType\DateType;
 /**
  * ESM (Enterprise Service Management) custom asset type, same `AssetDefinition` + capacities
  * mechanism as `VehicleAssetBuilder`/`ServerAssetBuilder`/`BuildingAssetBuilder` (see
- * `VehicleAssetBuilder`'s docblock for the full API research — not re-derived here, re-confirmed
+ * `VehicleAssetBuilder`'s docblock for the full API research: not re-derived here, re-confirmed
  * live against this same GLPI 11.0.8 test instance before writing this class: `AssetDefinition::
  * add()` with the `capacities`/`profiles` shape already used by the three sibling builders behaves
- * identically; a `translations` key on the definition itself was *not* added — GLPI's real
+ * identically; a `translations` key on the definition itself was *not* added: GLPI's real
  * validation for that field (`AbstractDefinition::validateTranslationsArray()`) expects a
  * CLDR-plural-category shape (`{language: {plural_category: string}}`), a materially different and
- * untested mechanism the three sibling builders don't use either — kept out of scope here for the
+ * untested mechanism the three sibling builders don't use either: kept out of scope here for the
  * same reason, see class docblock further down for what *is* translated).
  *
  * Prompted by a real GLPI official forum thread (https://forum.glpi-project.org/viewtopic.php?id=293900,
- * "ITSM → ESM", user Perreip asking whether GLPI can track non-IT regulated equipment — extincteurs,
- * ascenseurs — the same "actifs personnalisés" mechanism `VehicleAssetBuilder` et al. already prove
+ * "ITSM → ESM", user Perreip asking whether GLPI can track non-IT regulated equipment: extincteurs,
+ * ascenseurs : the same "actifs personnalisés" mechanism `VehicleAssetBuilder` et al. already prove
  * out). Fire safety equipment specifically: extincteurs, RIA (Robinet d'Incendie Armé), systèmes de
- * désenfumage, détection incendie, and — folded in on explicit request (2026-08-18) — défibrillateurs
+ * désenfumage, détection incendie, and : folded in on explicit request (2026-08-18) : défibrillateurs
  * automatisés externes (DAE/AED): distinct equipment family from fire suppression, but the exact same
- * "universal + regulatory periodic-verification date" shape (French ERP — Établissement Recevant du
- * Public — regulatory obligation for AED since 2020, same spirit as the extincteur/RIA verification
+ * "universal + regulatory periodic-verification date" shape (French ERP : Établissement Recevant du
+ * Public: regulatory obligation for AED since 2020, same spirit as the extincteur/RIA verification
  * requirement already covered) that made fire-safety equipment a clean fit for this plugin's
  * generalist scope in the first place. Kept as one asset type rather than a second dedicated builder
  * for AED specifically: same "one broad vertical, sub-kinds via the native type dropdown" pattern
- * `VehicleAssetBuilder` already uses for Voiture/Poids lourd/Moto (`self::TYPES` below) — a single
+ * `VehicleAssetBuilder` already uses for Voiture/Poids lourd/Moto (`self::TYPES` below): a single
  * shared field (periodic verification date) genuinely serves every sub-kind here, so a second
  * `AssetDefinition` would just be ceremony without a real capability difference.
  *
  * Triggered by a new, dedicated checkbox (`fire_safety_assets_enabled`) shown alongside the
- * "Bâtiment & Moyens Généraux" branch checkbox at the wizard's category-branches step — deliberately
+ * "Bâtiment & Moyens Généraux" branch checkbox at the wizard's category-branches step : deliberately
  * NOT auto-triggered by the branch checkbox alone (unlike `BuildingAssetBuilder`'s "Local," which
  * *is* implied by picking that branch): not every organisation running the "Bâtiment" branch's
  * ticket categories actually wants to track fire-safety equipment as GLPI assets (many delegate this
  * to a dedicated safety-compliance tool), so this stays an explicit opt-in nested under that branch
- * rather than bundled into it. `build()` still requires the branch itself to be selected — no branch,
+ * rather than bundled into it. `build()` still requires the branch itself to be selected: no branch,
  * no fire-safety category context, so the checkbox has nothing to attach to either.
  *
  * Capacities deliberately exclude `IsReservableCapacity` (present on `VehicleAssetBuilder`/
  * `BuildingAssetBuilder`): a fire extinguisher or smoke detector is never booked out like a pool car
- * or a meeting room — reservability has no real meaning for this equipment family, so it's left off
+ * or a meeting room: reservability has no real meaning for this equipment family, so it's left off
  * rather than included "just in case" like the other two custom assets. Otherwise the same
  * compliance-tracking set as `VehicleAssetBuilder`: financial/warranty info, contracts (maintenance),
  * documents (inspection certificates), history, notes, global search.
@@ -92,8 +92,8 @@ class FireSafetyAssetBuilder
     ];
 
     // Seeds the *native* "type" dropdown every custom asset definition automatically gets (same
-    // mechanism as VehicleAssetBuilder's own TYPES — see that class's seedTypes() docblock).
-    // "Défibrillateur automatisé externe (DAE)" folded in here rather than a second builder — see
+    // mechanism as VehicleAssetBuilder's own TYPES: see that class's seedTypes() docblock).
+    // "Défibrillateur automatisé externe (DAE)" folded in here rather than a second builder : see
     // class docblock.
     private const TYPES = [
         'Extincteur',
@@ -154,7 +154,7 @@ class FireSafetyAssetBuilder
 
         // Real bug found by testing MeetingRoomFormBuilder's real submission path (not by reading
         // the code) : without this, `AssociatedItemsField` on a form's `QuestionTypeItem` question
-        // pointing at this asset silently links nothing to the resulting ticket, no error anywhere —
+        // pointing at this asset silently links nothing to the resulting ticket, no error anywhere -
         // see `VehicleAssetBuilder::syncHelpdeskItemTypeProfiles()`'s docblock for the full root
         // cause. Idempotent and additive-only, safe to call unconditionally on every run.
         $this->syncHelpdeskItemTypeProfiles($definition);
@@ -174,15 +174,15 @@ class FireSafetyAssetBuilder
     }
 
     /**
-     * Same mechanism as `VehicleAssetBuilder::seedTypes()` — see that class's docblock. Icons are
+     * Same mechanism as `VehicleAssetBuilder::seedTypes()` - see that class's docblock. Icons are
      * baked directly into `name` rather than via `Translations::applyIcon()`/`DropdownTranslation`
      * (unlike ~20 other builders, e.g. `CategoryBuilder`): confirmed live that this dropdown's real
      * table (`glpi_assets_assettypes`) is *shared* across every `AssetDefinition` in the instance
      * (scoped by `assets_assetdefinitions_id`), not a dedicated table of its own like
-     * `glpi_itilcategories` — a `DropdownTranslation` row on it made GLPI's own `Search`/
+     * `glpi_itilcategories` - a `DropdownTranslation` row on it made GLPI's own `Search`/
      * `SQLProvider` emit a `glpi_assets_assettypes_trans_name` column with no matching JOIN,
      * breaking with "Unknown column" on *every* view of the resulting asset list, not just this
-     * dropdown — reproduced and root-caused this way rather than assumed. Looked up by definition +
+     * dropdown: reproduced and root-caused this way rather than assumed. Looked up by definition +
      * either the bare or icon-prefixed name so toggling the icon option on/off later stays
      * idempotent instead of creating a duplicate row.
      */
@@ -196,7 +196,7 @@ class FireSafetyAssetBuilder
             $displayName = $withIcons ? $iconVariant : $name;
 
             // Matches either the bare or icon-prefixed name regardless of *this* run's own
-            // withIcons value — otherwise toggling the option off after a prior run left an
+            // withIcons value: otherwise toggling the option off after a prior run left an
             // icon-prefixed row behind would miss it here and create a bare-name duplicate instead
             // of updating it (reproduced live before adding this).
             $item = new $itemtype();
@@ -241,7 +241,7 @@ class FireSafetyAssetBuilder
 
     /**
      * See `VehicleAssetBuilder::isHelpdeskItemTypeAlreadySynced()`'s own docblock for the full
-     * root cause this exists to fix — calling `AssetDefinition::update()` unconditionally on every
+     * root cause this exists to fix: calling `AssetDefinition::update()` unconditionally on every
      * run triggers a GLPI-core `DropdownVisibility` resync with no duplicate check, leaving
      * thousands of stale rows behind after repeated wizard runs.
      */

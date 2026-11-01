@@ -23,7 +23,7 @@ use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use PHPUnit\Framework\TestCase;
 
 /**
- * `Config` is the real singleton row this instance's actual live plugin configuration lives in —
+ * `Config` is the real singleton row this instance's actual live plugin configuration lives in -
  * same discipline as `ConfigTest`: this suite reads the real row (`Config::getConfig()->fields`)
  * to prove the serializer round-trips real data, but never calls `add()`/`update()` on it, so
  * running this suite never leaves the shared instance's own configuration changed.
@@ -67,9 +67,9 @@ final class BlueprintWorkflowTest extends TestCase
 
     /**
      * Exercises the exact export path `save_snapshot` uses (`front/profile.form.php`) against the
-     * REAL live `Config` row — read-only, never written back here — and confirms the resulting
+     * REAL live `Config` row: read-only, never written back here: and confirms the resulting
      * Blueprint, once re-imported, produces fields that `Config::prepareInputForAdd()` (pure
-     * sanitizer, no DB access — same technique `ConfigTest` already uses to exercise it safely)
+     * sanitizer, no DB access: same technique `ConfigTest` already uses to exercise it safely)
      * accepts without rejecting or corrupting them.
      */
     public function testExportOfTheRealLiveConfigProducesAReimportableBlueprint(): void
@@ -98,14 +98,14 @@ final class BlueprintWorkflowTest extends TestCase
         );
 
         // prepareInputForAdd() never touches $this->fields/the DB (confirmed in ConfigTest's own
-        // docblock) — safe to run against the live-derived values without writing anything back.
+        // docblock): safe to run against the live-derived values without writing anything back.
         $sanitized = (new Config())->prepareInputForAdd($imported);
         $this->assertSame($imported['entity_mode'], $sanitized['entity_mode']);
     }
 
     /**
      * A Blueprint saved on an OLDER version of this plugin (before some `Config` field existed)
-     * must not leave that field null/missing once imported — it falls back to today's real default,
+     * must not leave that field null/missing once imported: it falls back to today's real default,
      * matching `BlueprintSerializer::import()`'s own contract already covered in the pure unit test,
      * exercised here once more against the real, full-sized `Config::getDefaults()` (~135 keys)
      * rather than a small hand-written fixture.
@@ -126,7 +126,7 @@ final class BlueprintWorkflowTest extends TestCase
 
     /**
      * Export sélectif par catégorie (issue #117), exercé contre le vrai `Config` en direct plutôt
-     * qu'un petit jeu de données à la main : exporter, filtrer à un seul champ, réimporter — seul
+     * qu'un petit jeu de données à la main : exporter, filtrer à un seul champ, réimporter : seul
      * ce champ doit provenir du fichier filtré, tout le reste doit retomber sur les vraies valeurs
      * par défaut (jamais sur la valeur réelle non retenue dans le fichier).
      */

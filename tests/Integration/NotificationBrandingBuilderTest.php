@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * `NotificationBrandingBuilder` re-points 23 real, native GLPI `Ticket` notification events away
  * from the single shared default template (id confirmed live on this instance) to 23 dedicated
- * branded ones — a real, global, shared-instance side effect (see the class's own docblock). This
+ * branded ones: a real, global, shared-instance side effect (see the class's own docblock). This
  * suite captures each touched event's ORIGINAL template id in `setUp()` (rather than assuming it,
  * since it could legitimately differ across environments) and restores every one of them in
  * `tearDown()`, alongside deleting the templates/translations this suite itself created, so no
@@ -72,7 +72,7 @@ final class NotificationBrandingBuilderTest extends TestCase
         }
 
         global $DB;
-        foreach ($DB->request(['FROM' => NotificationTemplate::getTable(), 'WHERE' => ['name' => ['LIKE', 'Notification personnalisée —%']]]) as $row) {
+        foreach ($DB->request(['FROM' => NotificationTemplate::getTable(), 'WHERE' => ['name' => ['LIKE', 'Notification personnalisée -%']]]) as $row) {
             $DB->delete(NotificationTemplateTranslation::getTable(), ['notificationtemplates_id' => $row['id']]);
             (new NotificationTemplate())->delete(['id' => $row['id']], true);
         }
@@ -102,7 +102,7 @@ final class NotificationBrandingBuilderTest extends TestCase
         $this->assertSame(23, $count);
 
         $template = new NotificationTemplate();
-        $this->assertTrue($template->getFromDBByCrit(['name' => 'Notification personnalisée — Nouveau ticket', 'itemtype' => 'Ticket']));
+        $this->assertTrue($template->getFromDBByCrit(['name' => 'Notification personnalisée : Nouveau ticket', 'itemtype' => 'Ticket']));
 
         $notification = new Notification();
         $notification->getFromDBByCrit(['itemtype' => 'Ticket', 'event' => 'new']);
@@ -121,7 +121,7 @@ final class NotificationBrandingBuilderTest extends TestCase
         (new NotificationBrandingBuilder())->apply($this->buildConfig(true), '#206bc4', null);
 
         $template = new NotificationTemplate();
-        $template->getFromDBByCrit(['name' => 'Notification personnalisée — Nouveau ticket', 'itemtype' => 'Ticket']);
+        $template->getFromDBByCrit(['name' => 'Notification personnalisée : Nouveau ticket', 'itemtype' => 'Ticket']);
 
         $translation = new NotificationTemplateTranslation();
         $this->assertTrue($translation->getFromDBByCrit(['notificationtemplates_id' => $template->getID(), 'language' => '']));
@@ -135,7 +135,7 @@ final class NotificationBrandingBuilderTest extends TestCase
         (new NotificationBrandingBuilder())->apply($this->buildConfig(true), '#206bc4', null);
 
         $template = new NotificationTemplate();
-        $template->getFromDBByCrit(['name' => 'Notification personnalisée — Nouveau ticket', 'itemtype' => 'Ticket']);
+        $template->getFromDBByCrit(['name' => 'Notification personnalisée : Nouveau ticket', 'itemtype' => 'Ticket']);
 
         $translation = new NotificationTemplateTranslation();
         $this->assertTrue($translation->getFromDBByCrit(['notificationtemplates_id' => $template->getID(), 'language' => 'en_GB']));
@@ -148,7 +148,7 @@ final class NotificationBrandingBuilderTest extends TestCase
         (new NotificationBrandingBuilder())->apply($this->buildConfig(true), '#206bc4', null);
 
         $template = new NotificationTemplate();
-        $template->getFromDBByCrit(['name' => 'Notification personnalisée — Demande de validation', 'itemtype' => 'Ticket']);
+        $template->getFromDBByCrit(['name' => 'Notification personnalisée : Demande de validation', 'itemtype' => 'Ticket']);
         $translation = new NotificationTemplateTranslation();
         $translation->getFromDBByCrit(['notificationtemplates_id' => $template->getID(), 'language' => '']);
 
@@ -157,7 +157,7 @@ final class NotificationBrandingBuilderTest extends TestCase
 
     /**
      * Idempotent via an HTML comment marker rather than "row already exists, skip" (see the class's
-     * own docblock) : a second run must NOT recount templates that already carry the marker — a
+     * own docblock) : a second run must NOT recount templates that already carry the marker: a
      * genuinely different contract from most other builders in this plugin.
      */
     public function testASecondRunDoesNotRecountAlreadyMarkedTemplates(): void
@@ -167,7 +167,7 @@ final class NotificationBrandingBuilderTest extends TestCase
 
         $second = $builder->apply($this->buildConfig(true), '#206bc4', null);
 
-        $this->assertSame(0, $second, 'Every template already carries the marker — nothing left to (re)apply.');
+        $this->assertSame(0, $second, 'Every template already carries the marker: nothing left to (re)apply.');
     }
 
     /**
@@ -180,14 +180,14 @@ final class NotificationBrandingBuilderTest extends TestCase
         $builder->apply($this->buildConfig(true), '#206bc4', null);
 
         $template = new NotificationTemplate();
-        $template->getFromDBByCrit(['name' => 'Notification personnalisée — Nouveau ticket', 'itemtype' => 'Ticket']);
+        $template->getFromDBByCrit(['name' => 'Notification personnalisée : Nouveau ticket', 'itemtype' => 'Ticket']);
         $translation = new NotificationTemplateTranslation();
         $translation->getFromDBByCrit(['notificationtemplates_id' => $template->getID(), 'language' => '']);
         $translation->update(['id' => $translation->getID(), 'content_html' => '<p>Contenu modifié à la main par un admin</p>']);
 
         $second = $builder->apply($this->buildConfig(true), '#206bc4', null);
 
-        $this->assertSame(1, $second, 'Only the un-marked template must be re-applied — the other 22 still carry the marker and are skipped.');
+        $this->assertSame(1, $second, 'Only the un-marked template must be re-applied : the other 22 still carry the marker and are skipped.');
 
         $translation = new NotificationTemplateTranslation();
         $translation->getFromDBByCrit(['notificationtemplates_id' => $template->getID(), 'language' => '']);

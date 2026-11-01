@@ -32,7 +32,7 @@ use Ticket;
 
 /**
  * Real-submission regression guard for this form's `QuestionTypeUserDevice` + `AssociatedItemsField`
- * wiring — unlike the other builders in this suite, which point at one of this *plugin's own* custom
+ * wiring: unlike the other builders in this suite, which point at one of this *plugin's own* custom
  * assets, this one points at a real, native GLPI `Computer` affected to the requester
  * (`CommonItilObject_Item::getMyDevices()`). Confirms the same "config JSON looks right" trap doesn't
  * apply here either : the device must show up as a real `Item_Ticket` link on the resulting ticket.
@@ -146,7 +146,7 @@ final class SoftwareBugFormBuilderTest extends TestCase
     public function testAffectedComputerIsAssociatedOnTheTicket(): void
     {
         $form = $this->buildForm();
-        $computerId = $this->addRealComputerForUser('PHPUnit — Poste DW-042', 2);
+        $computerId = $this->addRealComputerForUser('PHPUnit: Poste DW-042', 2);
         $logicielId = $this->questionIdByRank($form, 0);
         $bloquantId = $this->questionIdByRank($form, 1);
         $posteId = $this->questionIdByRank($form, 2);
@@ -156,7 +156,7 @@ final class SoftwareBugFormBuilderTest extends TestCase
             "answers_$bloquantId" => ['1'],
             // QuestionTypeUserDevice's raw end-user input is a "<Itemtype>_<id>" string (confirmed
             // by reading QuestionTypeUserDevice::prepareEndUserAnswer() directly), not the
-            // {itemtype, items_id} array QuestionTypeItem expects — the two look similar but are
+            // {itemtype, items_id} array QuestionTypeItem expects: the two look similar but are
             // genuinely different wire formats.
             "answers_$posteId" => Computer::class . '_' . $computerId,
         ]);
@@ -175,7 +175,7 @@ final class SoftwareBugFormBuilderTest extends TestCase
 
     /**
      * The device question is optional (a bug can affect a shared machine, or the reporter may not
-     * know which record it's filed under) — leaving it unanswered must not silently associate a
+     * know which record it's filed under): leaving it unanswered must not silently associate a
      * stale or wrong item.
      */
     public function testUnansweredDeviceAssociatesNoItem(): void

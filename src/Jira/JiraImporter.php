@@ -257,10 +257,10 @@ final class JiraImporter
             : htmlescape((string) $issue['summary']);
         $content .= '<p><em>' . htmlescape(sprintf(__('Importé de Jira : %s', 'configurationglpiauto'), $key));
         if ((string) $issue['project'] !== '') {
-            $content .= ' — ' . htmlescape((string) $issue['project']);
+            $content .= ' - ' . htmlescape((string) $issue['project']);
         }
         if ($issue['labels'] !== []) {
-            $content .= ' — ' . htmlescape(implode(', ', $issue['labels']));
+            $content .= ' - ' . htmlescape(implode(', ', $issue['labels']));
         }
         $content .= '</em></p>';
         $priority = JiraMapping::defaultPriority((string) $issue['priority']);

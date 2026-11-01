@@ -25,7 +25,7 @@ use GlpiPlugin\Configurationglpiauto\StateBuilder;
 
 /**
  * Issue #293 : statuts recommandés absents (ex. « Détruit », créé par l'assistant seulement depuis
- * le 21/09/2026 — #276) et, si assetsign est actif, déclencheurs assetsign laissés vides alors que
+ * le 21/09/2026 - #276) et, si assetsign est actif, déclencheurs assetsign laissés vides alors que
  * leur statut existe. Corrigible en un clic : création des statuts manquants comme le fait
  * l'assistant, puis relais vers assetsign sans écraser un réglage existant.
  *

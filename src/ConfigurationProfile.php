@@ -21,13 +21,13 @@ use CommonDBTM;
 
 /**
  * A predefined configuration profile (PME, ETI, MSP, ISO 27001...) offered as the wizard's first
- * step. Picking one pre-fills sensible starting defaults for the later steps — see
- * getSuggestedDefaults() — the admin can still change anything afterward.
+ * step. Picking one pre-fills sensible starting defaults for the later steps: see
+ * getSuggestedDefaults(): the admin can still change anything afterward.
  *
  * Deliberately NOT namespaced under an `Entity\` sub-namespace: GLPI's automatic table-name
  * derivation reads namespace segments after the plugin prefix as part of the class name, and
  * "Entity" collides with GLPI's own core Entity class, producing a bogus many-to-many relation
- * table name (`..._entities_configurationprofiles` instead of `..._profiles`) — confirmed by
+ * table name (`..._entities_configurationprofiles` instead of `..._profiles`): confirmed by
  * reproducing it against a real GLPI 11 instance. getTable() is also overridden explicitly below
  * to remove the whole risk category, per the same lesson already documented on the sibling
  * glpi-vulnerability-manager plugin.
@@ -44,7 +44,7 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
     // Fait pointer le menu principal du plugin directement vers l'assistant plutot que vers la
     // liste CRUD generique de front/profile.php (celle-ci reste accessible par URL directe, mais
     // n'apporte rien comme point d'entree par defaut). getItemTypeSearchURL() du coeur construit
-    // "$dir/front/" . strtolower($itemtype) . ".php" — meme convention reprise ici a la main.
+    // "$dir/front/" . strtolower($itemtype) . ".php" - meme convention reprise ici a la main.
     public static function getSearchURL($full = true)
     {
         global $CFG_GLPI;
@@ -87,7 +87,7 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
     }
 
     // rawSearchOptions() (pas getSearchOptions(), final dans CommonDBTM) : sinon la liste
-    // s'affiche sans colonnes ni en-tetes — meme correctif que sur remise-glpi et
+    // s'affiche sans colonnes ni en-tetes : meme correctif que sur remise-glpi et
     // glpi-vulnerability-manager (piege documente sur les deux plugins jumeaux).
     public function rawSearchOptions(): array
     {
@@ -167,27 +167,27 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
 
     /**
      * Suggested starting point for the wizard's later steps once this profile is picked in
-     * step 1 — entity mode, and reasonable calendar/SLA defaults for that kind of organization.
+     * step 1: entity mode, and reasonable calendar/SLA defaults for that kind of organization.
      * Deliberately never touches entity_tree itself (no realistic way to guess real client/site
-     * names) — only the mode, so the admin still builds their own tree in step 2, just starting
+     * names): only the mode, so the admin still builds their own tree in step 2, just starting
      * from a sensible mode instead of always mono. The admin can still change any of this in the
      * later steps; picking a profile only pre-fills, it doesn't lock anything in. 'custom'
      * intentionally returns no suggestions at all.
      *
      * ITIL and ISO 27001 are not org sizes, they're practice frameworks any organization can
-     * follow regardless of size — a small company can be ISO 27001 certified, a large one might
+     * follow regardless of size: a small company can be ISO 27001 certified, a large one might
      * follow no formal framework at all. So they're not a separate profile choice here: a
      * calendar-scoped, priority-tiered SLA *is* the ITIL/ISO27001 baseline, and every non-minimal
      * profile gets one by default rather than only the "advanced" ones. What actually varies per
      * profile is the organization's calendar and whether it has astreinte (on-call coverage
-     * outside opening hours, see sla_astreinte) — MSP defaults to astreinte on and a tighter
+     * outside opening hours, see sla_astreinte): MSP defaults to astreinte on and a tighter
      * sla_tiers table because round-the-clock contractual coverage is characteristic of that
      * business model, not of being "bigger".
      *
      * Also deliberately only 4 profiles, not the finer PME/ETI/Grande entreprise split this used
      * to have: those three produced byte-for-byte identical suggestions (same entity mode, same
      * calendar, same SLA) once framework-vs-size was untangled, so keeping 3 jargon-labeled
-     * options that all did the same thing was actively misleading, not just needless clutter —
+     * options that all did the same thing was actively misleading, not just needless clutter -
      * merged into one plain-language 'multi_site'. The goal is a wizard a novice can use without
      * knowing what PME/ETI/MSP stand for, as much as a professional.
      *
@@ -197,25 +197,25 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
     {
         $goodPracticeBaseline = [
             'calendar_enabled' => true, 'calendar_days' => [1, 2, 3, 4, 5], 'calendar_begin' => '08:00', 'calendar_end' => '18:00',
-            // Public holidays affect SLA/OLA due-date math regardless of org size — same universal
+            // Public holidays affect SLA/OLA due-date math regardless of org size: same universal
             // good-practice reasoning as categories/states, not something that varies per profile.
             // Country-driven (France by default when no address is entered), not a France-only
-            // toggle — see CountryHolidayBuilder's docblock.
+            // toggle: see CountryHolidayBuilder's docblock.
             'country_holidays_enabled' => true,
             'sla_enabled' => true, 'sla_tiers' => Config::getDefaultSlaTiers(), 'sla_astreinte' => false,
             'ola_enabled' => true, 'ola_tiers' => Config::getDefaultOlaTiers(),
             // Warning before a deadline is breached (not just recording that it was) is standard
-            // ITIL practice, same universal reasoning as SLA/OLA themselves — not size-dependent.
+            // ITIL practice, same universal reasoning as SLA/OLA themselves: not size-dependent.
             'sla_escalation_enabled' => true, 'sla_escalation_threshold_percent' => 75,
             // Categories/states are universal ITIL/asset-management scaffolding, useful
-            // regardless of org size or business model — unlike calendar/SLA they don't vary
+            // regardless of org size or business model: unlike calendar/SLA they don't vary
             // per profile, so every non-minimal profile suggests the same values here. All 11
-            // category branches suggested (Config::CATEGORY_BRANCH_KEYS) — the admin trims what
+            // category branches suggested (Config::CATEGORY_BRANCH_KEYS): the admin trims what
             // doesn't apply (no vehicle fleet, no industrial maintenance...) in step 5.
             'category_enabled' => true, 'category_branches' => Config::CATEGORY_BRANCH_KEYS, 'category_icons_enabled' => true,
             'state_enabled' => true, 'state_icons_enabled' => true,
             // Same reasoning: GLPI core's own general settings (notifications, search/pagination
-            // layout, split action buttons...) are unhelpful defaults regardless of org size —
+            // layout, split action buttons...) are unhelpful defaults regardless of org size -
             // every group suggested on, the admin can still uncheck individual ones in step 10.
             'general_ui_enabled' => true,
             'notifications_enabled' => true,
@@ -227,20 +227,20 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
             // is an ITIL good practice independent of org size.
             'ticket_template_enabled' => true,
             // Urgency (self-reported by a requester with no visibility into real business impact)
-            // and Observers/Location on GLPI's native self-service forms — same ITIL good-practice
+            // and Observers/Location on GLPI's native self-service forms: same ITIL good-practice
             // reasoning, independent of org size.
             'helpdesk_form_hide_fields' => true,
             // A real service catalog reduces free-text "hors catalogue" tickets and routes each
-            // request to the right category automatically — same universal reasoning.
+            // request to the right category automatically: same universal reasoning.
             'service_catalog_enabled' => true,
-            // Pilot service with a computed ticket title (issue #208) — same catalog, same
+            // Pilot service with a computed ticket title (issue #208): same catalog, same
             // universal reasoning, the admin can still uncheck it independently in step 7.
             'abroad_mission_form_enabled' => true,
             // Auto-followup + auto-resolve on unresponsive requesters avoids tickets languishing
-            // forever — universal good practice, not size-dependent.
+            // forever: universal good practice, not size-dependent.
             'wait_reasons_enabled' => true,
             // "Kind of technician work" (diagnostic, install, escalation...) is independent of what
-            // the ticket is about (category) — useful reporting/filtering regardless of org size.
+            // the ticket is about (category): useful reporting/filtering regardless of org size.
             'task_categories_enabled' => true,
             'task_templates_enabled' => true,
             // A closure taxonomy (was the user helped vs. something actually fixed vs. a security
@@ -252,19 +252,19 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
             // Same reasoning as ticket_template_enabled: a default Change/Problem template beats
             // GLPI's "no template at all" out of the box, regardless of org size.
             'change_problem_templates_enabled' => true,
-            // Mirrors whatever entity tree the admin already built in step 2 — same structure,
+            // Mirrors whatever entity tree the admin already built in step 2: same structure,
             // just for "where" instead of "which org boundary", so no reason not to suggest it
             // alongside entity_mode itself.
             'locations_enabled' => true,
-            // A starter manufacturer list beats GLPI's empty one regardless of org size — the
+            // A starter manufacturer list beats GLPI's empty one regardless of org size: the
             // admin trims/extends it once real assets get entered.
             'manufacturers_enabled' => true,
             'kb_categories_enabled' => true,
             // Two ready-to-read FAQ articles (catalogue de services, incident vs. demande) beat an
-            // empty FAQ regardless of org size — same reasoning as kb_categories_enabled above.
+            // empty FAQ regardless of org size: same reasoning as kb_categories_enabled above.
             'kb_faq_enabled' => true,
             // Project types/task types are useful scaffolding independent of org size, same
-            // reasoning as the rest of this baseline — the admin trims what doesn't apply.
+            // reasoning as the rest of this baseline: the admin trims what doesn't apply.
             'project_taxonomy_enabled' => true,
             'project_task_templates_enabled' => true,
             // Same reasoning: a ready-to-duplicate project skeleton (tasks already linked) beats
@@ -272,7 +272,7 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
             'project_templates_enabled' => true,
         ];
 
-        // Tighter than the standard baseline at every level — round-the-clock contractual
+        // Tighter than the standard baseline at every level: round-the-clock contractual
         // coverage is characteristic of the MSP business model, not of being "bigger" (same
         // reasoning as sla_astreinte defaulting to true below).
         $mspSlaTiers = [

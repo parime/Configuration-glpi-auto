@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Same "third-party plugin not installed on this instance" scope limit as `TagBuilderTest`/
- * `VipBuilderTest` — see those tests' docblocks. Both of this class's own gates
+ * `VipBuilderTest` - see those tests' docblocks. Both of this class's own gates
  * (`satisfaction_plugin_survey_enabled` and the third-party plugin check) had zero coverage before
  * this test.
  */

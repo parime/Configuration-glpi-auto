@@ -24,49 +24,49 @@ use NotificationTemplateTranslation;
 
 /**
  * Replaces GLPI's single shared "Tickets" notification template
- * (`glpi_notifications_notificationtemplates` — confirmed in a fresh install: every ticket event
+ * (`glpi_notifications_notificationtemplates` - confirmed in a fresh install: every ticket event
  * points at the same template id, so they're all stuck with identical, plain-text-looking HTML)
- * with one dedicated, branded template per event — using the admin's own primary color
+ * with one dedicated, branded template per event: using the admin's own primary color
  * (`BrandingBuilder`) and root-entity logo, real GLPI notification tags confirmed one by one
  * against `NotificationTargetCommonITILObject`/`NotificationTargetTicket` source (never guessed):
  * every `##xxx##` tag below was grep'd out of GLPI 11 core before being used here.
  *
  * Covers all 23 events exposed by `NotificationTargetTicket::getEvents()` (14 ticket-specific:
  * new/update/solved/rejectsolution/validation/validation_answer/validation_reminder/closed/delete/
- * alertnotclosed/recall/recall_ola/satisfaction/replysatisfaction — 9 shared with every ITILObject
+ * alertnotclosed/recall/recall_ola/satisfaction/replysatisfaction: 9 shared with every ITILObject
  * via `NotificationTargetCommonITILObject::getEvents()`: requester_user/requester_group/
  * observer_user/observer_group/assign_user/assign_group/assign_supplier/add_task/update_task/
- * delete_task/add_followup/update_followup/delete_followup/user_mention/add_document — not every
+ * delete_task/add_followup/update_followup/delete_followup/user_mention/add_document: not every
  * one of those ~28 has a natural "branded card" shape (recall/recall_ola/satisfaction/
  * replysatisfaction/rejectsolution/validation_reminder/pendingreason_* are cron/survey/reminder
  * events whose native plain-text content is already adequate and whose exact tag set wasn't
  * cross-checked here): TEMPLATES below deliberately covers the 23 events with a clear "new
- * information to review" shape — the ones a recipient actually reads and acts on.
+ * information to review" shape: the ones a recipient actually reads and acts on.
  *
  * Layout directly modeled on a real production HTML notification set handed over for audit (dark
- * header, colored accent bar, colored CTA button, "-- via GLPI" style footer) — same "generalize a
+ * header, colored accent bar, colored CTA button, "-- via GLPI" style footer): same "generalize a
  * real pattern, drop the org-specific branding" approach already used for `RuleRightBuilder`/
  * `SlaBuilder`. The reference export's exact colors/company name are never reused, only the
  * structure; the admin's own computed color/logo (already collected in step 9) replace them.
  *
  * Links (`##ticket.url##`/`##ticket.urlvalidation##`) are GLPI's own native tags, resolved by
  * `NotificationTarget::formatURL()` from `$CFG_GLPI['url_base']` (Configuration générale > URL de
- * l'application) — nothing built or guessed here, this class never touches that config value
+ * l'application): nothing built or guessed here, this class never touches that config value
  * directly, it just never hand-builds a URL either.
  *
  * One `NotificationTemplateTranslation` row per language (`LABELS` below) rather than a single
- * `language=''` one — a real bug caught in review: GLPI resolves content by the *recipient's own*
+ * `language=''` one: a real bug caught in review: GLPI resolves content by the *recipient's own*
  * language (`NotificationTemplate::getByLanguage()`, confirmed in source:
  * `WHERE language IN ($recipient_language, '')`), so a single French-only row would have shown
  * French labels to every recipient regardless of their GLPI language, undermining the 6-language UI
  * translation work shipped just before this. `''` (empty language) doubles as both the universal
- * fallback *and* the French-specific row — matches the SQL `IN` clause, one less row to maintain,
+ * fallback *and* the French-specific row: matches the SQL `IN` clause, one less row to maintain,
  * same reasoning already used for this plugin's own `fr_FR` locale file (no separate row needed
  * when the fallback content IS the French content).
  *
  * Idempotent via an HTML comment marker rather than the usual "row already exists, skip" pattern:
  * this *modifies* native GLPI rows (or its own, on a second run) rather than creating new ones, so
- * "already has our marker" is the only safe re-run signal — an admin's own hand-edit after the fact
+ * "already has our marker" is the only safe re-run signal: an admin's own hand-edit after the fact
  * (no marker anymore, since they'd naturally replace the whole content) is respected, matching the
  * project's "point of entry, not final" convention rather than clobbering it silently. Checked only
  * on the `''` row: all languages are always written together in the same run, so that row's state
@@ -80,7 +80,7 @@ class NotificationBrandingBuilder
      * Chaque evenement definit : un intitule admin, l'evenement natif GLPI, la ligne d'en-tete
      * (meta_label/meta_tag), une liste de lignes cle/valeur (rows), un bloc de mise en avant
      * optionnel (highlight_*, pour le texte libre : contenu du ticket, description d'un suivi/
-     * tache, commentaire de validation...), et le tag utilise pour le bouton d'action (cta_tag —
+     * tache, commentaire de validation...), et le tag utilise pour le bouton d'action (cta_tag -
      * ##ticket.urlvalidation## pour les evenements de validation, ##ticket.url## partout ailleurs).
      *
      * @var array<int, array{
@@ -92,7 +92,7 @@ class NotificationBrandingBuilder
      */
     private const TEMPLATES = [
         [
-            'name' => 'Notification personnalisée — Nouveau ticket',
+            'name' => 'Notification personnalisée : Nouveau ticket',
             'event' => 'new',
             'meta_label' => 'opened_on', 'meta_tag' => '##ticket.creationdate##',
             'rows' => [['requesters', '##ticket.authors##'], ['category', '##ticket.category##'], ['urgency', '##ticket.urgency##']],
@@ -100,7 +100,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Mise à jour du ticket',
+            'name' => 'Notification personnalisée : Mise à jour du ticket',
             'event' => 'update',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['requesters', '##ticket.authors##'], ['category', '##ticket.category##'], ['last_update_by', '##ticket.lastupdater##']],
@@ -108,7 +108,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Ticket résolu',
+            'name' => 'Notification personnalisée : Ticket résolu',
             'event' => 'solved',
             'meta_label' => 'resolved_on', 'meta_tag' => '##ticket.solvedate##',
             'rows' => [['requesters', '##ticket.authors##'], ['category', '##ticket.category##'], ['solution_type', '##ticket.solution.type##'], ['solution_author', '##ticket.solution.author##']],
@@ -116,7 +116,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Clôture du ticket',
+            'name' => 'Notification personnalisée : Clôture du ticket',
             'event' => 'closed',
             'meta_label' => 'closed_on', 'meta_tag' => '##ticket.closedate##',
             'rows' => [['requesters', '##ticket.authors##'], ['category', '##ticket.category##'], ['solution_type', '##ticket.solution.type##'], ['solution_author', '##ticket.solution.author##']],
@@ -124,7 +124,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Ticket supprimé',
+            'name' => 'Notification personnalisée : Ticket supprimé',
             'event' => 'delete',
             'meta_label' => 'opened_on', 'meta_tag' => '##ticket.creationdate##',
             'rows' => [['requesters', '##ticket.authors##'], ['category', '##ticket.category##'], ['last_update_by', '##ticket.lastupdater##']],
@@ -132,7 +132,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Tickets non résolus (rappel)',
+            'name' => 'Notification personnalisée : Tickets non résolus (rappel)',
             'event' => 'alertnotclosed',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['requesters', '##ticket.authors##'], ['assigned_users', '##ticket.assigntousers##'], ['opened_on', '##ticket.creationdate##'], ['due_date', '##ticket.duedate##'], ['priority', '##ticket.priority##']],
@@ -140,7 +140,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Nouveau suivi',
+            'name' => 'Notification personnalisée : Nouveau suivi',
             'event' => 'add_followup',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['writer', '##followup.author##'], ['written_on', '##followup.date##'], ['private', '##followup.isprivate##']],
@@ -148,7 +148,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Suivi modifié',
+            'name' => 'Notification personnalisée : Suivi modifié',
             'event' => 'update_followup',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['writer', '##followup.author##'], ['written_on', '##followup.date##'], ['private', '##followup.isprivate##']],
@@ -156,7 +156,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Suivi supprimé',
+            'name' => 'Notification personnalisée : Suivi supprimé',
             'event' => 'delete_followup',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['requesters', '##ticket.authors##'], ['opened_on', '##ticket.creationdate##']],
@@ -164,7 +164,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Nouvelle tâche',
+            'name' => 'Notification personnalisée : Nouvelle tâche',
             'event' => 'add_task',
             'meta_label' => 'status', 'meta_tag' => '##task.status##',
             'rows' => [['writer', '##task.author##'], ['assignee', '##task.user##'], ['category', '##task.category##'], ['start', '##task.begin##'], ['end', '##task.end##'], ['duration', '##task.time##']],
@@ -172,7 +172,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Tâche modifiée',
+            'name' => 'Notification personnalisée : Tâche modifiée',
             'event' => 'update_task',
             'meta_label' => 'status', 'meta_tag' => '##task.status##',
             'rows' => [['writer', '##task.author##'], ['assignee', '##task.user##'], ['start', '##task.begin##'], ['end', '##task.end##']],
@@ -180,7 +180,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Tâche supprimée',
+            'name' => 'Notification personnalisée : Tâche supprimée',
             'event' => 'delete_task',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['requesters', '##ticket.authors##'], ['assigned_users', '##ticket.assigntousers##'], ['opened_on', '##ticket.creationdate##']],
@@ -188,7 +188,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Nouveau demandeur',
+            'name' => 'Notification personnalisée : Nouveau demandeur',
             'event' => 'requester_user',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['requesters', '##ticket.authors##'], ['assigned_users', '##ticket.assigntousers##'], ['category', '##ticket.category##'], ['opened_on', '##ticket.creationdate##']],
@@ -196,7 +196,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Nouveau groupe demandeur',
+            'name' => 'Notification personnalisée : Nouveau groupe demandeur',
             'event' => 'requester_group',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['requester_group', '##ticket.groups##'], ['category', '##ticket.category##'], ['opened_on', '##ticket.creationdate##']],
@@ -204,7 +204,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Nouvel observateur',
+            'name' => 'Notification personnalisée : Nouvel observateur',
             'event' => 'observer_user',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['requesters', '##ticket.authors##'], ['assigned_users', '##ticket.assigntousers##'], ['category', '##ticket.category##'], ['opened_on', '##ticket.creationdate##']],
@@ -212,7 +212,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Nouveau groupe observateur',
+            'name' => 'Notification personnalisée : Nouveau groupe observateur',
             'event' => 'observer_group',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['observer_group', '##ticket.observergroups##'], ['category', '##ticket.category##'], ['opened_on', '##ticket.creationdate##']],
@@ -220,7 +220,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Nouvelle assignation (utilisateur)',
+            'name' => 'Notification personnalisée : Nouvelle assignation (utilisateur)',
             'event' => 'assign_user',
             'meta_label' => 'priority', 'meta_tag' => '##ticket.priority##',
             'rows' => [['assigned_groups', '##ticket.assigntogroups##'], ['assigned_users', '##ticket.assigntousers##'], ['category', '##ticket.category##'], ['due_date', '##ticket.duedate##']],
@@ -228,7 +228,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Nouvelle assignation (groupe)',
+            'name' => 'Notification personnalisée : Nouvelle assignation (groupe)',
             'event' => 'assign_group',
             'meta_label' => 'priority', 'meta_tag' => '##ticket.priority##',
             'rows' => [['assigned_groups', '##ticket.assigntogroups##'], ['category', '##ticket.category##'], ['due_date', '##ticket.duedate##']],
@@ -236,7 +236,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Assignation à un fournisseur',
+            'name' => 'Notification personnalisée : Assignation à un fournisseur',
             'event' => 'assign_supplier',
             'meta_label' => 'priority', 'meta_tag' => '##ticket.priority##',
             'rows' => [['assigned_supplier', '##ticket.assigntosupplier##'], ['category', '##ticket.category##'], ['due_date', '##ticket.duedate##']],
@@ -244,7 +244,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Utilisateur mentionné',
+            'name' => 'Notification personnalisée : Utilisateur mentionné',
             'event' => 'user_mention',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['requesters', '##ticket.authors##'], ['assigned_users', '##ticket.assigntousers##'], ['opened_on', '##ticket.creationdate##']],
@@ -252,7 +252,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Nouveau document',
+            'name' => 'Notification personnalisée : Nouveau document',
             'event' => 'add_document',
             'meta_label' => 'status', 'meta_tag' => '##ticket.status##',
             'rows' => [['document_name', '##document.name##'], ['document_file', '##document.filename##'], ['requesters', '##ticket.authors##']],
@@ -260,7 +260,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'view_ticket', 'cta_tag' => '##ticket.url##',
         ],
         [
-            'name' => 'Notification personnalisée — Demande de validation',
+            'name' => 'Notification personnalisée : Demande de validation',
             'event' => 'validation',
             'meta_label' => 'requested_on', 'meta_tag' => '##validation.submissiondate##',
             'rows' => [['writer', '##validation.author##'], ['validator', '##validation.validator##']],
@@ -268,7 +268,7 @@ class NotificationBrandingBuilder
             'cta_label' => 'validate_ticket', 'cta_tag' => '##ticket.urlvalidation##',
         ],
         [
-            'name' => 'Notification personnalisée — Réponse à la validation',
+            'name' => 'Notification personnalisée : Réponse à la validation',
             'event' => 'validation_answer',
             'meta_label' => 'validated_on', 'meta_tag' => '##validation.validationdate##',
             'rows' => [['validator', '##validation.validator##'], ['validation_status', '##validation.status##']],
@@ -279,7 +279,7 @@ class NotificationBrandingBuilder
 
     /**
      * `''` est le code langue de repli propre a GLPI, qui double ici comme ligne francaise (voir
-     * docblock de la classe) — toute autre cle doit etre une vraie cle `$CFG_GLPI['languages']`
+     * docblock de la classe) : toute autre cle doit etre une vraie cle `$CFG_GLPI['languages']`
      * pour que `NotificationTemplate::getByLanguage()` la selectionne un jour pour ce destinataire.
      *
      * @var array<string, array<string, string>>
@@ -542,7 +542,7 @@ class NotificationBrandingBuilder
         $templateId = $this->getOrCreateTemplate($definition, $color, $logoDataUri);
         if ($templateId === null) {
             // Marker already present on the '' row: an earlier run (or, once edited, an admin) owns
-            // this content now — don't overwrite it again.
+            // this content now: don't overwrite it again.
             return false;
         }
 
@@ -570,7 +570,7 @@ class NotificationBrandingBuilder
             $templateId = (int) $template->add([
                 'name' => $definition['name'],
                 'itemtype' => 'Ticket',
-                'comment' => 'Créé par Configuration GLPI Auto — habillage HTML personnalisé.',
+                'comment' => 'Créé par Configuration GLPI Auto : habillage HTML personnalisé.',
             ]);
         }
 
@@ -597,7 +597,7 @@ class NotificationBrandingBuilder
 
     /**
      * Re-points the existing `mailing` join row for this event from GLPI's shared default template
-     * to our dedicated one — the row already exists natively for every core Ticket event, so this
+     * to our dedicated one: the row already exists natively for every core Ticket event, so this
      * is always an update, never an insert (confirmed via `DESCRIBE`: one row per event+mode).
      */
     private function assignToEvent(string $event, int $templateId): void

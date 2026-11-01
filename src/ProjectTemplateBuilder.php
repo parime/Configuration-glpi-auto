@@ -23,32 +23,32 @@ use ProjectTaskType;
 use ProjectType;
 
 /**
- * Turns on `project_templates_enabled` into real `Project` rows with `is_template=1` — a gap
+ * Turns on `project_templates_enabled` into real `Project` rows with `is_template=1` - a gap
  * confirmed by reading GLPI's own source rather than assumed: `Project` uses the generic
  * `CommonDBTM` templating fields (`is_template`/`template_name`/`projecttemplates_id`, the same
  * mechanism `Computer`/`NetworkEquipment` use, not `ITILTemplate`), and
- * `Project::getCloneRelations()` explicitly includes `ProjectTask::class` — meaning GLPI's own
+ * `Project::getCloneRelations()` explicitly includes `ProjectTask::class` - meaning GLPI's own
  * "create from template" flow (the template picker CommonDBTM shows when adding a new `Project`)
  * already clones every `ProjectTask` attached to a template project automatically. GLPI ships this
  * machinery but no template plugged into it, same gap `TaskTemplateBuilder` closes for tickets.
  *
  * Each template's `projecttypes_id`/`projecttasktypes_id` are resolved by name against whatever
- * `ProjectTaxonomyBuilder` already created — same independent-resolution pattern
+ * `ProjectTaxonomyBuilder` already created: same independent-resolution pattern
  * `ProjectTaskTemplateBuilder` already uses. Two templates, not one, covering the two shapes of
  * project this plugin's other content already assumes exist (`ProjectTaxonomyBuilder`'s "Interne"
  * vs "Déploiement / Migration" types): a full delivery lifecycle, and a light internal cycle
  * reusing the same three milestones as `ProjectTaskTemplateBuilder`'s own library for consistency.
- * No dates on any task — a real schedule is inherently specific to each project, nothing generic to
+ * No dates on any task: a real schedule is inherently specific to each project, nothing generic to
  * invent here.
  *
- * No icon *toggle* here unlike most other builders in this plugin — checked against GLPI's own
+ * No icon *toggle* here unlike most other builders in this plugin: checked against GLPI's own
  * source before copying that pattern over: `Project` isn't a `CommonDropdown`, and the only two
  * places `DropdownTranslation::getTranslatedValue()` is ever called in GLPI core are
  * `AbstractITILChildTemplate` (the 18 followup/task/solution templates, a genuinely different
  * class hierarchy) and `Dropdown::getDropdownValue()`'s generic AJAX search. The template picker
  * `CommonDBTM` itself shows when adding a new `Project` (`CommonDBTM::getFromDBByCrit(['is_template'
  * => 1])`, ordered by `template_name`) builds its own list straight from `$data["template_name"]`,
- * bypassing that lookup entirely — so a `Translations::applyIcon()` call here would write rows
+ * bypassing that lookup entirely: so a `Translations::applyIcon()` call here would write rows
  * nothing ever reads. The icon is embedded directly in `name`/`template_name` instead: no
  * multi-language layer exists for `Project` to plug into either way, so there is nothing an
  * "icons" toggle could actually turn on or off beyond that.
@@ -71,7 +71,7 @@ class ProjectTemplateBuilder
             ],
         ],
         [
-            'name' => 'Projet interne — cycle court',
+            'name' => 'Projet interne: cycle court',
             'icon' => '🏠',
             'project_type' => 'Interne',
             'content' => 'Modèle léger pour une initiative interne ou une amélioration continue.',
@@ -85,7 +85,7 @@ class ProjectTemplateBuilder
 
     /**
      * @return int Number of template projects created/reused (their linked tasks aren't counted
-     *             separately — they're an inherent part of each template, not an independent unit).
+     *             separately: they're an inherent part of each template, not an independent unit).
      */
     public function build(Config $config): int
     {
@@ -138,7 +138,7 @@ class ProjectTemplateBuilder
         $crit = ['is_template' => 1, 'template_name' => $name];
         if (Lookup::loadFirst($project, $crit)) {
             // Self-heals a template left with `projecttypes_id = 0` by an earlier run where
-            // `ProjectTaxonomyBuilder` hadn't been run yet — see
+            // `ProjectTaxonomyBuilder` hadn't been run yet: see
             // `ProjectTaskTemplateBuilder::getOrCreateTemplate()`'s own docblock for the same
             // reasoning applied to task templates.
             if ($projectTypeId > 0 && (int) $project->fields['projecttypes_id'] !== $projectTypeId) {

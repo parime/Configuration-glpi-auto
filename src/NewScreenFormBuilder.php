@@ -60,12 +60,12 @@ use Ticket;
  * Description field these smart forms no longer have.
  *
  * **Second pass (advanced question types)** : adds an optional `QuestionTypeUserDevice` ("Poste
- * auquel connecter l'écran") — unlike the replace-a-known-device flow in `LaptopRequestFormBuilder`/
+ * auquel connecter l'écran") : unlike the replace-a-known-device flow in `LaptopRequestFormBuilder`/
  * `ProfessionalPhoneFormBuilder`, this service never previously asked which workstation the screen is
  * for at all, so it's a genuinely new, optional field rather than a text-to-device conversion (a
  * first-equipment request may not have an existing workstation yet). Wired to `AssociatedItemsField`
  * (`LAST_VALID_ANSWER`) so IT gets a real linked asset when it is answered. `RequestTypeField` pinned
- * to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked) — an equipment request is
+ * to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked): an equipment request is
  * unambiguously a request, not an incident.
  */
 class NewScreenFormBuilder
@@ -241,7 +241,7 @@ class NewScreenFormBuilder
             'vertical_rank' => 3,
         ]);
 
-        // Optional: this service never asked which workstation the screen is for before — see
+        // Optional: this service never asked which workstation the screen is for before: see
         // class docblock.
         $poste = new Question();
         $poste->add([

@@ -23,7 +23,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
 /**
  * Les 4 comptes de démonstration fournis par toute installation GLPI standard
  * (`glpi`/`glpi`, `tech`/`tech`, `normal`/`normal`, `post-only`/`postonly`) sont des identifiants
- * publiquement documentés — un compte actif qui les utilise encore est une vraie faille (ISO 27001
+ * publiquement documentés : un compte actif qui les utilise encore est une vraie faille (ISO 27001
  * A.9, comptes par défaut), pas une question de choix d'organisation. `password_verify()` compare
  * de façon fiable un mot de passe en clair à un hash quel que soit son sel, donc cette vérification
  * ne lit ni ne stocke jamais de mot de passe réel d'un utilisateur : elle ne fait que confirmer si
@@ -31,7 +31,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
  *
  * Jamais corrigée automatiquement : deviner ou forcer un nouveau mot de passe à la place d'un
  * humain serait pire que le constat lui-même (perte d'accès), et désactiver le compte pourrait
- * casser un usage de démonstration délibéré — contrairement à `NotificationsDisabledCheck`, il
+ * casser un usage de démonstration délibéré : contrairement à `NotificationsDisabledCheck`, il
  * n'existe ici aucune correction non ambiguë possible.
  */
 final class DefaultCredentialsCheck implements AuditCheckInterface

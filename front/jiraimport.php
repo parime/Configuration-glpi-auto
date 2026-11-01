@@ -80,7 +80,7 @@ $statusLabels = [
     JiraMapping::STATUS_WAITING      => __('En attente', 'configurationglpiauto'),
     JiraMapping::STATUS_SOLVED       => __('Résolu', 'configurationglpiauto'),
     JiraMapping::STATUS_CLOSED       => __('Clos', 'configurationglpiauto'),
-    JiraMapping::STATUS_NOT_RETAINED => __('Clos — « Demande non retenue »', 'configurationglpiauto'),
+    JiraMapping::STATUS_NOT_RETAINED => __('Clos: « Demande non retenue »', 'configurationglpiauto'),
 ];
 $typeLabels = [
     JiraMapping::TYPE_INCIDENT => __('Incident', 'configurationglpiauto'),

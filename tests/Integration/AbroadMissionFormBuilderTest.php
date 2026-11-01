@@ -33,7 +33,7 @@ use User;
 
 /**
  * Same real-submission proof as `LeaveRequestFormBuilderTest` for the identical
- * `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring — see that class's docblock for the full
+ * `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring: see that class's docblock for the full
  * reasoning on why a real, temporarily-impersonated session is required to exercise this mechanism
  * at all (it reads `Session::getLoginUserID()`, not the plugin's own bootstrap superadmin).
  */

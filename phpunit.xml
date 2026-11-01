@@ -7,7 +7,7 @@
     <!--
         Used only inside a real, installed-and-activated GLPI instance (this plugin's own
         docker-compose.test.yml stack, or GLPI's official plugin-ci-workflows reusable CI job,
-        which auto-detects this exact filename) — see tests/integration-bootstrap.php for why a
+        which auto-detects this exact filename): see tests/integration-bootstrap.php for why a
         real GLPI Kernel boot is required and phpunit.xml.dist (no GLPI, pure PHP) is used
         everywhere else. Runs both suites since a live GLPI can execute pure-logic tests too.
     -->

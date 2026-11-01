@@ -24,7 +24,7 @@ use SoftwareLicense;
 use SoftwareVersion;
 
 /**
- * Issue #305 : logiciels en double déjà en base — même nom (au sens de la base : casse, accents,
+ * Issue #305 : logiciels en double déjà en base : même nom (au sens de la base : casse, accents,
  * espaces), même éditeur, même entité. Le blocage (#298) empêche d'en créer de nouveaux ; le
  * contrôle d'audit DuplicateSoftwareCheck fusionne ceux qui existent.
  *
@@ -32,8 +32,8 @@ use SoftwareVersion;
  * inc/relation.constant.php) : le « Remplacer par » de la suppression ne les déplace pas, et la
  * purge les effacerait avec leurs installations. La fusion les reporte donc d'abord elle-même :
  * 1. une version du doublon qui existe aussi sous le logiciel gardé (même nom) : ses installations
- *    et licences passent sur la version gardée — une machine qui a déjà la version gardée perd
- *    seulement la ligne en double (contrainte d'unicité) — puis la version vide est supprimée ;
+ *    et licences passent sur la version gardée : une machine qui a déjà la version gardée perd
+ *    seulement la ligne en double (contrainte d'unicité) : puis la version vide est supprimée ;
  * 2. les autres versions et les licences changent simplement de logiciel ;
  * 3. le doublon est supprimé avec `_replace_by` : documents, tickets, contrats... suivent.
  */

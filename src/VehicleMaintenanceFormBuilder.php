@@ -56,16 +56,16 @@ use Ticket;
  * builder's own loop).
  *
  * Two questions, no conditional branch : which vehicle, and what kind of maintenance (scheduled
- * routine upkeep, a mandatory technical inspection, or a mechanical problem noticed by the driver —
+ * routine upkeep, a mandatory technical inspection, or a mechanical problem noticed by the driver -
  * three outcomes that change urgency and routing but not what else needs asking). Every smart form
  * in this generalization also gets a final free-text "Précisions complémentaires" question as an
  * escape hatch, replacing the generic Description field these forms no longer have.
  *
- * Computed title only references the always-visible `vehicule` answer — "<form name> - <vehicule>",
+ * Computed title only references the always-visible `vehicule` answer - "<form name> - <vehicule>",
  * tag-built via `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
  *
  * **Second pass (advanced question types)** : same `QuestionTypeItem`(`Vehicule`) swap as
- * `VehicleIncidentFormBuilder` — see that class's docblock for the full reasoning (this plugin's own
+ * `VehicleIncidentFormBuilder` - see that class's docblock for the full reasoning (this plugin's own
  * `VehicleAssetBuilder` already turns the "flotte" branch into a real custom asset, unconditionally,
  * same single gate this form itself requires). Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`).
  * `RequestTypeField` pinned to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked) : even the
@@ -81,7 +81,7 @@ class VehicleMaintenanceFormBuilder
 
     private const CATEGORY_PATH = ['Entretien & Réparation'];
 
-    // Matches `VehicleAssetBuilder::SYSTEM_NAME` — see `VehicleIncidentFormBuilder`'s identical
+    // Matches `VehicleAssetBuilder::SYSTEM_NAME` - see `VehicleIncidentFormBuilder`'s identical
     // constant for the resolution reasoning.
     private const VEHICLE_ASSET_SYSTEM_NAME = 'Vehicule';
 
@@ -189,7 +189,7 @@ class VehicleMaintenanceFormBuilder
     }
 
     /**
-     * Same lookup as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` — see that class's
+     * Same lookup as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` - see that class's
      * docblock.
      */
     private function resolveVehicleItemtype(): ?string

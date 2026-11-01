@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Uses its own uniquely-named throwaway entity (deleted in `tearDown()`) rather than the fixtures
- * other suites create (e.g. `EntityAddressBuilderTest`'s "Client Adresse"/"Site Nord") — this test
+ * other suites create (e.g. `EntityAddressBuilderTest`'s "Client Adresse"/"Site Nord"): this test
  * genuinely purges its entity afterward, unlike those idempotent-reuse fixtures meant to persist
  * across runs, so it must not share one.
  */

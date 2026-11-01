@@ -22,9 +22,9 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
 
 /**
- * `Config::getConfigurationValues('core', ['use_notifications'])` — l'interrupteur général des
+ * `Config::getConfigurationValues('core', ['use_notifications'])` - l'interrupteur général des
  * notifications GLPI. Désactivé, plus aucune alerte (nouveau ticket, réponse, rappel SLA...) ne
- * part, en silence — confirmé en conditions réelles contre une instance GLPI 11 réelle. Seule
+ * part, en silence : confirmé en conditions réelles contre une instance GLPI 11 réelle. Seule
  * vérification de ce lot avec une correction non ambigüe : il n'existe aucune organisation pour
  * laquelle "aucune notification ne part jamais" est l'état souhaité, contrairement aux autres
  * vérifications (adresse, SLA...) où le bon réglage dépend de choix propres à l'organisation.

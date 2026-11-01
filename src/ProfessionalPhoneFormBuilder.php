@@ -65,10 +65,10 @@ use Ticket;
  * title would render an empty tag half the time.
  *
  * **Second pass (advanced question types)** : same `QuestionTypeUserDevice` swap as
- * `LaptopRequestFormBuilder` for the "current model to replace" follow-up — the requester picks their
+ * `LaptopRequestFormBuilder` for the "current model to replace" follow-up: the requester picks their
  * own real GLPI-tracked phone/smartphone instead of typing a model name by hand, wired to
  * `AssociatedItemsField` (`LAST_VALID_ANSWER`) for a genuine linked asset on the ticket.
- * `RequestTypeField` pinned to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked) — an
+ * `RequestTypeField` pinned to `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked): an
  * equipment request is unambiguously a request, not an incident.
  */
 class ProfessionalPhoneFormBuilder
@@ -239,7 +239,7 @@ class ProfessionalPhoneFormBuilder
             value: self::REMPLACEMENT_OPTION_KEY,
         );
 
-        // Was a free-text ShortText — replaced with QuestionTypeUserDevice, see class docblock.
+        // Was a free-text ShortText: replaced with QuestionTypeUserDevice, see class docblock.
         $modeleActuel = new Question();
         $modeleActuel->add([
             'forms_sections_id' => $sectionId,

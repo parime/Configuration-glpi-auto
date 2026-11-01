@@ -14,7 +14,7 @@
  #}
 
 {# Issue #114 ("Fonctionnalité de Rollback") : diff champ par champ entre la configuration actuelle
-   et l'instantané choisi, groupé visuellement par préfixe de nom de champ — jamais une notion de
+   et l'instantané choisi, groupé visuellement par préfixe de nom de champ : jamais une notion de
    "module" inventée (voir BlueprintSerializer::diff()). Style minimaliste, même esprit que
    audit.html.twig : pas de widget de diff visuel riche, juste les valeurs actuelle/sauvegardée
    côte à côte. #}
@@ -26,10 +26,10 @@
     </p>
 
     {# Issue #117 ("Import/Export avancé"), volet "validation automatique" : informatif, jamais
-       bloquant — même esprit que les bandeaux prereq_checks/rights_preview de l'assistant (#115). #}
+       bloquant : même esprit que les bandeaux prereq_checks/rights_preview de l'assistant (#115). #}
     {% if auto_corrections is defined and auto_corrections|length > 0 %}
       <div class="alert alert-info">
-        <strong>{{ __('Corrections automatiques', 'configurationglpiauto') }}</strong> —
+        <strong>{{ __('Corrections automatiques', 'configurationglpiauto') }}</strong> -
         {{ __('ces valeurs ne sont plus valides sur cette instance et seront automatiquement ajustées à l\'application.', 'configurationglpiauto') }}
         <ul class="mb-0 mt-1">
           {% for field, values in auto_corrections %}
@@ -45,7 +45,7 @@
     {% if groups is empty %}
       <div class="alert alert-info">
         <i class="ti ti-info-circle me-1"></i>
-        {{ __('Cette configuration est déjà identique à la configuration actuelle — rien à restaurer.', 'configurationglpiauto') }}
+        {{ __('Cette configuration est déjà identique à la configuration actuelle : rien à restaurer.', 'configurationglpiauto') }}
       </div>
       {% if can_deploy %}
         <a href="{{ deploy_url }}" class="btn btn-primary"><i class="ti ti-rocket me-1"></i>{{ __('Déployer cette configuration', 'configurationglpiauto') }}</a>

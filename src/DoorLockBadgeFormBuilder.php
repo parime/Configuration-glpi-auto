@@ -61,17 +61,17 @@ use Ticket;
  * complémentaires" question as an escape hatch, replacing the generic Description field these forms
  * no longer have.
  *
- * Computed title only references the always-visible `localisation` answer — "<form name> -
+ * Computed title only references the always-visible `localisation` answer - "<form name> -
  * <localisation>", tag-built via `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
  *
  * **Second pass (advanced question types)** : same optional `QuestionTypeItem`(`SecuritePhysique`)
- * addition as `VideoSurveillanceFormBuilder` — "Serrure électronique" and "Contrôle d'accès (lecteur
+ * addition as `VideoSurveillanceFormBuilder` - "Serrure électronique" and "Contrôle d'accès (lecteur
  * de badge)" are two of that asset's own native types, a direct match for this service. Unlike the
  * vehicle/room conversions elsewhere in this pass, this form's own branch (`batiment`) is *not* the
  * same gate `PhysicalSecurityAssetBuilder` requires (`securite` branch + its own opt-in toggle), so
- * the check here verifies both independently rather than assuming — a customer can easily pick
+ * the check here verifies both independently rather than assuming: a customer can easily pick
  * "batiment" without "securite". "Localisation précise" is kept exactly as is (not every door/lock
- * problem is on a referenced electronic asset — most physical/mechanical locks never will be), the
+ * problem is on a referenced electronic asset: most physical/mechanical locks never will be), the
  * new question is purely additive and optional. Wired to `AssociatedItemsField`
  * (`LAST_VALID_ANSWER`). `RequestTypeField` pinned to `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no
  * question asked) : a lock/door/badge malfunction is unambiguously an incident.
@@ -84,7 +84,7 @@ class DoorLockBadgeFormBuilder
 
     private const CATEGORY_PATH = ['Serrurerie, Portes & Fenêtres'];
 
-    // Matches `PhysicalSecurityAssetBuilder::SYSTEM_NAME` — see `VideoSurveillanceFormBuilder`'s
+    // Matches `PhysicalSecurityAssetBuilder::SYSTEM_NAME` - see `VideoSurveillanceFormBuilder`'s
     // identical constant.
     private const SECURITY_ASSET_SYSTEM_NAME = 'SecuritePhysique';
 
@@ -193,7 +193,7 @@ class DoorLockBadgeFormBuilder
     }
 
     /**
-     * Same lookup pattern as `VideoSurveillanceFormBuilder::resolveSecurityAssetItemtype()` — see
+     * Same lookup pattern as `VideoSurveillanceFormBuilder::resolveSecurityAssetItemtype()` - see
      * that class's docblock. Also checks the `securite` branch explicitly (unlike
      * `VideoSurveillanceFormBuilder`, this form's own `batiment` gate doesn't imply it).
      */
@@ -251,7 +251,7 @@ class DoorLockBadgeFormBuilder
         ]);
 
         // Optional: only added when this plugin's own physical-security asset catalog actually
-        // exists — see class docblock.
+        // exists: see class docblock.
         $securityAssetItemtype = $this->resolveSecurityAssetItemtype($config);
         $equipement = null;
         if ($securityAssetItemtype !== null) {

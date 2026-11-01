@@ -46,7 +46,7 @@ use ITILCategory;
  * and skipped by that builder's own loop).
  *
  * Three questions, all always relevant together, no conditional branch : what furniture, where, and
- * why (first equipment vs. replacing something broken vs. ergonomic fit-out — three outcomes that
+ * why (first equipment vs. replacing something broken vs. ergonomic fit-out: three outcomes that
  * mean very different things for whoever processes the request, but none of them changes what else
  * needs asking). Every smart form in this generalization also gets a final free-text "Précisions
  * complémentaires" question as an escape hatch, replacing the generic Description field these forms
@@ -54,7 +54,7 @@ use ITILCategory;
  *
  * Computed title references `typeMobilier` rather than `localisation` on purpose : unlike a facility
  * fault report, what's requested (desk, chair, storage...) is the more useful thing to see at a
- * glance across a list of furniture tickets — "<form name> - <typeMobilier>", tag-built via
+ * glance across a list of furniture tickets - "<form name> - <typeMobilier>", tag-built via
  * `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
  */
 class FurnitureRequestFormBuilder

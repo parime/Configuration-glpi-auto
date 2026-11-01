@@ -46,7 +46,7 @@ use ITILCategory;
  *
  * No conditional branch : both a move and an archiving request need a location (departure/arrival
  * for a move, storage location for archiving), so the location field stays relevant regardless of
- * which type is picked — there's no follow-up field that only makes sense for one branch. Also
+ * which type is picked: there's no follow-up field that only makes sense for one branch. Also
  * carries the "Précisions complémentaires" free-text field every class in this generalization batch
  * adds last, replacing the generic Description field these smart forms no longer have.
  */

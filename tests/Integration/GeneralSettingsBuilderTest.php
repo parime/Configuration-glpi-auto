@@ -22,7 +22,7 @@ use GlpiPlugin\Configurationglpiauto\GeneralSettingsBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Covers only the `inventory_enabled` group (#147) — the only one targeting the `inventory`
+ * Covers only the `inventory_enabled` group (#147): the only one targeting the `inventory`
  * config context instead of `core`, and the only one this session added. The other groups
  * (general UI, notifications, financial info, project task states, satisfaction survey,
  * committee validation, audit watch) predate this test file and are exercised indirectly by the
@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
  *
  * `buildConfig()` deliberately does NOT start from `Config::getDefaults()`: every other group
  * defaults to enabled there, and each one writes to *real*, shared GLPI core state (native
- * `Config` values, `Notification`/`CronTask` rows, even a new `ValidationStep`) — a real leak
+ * `Config` values, `Notification`/`CronTask` rows, even a new `ValidationStep`): a real leak
  * caught the hard way running this suite alongside a sibling plugin's own test suite on the same
  * shared instance: `financial_info_enabled` (on by default in `getDefaults()`) silently flipped
  * `auto_create_infocoms` to 1, which then made an unrelated plugin's own Infocom-related tests

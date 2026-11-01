@@ -23,7 +23,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\ParkAudit;
 use State;
 
 /**
- * Issue #306 : matériel incomplet — sans statut, sans lieu, ou au statut « Attribué » sans
+ * Issue #306 : matériel incomplet : sans statut, sans lieu, ou au statut « Attribué » sans
  * utilisateur. Silencieux si aucun statut n'existe (NoStatesConfiguredCheck couvre ce cas).
  *
  * Correction : un ticket groupé, lié à chaque matériel concerné. Rien n'est complété à la place

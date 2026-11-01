@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
 use Ticket;
 
 /**
- * "Type de support souhaité" is a `QuestionTypeCheckbox` (multi-select) — the real regression to
+ * "Type de support souhaité" is a `QuestionTypeCheckbox` (multi-select) : the real regression to
  * guard is that selecting several options at once is accepted and doesn't silently collapse to one.
  */
 final class EventSupportFormBuilderTest extends TestCase

@@ -56,18 +56,18 @@ use Ticket;
  * skipped by that builder's own loop).
  *
  * Three questions, no conditional branch : which vehicle, which of the two card/badge types is
- * wanted, and why (first issue vs. replacing a lost/stolen one vs. a routine renewal — all relevant
+ * wanted, and why (first issue vs. replacing a lost/stolen one vs. a routine renewal: all relevant
  * to fleet administration, none of them changing what else needs asking). Every smart form in this
  * generalization also gets a final free-text "Précisions complémentaires" question as an escape
  * hatch, replacing the generic Description field these forms no longer have.
  *
  * Computed title references `type` before `vehicule` on purpose : across a list of fleet tickets,
  * which kind of card/badge is requested is the more useful thing to see first, with the vehicle
- * still included for identification — "<form name> - <type> - <vehicule>", tag-built via
+ * still included for identification - "<form name> - <type> - <vehicule>", tag-built via
  * `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
  *
  * **Second pass (advanced question types)** : same `QuestionTypeItem`(`Vehicule`) swap as
- * `VehicleIncidentFormBuilder`/`VehicleMaintenanceFormBuilder` — see the former's docblock for the
+ * `VehicleIncidentFormBuilder`/`VehicleMaintenanceFormBuilder` - see the former's docblock for the
  * full reasoning. Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`). `RequestTypeField` pinned to
  * `Ticket::DEMAND_TYPE` (`SPECIFIC_VALUE`, no question asked) : a card/badge request, even to replace
  * a lost one, is administrative, not an open incident blocking the vehicle's use.
@@ -80,7 +80,7 @@ class FuelCardFormBuilder
 
     private const CATEGORY_PATH = ['Carburant & Recharge'];
 
-    // Matches `VehicleAssetBuilder::SYSTEM_NAME` — see `VehicleIncidentFormBuilder`'s identical
+    // Matches `VehicleAssetBuilder::SYSTEM_NAME` - see `VehicleIncidentFormBuilder`'s identical
     // constant for the resolution reasoning.
     private const VEHICLE_ASSET_SYSTEM_NAME = 'Vehicule';
 
@@ -193,7 +193,7 @@ class FuelCardFormBuilder
     }
 
     /**
-     * Same lookup as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` — see that class's
+     * Same lookup as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` - see that class's
      * docblock.
      */
     private function resolveVehicleItemtype(): ?string

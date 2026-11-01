@@ -93,7 +93,7 @@ final class AddressPlanImporter
             }
             $entitiesId = (int) $row['entities_id'];
             $comment = trim(sprintf(
-                __('Plan d\'adressage — site : %1$s, rôle : %2$s', 'configurationglpiauto'),
+                __('Plan d\'adressage : site : %1$s, rôle : %2$s', 'configurationglpiauto'),
                 $row['site_label'],
                 $row['role'] !== '' ? (self::roleNames()[$row['role']] ?? $row['role']) : '-'
             ));

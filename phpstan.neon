@@ -5,7 +5,7 @@ parameters:
     # jamais stubé ici : le bootstrap ci-dessous charge le VRAI autoload GLPI (aucune connexion DB
     # requise pour la seule résolution de types), même technique que le plugin jumeau
     # assetsign-glpi (`.phpstan-bootstrap.php`), qui a le premier prouvé que `src/` est analysable
-    # de cette façon — ce fichier ne scannait jusqu'ici que `tests/Unit`, laissant tout le code
+    # de cette façon : ce fichier ne scannait jusqu'ici que `tests/Unit`, laissant tout le code
     # métier réel (109 fichiers sous `src/`) hors de portée de l'analyse statique.
     bootstrapFiles:
         - .phpstan-bootstrap.php
@@ -40,19 +40,19 @@ parameters:
                 - tests/Integration/KnowbaseCategoryBuilderTest.php
         -
             # `GLPI_VERSION` est déjà définie dès que le bootstrap PHPStan charge l'autoload GLPI
-            # (composer), donc PHPStan la voit toujours définie — mais en exécution réelle, ce
+            # (composer), donc PHPStan la voit toujours définie : mais en exécution réelle, ce
             # fichier peut être chargé avant que le cœur GLPI ne définisse cette constante (c'est
             # exactement ce que `defined()` sert à distinguer ici). Faux positif de bootstrap, pas
             # un vrai bug : la vérification reste nécessaire à l'exécution.
             message: '#Right side of && is always false#'
             path: setup.php
         -
-            # `Html::back()`/`Html::redirect()` (cœur GLPI) ne sont pas annotées `@return never` —
+            # `Html::back()`/`Html::redirect()` (cœur GLPI) ne sont pas annotées `@return never` -
             # elles redirigent puis appellent `exit`, donc le code après leur appel n'est jamais
             # atteint en pratique, mais PHPStan ne peut pas le déduire sans cette annotation absente
             # du cœur GLPI. Confirmé en lisant chaque site : la variable est bien toujours définie
             # sur tout chemin qui atteint réellement le code suivant.
-            # reportUnmatched: false — les versions récentes du cœur GLPI 11 (image 11.0.x de la CI
+            # reportUnmatched: false : les versions récentes du cœur GLPI 11 (image 11.0.x de la CI
             # officielle, depuis le 7 octobre 2026) annotent enfin ces méthodes : le faux positif
             # n'existe plus avec elles, mais subsiste avec les autres versions analysées (GLPI 12,
             # image figée du job PHPStan). Sans ce réglage, l'exception devenue inutile sur l'une
@@ -63,7 +63,7 @@ parameters:
         -
             # Dette de typage connue, jamais des bugs : ce plugin n'annote pas encore le type de
             # valeur de chaque tableau imbriqué partout (`array` plutôt que `array<string, mixed>`
-            # etc.) — un vrai chantier de précision de type à mener séparément, pas quelque chose à
+            # etc.) : un vrai chantier de précision de type à mener séparément, pas quelque chose à
             # cacher indéfiniment (d'où une entrée dédiée et commentée plutôt qu'un `level` abaissé
             # qui masquerait aussi de vraies erreurs futures d'un tout autre genre).
             identifier: missingType.iterableValue
@@ -71,7 +71,7 @@ parameters:
             # `?? default` sur des données décodées depuis POST/JSON externe (formulaire du
             # wizard, Blueprint importé, JSON de config stocké en base) : PHPStan, en analysant un
             # chemin de code avec des littéraux constants, peut prouver que la clé existe toujours
-            # dans CE contexte précis — mais la garde reste une protection légitime contre des
+            # dans CE contexte précis : mais la garde reste une protection légitime contre des
             # données runtime moins fiables que ce que le type statique local suggère (un Blueprint
             # exporté par une version antérieure du plugin, un POST forgé...), jamais du code mort
             # dangereux à retirer en masse.
@@ -89,7 +89,7 @@ parameters:
                 - src/SlaBuilder.php
         -
             # Même nature que nullCoalesce.offset ci-dessus (`empty($ICONS[$name] ?? ...)`-style
-            # gardes sur des tableaux constants d'icônes) — légitime contre un futur désalignement
+            # gardes sur des tableaux constants d'icônes) : légitime contre un futur désalignement
             # entre deux constantes censées partager les mêmes clés.
             identifier: empty.offset
             paths:
@@ -97,7 +97,7 @@ parameters:
                 - src/PhysicalSecurityAssetBuilder.php
         -
             # RequestTypeTranslationBuilder::ICONS/TRANSLATIONS sont deux constantes déclarées
-            # séparément mais censées rester synchronisées (mêmes clés) — la garde `!== ''` protège
+            # séparément mais censées rester synchronisées (mêmes clés) : la garde `!== ''` protège
             # contre un futur désalignement (une entrée ajoutée à l'une sans l'autre), PHPStan ne
             # peut prouver "toujours vrai" qu'avec l'état ACTUEL des deux tableaux.
             identifier: notIdentical.alwaysTrue
@@ -114,7 +114,7 @@ parameters:
             # LocationBuilder/RuleRightBuilder : `is_array($node['children'] ?? null)` reste une
             # garde légitime avant de descendre récursivement dans un arbre reconstruit depuis
             # `Config::getEntityTree()` (JSON stocké en base, potentiellement écrit par une version
-            # antérieure du plugin) — jamais du code mort dangereux à retirer.
+            # antérieure du plugin) : jamais du code mort dangereux à retirer.
             identifier: function.alreadyNarrowedType
             paths:
                 - src/LocationBuilder.php

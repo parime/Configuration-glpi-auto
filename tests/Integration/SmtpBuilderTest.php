@@ -22,11 +22,11 @@ use GlpiPlugin\Configurationglpiauto\SmtpBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * `smtp_*` under the `core` context is GLPI's own real, shared mail configuration — a much bigger
+ * `smtp_*` under the `core` context is GLPI's own real, shared mail configuration: a much bigger
  * blast radius than this plugin's own tables (every notification email this instance ever sends
  * depends on it). Every test here captures the real values in `setUp()` and restores them in
  * `tearDown()` regardless of outcome, same discipline `ConfigTest`/`BlueprintWorkflowTest` already
- * apply to this plugin's own singleton — this suite must never leave the shared instance's actual
+ * apply to this plugin's own singleton: this suite must never leave the shared instance's actual
  * mail configuration different from what it found.
  */
 final class SmtpBuilderTest extends TestCase

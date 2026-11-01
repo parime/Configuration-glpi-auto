@@ -65,7 +65,7 @@ final class VehicleMaintenanceFormBuilderTest extends TestCase
         }
 
         // See VehicleIncidentFormBuilderTest's tearDown docblock: "Vehicule" is a real, shared,
-        // pre-existing asset type — never delete it, never clearDefinitionsCache().
+        // pre-existing asset type: never delete it, never clearDefinitionsCache().
     }
 
     private function buildConfig(): Config
@@ -162,7 +162,7 @@ final class VehicleMaintenanceFormBuilderTest extends TestCase
     public function testVehicleIsAssociatedAndTicketIsADemand(): void
     {
         $form = $this->buildForm();
-        $vehicleId = $this->addRealVehicle('PHPUnit — Citroën Jumpy');
+        $vehicleId = $this->addRealVehicle('PHPUnit: Citroën Jumpy');
         $vehiculeId = $this->questionIdByRank($form, 0);
         $typeId = $this->questionIdByRank($form, 1);
         $vehicleClass = $this->vehicleClassName();
@@ -186,7 +186,7 @@ final class VehicleMaintenanceFormBuilderTest extends TestCase
     public function testTicketTitleIncludesVehicleName(): void
     {
         $form = $this->buildForm();
-        $vehicleId = $this->addRealVehicle('PHPUnit — Citroën Jumpy 2');
+        $vehicleId = $this->addRealVehicle('PHPUnit: Citroën Jumpy 2');
         $vehiculeId = $this->questionIdByRank($form, 0);
         $typeId = $this->questionIdByRank($form, 1);
         $vehicleClass = $this->vehicleClassName();
@@ -196,6 +196,6 @@ final class VehicleMaintenanceFormBuilderTest extends TestCase
             "answers_$typeId" => ['2'],
         ]);
 
-        $this->assertStringContainsString('PHPUnit — Citroën Jumpy 2', $ticket->fields['name']);
+        $this->assertStringContainsString('PHPUnit: Citroën Jumpy 2', $ticket->fields['name']);
     }
 }

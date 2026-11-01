@@ -61,15 +61,15 @@ use Ticket;
  * smart forms no longer have.
  *
  * **Second pass (advanced question types)** : "Localisation de l'équipement concerné" is kept exactly
- * as is (mandatory ShortText) — unlike the vehicle/room custom assets elsewhere in this pass, this
+ * as is (mandatory ShortText): unlike the vehicle/room custom assets elsewhere in this pass, this
  * plugin's `PhysicalSecurityAssetBuilder` (custom asset `SecuritePhysique`, types include "Caméra de
  * vidéosurveillance"/"Centrale d'alarme intrusion") is gated behind its *own* opt-in toggle
  * (`physical_security_assets_enabled`) in addition to the "securite" branch this form itself already
- * requires — the two aren't the same single gate the vehicle/room conversions rely on, so the asset
+ * requires: the two aren't the same single gate the vehicle/room conversions rely on, so the asset
  * catalog genuinely may not exist even when this form does. Adds an **optional** `QuestionTypeItem`
  * ("Équipement concerné (si déjà référencé)") pointing at that asset class when the definition is
  * found, so a reporter who knows the exact camera/alarm can link it for real without forcing everyone
- * through a picker that might be empty. Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`) — a
+ * through a picker that might be empty. Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`): a
  * no-op when the optional question wasn't added or wasn't answered. `RequestTypeField` pinned to
  * `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no question asked) : reporting a malfunction is
  * unambiguously an incident.
@@ -82,7 +82,7 @@ class VideoSurveillanceFormBuilder
 
     private const CATEGORY_PATH = ['Vidéosurveillance & Alarmes'];
 
-    // Matches `PhysicalSecurityAssetBuilder::SYSTEM_NAME` — resolved by name, same convention as
+    // Matches `PhysicalSecurityAssetBuilder::SYSTEM_NAME` - resolved by name, same convention as
     // `VehicleIncidentFormBuilder`'s equivalent constant for `Vehicule`.
     private const SECURITY_ASSET_SYSTEM_NAME = 'SecuritePhysique';
 
@@ -190,7 +190,7 @@ class VideoSurveillanceFormBuilder
     }
 
     /**
-     * Same lookup pattern as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` — see that
+     * Same lookup pattern as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` - see that
      * class's docblock. Returns null both when the definition doesn't exist and when the dedicated
      * toggle is off, since either way there's nothing real for the question to point at.
      */
@@ -245,7 +245,7 @@ class VideoSurveillanceFormBuilder
         ]);
 
         // Optional: only added when this plugin's own physical-security asset catalog actually
-        // exists — see class docblock.
+        // exists: see class docblock.
         $securityAssetItemtype = $this->resolveSecurityAssetItemtype($config);
         $equipement = null;
         if ($securityAssetItemtype !== null) {

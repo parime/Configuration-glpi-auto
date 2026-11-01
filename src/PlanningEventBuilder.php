@@ -24,25 +24,25 @@ use PlanningExternalEventTemplate;
 /**
  * Turns on `planning_events_enabled` into real `PlanningEventCategory`/`PlanningExternalEventTemplate`
  * lists (Configuration > Intitulés > Assistance > "Catégories d'évènements" / "Gabarits
- * d'évènements externes") — GLPI ships neither by default, confirmed empty on a fresh 11.0.8
- * install. Low-priority, specific-usage intitulés (per the third audit) — built once the more
+ * d'évènements externes") : GLPI ships neither by default, confirmed empty on a fresh 11.0.8
+ * install. Low-priority, specific-usage intitulés (per the third audit) : built once the more
  * central Assistance gaps were closed.
  *
  * `PlanningEventCategory` has its own native `color` field (confirmed in `glpi_planningeventcategories`
- * — distinct from every other intitulé in this plugin) used to color-code events of that category
+ * - distinct from every other intitulé in this plugin) used to color-code events of that category
  * in GLPI's planning/calendar view, so the visual differentiation here goes through that dedicated
  * field rather than through `Translations::applyIcon()`'s `DropdownTranslation` mechanism used
- * elsewhere — icons are added too (list legibility outside the calendar), but `color` is what
+ * elsewhere: icons are added too (list legibility outside the calendar), but `color` is what
  * actually renders in the planning grid itself.
  *
  * `PlanningExternalEventTemplate` deliberately leaves `rrule` (recurrence) and `before_time`
- * (reminder lead time) at their defaults rather than guessing a recurrence pattern — a reusable
+ * (reminder lead time) at their defaults rather than guessing a recurrence pattern: a reusable
  * *shell* (name, description, category, a plausible duration), same "starting point, not a
  * decision" philosophy as every other template library in this plugin; the admin sets the actual
  * recurrence when scheduling a real event from it. `background = 1` on "Astreinte" only: GLPI's
  * own meaning for that flag is "renders as a busy-background block rather than a discrete event"
  * (confirmed in `glpi_planningexternaleventtemplates`), which is exactly how on-call coverage is
- * conventionally shown on a shared calendar — the other templates are real discrete events.
+ * conventionally shown on a shared calendar: the other templates are real discrete events.
  */
 class PlanningEventBuilder
 {
@@ -58,7 +58,7 @@ class PlanningEventBuilder
         [
             'name' => 'Réunion d\'équipe',
             'category' => 'Réunion',
-            'text' => 'Point d\'équipe régulier — avancement, blocages, priorités.',
+            'text' => 'Point d\'équipe régulier : avancement, blocages, priorités.',
             'duration' => 3600,
             'background' => 0,
         ],

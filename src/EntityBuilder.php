@@ -20,7 +20,7 @@ namespace GlpiPlugin\Configurationglpiauto;
 use Entity;
 
 /**
- * Turns a Config's entity_tree (an arbitrary tree of named nodes — see
+ * Turns a Config's entity_tree (an arbitrary tree of named nodes: see
  * Config::getEntityTree()) into real GLPI Entities, exactly matching whatever shape the admin
  * built in the live preview: any node can have any number of children, at any depth, unrelated
  * to its siblings (e.g. "Client A" has 6 children, one of which has 3 children of its own, while
@@ -58,9 +58,9 @@ class EntityBuilder
 
     /**
      * Human-readable summary of what build() created/reused, e.g. "Client A (9 sous-entités) ;
-     * Client B" — for the "structure applied" confirmation message. Deliberately not translated
+     * Client B" - for the "structure applied" confirmation message. Deliberately not translated
      * (plain string, no __()/_n()) so it stays a pure function testable without a GLPI bootstrap
-     * — see EntityBuilderTest.
+     * - see EntityBuilderTest.
      *
      * @param array<int, array{name: string, entities_id: int, count: int}> $results
      */
@@ -75,7 +75,7 @@ class EntityBuilder
     }
 
     /**
-     * Top-level entity IDs — the ones to hang a calendar/SLA/branding setting off, since
+     * Top-level entity IDs: the ones to hang a calendar/SLA/branding setting off, since
      * sub-entities inherit from their parent by default.
      *
      * @param array<int, array{name: string, entities_id: int, count: int}> $results

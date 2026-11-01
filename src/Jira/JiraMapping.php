@@ -130,7 +130,7 @@ final class JiraMapping
         foreach ($issues as $issue) {
             foreach (['statuses' => 'status', 'types' => 'type', 'projects' => 'project'] as $bucket => $field) {
                 $value = (string) ($issue[$field] ?? '');
-                $value = $value === '' ? '—' : $value;
+                $value = $value === '' ? '-' : $value;
                 $summary[$bucket][$value] = ($summary[$bucket][$value] ?? 0) + 1;
             }
         }

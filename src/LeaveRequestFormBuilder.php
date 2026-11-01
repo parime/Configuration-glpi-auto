@@ -80,7 +80,7 @@ use ITILCategory;
  * first (replaces the key by its option label before it ever reaches the tag system).
  *
  * **Second pass (advanced question types)** : same `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring
- * as `AbroadMissionFormBuilder`/`RemoteWorkFormBuilder` — see the former's docblock for the full
+ * as `AbroadMissionFormBuilder`/`RemoteWorkFormBuilder` - see the former's docblock for the full
  * reasoning. A leave request is the single most standard case for automatic manager visibility in
  * any HR system, across all four leave types this form covers.
  */

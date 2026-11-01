@@ -32,7 +32,7 @@ use Ticket;
 /**
  * The only one of the catalog's smart forms using `LogicOperator::OR` (see class docblock) :
  * "Poste concerné" must be visible/answerable for *either* "Arrivée" or "Mutation", but not for
- * "Départ" — the real regression to guard is that the OR condition genuinely covers both values,
+ * "Départ" - the real regression to guard is that the OR condition genuinely covers both values,
  * not just the first one a naive AND-based implementation would silently limit it to.
  */
 final class StaffMovementFormBuilderTest extends TestCase

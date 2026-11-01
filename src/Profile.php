@@ -22,7 +22,7 @@ use Glpi\Application\View\TemplateRenderer;
 /**
  * Declares this plugin's rights in GLPI's standard profile matrix (Administration > Profils).
  * Deliberately a dedicated right rather than reusing GLPI's core 'config' right: 'config' only
- * grants READ/UPDATE (it models a per-entity singleton), never CREATE/PURGE — confirmed against a
+ * grants READ/UPDATE (it models a per-entity singleton), never CREATE/PURGE: confirmed against a
  * real GLPI 11 instance while validating the profile CRUD screens, where "Ajouter" 403'd for the
  * built-in super-admin user despite it having full 'config' access.
  *
@@ -42,7 +42,7 @@ class Profile extends \CommonGLPI
         global $DB;
 
         // \ProfileRight::addProfileRights() does a raw INSERT per profile with no existence
-        // check — fine on a first install, but fatals with a duplicate-key error if install()
+        // check: fine on a first install, but fatals with a duplicate-key error if install()
         // ever runs again (e.g. plugin:install --force, or a future version bump). Insert only
         // the missing profile/right pairs instead, same fix already applied on remise-glpi.
         $existing = [];

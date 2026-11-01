@@ -22,21 +22,21 @@ use GlpiPlugin\Configurationglpiauto\Config;
 
 /**
  * Issue #131 ("Analyse continue") : ré-exécute le registre d'audit existant (`AuditService`,
- * issue #112/#125) à intervalle régulier via une tâche planifiée GLPI native (`CronTask`) — la
+ * issue #112/#125) à intervalle régulier via une tâche planifiée GLPI native (`CronTask`) : la
  * première que ce plugin enregistre lui-même (`GeneralSettingsBuilder` n'active jusqu'ici que des
  * CronTasks *existants* de GLPI cœur, jamais les siens).
  *
  * Volontairement sans nouvelle infrastructure de notification (`NotificationTarget`/
  * `NotificationTemplate` propres à ce plugin) : cette tâche ne fait qu'accumuler un compteur de
  * *nouveaux* constats critiques dans `Config::audit_watch_state`, affiché en bannière par
- * `front/audit.php` à la prochaine visite d'un administrateur — jamais un envoi automatique, jamais
+ * `front/audit.php` à la prochaine visite d'un administrateur : jamais un envoi automatique, jamais
  * une correction, seulement un signal que l'audit existant détaillera de toute façon sur place.
  */
 final class AuditWatchCron
 {
     /**
      * @param string $name Nom de la tâche (toujours "auditwatch" ici, seule tâche enregistrée par
-     *        ce plugin) — paramètre imposé par le contrat `CronTask::cronInfo()`.
+     *        ce plugin) : paramètre imposé par le contrat `CronTask::cronInfo()`.
      */
     public static function cronInfo($name): array
     {
@@ -52,7 +52,7 @@ final class AuditWatchCron
      * Nom de méthode imposé par `CronTask::launch()` : `{$itemtype}::cron{$name}($task)`, `$name`
      * étant celui passé à `CronTask::register()` à l'installation ("auditwatch").
      *
-     * @return int 0 si aucun nouveau constat critique, 1 sinon — même convention que
+     * @return int 0 si aucun nouveau constat critique, 1 sinon : même convention que
      *         `CartridgeItem::cronCartridge()` (0 rien à signaler, 1 action effectuée).
      */
     public static function cronAuditwatch(CronTask $task): int

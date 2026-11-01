@@ -43,11 +43,11 @@ final class StaffMovement
      */
     private const KNOWN_NAMES = [
         'arrival' => [
-            TaskTemplate::class => ['Onboarding — Arrivée collaborateur', 'Onboarding : arrivée collaborateur'],
+            TaskTemplate::class => ["Onboarding \u{2014} Arrivée collaborateur", 'Onboarding : arrivée collaborateur'],
             ITILCategory::class => ['Onboarding / Création de compte'],
         ],
         'departure' => [
-            TaskTemplate::class => ['Offboarding — Départ collaborateur', 'Offboarding : départ collaborateur'],
+            TaskTemplate::class => ["Offboarding \u{2014} Départ collaborateur", 'Offboarding : départ collaborateur'],
             ITILCategory::class => ['Offboarding / Suppression'],
         ],
     ];

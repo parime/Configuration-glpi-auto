@@ -88,7 +88,7 @@ final class BlueprintSerializerTest extends TestCase
         $this->assertSame('multi', $imported['entity_mode']);
         $this->assertSame(1, $imported['state_enabled']);
         $this->assertSame('#123456', $imported['branding_primary_color']);
-        // Ré-encodées vers la forme chaîne JSON attendue par Config, fidèlement — sans
+        // Ré-encodées vers la forme chaîne JSON attendue par Config, fidèlement : sans
         // JSON_UNESCAPED_UNICODE, comme Config::prepareInput() lui-même le fait pour toute mise
         // à jour réelle (seule la toute première valeur d'usine dans getDefaults() utilise ce
         // drapeau, jamais les écritures suivantes, vérifié en lisant Config.php ligne par ligne).
@@ -140,7 +140,7 @@ final class BlueprintSerializerTest extends TestCase
     public function testImportIgnoresInstanceSpecificFieldsEvenIfPresentInTheFile(): void
     {
         // configurationprofiles_id IS a real Config::getDefaults() key (the "last profile picked"
-        // pointer) — without the explicit guard in import(), a Blueprint exported from instance A
+        // pointer): without the explicit guard in import(), a Blueprint exported from instance A
         // pointing at profile #42 would silently overwrite instance B's own unrelated pointer.
         $blueprint = [
             'format_version' => BlueprintSerializer::FORMAT_VERSION,
@@ -182,7 +182,7 @@ final class BlueprintSerializerTest extends TestCase
 
     public function testImportWithOnlyFieldsEmptyArrayChangesNothing(): void
     {
-        // [] (nothing selected) is deliberately distinct from null (everything selected) — an
+        // [] (nothing selected) is deliberately distinct from null (everything selected): an
         // admin who unchecks every box in the restore screen must get a strict no-op, not a full
         // restore by accident.
         $imported = BlueprintSerializer::import(self::SELECTIVE_BLUEPRINT, self::SELECTIVE_DEFAULTS, []);
@@ -214,7 +214,7 @@ final class BlueprintSerializerTest extends TestCase
 
     public function testDiffDecodesJsonEncodedFieldsBeforeComparingAndIgnoresKeyOrderDifferences(): void
     {
-        // Same sla_tiers content, keys in a different order — must NOT show as a diff, otherwise
+        // Same sla_tiers content, keys in a different order: must NOT show as a diff, otherwise
         // every restore screen would show spurious "changes" caused purely by PHP's own json_encode
         // key ordering rather than a real configuration difference.
         $current = ['sla_tiers' => json_encode(['6' => ['tto_hours' => 1, 'ttr_hours' => 2], '5' => ['tto_hours' => 2, 'ttr_hours' => 4]])];

@@ -1242,7 +1242,7 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 ---
 
 > **Note (2026-09-12)** : les numéros de version ci-dessous (1.1 à 2.0) et les dates "prévues" sont
-> le schéma de numérotation spéculatif d'origine, écrit avant le Sprint 1 — comme pour la section
+> le schéma de numérotation spéculatif d'origine, écrit avant le Sprint 1 : comme pour la section
 > "Version 1.0" ci-dessus, ils n'ont plus aucun rapport avec la numérotation SemVer réelle du
 > plugin, qui a depuis dépassé la v1.3 (voir [CHANGELOG.md](CHANGELOG.md), 75+ versions publiées).
 > Les issues GitHub correspondantes (#112 à #131) sont donc des idées de backlog long terme, pas
@@ -1253,53 +1253,53 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 **Prévue** : Q4 2026
 
 **Nouvelles fonctionnalités** :
-- ✅ **Mode Audit avancé (issue #112) — livré**, périmètre v1 volontairement réduit à un noyau
+- ✅ **Mode Audit avancé (issue #112) : livré**, périmètre v1 volontairement réduit à un noyau
   extensible plutôt qu'une couverture exhaustive des 101 `*Builder` existants : nouveau registre
   `AuditService`/`AuditCheckInterface` (`src/Audit/`) parcourant des vérifications indépendantes de
-  ce plugin (lisent l'état réel de GLPI, pas seulement sa propre table `Config` — l'audit
+  ce plugin (lisent l'état réel de GLPI, pas seulement sa propre table `Config` - l'audit
   fonctionne sur n'importe quelle instance), 6 vérifications livrées (notifications désactivées,
   entités sans adresse, adresse email d'administration restée au défaut d'usine, aucun statut/
   calendrier/SLA configuré), nouvel écran `front/audit.php` (bouton "Lancer l'audit" depuis l'écran
   principal). "Correction automatique proposée" pris au sens strict : un correctif ne s'applique
   jamais sans un clic explicite, et seule la vérification "notifications désactivées" en propose un
-  réellement — un état non ambigu (activées/désactivées), contrairement à une adresse ou un SLA
+  réellement : un état non ambigu (activées/désactivées), contrairement à une adresse ou un SLA
   dont la bonne valeur dépend de l'organisation et que ce plugin ne devine jamais à sa place.
 
-- ✅ **Système de Blueprints (issue #113) — livré**, un profil de configuration
+- ✅ **Système de Blueprints (issue #113) : livré**, un profil de configuration
   (`ConfigurationProfile`, colonne `snapshot`) peut désormais capturer un instantané JSON complet
-  de `Config` (~135 champs, format standardisé et versionné —
+  de `Config` (~135 champs, format standardisé et versionné -
   `src/Blueprint/BlueprintSerializer.php`), l'exporter en fichier `.json` téléchargeable, et un
   fichier Blueprint peut être importé (`front/blueprint_import.php`) comme nouveau profil.
-  "Partage entre instances" pris au sens portabilité par fichier, pas un service en ligne — un
+  "Partage entre instances" pris au sens portabilité par fichier, pas un service en ligne : un
   vrai "Marketplace communautaire" reste un item séparé, bien plus tard (issue #128, v2.0.3).
   Comme le Mode Audit ci-dessus, jamais d'application silencieuse : importer/appliquer un
   Blueprint pré-remplit `Config` puis redirige vers l'assistant pour revue humaine de chaque
   étape avant toute écriture réelle sur les objets GLPI.
 
-- ✅ **Fonctionnalité de Rollback (issue #114) — livré**, historique automatique
+- ✅ **Fonctionnalité de Rollback (issue #114) : livré**, historique automatique
   (`ConfigHistory`, table dédiée) capturé juste avant chaque écrasement réel de `Config` (fin de
-  l'assistant, application d'un Blueprint) — les 20 entrées automatiques les plus récentes sont
+  l'assistant, application d'un Blueprint) : les 20 entrées automatiques les plus récentes sont
   conservées, purge synchrone à la capture, pas de `CronTask` dédié. Points de sauvegarde créés à
-  la demande (`front/history.php`), jamais purgés automatiquement — même table, un simple booléen
+  la demande (`front/history.php`), jamais purgés automatiquement : même table, un simple booléen
   (`is_manual`) distingue les deux. Restaurer (`front/history_restore.php`) affiche d'abord un
   diff champ par champ contre la configuration actuelle, groupé visuellement par préfixe de nom de
   champ (calculé, jamais une notion de "module" figée à maintenir) : "rollback sélectif par
-  module" devient un rollback sélectif par champ, avec une case à cocher par champ — plus précis
+  module" devient un rollback sélectif par champ, avec une case à cocher par champ : plus précis
   et auto-maintenu (un futur champ `Config` tombe automatiquement dans son groupe). Même principe
   que les Blueprints : restaurer ne réécrit jamais silencieusement la configuration, ça pré-remplit
   `Config` puis redirige vers l'assistant pour revue humaine de chaque étape.
 
-- ✅ **Mode Dry Run amélioré (issue #115) — livré**, l'étape "Récapitulatif" existante de
+- ✅ **Mode Dry Run amélioré (issue #115) : livré**, l'étape "Récapitulatif" existante de
   l'assistant (déjà un vrai résumé calculé côté client à partir des cases réellement cochées, pas
   un catalogue statique) reçoit deux ajouts concrets : un bandeau "validation pré-déploiement"
   listant les droits GLPI natifs manquants de l'opérateur (`checkDeploymentRights()`, même forme
-  que `checkEnvironmentPrerequisites()` déjà existant) — jusqu'ici, une fonctionnalité pouvait être
-  silencieusement ignorée à l'étape finale sans que l'opérateur délégué le sache — et une durée
+  que `checkEnvironmentPrerequisites()` déjà existant) : jusqu'ici, une fonctionnalité pouvait être
+  silencieusement ignorée à l'étape finale sans que l'opérateur délégué le sache : et une durée
   estimée par palier (calculée à partir du nombre réel d'éléments sélectionnés) remplaçant l'ancien
   texte statique identique dans tous les cas. Une vraie "visualisation des impacts" contre l'état
   réel de la base (N nouveaux/M déjà existants) exigerait de retoucher chacun des ~30 `*Builder`
   (idempotence et écriture fusionnées dans `build()`, aucune méthode de vérification séparée
-  aujourd'hui) — chantier disproportionné pour ce ticket, explicitement hors périmètre v1, même
+  aujourd'hui) : chantier disproportionné pour ce ticket, explicitement hors périmètre v1, même
   discipline que les réductions de périmètre déjà actées pour l'Audit (#112) et les Blueprints
   (#113).
 
@@ -1310,20 +1310,20 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 **Prévue** : Q2 2027
 
 **Fonctionnalités avancées** :
-- 🏪 **Marketplace de configurations (issue #116) — fermé, pas une priorité actuelle**, décision
+- 🏪 **Marketplace de configurations (issue #116) : fermé, pas une priorité actuelle**, décision
   du porteur du plugin (voir le commentaire de fermeture de l'issue). Non traité.
 
-- ✅ **Import/Export avancé (issue #117) — livré, périmètre réduit** : "conflict resolution" et
+- ✅ **Import/Export avancé (issue #117) : livré, périmètre réduit** : "conflict resolution" et
   "validation automatique" réutilisent l'écran de diff+application sélective déjà construit pour
   le Rollback (#114, `front/history_restore.php`), généralisé pour accepter aussi bien une entrée
-  d'historique qu'un Blueprint de profil — appliquer un Blueprint n'est plus un écrasement complet
+  d'historique qu'un Blueprint de profil : appliquer un Blueprint n'est plus un écrasement complet
   sans revue. "Export sélectif par catégorie" ajoute un écran de choix avant le téléchargement
   (`BlueprintSerializer::filterConfig()`). "Planification des imports" est explicitement retirée
   du périmètre (décision utilisateur) : une exécution planifiée sans surveillance romprait la
   règle "jamais d'écriture silencieuse sur `Config`" appliquée à toutes les fonctionnalités livrées
   cette session, et aucun `CronTask` n'existe nulle part dans ce plugin aujourd'hui.
 
-- 👥 **Profils communautaires (issue #118) — fermé, pas une priorité actuelle**, même décision et
+- 👥 **Profils communautaires (issue #118) : fermé, pas une priorité actuelle**, même décision et
   même raison que le Marketplace de configurations (#116) : même thématique de partage/catalogue
   communautaire, et de toute façon pas réalisable comme simple fonctionnalité de plugin
   ("catalogue de profils certifiés" suppose une vraie infrastructure d'hébergement/modération). La
@@ -1346,16 +1346,16 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
   - Synchronisation automatique
   - Gestion des groupes
 
-- ✅ **Configuration SMTP avancée (issue #121) — livré, périmètre réduit** : GLPI cœur fournit déjà
-  la quasi-totalité de ce que l'issue demandait — chiffrement du mot de passe SMTP (`GLPIKey`),
+- ✅ **Configuration SMTP avancée (issue #121) : livré, périmètre réduit** : GLPI cœur fournit déjà
+  la quasi-totalité de ce que l'issue demandait : chiffrement du mot de passe SMTP (`GLPIKey`),
   test de connexion réel (`NotificationMailing::testNotification()`, envoie un vrai email de
   test), et vérification de certificat TLS (`smtp_check_certificate`). Nouvelle étape d'assistant
   qui revoit directement ces réglages natifs (`SmtpBuilder`, jamais via `Config`/Blueprints/
-  Rollback propres au plugin — décision de sécurité délibérée, un secret ne doit jamais transiter
+  Rollback propres au plugin : décision de sécurité délibérée, un secret ne doit jamais transiter
   par un mécanisme qui l'exporterait en clair dans un fichier partageable), avec un lien vers
   l'écran natif GLPI pour le test de connexion plutôt qu'une réimplémentation. "Gestion des
   certificats" au sens gestion de certificats clients n'existe pas dans GLPI cœur et rien
-  n'indique un vrai besoin — non construit.
+  n'indique un vrai besoin : non construit.
 
 - 🔑 **Authentification SSO**
   - Support SAML
@@ -1369,32 +1369,32 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 **Prévue** : 2028
 
 **Fonctionnalités expertes** :
-- ~~📋 **Assistant ISO27001 complet**~~ — **abandonné, doublon** (issue #123 fermée le 2026-09-13) :
+- ~~📋 **Assistant ISO27001 complet**~~ - **abandonné, doublon** (issue #123 fermée le 2026-09-13) :
   couvert de façon bien plus complète par le plugin dédié
   [glpi-iso27001-management](https://github.com/parime/glpi-iso27001-management) (GRC Manager,
-  déjà en v2.1.0) — audits internes/CAPA (audit de conformité), politiques de sécurité et
+  déjà en v2.1.0) : audits internes/CAPA (audit de conformité), politiques de sécurité et
   Déclaration d'Applicabilité (génération de documentation), plans de traitement des risques
   (recommandations de sécurité).
 
-- ✅ **Guide ITIL complet** (issue #124) — livré, périmètre réduit : « implémentation des bonnes
+- ✅ **Guide ITIL complet** (issue #124) : livré, périmètre réduit : « implémentation des bonnes
   pratiques » et « workflows ITIL prédéfinis » étaient déjà couverts en grande partie par ce
-  plugin (voir l'audit ci-dessus) — ce qui manquait vraiment n'était pas du code mais une
+  plugin (voir l'audit ci-dessus) : ce qui manquait vraiment n'était pas du code mais une
   explication pensée pour un administrateur, pas pour un développeur qui suit l'avancement du
   projet ; nouveau document [`docs/ITIL_GUIDE.md`](docs/ITIL_GUIDE.md) qui fait ce lien pratique
   ITIL 4 ↔ étape de l'assistant. Seul vrai manque concret sur « métriques et rapports ITIL » :
   deux cartes de conformité SLA déjà présentes dans GLPI cœur
   (`bn_count_tickets_expired_by_tech`/`_group`) n'apparaissent sur aucun tableau de bord par
-  défaut — `DashboardBuilder` crée un tableau de bord GLPI natif dédié qui les met en avant
+  défaut - `DashboardBuilder` crée un tableau de bord GLPI natif dédié qui les met en avant
   (case à cocher dans l'étape « Réglages généraux »), sans dupliquer le tableau de bord
   « Assistance » existant, et sans jamais l'écraser sur un second passage de l'assistant.
 
-- ✅ **Bonnes pratiques automatiques** (issue #125) — livré, périmètre réduit : « analyse continue
+- ✅ **Bonnes pratiques automatiques** (issue #125) : livré, périmètre réduit : « analyse continue
   de la configuration » et « suggestions d'amélioration » sont déjà exactement ce que fait le
   registre d'audit livré sous #112 (`AuditService`, `src/Audit/`), conçu pour grandir sans toucher
   `front/audit.php` ; « optimisation automatique » y est déjà tranchée au sens strict (jamais sans
   clic explicite d'un humain). Ce qui restait vraiment à faire : agrandir ce registre plutôt que le
   refaire. 3 nouvelles vérifications ajoutées, comblant deux vrais trous de couverture absents des 6
-  vérifications de #112 — sécurité des comptes (`DefaultCredentialsCheck` : détecte les comptes de
+  vérifications de #112 : sécurité des comptes (`DefaultCredentialsCheck` : détecte les comptes de
   démonstration GLPI encore sur leur mot de passe d'usine, un vrai positif confirmé sur l'instance
   de développement partagée ; `WeakPasswordPolicyCheck` : longueur/complexité de mot de passe sous
   le plancher ANSSI/NIST) et catégorisation des tickets (`NoTicketCategoriesCheck`, même structure
@@ -1408,19 +1408,19 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
 **Prévue** : 2029
 
 **Plateforme complète** :
-- ❌ **API REST complète** — **fermée sans implémentation** (issue #126 fermée le 2026-09-20) :
+- ❌ **API REST complète** - **fermée sans implémentation** (issue #126 fermée le 2026-09-20) :
   "accès programmatique à toutes les fonctionnalités" ne peut pas dépasser la lecture seule sans
   rompre le principe "jamais écrire silencieusement" appliqué à chaque fonctionnalité de ce plugin
   (chaque écriture réelle passe par l'assistant pour revue humaine). Une API en lecture seule
   (constats d'audit, Blueprints) resterait envisageable, mais n'a aucun consommateur réel identifié
-  — pas de valeur concrète à construire à l'aveugle.
+  - pas de valeur concrète à construire à l'aveugle.
 
 - 🔗 **Synchronisation multi-instances**
   - Gestion centralisée de plusieurs instances GLPI
   - Synchronisation des configurations
   - Réplication des données
 
-- ❌ **Marketplace communautaire** — **fermé sans implémentation** (issue #128 fermée le
+- ❌ **Marketplace communautaire** - **fermé sans implémentation** (issue #128 fermée le
   2026-09-19) : un écosystème de plugins/configurations avec notation et monétisation est une
   plateforme à part entière (service web, infrastructure de paiement, gouvernance de confiance),
   pas une fonctionnalité qu'un plugin GLPI unique peut construire dans son propre code.
@@ -1430,18 +1430,18 @@ quoi que ce soit. Les deux items ci-dessous ont depuis été tranchés et livré
   - Analyse prédictive des problèmes
   - Optimisation automatique de la configuration
 
-- ❌ **Recommandations automatiques** — **fermé sans implémentation** (issue #130 fermée le
+- ❌ **Recommandations automatiques** - **fermé sans implémentation** (issue #130 fermée le
   2026-09-19) : doublon du champ `recommendation` déjà porté par chaque `AuditFinding` depuis #112/
   #125 ; un vrai "apprentissage automatique" temps réel n'a pas sa place dans ce plugin (aucune
   télémétrie, aucun pipeline d'entraînement, et contredirait le principe "jamais deviner à la place
   d'un humain ce qui est propre à son organisation").
 
-- ✅ **Analyse continue** (issue #131) — livré, périmètre réduit : "surveillance en temps réel" et
+- ✅ **Analyse continue** (issue #131) : livré, périmètre réduit : "surveillance en temps réel" et
   "alertes proactives" pris au sens réalisable pour un plugin de configuration ponctuelle, pas au
   sens littéral (polling live, notifications push). `AuditWatchCron` (nouveau, première tâche
   planifiée que ce plugin enregistre lui-même) ré-exécute chaque semaine le registre d'audit
   existant (#112/#125) et accumule un compteur de nouveaux constats critiques, affiché en bannière
-  sur `front/audit.php` à la prochaine visite d'un administrateur — volontairement sans nouvelle
+  sur `front/audit.php` à la prochaine visite d'un administrateur : volontairement sans nouvelle
   infrastructure de notification GLPI (`NotificationTarget`/`NotificationTemplate`), disproportionnée
   pour ce lot. "Rapports d'optimisation" n'a pas de sens séparé de l'audit déjà existant : l'écran
   d'audit lui-même EST le rapport.

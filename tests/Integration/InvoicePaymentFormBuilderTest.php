@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
 use Ticket;
 
 /**
- * The "Justificatif" question is an optional `QuestionTypeFile` — the real regression to guard is
+ * The "Justificatif" question is an optional `QuestionTypeFile` - the real regression to guard is
  * that submitting without any file attached still validates (a supporting document genuinely isn't
  * always at hand when the ticket is opened, see class docblock).
  */

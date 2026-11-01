@@ -27,7 +27,7 @@ use ProblemTemplateMandatoryField;
 
 /**
  * Unlike `TicketTemplateBuilder`'s two-tier split, `impact` is mandatory on Change only, not
- * Problem — the real distinction this class's own docblock explains (risk/impact assessment before
+ * Problem: the real distinction this class's own docblock explains (risk/impact assessment before
  * approval is Change Management's defining practice, Problem has no approval gate the same way).
  * The core regression to guard is that this asymmetry is really wired in the DB, not just the
  * template count.
@@ -87,7 +87,7 @@ final class ChangeProblemTemplateBuilderTest extends TestCase
             $impactMandatory = new ProblemTemplateMandatoryField();
             $this->assertFalse(
                 $impactMandatory->getFromDBByCrit(['problemtemplates_id' => $problem->getID(), 'num' => $so['impact']]),
-                'Problem has no approval gate the way Change does — impact must not be forced mandatory.'
+                'Problem has no approval gate the way Change does: impact must not be forced mandatory.'
             );
         }
     }
@@ -122,6 +122,6 @@ final class ChangeProblemTemplateBuilderTest extends TestCase
             'FROM' => ChangeTemplateMandatoryField::getTable(),
             'WHERE' => ['changetemplates_id' => $change->getID(), 'num' => $so['impact']],
         ])->count();
-        $this->assertSame(1, $count, 'Exactly one mandatory-field row must exist — no duplicate.');
+        $this->assertSame(1, $count, 'Exactly one mandatory-field row must exist: no duplicate.');
     }
 }

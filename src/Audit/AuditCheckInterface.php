@@ -18,21 +18,21 @@
 namespace GlpiPlugin\Configurationglpiauto\Audit;
 
 /**
- * Contrat commun à chaque vérification d'audit (issue #112, "Mode Audit avancé") — volontairement
+ * Contrat commun à chaque vérification d'audit (issue #112, "Mode Audit avancé") : volontairement
  * introduit ici plutôt que calqué sur la convention des `*Builder` (qui n'en ont pas), car cette
  * fois un registre générique (`AuditService`) doit pouvoir parcourir toutes les vérifications sans
  * connaître leur nom à l'avance, contrairement à `front/wizard.php` qui appelle chaque Builder
  * explicitement par son nom.
  *
  * Chaque vérification lit l'état réel de GLPI (pas seulement la table `Config` de ce plugin, qui
- * peut ne jamais avoir été utilisée) — l'audit doit rester valable sur n'importe quelle instance,
+ * peut ne jamais avoir été utilisée) : l'audit doit rester valable sur n'importe quelle instance,
  * pas seulement celles configurées via l'assistant de ce plugin.
  */
 interface AuditCheckInterface
 {
     /**
      * Identifiant stable, utilisé pour retrouver la vérification lors d'une correction (voir
-     * `AuditService::fix()`) — jamais affiché tel quel à l'utilisateur.
+     * `AuditService::fix()`) : jamais affiché tel quel à l'utilisateur.
      */
     public function getKey(): string;
 
@@ -42,7 +42,7 @@ interface AuditCheckInterface
     public function getDomain(): string;
 
     /**
-     * @return list<AuditFinding> Liste vide si aucun problème détecté — jamais un constat
+     * @return list<AuditFinding> Liste vide si aucun problème détecté : jamais un constat
      *         "tout va bien" explicite, l'absence de constat est le signal.
      */
     public function analyze(): array;
@@ -55,7 +55,7 @@ interface AuditCheckInterface
     public function canFix(): bool;
 
     /**
-     * Applique réellement la correction. Ne doit jamais être appelée si `canFix()` est faux —
+     * Applique réellement la correction. Ne doit jamais être appelée si `canFix()` est faux -
      * l'appelant (`AuditService::fix()`) est responsable de cette vérification.
      */
     public function fix(): void;

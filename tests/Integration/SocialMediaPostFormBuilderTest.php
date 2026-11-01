@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
 use Ticket;
 
 /**
- * "Réseau(x) concerné(s)" is a `QuestionTypeCheckbox` (multi-select) — same real regression to
+ * "Réseau(x) concerné(s)" is a `QuestionTypeCheckbox` (multi-select) : same real regression to
  * guard as `EventSupportFormBuilderTest` : several networks selected at once must be accepted.
  */
 final class SocialMediaPostFormBuilderTest extends TestCase

@@ -22,18 +22,18 @@ use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
 /**
  * Fonctionnalité de Rollback (issue #114) : une ligne de cette table EST un Blueprint complet
  * (même format que BlueprintSerializer::export(), voir ConfigurationProfile.snapshot pour le
- * précédent) — soit un instantané automatique (`is_manual=0`, capturé juste avant chaque écrasement
+ * précédent) : soit un instantané automatique (`is_manual=0`, capturé juste avant chaque écrasement
  * réel de `Config`, voir `captureAutomatic()`), soit un point de sauvegarde créé explicitement par
  * un administrateur (`is_manual=1`, jamais purgé automatiquement).
  *
  * Volontairement une table à part de `ConfigurationProfile` plutôt qu'une extension de celle-ci :
  * un profil est une bibliothèque nommée et rarement supprimée, alors que l'historique automatique
- * doit être purgé agressivement — mélanger les deux cycles de vie noierait la liste des profils
+ * doit être purgé agressivement : mélanger les deux cycles de vie noierait la liste des profils
  * sous des lignes générées automatiquement.
  *
  * Volontairement dans le namespace racine du plugin (pas `Blueprint\`, où vit `BlueprintSerializer`)
  * : GLPI dérive `getFormURL()`/`getSearchURL()` par défaut à partir des segments de namespace après
- * le préfixe du plugin (`Toolbox::getItemTypeFormURL()`) — un namespace imbriqué produirait une URL
+ * le préfixe du plugin (`Toolbox::getItemTypeFormURL()`) : un namespace imbriqué produirait une URL
  * par défaut sous `front/blueprint/...` qui n'existe pas. `ConfigurationProfile`/`Config`/`FuelType`
  * vivent tous dans ce même namespace racine pour la même raison. `getFormURL()` est de toute façon
  * explicitement surchargé ci-dessous (cette entité n'a pas de fichier `*.form.php` conventionnel),
@@ -64,7 +64,7 @@ final class ConfigHistory extends Compat\Base\ConfigHistoryBase
 
     // Pas de front/confighistory.form.php conventionnel : une ligne d'historique n'est jamais
     // éditée, seulement créée/consultée/restaurée via front/history_restore.php (confirmation +
-    // application, voir ce fichier) — d'où cette surcharge explicite, même précaution que
+    // application, voir ce fichier) : d'où cette surcharge explicite, même précaution que
     // ConfigurationProfile::getSearchURL() pour une raison symétrique (pointer vers un écran dédié
     // plutôt que la convention de nommage par défaut).
     public static function getFormURL($full = true): string
@@ -89,7 +89,7 @@ final class ConfigHistory extends Compat\Base\ConfigHistoryBase
     /**
      * Appelé juste avant chaque écrasement réel de la ligne `Config` vivante (front/wizard.php à
      * l'étape "finish", front/profile.form.php à l'action `apply_snapshot`, front/history_restore.php
-     * à l'action `restore`) — capture l'état COURANT (avant écrasement), jamais l'état qui va être
+     * à l'action `restore`): capture l'état COURANT (avant écrasement), jamais l'état qui va être
      * appliqué. Purge les entrées automatiques au-delà de MAX_AUTOMATIC_ENTRIES à chaque appel : pas
      * de CronTask dédié, la purge synchrone à la capture suffit pour les deux seuls points d'appel
      * réels de ce plugin.
@@ -101,7 +101,7 @@ final class ConfigHistory extends Compat\Base\ConfigHistoryBase
     }
 
     /**
-     * Appelé depuis le bouton "Créer un point de sauvegarde" (front/history.php) — jamais purgé
+     * Appelé depuis le bouton "Créer un point de sauvegarde" (front/history.php) : jamais purgé
      * automatiquement, contrairement à captureAutomatic().
      */
     public static function captureManual(Config $config, string $label): int
@@ -125,7 +125,7 @@ final class ConfigHistory extends Compat\Base\ConfigHistoryBase
         global $DB;
 
         // GLPI's query builder only applies 'START' (OFFSET) when 'LIMIT' is also set
-        // (DBmysqlIterator::handleLimits() no-ops the OFFSET clause otherwise) — this table never
+        // (DBmysqlIterator::handleLimits() no-ops the OFFSET clause otherwise): this table never
         // holds more than a handful of automatic rows, so fetching every id and slicing in PHP
         // avoids that pitfall entirely rather than fighting a combined LIMIT/OFFSET.
         $ids = [];

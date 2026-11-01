@@ -55,7 +55,7 @@ use Ticket;
  * forms no longer have.
  *
  * **Second pass (advanced question types)** : adds an optional `QuestionTypeFile` ("Photo ou preuve
- * documentaire") — a non-conformity report (defective product, process deviation...) is exactly the
+ * documentaire"): a non-conformity report (defective product, process deviation...) is exactly the
  * kind of claim visual/documentary evidence makes far more actionable for whoever investigates it,
  * and GLPI attaches any answered file straight to the ticket automatically
  * (`AbstractCommonITILFormDestination::setFilesInput()`, no extra destination config needed).

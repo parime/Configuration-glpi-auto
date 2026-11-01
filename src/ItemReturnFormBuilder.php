@@ -49,15 +49,15 @@ use Ticket;
  * flagged `'smart' => true` there and skipped by that builder's own loop).
  *
  * No conditional branch : the return/SAV distinction is captured as a plain radio answer, not a
- * gate, because both cases route to the same team and need the same "which article" information —
+ * gate, because both cases route to the same team and need the same "which article" information -
  * there's no follow-up field that only makes sense for one of the two. Also carries the "Précisions
  * complémentaires" free-text field every class in this generalization batch adds last, replacing the
  * generic Description field these smart forms no longer have.
  *
- * **Second pass (advanced question types)** : "Article concerné" stays free ShortText — purchased
+ * **Second pass (advanced question types)** : "Article concerné" stays free ShortText : purchased
  * goods in this branch (achats/logistique, not IT) aren't backed by any GLPI itemtype this plugin
  * creates, so there's nothing real for a `QuestionTypeItem` to point at without guessing. What *is*
- * a clean, verified fit : `QuestionTypeFile` ("Photo du défaut ou preuve d'achat", optional) — a
+ * a clean, verified fit : `QuestionTypeFile` ("Photo du défaut ou preuve d'achat", optional) : a
  * return/SAV claim is exactly the "facture, bon de commande, photo du dommage" case this plugin's own
  * mandate calls out, and GLPI attaches any answered file straight to the ticket automatically
  * (`AbstractCommonITILFormDestination::setFilesInput()`, no extra destination config needed).

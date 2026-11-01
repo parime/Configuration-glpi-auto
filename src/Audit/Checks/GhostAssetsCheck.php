@@ -27,7 +27,7 @@ use Printer;
 
 /**
  * Issue #306 : matériel inventorié qui ne remonte plus depuis X jours (Config::audit_ghost_days,
- * 0 = contrôle désactivé) — perdu, volé, agent en panne, ou sorti du parc sans être déclaré.
+ * 0 = contrôle désactivé) : perdu, volé, agent en panne, ou sorti du parc sans être déclaré.
  * Hors statuts « hors parc » (en stock, donné, vendu, détruit...).
  *
  * Correction : un ticket par matériel, lié à lui. Rien n'est modifié sur le matériel.

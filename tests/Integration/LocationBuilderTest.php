@@ -24,7 +24,7 @@ use Location;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Like `EntityAddressBuilderTest`, real entities are created up front via `EntityBuilder` — a
+ * Like `EntityAddressBuilderTest`, real entities are created up front via `EntityBuilder` - a
  * `Location` is only ever created for a node whose entity actually exists in the DB.
  */
 final class LocationBuilderTest extends TestCase
@@ -71,10 +71,10 @@ final class LocationBuilderTest extends TestCase
     }
 
     /**
-     * "Client Lieux" (path "0") has no data of its own — no Location for it. "Site Nord" (path
-     * "0-0") does — gets a Location nested at the root (`locations_id = 0`), since its parent has
+     * "Client Lieux" (path "0") has no data of its own: no Location for it. "Site Nord" (path
+     * "0-0") does: gets a Location nested at the root (`locations_id = 0`), since its parent has
      * none. "Site Sud" (path "0-1") has no data either, but its child "Atelier" (path "0-1-0")
-     * does — Atelier's Location also attaches directly to the root, skipping the data-less parent.
+     * does: Atelier's Location also attaches directly to the root, skipping the data-less parent.
      */
     public function testCreatesLocationOnlyForNodesWithDataAndSkipsDataLessAncestors(): void
     {
@@ -99,7 +99,7 @@ final class LocationBuilderTest extends TestCase
         $this->assertSame('Toulouse', $atelier->fields['town']);
 
         $clientLieux = new Location();
-        $this->assertFalse($clientLieux->getFromDBByCrit(['name' => 'Client Lieux']), 'No data on this node — no Location created for it.');
+        $this->assertFalse($clientLieux->getFromDBByCrit(['name' => 'Client Lieux']), 'No data on this node: no Location created for it.');
     }
 
     /**
@@ -114,7 +114,7 @@ final class LocationBuilderTest extends TestCase
 
         global $DB;
         $count = $DB->request(['FROM' => Location::getTable(), 'WHERE' => ['name' => 'Site Nord']])->count();
-        $this->assertSame(1, $count, 'No duplicate — the existing row is updated in place.');
+        $this->assertSame(1, $count, 'No duplicate: the existing row is updated in place.');
 
         $siteNord = new Location();
         $siteNord->getFromDBByCrit(['name' => 'Site Nord']);
@@ -123,7 +123,7 @@ final class LocationBuilderTest extends TestCase
 
     /**
      * Purely manual sub-locations (`$childrenByPath`) nest under the entity-derived location at
-     * that path, regardless of whether that entity itself has any address data — confirmed via a
+     * that path, regardless of whether that entity itself has any address data: confirmed via a
      * grandchild too, to exercise the recursive nesting.
      */
     public function testBuildManualChildrenCreatesNestedSubLocationsUnderTheEntityDerivedLocation(): void
@@ -166,6 +166,6 @@ final class LocationBuilderTest extends TestCase
 
         $count = (new LocationBuilder())->build($this->buildConfig(true), $dataByPath, $childrenByPath);
 
-        $this->assertSame(1, $count, 'Only "Site Nord" itself — the unnamed manual child is skipped.');
+        $this->assertSame(1, $count, 'Only "Site Nord" itself: the unnamed manual child is skipped.');
     }
 }

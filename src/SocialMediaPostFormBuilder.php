@@ -47,7 +47,7 @@ use ITILCategory;
  *
  * A post can genuinely target several networks at once, so "réseaux" is a `QuestionTypeCheckbox`
  * (same `QuestionTypeSelectableExtraDataConfig` shape as any radio in this catalog, just multi-select)
- * rather than a radio — and the desired publication date is always relevant, no branch needed. Same
+ * rather than a radio: and the desired publication date is always relevant, no branch needed. Same
  * "all fields answered every time" shape as the pilot (`AbroadMissionFormBuilder`, issue #208),
  * computed title built the same way (`AnswerTagProvider::getTagForQuestion()` /
  * `FormTagProvider::getTagForForm()`, never hand-written `<span>` markup). Also adds the "Précisions

@@ -68,7 +68,7 @@ use ITILCategory;
  * every class in this generalization batch adds last.
  *
  * **Second pass (advanced question types)** : same `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring
- * as `AbroadMissionFormBuilder` — see that class's docblock for the full reasoning. A remote-work or
+ * as `AbroadMissionFormBuilder` - see that class's docblock for the full reasoning. A remote-work or
  * schedule-adjustment request is arguably the single clearest case in this whole catalog for
  * automatic manager visibility, across all three of this form's motifs.
  */

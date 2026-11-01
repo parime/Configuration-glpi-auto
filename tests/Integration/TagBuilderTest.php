@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * `TagBuilder` only ever does real work when the third-party "Tag" plugin (pluginsGLPI/tag) is
- * active — never installed on this test instance, so the "plugin active AND enabled" creation path
+ * active: never installed on this test instance, so the "plugin active AND enabled" creation path
  * is out of this suite's reach (installing an unrelated third-party plugin just to test one guard
  * clause is out of scope, same reasoning already applied to SLA cron behaviour elsewhere in this
  * plugin). What IS fully verifiable here, and had zero coverage before this test, is both of this

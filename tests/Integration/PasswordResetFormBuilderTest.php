@@ -31,7 +31,7 @@ use User;
 
 /**
  * This form's "Compte utilisateur concerné" is a `QuestionTypeItem` pointing at the native `User`
- * itemtype (not one of this plugin's own custom assets, and not `QuestionTypeUserDevice` either) —
+ * itemtype (not one of this plugin's own custom assets, and not `QuestionTypeUserDevice` either) -
  * unlike its siblings, there's no `AssociatedItemsField` here (see class docblock : locking a
  * requester's *own* ticket to "User X" as an associated item wouldn't mean much), so the meaningful
  * real-submission assertion is that the computed title actually resolves to the target user's real

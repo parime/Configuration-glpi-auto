@@ -25,11 +25,11 @@ use RSSFeed;
 
 /**
  * `RSSFeed::prepareInputForAdd()` only fetches the feed live over the network the *first* time a
- * given URL is added (`getFromDBByCrit()` short-circuits before any fetch on every later run) — both
+ * given URL is added (`getFromDBByCrit()` short-circuits before any fetch on every later run): both
  * feeds already exist for real on this instance from an earlier run, so this suite never needs to
  * reach the real network itself, and deliberately doesn't force-delete them to trigger a live re-fetch
  * on every future CI run (unlike a DB row, an external site's uptime is outside this plugin's
- * control — same reasoning already applied to leaving `CountryHolidayBuilder`'s own live Nager.Date
+ * control: same reasoning already applied to leaving `CountryHolidayBuilder`'s own live Nager.Date
  * call out of this suite's automated scope). What's fully verifiable without any network dependency,
  * and had zero coverage before this test, is the visibility wiring this class is actually responsible
  * for : without a matching `Entity_RSSFeed` row, a feed stays visible only to whichever user id
@@ -90,7 +90,7 @@ final class RSSFeedBuilderTest extends TestCase
         global $DB;
         foreach (self::URLS as $url) {
             $feedCount = $DB->request(['FROM' => RSSFeed::getTable(), 'WHERE' => ['url' => $url]])->count();
-            $this->assertSame(1, $feedCount, "Exactly one row must exist for '$url' — no duplicate.");
+            $this->assertSame(1, $feedCount, "Exactly one row must exist for '$url' - no duplicate.");
         }
     }
 }

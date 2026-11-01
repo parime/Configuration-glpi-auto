@@ -21,38 +21,38 @@ use ITILFollowupTemplate;
 
 /**
  * Turns on `followup_library_enabled` into a general-purpose `ITILFollowupTemplate` library
- * (Configuration > Intitulés > Assistance > "Gabarits de suivis") — ready-to-use "keep the
+ * (Configuration > Intitulés > Assistance > "Gabarits de suivis"): ready-to-use "keep the
  * requester informed" messages any technician can pick when adding a followup to any ticket.
  *
  * Distinct from `WaitReasonBuilder`'s own `ITILFollowupTemplate` rows (Sprint 24): those exist
  * only to auto-attach to a specific `PendingReason` when a ticket is put on hold, named after that
  * reason. These are named after the *communication moment* instead (requesting info, notifying of
  * a delay...) so they read sensibly when picked manually mid-ticket, independent of any pending
- * status — deliberately different names from `WaitReasonBuilder`'s so the two libraries never
+ * status: deliberately different names from `WaitReasonBuilder`'s so the two libraries never
  * collide even though they cover overlapping situations.
  */
 class FollowupLibraryBuilder
 {
     /**
      * Twig prefix (GLPI's own `Glpi\ContentTemplates\TemplateManager`, sandboxed, available on
-     * `ITILFollowupTemplate`/`SolutionTemplate`/`TaskTemplate` since 10.0 — confirmed via
+     * `ITILFollowupTemplate`/`SolutionTemplate`/`TaskTemplate` since 10.0: confirmed via
      * `AbstractITILChildTemplate::getRenderedContent()`) resolving to a real "Bonjour <nom>,"
      * when the ticket/change/problem has at least one requester, falling back to the generic
-     * "Bonjour," otherwise. `itemtype` picks the right root node — these templates are shared
+     * "Bonjour," otherwise. `itemtype` picks the right root node: these templates are shared
      * across Ticket/Change/Problem (`AbstractITILChildTemplate`'s three children), each exposing
      * its data under a *different* root variable name (`ticket`/`change`/`problem`), so a template
      * can't hardcode `ticket.requesters` without breaking on the other two. `.fullname` (GLPI's
-     * `User::getFriendlyName()`) rather than `.firstname` — falls back to the login when
+     * `User::getFriendlyName()`) rather than `.firstname` - falls back to the login when
      * firstname/realname aren't set, `.firstname` alone would silently render blank on those
      * accounts (confirmed empirically: the seed `glpi` account has neither set).
      */
     private const GREETING = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Bonjour {{ requesters|first.fullname }},{% else %}Bonjour,{% endif %}";
 
     // Same Twig structure as GREETING (see its own docblock for the itemtype-branching reasoning),
-    // only the literal greeting word translated — everything else is Twig syntax/variable names,
+    // only the literal greeting word translated: everything else is Twig syntax/variable names,
     // language-neutral by construction. Content translation (Sprint 37) works the same way as the
     // wizard's own UI strings: a `DropdownTranslation` row per language on the `content` field,
-    // read by `AbstractITILChildTemplate::getRenderedContent()` — confirmed in core source — before
+    // read by `AbstractITILChildTemplate::getRenderedContent()` - confirmed in core source: before
     // Twig ever runs, so the *stored* template differs per language, not just the rendered output.
     private const GREETING_EN = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Hello {{ requesters|first.fullname }},{% else %}Hello,{% endif %}";
 
@@ -66,7 +66,7 @@ class FollowupLibraryBuilder
 
     private const TEMPLATES = [
         [
-            'name' => 'Relance — informations complémentaires demandées',
+            'name' => 'Relance : informations complémentaires demandées',
             'icon' => '❓',
             'content' => self::GREETING . "\n\nNous avons besoin d'informations complémentaires pour avancer sur votre demande :\n- \n\nMerci de nous répondre dans les meilleurs délais.\n\nCordialement,",
             'translations' => [
@@ -78,7 +78,7 @@ class FollowupLibraryBuilder
             ],
         ],
         [
-            'name' => 'Notification — commande ou livraison en cours',
+            'name' => 'Notification: commande ou livraison en cours',
             'icon' => '📦',
             'content' => self::GREETING . "\n\nVotre demande est en cours de traitement. Nous attendons la livraison du matériel/logiciel nécessaire et vous tiendrons informé dès réception.\n\nCordialement,",
             'translations' => [
@@ -90,7 +90,7 @@ class FollowupLibraryBuilder
             ],
         ],
         [
-            'name' => 'Notification — escalade fournisseur',
+            'name' => 'Notification: escalade fournisseur',
             'icon' => '🪜',
             'content' => self::GREETING . "\n\nVotre ticket a été transmis à notre fournisseur/éditeur pour analyse. Nous reviendrons vers vous dès que nous aurons un retour.\n\nCordialement,",
             'translations' => [
@@ -102,7 +102,7 @@ class FollowupLibraryBuilder
             ],
         ],
         [
-            'name' => 'Notification — intervention planifiée',
+            'name' => 'Notification : intervention planifiée',
             'icon' => '🗓️',
             'content' => self::GREETING . "\n\nUne intervention est planifiée pour résoudre votre demande. Merci de vous assurer de votre disponibilité à la date convenue.\n\nCordialement,",
             'translations' => [
@@ -114,7 +114,7 @@ class FollowupLibraryBuilder
             ],
         ],
         [
-            'name' => 'Notification — validation en cours',
+            'name' => 'Notification: validation en cours',
             'icon' => '✅',
             'content' => self::GREETING . "\n\nVotre demande nécessite une validation avant de pouvoir être traitée. Nous vous informerons dès qu'elle aura été obtenue.\n\nCordialement,",
             'translations' => [

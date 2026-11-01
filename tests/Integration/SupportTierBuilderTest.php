@@ -78,12 +78,12 @@ final class SupportTierBuilderTest extends TestCase
         global $DB;
         foreach (self::NAMES as $name) {
             $count = $DB->request(['FROM' => Group::getTable(), 'WHERE' => ['name' => $name, 'entities_id' => 0]])->count();
-            $this->assertSame(1, $count, "Exactly one '$name' group must exist — no duplicate.");
+            $this->assertSame(1, $count, "Exactly one '$name' group must exist: no duplicate.");
         }
     }
 
     /**
-     * Same `Translations::applyIcon()` regression guard as `CategoryBuilderTest` — toggling the
+     * Same `Translations::applyIcon()` regression guard as `CategoryBuilderTest` - toggling the
      * icon on then off must update the existing translation, not leave the old value stuck.
      */
     public function testTogglingIconsOnThenOffUpdatesTheTranslation(): void

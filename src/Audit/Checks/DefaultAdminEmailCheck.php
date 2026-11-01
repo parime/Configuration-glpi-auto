@@ -22,7 +22,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
 
 /**
- * `admin_email` reste à sa valeur d'usine `admsys@localhost` sur une installation GLPI fraîche —
+ * `admin_email` reste à sa valeur d'usine `admsys@localhost` sur une installation GLPI fraîche -
  * confirmé en conditions réelles contre une instance GLPI 11 réelle (jamais vide/NULL par défaut,
  * contrairement à ce qu'on pourrait supposer). Cette adresse sert aux notifications système et aux
  * réinitialisations de mot de passe : la laisser telle quelle signifie qu'aucun humain ne la reçoit

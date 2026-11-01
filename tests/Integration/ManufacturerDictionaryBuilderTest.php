@@ -32,7 +32,7 @@ use RuleDictionnaryManufacturerCollection;
 
 final class ManufacturerDictionaryBuilderTest extends TestCase
 {
-    private const RULE_NAME = 'Fabricant — normalisation « HP »';
+    private const RULE_NAME = 'Fabricant: normalisation « HP »';
 
     private function buildConfig(bool $enabled, bool $assetTypes = true): Config
     {

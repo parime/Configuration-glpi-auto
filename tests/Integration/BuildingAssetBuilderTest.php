@@ -31,7 +31,7 @@ use GlpiPlugin\Configurationglpiauto\Config;
 use PHPUnit\Framework\TestCase;
 
 /**
- * `BuildingAssetBuilder` creates GLPI 11's third custom asset type this plugin manages ("Local") —
+ * `BuildingAssetBuilder` creates GLPI 11's third custom asset type this plugin manages ("Local") -
  * see `VehicleAssetBuilderTest`'s own docblock for why the shared instance means every assertion
  * here checks the definition's real, current shape rather than "how many rows got created just
  * now" (a "Local" definition already exists on this instance, id 51, from earlier runs).
@@ -127,16 +127,16 @@ final class BuildingAssetBuilderTest extends TestCase
         sort($names);
         $expected = self::EXPECTED_FIELDS;
         sort($expected);
-        $this->assertSame($expected, $names, 'Exactly the 3 fields this class declares — no more, no fewer, no duplicates.');
+        $this->assertSame($expected, $names, 'Exactly the 3 fields this class declares: no more, no fewer, no duplicates.');
     }
 
     public function testBuildSeedsTheNativeTypeDropdownWithoutDuplicating(): void
     {
         $builder = new BuildingAssetBuilder();
         $builder->build($this->buildConfig(['batiment']));
-        // Called twice deliberately — the real regression is that a second run must not duplicate
+        // Called twice deliberately: the real regression is that a second run must not duplicate
         // the native type dropdown (seeded unconditionally, independent of the definition's own
-        // isNew state — see the class's own build() comments).
+        // isNew state: see the class's own build() comments).
         $builder->build($this->buildConfig(['batiment']));
 
         $definition = new AssetDefinition();
@@ -154,7 +154,7 @@ final class BuildingAssetBuilderTest extends TestCase
     }
 
     /**
-     * Same regression class as `VehicleAssetBuilderTest`'s own equivalent test — see that test's
+     * Same regression class as `VehicleAssetBuilderTest`'s own equivalent test: see that test's
      * docblock for the full root cause (`MeetingRoomFormBuilder`'s real submission path is what
      * first surfaced it for this second custom asset type).
      */

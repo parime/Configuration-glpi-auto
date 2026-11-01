@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 use RequestType;
 
 /**
- * Runs against a real GLPI instance — exercises the real `DropdownTranslation` add/update calls,
+ * Runs against a real GLPI instance: exercises the real `DropdownTranslation` add/update calls,
  * not just the builder's own return value.
  */
 final class RequestTypeTranslationBuilderTest extends TestCase
@@ -75,7 +75,7 @@ final class RequestTypeTranslationBuilderTest extends TestCase
     /**
      * Regression guard for a real bug found manually: `DropdownTranslation::update()` silently
      * does nothing (returns false, no exception) when the input omits itemtype/items_id/field/
-     * language — `checkBeforeAddorUpdate()` re-derives those from $input, not from the loaded
+     * language - `checkBeforeAddorUpdate()` re-derives those from $input, not from the loaded
      * item, so an id+value-only update() call (the usual CommonDBTM shape) is rejected. Confirmed
      * live before fixing: toggling icons on after a prior translation-only run left the old,
      * un-iconed value in place with no error anywhere. This test builds *twice* (translations
@@ -95,7 +95,7 @@ final class RequestTypeTranslationBuilderTest extends TestCase
         $tr = $DB->request(['FROM' => 'glpi_dropdowntranslations', 'WHERE' => ['itemtype' => RequestType::class, 'items_id' => $type->getID(), 'language' => 'fr_FR']])->current();
         $this->assertSame('🖥️ Formulaire web', $tr['value']);
 
-        // And back off again — same update path, opposite direction.
+        // And back off again: same update path, opposite direction.
         $builder->build($this->buildConfig(true, false));
         $type->getFromDB($type->getID());
         $this->assertSame('Helpdesk', $type->fields['name']);

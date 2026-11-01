@@ -28,13 +28,13 @@ use TaskTemplate;
 
 final class TaskTemplateBuilderTest extends TestCase
 {
-    private const NAME = 'Onboarding — Arrivée collaborateur';
+    private const NAME = 'Onboarding : Arrivée collaborateur';
 
     private const CATEGORY_NAME = 'Gestion des comptes utilisateurs';
 
     /**
      * `TaskTemplateBuilder::findCategoryId()` resolves the target category by name against
-     * whatever `TaskCategoryBuilder` already created (see that class's own docblock) — it never
+     * whatever `TaskCategoryBuilder` already created (see that class's own docblock): it never
      * creates the category itself. On a fresh install (unlike this project's own long-lived shared
      * dev instance, where every category already exists from earlier runs) that category genuinely
      * doesn't exist yet, so this suite must build it itself rather than assume it.
@@ -90,11 +90,11 @@ final class TaskTemplateBuilderTest extends TestCase
         $category = new TaskCategory();
         $this->assertTrue($category->getFromDBByCrit(['name' => 'Sécurité & Audit', 'taskcategories_id' => 0]));
         $template = new TaskTemplate();
-        $this->assertTrue($template->getFromDBByCrit(['name' => 'Sécurité — Nettoyage d\'un poste infecté']));
+        $this->assertTrue($template->getFromDBByCrit(['name' => 'Sécurité : Nettoyage d\'un poste infecté']));
         $this->assertSame((int) $category->getID(), (int) $template->fields['taskcategories_id']);
         $this->assertStringContainsString('Isoler le poste du réseau', $template->fields['content']);
-        $this->assertTrue((new TaskTemplate())->getFromDBByCrit(['name' => 'Sécurité — Accueil d\'un prestataire externe']));
-        $this->assertTrue((new TaskTemplate())->getFromDBByCrit(['name' => 'Sécurité — Revue des privilèges d\'accès']));
+        $this->assertTrue((new TaskTemplate())->getFromDBByCrit(['name' => 'Sécurité : Accueil d\'un prestataire externe']));
+        $this->assertTrue((new TaskTemplate())->getFromDBByCrit(['name' => 'Sécurité : Revue des privilèges d\'accès']));
     }
 
     public function testBuildIsIdempotentAndDoesNotDuplicateTemplates(): void
@@ -107,13 +107,13 @@ final class TaskTemplateBuilderTest extends TestCase
 
         global $DB;
         $count = $DB->request(['FROM' => TaskTemplate::getTable(), 'WHERE' => ['name' => self::NAME]])->count();
-        $this->assertSame(1, $count, 'Exactly one row must exist — no duplicate.');
+        $this->assertSame(1, $count, 'Exactly one row must exist: no duplicate.');
     }
 
     /**
      * Regression guard: a template created while `TaskCategoryBuilder` hadn't run yet (wizard
      * steps are independent and can run in any order) used to stay stuck with
-     * `taskcategories_id = 0` forever — `getOrCreateTemplate()` found the existing row by name and
+     * `taskcategories_id = 0` forever - `getOrCreateTemplate()` found the existing row by name and
      * returned early without ever revisiting its category FK.
      */
     public function testASecondRunHealsAPreviouslyUnresolvedCategory(): void
@@ -165,7 +165,7 @@ final class TaskTemplateBuilderTest extends TestCase
     }
 
     /**
-     * `Translations::applyContent()` — a distinct mechanism from `applyIcon()` (field `content`,
+     * `Translations::applyContent()` - a distinct mechanism from `applyIcon()` (field `content`,
      * not `name`), used here for the full multilingual checklist text rather than a name prefix.
      */
     public function testAppliesContentTranslationsForEveryLanguage(): void

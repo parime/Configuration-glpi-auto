@@ -26,14 +26,14 @@ use DropdownTranslation;
  * duplicate this before Sprint 35).
  *
  * Confirmed the 5 language codes against GLPI core itself (`.mo` files present in `locales/` for
- * all five) — same codes already used for `fr_FR` throughout this plugin. Deliberately scoped to
+ * all five): same codes already used for `fr_FR` throughout this plugin. Deliberately scoped to
  * the *data* this plugin generates (state names, category names...), not the wizard's own
  * interface text: this plugin ships zero `.po`/`.mo` files for itself, so every `__()` call in its
- * own templates/PHP only ever renders in French regardless of session language — a separate,
+ * own templates/PHP only ever renders in French regardless of session language: a separate,
  * unstarted body of work, not touched here.
  *
  * Manufacturer names (`ManufacturerBuilder`) are deliberately absent from `MAP`: they're proper
- * nouns ("Dell", "Cisco"...), identical in every language — `applyIcon()`'s fallback to the French
+ * nouns ("Dell", "Cisco"...), identical in every language - `applyIcon()`'s fallback to the French
  * text for missing entries already produces the right result for them without a MAP entry.
  */
 final class Translations
@@ -114,15 +114,15 @@ final class Translations
         'Problème standard' => ['en_GB' => 'Standard problem', 'de_DE' => 'Standardproblem', 'it_IT' => 'Problema standard', 'es_ES' => 'Problema estándar', 'pt_BR' => 'Problema padrão'],
 
         // ---- TaskTemplateBuilder (glpi_tasktemplates) ----
-        'Onboarding — Arrivée collaborateur' => ['en_GB' => 'Onboarding — New employee', 'de_DE' => 'Onboarding — Neuer Mitarbeiter', 'it_IT' => 'Onboarding — Nuovo dipendente', 'es_ES' => 'Incorporación — Nuevo empleado', 'pt_BR' => 'Onboarding — Admissão de colaborador'],
-        'Offboarding — Départ collaborateur' => ['en_GB' => 'Offboarding — Employee departure', 'de_DE' => 'Offboarding — Austritt Mitarbeiter', 'it_IT' => 'Offboarding — Uscita dipendente', 'es_ES' => 'Baja — Salida de empleado', 'pt_BR' => 'Offboarding — Desligamento de colaborador'],
+        'Onboarding : Arrivée collaborateur' => ['en_GB' => 'Onboarding: New employee', 'de_DE' => 'Onboarding: Neuer Mitarbeiter', 'it_IT' => 'Onboarding: Nuovo dipendente', 'es_ES' => 'Incorporación: Nuevo empleado', 'pt_BR' => 'Onboarding: Admissão de colaborador'],
+        'Offboarding : Départ collaborateur' => ['en_GB' => 'Offboarding: Employee departure', 'de_DE' => 'Offboarding: Austritt Mitarbeiter', 'it_IT' => 'Offboarding: Uscita dipendente', 'es_ES' => 'Baja: Salida de empleado', 'pt_BR' => 'Offboarding: Desligamento de colaborador'],
 
         // ---- FollowupLibraryBuilder (glpi_itilfollowuptemplates) ----
-        'Relance — informations complémentaires demandées' => ['en_GB' => 'Follow-up — additional information requested', 'de_DE' => 'Nachfrage — zusätzliche Informationen angefordert', 'it_IT' => 'Sollecito — informazioni aggiuntive richieste', 'es_ES' => 'Recordatorio — información adicional solicitada', 'pt_BR' => 'Lembrete — informações adicionais solicitadas'],
-        'Notification — commande ou livraison en cours' => ['en_GB' => 'Notification — order or delivery in progress', 'de_DE' => 'Benachrichtigung — Bestellung oder Lieferung läuft', 'it_IT' => 'Notifica — ordine o consegna in corso', 'es_ES' => 'Notificación — pedido o entrega en curso', 'pt_BR' => 'Notificação — pedido ou entrega em andamento'],
-        'Notification — escalade fournisseur' => ['en_GB' => 'Notification — vendor escalation', 'de_DE' => 'Benachrichtigung — Eskalation an Lieferant', 'it_IT' => 'Notifica — escalation al fornitore', 'es_ES' => 'Notificación — escalado al proveedor', 'pt_BR' => 'Notificação — escalonamento ao fornecedor'],
-        'Notification — intervention planifiée' => ['en_GB' => 'Notification — scheduled intervention', 'de_DE' => 'Benachrichtigung — geplanter Eingriff', 'it_IT' => 'Notifica — intervento pianificato', 'es_ES' => 'Notificación — intervención programada', 'pt_BR' => 'Notificação — intervenção programada'],
-        'Notification — validation en cours' => ['en_GB' => 'Notification — approval in progress', 'de_DE' => 'Benachrichtigung — Freigabe läuft', 'it_IT' => 'Notifica — approvazione in corso', 'es_ES' => 'Notificación — aprobación en curso', 'pt_BR' => 'Notificação — aprovação em andamento'],
+        'Relance : informations complémentaires demandées' => ['en_GB' => 'Follow-up: additional information requested', 'de_DE' => 'Nachfrage: zusätzliche Informationen angefordert', 'it_IT' => 'Sollecito: informazioni aggiuntive richieste', 'es_ES' => 'Recordatorio: información adicional solicitada', 'pt_BR' => 'Lembrete : informações adicionais solicitadas'],
+        'Notification: commande ou livraison en cours' => ['en_GB' => 'Notification: order or delivery in progress', 'de_DE' => 'Benachrichtigung: Bestellung oder Lieferung läuft', 'it_IT' => 'Notifica: ordine o consegna in corso', 'es_ES' => 'Notificación: pedido o entrega en curso', 'pt_BR' => 'Notificação : pedido ou entrega em andamento'],
+        'Notification: escalade fournisseur' => ['en_GB' => 'Notification: vendor escalation', 'de_DE' => 'Benachrichtigung: Eskalation an Lieferant', 'it_IT' => 'Notifica: escalation al fornitore', 'es_ES' => 'Notificación: escalado al proveedor', 'pt_BR' => 'Notificação : escalonamento ao fornecedor'],
+        'Notification : intervention planifiée' => ['en_GB' => 'Notification: scheduled intervention', 'de_DE' => 'Benachrichtigung: geplanter Eingriff', 'it_IT' => 'Notifica: intervento pianificato', 'es_ES' => 'Notificación: intervención programada', 'pt_BR' => 'Notificação : intervenção programada'],
+        'Notification: validation en cours' => ['en_GB' => 'Notification: approval in progress', 'de_DE' => 'Benachrichtigung: Freigabe läuft', 'it_IT' => 'Notifica: approvazione in corso', 'es_ES' => 'Notificación: aprobación en curso', 'pt_BR' => 'Notificação : aprovação em andamento'],
 
         // ---- ValidationTemplateBuilder (glpi_itilvalidationtemplates) ----
         'Validation hiérarchique (N+1)' => ['en_GB' => 'Hierarchical approval (line manager)', 'de_DE' => 'Hierarchische Freigabe (Vorgesetzter)', 'it_IT' => 'Approvazione gerarchica (responsabile)', 'es_ES' => 'Aprobación jerárquica (responsable directo)', 'pt_BR' => 'Aprovação hierárquica (superior direto)'],
@@ -148,7 +148,7 @@ final class Translations
         'Support N2' => ['en_GB' => 'Support N2', 'de_DE' => 'Support N2', 'it_IT' => 'Supporto N2', 'es_ES' => 'Soporte N2', 'pt_BR' => 'Suporte N2'],
         'Support N3' => ['en_GB' => 'Support N3', 'de_DE' => 'Support N3', 'it_IT' => 'Supporto N3', 'es_ES' => 'Soporte N3', 'pt_BR' => 'Suporte N3'],
 
-        // ---- CategoryBuilder (glpi_itilcategories) — top-level branches ----
+        // ---- CategoryBuilder (glpi_itilcategories): top-level branches ----
         'IT & SI' => ['en_GB' => 'IT & Information Systems', 'de_DE' => 'IT & Informationssysteme', 'it_IT' => 'IT e Sistemi Informativi', 'es_ES' => 'TI y Sistemas de Información', 'pt_BR' => 'TI e Sistemas de Informação'],
         'Bâtiment & Moyens Généraux' => ['en_GB' => 'Facilities & General Services', 'de_DE' => 'Gebäude & Allgemeine Dienste', 'it_IT' => 'Edificio e Servizi Generali', 'es_ES' => 'Edificio y Servicios Generales', 'pt_BR' => 'Predial e Serviços Gerais'],
         'Flotte Automobile & Mobilité' => ['en_GB' => 'Vehicle Fleet & Mobility', 'de_DE' => 'Fuhrpark & Mobilität', 'it_IT' => 'Flotta Auto e Mobilità', 'es_ES' => 'Flota de Vehículos y Movilidad', 'pt_BR' => 'Frota de Veículos e Mobilidade'],
@@ -349,7 +349,7 @@ final class Translations
         'Casque' => ['en_GB' => 'Headset', 'de_DE' => 'Headset', 'it_IT' => 'Cuffie', 'es_ES' => 'Auriculares', 'pt_BR' => 'Headset'],
         'Station d\'accueil' => ['en_GB' => 'Docking station', 'de_DE' => 'Dockingstation', 'it_IT' => 'Docking station', 'es_ES' => 'Estación de acoplamiento', 'pt_BR' => 'Estação de acoplamento'],
         // 'Scanner' déjà défini plus haut (catégorie de ticket, même libellé français, même
-        // traduction dans les 5 langues) — doublon accidentel trouvé et retiré par PHPStan
+        // traduction dans les 5 langues) : doublon accidentel trouvé et retiré par PHPStan
         // (array.duplicateKey), inoffensif ici (valeurs identiques) mais réel.
         'Disque externe' => ['en_GB' => 'External drive', 'de_DE' => 'Externe Festplatte', 'it_IT' => 'Disco esterno', 'es_ES' => 'Disco externo', 'pt_BR' => 'Disco externo'],
 
@@ -520,7 +520,7 @@ final class Translations
     ];
 
     /**
-     * Writes one `DropdownTranslation` row per language (fr_FR + the 4 above) — icon in front of
+     * Writes one `DropdownTranslation` row per language (fr_FR + the 4 above): icon in front of
      * the text, same visual format as the original French-only version. A name with no `MAP` entry
      * (manufacturer brand names, or anything not yet catalogued here) falls back to the French text
      * itself for every language: the icon still has to render regardless of session language, even
@@ -530,7 +530,7 @@ final class Translations
     {
         foreach (self::namesByLanguage($frenchName) as $language => $text) {
             // trim(): callers with no icon of their own (e.g. CategoryBuilder's leaf nodes, which
-            // were never given an emoji) pass '' here — still want the translated text alone, not
+            // were never given an emoji) pass '' here: still want the translated text alone, not
             // a stray leading space from the empty icon slot.
             $value = trim(sprintf('%s %s', $icon, $text));
 
@@ -539,7 +539,7 @@ final class Translations
             if (!Lookup::loadFirst($translation, $crit)) {
                 $translation->add($crit + ['value' => $value]);
             } elseif ($translation->fields['value'] !== $value) {
-                // Real bug found live (2026-08-23): this used to only ever add(), never update() —
+                // Real bug found live (2026-08-23): this used to only ever add(), never update() -
                 // a name/icon change between versions (or re-running after this MAP itself changed)
                 // left the old value stuck forever, no error anywhere. DropdownTranslation's own
                 // prepareInputForUpdate() re-derives whether the update is legal from
@@ -571,13 +571,13 @@ final class Translations
 
     /**
      * Same `DropdownTranslation` mechanism as `applyIcon()`, but for the `content` field of
-     * `ITILFollowupTemplate`/`SolutionTemplate`/`TaskTemplate` instead of `name` — confirmed in
+     * `ITILFollowupTemplate`/`SolutionTemplate`/`TaskTemplate` instead of `name` - confirmed in
      * `AbstractITILChildTemplate::getRenderedContent()` that GLPI resolves *this* field the same
      * way, by the session language of whichever technician applies the template. Unlike `applyIcon`,
      * translations are supplied directly by the caller (each builder's own `TEMPLATES` array) rather
      * than looked up from a shared `MAP`: template bodies are full paragraphs, not short recurring
      * words, so a giant central map keyed by huge strings would be fragile (one whitespace
-     * difference and the lookup silently misses) for no real reuse benefit — the *only* piece that
+     * difference and the lookup silently misses) for no real reuse benefit: the *only* piece that
      * does repeat across templates (the "Bonjour"-style greeting Twig prefix) is already factored
      * out as a `GREETING_EN`/`_DE`/`_IT`/`_ES`/`_PT` constant in each builder, same "small local
      * duplication" convention as the French `GREETING` constant it mirrors.
@@ -595,7 +595,7 @@ final class Translations
             if (!Lookup::loadFirst($translation, $crit)) {
                 $translation->add($crit + ['value' => $content]);
             } elseif ($translation->fields['value'] !== $content) {
-                // Same add-only bug already fixed on applyIcon() — see that method's comment.
+                // Same add-only bug already fixed on applyIcon(): see that method's comment.
                 $translation->update($crit + ['id' => (int) $translation->getID(), 'value' => $content]);
             }
         }

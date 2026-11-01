@@ -18,6 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   plugin assetsign les réutilise pour ses tickets d'arrivée et de départ. À la mise à jour, les
   objets déjà créés par une version antérieure sont retrouvés une fois et enregistrés.
 
+### Changed
+
+- **Plus de tiret cadratin** (issue #390) : dans les textes affichés, les noms des objets créés,
+  les traductions et la documentation, il est remplacé par « : », une virgule ou « - » selon le
+  cas. À la mise à jour, les objets créés par une version antérieure sont renommés (nom, nom complet
+  des arborescences, traductions), pour que l'assistant les retrouve au lieu d'en créer un second.
+  Seuls les noms donnés par le plugin sont touchés : un nom modifié par l'administrateur reste tel
+  quel. Les textes déjà enregistrés (descriptions, contenus) ne sont pas réécrits.
+
 ## [1.14.0] - 2026-10-29
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
@@ -495,7 +504,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Compatibilité GLPI 11 et GLPI 12 depuis un seul paquet** (plafond `PLUGIN_CONFIGURATIONGLPIAUTO_MAX_GLPI`
   relevé à `12.99.99`), même approche que les plugins jumeaux assetsign-glpi et grcmanager :
-  - `$rightname` (typé en GLPI 12, non typé en GLPI 11 — aucune déclaration unique ne passe sur
+  - `$rightname` (typé en GLPI 12, non typé en GLPI 11 : aucune déclaration unique ne passe sur
     les deux) redéclaré par une classe intermédiaire `Compat\Base\…Base` déclarée selon la
     version installée, la valeur propre à chaque classe passant par une constante `RIGHTNAME`.
     Une classe et non un trait : sur PHP 8.2 à 8.4, un trait ne peut pas
@@ -506,10 +515,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     (supprimés en GLPI 12) ;
   - HTTP sortant (jours fériés, géocodage, vérification de version GitHub) via un adaptateur
     `Compat\Http` : `Glpi\Toolbox\HttpClient` en GLPI 12, client Guzzle de GLPI en GLPI 11 ;
-  - base de connaissances : GLPI 12 a supprimé `KnowbaseItemCategory` — chaque branche devient un
+  - base de connaissances : GLPI 12 a supprimé `KnowbaseItemCategory` - chaque branche devient un
     article conteneur sous l'article racine (même forme que la migration 11→12 de GLPI), visible
     de toute l'organisation, icônes via `KnowbaseItemTranslation` ;
-  - OLA : GLPI 12 exige un groupe assignable par OLA — rattachés au groupe « Support N1 » ;
+  - OLA : GLPI 12 exige un groupe assignable par OLA : rattachés au groupe « Support N1 » ;
   - nouveau job CI « GLPI 12 » (installation, cycle désinstallation/réinstallation, suite
     d'intégration complète), ajouté au Quality Gate.
 
@@ -524,7 +533,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Le texte de recommandation de l'audit continu "Comptes par défaut utilisent encore leur mot de
   passe d'usine" apparaissait dupliqué**, sa propre traduction française collée deux fois en
   français, et une copie complète du texte source français ajoutée à la suite de la vraie
-  traduction dans les 5 autres langues (anglais, allemand, espagnol, italien, portugais) —
+  traduction dans les 5 autres langues (anglais, allemand, espagnol, italien, portugais) -
   découvert lors d'un passage en revue manuel de l'écran d'audit sur une instance peuplée de
   données réalistes (le job CI "Locale Completeness" ne vérifie que la *présence* d'une traduction
   par chaîne, jamais son contenu, donc ce genre de corruption ne peut pas y être détecté). Introduit
@@ -535,7 +544,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **PHPStan n'analysait jamais le vrai code métier** : `phpstan.neon` limitait volontairement le
   scope à `tests/Unit`, avec un commentaire expliquant que le cœur GLPI n'était pas stubé pour
-  l'analyse statique — alors que le plugin jumeau `assetsign-glpi` prouvait déjà le contraire via
+  l'analyse statique : alors que le plugin jumeau `assetsign-glpi` prouvait déjà le contraire via
   un bootstrap dédié (charge le vrai autoload GLPI, sans connexion DB). Même technique reprise ici
   (`.phpstan-bootstrap.php`) : `src/`, `front/`, `ajax/`, `hook.php`, `setup.php` sont désormais
   réellement scannés (109 fichiers auparavant hors de portée). Sur les 243 signalements initiaux
@@ -546,7 +555,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   sur `TASK_TYPES` (toujours vide, sans effet) ; une vérification redondante déjà couverte par un
   retour anticipé dans `VehicleIncidentFormBuilder.php` ; plusieurs annotations de type
   `array<string, ...>` en réalité `array<int, ...>`/`array<int|string, ...>` (les tiers SLA/OLA
-  sont indexés par des niveaux de priorité entiers, pas des chaînes — un cast `(string)` trompeur
+  sont indexés par des niveaux de priorité entiers, pas des chaînes : un cast `(string)` trompeur
   mais inoffensif, PHP normalisant de toute façon les clés numériques). Le reste (gardes
   défensives contre des données POST/JSON externes, dette de précision de type `array` sans valeur
   précisée) est documenté explicitement dans `ignoreErrors`, jamais masqué silencieusement.
@@ -554,18 +563,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Le job CI "PHPStan Analysis" tournait sans aucun GLPI disponible** : contrairement à
   l'exécution locale (conteneur Docker de dev, où `/var/www/html/glpi/vendor/autoload.php` existe
   réellement), ce job se contentait d'un `actions/checkout` + `composer install` sur un runner
-  `ubuntu-latest` nu — les deux chemins vérifiés par `.phpstan-bootstrap.php` étaient donc toujours
+  `ubuntu-latest` nu : les deux chemins vérifiés par `.phpstan-bootstrap.php` étaient donc toujours
   absents, PHPStan tournait sans aucune classe du cœur GLPI chargée, et remontait 1000+ faux
   `class.notFound` (constaté sur la PR #274, alors que le même code donnait 0 erreur en local). Le
   job construit désormais son propre GLPI réel via Docker (MariaDB + image officielle `glpi/glpi`,
-  auto-installée) et lance PHPStan à l'intérieur via `docker exec` — même recette déjà éprouvée par
+  auto-installée) et lance PHPStan à l'intérieur via `docker exec` - même recette déjà éprouvée par
   le plugin jumeau `assetsign-glpi` (`.github/workflows/ci.yml`).
 
 - **Le plugin recommandé « remise-glpi » n'existe plus sous ce nom** : `MarketplaceBuilder` et
   `StateBuilder` citaient encore l'ancien nom du dépôt jumeau (`https://github.com/parime/remise-glpi`),
-  renommé `assetsign-glpi` il y a longtemps — GitHub redirige encore l'ancienne URL (301), donc le
+  renommé `assetsign-glpi` il y a longtemps : GitHub redirige encore l'ancienne URL (301), donc le
   lien ne cassait jamais franchement, ce qui a laissé un nom et une description périmés (ne
-  mentionnant ni la signature électronique, ni le passeport numérique, ni le score de santé — les
+  mentionnant ni la signature électronique, ni le passeport numérique, ni le score de santé : les
   fonctionnalités phares actuelles du plugin) passer inaperçus dans l'assistant. Corrigé aux deux
   endroits (nom, URL, description), vérifié contre le vrai dépôt (`gh repo view`) plutôt que contre
   une ancienne citation.
@@ -574,24 +583,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `StateBuilder` recommandait déjà "En stock"/"Attribué"/"Donné"/"Vendu"/"Attente restitution" pour
   interopérer avec les déclenchements automatiques de remise/don/vente/restitution du plugin jumeau,
   mais rien pour son déclenchement Destruction (`Assetsign::TYPE_DESTRUCTION`,
-  `Config.destruction_states`) — "Obsolète"/"Défectueux" décrivent un état du matériel, pas
+  `Config.destruction_states`) - "Obsolète"/"Défectueux" décrivent un état du matériel, pas
   l'événement de mise au rebut lui-même (même distinction déjà faite entre "Attribué"/"En stock" et
   "Donné"/"Vendu"). Nouveau statut "Détruit" ajouté (14 → 15 statuts), marqué recommandé.
 
 ### Changed
 
 - **Le panneau « Marketplace & plugins recommandés » était noyé au milieu de l'étape 14** (Réglages
-  généraux), entre une dizaine de cases à cocher sans rapport — peu de chances qu'un administrateur
+  généraux), entre une dizaine de cases à cocher sans rapport : peu de chances qu'un administrateur
   le remarque avant de cliquer sur "Terminer". Déplacé en bas de l'étape 19 (Récapitulatif), la
   seule page que chaque administrateur lit réellement avant de valider, pour lui donner une vraie
   visibilité. Le deuxième plugin jumeau, `glpi-iso27001-management` (GRC/ISO 27001), a aussi été
-  ajouté à la liste — il ne l'était pas alors que les trois plugins sont conçus comme complémentaires.
+  ajouté à la liste : il ne l'était pas alors que les trois plugins sont conçus comme complémentaires.
 
 ### Added
 
 - **Analyse continue (issue #131)** : la première tâche planifiée GLPI (`CronTask`) que ce plugin
   enregistre lui-même (`GeneralSettingsBuilder` n'activait jusqu'ici que des CronTasks *existants*
-  de GLPI cœur) — `AuditWatchCron` ré-exécute chaque semaine le registre d'audit existant
+  de GLPI cœur) - `AuditWatchCron` ré-exécute chaque semaine le registre d'audit existant
   (`AuditService`, #112/#125) et accumule un compteur de *nouveaux* constats critiques dans la
   configuration du plugin. "Surveillance en temps réel" et "alertes proactives" (texte de l'issue)
   pris au sens réalisable pour un plugin de configuration ponctuelle : pas de nouvelle
@@ -605,13 +614,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   par chaque constat d'audit) ; #126 "API REST complète" reportée (incompatible en l'état avec le
   principe "jamais écrire silencieusement" au-delà de la lecture).
 - **Bonnes pratiques automatiques (issue #125)** : 3 nouvelles vérifications ajoutées au registre
-  d'audit existant (`AuditService`, issue #112) plutôt qu'une réimplémentation — "analyse continue
+  d'audit existant (`AuditService`, issue #112) plutôt qu'une réimplémentation - "analyse continue
   de la configuration" et "suggestions d'amélioration" (texte de l'issue) sont déjà exactement ce
   que fait ce registre, et "optimisation automatique" y est déjà tranchée au sens strict (jamais
   sans clic explicite). `DefaultCredentialsCheck` (nouveau) détecte si l'un des 4 comptes de
   démonstration standards de GLPI (`glpi`, `tech`, `normal`, `post-only`) utilise encore son mot de
   passe d'usine (`password_verify()` contre le hash réel, jamais de mot de passe lu ou stocké en
-  clair) — un vrai risque de sécurité ISO27001 (A.9, comptes par défaut), confirmé en conditions
+  clair) : un vrai risque de sécurité ISO27001 (A.9, comptes par défaut), confirmé en conditions
   réelles sur l'instance de développement partagée. `WeakPasswordPolicyCheck` (nouveau) signale une
   longueur minimale de mot de passe sous les 8 caractères (plancher ANSSI/NIST, pas une valeur
   propre à une organisation) ou l'absence de toute exigence de complexité. `NoTicketCategoriesCheck`
@@ -622,35 +631,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Guide ITIL complet (issue #124)** : nouveau document `docs/ITIL_GUIDE.md` expliquant, pour
   chaque pratique ITIL 4 (gestion des incidents/demandes, SLA/OLA et escalade N1→N2→N3, gestion
   des changements/problèmes, workflow d'approbation, gestion de la connaissance, enquêtes de
-  satisfaction), quelle étape de l'assistant la construit concrètement — l'audit interne déjà
+  satisfaction), quelle étape de l'assistant la construit concrètement : l'audit interne déjà
   présent dans `ROADMAP.md` montrait que l'essentiel de ces pratiques est déjà implémenté depuis
   longtemps, il manquait une explication pensée pour un administrateur, pas une réimplémentation.
   Seul vrai manque concret identifié : deux cartes de conformité SLA natives à GLPI
   (`bn_count_tickets_expired_by_tech`/`_group`) n'apparaissent sur aucun tableau de bord par
   défaut. `DashboardBuilder` (nouveau) crée un tableau de bord GLPI natif dédié ("Tableau de bord
   ITIL", case à cocher dans l'étape "Réglages généraux") les mettant en avant, en plus des
-  indicateurs déjà présents sur le tableau de bord "Assistance" — jamais recréé sur un second
+  indicateurs déjà présents sur le tableau de bord "Assistance" - jamais recréé sur un second
   passage de l'assistant (`Dashboard::saveItems()` fait un remplacement complet, pas une fusion :
   toute personnalisation d'un administrateur sur ce tableau de bord doit survivre).
 - **Configuration SMTP avancée (issue #121)** : nouvelle étape d'assistant (18/19, "Configuration
   SMTP") pour revoir directement les réglages d'envoi de mail natifs de GLPI (serveur, port,
   adresse d'expédition, identifiants, vérification du certificat TLS). `SmtpBuilder` (nouveau)
-  écrit **directement** dans `Config::setConfigurationValues('core', ...)` — jamais dans `Config`
+  écrit **directement** dans `Config::setConfigurationValues('core', ...)` - jamais dans `Config`
   propre à ce plugin ni dans `BlueprintSerializer`/`ConfigHistory` : un mot de passe SMTP qui y
   transiterait fuiterait en clair dans chaque export de Blueprint et chaque entrée d'historique
   automatique. GLPI cœur chiffre déjà `smtp_passwd` via `GLPIKey` (confirmé en lisant `Config::
-  setConfigurationValues()`) — cette classe ne réimplémente aucun chiffrement, et le mot de passe
+  setConfigurationValues()`) : cette classe ne réimplémente aucun chiffrement, et le mot de passe
   n'est jamais pré-rempli/renvoyé au navigateur (même convention que l'écran natif GLPI). "Tests de
   connectivité" et "gestion des certificats" (texte de l'issue) sont déjà couverts par GLPI cœur
-  (`NotificationMailing::testNotification()`, réglage `smtp_check_certificate`) — un simple lien
+  (`NotificationMailing::testNotification()`, réglage `smtp_check_certificate`) : un simple lien
   vers l'écran natif remplace toute réimplémentation, GLPI ne teste de toute façon que la
   configuration réellement enregistrée, jamais un formulaire en cours de saisie.
 - **Import/Export avancé (issue #117)** : appliquer un Blueprint (`front/profile.form.php`)
   redirige désormais vers l'écran de diff+application sélective déjà construit pour la
-  restauration d'historique (#114, `front/history_restore.php`, généralisé aux deux itemtypes) —
+  restauration d'historique (#114, `front/history_restore.php`, généralisé aux deux itemtypes) -
   fini l'écrasement complet sans revue ("conflict resolution"). Cet écran affiche aussi un
   nouveau bandeau "Corrections automatiques", listant les valeurs que `Config` ajusterait
-  silencieusement de toute façon (branche de catégorie disparue, statut hors liste blanche...) —
+  silencieusement de toute façon (branche de catégorie disparue, statut hors liste blanche...) -
   jamais bloquant, juste informatif ("validation automatique"). Exporter un Blueprint propose
   maintenant un écran de sélection par catégorie de réglages avant le téléchargement ("export
   sélectif"), via `BlueprintSerializer::filterConfig()`. La "planification des imports" annoncée
@@ -659,21 +668,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   plugin, aucun `CronTask` n'existant nulle part aujourd'hui.
 - **Mode Dry Run amélioré (issue #115)** : l'étape "Récapitulatif" de l'assistant affiche
   désormais un avertissement pré-déploiement sur les droits GLPI natifs manquants (création/
-  modification d'entités, règles LDAP, configuration générale) — jusqu'ici, une fonctionnalité
+  modification d'entités, règles LDAP, configuration générale) : jusqu'ici, une fonctionnalité
   entière pouvait être silencieusement ignorée à l'étape finale sans que l'opérateur délégué le
   sache. La durée estimée, jusqu'ici un texte statique identique dans tous les cas, devient un
   ordre de grandeur par palier ("quelques secondes" à "plusieurs minutes") calculé à partir du
   nombre réel d'éléments sélectionnés. Aucune nouvelle table ni classe : entièrement porté par
   `front/wizard.php`/`templates/wizard.html.twig`, périmètre volontairement limité à l'écran de
-  l'assistant — une vraie visualisation d'impact contre l'état réel de la base (N nouveaux/M déjà
+  l'assistant : une vraie visualisation d'impact contre l'état réel de la base (N nouveaux/M déjà
   existants) exigerait de retoucher chacun des ~30 `*Builder`, explicitement hors périmètre.
 - **Fonctionnalité de Rollback (issue #114)** : historique automatique des configurations
   (`ConfigHistory`) capturé juste avant chaque écrasement réel de `Config` (fin de l'assistant,
   application d'un Blueprint), plus des points de sauvegarde créés à la demande
-  (`front/history.php`, bouton "Créer un point de sauvegarde") — les 20 entrées automatiques les
+  (`front/history.php`, bouton "Créer un point de sauvegarde") : les 20 entrées automatiques les
   plus récentes sont conservées, les points de sauvegarde manuels ne sont jamais purgés. Restaurer
   une entrée (`front/history_restore.php`) affiche d'abord un diff champ par champ contre la
-  configuration actuelle, avec une case à cocher par champ pour un rollback sélectif — jamais une
+  configuration actuelle, avec une case à cocher par champ pour un rollback sélectif : jamais une
   notion de "module" figée, un simple regroupement visuel par préfixe de nom de champ. Comme pour
   les Blueprints, restaurer ne réécrit jamais silencieusement la configuration : ça pré-remplit
   `Config` puis redirige vers l'assistant pour revue humaine de chaque étape.
@@ -689,7 +698,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   testable) gère l'aller-retour export/import, avec repli sur les vraies valeurs par défaut pour
   tout champ absent d'un Blueprint exporté par une version plus ancienne du plugin.
 - **Mode Audit avancé (issue #112)** : nouvel écran "Lancer l'audit" analysant l'état réel de
-  l'instance GLPI (pas seulement ce que ce plugin a lui-même configuré) — 6 vérifications
+  l'instance GLPI (pas seulement ce que ce plugin a lui-même configuré) : 6 vérifications
   (notifications désactivées, entités sans adresse, adresse email d'administration restée au
   défaut d'usine, aucun statut/calendrier/SLA configuré), chacune avec une recommandation claire,
   et une correction en un clic pour la seule vérification dont le bon état n'est pas ambigu
@@ -702,7 +711,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   généraux activés par défaut) en ne surchargeant que `inventory_enabled`, faisant écrire à chaque
   exécution de la vraie configuration GLPI cœur (`auto_create_infocoms`, `use_notifications`, 3
   CronTasks natifs, une vraie ligne `ValidationStep`, l'état de la tâche `auditwatch`) que
-  `tearDown()` ne remettait jamais à zéro — sauf `enabled_inventory`, seul réglage que ce fichier
+  `tearDown()` ne remettait jamais à zéro : sauf `enabled_inventory`, seul réglage que ce fichier
   prétend tester. Trouvé en conditions réelles : `auto_create_infocoms` restait activé sur
   l'instance de développement partagée bien après l'exécution de cette suite, ce qui a fait échouer
   la suite de tests d'écriture Infocom d'un plugin jumeau installé sur la même instance. Corrigé en
@@ -716,21 +725,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documente dans `ROADMAP.md` un vrai casse-compatibilité GLPI 12 confirmé en lisant le code
   source réel de `12.0.0-rc1` : le cœur type désormais strictement `CommonGLPI::$rightname`
   (`public static string`), ce que 4 classes de ce plugin (`Config`, `ConfigurationProfile`,
-  `ConfigHistory`, `FuelType`) redéclarent sans type (motif GLPI 11) — une règle stricte
+  `ConfigHistory`, `FuelType`) redéclarent sans type (motif GLPI 11) : une règle stricte
   d'héritage PHP rend impossible un même fichier compatible avec GLPI 11 et 12 à la fois.
   Confirmé sans solution de compatibilité côté cœur GLPI (issue
   [glpi-project/glpi#25399](https://github.com/glpi-project/glpi/issues/25399)). Aucun changement
   de code pour l'instant, décision délibérée : `MAX_GLPI = 11.99.99` reste tel quel (c'est la
   configuration protectrice correcte tant que GLPI 12 n'est pas stable et que ce plugin n'a pas
-  reçu son propre correctif de typage) — chantier dédié (nouvelle branche/version majeure) prévu
+  reçu son propre correctif de typage) : chantier dédié (nouvelle branche/version majeure) prévu
   une fois GLPI 12 stable réellement publié.
 - Marque "Profils communautaires" (Version 1.2, issue #118) comme fermé dans `ROADMAP.md` :
   même thématique de partage/catalogue communautaire que le Marketplace de configurations (#116,
-  déjà fermé), décision du porteur du plugin de ne pas en faire une priorité actuelle — et de
+  déjà fermé), décision du porteur du plugin de ne pas en faire une priorité actuelle : et de
   toute façon pas réalisable comme simple fonctionnalité de plugin ("catalogue de profils
   certifiés" suppose une vraie infrastructure d'hébergement/modération).
 - Clarifie dans `ROADMAP.md` que la numérotation de version 1.1 à 2.0 est le schéma spéculatif
-  d'origine, sans rapport avec la vraie numérotation SemVer (déjà à la v1.3.2) — même note
+  d'origine, sans rapport avec la vraie numérotation SemVer (déjà à la v1.3.2) : même note
   corrective que celle déjà présente sur la section "Version 1.0".
 - Marque "Assistant ISO27001 complet" (Version 1.4, issue #123) comme abandonné dans
   `ROADMAP.md` : doublon fonctionnel avec le plugin dédié `glpi-iso27001-management` (GRC
@@ -748,7 +757,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   correspondant à un groupe qu'il possède lui-même (escalade de privilège complète à la prochaine
   synchronisation), créer des entités hors de son propre périmètre, ou modifier la configuration
   cœur de GLPI (palette, réglages généraux, clé d'enregistrement GLPI Network, modèles de
-  notification) — sans détenir les droits natifs correspondants (`rule_ldap`, `entity`, `config`).
+  notification) : sans détenir les droits natifs correspondants (`rule_ldap`, `entity`, `config`).
   `front/wizard.php` vérifie désormais le droit natif GLPI adapté à chaque action avant d'invoquer
   le bâtisseur correspondant (les fonctionnalités concernées sont silencieusement ignorées plutôt
   que de faire échouer tout l'assistant), les entités écrites sont filtrées par
@@ -757,7 +766,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **XSS stocké : `calendar_days`/`calendar_day_hours` contournaient la sanitization et étaient
   émis `|raw` dans un bloc `<script>`.** `Config::prepareInput()` normalisait par nom de *champ de
   formulaire* (`calendar_day`, singulier) alors que `CommonDBTM::update()` écrit par nom de
-  *colonne* — une requête nommant directement la colonne (`calendar_days`) atteignait la base non
+  *colonne* - une requête nommant directement la colonne (`calendar_days`) atteignait la base non
   sanitizée, puis le template. Même défaut structurel corrigé sur `entity_tree` (jamais un point
   d'injection, mais contournait le plafond de profondeur) et, en profondeur, sur `sla_tiers`/
   `ola_tiers`. Le template utilise désormais les accesseurs sanitizants (`getCalendarDays()`/
@@ -768,18 +777,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   supprime jamais une clé déjà enregistrée.
 - **Durcissement SSRF du proxy de géocodage** (`ajax/geocode.php`) : l'hôte de l'endpoint configuré
   est désormais résolu et rejeté s'il pointe vers une adresse privée/loopback/link-local, et les
-  redirections HTTP ne sont plus suivies — empêchait un détenteur du seul droit UPDATE du plugin de
+  redirections HTTP ne sont plus suivies : empêchait un détenteur du seul droit UPDATE du plugin de
   transformer ce proxy en SSRF semi-aveugle vers le réseau interne du serveur.
-- Le DDL brut d'installation (`src/Install/Installer.php`) n'utilise plus `die($DB->error())` — une
+- Le DDL brut d'installation (`src/Install/Installer.php`) n'utilise plus `die($DB->error())` - une
   erreur de création de table est désormais journalisée et l'installation échoue proprement.
 - `Installer::uninstall()` supprime désormais le thème personnalisé (`cga_custom.scss`) et
-  réinitialise `core.palette` s'il était encore la palette active — auparavant seul un nouveau run
+  réinitialise `core.palette` s'il était encore la palette active : auparavant seul un nouveau run
   du wizard avec la palette décochée faisait ce ménage, jamais une désinstallation directe.
 - L'appel GitHub de vérification de version (`Config::getLatestGithubVersion()`) porte désormais un
-  timeout total (`CURLOPT_TIMEOUT`), pas seulement un timeout de connexion — un hôte acceptant la
+  timeout total (`CURLOPT_TIMEOUT`), pas seulement un timeout de connexion : un hôte acceptant la
   connexion sans jamais répondre ne bloque plus indéfiniment le rendu de la page de l'assistant.
 - **`FuelType::$rightname` pointait vers le droit natif GLPI `'config'`**, dont
-  `\Config::getRights()` retire CREATE/DELETE/PURGE — "Ajouter"/"Purger" sur cet écran étaient donc
+  `\Config::getRights()` retire CREATE/DELETE/PURGE - "Ajouter"/"Purger" sur cet écran étaient donc
   impossibles pour tout le monde, super-admin inclus. Corrigé vers le droit propre du plugin
   (`Profile::RIGHT_CONFIG`), l'exact motif pour lequel ce droit dédié existe déjà.
 - Suppression de `BrandingBuilder::applyMailingSignatures()`, code mort sans appelant ni test
@@ -794,25 +803,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`can(CREATE)`/`can(PURGE)` exercés réellement, pas seulement lus). `calendar_begin`/
   `calendar_end` sont désormais aussi normalisés par `sanitizeTimeString()`, comme les champs
   `calendar_lunch_begin`/`_end` l'étaient déjà.
-- Tests d'intégration réels pour `Config` et `Install\Installer` — les deux dernières classes du
+- Tests d'intégration réels pour `Config` et `Install\Installer` - les deux dernières classes du
   plugin sans aucune couverture, complétant la campagne "aucune classe sans test". `Config` couvre
   `prepareInputForAdd()`/`prepareInputForUpdate()` (toute la sanitization d'entrée : arbre d'entités
   avec profondeur plafonnée et réglages par client, tiers SLA/OLA, palette, endpoint de géocodage,
   droits LDAP...) appelés directement sur une instance fraîche plutôt que via un vrai `add()`/
-  `update()` — ce sont des fonctions pures sans accès DB, donc sans aucun risque d'écrire sur la
+  `update()` - ce sont des fonctions pures sans accès DB, donc sans aucun risque d'écrire sur la
   vraie ligne singleton (id=1) de cette instance. `Install\Installer::install()` est ré-exécuté pour
   de vrai sur cette instance déjà installée (chaque `CREATE TABLE` est gardé par `tableExists()`,
   chaque migration par `addField()`/`dropField()`, tous idempotents) ; `uninstall()` n'est
   volontairement pas testé ici (vrai `DROP TABLE` sur les tables réelles dont dépend le reste de
-  cette suite) — ce chemin est déjà exercé pour de vrai à chaque run CI par le job dédié qui
+  cette suite) : ce chemin est déjà exercé pour de vrai à chaque run CI par le job dédié qui
   installe/active/désactive/désinstalle dans un conteneur jetable et vérifie l'absence de résidus.
 - Tests d'intégration réels pour `LocationBuilder`, `CountryHolidayBuilder`, `FuelType`,
-  `ConfigurationProfile` et `Profile` — aucune de ces 5 classes n'avait de test dédié.
+  `ConfigurationProfile` et `Profile` - aucune de ces 5 classes n'avait de test dédié.
   `LocationBuilder` couvre la règle "pas de données, pas de Location" à toute profondeur de
   l'arborescence, le rattachement au plus proche ancêtre ayant une Location, et les sous-lieux
   purement manuels imbriqués. `CountryHolidayBuilder` reste volontairement limité aux chemins
   vérifiables sans réseau (même raisonnement déjà documenté dans `RSSFeedBuilderTest` pour cette
-  classe) : désactivé, chemin vide, pays non reconnu — jamais le vrai appel Nager.Date, pour ne pas
+  classe) : désactivé, chemin vide, pays non reconnu : jamais le vrai appel Nager.Date, pour ne pas
   faire dépendre la CI de la disponibilité d'un service tiers. `Profile::uninstall()` est exercé
   puis immédiatement restauré via `install()` dans un bloc try/finally, pour ne pas laisser les
   droits Super-Admin réels de cette instance cassés en cas d'échec d'assertion en cours de route.
@@ -820,26 +829,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **`EntityBuilderTest::testBuildIsIdempotentAndReturnsTheSameEntityIds` comptait les entités
-  "Atelier" par nom seul, sans les scoper à leur parent** — révélé en ajoutant `LocationBuilderTest`
+  "Atelier" par nom seul, sans les scoper à leur parent** - révélé en ajoutant `LocationBuilderTest`
   (qui crée sa propre entité "Atelier" sous un parent différent) : les deux arborescences de test
   sont parfaitement valides indépendamment (des entités de même nom sous des parents différents ne
   sont pas des doublons), mais l'assertion, elle, ne distinguait pas les deux. Corrigé en scopant le
-  comptage à l'entité "Site Sud" précise créée par ce test — bug de test, pas de comportement réel
+  comptage à l'entité "Site Sud" précise créée par ce test : bug de test, pas de comportement réel
   du plugin.
 
-- Tests d'intégration réels pour `SlaBuilder` et `MarketplaceBuilder` — aucune des deux classes
+- Tests d'intégration réels pour `SlaBuilder` et `MarketplaceBuilder` - aucune des deux classes
   n'avait de test dédié. `SlaBuilder` est la classe la plus complexe du plugin (SLM, SLA/OLA par
   priorité, escalade N1→N2→N3) : couvre `build()`/`buildFromOverride()`, `assignToEntities()`/
   `assignMap()` (règles `RuleTicket` avec leurs critères/actions réels), et les 3 niveaux
   d'escalade (relève de priorité, réassignation de groupe avant échéance, réassignation à
   l'échéance). Les assertions sur les valeurs d'heures passent par `buildFromOverride()` avec un
-  nom de client unique par test plutôt que par le nom fixe `build()` — l'instance de dev partagée a
+  nom de client unique par test plutôt que par le nom fixe `build()` - l'instance de dev partagée a
   déjà un vrai SLM "SLA standard" issu d'exécutions réelles antérieures, jamais mis à jour sur les
   clés déjà résolues (`getOrCreateLevelAgreement()` ne réécrit jamais les heures d'un SLA déjà
   existant), donc y asserter des heures précises aurait testé de la donnée réelle laissée par un
   humain, pas ce test.
 - Tests d'intégration réels pour `ProjectTaskTemplateBuilder`, `ProjectTemplateBuilder`,
-  `EntityBuilder` et `EntityAddressBuilder` — aucune de ces 4 classes n'avait de test dédié.
+  `EntityBuilder` et `EntityAddressBuilder` - aucune de ces 4 classes n'avait de test dédié.
   `EntityAddressBuilder` est testé avec une véritable arborescence d'entités créée au préalable via
   `EntityBuilder` (résolution indépendante par chemin, comme documenté dans la classe).
 - Regression guard sur `TaskTemplateBuilder` pour la même correction (voir section Fixed).
@@ -849,7 +858,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`ProjectTaskTemplateBuilder`/`ProjectTemplateBuilder`/`TaskTemplateBuilder` laissaient
   définitivement une référence à `0` (`projecttasktypes_id`/`projecttypes_id`/`taskcategories_id`)
   quand l'étape correspondante (`ProjectTaxonomyBuilder`/`TaskCategoryBuilder`) n'avait pas encore
-  été exécutée au moment de la création** — trouvé en écrivant les tests ci-dessus : 3 gabarits de
+  été exécutée au moment de la création** - trouvé en écrivant les tests ci-dessus : 3 gabarits de
   tâches de projet, 2 projets modèles (et leurs 9 tâches), tous bloqués à `0` sur l'instance de test
   de ce projet. Cause : `getOrCreateTemplate()`/`getOrCreateTask()` retrouvent la ligne existante par
   nom et la retournent telle quelle, sans jamais revérifier sa clé étrangère une fois la
@@ -860,7 +869,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Tests d'intégration réels pour `DocumentManagementBuilder`, `FollowupLibraryBuilder`,
-  `ManufacturerDictionaryBuilder` et `PlanningEventBuilder` — aucune de ces 4 classes n'avait de test
+  `ManufacturerDictionaryBuilder` et `PlanningEventBuilder` - aucune de ces 4 classes n'avait de test
   dédié. `ManufacturerDictionaryBuilder` vérifie les 29 règles de dictionnaire fabricant avec leurs
   vrais critères (correspondance exacte, pas sous-chaîne) et action `assign`, idempotence comprise
   (`addMissingCriteria()` n'ajoute jamais de doublon). `PlanningEventBuilder` vérifie la distinction
@@ -878,10 +887,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   à chaque ré-exécution de l'assistant**, trouvé en auditant la base de test de ce projet (6552
   doublons sur 6678 lignes au total). Cause : ces 5 classes appellent
   `AssetDefinition::update()` sans condition à chaque exécution pour synchroniser
-  `helpdesk_item_type` (correctif documenté dans leur propre docblock) — or GLPI core resynchronise
+  `helpdesk_item_type` (correctif documenté dans leur propre docblock) : or GLPI core resynchronise
   alors `DropdownVisibility` pour chaque dropdown existant (`State` entre autres) contre le type
   d'actif personnalisé, sans vérifier les doublons. Corrigé en sautant l'appel `update()` dès que
-  tous les profils sont déjà synchronisés — un second passage de l'assistant ne modifie plus du
+  tous les profils sont déjà synchronisés : un second passage de l'assistant ne modifie plus du
   tout cette table. Correctif rétroactif sur le principe (n'efface rien d'existant), et les 6524
   lignes en trop déjà présentes sur cette instance ont été nettoyées.
 
@@ -889,50 +898,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour
   `TeamCollaborationSpaceFormBuilder`, `UserAccountCreationFormBuilder`,
-  `UserAccountDeactivationFormBuilder` et `WebsiteUpdateFormBuilder` — les 4 derniers des 33
+  `UserAccountDeactivationFormBuilder` et `WebsiteUpdateFormBuilder` - les 4 derniers des 33
   formulaires de la vague de généralisation du catalogue (issue #207), qui ont désormais tous un
   test dédié.
-- Test d'intégration réel pour `HelpdeskFormBuilder` — seule classe `*FormBuilder` du plugin qui ne
+- Test d'intégration réel pour `HelpdeskFormBuilder` - seule classe `*FormBuilder` du plugin qui ne
   crée pas de formulaire mais modifie les 2 formulaires natifs "Report an issue"/"Request a service"
   de GLPI 11 pour y masquer Urgency/Observers/Location. Vérifie directement le mécanisme réel
   documenté dans la classe (`VisibilityStrategy::VISIBLE_IF` + liste de conditions vide, la seule
-  façon d'obtenir un masquage permanent — il n'existe pas de stratégie "toujours masqué" native).
+  façon d'obtenir un masquage permanent : il n'existe pas de stratégie "toujours masqué" native).
   `setUp()`/`tearDown()` capturent et restaurent l'état d'origine de chaque question ciblée pour ne
   laisser aucune trace sur l'instance de dev partagée.
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour
   `PreventiveMaintenanceFormBuilder`, `CurativeMaintenanceFormBuilder`, `InstrumentCalibrationFormBuilder`
-  et `RelocationArchivingFormBuilder` — 4 autres des 33 formulaires de la vague de généralisation du
+  et `RelocationArchivingFormBuilder` - 4 autres des 33 formulaires de la vague de généralisation du
   catalogue (issue #207).
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `AuditRequestFormBuilder`,
-  `ContractReviewFormBuilder`, `DeliveryTrackingFormBuilder` et `MailPrintingFormBuilder` — 4 autres
+  `ContractReviewFormBuilder`, `DeliveryTrackingFormBuilder` et `MailPrintingFormBuilder` - 4 autres
   des 33 formulaires de la vague de généralisation du catalogue (issue #207).
   `MailPrintingFormBuilder` couvre le même mécanisme de champ conditionnel que
   `VpnAccessFormBuilder`/`WifiAccessFormBuilder` (destinataire/adresse visible uniquement pour
   "Envoi de courrier", jamais pour "Reprographie").
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `WorkplaceSafetyFormBuilder`,
-  `SocialMediaPostFormBuilder`, `StaffMovementFormBuilder` et `InvoicePaymentFormBuilder` — 4 autres
+  `SocialMediaPostFormBuilder`, `StaffMovementFormBuilder` et `InvoicePaymentFormBuilder` - 4 autres
   des 33 formulaires de la vague de généralisation du catalogue (issue #207).
   `StaffMovementFormBuilder` couvre le seul formulaire du catalogue utilisant
   `LogicOperator::OR` (le champ "Poste concerné" doit être visible pour une Arrivée *ou* une
-  Mutation, mais pas pour un Départ) — mécanisme jamais testé jusqu'ici. `InvoicePaymentFormBuilder`
+  Mutation, mais pas pour un Départ) : mécanisme jamais testé jusqu'ici. `InvoicePaymentFormBuilder`
   vérifie qu'une soumission sans la pièce jointe optionnelle reste valide.
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `BreakRoomFormBuilder`,
-  `EventSupportFormBuilder`, `RecyclingRequestFormBuilder` et `SupplyOrderFormBuilder` — 4 autres
+  `EventSupportFormBuilder`, `RecyclingRequestFormBuilder` et `SupplyOrderFormBuilder` - 4 autres
   des 33 formulaires de la vague de généralisation du catalogue (issue #207).
   `EventSupportFormBuilder` couvre en particulier une question `QuestionTypeCheckbox`
-  (multi-sélection) — plusieurs types de support choisis à la fois, jamais testé jusqu'ici.
+  (multi-sélection) : plusieurs types de support choisis à la fois, jamais testé jusqu'ici.
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `VpnAccessFormBuilder`,
-  `SoftwareLicenseFormBuilder`, `FurnitureRequestFormBuilder` et `MailboxRequestFormBuilder` — 4
+  `SoftwareLicenseFormBuilder`, `FurnitureRequestFormBuilder` et `MailboxRequestFormBuilder` - 4
   autres des 33 formulaires de la vague de généralisation du catalogue (issue #207).
   `VpnAccessFormBuilder` couvre le même mécanisme de champ conditionnel que `WifiAccessFormBuilder`
   (date de fin d'accès optionnelle pour un accès permanent, prise en compte pour un accès
   temporaire).
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `CleanlinessRequestFormBuilder`,
-  `HeatingClimateFormBuilder`, `ElectricalInterventionFormBuilder` et `WaterLeakFormBuilder` — 4
+  `HeatingClimateFormBuilder`, `ElectricalInterventionFormBuilder` et `WaterLeakFormBuilder` - 4
   autres des 33 formulaires de la vague de généralisation du catalogue (issue #207), tous du même
   patron "localisation + nature du problème" (Bâtiment & Moyens Généraux).
 - Tests d'intégration réels (vraie soumission via `AnswersHandler`) pour `AccessBadgeFormBuilder`,
-  `OfficeSuppliesFormBuilder`, `WifiAccessFormBuilder` et `SoftwareInstallFormBuilder` — 4 des 33
+  `OfficeSuppliesFormBuilder`, `WifiAccessFormBuilder` et `SoftwareInstallFormBuilder` - 4 des 33
   formulaires de la vague de généralisation du catalogue (issue #207) qui n'avaient encore aucun
   test. `WifiAccessFormBuilder` couvre en particulier le champ conditionnel "Date de fin d'accès"
   (`VisibilityStrategy::VISIBLE_IF`) : réellement optionnel quand masqué (accès permanent),
@@ -947,20 +956,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   qui doit réellement réinitialiser l'instance (bug documenté dans la classe, trouvé 2026-08-20).
   `NotificationBrandingBuilder` : les 23 événements natifs `Ticket` sont réellement réassignés à
   des gabarits dédiés, idempotence via marqueur HTML vérifiée (y compris la reprise après édition
-  manuelle d'un admin) — `setUp()`/`tearDown()` capturent et restaurent l'état d'origine de chaque
+  manuelle d'un admin) - `setUp()`/`tearDown()` capturent et restaurent l'état d'origine de chaque
   événement pour ne laisser aucune trace sur l'instance de dev partagée.
 
 ### Fixed
 
 - **Les questions de type "objet lié" (véhicule, salle de réunion, équipement de sécurité...) ne
-  liaient en réalité jamais l'objet choisi au ticket créé**, sans aucune erreur nulle part — trouvé en
+  liaient en réalité jamais l'objet choisi au ticket créé**, sans aucune erreur nulle part : trouvé en
   écrivant `MeetingRoomFormBuilderTest`, un test qui vérifie le vrai lien `Item_Ticket` créé plutôt
   que de se contenter d'un formulaire qui s'enregistre sans erreur. Cause : GLPI restreint, par profil
-  (`glpi_profiles.helpdesk_item_type`), la liste des types d'objets qu'on peut associer à un ticket —
+  (`glpi_profiles.helpdesk_item_type`), la liste des types d'objets qu'on peut associer à un ticket -
   un réglage que l'interface d'administration de GLPI fait cocher à la création manuelle d'un type
   d'actif personnalisé, mais que ce plugin, en créant ses actifs (Véhicule, Local, Sécurité physique...)
   par programmation, ne renseignait jamais. Chaque profil se retrouvait donc avec une liste vide pour
-  ces actifs, y compris "Self-Service" — le profil des demandeurs eux-mêmes, premiers concernés par
+  ces actifs, y compris "Self-Service" - le profil des demandeurs eux-mêmes, premiers concernés par
   ces formulaires de catalogue. Corrigé dans chacun des 5 générateurs d'actifs personnalisés
   (`VehicleAssetBuilder`, `BuildingAssetBuilder`, `PhysicalSecurityAssetBuilder`,
   `FireSafetyAssetBuilder`, `ServerAssetBuilder`) : le nouvel actif est désormais automatiquement
@@ -997,15 +1006,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test de non-régression (`VehicleIncidentFormBuilderTest`) pour le bug d'urgence corrigé en 1.3.1 :
   simule une vraie soumission de formulaire (le même chemin que `SubmitAnswerController`, pas juste
   une inspection de la config de destination) et vérifie l'urgence réellement enregistrée sur le
-  ticket créé — exactement ce qui avait permis de détecter le bug initial. Étendu pour vérifier aussi
+  ticket créé : exactement ce qui avait permis de détecter le bug initial. Étendu pour vérifier aussi
   le lien réel véhicule/ticket (voir le correctif ci-dessus).
 - Tests de non-régression pour le correctif ci-dessus, sur les autres formulaires du catalogue qui
   lient un actif personnalisé à un ticket : `MeetingRoomFormBuilderTest` (salle de réunion),
   `FuelCardFormBuilderTest` et `VehicleMaintenanceFormBuilderTest` (véhicule), et
   `VideoSurveillanceFormBuilderTest`/`DoorLockBadgeFormBuilderTest` (équipement de sécurité physique,
-  question optionnelle à double condition — branche(s) + bascule dédiée).
+  question optionnelle à double condition : branche(s) + bascule dédiée).
 - Tests de non-régression (vraie soumission, avec une session temporairement basculée sur un vrai
-  utilisateur créé pour l'occasion — pas seulement le compte superadmin du bootstrap) pour le
+  utilisateur créé pour l'occasion : pas seulement le compte superadmin du bootstrap) pour le
   mécanisme `ObserverField`(`FORM_FILLER_SUPERVISOR`, ajoute automatiquement le supérieur hiérarchique
   du demandeur comme observateur) : `LeaveRequestFormBuilderTest`, `AbroadMissionFormBuilderTest`,
   `RemoteWorkFormBuilderTest`, `TrainingRequestFormBuilderTest`.
@@ -1015,7 +1024,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `ProfessionalPhoneFormBuilderTest`, `NewScreenFormBuilderTest`. Documentent au passage un piège de
   format d'entrée découvert en les écrivant : la réponse brute attendue pour ce type de question est
   une chaîne `"<Itemtype>_<id>"`, pas le tableau `{itemtype, items_id}` qu'attend `QuestionTypeItem`
-  — les deux se ressemblent mais ne partagent pas le même format côté soumission.
+  - les deux se ressemblent mais ne partagent pas le même format côté soumission.
 - Tests de non-régression (vraie soumission, vraies assertions) pour les 3 derniers formulaires du
   catalogue restant à couvrir depuis la vague v1.3.0 : `ItemReturnFormBuilderTest`,
   `NonConformityFormBuilderTest` (`RequestTypeField` + titre calculé, ces deux formulaires n'ayant pas
@@ -1025,7 +1034,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `PhysicalSecurityAssetBuilderTest` vidaient le cache de définitions d'assets sans jamais le
   recharger) et un second, plus profond (le cache process-wide de GLPI pour les règles métier,
   `SingletonRuleList`, ne se rechargeait jamais après l'ajout d'une nouvelle règle en cours de suite
-  de tests — corrigé en activant `TU_USER`, le contournement que GLPI documente lui-même pour ce cas
+  de tests : corrigé en activant `TU_USER`, le contournement que GLPI documente lui-même pour ce cas
   précis dans ses propres tests).
 
 ## [1.3.1] - 2026-09-05
@@ -1037,13 +1046,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   qui semblait correcte à la lecture du code. Confirmé en soumettant réellement le formulaire et en
   inspectant la colonne `urgency` du ticket créé (retombait systématiquement sur la valeur par
   défaut, 3, quelle que soit la réponse) : un `QuestionTypeRadio` stocke sa réponse brute sous forme
-  de tableau (`["4"]`), même pour un choix unique — `UrgencyFieldStrategy::getUrgencyFromSpecificAnswer()`
+  de tableau (`["4"]`), même pour un choix unique - `UrgencyFieldStrategy::getUrgencyFromSpecificAnswer()`
   exige `is_numeric($answer)`, qui échoue silencieusement sur un tableau, sans aucune erreur ni
   échec de soumission. Remplacé par une vraie question `QuestionTypeUrgency` (dont le format de
   réponse brute est un scalaire, compatible), pilotée via `UrgencyFieldStrategy::LAST_VALID_ANSWER`
   (le mécanisme réellement prévu par GLPI pour ce cas). Le libellé de la question reste centré sur
   l'état objectif du véhicule ("Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"),
-  pas sur un ressenti personnel d'urgence — l'intention initiale (éviter l'auto-évaluation
+  pas sur un ressenti personnel d'urgence: l'intention initiale (éviter l'auto-évaluation
   subjective, anti-pattern déjà documenté dans `HelpdeskFormBuilder`) reste respectée, seul le
   mécanisme technique était cassé. Revérifié de bout en bout : un ticket réellement soumis avec
   "Très haute" porte maintenant `urgency = 5`.
@@ -1059,7 +1068,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   directement dans le code source GLPI 11 avant implémentation (jamais deviné) :
   - `QuestionTypeUserDevice` (matériel réellement affecté au demandeur, `CommonItilObject_Item::
     getMyDevices()`) sur `SoftwareBugFormBuilder`, `LaptopRequestFormBuilder`,
-    `ProfessionalPhoneFormBuilder`, `NewScreenFormBuilder` — remplace ou complète un champ texte libre
+    `ProfessionalPhoneFormBuilder`, `NewScreenFormBuilder` - remplace ou complète un champ texte libre
     par un vrai poste/appareil GLPI, rattaché au ticket comme élément lié réel via
     `AssociatedItemsField`.
   - `QuestionTypeItem` pointant vers les actifs personnalisés déjà créés par ce même plugin
@@ -1077,7 +1086,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `ObserverField` piloté par `ITILActorFieldStrategy::FORM_FILLER_SUPERVISOR` (aucune question
     posée : lit directement `users_id_supervisor`, même colonne native que la règle d'approbation
     déjà utilisée par `ValidationRoutingBuilder`) sur `AbroadMissionFormBuilder`,
-    `RemoteWorkFormBuilder`, `LeaveRequestFormBuilder`, `TrainingRequestFormBuilder` — le supérieur
+    `RemoteWorkFormBuilder`, `LeaveRequestFormBuilder`, `TrainingRequestFormBuilder` - le supérieur
     hiérarchique du demandeur est notifié automatiquement, sans lui demander qui il est.
   - `RequestTypeField` (Incident/Demande) épinglé explicitement par service concerné (aucune question
     posée), pour un typage de ticket cohérent plutôt que le défaut GLPI implicite.
@@ -1085,7 +1094,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     le demandeur est un anti-pattern ITSM documenté que ce plugin évite déjà explicitement ailleurs
     (`HelpdeskFormBuilder` masque la question native « Urgency » des formulaires natifs GLPI pour
     cette exacte raison ; `WaterLeakFormBuilder` tire la même conclusion indépendamment dans son
-    propre docblock) — l'ajouter aurait directement contredit un choix de conception déjà établi et
+    propre docblock) : l'ajouter aurait directement contredit un choix de conception déjà établi et
     documenté dans ce même plugin.
   - Les ~31 autres services restent inchangés : soit sans itemtype GLPI fiable à référencer
     (fournitures, mobilier, équipement industriel/technique non modélisé comme actif dans ce plugin),
@@ -1124,15 +1133,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `locales/pt_BR.mo` manquant : v1.1.0 livrait `locales/pt_BR.po` mais pas son binaire compilé, alors
-  que `Plugin::loadLang()` (GLPI core, `src/Plugin.php`) ne lit jamais le `.po` directement — il
+  que `Plugin::loadLang()` (GLPI core, `src/Plugin.php`) ne lit jamais le `.po` directement : il
   vérifie l'existence d'un fichier `.mo` précompilé pour la langue de session
   (`$CFG_GLPI["languages"][$lang][1]`) et, à défaut, retombe silencieusement sur `en_GB.mo` puis sur
   le `msgid` brut (français, langue source de ce plugin), sans aucune erreur. Résultat en v1.1.0 :
   une session `pt_BR` voyait le cœur de GLPI correctement en portugais (son propre `.mo` est fourni
   par GLPI) mais l'intégralité de l'interface du plugin (assistant, page de configuration) restait en
-  français — trouvé en testant réellement l'assistant avec un compte `pt_BR` sur l'instance partagée,
+  français : trouvé en testant réellement l'assistant avec un compte `pt_BR` sur l'instance partagée,
   pas seulement en relisant le code. `.mo` compilé via `msgfmt` (comme `de_DE.mo`/`en_GB.mo`/
-  `es_ES.mo`/`it_IT.mo`, déjà suivis par git — `.gitattributes` les marque `binary` — mais qu'aucune
+  `es_ES.mo`/`it_IT.mo`, déjà suivis par git - `.gitattributes` les marque `binary` - mais qu'aucune
   étape de `vendor/bin/extract-locales` ni de la CI ne recompile ou ne vérifie automatiquement ;
   point de vigilance à garder pour toute future mise à jour de `locales/*.po`). Revérifié en réel
   après correctif : assistant et page de configuration entièrement en portugais pour une session
@@ -1142,15 +1151,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Traduction complète en portugais du Brésil (pt-BR), issue #215 — proposée à l'origine par
+- Traduction complète en portugais du Brésil (pt-BR), issue #215 : proposée à l'origine par
   @andrefelipeufcg (Universidade Federal de Campina Grande), produite ici directement par un
   mainteneur pour la livrer sans attendre une contribution externe. `locales/pt_BR.po` couvre les
   468 chaînes extraites par `vendor/bin/extract-locales` (interface de l'assistant, `front/*.php`,
-  `src/*.php`) — vérifié à blanc contre la même boucle de complétude que la CI (`msgmerge` +
+  `src/*.php`) : vérifié à blanc contre la même boucle de complétude que la CI (`msgmerge` +
   `msgattrib --untranslated`) pour les 6 langues désormais supportées, aucune chaîne manquante.
   Terminologie ITSM/GLPI cohérente avec l'usage brésilien courant (« chamado » pour ticket,
   « requisição » pour le type ITIL Demande, « escalonamento » pour l'escalade, « localização » pour
-  Lieu...), forme plurielle `nplurals=2; plural=(n > 1);` (comme fr_FR/es_ES/it_IT/de_DE — confirmé
+  Lieu...), forme plurielle `nplurals=2; plural=(n > 1);` (comme fr_FR/es_ES/it_IT/de_DE : confirmé
   être la règle standard de gettext pour pt_BR, distincte de pt_PT qui utilise `plural=(n != 1)`).
   `pt_BR` ajouté à la boucle de vérification de complétude du workflow CI (job "locales", #174) pour
   qu'un futur `__()` non traduit dans cette langue soit détecté automatiquement, comme pour les 5
@@ -1162,14 +1171,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`RequestTypeTranslationBuilder`), les deux articles de FAQ (`FaqBuilder`), les modèles de suivis
   (`FollowupLibraryBuilder`), les types/gabarits de solution (`SolutionLibraryBuilder`), les
   checklists de tâches (`TaskTemplateBuilder`) et les libellés des e-mails de notification
-  personnalisés (`NotificationBrandingBuilder`) — sans quoi seule l'interface du wizard aurait été
+  personnalisés (`NotificationBrandingBuilder`) : sans quoi seule l'interface du wizard aurait été
   en portugais, tout le contenu réellement créé dans GLPI serait resté en français/anglais pour un
   utilisateur pt_BR.
 
 ## [1.0.0] - 2026-09-03
 
 Premier jalon de version majeure : le plugin est considéré stable au sens de
-[Semantic Versioning](https://semver.org/spec/v2.0.0.html) — engagement de ne plus introduire de
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html) : engagement de ne plus introduire de
 changement cassant hors bump majeur. Ce n'est pas un aboutissement fonctionnel nouveau (voir
 ROADMAP.md : le périmètre initial de la v1.0 était déjà entièrement livré depuis plusieurs dizaines
 de versions 0.x, cf. les audits de complétude ITIL/ISO 27001 successifs), mais une reconnaissance
@@ -1186,14 +1195,14 @@ de la maturité déjà atteinte après 75 releases incrémentales validées en r
   des articles de FAQ pour les utilisateurs finaux » (étape 15, cochée par défaut) : contrairement
   à une documentation statique dans ce dépôt, les deux articles sont de vrais `KnowbaseItem`
   (`is_faq=1`) créés à l'exécution de l'assistant, donc visibles immédiatement dans la FAQ native
-  de l'instance configurée — même logique que `KnowbaseCategoryBuilder`/`SolutionLibraryBuilder`
+  de l'instance configurée : même logique que `KnowbaseCategoryBuilder`/`SolutionLibraryBuilder`
   plutôt qu'un fichier markdown que personne n'ouvrirait depuis l'instance déployée. Visibilité
   vérifiée en lisant `KnowbaseItem::getVisibilityCriteriaKB()` (GLPI 11.0.8) : `is_faq=1` seul ne
   suffit pas, une ligne `Entity_KnowbaseItem` (entité 0, récursive) est nécessaire, comme pour
   toute visibilité globale ailleurs dans ce plugin. Contenu traduit dans les 5 langues via
   `KnowbaseItemTranslation` (mécanisme natif dédié à la base de connaissances, distinct de
   `DropdownTranslation`), même principe que `SolutionLibraryBuilder` pour son propre contenu
-  long — les deux articles ne passent pas par `__()`/`locales/*.po`, réservé aux textes d'interface
+  long : les deux articles ne passent pas par `__()`/`locales/*.po`, réservé aux textes d'interface
   courts, pas à la prose longue. Vérifié en réel : les deux articles apparaissent, lisibles et bien
   mis en forme, dans `/front/helpdesk.faq.php` avec le compte de démonstration `post-only`.
 

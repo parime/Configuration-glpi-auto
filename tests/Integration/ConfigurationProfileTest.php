@@ -53,7 +53,7 @@ final class ConfigurationProfileTest extends TestCase
 
     /**
      * MSP gets round-the-clock coverage (`sla_astreinte = true`) and a strictly tighter SLA/OLA
-     * table than the standard baseline at every priority level — characteristic of the MSP business
+     * table than the standard baseline at every priority level: characteristic of the MSP business
      * model, not of "being bigger" (see the class's own docblock).
      */
     public function testGetSuggestedDefaultsForMspOverridesAstreinteAndUsesATighterSlaTable(): void
@@ -118,13 +118,13 @@ final class ConfigurationProfileTest extends TestCase
 
     /**
      * `getTable()` is explicitly overridden (see the class's own docblock on the `Entity\`
-     * namespace collision pitfall) — this confirms the real table actually round-trips a row,
+     * namespace collision pitfall): this confirms the real table actually round-trips a row,
      * not just that the override returns a plausible-looking string.
      */
     public function testCanBeAddedToAndReadBackFromItsOwnRealTable(): void
     {
         $item = new ConfigurationProfile();
-        $id = $item->add(['name' => 'Test — Profil MSP', 'type' => 'msp']);
+        $id = $item->add(['name' => 'Test: Profil MSP', 'type' => 'msp']);
 
         $this->assertGreaterThan(0, $id);
 

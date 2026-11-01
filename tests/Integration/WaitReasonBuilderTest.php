@@ -26,7 +26,7 @@ use PHPUnit\Framework\TestCase;
 use SolutionTemplate;
 
 /**
- * Only "Attente de retour utilisateur" gets full automation (auto follow-up + auto-resolve) — the
+ * Only "Attente de retour utilisateur" gets full automation (auto follow-up + auto-resolve): the
  * real distinction this class's own docblock explains (auto-closing while waiting on a supplier or
  * an internal approval would be inappropriate). The core regression to guard is that this
  * distinction actually lands correctly in the DB (`followup_frequency`/`followups_before_resolution`
