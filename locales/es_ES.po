@@ -5273,3 +5273,6 @@ msgstr "Gestiona GLPI por cuenta de otras empresas"
 
 msgid "Je configure tout moi-même"
 msgstr "Lo configuro todo yo mismo"
+
+msgid "Sauvegarde automatique avant application"
+msgstr "Copia automática antes de aplicar"

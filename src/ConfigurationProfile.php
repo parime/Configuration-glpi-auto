@@ -76,6 +76,36 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
         return 'fas fa-cogs';
     }
 
+    /**
+     * Pages du plugin rattachées à cette entrée de menu (audit, plan d'adressage, import Jira) :
+     * chacune a son propre fil d'Ariane et aucun bouton « Ajouter » (qui créait un profil depuis
+     * la page d'audit).
+     *
+     * @return array<string, mixed>|false
+     */
+    public static function getMenuContent()
+    {
+        $menu = parent::getMenuContent();
+        if (!is_array($menu)) {
+            return $menu;
+        }
+        $pages = [
+            'audit'       => [__('Audit de configuration', 'configurationglpiauto'), 'audit.php', 'ti ti-shield-check'],
+            'addressplan' => [__('Plan d\'adressage', 'configurationglpiauto'), 'addressplan.php', 'ti ti-network'],
+            'jiraimport'  => [__('Importer depuis Jira', 'configurationglpiauto'), 'jiraimport.php', 'ti ti-file-import'],
+        ];
+        foreach ($pages as $key => [$title, $page, $icon]) {
+            $menu['options'][$key] = [
+                'title' => $title,
+                'page'  => FrontUrl::get($page),
+                'icon'  => $icon,
+                'links' => [],
+            ];
+        }
+
+        return $menu;
+    }
+
     public static function getTypes(): array
     {
         return [

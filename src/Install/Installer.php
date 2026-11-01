@@ -24,6 +24,7 @@ use GlpiPlugin\Configurationglpiauto\AssetsignTriggerBuilder;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditReportCron;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditWatchCron;
 use GlpiPlugin\Configurationglpiauto\Config;
+use GlpiPlugin\Configurationglpiauto\ConfigHistory;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\Lookup;
 use GlpiPlugin\Configurationglpiauto\NotificationTargetConfig;
@@ -512,6 +513,15 @@ final class Installer
                 \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s\n", self::HISTORY_TABLE, $DB->error()));
 
                 return false;
+            }
+        }
+
+        // Historique lisible : les sauvegardes automatiques sans libellé reçoivent le leur, et la
+        // liste affiche par défaut le type et la date (elle n'affichait qu'un numéro).
+        $DB->update(self::HISTORY_TABLE, ['label' => ConfigHistory::automaticLabel()], ['is_manual' => 0, 'OR' => [['label' => null], ['label' => '']]]);
+        if (countElementsInTable('glpi_displaypreferences', ['itemtype' => ConfigHistory::class, 'users_id' => 0]) === 0) {
+            foreach ([2 => 1, 19 => 2] as $num => $rank) {
+                $DB->insert('glpi_displaypreferences', ['itemtype' => ConfigHistory::class, 'num' => $num, 'rank' => $rank, 'users_id' => 0, 'interface' => 'central']);
             }
         }
 

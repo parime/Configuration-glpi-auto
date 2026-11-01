@@ -5150,3 +5150,6 @@ msgstr "You run GLPI on behalf of other companies"
 
 msgid "Je configure tout moi-même"
 msgstr "I configure everything myself"
+
+msgid "Sauvegarde automatique avant application"
+msgstr "Automatic backup before applying"

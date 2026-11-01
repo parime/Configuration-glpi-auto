@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto;
 
+use Glpi\Search\DefaultSearchRequestInterface;
 use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
 
 /**
@@ -41,7 +42,7 @@ use GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer;
  * (`getTypeName()`, la matrice de droits...), même précaution que documentée sur `getTable()`
  * ci-dessous.
  */
-final class ConfigHistory extends Compat\Base\ConfigHistoryBase
+final class ConfigHistory extends Compat\Base\ConfigHistoryBase implements DefaultSearchRequestInterface
 {
     public const RIGHTNAME = Profile::RIGHT_CONFIG;
 
@@ -87,6 +88,26 @@ final class ConfigHistory extends Compat\Base\ConfigHistoryBase
     }
 
     /**
+     * Les plus récentes d'abord : c'est la dernière sauvegarde qu'on cherche pour revenir en
+     * arrière.
+     *
+     * @return array<string, mixed>
+     */
+    public static function getDefaultSearchRequest(): array
+    {
+        return ['sort' => 19, 'order' => 'DESC'];
+    }
+
+    /**
+     * Libellé d'une sauvegarde prise automatiquement avant chaque application : sans lui, la liste
+     * n'affichait qu'un numéro (« (163) »).
+     */
+    public static function automaticLabel(): string
+    {
+        return __('Sauvegarde automatique avant application', 'configurationglpiauto');
+    }
+
+    /**
      * Appelé juste avant chaque écrasement réel de la ligne `Config` vivante (front/wizard.php à
      * l'étape "finish", front/profile.form.php à l'action `apply_snapshot`, front/history_restore.php
      * à l'action `restore`): capture l'état COURANT (avant écrasement), jamais l'état qui va être
@@ -115,7 +136,7 @@ final class ConfigHistory extends Compat\Base\ConfigHistoryBase
 
         return (int) (new self())->add([
             'is_manual' => $isManual ? 1 : 0,
-            'label'     => $label,
+            'label'     => $label ?? self::automaticLabel(),
             'snapshot'  => json_encode($snapshot, JSON_PRETTY_PRINT),
         ]);
     }

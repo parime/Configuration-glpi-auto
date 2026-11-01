@@ -38,6 +38,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Historique de configuration : la liste n'affichait qu'un numéro par ligne ; les sauvegardes
+  automatiques ont un libellé, le type et la date s'affichent, les plus récentes d'abord.
+- Audit, plan d'adressage, import Jira : le fil d'Ariane indiquait « Profils de configuration »
+  avec un bouton « Ajouter » qui créait un profil ; chaque page a désormais sa propre entrée.
 - Assistant, étape 1 : les noms et descriptions des profils livrés restaient en français dans
   toutes les langues ; ils sont traduits (un profil renommé par l'administrateur reste tel quel).
 - Traduction anglaise : quatre textes de l'audit étaient suivis de leur version française.
