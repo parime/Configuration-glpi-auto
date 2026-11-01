@@ -21,7 +21,7 @@ use SoftwareLicenseType;
 
 /**
  * Turns on `software_license_types_enabled` into real `SoftwareLicenseType` rows
- * (`glpi_softwarelicensetypes`) — confirmed empty on a fresh install, same as every other native
+ * (`glpi_softwarelicensetypes`): confirmed empty on a fresh install, same as every other native
  * "Types" table this plugin already seeds (`AssetTypeBuilder`). Deliberately left out of that
  * class and given its own (see `AssetTypeBuilder`'s docblock): unlike the 26 tables there, this one
  * is a `CommonTreeDropdown` (`softwarelicensetypes_id`/`level`/`ancestors_cache`/`completename`
@@ -29,18 +29,18 @@ use SoftwareLicenseType;
  * tree-building, not a flat `add()` bolted onto a `CommonDropdown` loop.
  *
  * Content is a flat list (every node's parent is `0`, the tree root) rather than an actual
- * multi-level hierarchy — standard software asset management (SAM) practice categorizes a license
+ * multi-level hierarchy: standard software asset management (SAM) practice categorizes a license
  * by its *acquisition/usage model* (OEM, volume, subscription...), which is a single dimension, not
  * a topic tree like `ITILCategory`'s. `CommonTreeDropdown`'s parent/child machinery still applies
- * (that's what the class *is* in GLPI core), it's just not exercised beyond one level here — an
+ * (that's what the class *is* in GLPI core), it's just not exercised beyond one level here: an
  * admin can always nest their own sub-types afterward if they need to.
  *
  * No `entities_id`/`is_recursive` distinction to make beyond the usual root-entity, recursive
  * scoping every other global dropdown in this plugin already uses (confirmed via the same
  * `DESCRIBE`: this table does carry those columns, like six of `AssetTypeBuilder`'s types).
  *
- * Reviewed for gaps per #146: added "Perpétuelle" (the single most basic SAM distinction —
- * time-unlimited vs. the "Abonnement (SaaS)" entry already present — oddly missing before) and
+ * Reviewed for gaps per #146: added "Perpétuelle" (the single most basic SAM distinction -
+ * time-unlimited vs. the "Abonnement (SaaS)" entry already present: oddly missing before) and
  * "Académique / Éducation" (a genuinely distinct acquisition channel with its own pricing/renewal
  * terms, not just a variant of an existing entry). `build()` already re-syncs `TYPES` against an
  * existing installation on every run (no `isNew` gate), so these reach an admin who ran the wizard

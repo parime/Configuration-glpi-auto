@@ -68,7 +68,7 @@ final class TaskCategoryBuilderTest extends TestCase
 
         global $DB;
         $count = $DB->request(['FROM' => TaskCategory::getTable(), 'WHERE' => ['name' => self::SAMPLE_NAME, 'taskcategories_id' => 0]])->count();
-        $this->assertSame(1, $count, 'Exactly one row must exist — no duplicate.');
+        $this->assertSame(1, $count, 'Exactly one row must exist: no duplicate.');
     }
 
     public function testTogglingIconsOnThenOffUpdatesTheTranslation(): void

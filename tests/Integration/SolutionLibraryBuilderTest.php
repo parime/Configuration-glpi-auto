@@ -25,7 +25,7 @@ use SolutionType;
 
 /**
  * Runs against a real GLPI instance. Focused on the 11th "Demande incomplète" template added to the
- * "Informationnel" category (forum GLPI officiel, topic 294630) — the other 10 pre-existing templates
+ * "Informationnel" category (forum GLPI officiel, topic 294630): the other 10 pre-existing templates
  * already have implicit coverage via every prior sprint's own manual verification (see CHANGELOG.md),
  * not re-tested here.
  */

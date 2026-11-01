@@ -30,12 +30,12 @@ use Profile;
  * neither by default.
  *
  * Unlike `TicketTemplateBuilder`'s two-tier split (simplified vs. complete), there's only one
- * template each here — confirmed in `glpi_profilerights` that GLPI's own `Self-Service` profile
+ * template each here: confirmed in `glpi_profilerights` that GLPI's own `Self-Service` profile
  * has zero rights on both `Change` and `Problem` by default, so the "base user vs. staff" split
  * that motivates Ticket's two templates doesn't apply: whoever can even open one of these forms is
  * already staff.
  *
- * Mandatory fields: `content` on both (the ITIL minimum), plus `impact` on Change specifically —
+ * Mandatory fields: `content` on both (the ITIL minimum), plus `impact` on Change specifically -
  * risk/impact assessment before approval is Change Management's defining ITIL practice,
  * distinguishing it from Problem (root-cause investigation, no approval gate the same way).
  */

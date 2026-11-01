@@ -62,7 +62,7 @@ class ComputerTypeDictionaryBuilder
         foreach (self::RULES as $canonical => $chassisTypes) {
             DictionaryRules::ensure(
                 RuleDictionnaryComputerType::class,
-                sprintf('Type d\'ordinateur — normalisation « %s »', $canonical),
+                sprintf('Type d\'ordinateur: normalisation « %s »', $canonical),
                 $canonical,
                 $chassisTypes
             );

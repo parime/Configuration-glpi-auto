@@ -20,23 +20,23 @@ namespace GlpiPlugin\Configurationglpiauto;
 /**
  * First cross-plugin integration in this project: when the third-party "More satisfaction" plugin
  * (marketplace key `satisfaction`, `pluginsGLPI/satisfaction`) is installed and active, creates one
- * ready-to-use `Survey` with 3 real questions — installed and inspected live on a real GLPI 11.0.8
+ * ready-to-use `Survey` with 3 real questions: installed and inspected live on a real GLPI 11.0.8
  * instance before writing this (marketplace unlocked with a real registration key, plugin
  * downloaded/activated via the native marketplace, `glpi_plugin_satisfaction_*` tables read via
  * `DESCRIBE`), not guessed from documentation.
  *
  * Writes directly to the plugin's own tables via GLPI's `$DB` global rather than instantiating its
- * PHP classes (`GlpiPlugin\Satisfaction\Survey`/`SurveyQuestion`) — that plugin isn't part of this
+ * PHP classes (`GlpiPlugin\Satisfaction\Survey`/`SurveyQuestion`): that plugin isn't part of this
  * one's own dependencies or CI environment (PHPStan has no stubs for it, and a hard `use` of a
  * class that may not exist on a given install is exactly the kind of fragility a config-generation
- * plugin already avoids elsewhere), so the schema — verified directly, not the class API — is the
+ * plugin already avoids elsewhere), so the schema: verified directly, not the class API: is the
  * stable contract to build against here.
  *
  * `Survey` fields: `entities_id`/`is_recursive` (same root+recursive scoping as everywhere else in
  * this plugin), `is_active`, `reminders_days` (native default 30, left as-is). `SurveyQuestion`
  * fields: `type` (`note`/`yesno`/`textarea`, confirmed exhaustive via `SurveyQuestion::getQuestionTypeList()`),
  * `number` (dual meaning confirmed in `SurveyQuestion.php`: display/insertion order for
- * `yesno`/`textarea`, the rating *scale* max — not order — specifically for `note`), `default_value`
+ * `yesno`/`textarea`, the rating *scale* max: not order: specifically for `note`), `default_value`
  * (pre-selected value on that scale, 1..number).
  */
 class SatisfactionSurveyBuilder
@@ -97,7 +97,7 @@ class SatisfactionSurveyBuilder
 
     /**
      * Exposed separately from build() so front/wizard.php can decide whether to show the wizard
-     * section at all — the user's own requirement: no trace in the form when the plugin isn't
+     * section at all: the user's own requirement: no trace in the form when the plugin isn't
      * installed, not just a toggle that would silently do nothing.
      */
     public static function isThirdPartyPluginActive(): bool

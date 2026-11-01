@@ -32,37 +32,37 @@ use Unmanaged;
 /**
  * Turns a Config's state setting into 15 real GLPI State ("Statuts des éléments") rows, used
  * across the asset/CMDB module. Confirmed against a fresh GLPI 11.0.8 instance: `glpi_states` is
- * *empty* out of the box — GLPI ships zero default states, so this genuinely fills a gap rather
+ * *empty* out of the box: GLPI ships zero default states, so this genuinely fills a gap rather
  * than duplicating something already there. Not a per-entity/per-client concept, unlike
- * calendar/SLA — instance-wide (`entities_id => 0`, `is_recursive => 1`).
+ * calendar/SLA: instance-wide (`entities_id => 0`, `is_recursive => 1`).
  *
- * The `name` field is always plain text, per explicit instruction — an icon there would corrupt
+ * The `name` field is always plain text, per explicit instruction: an icon there would corrupt
  * matching/sorting. Icons (optional, `state_icons_enabled`) live only in `DropdownTranslation` rows
  * (one per language, see `Translations::applyIcon()`, field `name`). Confirmed against a real
- * GLPI 11.0.8 instance that the translation `value` is rendered as *escaped plain text*, not HTML —
- * an `<i class="ti ...">` tag shows up literally instead of rendering — so the icon has to be a
+ * GLPI 11.0.8 instance that the translation `value` is rendered as *escaped plain text*, not HTML -
+ * an `<i class="ti ...">` tag shows up literally instead of rendering: so the icon has to be a
  * plain Unicode emoji character prepended to the name, not markup.
  *
  * Visibility (which asset types a state can be applied to) is governed by `DropdownVisibility`
  * rows (`itemtype => State::class`, `visible_itemtype => <asset class>`). Confirmed by reading
  * State::post_getFromDB(): every visibility field defaults to *not visible* unless an explicit
  * row says otherwise (`getEmpty()`'s all-visible defaults only apply to GLPI's own blank "add new
- * state" form, not to states inserted directly) — so only the itemtypes that should show "Oui"
+ * state" form, not to states inserted directly): so only the itemtypes that should show "Oui"
  * need a row here, not every itemtype with "Non".
  *
  * Individually selectable (`Config.state_names`, checkboxes on the wizard step) rather than
- * all-or-nothing — same "no bundling" lesson as Sprint 26. Six of the 15 are flagged as
+ * all-or-nothing: same "no bundling" lesson as Sprint 26. Six of the 15 are flagged as
  * recommended: this sibling plugin's own `assetsign-glpi`
- * (https://github.com/parime/assetsign-glpi — renamed from `remise-glpi` partway through this
+ * (https://github.com/parime/assetsign-glpi: renamed from `remise-glpi` partway through this
  * plugin's own development, confirmed against the real repo rather than an old citation) auto-
  * triggers a handover/return/donation/sale/destruction workflow off a `State` change, so an admin
  * running both plugins needs "En stock"/"Attribué"/"Donné"/"Vendu"/"Détruit"/"Attente restitution"
- * to exist for the two plugins to actually interoperate — but `assetsign-glpi` matches by *state
+ * to exist for the two plugins to actually interoperate: but `assetsign-glpi` matches by *state
  * ID* (configured in its own settings: `Config.donation_states`/`vente_states`/`destruction_states`,
  * confirmed in its `ARCHITECTURE.md`), not by exact name string, so this is a recommendation to
  * keep selected, not a hardcoded name dependency. "Détruit" specifically closes a real gap found
  * live: `assetsign-glpi` has a dedicated Destruction workflow (`Assetsign::TYPE_DESTRUCTION`,
- * `destruction_states`) with no name in the previous 14-state list resembling it — "Obsolète" and
+ * `destruction_states`) with no name in the previous 14-state list resembling it - "Obsolète" and
  * "Défectueux" describe a *condition*, not the *disposal event itself* (exactly the same
  * distinction "Donné"/"Vendu" already draw from "Attribué"/"En stock"), so reusing either for
  * destruction would have been the same category error, not a shortcut.
@@ -88,10 +88,10 @@ class StateBuilder
     ];
 
     // Kept selected by default for interoperability with assetsign-glpi's own donation/sale/
-    // destruction/return workflow triggers — see class docblock.
+    // destruction/return workflow triggers: see class docblock.
     public const RECOMMENDED_NAMES = ['En stock', 'Attribué', 'Donné', 'Vendu', 'Détruit', 'Attente restitution'];
 
-    // Only the itemtypes that should default to "Oui" — absence of a row means "Non" at runtime
+    // Only the itemtypes that should default to "Oui" - absence of a row means "Non" at runtime
     // (see class docblock), so the much longer list of component/infrastructure types that stay
     // "Non" (network equipment, racks, device components, etc.) needs no row at all.
     private const VISIBLE_FOR = [
@@ -118,7 +118,7 @@ class StateBuilder
     }
 
     /**
-     * @return string[] Every state name this builder knows how to create — used both as the
+     * @return string[] Every state name this builder knows how to create: used both as the
      *         "all selected" default and to validate `Config.state_names` against a whitelist
      *         (same role `Config::CATEGORY_BRANCH_KEYS` plays for category branches).
      */
@@ -152,7 +152,7 @@ class StateBuilder
     }
 
     /**
-     * Recommended states (RECOMMENDED_NAMES) that do not exist yet — e.g. "Détruit", only created by
+     * Recommended states (RECOMMENDED_NAMES) that do not exist yet : e.g. "Détruit", only created by
      * the wizard since 2026-09-21 (#276), so missing from instances configured before (#293).
      *
      * @return string[]

@@ -34,7 +34,7 @@ final class ProjectTemplateBuilderTest extends TestCase
 
     /**
      * `ProjectTemplateBuilder::findTypeId()` resolves each template's project/task types by name
-     * against whatever `ProjectTaxonomyBuilder` already created — it never creates those itself.
+     * against whatever `ProjectTaxonomyBuilder` already created: it never creates those itself.
      */
     protected function setUp(): void
     {
@@ -86,7 +86,7 @@ final class ProjectTemplateBuilderTest extends TestCase
 
     /**
      * Regression guard: a template project/task created while `ProjectTaxonomyBuilder` hadn't run
-     * yet used to stay stuck with `projecttypes_id`/`projecttasktypes_id = 0` forever —
+     * yet used to stay stuck with `projecttypes_id`/`projecttasktypes_id = 0` forever -
      * `getOrCreateTemplate()`/`getOrCreateTask()` found the existing row by name and returned
      * early without ever revisiting its type FK.
      */
@@ -129,11 +129,11 @@ final class ProjectTemplateBuilderTest extends TestCase
 
         global $DB;
         $projectCount = $DB->request(['FROM' => Project::getTable(), 'WHERE' => ['is_template' => 1, 'template_name' => self::TEMPLATE_NAME]])->count();
-        $this->assertSame(1, $projectCount, 'Exactly one template project must exist — no duplicate.');
+        $this->assertSame(1, $projectCount, 'Exactly one template project must exist: no duplicate.');
 
         $project = new Project();
         $project->getFromDBByCrit(['is_template' => 1, 'template_name' => self::TEMPLATE_NAME]);
         $taskCount = $DB->request(['FROM' => ProjectTask::getTable(), 'WHERE' => ['projects_id' => $project->getID(), 'name' => 'Analyse & Cadrage']])->count();
-        $this->assertSame(1, $taskCount, 'Exactly one task must exist — no duplicate.');
+        $this->assertSame(1, $taskCount, 'Exactly one task must exist: no duplicate.');
     }
 }

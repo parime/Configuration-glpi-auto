@@ -61,7 +61,7 @@ final class PlanningEventBuilderTest extends TestCase
     }
 
     /**
-     * `background = 1` on "Astreinte" only — GLPI's own meaning is "renders as a busy-background
+     * `background = 1` on "Astreinte" only: GLPI's own meaning is "renders as a busy-background
      * block rather than a discrete event", the correct on-call-coverage convention (see class
      * docblock). The real regression to guard is that this specific template gets it and the others
      * don't.

@@ -24,10 +24,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Calls `AuditWatchCron::cronAuditwatch()` directly, never through GLPI's real scheduler (same
- * convention as every `*Builder` test in this plugin — the wizard/cron dispatch layer itself is
+ * convention as every `*Builder` test in this plugin: the wizard/cron dispatch layer itself is
  * never exercised in tests, only the logic it calls). The real critical-findings state of the
  * shared instance is never forced either way here (same discipline as `CountBasedChecksTest`/
- * `DefaultCredentialsCheckTest`) — what IS deterministic regardless of that state: persistence
+ * `DefaultCredentialsCheckTest`): what IS deterministic regardless of that state: persistence
  * round-trips correctly, and the exact same critical set never counts as "new" twice in a row.
  */
 final class AuditWatchCronTest extends TestCase

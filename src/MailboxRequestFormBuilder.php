@@ -44,8 +44,8 @@ use ITILCategory;
  * `ServiceCatalogBuilder::SERVICES`.
  *
  * No conditional question : unlike `MeetingRoomFormBuilder`'s two branches, all three request types
- * here (new mailbox, extra alias, shared team mailbox) share the exact same follow-up need — the
- * desired address or name — so a single radio question is enough, no branching required. A final
+ * here (new mailbox, extra alias, shared team mailbox) share the exact same follow-up need: the
+ * desired address or name: so a single radio question is enough, no branching required. A final
  * free-text "Précisions complémentaires" field is added on every class in this generalization pass,
  * replacing the generic Description field these smart forms no longer have.
  */

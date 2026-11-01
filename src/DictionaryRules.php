@@ -34,16 +34,16 @@ final class DictionaryRules
 {
     /**
      * Issue #323 : début du nom des règles créées par l'assistant, par type de règle (cf. les
-     * `*DictionaryBuilder` et SoftwareCategoryBuilder::RULE_PREFIX) — ce qui les distingue des
+     * `*DictionaryBuilder` et SoftwareCategoryBuilder::RULE_PREFIX) : ce qui les distingue des
      * règles de GLPI ou de l'administrateur, que l'audit ne juge pas.
      */
     public const PLUGIN_RULE_PREFIXES = [
-        'RuleDictionnaryComputerType'               => 'Type d\'ordinateur — normalisation « ',
-        'RuleDictionnaryManufacturer'               => 'Fabricant — normalisation « ',
-        'RuleDictionnaryOperatingSystem'            => 'Système d\'exploitation — normalisation « ',
-        'RuleDictionnaryOperatingSystemArchitecture' => 'Système d\'exploitation — normalisation « ',
-        'RuleDictionnaryPrinter'                    => 'Imprimante — ne pas importer « ',
-        'RuleDictionnarySoftware'                   => 'Logiciel — normalisation « ',
+        'RuleDictionnaryComputerType'               => 'Type d\'ordinateur: normalisation « ',
+        'RuleDictionnaryManufacturer'               => 'Fabricant: normalisation « ',
+        'RuleDictionnaryOperatingSystem'            => 'Système d\'exploitation: normalisation « ',
+        'RuleDictionnaryOperatingSystemArchitecture' => 'Système d\'exploitation: normalisation « ',
+        'RuleDictionnaryPrinter'                    => 'Imprimante : ne pas importer « ',
+        'RuleDictionnarySoftware'                   => 'Logiciel: normalisation « ',
         'RuleSoftwareCategory'                      => SoftwareCategoryBuilder::RULE_PREFIX,
     ];
 

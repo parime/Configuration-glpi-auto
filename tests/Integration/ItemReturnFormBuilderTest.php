@@ -30,9 +30,9 @@ use Ticket;
 
 /**
  * Unlike its siblings elsewhere in this suite, this form has no `QuestionTypeItem`/
- * `QuestionTypeUserDevice` question — no real GLPI itemtype in the "achats/logistique" branch for one
+ * `QuestionTypeUserDevice` question: no real GLPI itemtype in the "achats/logistique" branch for one
  * to point at (see class docblock). Its only destination-level behavior worth a real assertion is
- * `RequestTypeField::SPECIFIC_VALUE` and the computed title — still real submission, real assertion,
+ * `RequestTypeField::SPECIFIC_VALUE` and the computed title: still real submission, real assertion,
  * not just "the form saves without error".
  */
 final class ItemReturnFormBuilderTest extends TestCase

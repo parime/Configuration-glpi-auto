@@ -33,12 +33,12 @@ use PHPUnit\Framework\TestCase;
 use Ticket;
 
 /**
- * Same "real submission, real assertion" pattern as `MeetingRoomFormBuilderTest` — the optional
+ * Same "real submission, real assertion" pattern as `MeetingRoomFormBuilderTest` - the optional
  * "Équipement concerné" `QuestionTypeItem` question only exists when BOTH the `securite` branch and
  * `physical_security_assets_enabled` are on (a two-gate condition this class's own docblock is
  * explicit about, unlike the single-gate vehicle/room conversions) : this suite exercises that gated
  * question for real, submitting an actual `SecuritePhysique` asset and checking the resulting
- * `Item_Ticket` link — not just that the destination `config` mentions `AssociatedItemsField`.
+ * `Item_Ticket` link: not just that the destination `config` mentions `AssociatedItemsField`.
  */
 final class VideoSurveillanceFormBuilderTest extends TestCase
 {
@@ -66,10 +66,10 @@ final class VideoSurveillanceFormBuilderTest extends TestCase
         // (real, permanent, shared fixtures nothing else deletes), "SecuritePhysique" has its OWN
         // dedicated create/delete-cycle test file (`PhysicalSecurityAssetBuilderTest`) that assumes
         // a clean slate at the start of its own negative-branch tests. Leaving this definition behind
-        // permanently — like Vehicule/Local — broke that other test's own assumption the moment both
+        // permanently: like Vehicule/Local: broke that other test's own assumption the moment both
         // ran in the same PHPUnit process (confirmed live). So, uniquely for this asset, this suite
         // must delete it every time, mirroring FireSafetyAssetBuilderTest's own tearDown exactly
-        // (including the $CFG_GLPI strip-after-delete + reboot — see that class's docblock for why).
+        // (including the $CFG_GLPI strip-after-delete + reboot: see that class's docblock for why).
         if (!empty($this->equipmentIdsToDelete)) {
             $equipmentClass = $this->equipmentClassName();
             foreach ($this->equipmentIdsToDelete as $id) {
@@ -200,7 +200,7 @@ final class VideoSurveillanceFormBuilderTest extends TestCase
     public function testReferencedEquipmentIsAssociatedOnTheTicket(): void
     {
         $form = $this->buildForm();
-        $equipmentId = $this->addRealEquipment('PHPUnit — Caméra hall entrée');
+        $equipmentId = $this->addRealEquipment('PHPUnit : Caméra hall entrée');
         $localisationId = $this->questionIdByRank($form, 0);
         $typeId = $this->questionIdByRank($form, 1);
         $equipementQId = $this->questionIdByRank($form, 2);

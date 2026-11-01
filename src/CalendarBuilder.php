@@ -26,32 +26,32 @@ use Entity;
  * assigns it to entities. Idempotent: reuses an existing calendar of the same name, and skips a
  * segment that's already there.
  *
- * One CalendarSegment per selected weekday by default (uniform hours), with two ways to diverge —
+ * One CalendarSegment per selected weekday by default (uniform hours), with two ways to diverge -
  * `glpi_calendarsegments` has no core limitation here, it already supports any number of segments
  * per day, this plugin's own `CalendarBuilder` just used to only ever create one: (1) per-day hour
- * overrides (`Config::getCalendarDayHours()`, e.g. "vendredi 9h-12h seulement" — only the days that
+ * overrides (`Config::getCalendarDayHours()`, e.g. "vendredi 9h-12h seulement" - only the days that
  * actually differ from the shared begin/end need an entry, everything else keeps using it), and
  * (2) an optional lunch break (`calendar_lunch_break_enabled`) that splits a day into two segments
- * (morning + afternoon) whenever the lunch window actually falls strictly inside that day's hours —
+ * (morning + afternoon) whenever the lunch window actually falls strictly inside that day's hours -
  * a day whose hours don't span the lunch window (e.g. a 9h-12h Friday with a 12h-13h lunch) keeps a
  * single segment rather than producing a zero-length or inverted one.
  *
  * Each day's existing segments are cleared right before that day's new one(s) are written
- * (`clearDaySegments()`) — a real bug found live (2026-08-14): the previous "skip if the exact
+ * (`clearDaySegments()`): a real bug found live (2026-08-14): the previous "skip if the exact
  * same segment already exists" check only protects against an *identical* resubmission. Once hours
  * can change between wizard runs (a different Friday end time, lunch break toggled on/off...), a
  * new segment can *overlap* an old one with different bounds on the same day, and
  * `CalendarSegment`'s own core validation (`Impossible d'ajouter une plage chevauchant une plage
- * existante`) rejects the insert outright — silently, since this class never checked `add()`'s
+ * existante`) rejects the insert outright: silently, since this class never checked `add()`'s
  * return value. Clearing the day first makes each resubmission fully replace that day's schedule
  * rather than merge with whatever was there before, which is also the behavior an admin actually
  * expects when they go back and change the hours.
  *
- * Public holidays are deliberately *not* handled here anymore — an earlier version seeded a
+ * Public holidays are deliberately *not* handled here anymore: an earlier version seeded a
  * hardcoded 8-holiday French list behind its own `calendar_holidays_enabled` checkbox, regardless
  * of which country the calendar's own entity was actually in. Replaced by `CountryHolidayBuilder`,
  * driven by the country typed on that entity's own Location (or France by default when none is
- * typed) — see that class's docblock for the full reasoning. `front/wizard.php` calls it
+ * typed): see that class's docblock for the full reasoning. `front/wizard.php` calls it
  * separately, after this class has assigned every calendar to its entities (it needs
  * `assignMap()`'s result, `$calendarMap`, to resolve which calendar a given country belongs to).
  */
@@ -100,7 +100,7 @@ class CalendarBuilder
     /**
      * Same as build(), but for one MSP client's own calendar override (see
      * Config::sanitizeTree()'s per-client `settings.calendar`) instead of the plugin-wide shared
-     * settings — named after the client so it doesn't collide with the shared calendar or another
+     * settings: named after the client so it doesn't collide with the shared calendar or another
      * client's.
      *
      * @param array{enabled: bool, days: int[], begin: string, end: string, dayHours?: array<int, array{begin: string, end: string}>, lunchBreakEnabled?: bool, lunchBegin?: string, lunchEnd?: string} $calendar
@@ -111,7 +111,7 @@ class CalendarBuilder
             return null;
         }
 
-        $name = sprintf(__('Horaires — %s', 'configurationglpiauto'), $clientName);
+        $name = sprintf(__('Horaires - %s', 'configurationglpiauto'), $clientName);
 
         return $this->buildCalendar(
             $name,
@@ -126,7 +126,7 @@ class CalendarBuilder
     }
 
     /**
-     * Assigns the same calendar to each given entity — sub-entities inherit it automatically
+     * Assigns the same calendar to each given entity: sub-entities inherit it automatically
      * (GLPI's default Entity::CONFIG_PARENT strategy), so only the top of each branch needs this.
      *
      * @param int[] $entityIds
@@ -163,7 +163,7 @@ class CalendarBuilder
     /**
      * @param int[] $days
      * @param array<int, array{begin: string, end: string}> $dayHours Per-day overrides of
-     *        $begin/$end (e.g. "vendredi 9h-12h seulement") — days missing here just use the
+     *        $begin/$end (e.g. "vendredi 9h-12h seulement"): days missing here just use the
      *        shared $begin/$end.
      */
     private function buildCalendar(
@@ -177,7 +177,7 @@ class CalendarBuilder
         string $lunchEnd = '13:00',
     ): int {
         // `entities_id`/`is_recursive` (confirmed via `DESCRIBE glpi_calendars`) were never set
-        // here, silently defaulting to GLPI's own add() default (root entity, *not* recursive) —
+        // here, silently defaulting to GLPI's own add() default (root entity, *not* recursive) -
         // real bug found live: every calendar this plugin ever created was invisible from any
         // sub-entity's own admin context (Configuration > Calendriers, scoped to the current
         // entity + recursive children only), even though the entity's own `calendars_id` still
@@ -215,7 +215,7 @@ class CalendarBuilder
     }
 
     /**
-     * Removes every existing segment for this (calendar, day) — called right before writing that
+     * Removes every existing segment for this (calendar, day): called right before writing that
      * day's segment(s) for the current submission, so a changed schedule always fully replaces the
      * old one instead of risking an overlap `CalendarSegment` would reject (see class docblock).
      */

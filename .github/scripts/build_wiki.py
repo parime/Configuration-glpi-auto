@@ -47,7 +47,7 @@ def rewrite(md: str, source_dir: str) -> str:
 
 
 os.makedirs(out, exist_ok=True)
-notice = (f'> 📄 Page générée automatiquement depuis [`{{src}}`]({blob}{{src}}) — '
+notice = (f'> 📄 Page générée automatiquement depuis [`{{src}}`]({blob}{{src}}) - '
           f'modifiez ce fichier dans le dépôt, pas cette page.\n\n')
 
 for p in pages:
@@ -67,7 +67,7 @@ for p in pages:
 with open(os.path.join(out, '_Sidebar.md'), 'w', encoding='utf-8', newline='\n') as f:
     f.write('\n'.join(sidebar).strip() + '\n')
 with open(os.path.join(out, '_Footer.md'), 'w', encoding='utf-8', newline='\n') as f:
-    f.write(f'Wiki généré depuis la branche `{branch}` de [{repo}](https://github.com/{repo}) — '
+    f.write(f'Wiki généré depuis la branche `{branch}` de [{repo}](https://github.com/{repo}) - '
             f'[signaler un problème](https://github.com/{repo}/issues)\n')
 
 print(f'{len(pages)} pages generees dans {out}')

@@ -26,7 +26,7 @@ use Software;
 /**
  * Issue #304 : logiciels déjà en base, sans catégorie, que les règles « Catégories de logiciels »
  * savent classer (créés avant les règles, ou par un import). Correction : la catégorie trouvée
- * par les règles est appliquée — et rien d'autre ; un logiciel qui a déjà une catégorie n'est
+ * par les règles est appliquée : et rien d'autre ; un logiciel qui a déjà une catégorie n'est
  * jamais touché.
  */
 final class UncategorizedSoftwareCheck implements AuditCheckInterface

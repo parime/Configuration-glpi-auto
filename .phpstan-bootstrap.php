@@ -6,7 +6,7 @@
  * volontairement le vrai bootstrap Kernel, qui exige une connexion DB). Valeurs arbitraires :
  * seule leur existence compte pour l'analyse statique, jamais leur contenu réel. Même convention
  * que le plugin jumeau assetsign-glpi (`.phpstan-bootstrap.php`), qui a le premier prouvé que
- * `src/` est bel et bien analysable sans DB — contrairement à ce que ce plugin supposait jusqu'ici
+ * `src/` est bel et bien analysable sans DB : contrairement à ce que ce plugin supposait jusqu'ici
  * (voir l'historique de phpstan.neon avant ce correctif).
  */
 if (!defined('GLPI_DOC_DIR')) {

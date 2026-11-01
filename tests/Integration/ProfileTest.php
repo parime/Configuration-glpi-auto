@@ -26,7 +26,7 @@ use ProfileRight;
  * The plugin is actually installed and active on this instance (real `ProfileRight` rows already
  * exist from the real activation), so `testUninstallThenReinstallRestoresState()` wraps its own
  * `uninstall()` call in try/finally to guarantee `install()` runs again before the test ends even
- * if an assertion fails in between — leaving the live plugin's own Super-Admin rights intact is
+ * if an assertion fails in between: leaving the live plugin's own Super-Admin rights intact is
  * more important than a clean early-return on failure.
  */
 final class ProfileTest extends TestCase
@@ -41,7 +41,7 @@ final class ProfileTest extends TestCase
         $profileCount = $DB->request(['FROM' => \Profile::getTable()])->count();
         foreach ([Profile::RIGHT_PROFILE, Profile::RIGHT_CONFIG] as $right) {
             $count = $DB->request(['FROM' => ProfileRight::getTable(), 'WHERE' => ['name' => $right]])->count();
-            $this->assertSame($profileCount, $count, "Exactly one '$right' row per real profile — no duplicate from running install() twice.");
+            $this->assertSame($profileCount, $count, "Exactly one '$right' row per real profile: no duplicate from running install() twice.");
         }
 
         $superAdmin = $DB->request(['FROM' => \Profile::getTable(), 'WHERE' => ['name' => 'Super-Admin']])->current();

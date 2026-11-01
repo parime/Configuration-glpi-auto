@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unlike `DefaultCredentialsCheckTest`, the 5 `password_*` keys read here are a single global GLPI
- * `Config` setting shared with every other suite/real usage of this instance — safe to force in
+ * `Config` setting shared with every other suite/real usage of this instance: safe to force in
  * both directions and restored in `tearDown()` regardless of outcome, same discipline as
  * `NotificationsDisabledCheckTest`.
  */

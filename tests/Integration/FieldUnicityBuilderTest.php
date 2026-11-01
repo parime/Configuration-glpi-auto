@@ -73,7 +73,7 @@ final class FieldUnicityBuilderTest extends TestCase
         global $DB;
         foreach (self::ITEMTYPES as $itemtype) {
             $count = $DB->request(['FROM' => FieldUnicity::getTable(), 'WHERE' => ['itemtype' => $itemtype, 'entities_id' => 0]])->count();
-            $this->assertSame(1, $count, "Exactly one rule for $itemtype must exist — no duplicate.");
+            $this->assertSame(1, $count, "Exactly one rule for $itemtype must exist: no duplicate.");
         }
     }
 }

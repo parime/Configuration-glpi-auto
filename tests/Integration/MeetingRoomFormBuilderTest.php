@@ -34,18 +34,18 @@ use Ticket;
 /**
  * Regression guard for a real bug from the same PR that introduced this builder's advanced question
  * types (#224) : the "Salle souhaitée" `QuestionTypeItem` was first wired with
- * `AssetDefinition::getAssetTypeClassName()` instead of `getAssetClassName()` — the former is the
+ * `AssetDefinition::getAssetTypeClassName()` instead of `getAssetClassName()` - the former is the
  * definition's native "Type" *dropdown* class (`getAssetClassName() . 'Type'`), not the asset itself.
  * GLPI rejected the resulting `QuestionTypeItemExtraDataConfig` with an `InvalidArgumentException`
  * ("Invalid extra data for question") the moment the wizard tried to build this specific form,
- * interrupting the whole assistant mid-run for every builder queued after it — found only by actually
+ * interrupting the whole assistant mid-run for every builder queued after it: found only by actually
  * running the wizard against the live instance, not by reading the code (both class-name getters
  * return a syntactically valid `class-string`, so nothing short of instantiating the config catches
  * the mix-up).
  *
  * This suite goes one step further than "does it throw" : it submits the form exactly like a real
  * browser would (`EndUserInputNameProvider` → `AnswersHandler::saveAnswers()`, the same pipeline
- * `SubmitAnswerController` uses) and asserts the REAL resulting `Item_Ticket` link — the only way to
+ * `SubmitAnswerController` uses) and asserts the REAL resulting `Item_Ticket` link: the only way to
  * confirm `AssociatedItemsField` actually attaches the chosen room, not just that the form saved
  * without error.
  */
@@ -78,7 +78,7 @@ final class MeetingRoomFormBuilderTest extends TestCase
         }
 
         // See VehicleIncidentFormBuilderTest's tearDown docblock: the "Local" AssetDefinition is a
-        // real, shared, pre-existing asset type — never delete it, never clearDefinitionsCache().
+        // real, shared, pre-existing asset type: never delete it, never clearDefinitionsCache().
     }
 
     private function buildConfig(): Config
@@ -174,12 +174,12 @@ final class MeetingRoomFormBuilderTest extends TestCase
 
     /**
      * The actual regression : the "Réservation de salle" branch must produce a ticket with a REAL
-     * `Item_Ticket` link to the chosen room asset — not just a form that saves without throwing.
+     * `Item_Ticket` link to the chosen room asset: not just a form that saves without throwing.
      */
     public function testReservationBranchAssociatesRoomOnTicket(): void
     {
         $form = $this->buildForm();
-        $roomId = $this->addRealRoom('PHPUnit — Salle Ariane');
+        $roomId = $this->addRealRoom('PHPUnit: Salle Ariane');
         $typeId = $this->questionIdByRank($form, 0);
         $salleId = $this->questionIdByRank($form, 1);
         $dateId = $this->questionIdByRank($form, 2);
@@ -201,7 +201,7 @@ final class MeetingRoomFormBuilderTest extends TestCase
     }
 
     /**
-     * The "Problème d'équipement" branch never shows/answers the room question — this must NOT
+     * The "Problème d'équipement" branch never shows/answers the room question : this must NOT
      * silently associate a stale or wrong item; `AssociatedItemsFieldStrategy::LAST_VALID_ANSWER`
      * must genuinely return null (no item), not just happen to not error.
      */
@@ -219,8 +219,8 @@ final class MeetingRoomFormBuilderTest extends TestCase
         ]);
 
         // Every ticket created from a Form gets one automatic, unrelated `Item_Ticket` row linking
-        // it back to the `Glpi\Form\Form` itself (a native GLPI traceability link, confirmed live —
-        // nothing to do with `AssociatedItemsField`) — so the real assertion is "no *room* was
+        // it back to the `Glpi\Form\Form` itself (a native GLPI traceability link, confirmed live -
+        // nothing to do with `AssociatedItemsField`): so the real assertion is "no *room* was
         // associated", not "no Item_Ticket row exists at all".
         $link = new Item_Ticket();
         $this->assertFalse(

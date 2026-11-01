@@ -19,7 +19,7 @@ namespace GlpiPlugin\Configurationglpiauto\Compat;
 
 /**
  * Outgoing HTTP GET through GLPI core's own client, on GLPI 11 (Toolbox::getGuzzleClient()) and
- * GLPI 12 (Glpi\Toolbox\HttpClient, which replaced it) alike — both honour GLPI's proxy settings.
+ * GLPI 12 (Glpi\Toolbox\HttpClient, which replaced it) alike: both honour GLPI's proxy settings.
  */
 final class Http
 {

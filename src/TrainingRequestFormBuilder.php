@@ -52,7 +52,7 @@ use ITILCategory;
  * adds last, replacing the generic Description field these smart forms no longer have.
  *
  * **Second pass (advanced question types)** : same `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring
- * as `AbroadMissionFormBuilder`/`RemoteWorkFormBuilder`/`LeaveRequestFormBuilder` — see the first's
+ * as `AbroadMissionFormBuilder`/`RemoteWorkFormBuilder`/`LeaveRequestFormBuilder` - see the first's
  * docblock for the full reasoning. A training request is a budget/planning decision managers
  * routinely need visibility into, without this plugin having to ask who that manager is.
  */

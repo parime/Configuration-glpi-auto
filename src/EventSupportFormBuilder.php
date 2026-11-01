@@ -46,7 +46,7 @@ use ITILCategory;
  * plain Title+Description entry that used to live in `ServiceCatalogBuilder::SERVICES` (now flagged
  * `'smart' => true` there and skipped by that builder's own loop).
  *
- * An event support request always needs a name, a date and the kind(s) of support requested — an
+ * An event support request always needs a name, a date and the kind(s) of support requested: an
  * event can genuinely need several kinds of support at once (communication *and* logistics, say), so
  * "typeSupport" is a `QuestionTypeCheckbox` (same `QuestionTypeSelectableExtraDataConfig` shape as
  * `SocialMediaPostFormBuilder`'s réseaux field, multi-select). No branch needed, every field is

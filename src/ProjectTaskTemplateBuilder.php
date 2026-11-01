@@ -22,13 +22,13 @@ use ProjectTaskType;
 
 /**
  * Turns on `project_task_templates_enabled` into a real `ProjectTaskTemplate` library
- * (Configuration > Intitulés > Assistance > "Gabarits de tâches de projets") — reusable steps a
+ * (Configuration > Intitulés > Assistance > "Gabarits de tâches de projets") : reusable steps a
  * project manager attaches instead of retyping the same milestones on every project. GLPI ships
  * none by default.
  *
  * Each template's `projecttasktypes_id` is resolved by name against whatever
- * `ProjectTaxonomyBuilder` already created — same independent-resolution pattern
- * `TaskTemplateBuilder` uses against `TaskCategoryBuilder`. `description` (not `content` — a
+ * `ProjectTaxonomyBuilder` already created: same independent-resolution pattern
+ * `TaskTemplateBuilder` uses against `TaskCategoryBuilder`. `description` (not `content` - a
  * different field name than `TaskTemplate`, confirmed in `glpi_projecttasktemplates`'s own schema)
  * is the template's body text.
  */
@@ -98,7 +98,7 @@ class ProjectTaskTemplateBuilder
         if (Lookup::loadFirst($item, ['name' => $name])) {
             // Self-heals a template left with `projecttasktypes_id = 0` by an earlier run where
             // `ProjectTaxonomyBuilder` hadn't been run yet (the wizard's steps are independent and
-            // can be run in any order, or re-run individually) — otherwise that FK stays broken
+            // can be run in any order, or re-run individually): otherwise that FK stays broken
             // forever, since nothing else ever revisits it.
             if ($taskTypeId > 0 && (int) $item->fields['projecttasktypes_id'] !== $taskTypeId) {
                 $item->update(['id' => $item->getID(), 'projecttasktypes_id' => $taskTypeId]);

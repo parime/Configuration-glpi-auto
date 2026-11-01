@@ -21,7 +21,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
 
 /**
- * `glpi_itilcategories` — aucune catégorie de ticket signifie qu'aucun ticket ne peut être
+ * `glpi_itilcategories` - aucune catégorie de ticket signifie qu'aucun ticket ne peut être
  * classifié ni routé automatiquement vers la bonne équipe, un des piliers ITIL de la gestion des
  * incidents/demandes (au même titre que les statuts ou le SLA, déjà couverts par
  * `NoStatesConfiguredCheck`/`NoSlaConfiguredCheck`). Jamais corrigée automatiquement : le libellé

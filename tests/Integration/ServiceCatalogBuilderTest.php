@@ -30,12 +30,12 @@ use Ticket;
 /**
  * `ServiceCatalogBuilder` is the piece tying the whole ~50-entry catalog together : it builds the
  * form-category tree AND is still the sole owner of the 2 entries deliberately left plain (see its
- * own class docblock — every other entry is `'smart' => true` and built by its own dedicated
+ * own class docblock: every other entry is `'smart' => true` and built by its own dedicated
  * `*FormBuilder` instead). Despite that, it had no test of its own before this one.
  *
  * Same "real submission, real assertion" pattern as the rest of this suite : the actual point of
  * `configureDestinationCategory()` is that a submitted ticket lands in the *specific*
- * `ITILCategory` the service maps to (`ITILCategoryFieldStrategy::SPECIFIC_VALUE`) — a config that
+ * `ITILCategory` the service maps to (`ITILCategoryFieldStrategy::SPECIFIC_VALUE`): a config that
  * "looks right" in its own JSON is not proof GLPI actually routes the ticket there.
  */
 final class ServiceCatalogBuilderTest extends TestCase
@@ -90,10 +90,10 @@ final class ServiceCatalogBuilderTest extends TestCase
 
         $count = (new ServiceCatalogBuilder())->build($config);
 
-        // Exactly 2, not e.g. 44+2 — this is the real proof the loop's own 'smart' skip works:
+        // Exactly 2, not e.g. 44+2: this is the real proof the loop's own 'smart' skip works:
         // the shared instance may legitimately already have some smart-flagged forms for real
         // (built by their own dedicated *FormBuilder from earlier wizard runs), so asserting a
-        // specific one's absence here would be unsafe — the return count is the robust check.
+        // specific one's absence here would be unsafe: the return count is the robust check.
         $this->assertSame(2, $count, 'Only the 2 deliberately-plain entries are this builder\'s own responsibility.');
         $this->assertTrue((new Form())->getFromDBByCrit(['name' => self::RH_FORM_NAME]));
         $this->assertTrue((new Form())->getFromDBByCrit(['name' => self::SECURITE_FORM_NAME]));
@@ -114,12 +114,12 @@ final class ServiceCatalogBuilderTest extends TestCase
         $second = $builder->build($config);
 
         // Unlike most other *Builder classes in this plugin (e.g. PhysicalSecurityAssetBuilder,
-        // whose own return value means "how many were newly created this call" — 0 on a second
+        // whose own return value means "how many were newly created this call" - 0 on a second
         // run), this method's own docblock documents a different, still-correct contract: "Number
-        // of service forms created *or reused*" — every call that matches the same enabled
+        // of service forms created *or reused*" - every call that matches the same enabled
         // branches counts the same 2 plain services, whether they already existed or not. The
         // real idempotency guarantee to verify is that the underlying form row is the exact same
-        // one (same id), not recreated — not that the return value drops to 0.
+        // one (same id), not recreated: not that the return value drops to 0.
         $this->assertSame(2, $first);
         $this->assertSame(2, $second);
 
@@ -133,7 +133,7 @@ final class ServiceCatalogBuilderTest extends TestCase
 
         global $DB;
         $matches = $DB->request(['FROM' => Form::getTable(), 'WHERE' => ['name' => self::RH_FORM_NAME]])->count();
-        $this->assertSame(1, $matches, 'Exactly one row must exist for this form name — no duplicate.');
+        $this->assertSame(1, $matches, 'Exactly one row must exist for this form name: no duplicate.');
     }
 
     /**
@@ -156,7 +156,7 @@ final class ServiceCatalogBuilderTest extends TestCase
         ]));
 
         $provider = new EndUserInputNameProvider();
-        // Only "Description" is mandatory on these minimal forms (see addQuestions()) — Title is
+        // Only "Description" is mandatory on these minimal forms (see addQuestions()): Title is
         // optional, matching the "enter the least possible" philosophy documented on the class.
         $descriptionId = $this->questionIdByRank($form, 1);
         $answers = $provider->getAnswers([

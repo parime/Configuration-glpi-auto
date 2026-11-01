@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * `use_notifications` is a single global GLPI setting shared with every other suite/real usage of
- * this instance — restored to enabled in `tearDown()` regardless of the outcome, so this test never
+ * this instance: restored to enabled in `tearDown()` regardless of the outcome, so this test never
  * leaves the shared instance worse off than it found it (same discipline as manual verification
  * elsewhere in this plugin's own history).
  */

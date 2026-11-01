@@ -20,7 +20,7 @@ namespace GlpiPlugin\Configurationglpiauto;
 use RuleDictionnaryPrinter;
 
 /**
- * Issue #315 : dictionnaire des imprimantes — ignorer à l'import les imprimantes virtuelles.
+ * Issue #315 : dictionnaire des imprimantes : ignorer à l'import les imprimantes virtuelles.
  *
  * Chaque poste remonte ses imprimantes locales (`Glpi\Inventory\Asset\Printer`) : à côté des vraies,
  * « Microsoft Print to PDF », « Microsoft XPS Document Writer », « OneNote », « Fax », les
@@ -59,7 +59,7 @@ class PrinterDictionaryBuilder
         foreach (self::IGNORED as $label => $regex) {
             DictionaryRules::ensure(
                 RuleDictionnaryPrinter::class,
-                sprintf('Imprimante — ne pas importer « %s »', $label),
+                sprintf('Imprimante : ne pas importer « %s »', $label),
                 '1',
                 [],
                 $regex,

@@ -49,12 +49,12 @@ use ITILCategory;
  * separate "urgency" question here either : `HelpdeskFormBuilder`'s own docblock documents that
  * asking requesters to self-rate urgency is a well-known ITSM anti-pattern (they lack visibility
  * into real business impact and consistently over-rate). "Fuite d'eau active" as one of the `nature`
- * options already conveys urgency objectively — an active leak vs. an out-of-service fixture vs.
- * something else — without asking the requester to make that judgment call themselves. Every smart
+ * options already conveys urgency objectively: an active leak vs. an out-of-service fixture vs.
+ * something else: without asking the requester to make that judgment call themselves. Every smart
  * form in this generalization also gets a final free-text "Précisions complémentaires" question as
  * an escape hatch, replacing the generic Description field these forms no longer have.
  *
- * Computed title only references the always-visible `localisation` answer — "<form name> -
+ * Computed title only references the always-visible `localisation` answer - "<form name> -
  * <localisation>", tag-built via `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
  */
 class WaterLeakFormBuilder

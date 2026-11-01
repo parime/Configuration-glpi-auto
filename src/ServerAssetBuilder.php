@@ -40,12 +40,12 @@ use Glpi\Asset\CustomFieldType\StringType;
 
 /**
  * Second custom asset type from the same "actifs personnalisés par branche de catégorie" idea as
- * `VehicleAssetBuilder` (see that class's docblock for the full API research — same mechanics,
+ * `VehicleAssetBuilder` (see that class's docblock for the full API research: same mechanics,
  * not re-derived here). Generated the moment the admin selects the "IT & SI" category branch
- * (`CategoryBuilder`'s `it` key) — no separate toggle, same trigger pattern as Vehicule.
+ * (`CategoryBuilder`'s `it` key): no separate toggle, same trigger pattern as Vehicule.
  *
  * Deliberately distinct from the native `Computer` asset type (the original idea's own framing:
- * "un type Serveur distinct de l'actif natif Computer") — a workstation/laptop has no meaningful
+ * "un type Serveur distinct de l'actif natif Computer") : a workstation/laptop has no meaningful
  * use for rack position, RAID, or hypervisor fields, so bolting them onto every `Computer` would
  * just be noise for the vast majority of a fleet. Capacities are broader than Vehicule's, closer to
  * what `Computer` itself has (`IsInventoriableCapacity`, `HasNetworkPortCapacity`,
@@ -53,7 +53,7 @@ use Glpi\Asset\CustomFieldType\StringType;
  * specifically server-relevant: `IsRackableCapacity` (goes in a datacenter rack),
  * `HasVirtualMachineCapacity` (may host VMs), `HasRemoteManagementCapacity` (iLO/iDRAC/IPMI),
  * `HasCertificatesCapacity` (server-side TLS certs), `HasDatabaseInstanceCapacity` (may run a
- * database GLPI's own inventory agent can discover). Not `IsReservableCapacity` — a server isn't
+ * database GLPI's own inventory agent can discover). Not `IsReservableCapacity` - a server isn't
  * booked out like a pool car or meeting room.
  *
  * Custom fields kept to free text, same reasoning as Vehicule's first pass: "position en baie" has
@@ -92,7 +92,7 @@ class ServerAssetBuilder
     ];
 
     // Seeds the *native* "type" dropdown every custom asset definition automatically gets (same
-    // mechanism as VehicleAssetBuilder's own TYPES — see that class's seedTypes() docblock).
+    // mechanism as VehicleAssetBuilder's own TYPES: see that class's seedTypes() docblock).
     // Server *form factor*, not brand/model (Manufacturer/AssetModel's job).
     private const TYPES = [
         'Serveur rack',
@@ -142,7 +142,7 @@ class ServerAssetBuilder
 
         // Real bug found by testing MeetingRoomFormBuilder's real submission path (not by reading
         // the code) : without this, `AssociatedItemsField` on a form's `QuestionTypeItem` question
-        // pointing at this asset silently links nothing to the resulting ticket, no error anywhere —
+        // pointing at this asset silently links nothing to the resulting ticket, no error anywhere -
         // see `VehicleAssetBuilder::syncHelpdeskItemTypeProfiles()`'s docblock for the full root
         // cause. Idempotent and additive-only, safe to call unconditionally on every run. This asset
         // isn't referenced by any `AssociatedItemsField`-wired form yet, but kept consistent with
@@ -153,7 +153,7 @@ class ServerAssetBuilder
     }
 
     /**
-     * Same mechanism as `VehicleAssetBuilder::seedTypes()` — see that class's docblock.
+     * Same mechanism as `VehicleAssetBuilder::seedTypes()` - see that class's docblock.
      */
     private function seedTypes(AssetDefinition $definition): void
     {
@@ -201,7 +201,7 @@ class ServerAssetBuilder
 
     /**
      * See `VehicleAssetBuilder::isHelpdeskItemTypeAlreadySynced()`'s own docblock for the full
-     * root cause this exists to fix — calling `AssetDefinition::update()` unconditionally on every
+     * root cause this exists to fix: calling `AssetDefinition::update()` unconditionally on every
      * run triggers a GLPI-core `DropdownVisibility` resync with no duplicate check, leaving
      * thousands of stale rows behind after repeated wizard runs.
      */

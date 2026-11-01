@@ -33,11 +33,11 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * `VehicleAssetBuilder` is the one class in this plugin that creates a real GLPI 11 native custom
- * asset type (`Glpi\Asset\AssetDefinition`), not a form/category/dropdown — it had no test of its
+ * asset type (`Glpi\Asset\AssetDefinition`), not a form/category/dropdown: it had no test of its
  * own, only incidental coverage from `VehicleIncidentFormBuilderTest` relying on its side effects.
  *
  * Confirmed on the shared instance (a real "Vehicule" definition already exists from earlier runs,
- * id 49) that this test suite must NOT assume a fresh "isNew" creation path — same "real, shared,
+ * id 49) that this test suite must NOT assume a fresh "isNew" creation path: same "real, shared,
  * permanent fixture" reasoning as `CategoryBuilderTest`/`ServiceCatalogBuilderTest`'s own
  * idempotency tests. Every assertion here checks the definition's real, current shape rather than
  * "how many rows got created just now."
@@ -148,7 +148,7 @@ final class VehicleAssetBuilderTest extends TestCase
         sort($names);
         $expected = self::EXPECTED_FIELDS;
         sort($expected);
-        $this->assertSame($expected, $names, 'Exactly the 5 fields this class declares — no more, no fewer, no duplicates.');
+        $this->assertSame($expected, $names, 'Exactly the 5 fields this class declares: no more, no fewer, no duplicates.');
     }
 
     public function testBuildSeedsFuelTypesAndNativeTypeDropdownWithoutDuplicating(): void
@@ -157,7 +157,7 @@ final class VehicleAssetBuilderTest extends TestCase
         $builder->build($this->buildConfig(['flotte']));
         // Called twice deliberately: the real regression is that a second run must not duplicate
         // either list (both are seeded unconditionally, independent of the definition's own
-        // isNew state — see the class's own build() comments).
+        // isNew state: see the class's own build() comments).
         $builder->build($this->buildConfig(['flotte']));
 
         $fuelNames = [];
@@ -213,15 +213,15 @@ final class VehicleAssetBuilderTest extends TestCase
 
     /**
      * Real regression found while auditing this session's own test DB (2026-09-06) : calling
-     * `AssetDefinition::update()` unconditionally on every `build()` run — done here via
+     * `AssetDefinition::update()` unconditionally on every `build()` run: done here via
      * `syncHelpdeskItemTypeProfiles()`, on the reasoning that the write itself is additive-only and
-     * idempotent — turned out to have an expensive side effect: GLPI core resyncs
+     * idempotent: turned out to have an expensive side effect: GLPI core resyncs
      * `DropdownVisibility` for the custom asset type against every existing dropdown (`State` among
      * others) on every single `update()` call, with no check for already-existing rows. Confirmed
      * live: 6552 duplicate rows out of 6678 total on this project's own dev instance, all traceable
      * to this exact pattern across the 5 custom-asset builders that share it
      * (Vehicle/Building/Server/PhysicalSecurity/FireSafety). Fixed by skipping the `update()` call
-     * entirely once every profile is already synced — this test proves a second `build()` call no
+     * entirely once every profile is already synced: this test proves a second `build()` call no
      * longer grows the `DropdownVisibility` table at all for this asset type.
      */
     public function testSecondBuildDoesNotGrowDropdownVisibilityRows(): void

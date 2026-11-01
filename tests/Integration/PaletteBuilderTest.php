@@ -24,8 +24,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * `PaletteBuilder` writes a real file under `GLPI_THEMES_DIR` and flips the instance-wide
- * `core.palette` config — both real, global, shared-instance side effects. `tearDown()` restores
- * the exact value this instance had before the test (confirmed empty — no custom palette was set
+ * `core.palette` config: both real, global, shared-instance side effects. `tearDown()` restores
+ * the exact value this instance had before the test (confirmed empty: no custom palette was set
  * here previously) and removes the generated file, so this suite leaves no lasting visual change on
  * the shared dev instance for other tests or real usage.
  *

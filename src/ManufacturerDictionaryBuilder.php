@@ -21,14 +21,14 @@ use RuleDictionnaryManufacturer;
 
 /**
  * Turns on `manufacturer_dictionary_enabled` into `RuleDictionnaryManufacturer` rows (Administration
- * > Dictionnaires > Fabricants) — GLPI's native mechanism for normalizing the inconsistent
+ * > Dictionnaires > Fabricants): GLPI's native mechanism for normalizing the inconsistent
  * manufacturer strings hardware inventory (dmidecode/WMI/SNMP/EDID) actually reports into a single
  * canonical `Manufacturer`. The inventory runs every manufacturer name through this dictionary
  * before looking for an existing one (`CommonDropdown::importExternal()`), so a variant the
  * dictionary knows never becomes a second manufacturer record.
  *
  * Explicitly re-scoped after user feedback: the project's ROADMAP previously rejected *all*
- * dictionary rules with "nothing to normalize yet on a fresh install without inventory data" — true
+ * dictionary rules with "nothing to normalize yet on a fresh install without inventory data" - true
  * for software dictionaries (whatever a specific org's real software happens to report), but *not*
  * true here: the raw strings inventory tools report for the major vendors are well documented and
  * stable across organizations.
@@ -48,7 +48,7 @@ class ManufacturerDictionaryBuilder
      * Canonical name => [exact variants, regex]. The first 29 entries are
      * `ManufacturerBuilder::MANUFACTURERS`; the others (#297) are brands that show up in almost
      * every inventory (components, monitors, printers, network) without being in the wizard's
-     * starter list — the dictionary creates them on first import under their canonical name.
+     * starter list: the dictionary creates them on first import under their canonical name.
      *
      * Variant sources: dmidecode `sys_vendor`/BIOS vendor strings, Windows WMI `Manufacturer`,
      * SNMP sysDescr, and the EDID vendor names glpi-agent reports for monitors (« Goldstar Company
@@ -158,6 +158,6 @@ class ManufacturerDictionaryBuilder
 
     public static function getRuleName(string $canonical): string
     {
-        return sprintf('Fabricant — normalisation « %s »', $canonical);
+        return sprintf('Fabricant: normalisation « %s »', $canonical);
     }
 }

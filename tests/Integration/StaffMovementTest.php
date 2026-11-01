@@ -69,10 +69,10 @@ final class StaffMovementTest extends TestCase
     {
         StaffMovement::uninstall();
         $template = new TaskTemplate();
-        $found = $template->getFromDBByCrit(['name' => 'Offboarding — Départ collaborateur']);
+        $found = $template->getFromDBByCrit(['name' => 'Offboarding : Départ collaborateur']);
         if (!$found) {
             $this->assertGreaterThan(0, (int) $template->add([
-                'name' => 'Offboarding — Départ collaborateur', 'content' => 'Test', 'entities_id' => 0, 'is_recursive' => 1,
+                'name' => 'Offboarding : Départ collaborateur', 'content' => 'Test', 'entities_id' => 0, 'is_recursive' => 1,
             ]));
         }
 
@@ -82,7 +82,7 @@ final class StaffMovementTest extends TestCase
         // Un identifiant enregistré n'est pas remplacé par un objet homonyme créé ensuite.
         $homonym = new TaskTemplate();
         $homonymId = (int) $homonym->add([
-            'name' => 'Offboarding — Départ collaborateur', 'content' => 'Copie', 'entities_id' => 0, 'is_recursive' => 1,
+            'name' => 'Offboarding : Départ collaborateur', 'content' => 'Copie', 'entities_id' => 0, 'is_recursive' => 1,
         ]);
         StaffMovement::recordExisting();
         $stored = CoreConfig::getConfigurationValues('plugin:configurationglpiauto', ['departure_tasktemplates_id']);

@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
 use Ticket;
 
 /**
- * Same conditional-visibility mechanism as `WifiAccessFormBuilderTest`/`VpnAccessFormBuilderTest` —
+ * Same conditional-visibility mechanism as `WifiAccessFormBuilderTest`/`VpnAccessFormBuilderTest` -
  * "Destinataire et adresse" only makes sense for "Envoi de courrier", never for "Reprographie".
  */
 final class MailPrintingFormBuilderTest extends TestCase

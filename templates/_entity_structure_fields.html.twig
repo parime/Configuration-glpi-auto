@@ -13,13 +13,13 @@
  # -------------------------------------------------------------------------
  #}
 
-{# Used by templates/wizard.html.twig (setup wizard, step "Entités") — kept as its own partial
+{# Used by templates/wizard.html.twig (setup wizard, step "Entités") : kept as its own partial
    (rather than inlined in wizard.html.twig) in case a future screen needs the same entity
    structure fields again. Caller provides an enclosing <form>; this partial only renders fields.
 
    The tree is a genuinely arbitrary structure: any node can have any number of children, at any
    depth, independent of its siblings (e.g. "Client A" has 6 children and one of those has 3
-   children of its own, while "Client B" has none) — not a uniform "N levels applied to every
+   children of its own, while "Client B" has none): not a uniform "N levels applied to every
    branch" shape. The whole tree is serialized to one hidden field (entity_tree_json) on every
    change rather than kept in sync via indexed input names, since add/remove at an arbitrary
    depth would otherwise require renumbering siblings on every edit. #}
@@ -57,7 +57,7 @@
     <div class="card">
       <div class="card-body">
         <h3 class="mb-1">{{ __('Aperçu', 'configurationglpiauto') }}</h3>
-        <p class="text-muted small mb-3">{{ __('Se met à jour en direct pendant que vous réglez les options à gauche — rien n\'est enregistré tant que vous ne validez pas.', 'configurationglpiauto') }}</p>
+        <p class="text-muted small mb-3">{{ __('Se met à jour en direct pendant que vous réglez les options à gauche : rien n\'est enregistré tant que vous ne validez pas.', 'configurationglpiauto') }}</p>
         <div id="cga-tree-preview"></div>
         <p class="text-muted small mt-3 mb-0" id="cga-tree-caption"></p>
       </div>
@@ -98,7 +98,7 @@
 
   var treeState = {{ entity_tree|default([])|json_encode|raw }};
   // Exposed so steps 3/4 (calendar/SLA) can render a panel per top-level node (MSP client) when
-  // per-client settings are turned on there — same array reference, not a copy, so edits either
+  // per-client settings are turned on there: same array reference, not a copy, so edits either
   // side makes (add/remove a client, or set node.settings from the per-client panels) stay in
   // sync without a second data channel to keep in step with the tree by index.
   window.cgaTree = treeState;
@@ -199,7 +199,7 @@
     syncAndRenderPreview();
   }
 
-  // Real tree, so the preview shows the exact structure — no "illustrative A/B" guess needed,
+  // Real tree, so the preview shows the exact structure: no "illustrative A/B" guess needed,
   // unlike the earlier uniform-levels version of this screen.
   function buildTreeLi(node) {
     var childrenHtml = node.children.length
@@ -216,7 +216,7 @@
     treeSection.style.display = mode === 'mono' ? 'none' : '';
 
     if (mode === 'mono') {
-      previewEl.innerHTML = '<ul class="cga-tree"><li><i class="ti ti-building"></i>Entité racine — votre organisation</li></ul>';
+      previewEl.innerHTML = '<ul class="cga-tree"><li><i class="ti ti-building"></i>Entité racine : votre organisation</li></ul>';
       captionEl.textContent = '';
       return;
     }

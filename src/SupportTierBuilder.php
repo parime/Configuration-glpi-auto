@@ -21,27 +21,27 @@ use Group;
 
 /**
  * Turns on `escalation_enabled` into 3 real technician `Group` rows ("Support N1", "Support N2",
- * "Support N3") — the standard 3-tier ITSM support convention confirmed via web research (InvGate,
+ * "Support N3"): the standard 3-tier ITSM support convention confirmed via web research (InvGate,
  * Giva, TOPdesk, Buchanan...) to be the most common in practice, N1 = first contact, N2 =
  * intermediate/specialist, N3 = advanced/vendor-facing. `is_assign => 1` is mandatory: confirmed in
  * GLPI source (`RuleCommonITILObject::getActions()`) that the `_groups_id_assign` action's
  * `condition` requires it, otherwise the group silently isn't offered as an assignment target.
  *
- * A fourth conceptual level, "N0" (self-service — knowledge base, service catalog, chatbot, no
+ * A fourth conceptual level, "N0" (self-service: knowledge base, service catalog, chatbot, no
  * human team), is offered in the wizard as a *label* only (`escalation_includes_n0`) pointing back
- * at this same plugin's own `ServiceCatalogBuilder`/`HelpdeskFormBuilder` — never a fourth `Group`
+ * at this same plugin's own `ServiceCatalogBuilder`/`HelpdeskFormBuilder` - never a fourth `Group`
  * here, since there's no technician team behind it to assign tickets to.
  *
  * Deliberately global (`entities_id => 0`, `is_recursive => 1`), not one set of 3 groups per
  * top-level entity/client: in a real MSP, the same technicians usually handle N1/N2/N3 across every
- * client, only the entity/SLA scoping differs — matches the reasoning already applied by
+ * client, only the entity/SLA scoping differs: matches the reasoning already applied by
  * `RuleRightBuilder` for its own scope choices. What *does* vary per client is whether escalation
  * is active and which hops are automatic (`SlaBuilder`'s `$tierGroupIds`/`$autoN1N2`/`$autoN2N3`
  * params), read from `Config::getEscalationSettings()`'s shared value or a per-client
  * `settings.escalation` override.
  *
  * Icons (optional, `support_tier_icons_enabled`) follow the same `DropdownTranslation` mechanism
- * as every other icon feature in this plugin — `Group extends CommonTreeDropdown` (confirmed in
+ * as every other icon feature in this plugin - `Group extends CommonTreeDropdown` (confirmed in
  * GLPI source), so it's eligible. A traffic-light progression (🟢/🟡/🔴) rather than an arbitrary
  * pick: the point is scanning an assignment dropdown for severity at a glance, and green→red is
  * the one color convention that needs no legend.

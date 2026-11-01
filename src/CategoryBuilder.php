@@ -20,29 +20,29 @@ namespace GlpiPlugin\Configurationglpiauto;
 use ITILCategory;
 
 /**
- * Turns a Config's category settings into a real topical ITILCategory tree (up to 3 levels —
+ * Turns a Config's category settings into a real topical ITILCategory tree (up to 3 levels -
  * `itilcategories_id` already supports arbitrary parent/child nesting, same as Entity). Replaces
  * an earlier version (Sprint 16) that created one category per ITIL ticket type
- * (Incident/Demande/Problème/Changement) — dropped after user feedback: `Ticket` already has a
+ * (Incident/Demande/Problème/Changement) : dropped after user feedback: `Ticket` already has a
  * native `type` field for Incident/Demande, and Problem/Change are already their own GLPI object
  * types, so a category-per-type never added anything. This tree is topical instead (IT, Bâtiment,
  * Flotte, RH...), each of the 11 top-level branches independently selectable so an organization
  * without a vehicle fleet or industrial maintenance doesn't end up with those branches.
  *
- * Every category gets all 4 `is_incident`/`is_request`/`is_problem`/`is_change` flags set — the
+ * Every category gets all 4 `is_incident`/`is_request`/`is_problem`/`is_change` flags set: the
  * category doesn't decide which ticket type it's usable for, that's an orthogonal, native concern.
  *
  * Icons (optional, `category_icons_enabled`) follow the exact same rule established for State
- * (Sprint 16): only on nodes the user actually gave an emoji for (top two levels here — the
+ * (Sprint 16): only on nodes the user actually gave an emoji for (top two levels here: the
  * bullet-only leaf items were never given one), stored as a `DropdownTranslation` (fr_FR, field
  * `name`) since GLPI renders that value as escaped plain text, never on the `name` field itself.
  * Parenthetical text in the user's original list (e.g. "Accessoires (Dock USB-C, Webcam...)") is
- * explicitly *not* a further tree level — confirmed with the user it's example/guidance text for
+ * explicitly *not* a further tree level: confirmed with the user it's example/guidance text for
  * the admin, so it becomes each node's `comment` instead.
  *
  * Only the 11 top-level branches get `is_helpdeskvisible = 1`; every child (N2/N3) is created with
  * it off. That flag is what GLPI's own ticket-creation category picker filters on for Self-Service
- * users specifically — so a base user sees the 11 broad themes, never the ~80 leaf categories meant
+ * users specifically: so a base user sees the 11 broad themes, never the ~80 leaf categories meant
  * for staff to pick during triage (`TicketTemplateBuilder`'s simplified template leaves category
  * visible for exactly this reason, unlike urgency/impact/priority which stay fully hidden).
  */
@@ -234,7 +234,7 @@ class CategoryBuilder
                 'is_problem' => 1,
                 'is_change' => 1,
                 // Self-Service's ticket-creation category picker only lists categories with this
-                // flag on (GLPI core, CommonITILObject::rawSearchOptions() — a `condition` added
+                // flag on (GLPI core, CommonITILObject::rawSearchOptions(): a `condition` added
                 // to the search option only for `Session::getCurrentInterface() == 'helpdesk'`).
                 // Only the 11 top-level branches (parentId 0) are helpdesk-visible, so a base user
                 // picks a broad theme, not one of the ~80 leaf categories meant for staff triage.
@@ -251,7 +251,7 @@ class CategoryBuilder
 
         // Every node gets its translation once icons are enabled, even leaves that were never
         // given an emoji (Translations::applyIcon() trims a blank icon to just the translated
-        // text) — an English/German/Italian/Spanish session shouldn't fall back to French for the
+        // text): an English/German/Italian/Spanish session shouldn't fall back to French for the
         // ~37 leaf categories just because they have no icon of their own.
         // Always called (see StateBuilder for the reasoning) so unchecking icons after a prior run
         // actually strips them instead of leaving old DropdownTranslation rows stuck.

@@ -21,10 +21,10 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditCheckInterface;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditFinding;
 
 /**
- * `glpi_states` ("Statuts des éléments") — GLPI n'en crée aucun par défaut (confirmé sur une
+ * `glpi_states` ("Statuts des éléments") : GLPI n'en crée aucun par défaut (confirmé sur une
  * instance GLPI 11 fraîche, voir aussi le docblock de `StateBuilder`), pourtant chaque actif du
  * parc (`Computer`, `Monitor`...) porte un champ `states_id`. Une instance avec zéro statut ne peut
- * tout simplement pas exprimer "en stock"/"attribué"/"en panne" — pas une question de choix
+ * tout simplement pas exprimer "en stock"/"attribué"/"en panne" - pas une question de choix
  * d'organisation, contrairement à *quels* statuts créer (ce que `canFix()` refuse de deviner ici :
  * le catalogue proposé par `StateBuilder` est une liste de départ à valider par un humain, jamais
  * une injection automatique silencieuse par ce constat).

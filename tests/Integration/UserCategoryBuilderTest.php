@@ -66,7 +66,7 @@ final class UserCategoryBuilderTest extends TestCase
         global $DB;
         foreach (self::NAMES as $name) {
             $count = $DB->request(['FROM' => UserCategory::getTable(), 'WHERE' => ['name' => $name]])->count();
-            $this->assertSame(1, $count, "Exactly one '$name' category must exist — no duplicate.");
+            $this->assertSame(1, $count, "Exactly one '$name' category must exist: no duplicate.");
         }
     }
 

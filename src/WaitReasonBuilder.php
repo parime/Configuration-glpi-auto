@@ -22,21 +22,21 @@ use PendingReason;
 use SolutionTemplate;
 
 /**
- * Turns a Config's wait-reason setting into real `PendingReason` rows (`glpi_pendingreasons`) — a
+ * Turns a Config's wait-reason setting into real `PendingReason` rows (`glpi_pendingreasons`): a
  * native GLPI mechanism for putting a ticket "on hold" with a reason, an automatic follow-up
  * cadence, and an automatic resolution after N unanswered follow-ups. Confirmed `glpi_pendingreasons`
  * ships empty on a fresh install (same pattern as states/holidays), and that the automation engine
- * itself is already active out of the box — `PendingReasonCron`'s crontask
+ * itself is already active out of the box - `PendingReasonCron`'s crontask
  * (`pendingreason_autobump_autosolve`) ships `state = 1` (active) by default, running every 30
  * minutes. So this only needs to create the reasons themselves; nothing else to enable.
  *
- * Only the wait-on-requester reason gets full automation (auto follow-up + auto-resolve) — auto-
+ * Only the wait-on-requester reason gets full automation (auto follow-up + auto-resolve): auto-
  * closing a ticket while waiting on a supplier delivery or an internal approval would be
  * inappropriate (the org doesn't control that timeline), so those stay reminder-only or fully
  * manual, matching a real production reference confirmed to make the same distinction.
  *
  * `followup_frequency` is stored in seconds, restricted by GLPI's own admin UI to a fixed enum of
- * day/week multiples (`PendingReason::getFollowupFrequencyValues()`) — built here from GLPI's own
+ * day/week multiples (`PendingReason::getFollowupFrequencyValues()`): built here from GLPI's own
  * `WEEK_TIMESTAMP` global constant rather than a hardcoded seconds value.
  */
 class WaitReasonBuilder
@@ -109,7 +109,7 @@ class WaitReasonBuilder
         if (Lookup::loadFirst($pendingReason, ['name' => $reason['name'], 'entities_id' => 0])) {
             Translations::applyIcon(PendingReason::class, (int) $pendingReason->getID(), $reason['name'], $icon);
             // The linked follow-up/solution templates were created on a prior run, before this
-            // branch existed to touch them — re-apply here too so re-running the wizard against
+            // branch existed to touch them: re-apply here too so re-running the wizard against
             // an already-configured instance still catches up, not just a fresh install.
             if ((int) $pendingReason->fields['itilfollowuptemplates_id'] > 0) {
                 Translations::applyIcon(ITILFollowupTemplate::class, (int) $pendingReason->fields['itilfollowuptemplates_id'], $reason['name'], $icon);
@@ -145,7 +145,7 @@ class WaitReasonBuilder
         ]);
 
         // Cross-link back so an admin picking this follow-up template by hand elsewhere is also
-        // offered to set the matching pending status — cosmetic, not needed by the automation
+        // offered to set the matching pending status: cosmetic, not needed by the automation
         // itself (that reads PendingReason -> template, not the other way around).
         if ($followupTemplateId > 0) {
             (new ITILFollowupTemplate())->update(['id' => $followupTemplateId, 'pendingreasons_id' => $id]);

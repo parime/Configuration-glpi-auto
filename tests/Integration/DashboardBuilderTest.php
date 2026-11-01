@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * `Glpi\Dashboard\Dashboard` est un vrai objet natif GLPI partagé (visible dans le menu Tableaux
- * de bord de toute l'instance) — purgé dans `tearDown()`, même discipline que le reste de ce
+ * de bord de toute l'instance) : purgé dans `tearDown()`, même discipline que le reste de ce
  * plugin pour tout ce qui touche un objet réel plutôt qu'une fixture jetable propre au plugin.
  */
 final class DashboardBuilderTest extends TestCase
@@ -32,7 +32,7 @@ final class DashboardBuilderTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Dashboard::getIndexName() returns "key" (not "id") — delete() looks up the row via
+        // Dashboard::getIndexName() returns "key" (not "id"): delete() looks up the row via
         // $input[getIndexName()], so it must be keyed 'key' here, never 'id', or it silently
         // matches nothing and returns false without deleting anything (confirmed the hard way:
         // an earlier version of this method left a real stray row on the shared instance).
@@ -68,7 +68,7 @@ final class DashboardBuilderTest extends TestCase
 
     /**
      * Non-régression directe sur le risque identifié dans la docblock de DashboardBuilder :
-     * Dashboard::saveItems() remplace entièrement les items à chaque appel — build() ne doit donc
+     * Dashboard::saveItems() remplace entièrement les items à chaque appel : build() ne doit donc
      * jamais rappeler saveNew()/saveItems() une fois le tableau de bord déjà créé, sous peine
      * d'écraser silencieusement une personnalisation de l'administrateur.
      */

@@ -33,17 +33,17 @@ use User;
 
 /**
  * Real-submission regression guard for `ObserverField`(`ITILActorFieldStrategy::
- * FORM_FILLER_SUPERVISOR`) — a destination mechanism that reads the *actual submitting session's*
+ * FORM_FILLER_SUPERVISOR`): a destination mechanism that reads the *actual submitting session's*
  * `Session::getLoginUserID()`, looks up that user's own `users_id_supervisor`, and CCs them as an
  * Observer, confirmed by reading `ITILActorFieldStrategy::getActorsFromSupervisorOfCurrentUser()`
  * directly. This plugin's own integration bootstrap always authenticates as the "glpi" superadmin
  * (id 2, no supervisor), so a test that only submits as that account could never actually exercise
- * this path — this suite temporarily points `$_SESSION['glpiID']` at a real, freshly created user
+ * this path: this suite temporarily points `$_SESSION['glpiID']` at a real, freshly created user
  * with a real supervisor (restored in `tearDown()`), the same session key `Session::getLoginUserID()`
  * reads, to submit "as" that user for real without a second HTTP login round-trip. Same class of
  * proof as the other builders' tests in this suite : the destination `config` JSON has always looked
  * correct for this wiring (`ObserverField::getKey() => ObserverFieldConfig([FORM_FILLER_SUPERVISOR])`)
- * — only a real submission followed by a real `Ticket_User` row proves GLPI actually acts on it.
+ * - only a real submission followed by a real `Ticket_User` row proves GLPI actually acts on it.
  */
 final class LeaveRequestFormBuilderTest extends TestCase
 {
@@ -132,7 +132,7 @@ final class LeaveRequestFormBuilderTest extends TestCase
     }
 
     /**
-     * Points the real GLPI session at `$usersId` for the duration of the submission — the exact
+     * Points the real GLPI session at `$usersId` for the duration of the submission: the exact
      * session key `ITILActorFieldStrategy::getActorsFromSupervisorOfCurrentUser()` reads via
      * `Session::getLoginUserID()`. Captured once so `tearDown()` can restore the superadmin session
      * every other test in this process expects.

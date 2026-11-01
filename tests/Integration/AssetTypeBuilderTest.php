@@ -22,7 +22,7 @@ use GlpiPlugin\Configurationglpiauto\Config;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Runs against a real GLPI instance — AssetTypeBuilder writes real rows across ~20 different core
+ * Runs against a real GLPI instance: AssetTypeBuilder writes real rows across ~20 different core
  * dropdown itemtypes (State, ComputerType, MonitorType...), so this exercises the common
  * getOrCreate() pattern shared by most of this plugin's "seed the native dropdowns" builders, both
  * for a plain global dropdown and for one of the entity-scoped ones (ApplianceType).
@@ -116,7 +116,7 @@ final class AssetTypeBuilderTest extends TestCase
 
     /**
      * `SoftwareCategory` is the one `CommonTreeDropdown` this builder seeds (every other itemtype
-     * here is a plain `CommonDropdown`) — regression guard for the exact bug found live on
+     * here is a plain `CommonDropdown`): regression guard for the exact bug found live on
      * `FireSafetyAssetBuilder`/`PhysicalSecurityAssetBuilder` (a `DropdownTranslation` row breaking
      * `Search::show()` on a table with unusual structure): confirms icons + a tree dropdown don't
      * hit the same class of issue, by actually calling `Search::show()`, not just checking the row

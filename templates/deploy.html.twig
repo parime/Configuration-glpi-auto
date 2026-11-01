@@ -42,7 +42,7 @@
             <i class="ti ti-circle-check text-green me-1"></i>{{ right.label }}
           {% else %}
             <i class="ti ti-alert-triangle text-orange me-1"></i><strong>{{ right.label }}</strong>
-            <span class="text-muted">— {{ __('manquant : partie ignorée', 'configurationglpiauto') }} ({{ right.hint }})</span>
+            <span class="text-muted">- {{ __('manquant : partie ignorée', 'configurationglpiauto') }} ({{ right.hint }})</span>
           {% endif %}
         </li>
       {% endfor %}

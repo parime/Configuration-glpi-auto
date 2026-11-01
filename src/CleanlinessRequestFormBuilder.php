@@ -46,12 +46,12 @@ use ITILCategory;
  * flagged `'smart' => true` there and skipped by that builder's own loop).
  *
  * Two questions, no conditional branch : where, and whether this is a cleaning to schedule ahead of
- * time or a cleanliness issue to report now — a distinction that matters for how it gets routed and
+ * time or a cleanliness issue to report now: a distinction that matters for how it gets routed and
  * prioritized, but doesn't need different follow-up fields either way. Every smart form in this
  * generalization also gets a final free-text "Précisions complémentaires" question as an escape
  * hatch, replacing the generic Description field these forms no longer have.
  *
- * Computed title only references the always-visible `localisation` answer — "<form name> -
+ * Computed title only references the always-visible `localisation` answer - "<form name> -
  * <localisation>", tag-built via `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
  */
 class CleanlinessRequestFormBuilder

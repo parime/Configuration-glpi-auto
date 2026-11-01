@@ -24,16 +24,16 @@ use Migration;
 use PHPUnit\Framework\TestCase;
 
 /**
- * The plugin is already installed and active on this instance — every `CREATE TABLE` branch in
+ * The plugin is already installed and active on this instance: every `CREATE TABLE` branch in
  * `install()` is guarded by `tableExists()` and every `addField()`/`dropField()` migration call is
  * itself idempotent, so re-running `install()` here is a safe, real re-application of the exact
  * same code path an upgrade runs, not a simulation. `uninstall()` is deliberately NOT exercised
  * here: it does a real `DROP TABLE` on this instance's actual live configuration/profile/fuel-type
  * tables, which every other test in this suite (including this file's own) depends on continuing
  * to exist. That destructive path is already exercised for real on every CI run instead, in a
- * throwaway container — confirmed in this project's own `ci.yml` "real-glpi-install" job, which
+ * throwaway container: confirmed in this project's own `ci.yml` "real-glpi-install" job, which
  * installs, activates, deactivates, uninstalls, and then asserts zero leftover tables/rights/cron
- * tasks — a materially safer place for a `DROP TABLE` to run than this shared, long-lived instance.
+ * tasks: a materially safer place for a `DROP TABLE` to run than this shared, long-lived instance.
  */
 final class InstallerTest extends TestCase
 {
@@ -51,13 +51,13 @@ final class InstallerTest extends TestCase
 
         global $DB;
         $count = $DB->request(['FROM' => ConfigurationProfile::getTable(), 'WHERE' => ['type' => 'multi_site']])->count();
-        $this->assertSame(1, $count, 'Exactly one "multi_site" profile must exist — no duplicate from running install() twice.');
+        $this->assertSame(1, $count, 'Exactly one "multi_site" profile must exist: no duplicate from running install() twice.');
     }
 
     /**
      * ITIL/ISO27001 (practice frameworks, not org sizes) and the old PME/ETI/Grande-entreprise
      * split (superseded by the plain-language "multi_site" merge) are retired via a soft
-     * `is_active = 0`, not deleted — a real `Config` row could still reference one via
+     * `is_active = 0`, not deleted: a real `Config` row could still reference one via
      * `configurationprofiles_id`. This instance's own profiles were seeded by the *current*
      * `insertDefaultProfiles()` (which no longer creates these legacy types at all), so a fake row
      * of each retired type is inserted first to exercise the actual upgrade path a genuinely old
@@ -68,7 +68,7 @@ final class InstallerTest extends TestCase
         global $DB;
         $ids = [];
         foreach (['iso27001', 'itil', 'sme', 'eti', 'enterprise'] as $type) {
-            $DB->insert(ConfigurationProfile::getTable(), ['name' => "Test — $type", 'type' => $type, 'is_active' => 1]);
+            $DB->insert(ConfigurationProfile::getTable(), ['name' => "Test - $type", 'type' => $type, 'is_active' => 1]);
             $ids[$type] = $DB->insertId();
         }
 
@@ -102,14 +102,14 @@ final class InstallerTest extends TestCase
     /**
      * Regression guard for the real bug documented directly in `install()`: `SlaBuilder`-created
      * `RuleTicket` rows missing `is_recursive = 1` used to only ever be evaluated for the rule's
-     * own root entity, never for a ticket created in any sub-entity — the only kind of entity this
+     * own root entity, never for a ticket created in any sub-entity: the only kind of entity this
      * plugin actually assigns an SLA to.
      */
     public function testInstallFixesUpAnySlaStandardRuleMissingIsRecursive(): void
     {
         global $DB;
         $DB->insert('glpi_rules', [
-            'name' => 'SLA standard — entité #999998 — Test',
+            'name' => 'SLA standard : entité #999998 : Test',
             'sub_type' => 'RuleTicket',
             'match' => 'AND',
             'condition' => 1,
@@ -120,10 +120,10 @@ final class InstallerTest extends TestCase
         try {
             (new Installer())->install(new Migration(PLUGIN_CONFIGURATIONGLPIAUTO_VERSION));
 
-            $row = $DB->request(['FROM' => 'glpi_rules', 'WHERE' => ['name' => 'SLA standard — entité #999998 — Test']])->current();
+            $row = $DB->request(['FROM' => 'glpi_rules', 'WHERE' => ['name' => 'SLA standard : entité #999998 : Test']])->current();
             $this->assertSame(1, (int) $row['is_recursive']);
         } finally {
-            $DB->delete('glpi_rules', ['name' => 'SLA standard — entité #999998 — Test']);
+            $DB->delete('glpi_rules', ['name' => 'SLA standard : entité #999998 : Test']);
         }
     }
 

@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
 use Ticket;
 
 /**
- * Same reasoning as `ItemReturnFormBuilderTest` — no `QuestionTypeItem`/`QuestionTypeUserDevice`
+ * Same reasoning as `ItemReturnFormBuilderTest` - no `QuestionTypeItem`/`QuestionTypeUserDevice`
  * question on this form (a quality non-conformity report has no real GLPI itemtype to point at), so
  * the meaningful real-submission assertions are `RequestTypeField::SPECIFIC_VALUE` (here
  * `Ticket::INCIDENT_TYPE`, unlike `ItemReturnFormBuilder`'s `DEMAND_TYPE`) and the computed title.

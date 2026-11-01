@@ -20,22 +20,22 @@ namespace GlpiPlugin\Configurationglpiauto;
 use LineOperator;
 
 /**
- * Turns on `line_operators_enabled` into real `LineOperator` rows (`glpi_lineoperators`) — native
+ * Turns on `line_operators_enabled` into real `LineOperator` rows (`glpi_lineoperators`): native
  * GLPI, empty by default on a fresh install. Scoped to France's four major mobile carriers
  * (Orange, SFR, Bouygues Telecom, Free) rather than a global list: unlike a hardware manufacturer,
  * a telecom operator is meaningful only within one country, so there's no single "universal
- * default" the way `ManufacturerBuilder` has — France-first, same reasoning already used elsewhere
+ * default" the way `ManufacturerBuilder` has: France-first, same reasoning already used elsewhere
  * in this plugin (public holidays, CERT-FR RSS feed).
  *
  * `mcc`/`mnc` (Mobile Country/Network Code) **must** be set explicitly, and to genuinely distinct
- * values per operator — `glpi_lineoperators` has a real `UNIQUE(mcc, mnc)` index (confirmed via
+ * values per operator - `glpi_lineoperators` has a real `UNIQUE(mcc, mnc)` index (confirmed via
  * `SHOW INDEX`), and GLPI's own `add()` defaults any unset `getAdditionalFields()` integer to `0`
  * rather than leaving it `NULL`. First discovered the hard way: omitting them entirely silently
  * created only the first operator (`0, 0`) and silently dropped the other three on the unique-index
- * collision, with no visible error anywhere in the wizard's success message or GLPI's own logs —
+ * collision, with no visible error anywhere in the wizard's success message or GLPI's own logs -
  * only caught by checking the row count in the database directly. MNC values cross-checked across
  * three independent sources (two MCC/MNC lookup services + Wikipedia's regional MNC table) for the
- * one each source agreed was that operator's primary/operational allocation — each carrier does
+ * one each source agreed was that operator's primary/operational allocation: each carrier does
  * hold several MNC blocks in reality (legacy 2G/3G, MVNO hosting...), so this is "a real, currently
  * operational one for that carrier", not necessarily the only one a given SIM will report.
  *

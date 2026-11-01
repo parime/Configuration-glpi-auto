@@ -24,7 +24,7 @@ use GlpiPlugin\Configurationglpiauto\Config;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Runs against a real GLPI instance (see tests/integration-bootstrap.php) — CalendarBuilder writes
+ * Runs against a real GLPI instance (see tests/integration-bootstrap.php): CalendarBuilder writes
  * real Calendar/CalendarSegment rows and its own core validation (overlap rejection) only fires
  * against the real DB, so this can't be a pure-PHP unit test.
  *
@@ -32,12 +32,12 @@ use PHPUnit\Framework\TestCase;
  * by the user 2026-08-14 (see CalendarBuilder's class docblock and CHANGELOG [0.61.1]): resubmitting
  * the wizard with different hours for a day that already had a calendar segment used to try to
  * insert an overlapping segment, which GLPI's own CalendarSegment::prepareInput() rejects
- * ("Impossible d'ajouter une plage chevauchant une plage existante") — silently, since the old code
+ * ("Impossible d'ajouter une plage chevauchant une plage existante") : silently, since the old code
  * never checked add()'s return value.
  */
 final class CalendarBuilderTest extends TestCase
 {
-    private const CALENDAR_NAME = 'PHPUnit — Horaires test';
+    private const CALENDAR_NAME = 'PHPUnit: Horaires test';
 
     protected function tearDown(): void
     {
@@ -109,7 +109,7 @@ final class CalendarBuilderTest extends TestCase
         ]);
         $calendarId = $builder->build($config);
 
-        // ...then the admin goes back and shortens Friday to 09:00-12:00 — this exact scenario
+        // ...then the admin goes back and shortens Friday to 09:00-12:00: this exact scenario
         // (a new segment overlapping the old one's bounds on the same day) is what used to throw.
         $config = $this->buildConfig([
             'calendar_days' => json_encode([5]),

@@ -27,7 +27,7 @@ use ValidationStep;
 
 /**
  * Applies a set of instance-wide GLPI core general settings (`glpi_configs`, context `core`) that
- * ship with unhelpful defaults out of the box. Not a per-entity/per-client concept — writes
+ * ship with unhelpful defaults out of the box. Not a per-entity/per-client concept: writes
  * directly through GLPI core's own `\Config::setConfigurationValues()` API (not raw SQL) so the
  * write goes through GLPI's normal cache/session invalidation.
  *
@@ -36,13 +36,13 @@ use ValidationStep;
  * call here would resolve to the wrong class.
  *
  * Split into independently-gated groups (Sprint 26) rather than one `apply()` behind a single
- * toggle — the earlier all-or-nothing design (everything from Sprint 18 through Sprint 25 folded
+ * toggle: the earlier all-or-nothing design (everything from Sprint 18 through Sprint 25 folded
  * into one `general_settings_enabled` flag) meant an admin who wanted the satisfaction survey but
  * not, say, the committee validation step had no way to say so. Each group below matches one
  * checkbox in the wizard's "Réglages généraux" step.
  *
  * `inventory_enabled` (added on explicit user request, #147) is the one group targeting the
- * `inventory` config context instead of `core` — confirmed both are legal contexts for
+ * `inventory` config context instead of `core` - confirmed both are legal contexts for
  * `\Config::setConfigurationValues()` by reading `\Config::update()`'s own `$allowed_context`
  * list, not assumed. Defaults to unchecked, same reasoning already applied to
  * `validation_supervisor_routing_enabled` in the wizard template: this opens a real network entry
@@ -51,7 +51,7 @@ use ValidationStep;
  */
 class GeneralSettingsBuilder
 {
-    // [itemtype, event] pairs matched against glpi_notifications — confirmed via a fresh 11.0.8
+    // [itemtype, event] pairs matched against glpi_notifications: confirmed via a fresh 11.0.8
     // install which specific ones ship inactive (KnowbaseItem new/update/delete notifications
     // deliberately left alone: a content-management concern, not core ticket-lifecycle
     // communication, and more subjective whether an org wants them).
@@ -63,7 +63,7 @@ class GeneralSettingsBuilder
         ['itemtype' => 'Problem', 'event' => 'add_document'],
     ];
 
-    // [itemtype, name] pairs matched against glpi_crontasks — confirmed via a fresh 11.0.8 install
+    // [itemtype, name] pairs matched against glpi_crontasks: confirmed via a fresh 11.0.8 install
     // that these three ship disabled (`state = CronTask::STATE_DISABLE`) while their matching
     // `Notification` row (Cartridges/Consumables/Software Licenses "alert" events, checked
     // separately) already ships `is_active = 1`: the notification looks fully configured, but
@@ -130,7 +130,7 @@ class GeneralSettingsBuilder
 
     /**
      * Active la tâche planifiée enregistrée à l'installation (`Installer::install()`, toujours
-     * `CronTask::STATE_DISABLE` tant que ce réglage n'est pas coché) — même mécanisme exact que
+     * `CronTask::STATE_DISABLE` tant que ce réglage n'est pas coché) : même mécanisme exact que
      * `applyNotifications()` ci-dessus pour les CronTasks natifs de GLPI cœur, réutilisé ici pour
      * celui propre à ce plugin (issue #131, voir `AuditWatchCron`).
      */
@@ -144,7 +144,7 @@ class GeneralSettingsBuilder
 
     /**
      * "Interface & ergonomie" group: button layout, search form/pagination position, homepage
-     * tickets widget — cosmetic/ergonomic GLPI core defaults, unrelated to notifications or
+     * tickets widget: cosmetic/ergonomic GLPI core defaults, unrelated to notifications or
      * ticket workflow.
      */
     private function applyGeneralUi(): void
@@ -161,15 +161,15 @@ class GeneralSettingsBuilder
 
     /**
      * "Notifications" group: the master activation toggle (off by default on a fresh install)
-     * plus the specific ticket-lifecycle events GLPI ships inactive — most notably `Ticket`/
+     * plus the specific ticket-lifecycle events GLPI ships inactive: most notably `Ticket`/
      * `auto_reminder`, the exact notification `PendingReasonCron` fires
      * (`NotificationEvent::raiseEvent('auto_reminder', ...)`, confirmed in source) for the
      * automatic follow-ups `WaitReasonBuilder` sets up. Without it, those follow-ups get added to
      * the ticket but the requester is never actually emailed, silently defeating half that
-     * feature — so this group matters even to an admin who only cares about wait reasons.
+     * feature: so this group matters even to an admin who only cares about wait reasons.
      *
      * Also activates the 3 native cron tasks (`CRONTASKS_TO_ENABLE`) that ship disabled despite
-     * their matching `Notification` row already being active — same "looks configured, silently
+     * their matching `Notification` row already being active: same "looks configured, silently
      * does nothing" trap as `auto_reminder` above, found by comparing `glpi_crontasks.state`
      * against `glpi_notifications.is_active` on a fresh install (fourth completeness audit,
      * Sprint 35).
@@ -202,7 +202,7 @@ class GeneralSettingsBuilder
      * "enabled" out of the box but `inquest_rate = 0`, which GLPI's own code treats as fully
      * disabled (`Entity::getValueToDisplay()` shows "Disabled" whenever the rate is 0, regardless
      * of `inquest_config`). Only the built-in single-question (1-5 stars + optional comment)
-     * survey is turned on here — a richer multi-question survey (like the one in the audited
+     * survey is turned on here: a richer multi-question survey (like the one in the audited
      * production export) needs an external tool wired through `inquest_config = TYPE_EXTERNAL` +
      * `inquest_URL`, which depends on which third-party survey tool the org already uses, so it's
      * out of scope.
@@ -223,7 +223,7 @@ class GeneralSettingsBuilder
     }
 
     /**
-     * `glpi_validationsteps` ships exactly one row ("Validation", 100% required) — a second
+     * `glpi_validationsteps` ships exactly one row ("Validation", 100% required): a second
      * "Validation comité" option (67%, i.e. 2/3) is added here for multi-approver committee
      * decisions, confirmed as a real pattern in the audited production export.
      */
@@ -240,7 +240,7 @@ class GeneralSettingsBuilder
 
     /**
      * Maps GLPI's 3 native `ProjectState` rows to the "unstarted/in progress/completed" buckets
-     * used for project task progress tracking. Matched by exact name, not hardcoded IDs — an
+     * used for project task progress tracking. Matched by exact name, not hardcoded IDs: an
      * admin could have reordered/recreated them before running the wizard; if any of the 3 native
      * names isn't found (non-fresh instance, renamed rows), the mapping is skipped rather than
      * writing a wrong/guessed ID.

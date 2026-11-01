@@ -23,20 +23,20 @@ use TaskTemplate;
 
 /**
  * Turns on `task_templates_enabled` into a real `TaskTemplate` library (Configuration >
- * Intitulés > Assistance > "Gabarits de tâche") — reusable checklists a technician attaches to a
+ * Intitulés > Assistance > "Gabarits de tâche") : reusable checklists a technician attaches to a
  * ticket instead of retyping the same steps every time. GLPI ships none by default.
  *
  * Each template's `taskcategories_id` is resolved by name against whatever `TaskCategoryBuilder`
- * already created, independently re-looked-up rather than threading IDs through — same
+ * already created, independently re-looked-up rather than threading IDs through: same
  * independent-resolution pattern `ServiceCatalogBuilder` already uses against `CategoryBuilder`'s
  * tree. A template whose target category doesn't exist (category toggle off, or renamed) still
- * gets created, just without a category — never blocks on a missing dependency.
+ * gets created, just without a category: never blocks on a missing dependency.
  */
 class TaskTemplateBuilder
 {
     private const TEMPLATES = [
         [
-            'name' => 'Onboarding — Arrivée collaborateur',
+            'name' => 'Onboarding : Arrivée collaborateur',
             'staff_movement' => 'arrival',
             'icon' => '🆕',
             'category' => 'Gestion des comptes utilisateurs',
@@ -50,7 +50,7 @@ class TaskTemplateBuilder
             ],
         ],
         [
-            'name' => 'Offboarding — Départ collaborateur',
+            'name' => 'Offboarding : Départ collaborateur',
             'staff_movement' => 'departure',
             'icon' => '🚪',
             'category' => 'Gestion des comptes utilisateurs',
@@ -78,7 +78,7 @@ class TaskTemplateBuilder
         ],
         // Issue #340 : gabarits d'hygiène informatique (poste infecté, prestataire, privilèges).
         [
-            'name' => 'Sécurité — Nettoyage d\'un poste infecté',
+            'name' => 'Sécurité : Nettoyage d\'un poste infecté',
             'icon' => '🦠',
             'category' => 'Sécurité & Audit',
             'content' => "PROCÉDURE POSTE INFECTÉ\n\n- Isoler le poste du réseau (câble, Wi-Fi, VPN) sans l'éteindre\n- Noter l'heure, les symptômes et le message éventuel\n- Prévenir le responsable sécurité et ouvrir un incident de sécurité si besoin\n- Lancer une analyse antivirus complète hors ligne\n- Sauvegarder les données utiles après analyse, puis réinstaller le poste si l'infection est confirmée\n- Réinitialiser les mots de passe de l'utilisateur (session, messagerie, applications)\n- Vérifier les autres postes du même réseau ou ayant reçu le même message\n- Remettre le poste en service et rappeler les bons réflexes à l'utilisateur",
@@ -91,7 +91,7 @@ class TaskTemplateBuilder
             ],
         ],
         [
-            'name' => 'Sécurité — Accueil d\'un prestataire externe',
+            'name' => 'Sécurité : Accueil d\'un prestataire externe',
             'icon' => '🤝',
             'category' => 'Gestion des comptes utilisateurs',
             'content' => "CHECKLIST PRESTATAIRE EXTERNE\n\n- Vérifier le contrat ou le bon de commande et le nom du référent interne\n- Faire signer la charte informatique et l'engagement de confidentialité\n- Créer un compte nominatif avec une date de fin (jamais de compte partagé)\n- Limiter les accès au strict nécessaire de la mission (applications, partages, VPN)\n- Fournir un poste maîtrisé ou vérifier la conformité du poste du prestataire (antivirus, mises à jour)\n- Consigner les accès accordés dans ce ticket\n- À la fin de la mission : désactiver le compte, révoquer les accès et récupérer le matériel",
@@ -104,7 +104,7 @@ class TaskTemplateBuilder
             ],
         ],
         [
-            'name' => 'Sécurité — Revue des privilèges d\'accès',
+            'name' => 'Sécurité : Revue des privilèges d\'accès',
             'icon' => '🔐',
             'category' => 'Sécurité & Audit',
             'content' => "REVUE DES PRIVILÈGES\n\n- Lister les comptes administrateurs (domaine, serveurs, GLPI, applications, cloud)\n- Lister les comptes de service et leurs propriétaires\n- Faire confirmer chaque privilège par le responsable de la personne ou de l'application\n- Retirer les privilèges non justifiés et les comptes devenus inutiles\n- Vérifier que les comptes à privilèges ont l'authentification multifacteur\n- Joindre la liste validée à ce ticket comme preuve de la revue",
@@ -166,7 +166,7 @@ class TaskTemplateBuilder
         if (Lookup::loadFirst($item, ['name' => $name])) {
             // Self-heals a template left with `taskcategories_id = 0` by an earlier run where
             // `TaskCategoryBuilder` hadn't been run yet (the wizard's steps are independent and can
-            // be run in any order, or re-run individually) — see
+            // be run in any order, or re-run individually): see
             // `ProjectTaskTemplateBuilder::getOrCreateTemplate()`'s own docblock for the same
             // reasoning applied to project task templates.
             if ($categoryId > 0 && (int) $item->fields['taskcategories_id'] !== $categoryId) {

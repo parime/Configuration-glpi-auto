@@ -81,7 +81,7 @@ final class LineOperatorBuilderTest extends TestCase
         global $DB;
         foreach (array_keys(self::EXPECTED) as $name) {
             $count = $DB->request(['FROM' => LineOperator::getTable(), 'WHERE' => ['name' => $name, 'entities_id' => 0]])->count();
-            $this->assertSame(1, $count, "Exactly one '$name' operator must exist — no duplicate.");
+            $this->assertSame(1, $count, "Exactly one '$name' operator must exist: no duplicate.");
         }
     }
 }

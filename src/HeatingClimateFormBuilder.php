@@ -46,7 +46,7 @@ use ITILCategory;
  * builder's own loop).
  *
  * Two questions cover what a facilities team actually needs to triage a CVC report : where (so
- * someone can be sent there) and what's wrong (temperature too high/low, total outage, or noise —
+ * someone can be sent there) and what's wrong (temperature too high/low, total outage, or noise -
  * the four outcomes that actually change how urgent/what kind of intervention is needed). No
  * conditional branch : both are always relevant together, same "all fields answered every time"
  * shape as `AccessBadgeFormBuilder`. Every smart form in this generalization also gets a final
@@ -54,7 +54,7 @@ use ITILCategory;
  * Description field these forms no longer have.
  *
  * Computed title only references the always-visible `localisation` answer (never `nature`, whose
- * label alone reads awkwardly mid-sentence) — "<form name> - <localisation>", tag-built via
+ * label alone reads awkwardly mid-sentence) - "<form name> - <localisation>", tag-built via
  * `AnswerTagProvider`/`FormTagProvider`, never hand-written markup.
  */
 class HeatingClimateFormBuilder

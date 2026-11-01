@@ -22,16 +22,16 @@ use GlpiPlugin\Configurationglpiauto\Profile;
 use PHPUnit\Framework\TestCase;
 
 /**
- * `FuelType` is a plain `CommonDropdown` this plugin owns end-to-end (table included) — unlike
+ * `FuelType` is a plain `CommonDropdown` this plugin owns end-to-end (table included): unlike
  * every other dropdown this plugin populates, GLPI has no native concept for it at all. This suite
  * only confirms the real table/CRUD wiring actually works (`DropdownType::getFormInput()`'s
- * `Dropdown::show($itemtype, ...)` needs a real `CommonDBTM`-backed table with a `name` field) —
+ * `Dropdown::show($itemtype, ...)` needs a real `CommonDBTM`-backed table with a `name` field) -
  * `VehicleAssetBuilder` (the class that actually seeds/consumes rows) has its own dedicated test.
  */
 final class FuelTypeTest extends TestCase
 {
     /**
-     * Compared against the same `_n()` call rather than a hardcoded literal — CI's default session
+     * Compared against the same `_n()` call rather than a hardcoded literal: CI's default session
      * language isn't necessarily French (confirmed: CI returned "Fuel type" for the same call), so
      * asserting a specific translated string would depend on which locale happens to be active.
      */
@@ -50,7 +50,7 @@ final class FuelTypeTest extends TestCase
     /**
      * Regression guard: `$rightname` used to be the native GLPI `'config'` right, which core's own
      * `\Config::getRights()` strips CREATE/DELETE/PURGE from (a per-entity singleton has no concept
-     * of creating/deleting rows) — meaning "Ajouter"/"Purger" on this dropdown's own screen 403'd
+     * of creating/deleting rows): meaning "Ajouter"/"Purger" on this dropdown's own screen 403'd
      * for everyone, super-admin included. Must be this plugin's own dedicated right instead, the
      * exact fix `Profile.php`'s own docblock explains this right was created to make possible.
      */
@@ -63,10 +63,10 @@ final class FuelTypeTest extends TestCase
     public function testASuperAdminCanCreateAndPurgeThroughTheRealCanCheck(): void
     {
         $item = new FuelType();
-        $createInput = ['name' => 'Test — CREATE right'];
+        $createInput = ['name' => 'Test: CREATE right'];
         $this->assertTrue($item->can(-1, CREATE, $createInput), 'CREATE must not be stripped, unlike the native config right.');
 
-        $id = (int) $item->add(['name' => 'Test — CREATE right']);
+        $id = (int) $item->add(['name' => 'Test: CREATE right']);
         $this->assertGreaterThan(0, $id);
         $this->assertTrue($item->can($id, PURGE), 'PURGE must not be stripped, unlike the native config right.');
 
@@ -76,13 +76,13 @@ final class FuelTypeTest extends TestCase
     public function testCanBeAddedToAndReadBackFromItsOwnRealTable(): void
     {
         $item = new FuelType();
-        $id = $item->add(['name' => 'Test — Hydrogène']);
+        $id = $item->add(['name' => 'Test : Hydrogène']);
 
         $this->assertGreaterThan(0, $id);
 
         $reloaded = new FuelType();
         $this->assertTrue($reloaded->getFromDB($id));
-        $this->assertSame('Test — Hydrogène', $reloaded->fields['name']);
+        $this->assertSame('Test : Hydrogène', $reloaded->fields['name']);
 
         $reloaded->delete(['id' => $id], true);
     }

@@ -33,25 +33,25 @@ use Glpi\Asset\CustomFieldType\StringType;
 /**
  * Third custom asset type from the same idea as `VehicleAssetBuilder`/`ServerAssetBuilder` (see
  * `VehicleAssetBuilder`'s docblock for the full API research). Generated the moment the admin
- * selects the "Bâtiment & Moyens Généraux" category branch (`CategoryBuilder`'s `batiment` key) —
+ * selects the "Bâtiment & Moyens Généraux" category branch (`CategoryBuilder`'s `batiment` key) -
  * same no-separate-toggle trigger pattern.
  *
  * Named "Local" (matching the original idea's own "Local"/"Salle" framing) rather than "Bâtiment"
- * — deliberately complements, not duplicates, GLPI's native `Location` (`glpi_locations`): a
+ * - deliberately complements, not duplicates, GLPI's native `Location` (`glpi_locations`): a
  * `Location` answers *where* an asset physically sits (a hierarchical building/floor/room tree,
  * already built by `LocationBuilder` elsewhere in this plugin) and carries no capacities of its
- * own — it can't have a contract, a purchase value, an attached floor plan, or be booked. A "Local"
+ * own: it can't have a contract, a purchase value, an attached floor plan, or be booked. A "Local"
  * *asset* tracks a specific room/office as a real managed item with its own financial info
  * (rent/lease), contracts (cleaning, maintenance, insurance), documents (floor plans, permits,
- * diagnostics), and reservability (meeting rooms) — none of which the `Location` object supports.
+ * diagnostics), and reservability (meeting rooms): none of which the `Location` object supports.
  *
- * Capacities scoped to what a room/office genuinely needs — no hardware-inventory capacities at
+ * Capacities scoped to what a room/office genuinely needs: no hardware-inventory capacities at
  * all (unlike Vehicule/Serveur, a room has no network ports, OS, or devices). `IsReservableCapacity`
- * is the one capacity that matters most here — a meeting room is the textbook reservable resource.
+ * is the one capacity that matters most here: a meeting room is the textbook reservable resource.
  *
  * Custom fields: surface and capacity are numeric (`NumberType`, confirmed real in
  * `src/Glpi/Asset/CustomFieldType/NumberType.php`), room type stays free text (Bureau, Salle de
- * réunion, Entrepôt, Local technique... — a small enough, self-evident set that a dropdown would
+ * réunion, Entrepôt, Local technique... : a small enough, self-evident set that a dropdown would
  * add ceremony without real benefit, unlike `type_carburant`'s fixed physical-world vocabulary).
  */
 class BuildingAssetBuilder
@@ -77,9 +77,9 @@ class BuildingAssetBuilder
     ];
 
     // Seeds the *native* "type" dropdown every custom asset definition automatically gets (same
-    // mechanism as VehicleAssetBuilder's own TYPES — see that class's seedTypes() docblock).
+    // mechanism as VehicleAssetBuilder's own TYPES: see that class's seedTypes() docblock).
     // Deliberately kept alongside the free-text `type_local` field above rather than replacing it
-    // (added later, on explicit user request, after `type_local` already shipped) — an admin who
+    // (added later, on explicit user request, after `type_local` already shipped): an admin who
     // already relies on the free-text field keeps it untouched; this just also populates the
     // native dropdown GLPI attaches to every custom asset regardless of whether this class uses it.
     private const TYPES = [
@@ -131,7 +131,7 @@ class BuildingAssetBuilder
 
         // Real bug found by testing MeetingRoomFormBuilder's real submission path (not by reading
         // the code) : without this, `AssociatedItemsField` on a form's `QuestionTypeItem` question
-        // pointing at this asset silently links nothing to the resulting ticket, no error anywhere —
+        // pointing at this asset silently links nothing to the resulting ticket, no error anywhere -
         // see `VehicleAssetBuilder::syncHelpdeskItemTypeProfiles()`'s docblock for the full root
         // cause (same fix, same mechanism, this plugin's own second custom asset to hit it).
         // Idempotent and additive-only, safe to call unconditionally on every run.
@@ -141,7 +141,7 @@ class BuildingAssetBuilder
     }
 
     /**
-     * Same mechanism as `VehicleAssetBuilder::seedTypes()` — see that class's docblock.
+     * Same mechanism as `VehicleAssetBuilder::seedTypes()` - see that class's docblock.
      */
     private function seedTypes(AssetDefinition $definition): void
     {
@@ -189,7 +189,7 @@ class BuildingAssetBuilder
 
     /**
      * See `VehicleAssetBuilder::isHelpdeskItemTypeAlreadySynced()`'s own docblock for the full
-     * root cause this exists to fix — calling `AssetDefinition::update()` unconditionally on every
+     * root cause this exists to fix: calling `AssetDefinition::update()` unconditionally on every
      * run triggers a GLPI-core `DropdownVisibility` resync with no duplicate check, leaving
      * thousands of stale rows behind after repeated wizard runs.
      */

@@ -18,21 +18,21 @@
 namespace GlpiPlugin\Configurationglpiauto;
 
 /**
- * A plain, flat dropdown (no `CommonTreeDropdown` nesting needed) — GLPI has no native "fuel type"
+ * A plain, flat dropdown (no `CommonTreeDropdown` nesting needed): GLPI has no native "fuel type"
  * concept anywhere, unlike every other dropdown this plugin populates (`Manufacturer`, `State`,
  * `ITILCategory`...), so this is the first one this plugin owns and creates the table for, rather
  * than just seeding rows into an existing native table. Exists solely to be the `itemtype` target
- * of `VehicleAssetBuilder`'s "Type de carburant" `DropdownType` custom field — a
+ * of `VehicleAssetBuilder`'s "Type de carburant" `DropdownType` custom field: a
  * `Glpi\Asset\CustomFieldType\DropdownType` accepts any real `CommonDBTM`-backed itemtype with a
  * table and a name field, confirmed by reading `DropdownType::getFormInput()`, which just calls
  * GLPI's generic `Dropdown::show($itemtype, ...)`.
  *
  * `$rightname = Profile::RIGHT_CONFIG` (this plugin's own dedicated right, same as `Config`/
- * `ConfigurationProfile`) rather than registering a brand new right — a small, rarely-edited
+ * `ConfigurationProfile`) rather than registering a brand new right: a small, rarely-edited
  * reference dropdown doesn't need its own permission bit. Deliberately NOT the native GLPI
  * `'config'` right: core's `\Config::getRights()` unsets CREATE/DELETE/PURGE on it (a per-entity
  * singleton has no concept of creating or deleting rows), which silently made "Ajouter"/"Purger"
- * on this dropdown's own screen 403 for everyone, super-admin included — the exact bug
+ * on this dropdown's own screen 403 for everyone, super-admin included: the exact bug
  * Profile.php's own docblock explains this dedicated right was created to avoid.
  */
 class FuelType extends Compat\Base\FuelTypeBase

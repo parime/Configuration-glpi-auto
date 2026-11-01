@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FollowupLibraryBuilderTest extends TestCase
 {
-    private const NAME = 'Relance — informations complémentaires demandées';
+    private const NAME = 'Relance : informations complémentaires demandées';
 
     private function buildConfig(bool $enabled, bool $icons = false): Config
     {
@@ -69,7 +69,7 @@ final class FollowupLibraryBuilderTest extends TestCase
     }
 
     /**
-     * `Translations::applyContent()` — the same distinct-from-`applyIcon()` mechanism already
+     * `Translations::applyContent()` - the same distinct-from-`applyIcon()` mechanism already
      * regression-tested on `TaskTemplateBuilder`, used here for the full multilingual message text.
      */
     public function testAppliesContentTranslationsForEveryLanguage(): void

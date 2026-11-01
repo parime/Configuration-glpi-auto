@@ -23,21 +23,21 @@ use ProjectType;
 
 /**
  * Turns on `project_taxonomy_enabled` into real `ProjectType`/`ProjectTaskType` lists
- * (Configuration > Intitulés > Assistance > "Types de projet" / "Types de tâche de projet") — GLPI
+ * (Configuration > Intitulés > Assistance > "Types de projet" / "Types de tâche de projet") : GLPI
  * ships neither by default. Both are flat name+comment dropdowns, no tree.
  *
  * `ProjectType` (what *kind* of project) and `ProjectTaskType` (what *kind* of task within a
  * project) are a genuinely different concern from `TaskCategoryBuilder`'s `TaskCategory`, which
- * only applies to tasks on tickets/changes/problems — `ProjectTask` is its own object type with
+ * only applies to tasks on tickets/changes/problems - `ProjectTask` is its own object type with
  * its own type dropdown.
  *
  * Unlike most other builders in this plugin, neither list was present in the audited production
  * export (its own "statut de projet" export only had GLPI's 3 native `ProjectState` rows,
- * unmodified — no project type/task type customization to draw from), so this is generalized from
- * standard PM practice rather than real org data — a starting point, same as everywhere else.
+ * unmodified: no project type/task type customization to draw from), so this is generalized from
+ * standard PM practice rather than real org data: a starting point, same as everywhere else.
  *
  * `ProjectState` (added on explicit user request, #155): the 3 native rows have no "on hold" or
- * "cancelled" concept at all (confirmed via `DESCRIBE` + reading the actual 3 rows, not assumed) —
+ * "cancelled" concept at all (confirmed via `DESCRIBE` + reading the actual 3 rows, not assumed) -
  * both common in real project tracking. Colors chosen distinct from the native 3 (green/orange/red)
  * so all 6 stay visually distinguishable on the same Kanban board; "Annulé" gets `is_finished = 1`
  * like "Closed" (both stop counting as active work). No icon applied here (unlike `ProjectType`/
@@ -55,7 +55,7 @@ class ProjectTaxonomyBuilder
     ];
 
     // GLPI ships only 3 native ProjectState rows (New/Processing/Closed, confirmed via DESCRIBE +
-    // direct row read — not assumed): no "on hold" or "cancelled" concept at all, both extremely
+    // direct row read: not assumed): no "on hold" or "cancelled" concept at all, both extremely
     // common in real project tracking (a project genuinely paused vs. actively progressing is a
     // different state a Kanban/report needs to distinguish, same for a project stopped before
     // completion vs. one that finished). Added on explicit user request (#155). Colors deliberately
@@ -98,7 +98,7 @@ class ProjectTaxonomyBuilder
             $count++;
         }
         foreach (self::TASK_TYPES as $type) {
-            // Unlike PROJECT_TYPES just above, TASK_TYPES entries never had a 'comment' key — a
+            // Unlike PROJECT_TYPES just above, TASK_TYPES entries never had a 'comment' key: a
             // leftover `$type['comment'] ?? ''` copy-pasted from that loop always evaluated to ''
             // here, never anything real (confirmed by PHPStan: the key simply doesn't exist on
             // this constant's shape).

@@ -32,7 +32,7 @@ use Ticket;
 
 /**
  * Same real-submission proof as `SoftwareBugFormBuilderTest`/`LaptopRequestFormBuilderTest` for the
- * `QuestionTypeUserDevice` + `AssociatedItemsField` pattern — here the device question
+ * `QuestionTypeUserDevice` + `AssociatedItemsField` pattern: here the device question
  * ("Poste auquel connecter l'écran") is unconditionally optional (no `VISIBLE_IF` gate tied to the
  * motif, unlike Laptop/ProfessionalPhone), so this suite exercises the answered/unanswered cases
  * directly rather than via a specific motif branch.
@@ -146,7 +146,7 @@ final class NewScreenFormBuilderTest extends TestCase
     public function testReferencedComputerIsAssociatedOnTheTicket(): void
     {
         $form = $this->buildForm();
-        $computerId = $this->addRealComputerForUser('PHPUnit — Poste à connecter', 2);
+        $computerId = $this->addRealComputerForUser('PHPUnit : Poste à connecter', 2);
         $nombreId = $this->questionIdByRank($form, 0);
         $motifId = $this->questionIdByRank($form, 2);
         $posteId = $this->questionIdByRank($form, 4);

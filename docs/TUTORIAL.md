@@ -181,7 +181,7 @@ purement esthétique, qui ne doit pas retarder les réglages fonctionnels qui pr
 ### Étape 18 : Configuration SMTP
 
 Optionnel : révise directement les réglages d'envoi d'e-mail natifs de GLPI (serveur, port,
-adresse d'expédition, identifiants, vérification du certificat TLS) — jamais une copie propre à ce
+adresse d'expédition, identifiants, vérification du certificat TLS) : jamais une copie propre à ce
 plugin, ces réglages sont écrits directement dans la configuration GLPI native. Le mot de passe
 n'est jamais pré-rempli ni renvoyé au navigateur, même s'il y en a déjà un enregistré. Le test de
 connexion se fait après avoir terminé l'assistant, depuis l'écran natif GLPI (Configuration >
@@ -384,7 +384,7 @@ shouldn't delay the functional settings that come before it.
 ### Step 18 : SMTP configuration
 
 Optional: review GLPI's native mail-sending settings directly (server, port, sender address,
-credentials, TLS certificate verification) — never a copy specific to this plugin, these settings
+credentials, TLS certificate verification): never a copy specific to this plugin, these settings
 are written directly into GLPI's native configuration. The password is never pre-filled or sent
 back to the browser, even if one is already saved. The connection test happens after finishing the
 wizard, from GLPI's native screen (Setup > Notifications): GLPI only ever tests the configuration

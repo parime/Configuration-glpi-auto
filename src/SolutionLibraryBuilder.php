@@ -23,17 +23,17 @@ use SolutionType;
 /**
  * Turns on `solution_library_enabled` into a real `SolutionType`/`SolutionTemplate` library
  * (Configuration > Intitulés > Assistance > "Types de solutions" / "Gabarits de solution"). GLPI
- * ships neither by default. Types and templates are built together — a template with no type to
+ * ships neither by default. Types and templates are built together: a template with no type to
  * belong to (or vice versa) isn't useful on its own, same reasoning `ServiceCatalogBuilder`
  * applies to categories+forms.
  *
- * Modeled on a real production GLPI export's own 5-type closure taxonomy (generalized — dropped
+ * Modeled on a real production GLPI export's own 5-type closure taxonomy (generalized: dropped
  * anything specific to that org's own incident-response tooling), cross-checked against standard
  * ITSM closure-code practice (ServiceNow/ITIL: resolution vs. workaround vs. informational vs.
  * duplicate all being distinct, auditable closure categories rather than one bucket): a resolution
  * always falls into "the user was helped" (no technical fix), "something was actually fixed",
  * "access/accounts changed", "a security incident was handled", or "no technical action was
- * needed" — and which of those is even *selectable* differs by ITIL object type (a security
+ * needed" - and which of those is even *selectable* differs by ITIL object type (a security
  * closure makes sense on an Incident or a Change, not on a Request; access management doesn't
  * apply to a Change). `SolutionType`'s own `is_incident`/`is_request`/`is_problem`/`is_change`
  * flags encode exactly that per-type visibility.
@@ -47,13 +47,13 @@ class SolutionLibraryBuilder
 {
     /**
      * Same itemtype-aware Twig prefix as `FollowupLibraryBuilder::GREETING` (see there for the
-     * full reasoning) — duplicated rather than shared, consistent with this codebase's existing
+     * full reasoning): duplicated rather than shared, consistent with this codebase's existing
      * "small local duplication over a cross-builder helper" convention.
      */
     private const GREETING = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Bonjour {{ requesters|first.fullname }},{% else %}Bonjour,{% endif %}";
 
     // Same GREETING_EN/_DE/_IT/_ES pattern as FollowupLibraryBuilder (see there for the full
-    // reasoning) — duplicated rather than shared, consistent with this codebase's convention.
+    // reasoning): duplicated rather than shared, consistent with this codebase's convention.
     private const GREETING_EN = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Hello {{ requesters|first.fullname }},{% else %}Hello,{% endif %}";
 
     private const GREETING_DE = "{% set requesters = itemtype == 'Change' ? change.requesters.users : (itemtype == 'Problem' ? problem.requesters.users : ticket.requesters.users) %}{% if requesters|length > 0 %}Hallo {{ requesters|first.fullname }},{% else %}Hallo,{% endif %}";
@@ -69,7 +69,7 @@ class SolutionLibraryBuilder
      * Problem), same itemtype-branching reasoning as GREETING above. Real bug caught while adding
      * this: the two "Sécurité" templates already referenced `{{ ticket.solvedate }}` directly
      * (added in an earlier sprint) despite `SolutionType::is_change=1` making them selectable on a
-     * Change — where `ticket` is undefined and Twig's `date` filter treats a null/undefined input
+     * Change: where `ticket` is undefined and Twig's `date` filter treats a null/undefined input
      * as "now", silently showing today's date instead of the real resolution date. Fixed alongside
      * the new GREETING rollout rather than left as a latent bug.
      */
@@ -79,7 +79,7 @@ class SolutionLibraryBuilder
         [
             'name' => 'Assistance / Support utilisateur',
             'icon' => '🙋',
-            'comment' => 'Aide apportée à l\'utilisateur : explications, guidage, prise en main, formation — sans intervention technique sur un système.',
+            'comment' => 'Aide apportée à l\'utilisateur : explications, guidage, prise en main, formation : sans intervention technique sur un système.',
             'is_incident' => 1, 'is_request' => 1, 'is_problem' => 1, 'is_change' => 0,
             'templates' => [
                 [
@@ -150,7 +150,7 @@ class SolutionLibraryBuilder
                     'name' => 'Confinement et éradication de la menace',
                     'icon' => '🛡️',
                     'content' => 'Incident de sécurité traité.' . "\n\nAction immédiate : isolation du système impacté.\nÉradication : suppression des éléments malveillants, nettoyage des persistances.\n\nOutils utilisés : \nDate : " . self::SOLVE_DATE,
-                    // No GREETING here (matches the French version — a security incident report
+                    // No GREETING here (matches the French version: a security incident report
                     // isn't addressed "Bonjour X,", same for every language). SOLVE_DATE itself
                     // needs no per-language variant: pure Twig/date filter, no literal words.
                     'translations' => [
@@ -206,7 +206,7 @@ class SolutionLibraryBuilder
                     ],
                 ],
                 // Issue #346 : demande d'évolution ou de service refusée après étude (tickets réels
-                // clôturés « non retenue ») — une clôture sans intervention, comme le doublon.
+                // clôturés « non retenue ») : une clôture sans intervention, comme le doublon.
                 [
                     'name' => 'Demande non retenue',
                     'icon' => '🚫',
@@ -219,7 +219,7 @@ class SolutionLibraryBuilder
                         'pt_BR' => self::GREETING_PT . "\n\nApós análise, sua solicitação não foi aceita.\n\nMotivo: \n\nNão hesite em nos contatar novamente se o contexto mudar.\n\nAtenciosamente,",
                     ],
                 ],
-                // 11e gabarit — forum GLPI officiel (topic 294630, utilisateur alecomte demandant un
+                // 11e gabarit : forum GLPI officiel (topic 294630, utilisateur alecomte demandant un
                 // statut/bouton dédié pour rejeter un ticket mal formulé ; réponse du contributeur
                 // LaDenrée : pas besoin de toucher au workflow natif, un gabarit de solution type
                 // suffit). Catégorie "Informationnel" : clôturer un ticket faute d'informations

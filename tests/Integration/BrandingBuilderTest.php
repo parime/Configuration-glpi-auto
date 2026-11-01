@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Regression guard for a real bug reported by the user: unchecking "Personnaliser la couleur
  * principale" (or "Ajouter un logo par entité") in the wizard never removed the CSS block a
- * previous run had already written into `glpi_entities.custom_css_code` — `apply()`/`applyLogos()`
+ * previous run had already written into `glpi_entities.custom_css_code` - `apply()`/`applyLogos()`
  * were simply never called again once their toggle was off, so the color/logo stayed visually
  * applied forever. Same bug class already fixed on `PaletteBuilder` (v0.65.1) for `core.palette`,
  * fixed here the same way: actively strip the plugin's own marker-delimited block instead of just

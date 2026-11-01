@@ -22,7 +22,7 @@ use GlpiPlugin\Configurationglpiauto\VipBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Same "third-party plugin not installed on this instance" scope limit as `TagBuilderTest` — see
+ * Same "third-party plugin not installed on this instance" scope limit as `TagBuilderTest` - see
  * that test's docblock. Both of this class's own gates (`vip_group_enabled` and the third-party
  * plugin check) had zero coverage before this test.
  */

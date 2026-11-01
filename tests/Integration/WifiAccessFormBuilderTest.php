@@ -31,7 +31,7 @@ use Ticket;
 
 /**
  * The "Date de fin d'accès" question is gated behind `VisibilityStrategy::VISIBLE_IF` on the
- * "temporary" radio option (same mechanism as `VpnAccessFormBuilder`) — the real regression to
+ * "temporary" radio option (same mechanism as `VpnAccessFormBuilder`): the real regression to
  * guard is that it is genuinely optional (not enforced mandatory) when hidden for a permanent
  * request, and genuinely required/answerable when visible for a temporary one.
  */
@@ -110,7 +110,7 @@ final class WifiAccessFormBuilderTest extends TestCase
 
         $ticket = $this->submit($form, [
             "answers_$typeId" => ['2'],
-            "answers_$appareilId" => 'PC portable invité — Jean Dupont',
+            "answers_$appareilId" => 'PC portable invité : Jean Dupont',
             "answers_$dateFinId" => '2026-11-05',
         ]);
 
@@ -125,7 +125,7 @@ final class WifiAccessFormBuilderTest extends TestCase
 
         $ticket = $this->submit($form, [
             "answers_$typeId" => ['1'],
-            "answers_$appareilId" => 'Ordinateur de bureau — Marie Curie',
+            "answers_$appareilId" => 'Ordinateur de bureau: Marie Curie',
         ]);
 
         $this->assertStringContainsString('Accès permanent', $ticket->fields['name']);

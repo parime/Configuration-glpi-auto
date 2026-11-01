@@ -33,7 +33,7 @@ final class ProjectTaskTemplateBuilderTest extends TestCase
 
     /**
      * `ProjectTaskTemplateBuilder::findTaskTypeId()` resolves each template's task type by name
-     * against whatever `ProjectTaxonomyBuilder` already created — it never creates the type itself.
+     * against whatever `ProjectTaxonomyBuilder` already created: it never creates the type itself.
      */
     protected function setUp(): void
     {
@@ -87,13 +87,13 @@ final class ProjectTaskTemplateBuilderTest extends TestCase
 
         global $DB;
         $count = $DB->request(['FROM' => ProjectTaskTemplate::getTable(), 'WHERE' => ['name' => self::NAME]])->count();
-        $this->assertSame(1, $count, 'Exactly one row must exist — no duplicate.');
+        $this->assertSame(1, $count, 'Exactly one row must exist: no duplicate.');
     }
 
     /**
      * Regression guard: a template created while `ProjectTaxonomyBuilder` hadn't run yet (wizard
      * steps are independent and can run in any order) used to stay stuck with
-     * `projecttasktypes_id = 0` forever — `getOrCreateTemplate()` found the existing row by name
+     * `projecttasktypes_id = 0` forever - `getOrCreateTemplate()` found the existing row by name
      * and returned early without ever revisiting its type FK.
      */
     public function testASecondRunHealsAPreviouslyUnresolvedTaskType(): void

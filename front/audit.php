@@ -22,7 +22,7 @@ use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
 // L'audit lit et corrige l'état général de toute l'instance (parc de toutes les entités, comptes par
 // défaut, configuration cœur) : le droit propre au plugin, délégable à un profil non super-admin
-// (voir Profile.php), ne suffit pas — le droit natif GLPI 'config' est exigé en plus, READ pour
+// (voir Profile.php), ne suffit pas : le droit natif GLPI 'config' est exigé en plus, READ pour
 // consulter, UPDATE pour corriger (fusions/purges de logiciels et d'intitulés, réglages cœur,
 // tickets ouverts dans n'importe quelle entité) ou envoyer le rapport hors de GLPI par e-mail.
 Session::checkRight(Config::$rightname, READ);
@@ -119,7 +119,7 @@ $severityOrder = ['critical' => 0, 'warning' => 1, 'info' => 2];
 usort($findings, static fn ($a, $b) => $severityOrder[$a->severity] <=> $severityOrder[$b->severity]);
 
 // Analyse continue (issue #131) : le compteur accumulé par AuditWatchCron est affiché une fois puis
-// remis à zéro ici (vu = acquitté) — jamais `last_critical_keys`, uniquement le compteur de nouveaux
+// remis à zéro ici (vu = acquitté) : jamais `last_critical_keys`, uniquement le compteur de nouveaux
 // constats non encore consultés. Le droit de lecture déjà vérifié plus haut suffit : acquitter un
 // simple indicateur de lecture n'exige pas le droit d'écriture UPDATE.
 $config = Config::getConfig();
@@ -131,7 +131,7 @@ $newCriticalMessage = null;
 
 if ($newCriticalCount > 0) {
     // Rendu en PHP, pas en Twig : extract-locales n'extrait `_n()` que depuis le code PHP, jamais
-    // depuis un appel Twig équivalent (confirmé en direct — un essai précédent avec `_n()` appelé
+    // depuis un appel Twig équivalent (confirmé en direct : un essai précédent avec `_n()` appelé
     // depuis le template ne remontait tout simplement pas dans la liste des chaînes à traduire).
     $newCriticalMessage = sprintf(
         _n(

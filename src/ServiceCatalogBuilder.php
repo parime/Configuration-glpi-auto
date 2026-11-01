@@ -31,20 +31,20 @@ use Glpi\Form\Section;
 use ITILCategory;
 
 /**
- * Builds a self-service Service Catalog (GLPI 11's native `Glpi\Form\Form`/`Question` system —
+ * Builds a self-service Service Catalog (GLPI 11's native `Glpi\Form\Form`/`Question` system -
  * confirmed a completely separate mechanism from `TicketTemplate`/`ITILCategory`, see
  * `HelpdeskFormBuilder`'s docblock) out of `CategoryBuilder`'s already-built category tree, one
  * catalog section per selected top-level branch.
  *
  * Each service is a minimal form (Title + Description only, same "enter the least possible"
  * philosophy as `HelpdeskFormBuilder`) that routes its resulting ticket to a *fixed* pre-existing
- * `ITILCategory` — the user picks a specific service, never a category. Wired through
+ * `ITILCategory` - the user picks a specific service, never a category. Wired through
  * `FormDestinationTicket`'s `ITILCategoryFieldConfig` with the `SPECIFIC_VALUE` strategy
  * (confirmed via source: the alternative `LAST_VALID_ANSWER` strategy reads from a "Category"-type
  * question instead, which these forms deliberately don't have).
  *
  * `Form::add()` already creates a first `Section` and a default `FormDestination` on its own
- * (`Form::post_addItem()` → `createFirstSection()` / `addDefaultDestinations()`) — reused here
+ * (`Form::post_addItem()` → `createFirstSection()` / `addDefaultDestinations()`): reused here
  * instead of creating them by hand.
  *
  * **Issue #207 triage, generalized catalog-wide** : entries flagged `'smart' => true` below are
@@ -55,13 +55,13 @@ use ITILCategory;
  * plugin owner explicitly revisited that call as too conservative and asked for the exercise to be
  * redone catalog-wide with a real per-service judgment call each time, biased toward "what
  * structured field would make this ticket more actionable" rather than "does free text technically
- * suffice" — resulting in 42 more of those ~44 getting the same treatment (own dedicated builder,
+ * suffice" - resulting in 42 more of those ~44 getting the same treatment (own dedicated builder,
  * real typed/conditional questions, computed ticket title via `Glpi\Form\Tag\AnswerTagProvider` /
  * `FormTagProvider`, never hand-written markup), for a total of 48 smart services out of 50. Only
  * two stayed deliberately plain, each for a reason specific to it rather than a blanket rule:
  * "Demande administrative RH" is the RH branch's own intentional catch-all sitting alongside 4 other
  * well-defined RH services (formation, congés, mouvements de personnel, télétravail) that already
- * partition the well-known cases — a "type" field here would either duplicate those or need an
+ * partition the well-known cases: a "type" field here would either duplicate those or need an
  * ever-growing option list to stay honest, so free text is the more honest fit for a deliberately
  * open-ended residual category. "Signaler un incident ou une urgence sécurité" is a time-critical
  * emergency report where minimizing friction to submit fast matters more than structured intake;
@@ -162,8 +162,8 @@ class ServiceCatalogBuilder
     ];
 
     // GLPI's own bundled illustration catalog (`public/lib/glpi-project/illustrations/icons.json`,
-    // resolved via `Glpi\UI\IllustrationManager` — no custom SVG import needed, these ship with
-    // core already) — one recognizable icon per branch instead of the generic default
+    // resolved via `Glpi\UI\IllustrationManager` - no custom SVG import needed, these ship with
+    // core already): one recognizable icon per branch instead of the generic default
     // ("request-service") every rubric/form falls back to when `illustration` is left unset.
     private const BRANCH_ILLUSTRATIONS = [
         'it' => 'asset-desktop-1',
@@ -248,7 +248,7 @@ class ServiceCatalogBuilder
     }
 
     /**
-     * Walks $path (1 or 2 names) starting from $branch's own root `ITILCategory` — the same tree
+     * Walks $path (1 or 2 names) starting from $branch's own root `ITILCategory` - the same tree
      * `CategoryBuilder` already built. Returns null (skip the service) if any step isn't found.
      */
     private function resolveItilCategoryId(array $branch, array $path): ?int

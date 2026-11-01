@@ -22,26 +22,26 @@ use DocumentCategory;
 
 /**
  * Turns on `document_management_enabled` into real `DocumentCategory`/`BusinessCriticity` lists
- * (Configuration > Intitulés > Gestion) — GLPI ships neither by default. Third intitulé in that
+ * (Configuration > Intitulés > Gestion) : GLPI ships neither by default. Third intitulé in that
  * same "Gestion" group, `DocumentType` (Configuration > Intitulés > Gestion > "Types de documents"),
  * is deliberately left untouched: confirmed on a fresh GLPI 11.0.8 install it already ships 73
- * native rows (every common file-extension type) — already sufficient, same "verified, nothing to
+ * native rows (every common file-extension type): already sufficient, same "verified, nothing to
  * build" conclusion as `RequestType`/`ProjectState` elsewhere in this plugin.
  *
  * The two lists cover genuinely different things, confirmed by checking what actually references
  * each foreign key in GLPI core rather than assuming from the label alone:
  * - `DocumentCategory` (`glpi_documents.documentcategories_id`) classifies an uploaded *document*
- *   itself. `glpi_documents` has no native confidentiality/sensitivity field at all — this is the
+ *   itself. `glpi_documents` has no native confidentiality/sensitivity field at all: this is the
  *   closest GLPI-native mechanism to one, so the list here follows the standard ISO 27001 (Annex
  *   A.8.2) information-classification scale (Public/Interne/Confidentiel/Diffusion restreinte)
  *   rather than a generic "kind of document" taxonomy that would just duplicate `DocumentType`.
  * - `BusinessCriticity` (`glpi_infocoms.businesscriticities_id`, confirmed via
- *   `information_schema.COLUMNS` — the only other table referencing it) rates the business impact
- *   of an *asset* (via its `Infocom`/financial-info record), not a document — a standard 4-level
+ *   `information_schema.COLUMNS` - the only other table referencing it) rates the business impact
+ *   of an *asset* (via its `Infocom`/financial-info record), not a document: a standard 4-level
  *   severity scale, same traffic-light convention as `SupportTierBuilder`'s N1/N2/N3 groups.
  *
  * Both are flat (no natural sub-tree for either scale) `CommonTreeDropdown`s. `DocumentCategory`'s
- * own table has no `entities_id`/`is_recursive` columns (confirmed via `DESCRIBE`) — a global,
+ * own table has no `entities_id`/`is_recursive` columns (confirmed via `DESCRIBE`): a global,
  * non-entity-scoped dropdown, unlike `BusinessCriticity` which is entity-scoped like most other
  * intitulés this plugin creates.
  */
@@ -51,7 +51,7 @@ class DocumentManagementBuilder
         ['icon' => '🌐', 'name' => 'Public', 'comment' => 'Diffusion libre, sans restriction.'],
         ['icon' => '🏢', 'name' => 'Interne', 'comment' => 'Usage interne, non destiné à une diffusion externe.'],
         ['icon' => '🔒', 'name' => 'Confidentiel', 'comment' => 'Accès restreint aux personnes habilitées (besoin d\'en connaître).'],
-        ['icon' => '🚫', 'name' => 'Diffusion restreinte', 'comment' => 'Accès nominatif uniquement — le niveau le plus sensible.'],
+        ['icon' => '🚫', 'name' => 'Diffusion restreinte', 'comment' => 'Accès nominatif uniquement : le niveau le plus sensible.'],
     ];
 
     private const BUSINESS_CRITICITIES = [

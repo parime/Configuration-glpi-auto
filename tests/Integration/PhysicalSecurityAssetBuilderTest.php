@@ -24,15 +24,15 @@ use GlpiPlugin\Configurationglpiauto\PhysicalSecurityAssetBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Runs against a real GLPI instance — same overall pattern as `FireSafetyAssetBuilderTest`. Also
+ * Runs against a real GLPI instance: same overall pattern as `FireSafetyAssetBuilderTest`. Also
  * confirms the trigger is the "securite" branch (Sécurité & Protection des Personnes), not
- * "batiment" — the whole point of `PhysicalSecurityAssetBuilder`'s docblock reasoning for picking a
+ * "batiment" - the whole point of `PhysicalSecurityAssetBuilder`'s docblock reasoning for picking a
  * different branch than its sibling `FireSafetyAssetBuilder`.
  *
  * See `FireSafetyAssetBuilderTest`'s docblock for why `clearDefinitionsCache()` is required in
- * tearDown() (PHPUnit process-lifetime cache staleness across tests, not a production concern) —
+ * tearDown() (PHPUnit process-lifetime cache staleness across tests, not a production concern) -
  * why it must be immediately followed by `bootDefinitions()`, or every later AssetDefinition-backed
- * test in the same process loses autoloading entirely, not just this one's — and why the deleted
+ * test in the same process loses autoloading entirely, not just this one's: and why the deleted
  * definition's class names must ALSO be stripped back out of `$CFG_GLPI` before deletion, or a later
  * test enumerating all helpdesk-eligible types (e.g. `VehicleIncidentFormBuilderTest`'s real form
  * submission) crashes trying to instantiate this test's own orphaned, already-deleted asset class.
@@ -55,7 +55,7 @@ final class PhysicalSecurityAssetBuilderTest extends TestCase
                 $definition->getAssetModelClassName(),
             ];
 
-            // Stripping BEFORE delete() looked right but isn't — see FireSafetyAssetBuilderTest's
+            // Stripping BEFORE delete() looked right but isn't: see FireSafetyAssetBuilderTest's
             // docblock: AssetDefinition::delete()'s own capacity-cleanup re-triggers
             // bootstrapDefinition() before the row is actually gone, so stripping must happen AFTER
             // delete() to survive it.
@@ -88,7 +88,7 @@ final class PhysicalSecurityAssetBuilderTest extends TestCase
     public function testBatimentBranchAloneDoesNotTriggerThisBuilder(): void
     {
         // Regression guard: this builder must NOT fire off the "Bâtiment" branch, unlike
-        // FireSafetyAssetBuilder/BuildingAssetBuilder — it needs "securite" specifically.
+        // FireSafetyAssetBuilder/BuildingAssetBuilder: it needs "securite" specifically.
         $count = (new PhysicalSecurityAssetBuilder())->build($this->buildConfig(['batiment'], true));
 
         $this->assertSame(0, $count);
@@ -158,11 +158,11 @@ final class PhysicalSecurityAssetBuilderTest extends TestCase
      * Regression guard for a real bug (found manually against a live instance, not by this suite,
      * which is exactly why it's added here): a `DropdownTranslation` row on the generated "type"
      * dropdown class made GLPI's own `Search`/`SQLProvider` emit a `..._trans_name` column with no
-     * matching JOIN — `glpi_assets_assettypes` is one table shared by every `AssetDefinition`, not a
+     * matching JOIN - `glpi_assets_assettypes` is one table shared by every `AssetDefinition`, not a
      * dedicated one, unlike the ~20 other builders this plugin applies `Translations::applyIcon()`
      * to. Fixed by baking the icon into `name` directly instead. This test both confirms that (the
      * icon prefix, no duplicate row when the option is later toggled off) and that `Search::show()`
-     * on the resulting asset class no longer throws — the actual observable symptom.
+     * on the resulting asset class no longer throws: the actual observable symptom.
      */
     public function testIconsEnabledPrefixesNameAndSearchStillWorks(): void
     {
@@ -193,7 +193,7 @@ final class PhysicalSecurityAssetBuilderTest extends TestCase
         $this->assertSame(6, $count, 'Toggling icons off must update existing rows, not duplicate them.');
 
         // The actual observable symptom: Search::show() threw a RuntimeException ("Unknown column
-        // ..._trans_name") on the broken code, it doesn't just embed an error string in its output —
+        // ..._trans_name") on the broken code, it doesn't just embed an error string in its output -
         // letting it throw here is the regression guard, no assertion needed beyond that.
         $assetClass = $definition->getAssetClassName();
         ob_start();

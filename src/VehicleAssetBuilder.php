@@ -33,7 +33,7 @@ use Glpi\Asset\CustomFieldType\StringType;
 
 /**
  * Generates a real GLPI 11 custom asset type ("Véhicule") the moment the admin selects the
- * "Flotte Automobile & Mobilité" category branch (`CategoryBuilder`'s `flotte` key) — no separate
+ * "Flotte Automobile & Mobilité" category branch (`CategoryBuilder`'s `flotte` key) : no separate
  * toggle needed, that checkbox already is the trigger, exactly the idea scoped with the user
  * earlier ("la branche Flotte Automobile activée créerait un type d'actif Véhicule").
  *
@@ -42,45 +42,45 @@ use Glpi\Asset\CustomFieldType\StringType;
  * admin UI (`front/asset/assetdefinition.form.php`) on the test instance and reading back exactly
  * what landed in `glpi_assets_assetdefinitions`/`glpi_assets_customfielddefinitions`, rather than
  * guessing the API shape from source alone:
- * - `capacities` must be `[{name: FQCN}, ...]` — each entry becomes a `Glpi\Asset\Capacity` object
+ * - `capacities` must be `[{name: FQCN}, ...]` - each entry becomes a `Glpi\Asset\Capacity` object
  *   internally (`AssetDefinition::prepareInput()`), not a bare array of class-name strings.
  * - `profiles` decodes to a flat `{profile_id: rights_int}` map (confirmed in
- *   `AbstractDefinition::getDecodedProfilesField()`) — controls who can see/manage actual Vehicule
+ *   `AbstractDefinition::getDecodedProfilesField()`): controls who can see/manage actual Vehicule
  *   *items*, entirely separate from the `config` right needed to edit the definition itself.
  * - `CustomFieldDefinition::type` stores the field type class's FQCN directly (confirmed in
  *   `CustomFieldDefinition::getFieldType()`), `system_name` must match `^[a-z0-9_]+$` and stay
  *   unique per definition.
  *
- * Capacities kept deliberately narrow — the ones a vehicle genuinely needs (financial/warranty
+ * Capacities kept deliberately narrow: the ones a vehicle genuinely needs (financial/warranty
  * info, contracts for insurance/maintenance, attached documents, history, notes, external links,
- * global search, reservable for a pool car) — not the hardware-inventory ones every other asset
+ * global search, reservable for a pool car): not the hardware-inventory ones every other asset
  * type in GLPI gets (network ports, OS, software, virtualization...), which make no sense for a
- * car. Only Super-Admin/Admin get rights by default — same reasoning as VipBuilder's native Group
+ * car. Only Super-Admin/Admin get rights by default: same reasoning as VipBuilder's native Group
  * default: a sensible, safe starting point, not a guess at which of an organisation's own
  * technician profiles should manage a vehicle fleet.
  *
  * Custom fields cover exactly what the original idea named (immatriculation, type de carburant,
  * date de contrôle technique) plus the two other pieces of information a real vehicle record is
  * incomplete without (mise en circulation, expiration assurance). "Immatriculation" is marked
- * `required` (a real, GLPI-native per-field option — `Glpi\Asset\CustomFieldType\AbstractType::
+ * `required` (a real, GLPI-native per-field option - `Glpi\Asset\CustomFieldType\AbstractType::
  * getOptions()` exposes a `BooleanOption('required', 'Mandatory')` on every field type, the exact
  * checkbox an admin would tick by hand on the "Champs" tab; not a client-side-only hint). "Type de
- * carburant / motorisation" is a real dropdown (`FuelType`, this plugin's own `CommonDropdown` —
+ * carburant / motorisation" is a real dropdown (`FuelType`, this plugin's own `CommonDropdown` -
  * GLPI has no native fuel-type concept to reuse, unlike every other dropdown this plugin
  * populates) seeded with common fuel types, extended on every resubmit the same way
  * `ManufacturerDictionaryBuilder` extends its own list, independently of whether the Vehicule
  * definition itself already exists. Label relabeled from the original "Type de carburant" (#161,
  * user asked to distinguish électrique/hybride/thermique): `FUEL_TYPES` already lists
  * Électrique/Hybride/Hybride rechargeable alongside the actual fuels (Essence/Diesel/GPL/
- * Hydrogène), so the data model already captures the distinction — the old label was just
+ * Hydrogène), so the data model already captures the distinction : the old label was just
  * confusing for an electric vehicle ("fuel type: Électrique" reads oddly). Splitting the vehicle
  * *type* list itself (Voiture/Poids lourd/...) into per-propulsion variants was considered and
- * deliberately not done here — would combinatorially explode `TYPES` (Voiture électrique/hybride/
+ * deliberately not done here : would combinatorially explode `TYPES` (Voiture électrique/hybride/
  * thermique, Utilitaire électrique/hybride/thermique...) for the same information this one field
  * already carries; left as an open question for the user rather than guessed (see issue #161).
  * No true database-level uniqueness on immatriculation, deliberately: GLPI's `FieldUnicity`
  * mechanism (`FieldUnicityBuilder` elsewhere in this plugin) only matches on real database columns
- * (confirmed in `FieldUnicity::dropdownFields()` — it lists `$DB->listFields($table)`), and this
+ * (confirmed in `FieldUnicity::dropdownFields()` - it lists `$DB->listFields($table)`), and this
  * field lives inside the shared `glpi_assets_assets.custom_fields` JSON blob, invisible to it. The
  * native `serial` column would have been eligible instead, but the user explicitly chose to keep
  * the clearer "Immatriculation" label over gaining server-side uniqueness.
@@ -130,7 +130,7 @@ class VehicleAssetBuilder
     ];
 
     // Seeds the *native* "type" dropdown every custom asset definition automatically gets
-    // (`AssetDefinition`'s own standard fields, confirmed in GLPI core — distinct from
+    // (`AssetDefinition`'s own standard fields, confirmed in GLPI core: distinct from
     // `type_carburant` above, which is this class's own extra custom field). Real fleet-management
     // categories, not vehicle models/brands (that's `Manufacturer`/`AssetModel`'s job).
     private const TYPES = [
@@ -150,7 +150,7 @@ class VehicleAssetBuilder
             return 0;
         }
 
-        // Independent of whether the definition below already exists — an upgrade that adds new
+        // Independent of whether the definition below already exists: an upgrade that adds new
         // fuel types to the const list should still benefit an admin who ran the wizard before,
         // same reasoning as ManufacturerDictionaryBuilder::addMissingCriteria().
         $this->seedFuelTypes();
@@ -189,14 +189,14 @@ class VehicleAssetBuilder
         }
 
         // Same "independent of whether the definition itself is new" reasoning as
-        // seedFuelTypes() above — an upgrade that adds a new vehicle type to the const list
+        // seedFuelTypes() above: an upgrade that adds a new vehicle type to the const list
         // should still reach an admin who ran the wizard on an earlier version.
         $this->seedTypes($definition);
 
         // Real bug found by testing VehicleIncidentFormBuilder's real submission path (not by
         // reading the code) : without this, `AssociatedItemsField` on a form's `QuestionTypeItem`
         // question pointing at this asset silently links nothing to the resulting ticket, no error
-        // anywhere — see this method's own class docblock for the full root cause. Idempotent and
+        // anywhere: see this method's own class docblock for the full root cause. Idempotent and
         // additive-only (`AssetDefinition::syncProfilesRights()` only appends missing profile ids),
         // so safe to call unconditionally on every run, including retroactively for a definition
         // created by an earlier version of this plugin that predates this fix.
@@ -217,10 +217,10 @@ class VehicleAssetBuilder
 
     /**
      * Seeds `self::TYPES` into the definition's own auto-generated "type" dropdown
-     * (`Glpi\CustomAsset\VehiculeAssetType`, resolved dynamically — GLPI 11 generates one such
+     * (`Glpi\CustomAsset\VehiculeAssetType`, resolved dynamically: GLPI 11 generates one such
      * class per custom asset definition, sharing the single `glpi_assets_assettypes` table
      * discriminated by `assets_assetdefinitions_id`, confirmed via `DESCRIBE`). Not the same field
-     * as `type_carburant` (a `FuelType` dropdown custom field further above) — this is the
+     * as `type_carburant` (a `FuelType` dropdown custom field further above): this is the
      * standard "type" field GLPI attaches to every custom asset definition, independent of
      * anything this class explicitly declared in `self::FIELDS`.
      */
@@ -241,11 +241,11 @@ class VehicleAssetBuilder
     /**
      * `helpdesk_item_type` (`glpi_profiles`, a per-profile serialized array, distinct from the CRUD
      * `profiles` rights `getDefaultProfileRights()` grants on the asset registry itself) gates
-     * `CommonITILObject::getAllTypesForHelpdesk()` — the list `AssociatedItemsFieldStrategy::
+     * `CommonITILObject::getAllTypesForHelpdesk()` - the list `AssociatedItemsFieldStrategy::
      * isValidAnswer()` checks a `QuestionTypeItem` answer's itemtype against before linking it to a
      * ticket. GLPI's own "add a new asset definition" admin form has a dedicated per-profile checkbox
      * for exactly this (`AssetDefinition::getExtraProfilesFields()`/`syncProfilesRights()`,
-     * `_profiles_extra[helpdesk_item_type]` input) — creating the definition programmatically, as
+     * `_profiles_extra[helpdesk_item_type]` input): creating the definition programmatically, as
      * every builder in this plugin does, skips that checkbox entirely, leaving every profile's list
      * untouched (empty for this class, on a fresh instance). All existing profiles, not just the ones
      * with CRUD rights on the asset itself : anyone who can create a ticket (including a plain
@@ -281,8 +281,8 @@ class VehicleAssetBuilder
 
     /**
      * Real fix (found while auditing this session's own test DB) : calling
-     * `AssetDefinition::update()` unconditionally on every run — even though the write itself is
-     * additive-only and idempotent — has a very expensive side effect confirmed live: GLPI core
+     * `AssetDefinition::update()` unconditionally on every run: even though the write itself is
+     * additive-only and idempotent: has a very expensive side effect confirmed live: GLPI core
      * resyncs `DropdownVisibility` for the custom asset type against every existing dropdown
      * (`State` among others) on every `update()` call, without checking for already-existing
      * rows, leaving thousands of duplicate rows behind after repeated wizard runs (confirmed:

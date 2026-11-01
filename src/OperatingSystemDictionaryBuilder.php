@@ -79,7 +79,7 @@ class OperatingSystemDictionaryBuilder
             foreach ($rules as $label => [$regex, $name]) {
                 DictionaryRules::ensure(
                     $subType,
-                    sprintf('Système d\'exploitation — normalisation « %s »', $label),
+                    sprintf('Système d\'exploitation: normalisation « %s »', $label),
                     $name,
                     [],
                     $regex,

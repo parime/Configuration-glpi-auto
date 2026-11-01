@@ -26,15 +26,15 @@ use KnowbaseItemTranslation;
 
 /**
  * Turns on `kb_categories_enabled` into a real `KnowbaseItemCategory` tree (Configuration >
- * Intitulés > Outils > "Catégories de la base de connaissances") — GLPI ships none by default,
+ * Intitulés > Outils > "Catégories de la base de connaissances") : GLPI ships none by default,
  * and a self-service user has nowhere to browse before filing a ticket. Reuses
  * `CategoryBuilder::getCategoriesPreview()`'s 11 top-level branch names/icons instead of a second
  * invented taxonomy: a requester expects the knowledge base to be organized the same way as the
  * ticket categories they already see when filing a request, and only the branches actually
- * selected in step 5 (`Config::getCategoryBranches()`) get a matching KB category — same
+ * selected in step 5 (`Config::getCategoryBranches()`) get a matching KB category: same
  * filtering an admin without a vehicle fleet or industrial maintenance already applies there.
  *
- * Flat (top level only, no sub-tree) — the ticket category tree goes 3 levels deep for triage
+ * Flat (top level only, no sub-tree): the ticket category tree goes 3 levels deep for triage
  * precision, but a KB table of contents that deep would be more to browse than to read.
  */
 class KnowbaseCategoryBuilder
@@ -88,7 +88,7 @@ class KnowbaseCategoryBuilder
      * an empty "container" article (`answer` '', not FAQ) linked under the KB root article through
      * `KnowbaseItem_KnowbaseItem`. Same shape here, so a branch looks exactly like a migrated
      * category. One difference: a recursive root-entity visibility, since a migrated container is
-     * closed by default and self-service users could no longer browse it — a GLPI 11 category was
+     * closed by default and self-service users could no longer browse it: a GLPI 11 category was
      * visible to everyone. Icons move from `DropdownTranslation` to `KnowbaseItemTranslation`.
      */
     private function getOrCreateContainerArticle(string $name, string $icon): int

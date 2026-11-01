@@ -19,21 +19,21 @@ use GlpiPlugin\Configurationglpiauto\Compat\Http;
 use GlpiPlugin\Configurationglpiauto\Config;
 
 /**
- * Server-side proxy for the wizard's address-autocomplete assistant (step "Lieux") — never called
+ * Server-side proxy for the wizard's address-autocomplete assistant (step "Lieux"): never called
  * directly by an anonymous visitor, only by the wizard's own JS while an admin is filling in step
  * 15, and never with a client-supplied target host.
  *
  * Deliberately proxied through this plugin's own backend rather than a raw client-side `fetch()`
  * straight to Nominatim, for two real reasons:
- * - A browser cannot set a custom `User-Agent` header (blocked for security by every engine) — the
+ * - A browser cannot set a custom `User-Agent` header (blocked for security by every engine): the
  *   Nominatim usage policy requires a real identifying one; server-side PHP can set it.
  * - The target endpoint is admin-configurable (`$config->fields['location_geocoding_endpoint']`, self-hosted
- *   Nominatim/Photon/LocationIQ...) — reading it from *this server's own stored config* rather than
+ *   Nominatim/Photon/LocationIQ...): reading it from *this server's own stored config* rather than
  *   from the request means a malicious client can never redirect this proxy to fetch an arbitrary
  *   URL (would otherwise be a textbook SSRF: whoever controls the query params controls what the
  *   GLPI server fetches).
  *
- * GLPI core's HTTP client (via `Compat\Http`, GLPI 11 and 12) rather than raw `file_get_contents`/curl — automatically
+ * GLPI core's HTTP client (via `Compat\Http`, GLPI 11 and 12) rather than raw `file_get_contents`/curl: automatically
  * honours GLPI's own configured outbound proxy (`proxy_name`/`proxy_port`), which a corporate
  * install behind a proxy would otherwise silently fail through.
  */
@@ -47,7 +47,7 @@ $config = Config::getConfig();
 
 // Deliberately no `location_geocoding_enabled` gate here: the wizard's own JS already never
 // calls this endpoint unless the admin has just checked that box in *this* browser session (see
-// wizard.html.twig's `locationGeocodingEnabledInput.checked` guard) — that in-the-moment click is
+// wizard.html.twig's `locationGeocodingEnabledInput.checked` guard): that in-the-moment click is
 // the real opt-in. Gating on the *persisted* config value instead would reject every call made
 // during the very first wizard run, before that toggle has ever been saved (nothing to persist
 // until "Terminer" is clicked), while adding no actual protection: this endpoint is already
@@ -55,7 +55,7 @@ $config = Config::getConfig();
 // simply re-check the box and reload to get the same access a moment later.
 $endpoint = rtrim((string) ($config->fields['location_geocoding_endpoint'] ?? ''), '/');
 if ($endpoint === '' || !preg_match('#^https://#', $endpoint)) {
-    // Config::prepareInput() only ever lets a valid https:// URL through at save time — this is
+    // Config::prepareInput() only ever lets a valid https:// URL through at save time: this is
     // a defence-in-depth check, not the primary validation.
     http_response_code(500);
     echo json_encode(['error' => 'misconfigured_endpoint']);
@@ -65,7 +65,7 @@ if ($endpoint === '' || !preg_match('#^https://#', $endpoint)) {
 // The endpoint host is admin-configurable (self-hosted Nominatim/Photon/LocationIQ...), so an
 // operator holding only this plugin's own right could otherwise point it at an internal address
 // (a loopback/private/link-local host, or a public host that 302-redirects to one) and use this
-// proxy as a semi-blind SSRF into the server's own network — the response body is partially
+// proxy as a semi-blind SSRF into the server's own network: the response body is partially
 // echoed back below. Resolve and reject any non-public address before ever calling it.
 $endpointHost = parse_url($endpoint, PHP_URL_HOST);
 $resolvedIp = is_string($endpointHost) && $endpointHost !== '' ? gethostbyname($endpointHost) : false;
@@ -77,7 +77,7 @@ if (!$isPublicIp) {
     return;
 }
 
-// Free-form query ("12 rue de la Paix, Paris") or a postcode-only lookup (city auto-fill) —
+// Free-form query ("12 rue de la Paix, Paris") or a postcode-only lookup (city auto-fill) -
 // never both at once, the caller picks one mode. `town`/`country` are optional hints from
 // whatever the admin has already typed in those fields, on either mode.
 $query = trim((string) ($_GET['q'] ?? ''));
@@ -97,7 +97,7 @@ $params = [
 ];
 if ($postcode !== '') {
     // A bare postcode is ambiguous worldwide (e.g. "69001" alone matches Lyon, France just as
-    // well as a district of Zaporizhzhia, Ukraine — confirmed live against public Nominatim) and
+    // well as a district of Zaporizhzhia, Ukraine: confirmed live against public Nominatim) and
     // this result silently overwrites the town field with no admin review, unlike the free-text
     // suggestions below which the admin always picks from explicitly. Narrow it down with a
     // country: whatever the admin already typed in the "Pays" field, or this plugin's own
@@ -125,13 +125,13 @@ try {
         'query' => $params,
         'headers' => [
             // Identifies the request per Nominatim's usage policy (a plain browser fetch() can't
-            // set this header at all) — real repo URL, not a placeholder, so a legitimate abuse
+            // set this header at all): real repo URL, not a placeholder, so a legitimate abuse
             // report has somewhere to go.
             'User-Agent' => 'Configuration-glpi-auto-plugin (+https://github.com/parime/Configuration-glpi-auto)',
             'Accept' => 'application/json',
         ],
         'timeout' => 5,
-        // The public-IP check above only covers the first hop — without this, a host that passes
+        // The public-IP check above only covers the first hop: without this, a host that passes
         // that check could still redirect the client to an internal address (HTTP clients follow
         // redirects by default), reopening the same SSRF this proxy exists to prevent.
         'follow_redirects' => false,
@@ -153,9 +153,9 @@ try {
     return;
 }
 
-// Trim to just what the wizard's JS actually needs — never forward the full, sometimes very large
+// Trim to just what the wizard's JS actually needs: never forward the full, sometimes very large
 // Nominatim payload (bounding boxes, OSM internal ids...) to the browser. `lat`/`lon` are always
-// present on every Nominatim result (top-level, not under `address`) — glpi_locations has its own
+// present on every Nominatim result (top-level, not under `address`): glpi_locations has its own
 // `latitude`/`longitude` columns, unused until now.
 $suggestions = [];
 foreach ($results as $result) {

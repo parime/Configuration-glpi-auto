@@ -28,7 +28,7 @@ use NotificationTarget;
  * NotificationTarget::getInstanceClass() pour l'itemtype `GlpiPlugin\Configurationglpiauto\Config`
  * (la ligne de configuration du plugin sert d'objet porteur de l'événement, voir AuditReportCron).
  *
- * Destinataires : ceux de GLPI (administrateur, profils, groupes — ajoutés par
+ * Destinataires : ceux de GLPI (administrateur, profils, groupes : ajoutés par
  * NotificationTarget::addNotificationTargets()) plus une cible propre, « adresses
  * supplémentaires », alimentée par Config::audit_report_emails pour des destinataires sans compte
  * GLPI (RSSI externe, prestataire).
@@ -68,7 +68,7 @@ class NotificationTargetConfig extends NotificationTarget
         global $CFG_GLPI;
 
         // Constats recalculés ICI plutôt que repris de $options : GLPI rappelle cette méthode une
-        // fois par langue de destinataire, après avoir chargé cette langue — titres et
+        // fois par langue de destinataire, après avoir chargé cette langue : titres et
         // recommandations arrivent ainsi traduits pour chacun (les statuts, eux, ne dépendent pas
         // de la langue et restent identiques à ceux calculés par AuditReportCron).
         $report    = AuditReport::build($options['check_keys'] ?? [], AuditService::runAll());

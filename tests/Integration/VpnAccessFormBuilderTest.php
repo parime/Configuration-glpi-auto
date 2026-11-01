@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
 use Ticket;
 
 /**
- * Same conditional-visibility mechanism as `WifiAccessFormBuilderTest` — the "Date de fin d'accès"
+ * Same conditional-visibility mechanism as `WifiAccessFormBuilderTest` - the "Date de fin d'accès"
  * question must be genuinely optional for a permanent request and genuinely taken into account for
  * a temporary one.
  */

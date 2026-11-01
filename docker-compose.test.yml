@@ -18,7 +18,7 @@
 # Usage:
 #   composer install --no-dev   # vendor/autoload.php is a hard runtime requirement, see setup.php
 #   docker compose -f docker-compose.test.yml up -d
-#   # first boot downloads GLPI itself into the glpi_data volume — wait for it to be reachable:
+#   # first boot downloads GLPI itself into the glpi_data volume: wait for it to be reachable:
 #   #   curl -o /dev/null -sw '%{http_code}\n' http://localhost:8081/
 #   docker compose -f docker-compose.test.yml exec glpi \
 #     php bin/console database:configure --allow-superuser -n --db-host=db --db-name=glpi --db-user=glpi --db-password=glpi
@@ -31,13 +31,13 @@
 #   # then open http://localhost:8081
 #
 # `bin/console` runs as root by default in this image (a WARNING is printed each time). Apache
-# runs as www-data — root-run commands create cache/log files under files/ owned by root that
+# runs as www-data: root-run commands create cache/log files under files/ owned by root that
 # www-data can't write to afterwards, which surfaces as a generic 500 on every page with an empty
 # Apache error log (the real error only shows up in a CLI run with display_errors=1). If that
 # happens, run: docker compose -f docker-compose.test.yml exec glpi chown -R www-data:www-data
 # /var/www/html/glpi/files
 #
-# GLPI caches compiled Twig templates under files/_cache — edits to any .html.twig file are NOT
+# GLPI caches compiled Twig templates under files/_cache: edits to any .html.twig file are NOT
 # picked up automatically against this image (confirmed while iterating on templates/*.html.twig).
 # After changing a template, clear it: docker compose -f docker-compose.test.yml exec glpi \
 #   find /var/www/html/glpi/files/_cache -mindepth 1 -delete

@@ -32,7 +32,7 @@ use Ticket;
 
 /**
  * Same real-submission proof as `SoftwareBugFormBuilderTest`/`LaptopRequestFormBuilderTest` for the
- * `QuestionTypeUserDevice` + `AssociatedItemsField` pattern — this one against a real `Phone`, not a
+ * `QuestionTypeUserDevice` + `AssociatedItemsField` pattern: this one against a real `Phone`, not a
  * `Computer`, confirming the "<Itemtype>_<id>" raw-answer format and the association both work for a
  * different native itemtype too.
  */
@@ -147,7 +147,7 @@ final class ProfessionalPhoneFormBuilderTest extends TestCase
     public function testReplacedPhoneIsAssociatedOnTheTicket(): void
     {
         $form = $this->buildForm();
-        $phoneId = $this->addRealPhoneForUser('PHPUnit — Téléphone à remplacer', 2);
+        $phoneId = $this->addRealPhoneForUser('PHPUnit : Téléphone à remplacer', 2);
         $typeAppId = $this->questionIdByRank($form, 0);
         $motifId = $this->questionIdByRank($form, 1);
         $modeleId = $this->questionIdByRank($form, 2);

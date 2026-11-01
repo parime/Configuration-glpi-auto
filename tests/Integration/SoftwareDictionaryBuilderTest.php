@@ -53,7 +53,7 @@ final class SoftwareDictionaryBuilderTest extends TestCase
         $this->assertSame(count(SoftwareDictionaryBuilder::getPreview()), $count);
         $this->assertSame($count, $DB->request([
             'FROM' => Rule::getTable(),
-            'WHERE' => ['sub_type' => RuleDictionnarySoftware::class, 'name' => ['LIKE', 'Logiciel — normalisation %']],
+            'WHERE' => ['sub_type' => RuleDictionnarySoftware::class, 'name' => ['LIKE', 'Logiciel: normalisation %']],
         ])->count());
     }
 

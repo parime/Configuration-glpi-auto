@@ -28,17 +28,17 @@ use TicketTemplateMandatoryField;
  * `$helpdesk_rights`/`$common_fields`): a minimal one (title + description, and a category picker
  * restricted to top-level branches only) for the profiles with no elevated rights (Self-Service,
  * Read-Only), and a complete one (category + urgency mandatory, nothing hidden) for every other
- * profile — matching the explicit split requested: base users enter the least possible, staff
+ * profile: matching the explicit split requested: base users enter the least possible, staff
  * qualify the ticket.
  *
  * Field numbers (`num` in `glpi_tickettemplate{mandatory,hidden}fields`) are GLPI SearchOption IDs.
- * Resolved via `TicketTemplate::getAllowedFields(true)` — the exact same method GLPI's own "Champs
+ * Resolved via `TicketTemplate::getAllowedFields(true)` - the exact same method GLPI's own "Champs
  * masqués" admin tab uses to build its field list (confirmed by reading `ITILTemplateField::
- * showForITILTemplate()`) — rather than re-deriving `getSearchOptionIDByField()` calls by hand:
+ * showForITILTemplate()`): rather than re-deriving `getSearchOptionIDByField()` calls by hand:
  * an earlier version of this class hand-resolved a handful of fields and missed that
  * `TicketTemplate::getExtraAllowedFields()` (not `Ticket`'s own search options) is where SLA/OLA
  * fields (`slas_id_tto`/`_ttr`, `olas_id_tto`/`_ttr`, `time_to_own`, `internal_time_to_own`/
- * `_resolve`) live — calling the real method instead of guessing avoids that class of mistake.
+ * `_resolve`) live: calling the real method instead of guessing avoids that class of mistake.
  */
 class TicketTemplateBuilder
 {
@@ -46,14 +46,14 @@ class TicketTemplateBuilder
 
     private const COMPLETE_NAME = 'Ticket complet (support)';
 
-    // Exact GLPI default profile names — matched by name, not by right/interface, so a renamed or
+    // Exact GLPI default profile names: matched by name, not by right/interface, so a renamed or
     // custom profile isn't silently swept into the wrong bucket.
     private const SIMPLIFIED_PROFILES = ['Self-Service', 'Read-Only'];
 
     // Fields hidden on the simplified template: everything a base user filing "title + description"
-    // doesn't need to see — qualification (urgency/impact/priority/status/location), service-level
+    // doesn't need to see: qualification (urgency/impact/priority/status/location), service-level
     // display (SLA/OLA due dates, both external and internal), staff-only durations, and
-    // assignment/observer actor fields. `itilcategories_id` is deliberately NOT here — it stays
+    // assignment/observer actor fields. `itilcategories_id` is deliberately NOT here: it stays
     // visible, but restricted to the 11 top-level branches via `is_helpdeskvisible`
     // (`CategoryBuilder`), not via this hidden-field mechanism.
     private const HIDDEN_FOR_SIMPLIFIED = [
@@ -151,7 +151,7 @@ class TicketTemplateBuilder
     }
 
     /**
-     * Every existing profile gets pointed at one of the two templates — re-run safe (always sets
+     * Every existing profile gets pointed at one of the two templates: re-run safe (always sets
      * the same value), same "point of entry, not final" philosophy as the rest of the wizard: an
      * admin can still override a given profile's template by hand afterward.
      */

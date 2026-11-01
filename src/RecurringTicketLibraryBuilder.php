@@ -29,12 +29,12 @@ use TicketTemplatePredefinedField;
  *
  * Read `CommonITILRecurrent`/`TicketRecurrent` in GLPI core before deciding this: turning one on for
  * real needs a `begin_date`, `periodicity`, `create_before` delay, and (optionally) a `calendars_id`
- * — and, more importantly, a specific group/assignee to actually work the ticket once created. Every
+ * - and, more importantly, a specific group/assignee to actually work the ticket once created. Every
  * other choice this plugin's builders make (which category names, which icon, which default
  * profiles) is either universal enough to guess safely or reversible with zero side effects if
  * wrong. A live recurring-ticket schedule is neither: guessing "monthly, unassigned, starting today"
  * would start silently generating real tickets in someone's queue with no one responsible for them
- * — worse than not offering the feature at all. The actual schedule/assignee is an organizational
+ * - worse than not offering the feature at all. The actual schedule/assignee is an organizational
  * decision only the admin can make, same reasoning `EscalationBuilder`/`ValidationSupervisorRouting`
  * elsewhere in this plugin already apply to real workflow-behavior changes (opt-in, not guessed).
  *
@@ -42,7 +42,7 @@ use TicketTemplatePredefinedField;
  * ready checklist body) so an admin who does want to set up recurrence has a real starting point
  * to pick in GLPI's native "Tickets récurrents" screen (`tickettemplates_id` is exactly the field
  * it asks for), instead of writing one from scratch. `TicketTemplatePredefinedField` (num=1 for the
- * title/`name` field, num=21 for `content` — resolved via `TicketTemplate::getAllowedFields(true)`,
+ * title/`name` field, num=21 for `content` - resolved via `TicketTemplate::getAllowedFields(true)`,
  * confirmed live rather than guessed, same method `TicketTemplateBuilder` already uses) is what
  * pre-fills those two fields the moment this template is selected, whether picked by hand or via
  * `TicketRecurrent`.

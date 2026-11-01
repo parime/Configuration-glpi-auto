@@ -30,7 +30,7 @@ use User;
 use UserEmail;
 
 /**
- * Issue #345 : import d'un export Jira fictif — personnes reconnues, statuts, commentaires,
+ * Issue #345 : import d'un export Jira fictif : personnes reconnues, statuts, commentaires,
  * « non retenu », et réimport sans doublon.
  */
 final class JiraImporterTest extends TestCase

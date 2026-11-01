@@ -57,6 +57,10 @@ final class Installer
 
         $migration->setVersion(PLUGIN_CONFIGURATIONGLPIAUTO_VERSION);
 
+        // Issue #390 : renomme d'abord les objets créés avec un tiret cadratin, pour que la suite
+        // (et l'assistant) les retrouve sous leur nom actuel au lieu d'en créer un second.
+        EmDashRename::migrate();
+
         $slaTiersSeed = null;
         $generalSettingsSeed = null;
 
@@ -91,7 +95,7 @@ final class Installer
         } else {
             // Système de Blueprints (issue #113) : une ligne dont `snapshot` est renseigné EST un
             // Blueprint complet (instantané de `Config::getDefaults()`), pas seulement un
-            // pointeur vers un `type` figé — voir GlpiPlugin\Configurationglpiauto\Blueprint\
+            // pointeur vers un `type` figé : voir GlpiPlugin\Configurationglpiauto\Blueprint\
             // BlueprintSerializer. `longtext` (pas `text`) : un `Config` complet avec ses ~8
             // champs déjà JSON-imbriqués peut dépasser la limite de 64 Ko de `text` une fois
             // réencodé (même leçon que la corrélation CPE d'un plugin jumeau de cet auteur cette
@@ -251,7 +255,7 @@ final class Installer
             (new Config())->add(Config::getDefaults() + ['id' => 1]);
         } else {
             // sla_tto_hours/sla_ttr_hours (flat) replaced by sla_tiers (JSON, one row per
-            // priority level, Sprint 14) — read the old singleton's flat value first (while the
+            // priority level, Sprint 14): read the old singleton's flat value first (while the
             // columns still exist) so upgrading doesn't silently lose the existing setting; the
             // actual UPDATE happens after executeMigration() below, once sla_tiers physically
             // exists to write into.
@@ -268,7 +272,7 @@ final class Installer
             $migration->dropField(self::CONFIGS_TABLE, 'sla_ttr_hours');
             $migration->addField(self::CONFIGS_TABLE, 'sla_tiers', 'text');
 
-            // Upgrade path for instances installed before these columns existed — addField() is
+            // Upgrade path for instances installed before these columns existed: addField() is
             // idempotent, unlike the raw CREATE TABLE above, same pattern already used on the
             // sibling glpi-vulnerability-manager plugin.
             $migration->addField(
@@ -278,7 +282,7 @@ final class Installer
                 ['value' => 0]
             );
             // entity_levels/level_labels/top_level_names (uniform-tree model) replaced by
-            // entity_tree (arbitrary per-node tree, Sprint 9) — dropField() is idempotent
+            // entity_tree (arbitrary per-node tree, Sprint 9): dropField() is idempotent
             // (no-op if the column is already gone), same as addField().
             $migration->dropField(self::CONFIGS_TABLE, 'entity_levels');
             $migration->dropField(self::CONFIGS_TABLE, 'level_labels');
@@ -317,7 +321,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'category_icons_enabled', 'bool', ['value' => 0]);
 
             // general_settings_enabled (single all-or-nothing toggle) replaced by 6 independently
-            // gated groups (Sprint 26) — an admin could not, e.g., accept the satisfaction survey
+            // gated groups (Sprint 26): an admin could not, e.g., accept the satisfaction survey
             // without also getting the committee validation step. Read the old singleton's value
             // first (while the column still exists) so upgrading doesn't silently turn every group
             // off for an instance that had it on; the actual backfill happens after
@@ -361,7 +365,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'manufacturers_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'manufacturer_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'manufacturer_dictionary_enabled', 'bool', ['value' => 0]);
-            // #298 : actif aussi sur une instance mise à jour — refuser un fabricant ou un modèle
+            // #298 : actif aussi sur une instance mise à jour : refuser un fabricant ou un modèle
             // en double n'enlève rien à personne, et c'est ce que l'administrateur attend.
             $migration->addField(self::CONFIGS_TABLE, 'dropdown_unicity_enabled', 'bool', ['value' => 1]);
             // #303 : coché par défaut, mais rien n'est créé avant que l'administrateur relance l'assistant.
@@ -378,7 +382,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'audit_warranty_days', 'integer', ['value' => 30]);
             $migration->addField(self::CONFIGS_TABLE, 'kb_categories_enabled', 'bool', ['value' => 0]);
             // #143/#144: explicit default 1 (unlike the plain addField()-with-no-value precedent
-            // above) — this seeds two ready-to-read FAQ articles, not an empty structure an admin
+            // above): this seeds two ready-to-read FAQ articles, not an empty structure an admin
             // still has to fill in themselves, so an upgrading instance gets them the same as a
             // fresh install unless the admin actively unchecks the wizard's new checkbox.
             $migration->addField(self::CONFIGS_TABLE, 'kb_faq_enabled', 'bool', ['value' => 1]);
@@ -441,10 +445,10 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'certificate_type_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'recurring_ticket_library_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'abroad_mission_form_enabled', 'bool', ['value' => 0]);
-            // Guide ITIL complet (issue #124) : voir DashboardBuilder — purement additif, même
+            // Guide ITIL complet (issue #124) : voir DashboardBuilder : purement additif, même
             // valeur par défaut que les autres réglages généraux.
             $migration->addField(self::CONFIGS_TABLE, 'dashboard_enabled', 'bool', ['value' => 1]);
-            // Analyse continue (issue #131) : voir AuditWatchCron — purement additif, même valeur
+            // Analyse continue (issue #131) : voir AuditWatchCron : purement additif, même valeur
             // par défaut que les autres réglages généraux. `audit_watch_state` n'a volontairement
             // pas de valeur par défaut : jamais saisi via l'assistant, uniquement écrit par
             // AuditWatchCron/remis à zéro par front/audit.php.
@@ -456,7 +460,7 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'audit_report_state', 'text');
         }
 
-        // Flat CommonDropdown table, GLPI has no native "fuel type" concept — same minimal shape
+        // Flat CommonDropdown table, GLPI has no native "fuel type" concept: same minimal shape
         // as glpi_manufacturers (id/name/comment/dates), no entities_id: a fuel type is a universal
         // reference value, not scoped to any one entity. Target of VehicleAssetBuilder's
         // "Type de carburant" DropdownType custom field.
@@ -484,7 +488,7 @@ final class Installer
 
         // Fonctionnalité de Rollback (issue #114) : une ligne EST un Blueprint complet (même format
         // que GlpiPlugin\Configurationglpiauto\Blueprint\BlueprintSerializer::export(), voir
-        // ConfigHistory dans le même namespace) — `is_manual=0` pour un instantané automatique
+        // ConfigHistory dans le même namespace) - `is_manual=0` pour un instantané automatique
         // (capturé juste avant chaque écrasement réel de Config, purgé au-delà des 20 plus récents),
         // `is_manual=1` pour un point de sauvegarde créé explicitement par un administrateur (jamais
         // purgé automatiquement). `longtext`, même raison que PROFILES_TABLE.snapshot ci-dessus.
@@ -536,7 +540,7 @@ final class Installer
         }
 
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
-        // pratiques que n'importe quel profil peut suivre — retires de la liste des profils
+        // pratiques que n'importe quel profil peut suivre : retires de la liste des profils
         // proposes (Sprint 11, voir ConfigurationProfile::getSuggestedDefaults()). Desactivation,
         // pas suppression : une Config existante pourrait encore pointer dessus via
         // configurationprofiles_id, et l'etape 1 du wizard filtre deja is_active=1 donc l'effet
@@ -544,7 +548,7 @@ final class Installer
         $DB->update(self::PROFILES_TABLE, ['is_active' => 0], ['type' => ['iso27001', 'itil']]);
 
         // PME/ETI/Grande entreprise renvoyaient des suggestions identiques une fois taille et
-        // cadre de bonnes pratiques distingues (Sprint 11) — trois options avec des sigles
+        // cadre de bonnes pratiques distingues (Sprint 11) : trois options avec des sigles
         // differents qui font la meme chose, c'est trompeur. Fusionnees en une seule option en
         // francais clair (Sprint 12), meme logique de desactivation que ci-dessus.
         $DB->update(self::PROFILES_TABLE, ['is_active' => 0], ['type' => ['sme', 'eti', 'enterprise']]);
@@ -561,7 +565,7 @@ final class Installer
         }
 
         // Sprint 14 bug fix: SlaBuilder-created rules were missing is_recursive=1, so GLPI's
-        // RuleCollection only ever evaluated them for the rule's own entities_id (root, 0) — never
+        // RuleCollection only ever evaluated them for the rule's own entities_id (root, 0): never
         // for a ticket created in any sub-entity, which is the only kind of entity this plugin
         // ever actually assigns an SLA to. Confirmed by creating a real ticket in a sub-entity and
         // finding slas_id_tto/slas_id_ttr stayed 0. Fixes rules created by earlier sprints too;
@@ -569,12 +573,12 @@ final class Installer
         $DB->update('glpi_rules', ['is_recursive' => 1], ['sub_type' => 'RuleTicket', 'name' => ['LIKE', 'SLA standard%']]);
 
         // Sprint 16's "one category per ITIL type" (Incidents/Demandes/Problèmes/Changements) was
-        // replaced in Sprint 17 by a real topical category tree — Ticket already has a native
+        // replaced in Sprint 17 by a real topical category tree: Ticket already has a native
         // `type` field for Incident/Demande, and Problem/Change are already their own GLPI object
         // types, so a category per type never added anything. ITILCategory has no is_active flag
         // to soft-disable with, so this just hides the 4 old root categories from ticket creation
         // (is_helpdeskvisible=0) instead of deleting real GLPI objects that could already have
-        // tickets attached — restricted to root-level (itilcategories_id=0) exact-name matches to
+        // tickets attached: restricted to root-level (itilcategories_id=0) exact-name matches to
         // avoid touching anything an admin created themselves with the same name.
         $DB->update(
             'glpi_itilcategories',
@@ -583,7 +587,7 @@ final class Installer
         );
 
         // Renamed to a vendor-neutral name (user feedback: not every organization is on
-        // Microsoft 365) — restricted to this exact, distinctive name so nothing an admin created
+        // Microsoft 365): restricted to this exact, distinctive name so nothing an admin created
         // independently gets touched. `add()`/`update()` on this category elsewhere always match
         // by current name, so an already-created row has to be renamed here too, not just in
         // CategoryBuilder::CATEGORIES, or the next wizard run would create a duplicate instead of
@@ -594,7 +598,7 @@ final class Installer
             ['name' => 'Microsoft 365 / Workspace']
         );
         // The icon translation's value is only set once at creation (CategoryBuilder::buildNode()
-        // never updates it on reuse) — has to be fixed up here too, or it keeps showing the old
+        // never updates it on reuse): has to be fixed up here too, or it keeps showing the old
         // name text next to the (unchanged) icon.
         $renamedCategory = $DB->request(['FROM' => 'glpi_itilcategories', 'WHERE' => ['name' => 'Messagerie & Collaboration']])->current();
         if ($renamedCategory !== null) {
@@ -609,7 +613,7 @@ final class Installer
                 ]
             );
             // GLPI auto-derives a second "completename" translation (breadcrumb path, e.g. "IT &
-            // SI > Microsoft 365 / Workspace") from the "name" one whenever it's created — fixing
+            // SI > Microsoft 365 / Workspace") from the "name" one whenever it's created: fixing
             // the "name" row above doesn't touch it, it has to be explicitly regenerated.
             DropdownTranslation::regenerateAllCompletenameTranslationsFor('ITILCategory', $renamedCategory['id']);
         }
@@ -622,7 +626,7 @@ final class Installer
 
         // Service Catalog rubrics/forms created before ServiceCatalogBuilder set `illustration`
         // (Sprint 23's first version) are stuck with GLPI's generic default icon
-        // (IllustrationManager::DEFAULT_ILLUSTRATION) forever, since it's only set at creation —
+        // (IllustrationManager::DEFAULT_ILLUSTRATION) forever, since it's only set at creation -
         // backfilled here, guarded to not overwrite anything an admin already customized by hand.
         $branchIllustrations = [
             '💻 IT & SI' => 'asset-desktop-1',
@@ -673,10 +677,10 @@ final class Installer
         }
 
         // Retroactive fix for a real bug found live: CalendarBuilder never set entities_id/
-        // is_recursive when creating a calendar, silently defaulting to root + *not* recursive —
+        // is_recursive when creating a calendar, silently defaulting to root + *not* recursive -
         // every calendar this plugin ever created was invisible from any sub-entity's own admin
         // context, even though the entity's calendars_id still correctly pointed to it. Scoped by
-        // name prefix (this plugin's own naming, "Horaires standard"/"Horaires — <name>") rather
+        // name prefix (this plugin's own naming, "Horaires standard"/"Horaires - <name>") rather
         // than blindly touching every row in glpi_calendars, which could include calendars this
         // plugin never created (GLPI's own native "Default" among them).
         $DB->update('glpi_calendars', ['is_recursive' => 1], [
@@ -684,12 +688,13 @@ final class Installer
             'is_recursive' => 0,
             ['OR' => [
                 'name' => 'Horaires standard',
-                ['name' => ['LIKE', 'Horaires — %']],
+                ['name' => ['LIKE', "Horaires \u{2014} %"]],
+                ['name' => ['LIKE', 'Horaires - %']],
             ]],
         ]);
 
         // Analyse continue (issue #131) : enregistre la tâche planifiée une seule fois (CronTask::
-        // register() vérifie déjà les doublons via getFromDBbyName) — jamais active tant que
+        // register() vérifie déjà les doublons via getFromDBbyName) : jamais active tant que
         // l'assistant ne l'active pas explicitement (voir GeneralSettingsBuilder::
         // enableAuditWatch()), même raisonnement que inventory_enabled : un comportement en tâche
         // de fond nouveau, pas juste un contenu généré.
@@ -717,7 +722,7 @@ final class Installer
     {
         global $DB;
 
-        // Undoes PaletteBuilder::apply()'s custom-theme write if it's still the active choice —
+        // Undoes PaletteBuilder::apply()'s custom-theme write if it's still the active choice -
         // PaletteBuilder itself already reverts this the moment the wizard is re-run with the
         // custom palette unchecked, but nothing did so on a straight uninstall: GLPI's own
         // ThemeManager keeps listing/serving a theme file whose owning plugin no longer exists,
@@ -732,7 +737,7 @@ final class Installer
         }
 
         // Analyse continue (issue #131) : retire la tâche planifiée que ce plugin enregistre
-        // (CronTask::unregister() matche par préfixe d'itemtype, voir sa propre docblock) — avant
+        // (CronTask::unregister() matche par préfixe d'itemtype, voir sa propre docblock) : avant
         // les DROP TABLE ci-dessous, même ordre que le reste de cette méthode (défaire d'abord ce
         // qui dépend de GLPI cœur, puis les tables propres au plugin).
         CronTask::unregister('configurationglpiauto');
@@ -795,7 +800,7 @@ final class Installer
             '' => [
                 'subject' => 'Rapport d\'audit : ##audit.critical## en échec, ##audit.warning## en alerte',
                 'intro'   => 'Rapport d\'audit de configuration du ##audit.date##',
-                'summary' => 'Contrôles exécutés : ##audit.total## — OK : ##audit.ok## — en alerte : ##audit.warning## — en échec : ##audit.critical##',
+                'summary' => 'Contrôles exécutés : ##audit.total## - OK : ##audit.ok## - en alerte : ##audit.warning## - en échec : ##audit.critical##',
                 'todo'    => 'Points à traiter',
                 'reco'    => 'Recommandation',
                 'link'    => 'Ouvrir l\'audit dans GLPI',
@@ -804,7 +809,7 @@ final class Installer
             'en_GB' => [
                 'subject' => 'Audit report: ##audit.critical## failing, ##audit.warning## warning',
                 'intro'   => 'Configuration audit report of ##audit.date##',
-                'summary' => 'Checks run: ##audit.total## — OK: ##audit.ok## — warning: ##audit.warning## — failing: ##audit.critical##',
+                'summary' => 'Checks run: ##audit.total## - OK: ##audit.ok## - warning: ##audit.warning## - failing: ##audit.critical##',
                 'todo'    => 'Items to address',
                 'reco'    => 'Recommendation',
                 'link'    => 'Open the audit in GLPI',

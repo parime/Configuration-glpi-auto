@@ -40,7 +40,7 @@ use Session;
  */
 class EntityInventoryRuleBuilder
 {
-    public const RULE_PREFIX = 'Entité — inventaire';
+    public const RULE_PREFIX = 'Entité : inventaire';
 
     /**
      * Plages IPv4 valides d'une saisie libre (« 192.168.10.0/24, 10.1.0.0/16 »).
@@ -101,7 +101,7 @@ class EntityInventoryRuleBuilder
         $count = 0;
         $data = $byPath[$path] ?? ['ranges' => [], 'tag' => ''];
         // Resolved by name: an entity of the same name may already exist outside the operator's
-        // own scope — never route inventoried machines into an entity they cannot access.
+        // own scope: never route inventoried machines into an entity they cannot access.
         if (($data['ranges'] !== [] || $data['tag'] !== '') && Session::haveAccessToEntity($entityId)) {
             $this->ensureRule($entityId, (string) $entity->fields['completename'], $data['ranges'], $data['tag']);
             $count = 1;

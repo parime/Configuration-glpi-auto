@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * `KnowbaseCategoryBuilder` deliberately reuses `CategoryBuilder`'s own 11 branch names/icons
- * instead of inventing a second taxonomy (see its own docblock) — this test picks a single branch
+ * instead of inventing a second taxonomy (see its own docblock): this test picks a single branch
  * ('qualite') to isolate the "only selected branches get a matching KB category" behaviour, rather
  * than one already exercised by `CategoryBuilderTest`.
  *
@@ -145,7 +145,7 @@ final class KnowbaseCategoryBuilderTest extends TestCase
         $this->assertSame(1, $second);
 
         $idsAfter = $this->findCategoryIds();
-        $this->assertCount(1, $idsAfter, 'Exactly one row must exist — no duplicate.');
+        $this->assertCount(1, $idsAfter, 'Exactly one row must exist: no duplicate.');
         $this->assertSame($idsBefore, $idsAfter);
     }
 

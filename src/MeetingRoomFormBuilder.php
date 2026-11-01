@@ -69,21 +69,21 @@ use ITILCategory;
  * name> - <type>" is still strictly more informative than the plain form name repeated on every
  * ticket, without that risk.
  *
- * **Second pass (advanced question types)** : "Salle souhaitée" used to be free ShortText — this
+ * **Second pass (advanced question types)** : "Salle souhaitée" used to be free ShortText : this
  * plugin's own `BuildingAssetBuilder` already turns every selected "batiment" branch into a real
  * custom GLPI asset (`AssetDefinition` system_name `Local`, unconditionally, same single gate this
  * form itself requires) that's explicitly `IsReservableCapacity`-enabled and whose native type
- * dropdown includes "Salle de réunion" — exactly the reservable-resource concept this branch of the
+ * dropdown includes "Salle de réunion" - exactly the reservable-resource concept this branch of the
  * question is about. Replaced with `QuestionTypeItem` pointing at that asset class (kept under the
  * exact same "Réservation de salle" `VISIBLE_IF` condition as the ShortText it replaces). It isn't
- * filtered down to only the "Salle de réunion" sub-type — `QuestionTypeItem`'s own tree/root
+ * filtered down to only the "Salle de réunion" sub-type - `QuestionTypeItem`'s own tree/root
  * restriction only applies to `CommonTreeDropdown` itemtypes, and "Local" is a flat custom asset list
- * — so the picker shows every "Local" (bureaux, entrepôts... included), a real trade-off worth being
+ * - so the picker shows every "Local" (bureaux, entrepôts... included), a real trade-off worth being
  * explicit about, but still a genuine linked GLPI record instead of an unstructured room name.
  * Wired to `AssociatedItemsField` (`LAST_VALID_ANSWER`) : a no-op on the "Problème d'équipement"
  * branch (question never answered), a real linked room asset on the "Réservation" branch. No
  * `RequestTypeField` change : this form's own nature is genuinely mixed (booking ahead vs. reporting
- * a fault right now), so pinning one fixed type would misclassify whichever branch wasn't taken —
+ * a fault right now), so pinning one fixed type would misclassify whichever branch wasn't taken -
  * same reasoning the class docblock above already gives for keeping the title untouched by either
  * conditional branch.
  */
@@ -95,7 +95,7 @@ class MeetingRoomFormBuilder
 
     private const CATEGORY_PATH = ['Salles de réunion & Équipements'];
 
-    // Matches `BuildingAssetBuilder::SYSTEM_NAME` — resolved by name rather than shared code, same
+    // Matches `BuildingAssetBuilder::SYSTEM_NAME` - resolved by name rather than shared code, same
     // convention as `VehicleIncidentFormBuilder`'s identical-shaped constant for `Vehicule`.
     private const ROOM_ASSET_SYSTEM_NAME = 'Local';
 
@@ -206,7 +206,7 @@ class MeetingRoomFormBuilder
     }
 
     /**
-     * Same lookup pattern as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` — see that
+     * Same lookup pattern as `VehicleIncidentFormBuilder::resolveVehicleItemtype()` - see that
      * class's docblock.
      */
     private function resolveRoomItemtype(): ?string
@@ -266,7 +266,7 @@ class MeetingRoomFormBuilder
 
         $roomItemtype = $this->resolveRoomItemtype();
 
-        // Was a free-text ShortText — replaced with QuestionTypeItem(Local), see class docblock.
+        // Was a free-text ShortText: replaced with QuestionTypeItem(Local), see class docblock.
         $salle = new Question();
         $salle->add($roomItemtype !== null ? [
             'forms_sections_id' => $sectionId,
@@ -283,7 +283,7 @@ class MeetingRoomFormBuilder
             'visibility_strategy' => VisibilityStrategy::VISIBLE_IF->value,
             'conditions' => json_encode([$reservationCondition->jsonSerialize()]),
         ] : [
-            // Fallback if BuildingAssetBuilder's definition can't be found — see class docblock.
+            // Fallback if BuildingAssetBuilder's definition can't be found: see class docblock.
             'forms_sections_id' => $sectionId,
             'name' => __('Salle souhaitée', 'configurationglpiauto'),
             'type' => QuestionTypeShortText::class,
@@ -365,7 +365,7 @@ class MeetingRoomFormBuilder
             ))->jsonSerialize(),
             TitleField::getKey() => (new SimpleValueConfig($titleValue))->jsonSerialize(),
             ContentField::getAutoConfigKey() => 1,
-            // "salle" is the only QuestionTypeItem/QuestionTypeUserDevice question on this form —
+            // "salle" is the only QuestionTypeItem/QuestionTypeUserDevice question on this form -
             // a no-op on the "Problème d'équipement" branch (never answered), a real linked room
             // asset on the "Réservation" branch.
             AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(

@@ -22,12 +22,12 @@ use InvalidArgumentException;
 
 /**
  * Système de Blueprints (issue #113) : sérialise/désérialise un instantané complet du singleton
- * `Config` (~135 champs) vers/depuis un format JSON portable — indépendant de GLPI, testable en
+ * `Config` (~135 champs) vers/depuis un format JSON portable : indépendant de GLPI, testable en
  * pur PHP (`tests/Unit/`), contrairement au reste de ce plugin qui étend des classes GLPI core.
  *
  * Un Blueprint capture l'INTENTION de configuration (ce que `front/wizard.php` appliquerait via
  * les `*Builder`), jamais les lignes GLPI réellement créées (états, SLA...) : celles-ci ont des
- * identifiants propres à chaque instance, les transférer tels quels n'aurait pas de sens —
+ * identifiants propres à chaque instance, les transférer tels quels n'aurait pas de sens -
  * réimporter le même `Config` puis relancer l'assistant reproduit le même résultat.
  */
 final class BlueprintSerializer
@@ -35,7 +35,7 @@ final class BlueprintSerializer
     public const FORMAT_VERSION = 1;
 
     /**
-     * Champs `Config` stockés en base comme chaîne JSON — décodés en JSON imbriqué réel dans le
+     * Champs `Config` stockés en base comme chaîne JSON : décodés en JSON imbriqué réel dans le
      * fichier exporté (plus lisible/portable qu'une chaîne JSON dans une chaîne JSON), puis
      * ré-encodés à l'import vers la forme attendue par `Config`.
      */
@@ -45,7 +45,7 @@ final class BlueprintSerializer
     ];
 
     /**
-     * Purement propres à CETTE ligne `Config`/CETTE instance — jamais exportés, jamais réimportés
+     * Purement propres à CETTE ligne `Config`/CETTE instance : jamais exportés, jamais réimportés
      * tels quels (un `id`/`configurationprofiles_id` importé référencerait une ligne qui n'existe
      * pas forcément sur l'instance de destination).
      */
@@ -90,18 +90,18 @@ final class BlueprintSerializer
      * @param array<string, mixed> $decodedJson Contenu décodé (`json_decode(..., true)`) du
      *     fichier Blueprint importé.
      * @param array<string, mixed> $currentDefaults `Config::getDefaults()` de la version
-     *     actuellement installée du plugin — chaque champ absent du Blueprint importé (par
+     *     actuellement installée du plugin : chaque champ absent du Blueprint importé (par
      *     exemple exporté par une version plus ancienne de ce plugin, avant l'ajout d'un nouveau
      *     réglage) retombe sur sa vraie valeur par défaut, jamais `null`/vide.
      * @param ?array<int, string> $onlyFields Rollback sélectif (issue #114) : si non `null`, seuls
-     *     les champs listés ici sont écrasés par le Blueprint — tout le reste retombe sur
+     *     les champs listés ici sont écrasés par le Blueprint : tout le reste retombe sur
      *     `$currentDefaults` (jamais sur la valeur actuelle non passée en paramètre, la même
      *     discipline "toujours défauts réels, jamais deviné" que pour un champ absent du Blueprint).
      *     `null` (par défaut) préserve le comportement historique (tous les champs du Blueprint
-     *     s'appliquent) — tous les appelants existants avant #114 ne passent que 2 arguments.
+     *     s'appliquent) : tous les appelants existants avant #114 ne passent que 2 arguments.
      * @return array<string, mixed> Champs prêts pour `Config::update()`.
      * @throws InvalidArgumentException Si le fichier n'est pas un Blueprint valide dans un format
-     *     reconnu — jamais une supposition silencieuse sur un contenu qui ne ressemble pas à un
+     *     reconnu : jamais une supposition silencieuse sur un contenu qui ne ressemble pas à un
      *     Blueprint.
      */
     public static function import(array $decodedJson, array $currentDefaults, ?array $onlyFields = null): array
@@ -150,12 +150,12 @@ final class BlueprintSerializer
      *
      * @param array<string, mixed> $currentFields `Config::getConfig()->fields` (forme brute, chaînes
      *     JSON pour les ~8 champs concernés).
-     * @param array<string, mixed> $snapshotFields Résultat de `import()` — JAMAIS la sous-clé brute
+     * @param array<string, mixed> $snapshotFields Résultat de `import()` - JAMAIS la sous-clé brute
      *     `decodedJson['config']` directement : `import()` complète déjà les champs absents avec les
      *     vraies valeurs par défaut, donc diffé contre son résultat évite qu'un champ manquant d'un
      *     ancien Blueprint apparaisse comme un faux positif.
      * @return array<string, array{current: mixed, snapshot: mixed}> Seulement les champs qui
-     *     diffèrent réellement — décode les ~8 champs JSON des deux côtés avant de comparer, jamais
+     *     diffèrent réellement : décode les ~8 champs JSON des deux côtés avant de comparer, jamais
      *     une comparaison de chaînes JSON brutes (qui donnerait de faux positifs sur un simple
      *     réordonnancement de clés).
      */
@@ -191,13 +191,13 @@ final class BlueprintSerializer
 
     /**
      * Export sélectif par catégorie (issue #117) : restreint la sous-clé `config` d'un Blueprint
-     * déjà exporté (résultat de `export()`) aux champs choisis — jamais les métadonnées
+     * déjà exporté (résultat de `export()`) aux champs choisis : jamais les métadonnées
      * (`format_version`/`plugin_version`/`exported_at`/`profile_name`), toujours nécessaires à un
      * import valide ultérieur, même sur un export partiel.
      *
      * @param array<string, mixed> $decodedJson Résultat de `export()` (ou tout Blueprint déjà
      *     décodé au même format).
-     * @param array<int, string> $onlyFields Champs de `config` à conserver — `[]` produit un
+     * @param array<int, string> $onlyFields Champs de `config` à conserver - `[]` produit un
      *     `config` vide (export "vide" explicite, jamais une supposition silencieuse sur ce que
      *     l'utilisateur voulait garder).
      * @return array<string, mixed> Même structure que `$decodedJson`, `config` filtré.

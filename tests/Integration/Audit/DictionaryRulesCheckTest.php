@@ -67,9 +67,9 @@ final class DictionaryRulesCheckTest extends TestCase
     public function testOnlyPluginRulesAreJudged(): void
     {
         $this->assertTrue(DictionaryRules::isPluginRule('RuleSoftwareCategory', SoftwareCategoryBuilder::RULE_PREFIX . 'Sécurité »'));
-        $this->assertTrue(DictionaryRules::isPluginRule('RuleDictionnaryManufacturer', 'Fabricant — normalisation « Dell »'));
+        $this->assertTrue(DictionaryRules::isPluginRule('RuleDictionnaryManufacturer', 'Fabricant: normalisation « Dell »'));
         $this->assertFalse(DictionaryRules::isPluginRule('RuleSoftwareCategory', 'Import category from inventory tool'));
-        $this->assertFalse(DictionaryRules::isPluginRule('RuleDictionnarySoftware', 'Fabricant — normalisation « Dell »'), 'Préfixe d\'un autre type de règle.');
+        $this->assertFalse(DictionaryRules::isPluginRule('RuleDictionnarySoftware', 'Fabricant: normalisation « Dell »'), 'Préfixe d\'un autre type de règle.');
     }
 
     public function testADeletedCategoryMakesItsRulesOrphan(): void
@@ -101,7 +101,7 @@ final class DictionaryRulesCheckTest extends TestCase
             $first = $DB->request([
                 'SELECT' => ['id'],
                 'FROM'   => Rule::getTable(),
-                'WHERE'  => ['sub_type' => 'RuleDictionnarySoftware', 'name' => ['LIKE', 'Logiciel — normalisation « %']],
+                'WHERE'  => ['sub_type' => 'RuleDictionnarySoftware', 'name' => ['LIKE', 'Logiciel: normalisation « %']],
                 'LIMIT'  => 1,
             ])->current();
             $rule = new Rule();

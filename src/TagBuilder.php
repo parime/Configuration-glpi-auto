@@ -18,23 +18,23 @@
 namespace GlpiPlugin\Configurationglpiauto;
 
 /**
- * Only runs if the third-party "Tag" plugin (pluginsGLPI/tag, marketplace key `tag`) is active —
+ * Only runs if the third-party "Tag" plugin (pluginsGLPI/tag, marketplace key `tag`) is active -
  * never a hard dependency, same reasoning as SatisfactionSurveyBuilder/VipBuilder. Confirmed via
  * `remise-glpi`'s own README/ARCHITECTURE/CHANGELOG (fetched via `gh api`, matches were incidental
- * French words containing the substring "tag" — "partagé", "déclenchement"...) that it has no
+ * French words containing the substring "tag" - "partagé", "déclenchement"...) that it has no
  * overlapping tagging/labelling feature, per the user's own initial concern.
  *
  * Confirmed live on a real install: `glpi_plugin_tag_tags` (`PluginTagTag extends CommonDropdown`)
- * is a plain, empty-on-fresh-install dropdown table — `name`/`comment`/`color`/`is_active`, plus a
+ * is a plain, empty-on-fresh-install dropdown table - `name`/`comment`/`color`/`is_active`, plus a
  * `type_menu` column holding a JSON array of itemtype strings that restricts which object types a
  * tag is selectable on (`PluginTagTag::canItemtype()`: an empty/null `type_menu` means the tag is
  * usable everywhere). Assignment itself lives in a separate polymorphic link table
  * (`glpi_plugin_tag_tagitems`, `itemtype`/`items_id`/`plugin_tag_tags_id`) this builder never
- * touches — seeding tag *definitions* is generalisable, seeding which real ticket/asset gets which
+ * touches: seeding tag *definitions* is generalisable, seeding which real ticket/asset gets which
  * tag is not (same reasoning as leaving RuleVip's per-organisation criteria untouched in
  * VipBuilder).
  *
- * Seeds a small set of universally useful global tags (`type_menu` left null) — not org-specific
+ * Seeds a small set of universally useful global tags (`type_menu` left null): not org-specific
  * guesswork, the same "seed a sensible starting point, let the admin customise/rename/add more"
  * pattern already used by RSSFeedBuilder/AssetTypeBuilder/WaitReasonBuilder.
  */

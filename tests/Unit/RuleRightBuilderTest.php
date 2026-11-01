@@ -21,7 +21,7 @@ use GlpiPlugin\Configurationglpiauto\RuleRightBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Covers only RuleRightBuilder::preview() — a pure function over the tree shape, no GLPI
+ * Covers only RuleRightBuilder::preview(): a pure function over the tree shape, no GLPI
  * bootstrap needed (see EntityBuilderTest for why build() itself isn't unit-tested here).
  */
 final class RuleRightBuilderTest extends TestCase

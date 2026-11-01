@@ -16,17 +16,17 @@
 {# Issue #112 ("Mode Audit avancé") : analyse l'état réel de l'instance GLPI (pas seulement la
    configuration de ce plugin) et affiche les constats groupés par gravité, avec une correction
    d'un clic uniquement pour les constats dont le "bon" état n'est pas ambigu (voir
-   NotificationsDisabledCheck) — les autres n'affichent qu'une recommandation, jamais une valeur
+   NotificationsDisabledCheck) : les autres n'affichent qu'une recommandation, jamais une valeur
    inventée à la place de l'administrateur. #}
 
 <div class="card">
   <div class="card-body">
     <p class="text-muted">
-      {{ __('Analyse de l\'état actuel de votre instance GLPI — indépendante de ce que cet assistant a lui-même configuré.', 'configurationglpiauto') }}
+      {{ __('Analyse de l\'état actuel de votre instance GLPI : indépendante de ce que cet assistant a lui-même configuré.', 'configurationglpiauto') }}
     </p>
 
     {# Issue #131 ("Analyse continue") : compteur accumulé par la tâche planifiée AuditWatchCron
-       depuis la dernière visite de cet écran — déjà remis à zéro côté PHP au moment du rendu, cette
+       depuis la dernière visite de cet écran : déjà remis à zéro côté PHP au moment du rendu, cette
        bannière n'apparaît donc qu'une seule fois par lot de nouveaux constats. Message déjà rendu
        côté PHP (front/audit.php) : extract-locales n'extrait `_n()` que depuis le code PHP. #}
     {% if new_critical_message is not null %}

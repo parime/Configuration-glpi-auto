@@ -18,7 +18,7 @@
 /**
  * Donnees du test de controle d'acces de bout en bout (tests/security/access-matrix.sh), lance
  * par la CI dans une instance GLPI jetable : un profil « delegue » qui detient tous les droits de
- * ce plugin mais aucun droit natif GLPI privilegie (config, entity, regles...) — le cas exact de
+ * ce plugin mais aucun droit natif GLPI privilegie (config, entity, regles...) : le cas exact de
  * la delegation que Profile.php documente.
  *
  * Usage (en www-data, depuis la racine GLPI) :

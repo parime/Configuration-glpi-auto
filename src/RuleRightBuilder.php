@@ -25,28 +25,28 @@ use RuleCriteria;
 use RuleRight;
 
 /**
- * Scaffolds one `RuleRight` per leaf entity in the tree — GLPI's native mechanism for
+ * Scaffolds one `RuleRight` per leaf entity in the tree: GLPI's native mechanism for
  * auto-assigning a user's entity + profile from their LDAP/AD group membership at import/sync
  * time (`RuleRightCollection`, confirmed in source: fires automatically on every LDAP
- * import/update, no extra wiring needed once the rule rows exist — same "just works once created"
+ * import/update, no extra wiring needed once the rule rows exist: same "just works once created"
  * behavior as `SlaBuilder`'s `RuleTicket` rows).
  *
  * Directly inspired by a real production GLPI export handed over for audit: 37 `RuleRight` rows,
- * each matching an AD group name (via *both* the `_groups_id` and `memberof` criteria, `OR`-ed —
+ * each matching an AD group name (via *both* the `_groups_id` and `memberof` criteria, `OR`-ed -
  * belt-and-braces so the rule still fires even before GLPI's own group sync has caught up) to
  * assign one site's entity + a fixed profile. Generalized here: the real AD group names
- * ("WG_AA_Bordeaux", "Ag_Rapsodi"...) are never reused — the admin supplies a naming *template*
+ * ("WG_AA_Bordeaux", "Ag_Rapsodi"...) are never reused: the admin supplies a naming *template*
  * (`ldap_rights_group_template`, containing the literal placeholder `{ENTITY}`) and picks one
  * profile (`ldap_rights_profile`) applied to every generated rule. This only scaffolds the
- * one-profile-per-site pattern actually confirmed with the user — the production export's other
+ * one-profile-per-site pattern actually confirmed with the user: the production export's other
  * pattern (an org-wide function-based profile, e.g. "Finance"/"DSI" AD groups → a global profile
  * regardless of site) is a different shape entirely and out of scope here.
  *
- * One rule per *leaf* entity (no children), not every node at every depth — matches the real
+ * One rule per *leaf* entity (no children), not every node at every depth: matches the real
  * export's pattern (one rule per physical site, the leaves of a Client > Site tree) and avoids
  * generating a rule for intermediate "container" nodes nobody actually logs into.
  *
- * No-op entirely if there's no entity tree (mono-entité) — nothing to scaffold without at least
+ * No-op entirely if there's no entity tree (mono-entité) : nothing to scaffold without at least
  * one site.
  *
  * `buildFunctionRights()` (Sprint 36) covers a genuinely different pattern, layered on top rather
@@ -54,7 +54,7 @@ use RuleRight;
  * should always get a given profile regardless of which site the user is on. Confirmed in GLPI's
  * own `RuleRight::executeActions()` that a rule with *only* a `profiles_id` assign action (no
  * `entities_id` action) accumulates into `_ldap_rules.rules_rights`, kept separate from the
- * per-site `rules_entities_rights` — and `RuleRightCollection::$stop_on_first_match = false`
+ * per-site `rules_entities_rights` - and `RuleRightCollection::$stop_on_first_match = false`
  * (confirmed in source) means both kinds of rules apply together for the same user, not one
  * overriding the other. Department names are exactly as organization-specific as the per-site
  * `{ENTITY}` group-name template above, so this is a blank, admin-supplied list
@@ -94,7 +94,7 @@ class RuleRightBuilder
 
     /**
      * @param array<int, array{group: string, profile: string}> $pairs Already validated by
-     *        Config::sanitizeLdapFunctionRights() — group non-empty, profile a real native name.
+     *        Config::sanitizeLdapFunctionRights(): group non-empty, profile a real native name.
      * @return int Number of function-right rules created/reused.
      */
     public function buildFunctionRights(array $pairs): int
@@ -118,7 +118,7 @@ class RuleRightBuilder
 
     /**
      * Live-preview equivalent of build(): the (entity name → AD group name) pairs it would
-     * generate, without touching the database — used by the wizard's recap step and by build()'s
+     * generate, without touching the database: used by the wizard's recap step and by build()'s
      * own tests. Entities don't need to exist yet for this to work (unlike build(), which resolves
      * real entity IDs) since it only reads the tree shape, never the database.
      *
@@ -154,7 +154,7 @@ class RuleRightBuilder
     /**
      * Re-resolves each leaf's real entity ID by walking the tree the same way EntityBuilder does
      * (name + parent lookup) rather than requiring EntityBuilder to expose its internal node
-     * details — same independent-resolution pattern already used by ServiceCatalogBuilder against
+     * details: same independent-resolution pattern already used by ServiceCatalogBuilder against
      * CategoryBuilder's tree. Assumes EntityBuilder has already run in this same request; a leaf
      * whose entity doesn't exist (shouldn't happen in the normal wizard flow) is silently skipped.
      *
@@ -186,7 +186,7 @@ class RuleRightBuilder
 
     private function createRule(int $entityId, string $entityName, string $groupName, int $profileId): void
     {
-        $ruleName = sprintf('Droits LDAP — %s (entité #%d)', $entityName, $entityId);
+        $ruleName = sprintf('Droits LDAP - %s (entité #%d)', $entityName, $entityId);
 
         $rule = new RuleRight();
         if (Lookup::loadFirst($rule, ['name' => $ruleName])) {
@@ -248,14 +248,14 @@ class RuleRightBuilder
     }
 
     /**
-     * Same shape as createRule() above, minus every `entities_id`/`_entities_id_default` action —
+     * Same shape as createRule() above, minus every `entities_id`/`_entities_id_default` action -
      * confirmed in `RuleRight::executeActions()` that omitting the entity action entirely (not
      * setting it to some placeholder value) is what routes this rule into the entity-independent
      * `rules_rights` accumulator rather than `rules_entities_rights`.
      */
     private function createFunctionRule(string $groupName, int $profileId): void
     {
-        $ruleName = sprintf('Droits LDAP — fonction %s', $groupName);
+        $ruleName = sprintf('Droits LDAP: fonction %s', $groupName);
 
         $rule = new RuleRight();
         if (Lookup::loadFirst($rule, ['name' => $ruleName])) {

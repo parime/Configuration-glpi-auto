@@ -23,10 +23,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * `build()` only ever reaches the live Nager.Date network call (`buildForCountry()`) for a
- * recognized country name — same reasoning already applied in `RSSFeedBuilderTest`'s own docblock
+ * recognized country name: same reasoning already applied in `RSSFeedBuilderTest`'s own docblock
  * for leaving this exact class's live call out of the automated suite's scope: an external site's
  * uptime is outside this plugin's control, so CI shouldn't depend on it. What's fully verifiable
- * without ever reaching the network is `COUNTRY_CODES` resolution itself — every path here is
+ * without ever reaching the network is `COUNTRY_CODES` resolution itself: every path here is
  * exercised without a single unrecognized/disabled/empty case ever calling `buildForCountry()`.
  */
 final class CountryHolidayBuilderTest extends TestCase
@@ -56,8 +56,8 @@ final class CountryHolidayBuilderTest extends TestCase
     }
 
     /**
-     * A free-text country name this class doesn't recognize is silently skipped — never guessed,
-     * never reaches the network — per the class's own documented "only for countries where we
+     * A free-text country name this class doesn't recognize is silently skipped: never guessed,
+     * never reaches the network: per the class's own documented "only for countries where we
      * actually have real data" rule.
      */
     public function testReturnsZeroAndNeverReachesTheNetworkForAnUnrecognizedCountryName(): void

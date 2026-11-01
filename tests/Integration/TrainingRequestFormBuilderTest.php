@@ -33,7 +33,7 @@ use User;
 
 /**
  * Same real-submission proof as `LeaveRequestFormBuilderTest` for the identical
- * `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring — see that class's docblock for the full
+ * `ObserverField`(`FORM_FILLER_SUPERVISOR`) wiring: see that class's docblock for the full
  * reasoning.
  */
 final class TrainingRequestFormBuilderTest extends TestCase

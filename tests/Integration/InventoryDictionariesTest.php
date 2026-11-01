@@ -29,7 +29,7 @@ use RuleDictionnaryPrinterCollection;
 use RuleDictionnarySoftwareCollection;
 
 /**
- * Issue #315 : revue des dictionnaires — systèmes d'exploitation, architectures, imprimantes
+ * Issue #315 : revue des dictionnaires : systèmes d'exploitation, architectures, imprimantes
  * virtuelles, compléments logiciels.
  */
 final class InventoryDictionariesTest extends TestCase

@@ -64,21 +64,21 @@ use Ticket;
  * that the first pass's basic-types-only treatment was insufficient)** : adds `QuestionTypeUserDevice`
  * ("Poste ou appareil concerné", optional) so the reporter can point at the *real* Computer/Monitor/
  * Phone/... GLPI already has affected to them (`CommonItilObject_Item::getMyDevices()`), instead of
- * re-describing it in free text inside "Précisions" — wired to the ticket as a genuine associated item
+ * re-describing it in free text inside "Précisions" - wired to the ticket as a genuine associated item
  * via `AssociatedItemsField` (`LAST_VALID_ANSWER`, the only `QuestionTypeUserDevice`/`QuestionTypeItem`
  * question on this form so no ambiguity). Optional, not mandatory : a software bug can also affect a
  * shared/non-personal machine, or the reporter may simply not know which asset record it's filed
- * under — free text in "Précisions" remains the fallback either way. Also adds `QuestionTypeFile`
- * ("Capture d'écran de l'erreur", optional) — GLPI attaches any answered file straight to the ticket's
+ * under : free text in "Précisions" remains the fallback either way. Also adds `QuestionTypeFile`
+ * ("Capture d'écran de l'erreur", optional): GLPI attaches any answered file straight to the ticket's
  * content automatically (confirmed via `AbstractCommonITILFormDestination::setFilesInput()`, no extra
  * destination config needed for that part).
  *
  * `RequestTypeField` pinned to `Ticket::INCIDENT_TYPE` (`SPECIFIC_VALUE`, no question asked) : a bug
  * report is unambiguously an incident, not a request, and this plugin doesn't otherwise set a ticket
- * type at all for its smart forms — worth doing explicitly rather than relying on whatever GLPI/the
+ * type at all for its smart forms: worth doing explicitly rather than relying on whatever GLPI/the
  * ticket template happens to default to.
  *
- * Deliberately did NOT add a `QuestionTypeUrgency` question here (or anywhere in this second pass) —
+ * Deliberately did NOT add a `QuestionTypeUrgency` question here (or anywhere in this second pass) -
  * see `HelpdeskFormBuilder`'s own docblock: asking requesters to self-rate urgency is a well-documented
  * ITSM anti-pattern this plugin already goes out of its way to avoid (it actively hides GLPI's native
  * "Urgency" question on the default self-service forms for exactly that reason). The existing
@@ -232,7 +232,7 @@ class SoftwareBugFormBuilder
         ]);
 
         // Optional: lets the reporter point at their own real GLPI-tracked device instead of
-        // re-describing it in free text — see class docblock. `getMyDevices()` already scopes
+        // re-describing it in free text: see class docblock. `getMyDevices()` already scopes
         // this to devices affected to the current end user, so no itemtype restriction to set.
         $poste = new Question();
         $poste->add([
@@ -300,11 +300,11 @@ class SoftwareBugFormBuilder
             ContentField::getAutoConfigKey() => 1,
             // The "poste" question is the only QuestionTypeUserDevice/QuestionTypeItem question on
             // this form, so LAST_VALID_ANSWER unambiguously means "whatever device was answered
-            // there" — turns a free-text device description into a real linked Ticket item.
+            // there" - turns a free-text device description into a real linked Ticket item.
             AssociatedItemsField::getKey() => (new AssociatedItemsFieldConfig(
                 strategies: [AssociatedItemsFieldStrategy::LAST_VALID_ANSWER],
             ))->jsonSerialize(),
-            // A bug/dysfunction report is unambiguously an incident, not a request — see class
+            // A bug/dysfunction report is unambiguously an incident, not a request: see class
             // docblock.
             RequestTypeField::getKey() => (new RequestTypeFieldConfig(
                 strategy: RequestTypeFieldStrategy::SPECIFIC_VALUE,

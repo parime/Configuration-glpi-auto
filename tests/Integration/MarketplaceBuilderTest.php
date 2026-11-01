@@ -26,7 +26,7 @@ final class MarketplaceBuilderTest extends TestCase
 {
     protected function tearDown(): void
     {
-        // Leaves no trace on the shared instance — restores GLPI's own native registration key
+        // Leaves no trace on the shared instance: restores GLPI's own native registration key
         // config to whatever it was (usually unset) before this suite ran.
         GlpiConfig::deleteConfigurationValues('core', ['glpinetwork_registration_key']);
     }
@@ -40,7 +40,7 @@ final class MarketplaceBuilderTest extends TestCase
 
     /**
      * `GLPINetwork::getRegistrationKey()` reads from the `$CFG_GLPI` global, only refreshed at
-     * bootstrap — not after a same-request `Config::setConfigurationValues()` write. So this reads
+     * bootstrap: not after a same-request `Config::setConfigurationValues()` write. So this reads
      * straight back from the DB (same encrypted value GLPIKey stores) instead, decrypting it with
      * the same `GLPIKey` mechanism `getRegistrationKey()` itself uses.
      */
@@ -66,7 +66,7 @@ final class MarketplaceBuilderTest extends TestCase
             $this->assertNotSame('', $plugin['url']);
             $this->assertNotSame('', $plugin['note']);
             // Either a real marketplace `key` (installable in one click) or an explicit note saying
-            // it isn't on the marketplace yet — never silently missing both.
+            // it isn't on the marketplace yet: never silently missing both.
             $this->assertTrue($plugin['key'] !== null || str_contains($plugin['note'], 'marketplace'));
         }
     }

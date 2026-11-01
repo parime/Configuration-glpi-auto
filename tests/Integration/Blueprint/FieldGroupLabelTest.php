@@ -21,7 +21,7 @@ use GlpiPlugin\Configurationglpiauto\Blueprint\FieldGroupLabel;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Contrairement à `BlueprintSerializer`, cette classe appelle `__()` (traduction GLPI) — elle a
+ * Contrairement à `BlueprintSerializer`, cette classe appelle `__()` (traduction GLPI) : elle a
  * donc besoin d'une vraie instance GLPI bootée pour être exercée, d'où sa place dans `tests/
  * Integration/` plutôt que `tests/Unit/` (confirmé en pratique : `__()` est indéfini sous le
  * bootstrap PHP pur de `phpunit.xml.dist`).
@@ -30,7 +30,7 @@ final class FieldGroupLabelTest extends TestCase
 {
     public function testKnownPrefixReturnsItsTranslatedLabel(): void
     {
-        // CI runs GLPI in English by default, the shared dev instance in French — never hardcode
+        // CI runs GLPI in English by default, the shared dev instance in French: never hardcode
         // a literal translated string here, build the expectation via the same __() call instead
         // (locale-agnostic either way).
         $this->assertSame(__('SLA', 'configurationglpiauto'), FieldGroupLabel::for('sla_tiers'));
@@ -40,7 +40,7 @@ final class FieldGroupLabelTest extends TestCase
     public function testUnknownPrefixFallsBackToTheCapitalizedPrefixItself(): void
     {
         // Dégradation propre pour un futur champ Config dont le préfixe n'a pas encore de libellé
-        // traduit — jamais une exception, jamais une chaîne vide.
+        // traduit : jamais une exception, jamais une chaîne vide.
         $this->assertSame('Zorglub', FieldGroupLabel::for('zorglub_enabled'));
     }
 

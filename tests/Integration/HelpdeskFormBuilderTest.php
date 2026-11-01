@@ -25,14 +25,14 @@ use GlpiPlugin\Configurationglpiauto\HelpdeskFormBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Unlike every other `*FormBuilder` in this plugin, `HelpdeskFormBuilder` doesn't create a form — it
+ * Unlike every other `*FormBuilder` in this plugin, `HelpdeskFormBuilder` doesn't create a form: it
  * mutates GLPI 11's own two native self-service forms ("Report an issue"/"Request a service",
  * real, shared, permanent fixtures on this instance) to hide 3 specific questions. `setUp()`/
  * `tearDown()` capture and restore each targeted question's real original visibility state, so this
  * suite leaves no lasting change on the shared dev instance.
  *
  * Real regression this class guards against (see its own docblock) : `Question::conditions` has no
- * "always hidden" strategy — an empty `conditions` array combined with `VISIBLE_IF` is what actually
+ * "always hidden" strategy: an empty `conditions` array combined with `VISIBLE_IF` is what actually
  * achieves it (confirmed by reading `Engine::computeConditions()`). Asserting the exact stored
  * strategy + empty conditions is the only way to catch a regression to, say, `HIDDEN_IF` with an
  * empty array, which per that same engine logic would do the opposite (always visible).
@@ -123,12 +123,12 @@ final class HelpdeskFormBuilderTest extends TestCase
                 $this->assertSame(
                     VisibilityStrategy::VISIBLE_IF->value,
                     $question->fields['visibility_strategy'],
-                    "'{$question->fields['name']}' on '$formName' must use VISIBLE_IF — there is no plain \"always hidden\" strategy."
+                    "'{$question->fields['name']}' on '$formName' must use VISIBLE_IF: there is no plain \"always hidden\" strategy."
                 );
                 $this->assertSame(
                     [],
                     json_decode($question->fields['conditions'], true),
-                    "'{$question->fields['name']}' on '$formName' must have an empty condition list — VISIBLE_IF + no conditions is what actually hides it permanently."
+                    "'{$question->fields['name']}' on '$formName' must have an empty condition list: VISIBLE_IF + no conditions is what actually hides it permanently."
                 );
             }
 

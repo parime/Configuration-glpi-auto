@@ -22,7 +22,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultAdminEmailCheck;
 use PHPUnit\Framework\TestCase;
 
 /**
- * `admin_email` is a single global GLPI setting shared with the rest of the instance — its real
+ * `admin_email` is a single global GLPI setting shared with the rest of the instance: its real
  * value is captured in `setUp()` and restored in `tearDown()`, so this test never leaves the
  * shared instance's admin email different from how it found it.
  */
@@ -69,7 +69,7 @@ final class DefaultAdminEmailCheckTest extends TestCase
 
     public function testIsNeverAutomaticallyFixable(): void
     {
-        // A real admin email cannot be guessed on the organization's behalf — see class docblock.
+        // A real admin email cannot be guessed on the organization's behalf: see class docblock.
         $this->assertFalse((new DefaultAdminEmailCheck())->canFix());
     }
 }

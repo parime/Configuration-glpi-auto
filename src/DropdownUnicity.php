@@ -58,7 +58,7 @@ use Software;
  *
  * Les logiciels sont rattachés à une entité : deux entités clientes peuvent chacune avoir leur
  * « Firefox ». Un doublon est donc un logiciel du même nom dans la même entité, ou récursif dans
- * une entité parente (il y est déjà visible), ou — si le nouveau est récursif — dans une entité
+ * une entité parente (il y est déjà visible), ou : si le nouveau est récursif : dans une entité
  * fille. L'« Unicité des champs » native de GLPI ne sait pas faire cette distinction : posée sur
  * l'entité racine, elle compare toutes les entités entre elles.
  */
@@ -103,7 +103,7 @@ final class DropdownUnicity
     public static function preItemUpdate(CommonDBTM $item): void
     {
         // Seulement si le nom change : modifier le commentaire d'un doublon déjà en base (avant
-        // l'activation de l'option) ne doit pas être refusé — l'audit (#299) les fusionne.
+        // l'activation de l'option) ne doit pas être refusé : l'audit (#299) les fusionne.
         if (!is_array($item->input) || !isset($item->input['name'])) {
             return;
         }

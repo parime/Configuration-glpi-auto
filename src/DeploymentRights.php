@@ -36,7 +36,7 @@ final class DeploymentRights
             [
                 'label' => __('Créer des entités', 'configurationglpiauto'),
                 'ok' => Session::haveRight('entity', CREATE),
-                'hint' => __('nécessaire pour construire l\'arborescence (étape 2) — les entités déjà existantes restent utilisables, mais aucune nouvelle ne sera créée', 'configurationglpiauto'),
+                'hint' => __('nécessaire pour construire l\'arborescence (étape 2) : les entités déjà existantes restent utilisables, mais aucune nouvelle ne sera créée', 'configurationglpiauto'),
             ],
             [
                 'label' => __('Modifier des entités', 'configurationglpiauto'),

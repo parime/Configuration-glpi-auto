@@ -47,7 +47,7 @@ use ITILCategory;
  *
  * A finance request always names a reference and a request type, no branch needed there, but the
  * supporting document (the invoice or purchase order itself) genuinely isn't always at hand when the
- * ticket is opened, so it stays an optional `QuestionTypeFile` rather than a mandatory one — same
+ * ticket is opened, so it stays an optional `QuestionTypeFile` rather than a mandatory one: same
  * "attach if you have it" reasoning as any other optional upload in this catalog. Computed title
  * built the same way as the pilot (`AbroadMissionFormBuilder`, issue #208) :
  * `AnswerTagProvider::getTagForQuestion()` / `FormTagProvider::getTagForForm()`, never hand-written

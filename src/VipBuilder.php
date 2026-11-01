@@ -20,25 +20,25 @@ namespace GlpiPlugin\Configurationglpiauto;
 use Group;
 
 /**
- * Only runs if the third-party "VIP" plugin (pluginsGLPI/vip, marketplace key `vip`) is active —
+ * Only runs if the third-party "VIP" plugin (pluginsGLPI/vip, marketplace key `vip`) is active -
  * never a hard dependency, same reasoning as SatisfactionSurveyBuilder. Not a technician/support
- * group — the plugin flags priority *requesters* (executives, shareholders, any stakeholder whose
+ * group: the plugin flags priority *requesters* (executives, shareholders, any stakeholder whose
  * tickets should stand out), badging their tickets for the support team's attention. Confirmed live
  * on a real install: the plugin extends the native `Group` object with one row per group in its own
- * `glpi_plugin_vip_groups` table (`id` mirrors `glpi_groups.id`, no auto-increment — its own
+ * `glpi_plugin_vip_groups` table (`id` mirrors `glpi_groups.id`, no auto-increment: its own
  * Group::processMassiveActionsForOneItemtype() inserts with an explicit `id`, never lets MySQL
  * generate one), holding an `isvip` flag plus a display `name`/`vip_color`/`vip_icon` used to
  * badge tickets from VIP-flagged groups' members.
  *
  * The plugin's own `plugin_vip_install()` already grants the `plugin_vip` right to existing
  * profiles (`Profile::initProfile()`) and its rule engine (`RuleVip`, "assign VIP group from LDAP
- * criteria") is inherently per-organisation (depends on the customer's own AD/LDAP OU layout) —
+ * criteria") is inherently per-organisation (depends on the customer's own AD/LDAP OU layout) -
  * same reasoning already applied to excluding LDAP diagnostics from this plugin's generalist
  * scope, so neither is touched here.
  *
  * What *is* safely generalisable: seeding one native "VIP" Group and flagging it `isvip=1`, so the
  * feature is immediately visible and usable (the Group tab, the ticket badge) the moment the admin
- * adds real members — mirrors the same "seed a sensible starting point, let the admin customise"
+ * adds real members: mirrors the same "seed a sensible starting point, let the admin customise"
  * pattern already used by RSSFeedBuilder/SupportTierBuilder, not org-specific guesswork.
  */
 class VipBuilder
@@ -94,7 +94,7 @@ class VipBuilder
             return;
         }
 
-        // Primary key mirrors glpi_groups.id, no auto-increment on this table — must be provided
+        // Primary key mirrors glpi_groups.id, no auto-increment on this table: must be provided
         // explicitly on insert (confirmed in the third-party plugin's own Group::
         // processMassiveActionsForOneItemtype()).
         $DB->insert('glpi_plugin_vip_groups', [

@@ -22,7 +22,7 @@ use CommonDBTM;
 /**
  * Plugin-wide settings screen (Configuration > Plugins > wrench icon), a single row (id=1). For
  * now this only holds the entity-structure choice that will drive the future entity-creation
- * wizard (ROADMAP "Assistant de création des entités") — it does not create any Entity yet, it
+ * wizard (ROADMAP "Assistant de création des entités") : it does not create any Entity yet, it
  * only records the shape the wizard will build later and lets the admin preview it live.
  */
 class Config extends Compat\Base\ConfigBase
@@ -37,28 +37,28 @@ class Config extends Compat\Base\ConfigBase
 
     public const MAX_LEVELS = 5;
 
-    // GLPI's own priority scale (CommonITILObject::getPriorityName()) — 6=Majeure down to
+    // GLPI's own priority scale (CommonITILObject::getPriorityName()): 6=Majeure down to
     // 1=Très basse, computed per ticket from the instance-wide urgency×impact matrix. Highest
     // first since that's also natural display order.
     public const PRIORITY_LEVELS = [6, 5, 4, 3, 2, 1];
 
     private const SINGLETON_ID = 1;
 
-    // Stable keys for the 11 top-level category branches (CategoryBuilder::CATEGORIES) — used to
+    // Stable keys for the 11 top-level category branches (CategoryBuilder::CATEGORIES): used to
     // validate category_branches against a whitelist, same role PRIORITY_LEVELS plays for tiers.
     public const CATEGORY_BRANCH_KEYS = [
         'it', 'batiment', 'flotte', 'rh', 'achats', 'securite',
         'services_generaux', 'administratif', 'communication', 'qualite', 'maintenance',
     ];
 
-    // The 8 profiles GLPI 11 ships out of the box (confirmed on a fresh install) — used to
+    // The 8 profiles GLPI 11 ships out of the box (confirmed on a fresh install): used to
     // validate ldap_rights_profile against a whitelist rather than trusting free text that could
     // reference a profile that doesn't exist (RuleRightBuilder would then have nothing to assign).
     public const NATIVE_PROFILE_NAMES = [
         'Super-Admin', 'Admin', 'Supervisor', 'Technician', 'Hotliner', 'Observer', 'Self-Service', 'Read-Only',
     ];
 
-    // The 18 palette keys GLPI 11 ships out of the box (Glpi\UI\ThemeManager::getCoreThemes()) —
+    // The 18 palette keys GLPI 11 ships out of the box (Glpi\UI\ThemeManager::getCoreThemes()) -
     // same whitelist role as NATIVE_PROFILE_NAMES above, kept here rather than re-querying
     // ThemeManager on every prepareInput() call for a fixed, rarely-changing list.
     public const NATIVE_PALETTE_KEYS = [
@@ -67,7 +67,7 @@ class Config extends Compat\Base\ConfigBase
         'premiumred', 'purplehaze', 'teclib', 'vintage',
     ];
 
-    // Starting point for a fresh sla_tiers table, editable by the admin afterward — same
+    // Starting point for a fresh sla_tiers table, editable by the admin afterward: same
     // philosophy as the plugin's other defaults (e.g. the old flat 4h/48h).
     private const DEFAULT_SLA_TIERS = [
         '6' => ['tto_hours' => 1, 'ttr_hours' => 4],
@@ -80,7 +80,7 @@ class Config extends Compat\Base\ConfigBase
 
     // OLA = internal commitment that has to land *before* the matching SLA deadline for the SLA
     // to actually be met (e.g. tier 1 support triage before the customer-facing clock runs out),
-    // so tighter than DEFAULT_SLA_TIERS at every level — starting point, admin-editable.
+    // so tighter than DEFAULT_SLA_TIERS at every level: starting point, admin-editable.
     private const DEFAULT_OLA_TIERS = [
         '6' => ['tto_hours' => 1, 'ttr_hours' => 2],
         '5' => ['tto_hours' => 1, 'ttr_hours' => 4],
@@ -103,15 +103,15 @@ class Config extends Compat\Base\ConfigBase
     public static function getModes(): array
     {
         return [
-            self::MODE_MONO => __('Mono-entité — une seule structure, pas de sous-entités', 'configurationglpiauto'),
-            self::MODE_MULTI_SAME_COMPANY => __('Multi-entité — plusieurs sites ou services d\'une même entreprise', 'configurationglpiauto'),
-            self::MODE_MULTI_MSP => __('Multi-entité — infogérance de plusieurs entreprises clientes (MSP)', 'configurationglpiauto'),
+            self::MODE_MONO => __('Mono-entité : une seule structure, pas de sous-entités', 'configurationglpiauto'),
+            self::MODE_MULTI_SAME_COMPANY => __('Multi-entité : plusieurs sites ou services d\'une même entreprise', 'configurationglpiauto'),
+            self::MODE_MULTI_MSP => __('Multi-entité : infogérance de plusieurs entreprises clientes (MSP)', 'configurationglpiauto'),
         ];
     }
 
     /**
      * Always returns the single settings row, creating it with defaults if it doesn't exist yet
-     * (belt and braces alongside Installer seeding it — keeps this safe to call even if the
+     * (belt and braces alongside Installer seeding it: keeps this safe to call even if the
      * plugin was ever activated before this feature existed).
      */
     public static function getConfig(): self
@@ -164,7 +164,7 @@ class Config extends Compat\Base\ConfigBase
             'state_icons_enabled' => 1,
             // JSON_UNESCAPED_UNICODE: several state names carry accents (Attribué, Obsolète...),
             // and this default value also gets embedded literally in a SQL DEFAULT clause on
-            // upgrade (Installer.php's addField() call) — a `\uXXXX` escape sequence there is
+            // upgrade (Installer.php's addField() call): a `\uXXXX` escape sequence there is
             // fragile (confirmed: MySQL's own backslash-escaping in a DEFAULT literal ate the
             // backslash, corrupting "Attribué" into "Attribuu00e9"). Storing the raw UTF-8
             // character instead sidesteps the whole class of problem.
@@ -176,18 +176,18 @@ class Config extends Compat\Base\ConfigBase
             'satisfaction_survey_enabled' => 1,
             'committee_validation_enabled' => 1,
             // Guide ITIL complet (issue #124) : crée un tableau de bord GLPI natif dédié, jamais
-            // recréé ensuite (voir DashboardBuilder) — purement additif, même raisonnement de
+            // recréé ensuite (voir DashboardBuilder) : purement additif, même raisonnement de
             // défaut que les autres réglages généraux ci-dessus.
             'dashboard_enabled' => 1,
             // Analyse continue (issue #131) : active une tâche planifiée GLPI native (voir
             // AuditWatchCron) qui ré-exécute l'audit existant et accumule un compteur de nouveaux
-            // constats critiques, affiché en bannière sur front/audit.php — purement additif,
+            // constats critiques, affiché en bannière sur front/audit.php : purement additif,
             // aucune correction ni notification externe, même raisonnement de défaut que les
             // autres réglages généraux ci-dessus. `audit_watch_state` (l'état accumulé lui-même)
             // n'a volontairement pas de valeur par défaut ici : jamais saisi via l'assistant,
             // uniquement écrit par AuditWatchCron/remis à zéro par front/audit.php.
             'audit_watch_enabled' => 1,
-            // Issue #285 : rapport d'audit périodique par e-mail (voir AuditReportCron) — la tâche
+            // Issue #285 : rapport d'audit périodique par e-mail (voir AuditReportCron) : la tâche
             // planifiée reste désactivée tant que l'administrateur ne l'active pas sur front/audit.php.
             'audit_report_only_on_change' => 1,
             'audit_report_emails' => '',
@@ -203,13 +203,13 @@ class Config extends Compat\Base\ConfigBase
             'wait_reasons_enabled' => 1,
             'ldap_rights_enabled' => 1,
             'ldap_rights_group_template' => 'GLPI_{ENTITY}',
-            // Native "Admin" — deliberately not "Super-Admin" (fifth completeness audit, Sprint 35):
+            // Native "Admin" - deliberately not "Super-Admin" (fifth completeness audit, Sprint 35):
             // the single most severe GLPI pain point found in web research is orgs defaulting too
             // many people to Super-Admin out of convenience, since it's the only native profile
             // with enough day-to-day capability. Confirmed by diffing glpi_profilerights: Admin
             // already lacks `profile` write access (can't edit profile definitions, so can't grant
             // itself more), `rule_ldap`/`rule_import` (can't rewrite the very sync rules this
-            // toggle creates), and `config` (no general instance configuration) — the exact
+            // toggle creates), and `config` (no general instance configuration): the exact
             // self-elevation vectors, without inventing a new bespoke rights bitmask.
             'ldap_rights_profile' => 'Admin',
             'ldap_function_rights' => '[]',
@@ -288,11 +288,11 @@ class Config extends Compat\Base\ConfigBase
             'assetsign_company_name' => '',
             'assetsign_charter_url' => '',
             // Opt-in, not opt-out like the rest of this list: a real ticket-workflow behavior
-            // change (mandatory approval on every matching ticket), not content scaffolding — same
+            // change (mandatory approval on every matching ticket), not content scaffolding: same
             // exception already applied to branding.
             'validation_supervisor_routing_enabled' => 0,
             // ESM custom asset types (forum-sourced, see FireSafetyAssetBuilder/
-            // PhysicalSecurityAssetBuilder docblocks) — opt-out like the rest of this list, but each
+            // PhysicalSecurityAssetBuilder docblocks): opt-out like the rest of this list, but each
             // ALSO requires its own category branch ("batiment"/"securite" respectively) to be
             // selected, unlike VehicleAssetBuilder/ServerAssetBuilder/BuildingAssetBuilder which have
             // no dedicated toggle of their own (see those two builders' docblocks for why this pair
@@ -305,7 +305,7 @@ class Config extends Compat\Base\ConfigBase
     }
 
     /**
-     * Weekday numbers this calendar covers, PHP date('w') convention (0=Sunday..6=Saturday) —
+     * Weekday numbers this calendar covers, PHP date('w') convention (0=Sunday..6=Saturday) -
      * matches GLPI core's own Toolbox::getDaysOfWeekArray()/CalendarSegment.day.
      */
     public function getCalendarDays(): array
@@ -317,7 +317,7 @@ class Config extends Compat\Base\ConfigBase
 
     /**
      * Per-day overrides of the shared calendar's opening hours (e.g. "vendredi 9h-12h seulement")
-     * — only days that actually differ from `calendar_begin`/`calendar_end` need an entry here;
+     * - only days that actually differ from `calendar_begin`/`calendar_end` need an entry here;
      * CalendarBuilder falls back to the shared begin/end for any day missing from this map, so a
      * single uniform schedule (the common case) needs no per-day data at all.
      *
@@ -346,7 +346,7 @@ class Config extends Compat\Base\ConfigBase
 
     /**
      * The shared/default SLA table: one `['tto_hours' => int, 'ttr_hours' => int]` pair per
-     * priority level (string keys matching PRIORITY_LEVELS) — a site/client with no override of
+     * priority level (string keys matching PRIORITY_LEVELS): a site/client with no override of
      * its own (see sanitizeClientSettings()) uses this. Missing/invalid levels fall back to
      * DEFAULT_SLA_TIERS rather than leaving a gap.
      *
@@ -360,7 +360,7 @@ class Config extends Compat\Base\ConfigBase
     }
 
     /**
-     * The built-in starting-point tier table — exposed so ConfigurationProfile::getSuggestedDefaults()
+     * The built-in starting-point tier table: exposed so ConfigurationProfile::getSuggestedDefaults()
      * can reuse it instead of duplicating the same 6 numbers a second time.
      *
      * @return array<int, array{tto_hours: int, ttr_hours: int}>
@@ -371,7 +371,7 @@ class Config extends Compat\Base\ConfigBase
     }
 
     /**
-     * Same as getSlaTiers(), for the OLA (internal commitment) table — see class docs on
+     * Same as getSlaTiers(), for the OLA (internal commitment) table: see class docs on
      * sanitizeSlaSettings() for why OLA lives alongside SLA rather than as its own concept.
      *
      * @return array<int, array{tto_hours: int, ttr_hours: int}>
@@ -392,7 +392,7 @@ class Config extends Compat\Base\ConfigBase
     }
 
     /**
-     * Which of CategoryBuilder's 11 top-level branches the admin wants created — a client with an
+     * Which of CategoryBuilder's 11 top-level branches the admin wants created: a client with an
      * empty/malformed value gets none rather than a guess, but a fresh install defaults to all of
      * them (see getDefaults()) since that's a more useful starting point than an empty wizard step.
      *
@@ -406,7 +406,7 @@ class Config extends Compat\Base\ConfigBase
     }
 
     /**
-     * Which of `StateBuilder`'s 15 states the admin wants created — same "whitelist-intersect,
+     * Which of `StateBuilder`'s 15 states the admin wants created: same "whitelist-intersect,
      * empty rather than a guess" reasoning as `getCategoryBranches()`.
      *
      * @return string[]
@@ -461,7 +461,7 @@ class Config extends Compat\Base\ConfigBase
 
     /**
      * The entity tree the admin has built, root-relative: an array of nodes, each
-     * `['name' => string, 'children' => Node[]]` — arbitrary shape, every node can have a
+     * `['name' => string, 'children' => Node[]]` - arbitrary shape, every node can have a
      * different number of children at a different depth (e.g. "test1" has 2 children, one of
      * which has 3 children of its own, while "test2" has none). Empty means "nothing built yet".
      */
@@ -508,7 +508,7 @@ class Config extends Compat\Base\ConfigBase
             unset($input['entity_tree_json']);
         } elseif (array_key_exists('entity_tree', $input)) {
             // A request naming the COLUMN directly (entity_tree) rather than the form field
-            // (entity_tree_json) would otherwise reach CommonDBTM::update() unsanitized — same
+            // (entity_tree_json) would otherwise reach CommonDBTM::update() unsanitized: same
             // fix as calendar_days/calendar_day_hours below, re-normalize unconditionally.
             $tree = is_string($input['entity_tree']) ? json_decode($input['entity_tree'], true) : $input['entity_tree'];
             $input['entity_tree'] = json_encode(is_array($tree) ? $this->sanitizeTree($tree) : []);
@@ -527,7 +527,7 @@ class Config extends Compat\Base\ConfigBase
             unset($input['calendar_day']);
         } elseif (array_key_exists('calendar_days', $input)) {
             // A request naming the COLUMN directly (calendar_days) rather than the form field
-            // (calendar_day, singular) would otherwise reach CommonDBTM::update() unsanitized —
+            // (calendar_day, singular) would otherwise reach CommonDBTM::update() unsanitized -
             // this is also what templates/wizard.html.twig emits raw into a <script> block, so an
             // unsanitized value here is a stored-XSS sink, not just a data-integrity issue.
             // Re-normalize unconditionally, falling back to an empty array on anything malformed.
@@ -621,7 +621,7 @@ class Config extends Compat\Base\ConfigBase
             // Two different shapes reach here: a real array from the wizard form's
             // `category_branches[]` checkboxes, or the JSON-encoded string getDefaults() uses for
             // the fresh-install seed row (add()'s own prepareInputForAdd() call). `(array) $string`
-            // would wrap the whole JSON string as a single bogus element instead of decoding it —
+            // would wrap the whole JSON string as a single bogus element instead of decoding it -
             // confirmed as a real bug (a fresh install silently got zero branches selected instead
             // of all 11) via the empty-DB reset done this session, which finally surfaced it.
             $branches = is_string($input['category_branches'])
@@ -643,7 +643,7 @@ class Config extends Compat\Base\ConfigBase
 
         if (isset($input['state_names'])) {
             // Same two shapes as category_branches (real array from the form vs. the JSON string
-            // getDefaults() seeds a fresh row with) — decode explicitly rather than `(array)`
+            // getDefaults() seeds a fresh row with): decode explicitly rather than `(array)`
             // casting a string, which would wrap it as one bogus element instead of decoding it
             // (the exact bug fixed in category_branches this same session).
             $names = is_string($input['state_names']) ? (json_decode($input['state_names'], true) ?? []) : $input['state_names'];
@@ -665,7 +665,7 @@ class Config extends Compat\Base\ConfigBase
             )));
         }
 
-        // Issue #285 : adresses supplémentaires du rapport d'audit — seules des adresses valides
+        // Issue #285 : adresses supplémentaires du rapport d'audit : seules des adresses valides
         // sont conservées (séparateurs : retour à la ligne, virgule, point-virgule, espace).
         if (isset($input['audit_report_emails'])) {
             $input['audit_report_emails'] = implode("\n", self::parseEmails((string) $input['audit_report_emails']));
@@ -724,7 +724,7 @@ class Config extends Compat\Base\ConfigBase
         }
 
         if (isset($input['location_geocoding_endpoint'])) {
-            // Only ever an admin-typed URL, never request data reaching ajax/geocode.php — but
+            // Only ever an admin-typed URL, never request data reaching ajax/geocode.php: but
             // validated here too (not just there) since this is the one place that actually
             // writes it to storage. https:// only: the proxy forwards this over the network,
             // an http:// (or any other scheme, including file:// gadgets) endpoint has no
@@ -735,7 +735,7 @@ class Config extends Compat\Base\ConfigBase
                 : 'https://nominatim.openstreetmap.org';
         }
 
-        // Empty string (no native palette chosen) is always valid — only a non-empty value has to
+        // Empty string (no native palette chosen) is always valid: only a non-empty value has to
         // match a real GLPI palette key, same "trust nothing free-text" reasoning as
         // ldap_rights_profile above.
         if (isset($input['native_palette']) && $input['native_palette'] !== '' && !in_array($input['native_palette'], self::NATIVE_PALETTE_KEYS, true)) {
@@ -754,7 +754,7 @@ class Config extends Compat\Base\ConfigBase
     /**
      * Recursively trims node names, drops nodes left with an empty name, and caps depth at
      * MAX_LEVELS (guards against a malicious/malformed deeply-nested payload, not a realistic
-     * admin use case). Top-level nodes only (depth 1 — the MSP "client" nodes a calendar/SLA
+     * admin use case). Top-level nodes only (depth 1: the MSP "client" nodes a calendar/SLA
      * actually gets assigned to) may also carry an optional per-client `settings` override
      * (calendar and/or SLA); dropped silently at any deeper depth since sub-entities always
      * inherit from their parent.
@@ -797,7 +797,7 @@ class Config extends Compat\Base\ConfigBase
     }
 
     /**
-     * Drops any row with an empty group name or a profile outside NATIVE_PROFILE_NAMES — same
+     * Drops any row with an empty group name or a profile outside NATIVE_PROFILE_NAMES: same
      * "trust nothing free-text" reasoning as ldap_rights_profile/native_palette, applied per-row
      * since this is a user-supplied list rather than a single field.
      *
@@ -828,13 +828,13 @@ class Config extends Compat\Base\ConfigBase
 
     /**
      * A `RuleRight` built from `ldap_rights_profile`/`ldap_function_rights` auto-assigns whichever
-     * profile is named here to any LDAP-imported user matching the configured group — including on
+     * profile is named here to any LDAP-imported user matching the configured group: including on
      * their very next sync, with no further review. Restricting "Super-Admin" to operators who
      * already hold that profile themselves closes the privilege-escalation path a delegated
      * `plugin_configurationglpiauto_config` holder (a right explicitly meant to be grantable to a
      * non-super-admin profile, see Profile.php) would otherwise have: grant yourself an LDAP group
      * you belong to, assign it "Super-Admin", wait for the next sync. Every other native profile
-     * name is unaffected — this only narrows the one value that grants full instance control.
+     * name is unaffected: this only narrows the one value that grants full instance control.
      */
     private function isAssignableProfileName(string $profile): bool
     {
@@ -870,7 +870,7 @@ class Config extends Compat\Base\ConfigBase
 
     /**
      * @return array{calendar?: array, sla?: array} Only the sub-keys that were actually present
-     *         and valid — a client with no override at all in $settings ends up with an empty
+     *         and valid: a client with no override at all in $settings ends up with an empty
      *         array here, which sanitizeTree() then drops entirely rather than storing `{}`.
      */
     private function sanitizeClientSettings(array $settings): array
@@ -925,7 +925,7 @@ class Config extends Compat\Base\ConfigBase
 
     /**
      * OLA (internal commitment) is kept as sibling keys here rather than its own top-level
-     * `settings.ola` — it only ever exists attached to the same client's SLA (same SLM
+     * `settings.ola` - it only ever exists attached to the same client's SLA (same SLM
      * container in SlaBuilder), so nesting it separately would just be two objects that always
      * have to agree on which client they belong to.
      *
@@ -945,7 +945,7 @@ class Config extends Compat\Base\ConfigBase
     /**
      * Fills in every level from PRIORITY_LEVELS, falling back to $defaults for any level missing
      * or malformed in $tiers rather than leaving a gap a ticket could fall through. Shared by SLA
-     * and OLA tables — same shape, different starting-point numbers ($defaults).
+     * and OLA tables: same shape, different starting-point numbers ($defaults).
      *
      * @param array<int, array{tto_hours: int, ttr_hours: int}> $defaults
      * @return array<int, array{tto_hours: int, ttr_hours: int}>
@@ -954,7 +954,7 @@ class Config extends Compat\Base\ConfigBase
     {
         $clean = [];
         foreach (self::PRIORITY_LEVELS as $key) {
-            // PRIORITY_LEVELS is already a list of ints — a former `(string) $level` cast here was
+            // PRIORITY_LEVELS is already a list of ints: a former `(string) $level` cast here was
             // misleading, not just redundant: PHP always normalizes a numeric-string array key back
             // to int (confirmed by PHPStan, which infers `array<int, ...>` for this method's actual
             // return shape despite the `array<string, ...>` docblock this cast was written to
@@ -998,7 +998,7 @@ class Config extends Compat\Base\ConfigBase
 
     /**
      * Dernière version publiée sur GitHub (release la plus récente, hors pre-release), pour
-     * affichage à côté de la version installée en tête de l'assistant — permet de détecter
+     * affichage à côté de la version installée en tête de l'assistant : permet de détecter
      * immédiatement qu'un environnement tourne sur une version antérieure à celle publiée, sans
      * comparer des fichiers un par un. Sur demande explicite de l'utilisateur (#153), même
      * mécanisme que les plugins jumeaux assetsign-glpi et glpi-vulnerability-manager (confirmé en
@@ -1012,7 +1012,7 @@ class Config extends Compat\Base\ConfigBase
      * proxy/timeout/erreurs déjà établie par le cœur GLPI pour ce type d'appel.
      *
      * Opt-in : aucun appel sortant tant que l'action automatique native « checkupdate » de GLPI
-     * (Configuration > Actions automatiques, désactivée par défaut) n'est pas activée — un
+     * (Configuration > Actions automatiques, désactivée par défaut) n'est pas activée : un
      * administrateur qui refuse la vérification de mise à jour de GLPI lui-même refuse aussi
      * celle-ci, sans réglage supplémentaire propre au plugin.
      *

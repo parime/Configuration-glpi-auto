@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
 use Ticket;
 
 /**
- * The "Document à faire relire ou signer" question is optional — same "attach if you have it"
+ * The "Document à faire relire ou signer" question is optional: same "attach if you have it"
  * reasoning as `InvoicePaymentFormBuilderTest`.
  */
 final class ContractReviewFormBuilderTest extends TestCase

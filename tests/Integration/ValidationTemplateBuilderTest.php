@@ -33,7 +33,7 @@ final class ValidationTemplateBuilderTest extends TestCase
 
     /**
      * The "Validation comité (2/3)" `ValidationStep` is created by `GeneralSettingsBuilder`
-     * (`committee_validation_enabled`), not by `ValidationTemplateBuilder` itself — it only looks
+     * (`committee_validation_enabled`), not by `ValidationTemplateBuilder` itself: it only looks
      * the step up by name if it happens to exist (see that class's own docblock). On a fresh install
      * (unlike this project's own long-lived shared dev instance, where the step already exists from
      * an earlier run) it genuinely doesn't exist yet, so this suite must build it itself.
@@ -105,7 +105,7 @@ final class ValidationTemplateBuilderTest extends TestCase
 
         global $DB;
         $count = $DB->request(['FROM' => ITILValidationTemplate::getTable(), 'WHERE' => ['name' => self::COMMITTEE_NAME]])->count();
-        $this->assertSame(1, $count, 'Exactly one row must exist — no duplicate.');
+        $this->assertSame(1, $count, 'Exactly one row must exist: no duplicate.');
     }
 
     public function testTogglingIconsOnThenOffUpdatesTheTranslation(): void

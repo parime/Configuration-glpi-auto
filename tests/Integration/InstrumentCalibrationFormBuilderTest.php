@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
 use Ticket;
 
 /**
- * The "Référence ou numéro de série" question is optional — same "attach if you have it" style of
+ * The "Référence ou numéro de série" question is optional: same "attach if you have it" style of
  * reasoning as the optional file questions elsewhere in this catalog, just for a text detail here.
  */
 final class InstrumentCalibrationFormBuilderTest extends TestCase

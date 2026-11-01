@@ -26,7 +26,7 @@ use TicketTemplateMandatoryField;
 
 /**
  * The real point of `TicketTemplateBuilder` is the split it wires up (see its own docblock): base
- * users (Self-Service/Read-Only) get a minimal template, everyone else gets the full one — resolved
+ * users (Self-Service/Read-Only) get a minimal template, everyone else gets the full one: resolved
  * via `TicketTemplate::getAllowedFields(true)`, the same authoritative source GLPI's own admin UI
  * uses (the class's docblock explains a real earlier mistake from hand-deriving these IDs instead).
  * This suite resolves search option ids the same way, rather than hardcoding numbers.
@@ -74,7 +74,7 @@ final class TicketTemplateBuilderTest extends TestCase
         $categoryHidden = new TicketTemplateHiddenField();
         $this->assertFalse(
             $categoryHidden->getFromDBByCrit(['tickettemplates_id' => $simplified->getID(), 'num' => $so['itilcategories_id']]),
-            'itilcategories_id must stay visible — scoped via is_helpdeskvisible, not this hidden-field mechanism.'
+            'itilcategories_id must stay visible: scoped via is_helpdeskvisible, not this hidden-field mechanism.'
         );
 
         $mandatory = new TicketTemplateMandatoryField();
@@ -132,6 +132,6 @@ final class TicketTemplateBuilderTest extends TestCase
             'FROM' => TicketTemplateHiddenField::getTable(),
             'WHERE' => ['tickettemplates_id' => $simplified->getID(), 'num' => $so['urgency']],
         ])->count();
-        $this->assertSame(1, $count, 'Exactly one hidden-field row must exist — no duplicate.');
+        $this->assertSame(1, $count, 'Exactly one hidden-field row must exist: no duplicate.');
     }
 }

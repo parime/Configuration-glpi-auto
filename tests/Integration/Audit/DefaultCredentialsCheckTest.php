@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
  * Deliberately never mutates the real `glpi`/`tech`/`normal`/`post-only` accounts here: this suite
  * runs against the same shared, persistent instance as every other Integration test in this
  * plugin (and this plugin's own `tests/integration-bootstrap.php` logs in as `glpi`/`glpi` to run
- * every other test) — changing one of these passwords, even temporarily, would risk locking out
+ * every other test): changing one of these passwords, even temporarily, would risk locking out
  * the whole suite or a real user depending on execution order/timing. What IS safely verifiable
  * without touching any real credential: the check never claims to be fixable, and any finding it
  * does return (state-dependent, not forced either way) is well-formed.

@@ -45,7 +45,7 @@ use ITILCategory;
  *
  * No conditional branch : the four request types here (risk report, accident declaration, PPE
  * request, other) are handled by the same HSE team through the same intake process, and each is
- * already self-explanatory from its label — the details that would otherwise justify a follow-up
+ * already self-explanatory from its label: the details that would otherwise justify a follow-up
  * field belong in the free-text "Précisions complémentaires" field every class in this generalization
  * batch adds last, replacing the generic Description field these smart forms no longer have.
  */

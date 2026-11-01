@@ -19,7 +19,7 @@
       <li>
         {% if node.icon is defined %}<span class="cga-category-tree-icon" style="display: none;">{{ node.icon }}</span>{% endif %}
         {{ node.name }}
-        {% if node.comment is defined %}<span class="text-muted small"> — {{ node.comment }}</span>{% endif %}
+        {% if node.comment is defined %}<span class="text-muted small"> - {{ node.comment }}</span>{% endif %}
         {% if node.children is defined and node.children|length %}
           {{ _self.category_tree(node.children) }}
         {% endif %}
@@ -52,11 +52,11 @@
 
     {% if prereq_checks is defined and prereq_checks|filter(c => not c.ok)|length > 0 %}
       <div class="alert alert-warning mb-3">
-        <strong>{{ __('Vérification de l\'environnement', 'configurationglpiauto') }}</strong> —
+        <strong>{{ __('Vérification de l\'environnement', 'configurationglpiauto') }}</strong> -
         {{ __('certains points ci-dessous peuvent limiter des fonctionnalités du wizard. Cela n\'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée vous intéresse.', 'configurationglpiauto') }}
         <ul class="mb-0 mt-1">
           {% for check in prereq_checks %}
-            <li>{{ check.ok ? '✅' : '⚠️' }} {{ check.label }}{% if not check.ok and check.hint %} — <span class="text-muted">{{ check.hint }}</span>{% endif %}</li>
+            <li>{{ check.ok ? '✅' : '⚠️' }} {{ check.label }}{% if not check.ok and check.hint %} - <span class="text-muted">{{ check.hint }}</span>{% endif %}</li>
           {% endfor %}
         </ul>
       </div>
@@ -64,17 +64,17 @@
 
     {# Issue #115 ("Mode Dry Run amélioré"), volet "validation pré-déploiement" : mêmes droits que
        ceux vérifiés silencieusement dans le bloc "finish" (front/wizard.php) avant d'exécuter
-       chaque fonctionnalité — affichés ici en amont pour qu'un opérateur dont le droit propre à ce
+       chaque fonctionnalité : affichés ici en amont pour qu'un opérateur dont le droit propre à ce
        plugin est délégué (voir Profile.php) mais qui ne détient pas le droit natif GLPI
        correspondant sache, avant de remplir tout l'assistant, qu'une fonctionnalité entière sera
        silencieusement ignorée à la fin plutôt que de le découvrir après coup. #}
     {% if rights_preview is defined and rights_preview|filter(c => not c.ok)|length > 0 %}
       <div class="alert alert-warning mb-3">
-        <strong>{{ __('Droits de l\'opérateur actuel', 'configurationglpiauto') }}</strong> —
+        <strong>{{ __('Droits de l\'opérateur actuel', 'configurationglpiauto') }}</strong> -
         {{ __('certains droits GLPI natifs vous manquent : les fonctionnalités correspondantes seront silencieusement ignorées à l\'étape finale. Cela n\'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée vous intéresse.', 'configurationglpiauto') }}
         <ul class="mb-0 mt-1">
           {% for check in rights_preview %}
-            <li>{{ check.ok ? '✅' : '⚠️' }} {{ check.label }}{% if not check.ok and check.hint %} — <span class="text-muted">{{ check.hint }}</span>{% endif %}</li>
+            <li>{{ check.ok ? '✅' : '⚠️' }} {{ check.label }}{% if not check.ok and check.hint %} - <span class="text-muted">{{ check.hint }}</span>{% endif %}</li>
           {% endfor %}
         </ul>
       </div>
@@ -91,7 +91,7 @@
       {# ---------------------------------------------------------------- Étape 1 : Profil #}
       <div class="cga-wizard-step" data-step="1">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 1 : {{ __('Profil', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Quel profil correspond le mieux à votre organisation ? Ce choix pré-remplit la structure d\'entités, le calendrier et les SLA des étapes suivantes avec des valeurs adaptées — vous pourrez tout ajuster ensuite.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Quel profil correspond le mieux à votre organisation ? Ce choix pré-remplit la structure d\'entités, le calendrier et les SLA des étapes suivantes avec des valeurs adaptées : vous pourrez tout ajuster ensuite.', 'configurationglpiauto') }}</p>
 
         {% for id, profile in profiles %}
           <div class="form-check mb-2">
@@ -105,14 +105,14 @@
             >
             <label class="form-check-label" for="cga-profile-{{ profile.id }}">
               <strong>{{ profile.name }}</strong>
-              {% if profile.description %}<span class="text-muted"> — {{ profile.description }}</span>{% endif %}
+              {% if profile.description %}<span class="text-muted"> - {{ profile.description }}</span>{% endif %}
             </label>
           </div>
         {% endfor %}
 
         <div class="alert alert-light border mt-3 mb-0 d-flex flex-wrap align-items-center gap-3" id="cga-express-panel">
           <p class="mb-0 flex-fill" style="min-width: 260px;">
-            <strong>⚡ {{ __('Configuration express', 'configurationglpiauto') }}</strong> —
+            <strong>⚡ {{ __('Configuration express', 'configurationglpiauto') }}</strong> -
             {{ __('applique tout de suite les réglages recommandés ci-dessus pour le profil sélectionné, sans repasser par chacune des 18 étapes. Idéal pour une installation simple/mono-site ; pour une structure multi-site ou MSP, l\'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout s\'applique à l\'entité racine seule.', 'configurationglpiauto') }}
           </p>
           <button
@@ -130,7 +130,7 @@
       {# ---------------------------------------------------------------- Étape 2 : Structure des entités #}
       <div class="cga-wizard-step" data-step="2" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 2 : {{ __('Structure des entités', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Choisissez la structure d\'entités à mettre en place — l\'aperçu à droite se met à jour en direct.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Choisissez la structure d\'entités à mettre en place : l\'aperçu à droite se met à jour en direct.', 'configurationglpiauto') }}</p>
 
         {% include '@configurationglpiauto/_entity_structure_fields.html.twig' %}
       </div>
@@ -138,7 +138,7 @@
       {# ---------------------------------------------------------------- Étape 3 : Lieux #}
       <div class="cga-wizard-step" data-step="3" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 3 : {{ __('Lieux', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : associez une adresse (ou plus) à une entité de l\'arborescence — rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, aucun lieu créé, comme sur une installation GLPI neuve.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : associez une adresse (ou plus) à une entité de l\'arborescence : rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, aucun lieu créé, comme sur une installation GLPI neuve.', 'configurationglpiauto') }}</p>
         {# Issue #343 : le plan d'adressage (réseaux IP et VLAN) se déclare par site, une fois les lieux créés. #}
         <p class="small"><i class="ti ti-network me-1"></i>{{ __('Une fois les lieux créés, déclarez leurs réseaux IP et VLAN, ou importez-les depuis un tableau :', 'configurationglpiauto') }}
           <a href="{{ config('root_doc') }}/plugins/configurationglpiauto/front/addressplan.php" target="_blank" rel="noopener">{{ __('Plan d\'adressage (réseaux et VLAN)', 'configurationglpiauto') }}</a></p>
@@ -149,14 +149,14 @@
           <label class="form-check-label" for="cga-locations-enabled">{{ __('Associer une adresse à des entités de l\'arborescence', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-locations-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-2">{{ __('Parcourez l\'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur les entités qui en ont une (site, agence...) — les autres n\'auront aucun lieu créé, comme sur une installation GLPI neuve.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Parcourez l\'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur les entités qui en ont une (site, agence...) : les autres n\'auront aucun lieu créé, comme sur une installation GLPI neuve.', 'configurationglpiauto') }}</p>
 
           <div class="form-check form-switch mb-2">
             <input type="hidden" name="location_geocoding_enabled" value="0">
             <input type="checkbox" name="location_geocoding_enabled" value="1" class="form-check-input" id="cga-location-geocoding-enabled" {{ config.location_geocoding_enabled|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="cga-location-geocoding-enabled">{{ __('Assistant d\'adresse (suggestions de rue pendant la saisie, ville/région/pays pré-remplis)', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small mb-2">{{ __('Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions — activé par défaut, désactivable ci-dessus si l\'envoi de l\'adresse en cours de saisie à ce service pose problème.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par défaut) pour proposer des suggestions : activé par défaut, désactivable ci-dessus si l\'envoi de l\'adresse en cours de saisie à ce service pose problème.', 'configurationglpiauto') }}</p>
 
           <div id="cga-location-geocoding-fields" style="display: none;" class="mb-3">
             <label class="form-label" for="cga-location-geocoding-endpoint">{{ __('Service de géocodage (avancé)', 'configurationglpiauto') }}</label>
@@ -169,7 +169,7 @@
             <input type="checkbox" name="entity_native_address_enabled" value="1" class="form-check-input" id="cga-entity-native-address-enabled" {{ config.entity_native_address_enabled|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="cga-entity-native-address-enabled">{{ __('Compléter aussi la fiche adresse native de chaque entité (GLPI > Entités > Adresse)', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small mb-2">{{ __('Reprend l\'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper — ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Reprend l\'adresse déjà saisie ci-dessous pour chaque entité, sans la retaper : ajoute juste téléphone/fax/site web/e-mail, propres à la fiche entité.', 'configurationglpiauto') }}</p>
 
 
           <div class="form-check form-switch mb-2">
@@ -177,10 +177,10 @@
             <input type="checkbox" name="country_holidays_enabled" value="1" class="form-check-input" id="cga-country-holidays-enabled" {{ config.country_holidays_enabled|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="cga-country-holidays-enabled">{{ __('Fermetures automatiques selon le pays (jours fériés)', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small mb-2">{{ __('Ajoute les jours fériés à date fixe du pays saisi ci-dessous, rattachés automatiquement au calendrier du site/client concerné — France par défaut si aucun pays n\'est saisi (y compris en mode mono-site sans adresse). Un pays saisi mais non reconnu est simplement ignoré, sans rien inventer.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Ajoute les jours fériés à date fixe du pays saisi ci-dessous, rattachés automatiquement au calendrier du site/client concerné : France par défaut si aucun pays n\'est saisi (y compris en mode mono-site sans adresse). Un pays saisi mais non reconnu est simplement ignoré, sans rien inventer.', 'configurationglpiauto') }}</p>
           <div class="alert alert-warning py-2 px-3 mb-3" id="cga-country-holidays-warning" style="display: none;">
             <i class="ti ti-alert-triangle"></i>
-            {{ __('Sans adresse complétée ci-dessous pour un site/client, celui-ci recevra les jours fériés français par défaut — complétez au moins le champ "Pays" de chaque site pour que les sites hors France reçoivent leurs propres jours fériés.', 'configurationglpiauto') }}
+            {{ __('Sans adresse complétée ci-dessous pour un site/client, celui-ci recevra les jours fériés français par défaut : complétez au moins le champ "Pays" de chaque site pour que les sites hors France reçoivent leurs propres jours fériés.', 'configurationglpiauto') }}
           </div>
 
           <div id="cga-locations-tree"></div>
@@ -232,7 +232,7 @@
 
             <div class="mb-3">
               <label class="form-label">{{ __('Jours ouvrés et horaires', 'configurationglpiauto') }}</label>
-              <p class="text-muted small mb-2">{{ __('Un horaire par jour coché — modifiez-le librement pour un jour qui diffère des autres (ex. vendredi 9h-12h seulement).', 'configurationglpiauto') }}</p>
+              <p class="text-muted small mb-2">{{ __('Un horaire par jour coché : modifiez-le librement pour un jour qui diffère des autres (ex. vendredi 9h-12h seulement).', 'configurationglpiauto') }}</p>
               <div id="cga-calendar-days"></div>
               <input type="hidden" name="calendar_begin" value="{{ config.calendar_begin|default('08:00') }}">
               <input type="hidden" name="calendar_end" value="{{ config.calendar_end|default('18:00') }}">
@@ -264,7 +264,7 @@
 
             <p class="text-muted small mb-0">
               <i class="ti ti-info-circle"></i>
-              {{ __('Les jours fériés sont désormais ajoutés automatiquement selon le pays saisi à l\'étape "Lieux" (France par défaut si aucun pays n\'est saisi) — voir la case "Fermetures automatiques selon le pays" à cette étape.', 'configurationglpiauto') }}
+              {{ __('Les jours fériés sont désormais ajoutés automatiquement selon le pays saisi à l\'étape "Lieux" (France par défaut si aucun pays n\'est saisi) : voir la case "Fermetures automatiques selon le pays" à cette étape.', 'configurationglpiauto') }}
             </p>
           </div>
         </div>
@@ -328,7 +328,7 @@
                 id="cga-sla-astreinte"
                 {{ config.sla_astreinte|default(0) ? 'checked' : '' }}
               >
-              <label class="form-check-label" for="cga-sla-astreinte">{{ __('Astreinte (couverture 24h/24, 7j/7 — le délai continue de courir en dehors des horaires ouvrés)', 'configurationglpiauto') }}</label>
+              <label class="form-check-label" for="cga-sla-astreinte">{{ __('Astreinte (couverture 24h/24, 7j/7 : le délai continue de courir en dehors des horaires ouvrés)', 'configurationglpiauto') }}</label>
             </div>
 
             {# Issue #322 : un SLM/SLA deja cree n'est jamais modifie, sauf demande explicite. #}
@@ -368,7 +368,7 @@
               >
               <label class="form-check-label" for="cga-ola-enabled">{{ __('Ajouter des engagements internes (OLA)', 'configurationglpiauto') }}</label>
             </div>
-            <p class="text-muted small">{{ __('L\'OLA est un engagement interne entre le support et les équipes techniques, plus court que le SLA externe — il doit être tenu pour que le SLA le soit aussi.', 'configurationglpiauto') }}</p>
+            <p class="text-muted small">{{ __('L\'OLA est un engagement interne entre le support et les équipes techniques, plus court que le SLA externe : il doit être tenu pour que le SLA le soit aussi.', 'configurationglpiauto') }}</p>
 
             <table class="table table-sm mb-3" id="cga-ola-fields" style="max-width: 480px; display: none;">
               <thead>
@@ -420,7 +420,7 @@
             >
             <span>% {{ __('du délai écoulé → priorité relevée d\'un cran (résolution, et engagement interne si activé)', 'configurationglpiauto') }}</span>
           </div>
-          <p class="text-muted small">{{ __('S\'applique à tout SLA/OLA créé sur cette étape — partagé ou par site/client.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small">{{ __('S\'applique à tout SLA/OLA créé sur cette étape : partagé ou par site/client.', 'configurationglpiauto') }}</p>
         </div>
 
         <div class="mt-3 pt-3 border-top">
@@ -430,7 +430,7 @@
             <label class="form-check-label" for="cga-escalation-enabled">{{ __('Activer l\'escalade entre niveaux de support (N1 → N2 → N3)', 'configurationglpiauto') }}</label>
           </div>
           <div id="cga-escalation-fields" style="display: none;">
-            <p class="text-muted small mb-2">{{ __('Crée 3 groupes techniciens (Support N1/N2/N3 — convention ITSM la plus répandue). Tout ticket créé démarre au N1 ; l\'escalade automatique (ci-dessous) le réaffecte au niveau suivant si le SLA de résolution approche ou dépasse son échéance.', 'configurationglpiauto') }}</p>
+            <p class="text-muted small mb-2">{{ __('Crée 3 groupes techniciens (Support N1/N2/N3 : convention ITSM la plus répandue). Tout ticket créé démarre au N1 ; l\'escalade automatique (ci-dessous) le réaffecte au niveau suivant si le SLA de résolution approche ou dépasse son échéance.', 'configurationglpiauto') }}</p>
 
             <div class="form-check form-switch mb-2">
               <input type="hidden" name="support_tier_icons_enabled" value="0">
@@ -446,7 +446,7 @@
               <input type="checkbox" name="escalation_includes_n0" value="1" class="form-check-input" id="cga-escalation-includes-n0" {{ config.escalation_includes_n0|default(0) ? 'checked' : '' }}>
               <label class="form-check-label" for="cga-escalation-includes-n0">{{ __('Inclure le niveau N0 (portail libre-service) dans le récapitulatif', 'configurationglpiauto') }}</label>
             </div>
-            <p class="text-muted small mb-2">{{ __('N0 = le libre-service déjà configuré aux étapes Catalogue de services / Formulaire d\'accueil — pas un groupe supplémentaire, juste un repère pour situer où commence le support humain.', 'configurationglpiauto') }}</p>
+            <p class="text-muted small mb-2">{{ __('N0 = le libre-service déjà configuré aux étapes Catalogue de services / Formulaire d\'accueil : pas un groupe supplémentaire, juste un repère pour situer où commence le support humain.', 'configurationglpiauto') }}</p>
 
             <div class="form-check form-switch mb-2">
               <input type="hidden" name="escalation_auto_n1_n2" value="0">
@@ -467,7 +467,7 @@
       {# ---------------------------------------------------------------- Étape 6 : Catégories de tickets #}
       <div class="cga-wizard-step" data-step="6" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 6 : {{ __('Catégories de tickets', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : une arborescence de catégories thématiques (IT, Bâtiment, Flotte, RH...), pas une par type ITIL — le type (Incident/Demande) est déjà géré nativement par GLPI. Décochez les branches qui ne s\'appliquent pas à votre organisation.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : une arborescence de catégories thématiques (IT, Bâtiment, Flotte, RH...), pas une par type ITIL : le type (Incident/Demande) est déjà géré nativement par GLPI. Décochez les branches qui ne s\'appliquent pas à votre organisation.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
           <input type="hidden" name="category_enabled" value="0">
@@ -485,7 +485,7 @@
         <div id="cga-category-fields" style="display: none;">
           <div class="card mb-3" style="max-width: 640px;">
             <div class="card-body py-2">
-              <p class="text-muted small mb-2">{{ __('Profil métier — préremplit les branches ci-dessous et le SLA de l\'étape 5 (physique/administratif traité plus lentement que l\'IT). Toujours ajustable ensuite, dans les deux cas.', 'configurationglpiauto') }}</p>
+              <p class="text-muted small mb-2">{{ __('Profil métier : préremplit les branches ci-dessous et le SLA de l\'étape 5 (physique/administratif traité plus lentement que l\'IT). Toujours ajustable ensuite, dans les deux cas.', 'configurationglpiauto') }}</p>
               <div class="d-flex gap-2 flex-wrap">
                 <button type="button" class="btn btn-sm btn-outline-secondary cga-business-profile-btn" data-business-profile="it">{{ __('💻 IT pur', 'configurationglpiauto') }}</button>
                 <button type="button" class="btn btn-sm btn-outline-secondary cga-business-profile-btn" data-business-profile="rh">{{ __('👤 RH & Support interne', 'configurationglpiauto') }}</button>
@@ -536,7 +536,7 @@
                 {% if branch.key == 'batiment' %}
                   <div class="card mt-2" style="max-width: 640px;">
                     <div class="card-body py-2">
-                      <p class="text-muted small mb-2">{{ __('Actif personnalisé ESM (Enterprise Service Management) — en plus de l\'actif "Local" créé automatiquement pour cette branche.', 'configurationglpiauto') }}</p>
+                      <p class="text-muted small mb-2">{{ __('Actif personnalisé ESM (Enterprise Service Management) : en plus de l\'actif "Local" créé automatiquement pour cette branche.', 'configurationglpiauto') }}</p>
 
                       <div class="form-check form-switch mb-2">
                         <input type="hidden" name="fire_safety_assets_enabled" value="0">
@@ -595,7 +595,7 @@
       {# ---------------------------------------------------------------- Étape 7 : Catalogue de services #}
       <div class="cga-wizard-step" data-step="7" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 7 : {{ __('Catalogue de services', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : des formulaires prêts à l\'emploi dans le portail libre-service — l\'utilisateur choisit un service précis, jamais une catégorie ; le ticket est automatiquement routé vers la bonne catégorie.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : des formulaires prêts à l\'emploi dans le portail libre-service : l\'utilisateur choisit un service précis, jamais une catégorie ; le ticket est automatiquement routé vers la bonne catégorie.', 'configurationglpiauto') }}</p>
         <p class="text-muted small">{{ __('Quelques services vont plus loin avec de vraies questions (dates, quantités...) : le titre du ticket est alors calculé automatiquement, et/ou certaines questions ne s\'affichent que selon une réponse précédente (voir les badges ci-dessous).', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
@@ -612,7 +612,7 @@
         </div>
 
         <div id="cga-service-catalog-fields" style="display: none;">
-          <p class="text-muted small">{{ __('Un service par ligne, groupé par branche cochée à l\'étape Catégories — décocher une branche là-bas retire aussi ses services ici.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small">{{ __('Un service par ligne, groupé par branche cochée à l\'étape Catégories : décocher une branche là-bas retire aussi ses services ici.', 'configurationglpiauto') }}</p>
           <div id="cga-service-catalog-preview">
             {% for branch in categories_preview %}
               {% set branch_services = services_preview|filter(s => s.branch == branch.key) %}
@@ -665,7 +665,7 @@
       {# ---------------------------------------------------------------- Étape 8 : Statuts des éléments #}
       <div class="cga-wizard-step" data-step="8" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 8 : {{ __('Statuts des éléments', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : un jeu de statuts standards pour le parc (ordinateurs, moniteurs, téléphones...) — aucun n\'existe par défaut dans GLPI.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : un jeu de statuts standards pour le parc (ordinateurs, moniteurs, téléphones...) : aucun n\'existe par défaut dans GLPI.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
           <input type="hidden" name="state_enabled" value="0">
@@ -694,8 +694,8 @@
             <label class="form-check-label" for="cga-state-icons-enabled">{{ __('Ajouter des icônes (visibles dans la liste, le nom lui-même reste sans icône)', 'configurationglpiauto') }}</label>
           </div>
 
-          <p class="text-muted small mb-1">{{ __('Le statut décrit la situation d\'un équipement dans son cycle de vie (en stock, attribué, en panne...) — il sert à filtrer et suivre le parc, indépendamment de sa localisation ou de son entité. Ne cochez que les statuts qui correspondent à des situations réelles chez vous ; chacun peut être appliqué aux ordinateurs, téléphones, moniteurs, licences, etc.', 'configurationglpiauto') }}</p>
-          <p class="text-muted small mb-1">{{ __('Les statuts marqués « recommandé » sont ceux utilisés par assetsign-glpi (déclenchement automatique remise/don/vente/destruction/restitution) — les décocher n\'empêche rien de fonctionner mais réduit l\'interopérabilité entre les deux plugins si vous utilisez assetsign-glpi.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-1">{{ __('Le statut décrit la situation d\'un équipement dans son cycle de vie (en stock, attribué, en panne...) : il sert à filtrer et suivre le parc, indépendamment de sa localisation ou de son entité. Ne cochez que les statuts qui correspondent à des situations réelles chez vous ; chacun peut être appliqué aux ordinateurs, téléphones, moniteurs, licences, etc.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-1">{{ __('Les statuts marqués « recommandé » sont ceux utilisés par assetsign-glpi (déclenchement automatique remise/don/vente/destruction/restitution) : les décocher n\'empêche rien de fonctionner mais réduit l\'interopérabilité entre les deux plugins si vous utilisez assetsign-glpi.', 'configurationglpiauto') }}</p>
           <ul class="list-group" id="cga-state-preview" style="max-width: 560px;">
             {% for state in states_preview %}
               <li class="list-group-item d-flex align-items-start gap-2">
@@ -734,7 +734,7 @@
           <div class="form-check form-switch mb-1">
             <input type="hidden" name="assetsign_triggers_enabled" value="0">
             <input type="checkbox" name="assetsign_triggers_enabled" value="1" class="form-check-input" id="cga-assetsign-triggers-enabled" {{ config.assetsign_triggers_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-assetsign-triggers-enabled"><i class="ti ti-signature me-1"></i>{{ __('Plugin assetsign détecté — relier ses déclencheurs de fiches à ces statuts', 'configurationglpiauto') }}</label>
+            <label class="form-check-label" for="cga-assetsign-triggers-enabled"><i class="ti ti-signature me-1"></i>{{ __('Plugin assetsign détecté : relier ses déclencheurs de fiches à ces statuts', 'configurationglpiauto') }}</label>
           </div>
           <p class="text-muted small mb-2">{{ __('Quand un matériel passe dans l\'un de ces statuts, assetsign crée la fiche correspondante à faire signer. Un déclencheur déjà réglé dans assetsign n\'est jamais modifié. La restitution est déclenchée par « Attente restitution » : le retour en stock s\'accompagne en général du retrait de l\'utilisateur, déjà géré par assetsign lui-même.', 'configurationglpiauto') }}</p>
           <input type="hidden" name="assetsign_trigger_fields[]" value="">
@@ -761,7 +761,7 @@
       {# ---------------------------------------------------------------- Étape 9 : Raisons d'attente #}
       <div class="cga-wizard-step" data-step="9" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 9 : {{ __('Raisons d\'attente', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : des raisons de mise en attente avec relance et clôture automatiques — évite les tickets qui traînent indéfiniment. Le moteur d\'automatisation de GLPI est déjà actif par défaut, seules les raisons manquent.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : des raisons de mise en attente avec relance et clôture automatiques : évite les tickets qui traînent indéfiniment. Le moteur d\'automatisation de GLPI est déjà actif par défaut, seules les raisons manquent.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
           <input type="hidden" name="wait_reasons_enabled" value="0">
@@ -790,7 +790,7 @@
                 {% if reason.followup_weeks > 0 %}
                   <span class="text-muted small">{{ __('Relance toutes les', 'configurationglpiauto') }} {{ reason.followup_weeks }} {{ reason.followup_weeks > 1 ? __('semaines', 'configurationglpiauto') : __('semaine', 'configurationglpiauto') }}{% if reason.followups_before_resolution > 0 %}, {{ __('clôture automatique après', 'configurationglpiauto') }} {{ reason.followups_before_resolution }} {{ __('relances sans réponse', 'configurationglpiauto') }}{% endif %}</span>
                 {% else %}
-                  <span class="text-muted small">{{ __('Pas de relance automatique — catégorisation uniquement', 'configurationglpiauto') }}</span>
+                  <span class="text-muted small">{{ __('Pas de relance automatique : catégorisation uniquement', 'configurationglpiauto') }}</span>
                 {% endif %}
               </li>
             {% endfor %}
@@ -801,7 +801,7 @@
       {# ---------------------------------------------------------------- Étape 10 : Modèles de tickets #}
       <div class="cga-wizard-step" data-step="10" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 10 : {{ __('Modèles de tickets', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : sépare le formulaire de création de ticket en deux — le minimum pour un utilisateur de base, l\'interface complète pour le support.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : sépare le formulaire de création de ticket en deux : le minimum pour un utilisateur de base, l\'interface complète pour le support.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
           <input type="hidden" name="ticket_template_enabled" value="0">
@@ -825,7 +825,7 @@
           <div class="row">
             <div class="col-md-6">
               <ul class="list-group mb-3">
-                <li class="list-group-item list-group-item-secondary"><span class="cga-ticket-template-icon" style="display: none;">📝</span> {{ __('Simplifié — Self-Service, Read-Only', 'configurationglpiauto') }}</li>
+                <li class="list-group-item list-group-item-secondary"><span class="cga-ticket-template-icon" style="display: none;">📝</span> {{ __('Simplifié : Self-Service, Read-Only', 'configurationglpiauto') }}</li>
                 <li class="list-group-item">{{ __('Titre + description uniquement', 'configurationglpiauto') }}</li>
                 <li class="list-group-item">{{ __('Catégorie visible mais limitée aux 11 branches parentes', 'configurationglpiauto') }}</li>
                 <li class="list-group-item">{{ __('Urgence, impact, statut, lieu, attribution, niveaux de service (SLA/OLA) : masqués', 'configurationglpiauto') }}</li>
@@ -833,7 +833,7 @@
             </div>
             <div class="col-md-6">
               <ul class="list-group mb-3">
-                <li class="list-group-item list-group-item-secondary"><span class="cga-ticket-template-icon" style="display: none;">🛠️</span> {{ __('Complet — tous les autres profils', 'configurationglpiauto') }}</li>
+                <li class="list-group-item list-group-item-secondary"><span class="cga-ticket-template-icon" style="display: none;">🛠️</span> {{ __('Complet : tous les autres profils', 'configurationglpiauto') }}</li>
                 <li class="list-group-item">{{ __('Interface complète (aucun champ masqué)', 'configurationglpiauto') }}</li>
                 <li class="list-group-item">{{ __('Catégorie et urgence obligatoires', 'configurationglpiauto') }}</li>
               </ul>
@@ -852,7 +852,7 @@
             >
             <label class="form-check-label" for="cga-helpdesk-form-hide-fields">{{ __('Masquer Urgence, Observateurs et Lieu sur les formulaires natifs « Signaler un incident » / « Faire une demande »', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small">{{ __('Ces formulaires du portail libre-service sont un système distinct des modèles de tickets ci-dessus (nouveau moteur de formulaires GLPI 11) — un utilisateur de base n\'a pas la visibilité nécessaire pour juger de l\'urgence réelle de sa demande, c\'est au support de la qualifier.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small">{{ __('Ces formulaires du portail libre-service sont un système distinct des modèles de tickets ci-dessus (nouveau moteur de formulaires GLPI 11) : un utilisateur de base n\'a pas la visibilité nécessaire pour juger de l\'urgence réelle de sa demande, c\'est au support de la qualifier.', 'configurationglpiauto') }}</p>
         </div>
       </div>
 
@@ -986,7 +986,7 @@
       {# ---------------------------------------------------------------- Étape 13 : Droits LDAP par entité #}
       <div class="cga-wizard-step" data-step="13" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 13 : {{ __('Droits LDAP par entité', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : une règle d\'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l\'utilisateur lors de la synchronisation — ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n\'y a rien à générer.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : une règle d\'affectation automatique (entité + profil) par site, déclenchée par le groupe AD/LDAP de l\'utilisateur lors de la synchronisation : ne sert que si une synchronisation LDAP est prévue. Sans arborescence multi-site (étape 2), il n\'y a rien à générer.', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-3">
           <input type="hidden" name="ldap_rights_enabled" value="0">
@@ -1025,12 +1025,12 @@
             </div>
           </div>
 
-          <p class="text-muted small mb-1">{{ __('Une règle par site (feuille de l\'arborescence) — aperçu en fonction de l\'arborescence construite à l\'étape 2 :', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-1">{{ __('Une règle par site (feuille de l\'arborescence) : aperçu en fonction de l\'arborescence construite à l\'étape 2 :', 'configurationglpiauto') }}</p>
           <ul class="list-group" id="cga-ldap-rights-preview" style="max-width: 560px;"></ul>
 
           <hr class="my-3">
           <label class="form-label mb-1">{{ __('Règles par fonction/département (optionnel)', 'configurationglpiauto') }}</label>
-          <p class="text-muted small mb-2">{{ __('En complément de la règle par site ci-dessus, indépendant du site de l\'utilisateur — ex. le groupe AD "Finance" reçoit toujours tel profil, quel que soit son site. Chaque ligne devient une règle GLPI distincte, qui n\'affecte que le profil (pas l\'entité).', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('En complément de la règle par site ci-dessus, indépendant du site de l\'utilisateur : ex. le groupe AD "Finance" reçoit toujours tel profil, quel que soit son site. Chaque ligne devient une règle GLPI distincte, qui n\'affecte que le profil (pas l\'entité).', 'configurationglpiauto') }}</p>
           <div id="cga-ldap-function-rights-rows" class="mb-2"></div>
           <button type="button" class="btn btn-sm btn-outline-secondary" id="cga-ldap-function-rights-add">{{ __('+ Ajouter une règle', 'configurationglpiauto') }}</button>
         </div>
@@ -1039,7 +1039,7 @@
       {# ---------------------------------------------------------------- Étape 14 : Réglages généraux GLPI #}
       <div class="cga-wizard-step" data-step="14" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 14 : {{ __('Réglages généraux GLPI', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l\'usage — activez chaque groupe indépendamment selon vos besoins.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut peu pratiques à l\'usage : activez chaque groupe indépendamment selon vos besoins.', 'configurationglpiauto') }}</p>
 
         <div class="form-check mb-3">
           <input type="checkbox" class="form-check-input" id="cga-general-settings-select-all">
@@ -1129,7 +1129,7 @@
           <input type="checkbox" name="inventory_enabled" value="1" class="form-check-input" id="cga-inventory-enabled" {{ config.inventory_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-inventory-enabled">{{ __('Activer l\'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)', 'configurationglpiauto') }}</label>
         </div>
-        <p class="text-muted small mb-3">{{ __('Ouvre l\'endpoint d\'inventaire de GLPI (Configuration > Inventaire) pour que les agents installés sur le parc puissent remonter leurs données automatiquement. Décochée par défaut, comme la validation N+1 ci-dessous : ceci ouvre un vrai point d\'entrée réseau, pas juste du contenu — à activer seulement si vous comptez réellement déployer des agents.', 'configurationglpiauto') }}</p>
+        <p class="text-muted small mb-3">{{ __('Ouvre l\'endpoint d\'inventaire de GLPI (Configuration > Inventaire) pour que les agents installés sur le parc puissent remonter leurs données automatiquement. Décochée par défaut, comme la validation N+1 ci-dessous : ceci ouvre un vrai point d\'entrée réseau, pas juste du contenu : à activer seulement si vous comptez réellement déployer des agents.', 'configurationglpiauto') }}</p>
 
         <hr class="my-3">
         <div class="form-check form-switch mb-1">
@@ -1137,28 +1137,28 @@
           <input type="checkbox" name="validation_supervisor_routing_enabled" value="1" class="form-check-input" id="cga-validation-supervisor-routing-enabled" {{ config.validation_supervisor_routing_enabled|default(0) ? 'checked' : '' }}>
           <label class="form-check-label" for="cga-validation-supervisor-routing-enabled">{{ __('Validation automatique par le supérieur hiérarchique du demandeur (« N+1 »)', 'configurationglpiauto') }}</label>
         </div>
-        <p class="text-muted small mb-3">{{ __('Envoie automatiquement une demande d\'approbation au supérieur hiérarchique du demandeur (champ natif GLPI « Superviseur ») pour chaque ticket de type Demande. Décochée par défaut, contrairement au reste de cette page : ceci change un vrai comportement (approbation obligatoire), pas juste du contenu — et ne fait quelque chose que si le champ Superviseur des utilisateurs est renseigné (import LDAP ou saisie manuelle). Sans supérieur renseigné, aucune validation n\'est créée.', 'configurationglpiauto') }}</p>
+        <p class="text-muted small mb-3">{{ __('Envoie automatiquement une demande d\'approbation au supérieur hiérarchique du demandeur (champ natif GLPI « Superviseur ») pour chaque ticket de type Demande. Décochée par défaut, contrairement au reste de cette page : ceci change un vrai comportement (approbation obligatoire), pas juste du contenu : et ne fait quelque chose que si le champ Superviseur des utilisateurs est renseigné (import LDAP ou saisie manuelle). Sans supérieur renseigné, aucune validation n\'est créée.', 'configurationglpiauto') }}</p>
 
-        {# Visible uniquement si le plugin tiers "More satisfaction" est installé ET activé —
+        {# Visible uniquement si le plugin tiers "More satisfaction" est installé ET activé -
            aucune trace dans le formulaire sinon, comme demandé. #}
         {% if satisfaction_plugin_active %}
           <hr class="my-3">
           <div class="form-check form-switch mb-1">
             <input type="hidden" name="satisfaction_plugin_survey_enabled" value="0">
             <input type="checkbox" name="satisfaction_plugin_survey_enabled" value="1" class="form-check-input" id="cga-satisfaction-plugin-survey-enabled" {{ config.satisfaction_plugin_survey_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-satisfaction-plugin-survey-enabled">{{ __('Plugin "More satisfaction" détecté — créer une enquête de satisfaction toute faite', 'configurationglpiauto') }}</label>
+            <label class="form-check-label" for="cga-satisfaction-plugin-survey-enabled">{{ __('Plugin "More satisfaction" détecté : créer une enquête de satisfaction toute faite', 'configurationglpiauto') }}</label>
           </div>
-          <p class="text-muted small mb-0">{{ __('3 questions courantes (note sur 5, résolution oui/non, remarques libres), activée sur toute l\'instance. Différent de l\'enquête native ci-dessus — le plugin permet plusieurs questions et un rappel automatique, la case native ne fait qu\'une note sur 5.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-0">{{ __('3 questions courantes (note sur 5, résolution oui/non, remarques libres), activée sur toute l\'instance. Différent de l\'enquête native ci-dessus : le plugin permet plusieurs questions et un rappel automatique, la case native ne fait qu\'une note sur 5.', 'configurationglpiauto') }}</p>
         {% endif %}
 
-        {# Visible uniquement si le plugin tiers "VIP" est installé ET activé — aucune trace dans
+        {# Visible uniquement si le plugin tiers "VIP" est installé ET activé : aucune trace dans
            le formulaire sinon. #}
         {% if vip_plugin_active %}
           <hr class="my-3">
           <div class="form-check form-switch mb-1">
             <input type="hidden" name="vip_group_enabled" value="0">
             <input type="checkbox" name="vip_group_enabled" value="1" class="form-check-input" id="cga-vip-group-enabled" {{ config.vip_group_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-vip-group-enabled">{{ __('Plugin "VIP" détecté — créer le groupe "VIP" et l\'activer', 'configurationglpiauto') }}</label>
+            <label class="form-check-label" for="cga-vip-group-enabled">{{ __('Plugin "VIP" détecté : créer le groupe "VIP" et l\'activer', 'configurationglpiauto') }}</label>
           </div>
           <p class="text-muted small mb-0">{{ __('Crée un groupe natif "VIP" (à ne pas confondre avec un groupe de techniciens) et le marque comme groupe VIP auprès du plugin : ajoutez-y les personnes ou groupes prioritaires (direction, actionnaires...) dont les tickets doivent être mis en évidence.', 'configurationglpiauto') }}</p>
         {% endif %}
@@ -1169,7 +1169,7 @@
           <div class="form-check form-switch mb-1">
             <input type="hidden" name="assetsign_setup_enabled" value="0">
             <input type="checkbox" name="assetsign_setup_enabled" value="1" class="form-check-input" id="cga-assetsign-setup-enabled" {{ config.assetsign_setup_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-assetsign-setup-enabled"><i class="ti ti-signature me-1"></i>{{ __('Plugin assetsign détecté — renseigner l\'entreprise et le lien de la charte informatique', 'configurationglpiauto') }}</label>
+            <label class="form-check-label" for="cga-assetsign-setup-enabled"><i class="ti ti-signature me-1"></i>{{ __('Plugin assetsign détecté : renseigner l\'entreprise et le lien de la charte informatique', 'configurationglpiauto') }}</label>
           </div>
           <p class="text-muted small mb-2">{{ __('L\'entreprise apparaît en tête des PDF de remise ; le lien de la charte est le prérequis des campagnes de charte d\'assetsign. Seuls les réglages encore vides dans assetsign sont renseignés.', 'configurationglpiauto') }}</p>
           <div class="row g-2 mb-0" style="max-width: 760px;">
@@ -1190,7 +1190,7 @@
           <div class="form-check form-switch mb-1">
             <input type="hidden" name="grcmanager_ciso_group_enabled" value="0">
             <input type="checkbox" name="grcmanager_ciso_group_enabled" value="1" class="form-check-input" id="cga-grcmanager-ciso-group-enabled" {{ config.grcmanager_ciso_group_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-grcmanager-ciso-group-enabled">{{ __('Plugin GRC Manager détecté — créer le groupe "RSSI" et le déclarer dans GRC Manager', 'configurationglpiauto') }}</label>
+            <label class="form-check-label" for="cga-grcmanager-ciso-group-enabled">{{ __('Plugin GRC Manager détecté : créer le groupe "RSSI" et le déclarer dans GRC Manager', 'configurationglpiauto') }}</label>
           </div>
           <p class="text-muted small mb-2">{{ __('Ses membres liront les documents de tous les audits internes et les copies de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la configuration de GRC Manager.', 'configurationglpiauto') }}</p>
           <div class="form-check form-switch mb-1">
@@ -1216,14 +1216,14 @@
           {% endif %}
         {% endif %}
 
-        {# Visible uniquement si le plugin tiers "Tag" est installé ET activé — aucune trace dans
+        {# Visible uniquement si le plugin tiers "Tag" est installé ET activé : aucune trace dans
            le formulaire sinon. #}
         {% if tag_plugin_active %}
           <hr class="my-3">
           <div class="form-check form-switch mb-1">
             <input type="hidden" name="tag_library_enabled" value="0">
             <input type="checkbox" name="tag_library_enabled" value="1" class="form-check-input" id="cga-tag-library-enabled" {{ config.tag_library_enabled|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-tag-library-enabled">{{ __('Plugin "Tag" détecté — créer une bibliothèque de tags courants', 'configurationglpiauto') }}</label>
+            <label class="form-check-label" for="cga-tag-library-enabled">{{ __('Plugin "Tag" détecté : créer une bibliothèque de tags courants', 'configurationglpiauto') }}</label>
           </div>
           <p class="text-muted small mb-0">{{ __('6 tags génériques utilisables sur tout objet GLPI (Prioritaire, Urgent, À vérifier, Obsolète, Garantie active, Confidentiel), avec une couleur distincte chacun.', 'configurationglpiauto') }}</p>
         {% endif %}
@@ -1362,7 +1362,7 @@
           <label class="form-check-label" for="cga-recurring-ticket-library-enabled">{{ __('Créer des modèles de tickets pour les tâches récurrentes courantes (revue utilisateurs, maintenance, mises à jour)', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-recurring-ticket-library-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-1">{{ __('Contenu prêt à l\'emploi uniquement — aucune planification automatique créée : à sélectionner vous-même dans Configuration > Intitulés > Assistance > Tickets récurrents une fois le groupe et la fréquence décidés.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-1">{{ __('Contenu prêt à l\'emploi uniquement : aucune planification automatique créée : à sélectionner vous-même dans Configuration > Intitulés > Assistance > Tickets récurrents une fois le groupe et la fréquence décidés.', 'configurationglpiauto') }}</p>
           <ul class="mb-0">
             {% for tpl in recurring_ticket_library_preview %}
               <li>{{ tpl.name }}</li>
@@ -1376,7 +1376,7 @@
           <label class="form-check-label" for="cga-request-type-translations-enabled">{{ __('Traduire les sources de demande natives de GLPI', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-request-type-translations-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-1">{{ __('GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, sans traduction — une session française (ou allemande, italienne, espagnole) les voit telles quelles tant qu\'aucune traduction n\'existe.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-1">{{ __('GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, sans traduction : une session française (ou allemande, italienne, espagnole) les voit telles quelles tant qu\'aucune traduction n\'existe.', 'configurationglpiauto') }}</p>
           <div class="form-check form-switch mb-2">
             <input type="hidden" name="request_type_icons_enabled" value="0">
             <input type="checkbox" name="request_type_icons_enabled" value="1" class="form-check-input" id="cga-request-type-icons-enabled" {{ config.request_type_icons_enabled|default(0) ? 'checked' : '' }}>
@@ -1395,7 +1395,7 @@
           <label class="form-check-label" for="cga-user-categories-enabled">{{ __('Créer des catégories d\'utilisateur courantes', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-user-categories-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-1">{{ __('Classification indépendante des profils/droits — qui est la personne pour l\'organisation (salarié, prestataire...), pas ce qu\'elle peut faire dans GLPI. Importable depuis un attribut LDAP, utilisable en critère de ciblage de notification et en statistiques.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-1">{{ __('Classification indépendante des profils/droits : qui est la personne pour l\'organisation (salarié, prestataire...), pas ce qu\'elle peut faire dans GLPI. Importable depuis un attribut LDAP, utilisable en critère de ciblage de notification et en statistiques.', 'configurationglpiauto') }}</p>
           <div class="form-check form-switch mb-2">
             <input type="hidden" name="user_category_icons_enabled" value="0">
             <input type="checkbox" name="user_category_icons_enabled" value="1" class="form-check-input" id="cga-user-category-icons-enabled" {{ config.user_category_icons_enabled|default(0) ? 'checked' : '' }}>
@@ -1414,7 +1414,7 @@
           <label class="form-check-label" for="cga-field-unicity-enabled">{{ __('Interdire les numéros de série en double', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-field-unicity-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-1">{{ __('Bloque la création ou la modification d\'un élément si son numéro de série existe déjà sur un autre élément du même type — évite les doublons issus d\'une saisie manuelle ou d\'un import incohérent. Un numéro de série vide n\'est jamais considéré comme un doublon.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-1">{{ __('Bloque la création ou la modification d\'un élément si son numéro de série existe déjà sur un autre élément du même type : évite les doublons issus d\'une saisie manuelle ou d\'un import incohérent. Un numéro de série vide n\'est jamais considéré comme un doublon.', 'configurationglpiauto') }}</p>
           <p class="text-muted small mb-0">
             {% for rule in field_unicity_rules_preview %}{{ rule.label }}{% if not loop.last %}, {% endif %}{% endfor %}
           </p>
@@ -1426,7 +1426,7 @@
           <label class="form-check-label" for="cga-rss-feeds-enabled">{{ __('Ajouter des flux RSS utiles (sécurité CERT-FR, notes de version GLPI)', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-rss-feeds-fields" style="display: none;" class="mb-3">
-          <p class="text-muted small mb-1">{{ __('Visible dans Outils > Flux RSS pour toute l\'instance — utile pour suivre les vulnérabilités affectant le parc et les nouvelles versions de GLPI sans quitter l\'outil.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-1">{{ __('Visible dans Outils > Flux RSS pour toute l\'instance : utile pour suivre les vulnérabilités affectant le parc et les nouvelles versions de GLPI sans quitter l\'outil.', 'configurationglpiauto') }}</p>
           <ul class="mb-0">
             {% for feed in rss_feeds_preview %}
               <li>{{ feed.name }}</li>
@@ -1524,7 +1524,7 @@
               <strong>{{ __('Gabarits d\'évènements externes', 'configurationglpiauto') }}</strong>
               <ul class="mb-0">
                 {% for tpl in planning_events_preview.templates %}
-                  <li><span class="cga-planning-events-icon" style="display: none;"></span>{{ tpl.name }} <span class="text-muted small">— {{ tpl.category }}</span></li>
+                  <li><span class="cga-planning-events-icon" style="display: none;"></span>{{ tpl.name }} <span class="text-muted small">- {{ tpl.category }}</span></li>
                 {% endfor %}
               </ul>
             </div>
@@ -1535,7 +1535,7 @@
       {# ---------------------------------------------------------------- Étape 16 : Projets #}
       <div class="cga-wizard-step" data-step="16" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 16 : {{ __('Projets', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : des intitulés pour le module Projets, aucun n\'existe par défaut dans GLPI (hors les 3 statuts natifs, déjà suffisants — non modifiés dans l\'export de production audité).', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : des intitulés pour le module Projets, aucun n\'existe par défaut dans GLPI (hors les 3 statuts natifs, déjà suffisants : non modifiés dans l\'export de production audité).', 'configurationglpiauto') }}</p>
 
         <div class="form-check form-switch mb-2">
           <input type="hidden" name="project_taxonomy_enabled" value="0">
@@ -1601,7 +1601,7 @@
           <label class="form-check-label" for="cga-project-templates-enabled">{{ __('Créer des modèles de projet pré-structurés (tâches déjà liées)', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-project-templates-fields" style="display: none;">
-          <p class="text-muted small mb-2">{{ __('Un vrai projet marqué comme modèle, avec ses tâches déjà rattachées — "+ Nouveau" sur Projets propose ensuite de démarrer depuis ce modèle, tâches incluses.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Un vrai projet marqué comme modèle, avec ses tâches déjà rattachées - "+ Nouveau" sur Projets propose ensuite de démarrer depuis ce modèle, tâches incluses.', 'configurationglpiauto') }}</p>
           <div class="row">
             {% for tpl in project_templates_preview %}
               <div class="col-md-6 mb-2">
@@ -1691,7 +1691,7 @@
           <label class="form-check-label" for="cga-branding-per-client-enabled">{{ __('Couleur différente par client/site (au lieu d\'une seule couleur partagée)', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-branding-per-client-fields" style="display: none;">
-          <p class="text-muted small mb-2">{{ __('Une couleur par nœud de premier niveau de l\'arborescence (étape 2) — préremplie avec la couleur ci-dessus, ajustable individuellement.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Une couleur par nœud de premier niveau de l\'arborescence (étape 2) : préremplie avec la couleur ci-dessus, ajustable individuellement.', 'configurationglpiauto') }}</p>
           <div id="cga-branding-per-client-panels" class="d-flex gap-3 flex-wrap"></div>
         </div>
 
@@ -1708,7 +1708,7 @@
           <label class="form-check-label" for="cga-entity-logos-enabled">{{ __('Ajouter un logo par entité', 'configurationglpiauto') }}</label>
         </div>
         <div id="cga-entity-logos-fields" style="display: none;">
-          <p class="text-muted small mb-2">{{ __('Un logo par site/client de l\'arborescence (étape 2) — remplace le logo GLPI dans l\'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 Mo maximum. L\'emplacement dans l\'en-tête GLPI est petit (environ 100×55 px) : une image large ou carrée sera automatiquement réduite pour y tenir sans déformation, un format proche de ce ratio donnera le meilleur rendu. Choisissez un fichier pour le voir dans l\'aperçu ci-dessus.', 'configurationglpiauto') }}</p>
+          <p class="text-muted small mb-2">{{ __('Un logo par site/client de l\'arborescence (étape 2) : remplace le logo GLPI dans l\'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 Mo maximum. L\'emplacement dans l\'en-tête GLPI est petit (environ 100×55 px) : une image large ou carrée sera automatiquement réduite pour y tenir sans déformation, un format proche de ce ratio donnera le meilleur rendu. Choisissez un fichier pour le voir dans l\'aperçu ci-dessus.', 'configurationglpiauto') }}</p>
           <div id="cga-entity-logos-panels"></div>
         </div>
 
@@ -1724,16 +1724,16 @@
           >
           <label class="form-check-label" for="cga-notification-branding-enabled">{{ __('Habiller les e-mails de notification (Nouveau ticket, Mise à jour, Résolution, Suivi)', 'configurationglpiauto') }}</label>
         </div>
-        <p class="text-muted small mb-0">{{ __('Remplace le modèle de notification GLPI par défaut de ces 4 évènements par une version HTML reprenant la couleur et le logo ci-dessus — un e-mail modifié à la main ensuite n\'est plus jamais réécrit par une réexécution de l\'assistant.', 'configurationglpiauto') }}</p>
+        <p class="text-muted small mb-0">{{ __('Remplace le modèle de notification GLPI par défaut de ces 4 évènements par une version HTML reprenant la couleur et le logo ci-dessus : un e-mail modifié à la main ensuite n\'est plus jamais réécrit par une réexécution de l\'assistant.', 'configurationglpiauto') }}</p>
       </div>
 
       {# ---------------------------------------------------------------- Étape 18 : Configuration SMTP #}
       <div class="cga-wizard-step" data-step="18" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 18 : {{ __('Configuration SMTP', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Optionnel : révise directement les réglages d\'envoi d\'e-mail natifs de GLPI (Configuration > Notifications). Le test de connexion se fait après application, depuis cet écran natif — GLPI teste toujours la configuration réellement enregistrée, jamais un formulaire en cours de saisie.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Optionnel : révise directement les réglages d\'envoi d\'e-mail natifs de GLPI (Configuration > Notifications). Le test de connexion se fait après application, depuis cet écran natif : GLPI teste toujours la configuration réellement enregistrée, jamais un formulaire en cours de saisie.', 'configurationglpiauto') }}</p>
 
         {# Issue #121 ("Configuration SMTP avancée") : ces champs ne vivent JAMAIS dans Config
-           propre au plugin — voir la docblock de SmtpBuilder. Pré-remplis depuis smtp_defaults
+           propre au plugin : voir la docblock de SmtpBuilder. Pré-remplis depuis smtp_defaults
            (lu directement de $CFG_GLPI dans front/wizard.php), jamais depuis `config`. #}
         <div class="form-check form-switch mb-3">
           <input type="hidden" name="smtp_enabled" value="0">
@@ -1799,7 +1799,7 @@
           <div>
             {{ __('Une fois cette étape terminée, testez l\'envoi d\'un e-mail réel depuis', 'configurationglpiauto') }}
             <a href="{{ config('root_doc') }}/front/notificationmailingsetting.form.php" target="_blank" rel="noopener">{{ __('Configuration > Notifications', 'configurationglpiauto') }}</a>
-            {{ __('— GLPI y envoie un vrai message de test et affiche le résultat détaillé.', 'configurationglpiauto') }}
+            {{ __('- GLPI y envoie un vrai message de test et affiche le résultat détaillé.', 'configurationglpiauto') }}
           </div>
         </div>
       </div>
@@ -1807,15 +1807,15 @@
       {# ---------------------------------------------------------------- Étape 19 : Récapitulatif #}
       <div class="cga-wizard-step" data-step="19" style="display: none;">
         <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 19 : {{ __('Récapitulatif', 'configurationglpiauto') }}</h3>
-        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer — cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits/modèles de projet.', 'configurationglpiauto') }}</p>
+        <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer : cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits/modèles de projet.', 'configurationglpiauto') }}</p>
 
         <div class="alert alert-info d-flex align-items-center gap-2 mb-3">
           <i class="ti ti-clock"></i>
           {# Issue #115 ("Mode Dry Run amélioré") : durée estimée dynamique (par paliers, jamais
-             une fausse précision en secondes — aucune mesure réelle de durée n'existe dans ce
+             une fausse précision en secondes : aucune mesure réelle de durée n'existe dans ce
              plugin pour la calibrer plus finement), calculée dans fillSummary() à partir du même
              total d'éléments réellement cochés que les autres lignes de ce récapitulatif. #}
-          <div>{{ __('Durée estimée', 'configurationglpiauto') }} : <strong id="cga-summary-time-estimate"></strong> — {{ __('estimation indicative, selon le nombre d\'options cochées (arborescence multi-site, actifs personnalisés, bibliothèques de gabarits...) — ne fermez pas cette page et ne cliquez qu\'une seule fois sur "Terminer".', 'configurationglpiauto') }}</div>
+          <div>{{ __('Durée estimée', 'configurationglpiauto') }} : <strong id="cga-summary-time-estimate"></strong> - {{ __('estimation indicative, selon le nombre d\'options cochées (arborescence multi-site, actifs personnalisés, bibliothèques de gabarits...) : ne fermez pas cette page et ne cliquez qu\'une seule fois sur "Terminer".', 'configurationglpiauto') }}</div>
         </div>
 
         <ul class="list-group mb-3">
@@ -1873,18 +1873,18 @@
         </ul>
 
         {# Déplacé ici depuis l'étape 14 (Réglages généraux), où il se perdait au milieu d'une
-           dizaine de cases à cocher sans rapport — la dernière page, celle que chaque
+           dizaine de cases à cocher sans rapport : la dernière page, celle que chaque
            administrateur lit vraiment avant de cliquer sur "Terminer", donne enfin une vraie
            visibilité à ces recommandations. #}
         <h4 class="mb-1">{{ __('Marketplace & plugins recommandés', 'configurationglpiauto') }}</h4>
-        <p class="text-muted small mb-2">{{ __('Optionnel : une clé d\'enregistrement GLPI Network (au moins gratuite) débloque le marketplace natif de GLPI (Configuration > Plugins > Marketplace) — sans elle, la liste des plugins y reste vide.', 'configurationglpiauto') }}</p>
+        <p class="text-muted small mb-2">{{ __('Optionnel : une clé d\'enregistrement GLPI Network (au moins gratuite) débloque le marketplace natif de GLPI (Configuration > Plugins > Marketplace) : sans elle, la liste des plugins y reste vide.', 'configurationglpiauto') }}</p>
         <div class="mb-3" style="max-width: 560px;">
           <label class="form-label mb-1" for="cga-glpi-network-registration-key">{{ __('Clé d\'enregistrement GLPI Network', 'configurationglpiauto') }}</label>
           <input type="text" name="glpi_network_registration_key" id="cga-glpi-network-registration-key" class="form-control" value="{{ glpi_network_registration_key|default('') }}" autocomplete="off">
           <p class="text-muted small mb-0">{{ __('S\'obtient gratuitement sur', 'configurationglpiauto') }} <a href="https://services.glpi-network.com/" target="_blank" rel="noopener">services.glpi-network.com</a>.</p>
         </div>
 
-        <p class="text-muted small mb-2">{{ __('Une fois le marketplace débloqué, ces plugins sont installables en un clic depuis Configuration > Plugins > Marketplace — non installés automatiquement par cet assistant.', 'configurationglpiauto') }}</p>
+        <p class="text-muted small mb-2">{{ __('Une fois le marketplace débloqué, ces plugins sont installables en un clic depuis Configuration > Plugins > Marketplace : non installés automatiquement par cet assistant.', 'configurationglpiauto') }}</p>
         <div class="d-flex flex-wrap gap-2 mb-2">
           {% for plugin in marketplace_recommended_plugins %}
             <div class="card card-body p-2" style="max-width: 320px;">
@@ -1931,18 +1931,18 @@
 
   // Le traitement serveur (~25 builders séquentiels) prend plusieurs secondes : sans garde, un
   // admin qui ne voit rien se passer peut cliquer une seconde fois. Le jeton CSRF est à usage
-  // unique côté GLPI (Session::validateCSRF() le consomme dès sa première validation) — un second
+  // unique côté GLPI (Session::validateCSRF() le consomme dès sa première validation) : un second
   // clic renverrait donc le même jeton déjà consommé et se ferait rejeter par le pare-feu GLPI
   // (AccessDeniedHttpException brute, avant même que ce plugin ne s'exécute). Désactiver le bouton
   // dès le premier submit réel (après confirm()) empêche mécaniquement cette resoumission.
   //
   // setTimeout(..., 0) est indispensable ici, pas cosmétique : désactiver le bouton `finishBtn`
   // de façon synchrone DANS le handler `submit` empêche le navigateur d'inclure son couple
-  // name=value ("finish") dans les données du formulaire envoyées — un bouton désactivé n'est
+  // name=value ("finish") dans les données du formulaire envoyées : un bouton désactivé n'est
   // jamais soumis, même s'il l'était encore au moment du clic qui a déclenché l'événement `submit`.
   // Résultat observé sans ce délai : `isset($_POST['finish'])` est faux côté serveur, tout le bloc
   // de traitement du wizard est silencieusement ignoré, la page se re-rend comme si de rien
-  // n'était — bug réel trouvé en testant l'escalade N1-N3 (aucune régression visible sans
+  // n'était : bug réel trouvé en testant l'escalade N1-N3 (aucune régression visible sans
   // désactiver les champs pour vérifier, puisque la page semble se recharger normalement).
   // `prevBtn`/`nextBtn` sont de simples `type="button"`, jamais soumis de toute façon : les
   // désactiver immédiatement ne pose pas ce problème.
@@ -1953,7 +1953,7 @@
     nextBtn.disabled = true;
     finishLabel.textContent = "{{ __('Création en cours...', 'configurationglpiauto')|e('js') }}";
     expressFinishLabel.textContent = "{{ __('Création en cours...', 'configurationglpiauto')|e('js') }}";
-    // Same "defer only the submitter's own disabling by one tick" pattern as finishBtn below —
+    // Same "defer only the submitter's own disabling by one tick" pattern as finishBtn below -
     // disabling either submit button synchronously inside this handler would exclude its
     // name=finish pair from the submitted data even though it was enabled at click time (a
     // disabled control is simply never included in form submission).
@@ -2007,7 +2007,7 @@
   var calendarDaysContainer = document.getElementById('cga-calendar-days');
 
   // One row per day: checkbox + label, plus a begin/end time pair that only matters (and is
-  // only visible) once that day is checked — lets a single day (e.g. Friday) carry different
+  // only visible) once that day is checked: lets a single day (e.g. Friday) carry different
   // hours than the rest without a separate "override" flag to manage.
   DAYS.forEach(function (day) {
     var dayHours = initialCalendarDayHours[String(day.value)] || initialCalendarDayHours[day.value];
@@ -2047,7 +2047,7 @@
     beginInput.value = begin;
     var sep = document.createElement('span');
     sep.className = 'text-muted small';
-    sep.textContent = '—';
+    sep.textContent = '-';
     var endInput = document.createElement('input');
     endInput.type = 'time';
     endInput.className = 'form-control form-control-sm';
@@ -2138,13 +2138,13 @@
   toggleCategoryFields();
   toggleCategoryIcons();
 
-  // "Profils métier" quick-picker (Sprint 35) — pure client-side convenience over two fields that
+  // "Profils métier" quick-picker (Sprint 35) : pure client-side convenience over two fields that
   // already exist (category_branches, sla_tiers), no new config field: picks the right branches
   // and, unlike the IT-sourced baseline (Config::DEFAULT_SLA_TIERS), a plausible-but-invented SLA
-  // pace for verticals with no equivalent sourced ITIL practice — physical/administrative work
+  // pace for verticals with no equivalent sourced ITIL practice: physical/administrative work
   // simply can't be dispatched and resolved as fast as a software fix, so Bâtiment/RH scale the IT
   // baseline by a flat ×2/×4 rather than pretending to independently-researched numbers. Always
-  // just a starting point, same as every other preset in this wizard — every field it touches
+  // just a starting point, same as every other preset in this wizard: every field it touches
   // stays editable on the very same screen right after clicking.
   var BUSINESS_PROFILES = {
     it: {
@@ -2160,7 +2160,7 @@
       sla_tiers: { 6: { tto_hours: 2, ttr_hours: 8 }, 5: { tto_hours: 4, ttr_hours: 16 }, 4: { tto_hours: 8, ttr_hours: 48 }, 3: { tto_hours: 16, ttr_hours: 96 }, 2: { tto_hours: 48, ttr_hours: 144 }, 1: { tto_hours: 96, ttr_hours: 240 } },
     },
     generaliste: {
-      // All branches — read from the DOM rather than a second hardcoded key list, so this never
+      // All branches: read from the DOM rather than a second hardcoded key list, so this never
       // drifts out of sync with CategoryBuilder::CATEGORIES (the twig loop above is already the
       // single source of truth for what branches exist).
       branches: Array.from(categoryBranchToggles).map(function (toggle) { return toggle.dataset.branch; }),
@@ -2240,7 +2240,7 @@
     brandingFields.style.display = brandingEnabledInput.checked ? 'flex' : 'none';
     customPaletteWrap.style.display = brandingEnabledInput.checked ? '' : 'none';
   }
-  // Mini simulation de l'en-tête GLPI (.glpi-logo, --tblr-primary) — met à jour la couleur en
+  // Mini simulation de l'en-tête GLPI (.glpi-logo, --tblr-primary) : met à jour la couleur en
   // direct depuis le sélecteur, sans attendre la soumission du formulaire.
   function updatePreview() {
     brandingPreviewHeader.style.backgroundColor = brandingColorInput.value;
@@ -2252,7 +2252,7 @@
   brandingColorInput.addEventListener('input', updatePreview);
 
   // Custom palette (color-derived) and native palette (pick one of GLPI's 18 built-in themes) are
-  // two different answers to the same "what's the default palette" question — mutually exclusive
+  // two different answers to the same "what's the default palette" question: mutually exclusive
   // in the UI so it's clear only one wins (PaletteBuilder itself also has custom win if both were
   // somehow submitted, but the UI shouldn't let that ambiguity arise in the first place).
   var customPaletteEnabledInput = document.getElementById('cga-custom-palette-enabled');
@@ -2280,7 +2280,7 @@
   toggleEntityLogosFields();
 
   // Issue #121 ("Configuration SMTP avancée") : jamais de champ Config propre au plugin ici, voir
-  // la docblock de SmtpBuilder — ces champs vont directement dans front/wizard.php -> SmtpBuilder
+  // la docblock de SmtpBuilder : ces champs vont directement dans front/wizard.php -> SmtpBuilder
   // -> Config::setConfigurationValues('core', ...) de GLPI.
   var smtpEnabledInput = document.getElementById('cga-smtp-enabled');
   var smtpFields = document.getElementById('cga-smtp-fields');
@@ -2295,7 +2295,7 @@
   toggleSmtpFields();
 
   // One file input per top-level entity (or a single one for mono-entité/empty tree, matching
-  // entities_id=0 fallback) — named by index, matching how front/wizard.php pairs
+  // entities_id=0 fallback): named by index, matching how front/wizard.php pairs
   // EntityBuilder::topEntityIds() (same order as this array) with $_FILES['entity_logo_N'].
   // Re-rendered whenever the branding step is shown so it always reflects the current tree; a
   // previously-chosen file is lost on re-render (native <input type="file"> can't be repopulated
@@ -2310,7 +2310,7 @@
   toggleBrandingPerClientFields();
 
   // Unlike renderEntityLogoPanels() (native <input type="file"> can't survive a re-render), a
-  // color input's value survives fine — only render once so re-entering step 9 doesn't wipe edits
+  // color input's value survives fine: only render once so re-entering step 9 doesn't wipe edits
   // already made, and only rebuild if the tree's node count actually changed (client added/removed
   // in step 2 since the panels were last built).
   function renderBrandingPerClientPanels() {
@@ -2352,7 +2352,7 @@
       input.accept = 'image/png,image/jpeg,image/webp,image/gif';
       input.className = 'form-control form-control-sm';
       // Aperçu instantané côté client (FileReader), indépendant de la conversion en data URI
-      // faite côté serveur à la soumission (front/wizard.php) — juste pour visualiser le choix
+      // faite côté serveur à la soumission (front/wizard.php) : juste pour visualiser le choix
       // avant d'envoyer le formulaire.
       input.addEventListener('change', function () {
         var file = input.files && input.files[0];
@@ -2372,7 +2372,7 @@
     });
   }
 
-  // Server-side proxy (ajax/geocode.php) — never called with a client-chosen host, see that
+  // Server-side proxy (ajax/geocode.php): never called with a client-chosen host, see that
   // file's own docblock. Debounced client-side here as the other half of the same rate-limit
   // discipline (the free public Nominatim instance used by default tolerates ~1 req/s).
   var CGA_GEOCODE_URL = "{{ config('root_doc') }}/plugins/configurationglpiauto/ajax/geocode.php";
@@ -2396,14 +2396,14 @@
     return input;
   }
 
-  // Every user-fillable native glpi_locations column, not just address/postcode/town/country —
+  // Every user-fillable native glpi_locations column, not just address/postcode/town/country -
   // same "tout sans exception" standard already applied to translations this session. Nominatim
   // can suggest address/postcode/town/state/country/latitude/longitude; code/alias/comment/
   // building/room/altitude are always manual (no geocoding service returns elevation), same as on
   // GLPI's own native Location form.
   //
   // Builds the full field set for one tree node, named by its own path (`location_address_1-0`
-  // etc.) — matches LocationBuilder::buildNode()'s own path computation exactly, so
+  // etc.): matches LocationBuilder::buildNode()'s own path computation exactly, so
   // front/wizard.php's collectLocationDataFromPost() always lines each field up with the right
   // node regardless of tree depth.
   function buildLocationFieldsPanel(path) {
@@ -2416,7 +2416,7 @@
     var addressInput = cgaMakeInput('location_address_' + path, "{{ __('Rue, numéro...', 'configurationglpiauto')|e('js') }}");
     addressInput.autocomplete = 'off';
     // `dropdown-menu` (Bootstrap/Tabler component) rather than `list-group`: comes with its own
-    // opaque, theme-aware background/border/shadow built in — a plain `list-group` here rendered
+    // opaque, theme-aware background/border/shadow built in: a plain `list-group` here rendered
     // see-through over the fields/toggles underneath it (confirmed from a real screenshot), since
     // nothing gave the floating list itself a solid background.
     var suggestions = document.createElement('ul');
@@ -2463,7 +2463,7 @@
 
     // Coordonnées GPS (glpi_locations.latitude/longitude/altitude, jamais renseignées ailleurs
     // dans le plugin) : latitude/longitude remplies automatiquement depuis Nominatim, altitude
-    // toujours manuelle (aucun service de géocodage ne la fournit) — les trois éditables à la main
+    // toujours manuelle (aucun service de géocodage ne la fournit) : les trois éditables à la main
     // dans tous les cas (un admin peut coller des coordonnées récupérées ailleurs).
     var gpsRow = document.createElement('div');
     gpsRow.className = 'd-flex gap-1';
@@ -2475,7 +2475,7 @@
     gpsRow.appendChild(altInput);
     panel.appendChild(gpsRow);
 
-    // Champs propres à la fiche entité (glpi_entities), sans équivalent sur Location — visibles
+    // Champs propres à la fiche entité (glpi_entities), sans équivalent sur Location : visibles
     // seulement si "Compléter aussi la fiche adresse native de chaque entité" est coché ; l'adresse
     // elle-même (rue/ville/état/pays/GPS ci-dessus) est réutilisée telle quelle côté serveur,
     // jamais retapée ici.
@@ -2512,7 +2512,7 @@
     }
 
     var fetchAddressSuggestions = cgaDebounce(function (query) {
-      // Sans ça, une recherche comme "avenue" seule remonte des résultats partout en France — en
+      // Sans ça, une recherche comme "avenue" seule remonte des résultats partout en France : en
       // repassant la ville/pays déjà saisis (s'ils le sont), ajax/geocode.php restreint la
       // recherche Nominatim à cette zone au lieu de chercher "avenue" sur tout le pays.
       var townHint = townInput.value.trim();
@@ -2538,7 +2538,7 @@
             suggestions.appendChild(li);
           });
           // `.dropdown-menu` (Bootstrap/Tabler) is `display: none` by its own CSS rule, only ever
-          // shown via a `.show` class Bootstrap's own JS toggles — since that JS component isn't
+          // shown via a `.show` class Bootstrap's own JS toggles: since that JS component isn't
           // wired up here, an empty inline style falls back to that CSS rule and stays hidden.
           // `'block'` overrides it directly instead.
           suggestions.style.display = 'block';
@@ -2574,7 +2574,7 @@
       if (postcode.length < 3 || townInput.value.trim() !== '') {
         return;
       }
-      // Passe le pays déjà saisi (sinon ajax/geocode.php retombe sur son défaut) — un code postal
+      // Passe le pays déjà saisi (sinon ajax/geocode.php retombe sur son défaut) : un code postal
       // seul est ambigu à l'échelle mondiale (69001 existe aussi bien à Lyon qu'en Ukraine), et ce
       // résultat écrase la ville sans relecture possible par l'admin.
       var countryHint = countryInput.value.trim();
@@ -2588,7 +2588,7 @@
             if (results[0].state && stateInput.value.trim() === '') { stateInput.value = results[0].state; }
             if (results[0].country && countryInput.value.trim() === '') { countryInput.value = results[0].country; }
             // Centroïde du code postal, moins précis qu'une suggestion de rue choisie
-            // explicitement — ne remplit que si rien n'a déjà été saisi.
+            // explicitement : ne remplit que si rien n'a déjà été saisi.
             if (results[0].latitude && latInput.value.trim() === '') { latInput.value = results[0].latitude; }
             if (results[0].longitude && lonInput.value.trim() === '') { lonInput.value = results[0].longitude; }
           }
@@ -2597,11 +2597,11 @@
     });
 
     // Lieux enfants (bâtiment, étage, salle...) : glpi_locations a son propre arbre indépendant
-    // (locations_id auto-référencé), sans rapport avec l'arborescence d'entités — un même site
+    // (locations_id auto-référencé), sans rapport avec l'arborescence d'entités : un même site
     // peut avoir plusieurs niveaux imbriqués qui n'ont pas leur propre entité. Éditeur récursif
     // identique à celui de l'étape 2 (_entity_structure_fields.html.twig : add/remove par nœud,
     // arbre sérialisé en JSON plutôt que des champs plats dont la forme serait connue à l'avance)
-    // — réutilise directement ses classes CSS (.cga-tree/.cga-node-children/.cga-node-row),
+    // - réutilise directement ses classes CSS (.cga-tree/.cga-node-children/.cga-node-row),
     // globales sur la page puisque ce partial est déjà inclus pour l'étape Entités.
     var childrenState = [];
     var childrenJsonInput = document.createElement('input');
@@ -2673,7 +2673,7 @@
       row.appendChild(removeBtn);
       wrapper.appendChild(row);
 
-      // Champs complets (adresse, code, alias...) sur ce lieu enfant lui-même — mêmes champs que
+      // Champs complets (adresse, code, alias...) sur ce lieu enfant lui-même : mêmes champs que
       // le lieu de l'entité, mais liés à l'objet `node.fields` de cet arbre plutôt qu'à des
       // inputs nommés statiquement, puisque ce nœud n'existait pas avant que l'admin l'ajoute.
       var subFieldsRow = document.createElement('div');
@@ -2737,7 +2737,7 @@
   }
 
   // Un nœud sans adresse ni aucun autre champ rempli ne devient pas un Lieu du tout côté serveur
-  // (LocationBuilder) — le panneau de champs reste donc replié par défaut sur chaque nœud plutôt
+  // (LocationBuilder) : le panneau de champs reste donc replié par défaut sur chaque nœud plutôt
   // que déployé partout, pour ne pas donner l'impression qu'un Lieu vide sera créé.
   function buildLocationNode(node, path, depth) {
     var nodeName = node.name || "{{ __('(sans nom)', 'configurationglpiauto')|e('js') }}";
@@ -2895,7 +2895,7 @@
       var empty = document.createElement('li');
       empty.className = 'list-group-item text-muted';
       empty.textContent = leaves.length === 0
-        ? "{{ __('Aucun site dans l\'arborescence (étape 2) — rien à générer.', 'configurationglpiauto')|e('js') }}"
+        ? "{{ __('Aucun site dans l\'arborescence (étape 2) : rien à générer.', 'configurationglpiauto')|e('js') }}"
         : "{{ __('Le gabarit doit contenir {ENTITY}.', 'configurationglpiauto')|e('js') }}";
       ldapRightsPreviewList.appendChild(empty);
       return;
@@ -2904,7 +2904,7 @@
       var group = template.replace('{ENTITY}', name.replace(/ /g, '_'));
       var li = document.createElement('li');
       li.className = 'list-group-item';
-      li.textContent = name + ' — ' + group;
+      li.textContent = name + ' - ' + group;
       ldapRightsPreviewList.appendChild(li);
     });
   }
@@ -2913,11 +2913,11 @@
   ldapRightsProfileInput.addEventListener('change', updateLdapRightsPreview);
   toggleLdapRightsFields();
 
-  // Function/department LDAP rules (Sprint 36) — a user-supplied list of (AD group name, profile)
+  // Function/department LDAP rules (Sprint 36): a user-supplied list of (AD group name, profile)
   // pairs, entity-independent, layered on top of the per-site rule above rather than replacing it
   // (confirmed in GLPI's own RuleRight::executeActions(): a rule with only a `profiles_id` assign
   // action and no `entities_id` action accumulates into `_ldap_rules.rules_rights`, separate from
-  // the per-site `rules_entities_rights` — GLPI's RuleRightCollection doesn't stop at the first
+  // the per-site `rules_entities_rights` - GLPI's RuleRightCollection doesn't stop at the first
   // match, so both kinds of rules apply together for the same user). Department names are entirely
   // organization-specific (same reasoning as ldap_rights_group_template's own {ENTITY} placeholder)
   // so this is a blank, admin-filled list, never a guessed set of names like "Finance"/"DSI".
@@ -2988,7 +2988,7 @@
   }
 
   // Générique pour tout toggle "icônes" qui bascule la visibilité de spans .cga-xxx-icon dans un
-  // aperçu déjà rendu côté serveur — même pattern que toggleStateIcons() ci-dessus, factorisé pour
+  // aperçu déjà rendu côté serveur : même pattern que toggleStateIcons() ci-dessus, factorisé pour
   // les autres intitulés à icônes (fabricants, raisons d'attente, types de projet, types de
   // solution) plutôt que dupliqué une fois par builder.
   function wireIconsToggle(checkboxId, iconSelector) {
@@ -3017,7 +3017,7 @@
   var locationGeocodingEnabledInput = wireSimpleToggle('cga-location-geocoding-enabled', 'cga-location-geocoding-fields');
   var countryHolidaysEnabledInput = wireSimpleToggle('cga-country-holidays-enabled', 'cga-country-holidays-warning');
   // No single "fields" container to toggle (the fields it governs are scattered across every
-  // per-node location panel, built lazily) — instead show/hide every `.cga-entity-comms-fields`
+  // per-node location panel, built lazily): instead show/hide every `.cga-entity-comms-fields`
   // block on change, same effect as wireSimpleToggle for a single container.
   var entityNativeAddressEnabledInput = document.getElementById('cga-entity-native-address-enabled');
   entityNativeAddressEnabledInput.addEventListener('change', function () {
@@ -3069,7 +3069,7 @@
   var projectTemplatesEnabledInput = wireSimpleToggle('cga-project-templates-enabled', 'cga-project-templates-fields');
 
   // Per-client/site calendar & SLA (Sprint 13): only meaningful once there's more than one
-  // top-level entity to have its own settings, i.e. any multi-entité mode — not mono. Reuses
+  // top-level entity to have its own settings, i.e. any multi-entité mode : not mono. Reuses
   // window.cgaTree (same array reference the tree editor in step 2 mutates, see
   // _entity_structure_fields.html.twig) rather than a second data channel kept in sync by index.
   function currentEntityMode() {
@@ -3265,7 +3265,7 @@
           beginInput.value = begin;
           var sep = document.createElement('span');
           sep.className = 'text-muted small';
-          sep.textContent = '—';
+          sep.textContent = '-';
           var endInput = document.createElement('input');
           endInput.type = 'time';
           endInput.className = 'form-control form-control-sm';
@@ -3405,7 +3405,7 @@
 
       // "Utiliser le SLA par défaut" (coché par défaut) : ce client suit le tableau partagé,
       // rien n'est stocké pour lui (même principe que le repli Sprint 13). Décoché : tableau à 6
-      // niveaux propre à ce client, pré-rempli avec les valeurs actuelles du tableau partagé —
+      // niveaux propre à ce client, pré-rempli avec les valeurs actuelles du tableau partagé -
       // un point de départ, pas des champs vides.
       var useDefaultWrap = document.createElement('div');
       useDefaultWrap.className = 'form-check form-switch mb-2';
@@ -3540,7 +3540,7 @@
   }
 
   // Escalade par client : pas de bascule dédiée, réutilise le même toggle "SLA différent par
-  // site/client" — l'escalade N1/N2/N3 n'a de sens qu'attachée à un SLA, même granularité.
+  // site/client" - l'escalade N1/N2/N3 n'a de sens qu'attachée à un SLA, même granularité.
   var escalationPerClientPanels = document.getElementById('cga-escalation-per-client-panels');
 
   function renderEscalationPerClientPanels() {
@@ -3648,7 +3648,7 @@
     if (perClient) {
       // Unlike calendar, no ensureClientSettings() here: a client defaults to "use the shared
       // SLA table" (no settings.sla stored at all) until it explicitly opts out via its own
-      // "Utiliser le SLA par défaut" checkbox (see renderSlaPerClientPanels()) — the per-client
+      // "Utiliser le SLA par défaut" checkbox (see renderSlaPerClientPanels()) : the per-client
       // mode toggle alone shouldn't force every client into a custom table.
       renderSlaPerClientPanels();
       renderEscalationPerClientPanels();
@@ -3660,7 +3660,7 @@
   }
   slaPerClientToggle.addEventListener('change', updateSlaMode);
 
-  // Tree changes (add/remove/rename a node, or switch entity_mode) come from step 2's script —
+  // Tree changes (add/remove/rename a node, or switch entity_mode) come from step 2's script -
   // re-derive both panels' visibility/content from the live window.cgaTree reference.
   document.addEventListener('cga:tree-changed', function () {
     updateCalendarMode();
@@ -3676,7 +3676,7 @@
 
   function fillSummary() {
     // Issue #115 ("Mode Dry Run amélioré") : somme des mêmes compteurs déjà affichés plus bas dans
-    // cette fonction (branches de catégories cochées, statuts sélectionnés, entités feuilles...) —
+    // cette fonction (branches de catégories cochées, statuts sélectionnés, entités feuilles...) -
     // jamais un recomptage séparé des objets GLPI réellement créés (ça exigerait de dupliquer la
     // logique de chaque *Builder ici). Un ordre de grandeur honnête, pas une mesure exacte : voir
     // le barème à la fin de cette fonction.
@@ -3719,16 +3719,16 @@
         ? dayHoursTexts[0]
         : "{{ __('horaires variables selon les jours', 'configurationglpiauto')|e('js') }}";
       var lunchText = calendarLunchBreakInput.checked ? ' + ' + "{{ __('coupure déjeuner', 'configurationglpiauto')|e('js') }}" : '';
-      calendarSummary = name + ' — ' + checkedDays.join(', ') + ' — ' + hoursText + lunchText
+      calendarSummary = name + ' - ' + checkedDays.join(', ') + ' - ' + hoursText + lunchText
         + (document.getElementById('cga-country-holidays-enabled').checked ? ' + ' + "{{ __('jours fériés', 'configurationglpiauto')|e('js') }}" : '');
     }
     document.getElementById('cga-summary-calendar').textContent = calendarSummary;
 
     var slaEscalationSuffix = slaEscalationEnabledInput.checked
-      ? (" — {{ __('escalade à', 'configurationglpiauto')|e('js') }} " + document.getElementById('cga-sla-escalation-threshold').value + '%')
+      ? (" - {{ __('escalade à', 'configurationglpiauto')|e('js') }} " + document.getElementById('cga-sla-escalation-threshold').value + '%')
       : '';
     if (escalationEnabledInput.checked) {
-      slaEscalationSuffix += " — {{ __('escalade N1→N2→N3', 'configurationglpiauto')|e('js') }}";
+      slaEscalationSuffix += " - {{ __('escalade N1→N2→N3', 'configurationglpiauto')|e('js') }}";
     }
     if (slaPerClientToggle.checked) {
       var slaPcCount = (window.cgaTree || []).filter(function (n) { return n.settings && n.settings.sla && n.settings.sla.enabled; }).length;
@@ -3741,10 +3741,10 @@
         return PRIORITY_LABELS[level] + ' ' + tiers[level].tto_hours + 'h/' + tiers[level].ttr_hours + 'h';
       }).join(', ');
       if (slaAstreinteInput.checked) {
-        slaSummary += " — {{ __('astreinte 24h/24, 7j/7', 'configurationglpiauto')|e('js') }}";
+        slaSummary += " - {{ __('astreinte 24h/24, 7j/7', 'configurationglpiauto')|e('js') }}";
       }
       if (olaEnabledInput.checked) {
-        slaSummary += " — {{ __('+ OLA (engagements internes)', 'configurationglpiauto')|e('js') }}";
+        slaSummary += " - {{ __('+ OLA (engagements internes)', 'configurationglpiauto')|e('js') }}";
       }
       slaSummary += slaEscalationSuffix;
       document.getElementById('cga-summary-sla').textContent = slaSummary;
@@ -3756,7 +3756,7 @@
       : selectedCategoryBranchCount
         + ' / ' + categoryBranchToggles.length + ' ' + "{{ __('branches', 'configurationglpiauto')|e('js') }}"
         + (categoryIconsEnabledInput.checked ? " {{ __('(avec icônes)', 'configurationglpiauto')|e('js') }}" : '');
-    // Chaque branche crée en réalité plusieurs catégories (voir categories_preview) — poids
+    // Chaque branche crée en réalité plusieurs catégories (voir categories_preview) : poids
     // approximatif, pas un compte exact, cohérent avec le principe "ordre de grandeur" ci-dessus.
     if (categoryEnabledInput.checked) { totalItemsEstimate += selectedCategoryBranchCount * 10; }
 
@@ -3798,7 +3798,7 @@
 
     var ldapRightsLeafCount = collectLeafEntityNames(window.cgaTree || []).length;
     document.getElementById('cga-summary-ldap-rights').textContent = (ldapRightsEnabledInput.checked && ldapRightsLeafCount > 0)
-      ? (ldapRightsLeafCount + ' ' + "{{ __('règle(s)', 'configurationglpiauto')|e('js') }}" + ' — ' + ldapRightsProfileInput.value)
+      ? (ldapRightsLeafCount + ' ' + "{{ __('règle(s)', 'configurationglpiauto')|e('js') }}" + ' - ' + ldapRightsProfileInput.value)
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
     // Décompté même hors LDAP : ldapRightsLeafCount reflète le nombre d'entités feuilles de
     // l'arborescence, le plus gros poste de création à lui seul dans les grandes arborescences.
@@ -3839,7 +3839,7 @@
 
     // Chaque bibliothèque/catalogue activé (tâches/solutions, suivis/validations, outils
     // généraux, projets, réglages généraux) pèse pour un poids forfaitaire modeste dans
-    // l'estimation — ce sont des catalogues de taille à peu près fixe, pas des listes qui
+    // l'estimation : ce sont des catalogues de taille à peu près fixe, pas des listes qui
     // grandissent avec la sélection de l'utilisateur comme les catégories ou les statuts.
     totalItemsEstimate += (tasksSolutionsParts.length + followupsValidationsParts.length + generalToolsParts.length + projectsParts.length) * 15;
     totalItemsEstimate += generalSettingsCheckedCount * 5;
@@ -3860,7 +3860,7 @@
       stepEl.style.display = (parseInt(stepEl.dataset.step, 10) === currentStep) ? '' : 'none';
     });
     progressBar.style.width = Math.round((currentStep / STEP_COUNT) * 100) + '%';
-    stepIndicator.textContent = "{{ __('Étape', 'configurationglpiauto')|e('js') }} " + currentStep + "/" + STEP_COUNT + " — " + stepLabels[currentStep - 1];
+    stepIndicator.textContent = "{{ __('Étape', 'configurationglpiauto')|e('js') }} " + currentStep + "/" + STEP_COUNT + " - " + stepLabels[currentStep - 1];
     prevBtn.style.display = currentStep === 1 ? 'none' : '';
     nextBtn.style.display = currentStep === STEP_COUNT ? 'none' : '';
     finishBtn.style.display = currentStep === STEP_COUNT ? '' : 'none';
@@ -3870,7 +3870,7 @@
     }
     updateLdapRightsPreview();
     if (currentStep === 17) {
-      // Re-rendered only when actually entering this step (not on every navigation elsewhere) —
+      // Re-rendered only when actually entering this step (not on every navigation elsewhere) -
       // a native <input type="file">'s selection can't survive a re-render, so this only refreshes
       // when it matters (the tree may have changed since last time) rather than on every click.
       renderEntityLogoPanels();
@@ -3886,7 +3886,7 @@
   nextBtn.addEventListener('click', function () { showStep(currentStep + 1); });
 
   // Profile pre-fill: picking a profile in step 1 suggests a starting point for steps 2-5
-  // (entity mode, calendar, SLA) — never entity_tree itself (no realistic way to guess real
+  // (entity mode, calendar, SLA): never entity_tree itself (no realistic way to guess real
   // client/site names) and never overrides anything a profile's defaults don't mention. Purely
   // a suggestion: every field stays a normal input the admin can still change afterward.
   var profileDefaults = {{ profile_defaults|default({})|json_encode|raw }};
@@ -3949,7 +3949,7 @@
       toggleSlaEscalationFields();
     }
     // escalation_enabled n'est volontairement dans aucun profil suggéré (opt-in explicite, cf.
-    // ConfigurationProfile::getSuggestedDefaults()) — ce bloc ne fait donc jamais rien aujourd'hui,
+    // ConfigurationProfile::getSuggestedDefaults()) : ce bloc ne fait donc jamais rien aujourd'hui,
     // gardé pour rester cohérent si un futur profil venait à le proposer.
     if (typeof defaults.escalation_enabled !== 'undefined') {
       escalationEnabledInput.checked = !!defaults.escalation_enabled;

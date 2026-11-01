@@ -31,7 +31,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Same "real, shared, permanent fixture" reasoning as `VehicleAssetBuilderTest`/
- * `BuildingAssetBuilderTest` — a "Serveur" definition already exists on this instance (id 50).
+ * `BuildingAssetBuilderTest` - a "Serveur" definition already exists on this instance (id 50).
  */
 final class ServerAssetBuilderTest extends TestCase
 {
@@ -71,7 +71,7 @@ final class ServerAssetBuilderTest extends TestCase
             HasNetworkPortCapacity::class, HasVirtualMachineCapacity::class, IsRackableCapacity::class,
             HasRemoteManagementCapacity::class, HasCertificatesCapacity::class, HasDatabaseInstanceCapacity::class,
         ] as $capacity) {
-            $this->assertContains($capacity, $capacities, "$capacity must be present — server-relevant, unlike Vehicule's own capacity set.");
+            $this->assertContains($capacity, $capacities, "$capacity must be present: server-relevant, unlike Vehicule's own capacity set.");
         }
         $this->assertNotContains(IsReservableCapacity::class, $capacities, 'A server is not booked out like a pool car or meeting room.');
     }

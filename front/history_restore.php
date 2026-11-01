@@ -25,14 +25,14 @@ Session::checkRight(Config::$rightname, READ);
 
 // Import/Export avancé (issue #117), volet "conflict resolution" : cet écran sert désormais aussi
 // bien à restaurer une entrée d'historique (ConfigHistory, #114) qu'à appliquer un Blueprint
-// (ConfigurationProfile, #113) — les deux sont structurellement le même Blueprint stocké dans une
+// (ConfigurationProfile, #113) : les deux sont structurellement le même Blueprint stocké dans une
 // colonne `snapshot`, la même revue diff+sélective a donc du sens pour les deux plutôt que de
 // garder un écrasement complet sans revue pour l'un des deux chemins. `ConfigHistory` par défaut :
 // rétrocompatible avec les liens existants générés avant #117 (sans paramètre `itemtype`).
 // Une branche explicite plutôt que `new $itemtype()` : seules deux classes sont jamais légitimes
 // ici, autant l'exprimer directement plutôt que d'instancier une classe à partir d'une chaîne
 // dérivée de la requête (Semgrep signale à raison ce motif comme une instanciation d'objet
-// potentiellement contaminée, même quand — comme ici — une liste blanche stricte la précède déjà).
+// potentiellement contaminée, même quand : comme ici : une liste blanche stricte la précède déjà).
 $requestedItemtype = $_GET['itemtype'] ?? $_POST['itemtype'] ?? ConfigHistory::class;
 $itemtype = $requestedItemtype === ConfigurationProfile::class ? ConfigurationProfile::class : ConfigHistory::class;
 
@@ -80,12 +80,12 @@ foreach ($diff as $field => $values) {
 ksort($groups);
 
 // Import/Export avancé (issue #117), volet "validation automatique" : Config::prepareInputForAdd()
-// (pur, sans effet de bord — voir ConfigTest) corrige déjà silencieusement les valeurs devenues
+// (pur, sans effet de bord : voir ConfigTest) corrige déjà silencieusement les valeurs devenues
 // invalides (branche de catégorie disparue, statut hors liste blanche, profil LDAP non détenu par
 // l'utilisateur qui importe...) sans jamais le dire. Réutilise diff() tel quel plutôt que d'écrire
 // une nouvelle logique de comparaison : $fullyDefaulted est déjà "ce qui serait appliqué",
 // $sanitized "ce qui serait réellement écrit une fois passé par le même sanitizeur que Config::
-// update() applique de toute façon" — jamais bloquant, purement informatif.
+// update() applique de toute façon" - jamais bloquant, purement informatif.
 $sanitized = (new Config())->prepareInputForAdd($fullyDefaulted);
 $autoCorrections = BlueprintSerializer::diff($fullyDefaulted, $sanitized);
 

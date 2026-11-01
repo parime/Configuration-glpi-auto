@@ -52,31 +52,31 @@ use VirtualMachineType;
 /**
  * Turns on `asset_types_enabled` into real `*Type` rows (`glpi_computertypes`,
  * `glpi_monitortypes`, `glpi_networkequipmenttypes`, `glpi_peripheraltypes`, `glpi_phonetypes`,
- * `glpi_printertypes`) — all native GLPI, all confirmed empty on a fresh install
+ * `glpi_printertypes`): all native GLPI, all confirmed empty on a fresh install
  * (`information_schema` row-count check against a real instance). Scoped to the same six hardware
  * asset types already covered by `ManufacturerBuilder`/`FieldUnicityBuilder` (the ones with a
  * meaningful, industry-standard "kind of device" categorization) rather than the full ~30-table
- * native "Types" section — the rest (Rack/PDU/Cluster/DatabaseInstance/DeviceSensor...) need their
+ * native "Types" section: the rest (Rack/PDU/Cluster/DatabaseInstance/DeviceSensor...) need their
  * own per-itemtype content research before seeding, deliberately left for a later, separately
  * scoped pass (see ROADMAP.md) rather than rushed through in one block.
  *
  * Second pass (v0.51.0) added 8 more: Racks/PDU (physical infrastructure, same reasoning as the
  * matching `FieldUnicityBuilder` entries), Certificats (SSL/TLS, signature de code, client,
- * S/MIME — standard PKI use-case categories), Disques durs/Batteries/Boîtiers de composant
- * (`DeviceHardDrive`/`DeviceBattery`/`DeviceCase` — standard, stable hardware taxonomy, not
- * vendor-specific), Câbles (Ethernet/fibre/alimentation/USB — physical media types, not brands),
+ * S/MIME : standard PKI use-case categories), Disques durs/Batteries/Boîtiers de composant
+ * (`DeviceHardDrive`/`DeviceBattery`/`DeviceCase` - standard, stable hardware taxonomy, not
+ * vendor-specific), Câbles (Ethernet/fibre/alimentation/USB: physical media types, not brands),
  * Cartouches d'impression (toner/encre/tambour/kit de maintenance). `Enclosure` (Châssis), also
  * flagged as a candidate in the original audit, turned out to have no `Type` dropdown at all in
- * GLPI core (`glpi_enclosuretypes` doesn't exist — confirmed via a direct `DESCRIBE`, not assumed
- * from the table-name pattern) — dropped from scope entirely, not just deferred.
+ * GLPI core (`glpi_enclosuretypes` doesn't exist: confirmed via a direct `DESCRIBE`, not assumed
+ * from the table-name pattern): dropped from scope entirely, not just deferred.
  * `SoftwareLicenseType` deliberately deferred to a later pass despite being audited: unlike every
  * other table here, it's a `CommonTreeDropdown` (`softwarelicensetypes_id`/`level`/
- * `ancestors_cache`/`completename` columns) — needs the same care already given to
+ * `ancestors_cache`/`completename` columns): needs the same care already given to
  * `CategoryBuilder`'s tree-building, not a flat `add()` bolted onto this class.
  *
  * Deliberately excluded from this batch despite being in the same native "Types" section:
  * `AgentType` (auto-created by `Agent::handleAgent()` the moment any real inventory agent
- * connects — seeding it ourselves would be redundant, not filling a real gap) and
+ * connects: seeding it ourselves would be redundant, not filling a real gap) and
  * `Assets_AssetType` (tied to a specific `AssetDefinition` a plugin/admin has to create first, not
  * a standalone global dropdown).
  *
@@ -84,12 +84,12 @@ use VirtualMachineType;
  * except `SoftwareLicenseType` (tree, still deferred) and the two already-excluded ones above:
  * `Appliance`/`Budget`/`Cluster`/`ConsumableItem`/`Contact`/`Contract`/`Domain`/`Line`/
  * `PassiveDCEquipment`/`Supplier`/`VirtualMachine`/`DeviceSensor`. `DeviceGeneric`, also from the
- * original audit, is deliberately still excluded — too generic a bucket for meaningful standard
+ * original audit, is deliberately still excluded: too generic a bucket for meaningful standard
  * content. `ConsumableItemType`'s content deliberately doesn't repeat `CartridgeItemType`'s
- * toner/ink/drum entries — `Consumable` and `CartridgeItem` are distinct GLPI objects (general
+ * toner/ink/drum entries - `Consumable` and `CartridgeItem` are distinct GLPI objects (general
  * consumables vs. printer-supply tracking with its own stock mechanism), so the two type lists
  * stay complementary, not duplicated. `VirtualMachineType` is unrelated to `ServerAssetBuilder`'s
- * own free-text "hyperviseur" custom field — this dropdown feeds GLPI's native,
+ * own free-text "hyperviseur" custom field: this dropdown feeds GLPI's native,
  * inventory-populated `VirtualMachine` component objects (via `HasVirtualMachineCapacity`), not the
  * custom asset's own field.
  *
@@ -97,28 +97,28 @@ use VirtualMachineType;
  * original audit over a real risk: a naive content list ("MySQL", "PostgreSQL", "Oracle"...) would
  * just duplicate `Manufacturer`/vendor-territory, especially since `DatabaseInstance` already has
  * its own `manufacturers_id` field (confirmed via `DESCRIBE glpi_databaseinstances`) for exactly
- * that. Avoided by categorizing by *engine kind* instead (relational, document, key-value...) — a
- * real, standard DBMS taxonomy, not a product list — also confirmed distinct from
+ * that. Avoided by categorizing by *engine kind* instead (relational, document, key-value...): a
+ * real, standard DBMS taxonomy, not a product list: also confirmed distinct from
  * `databaseinstancecategories_id` (a separate native dropdown, environment/purpose-scoped:
  * prod/test/dev, not engine kind).
  *
- * Fifth pass added `SocketModel` (`Glpi\SocketModel`, confirmed the FQCN via `find` — not
+ * Fifth pass added `SocketModel` (`Glpi\SocketModel`, confirmed the FQCN via `find` - not
  * top-level like the others), `UserTitle`, `SoftwareCategory` and `ApplianceEnvironment`, on
  * explicit user request after a real GLPI 11 instance was checked table-by-table (`DESCRIBE`) for
  * each candidate rather than guessing which ones exist: `SocketModel` backs *both* "type" and
  * "modèle" of prise/connectique in GLPI (one table, not two), `UserTitle` is job title
  * ("Titre d'utilisateur" per `getTypeName()`), distinct from `UserCategoryBuilder`'s own
  * contract-type classification. `SoftwareCategory` is the one `CommonTreeDropdown` in this batch
- * (confirmed via `is_subclass_of()`) — `getOrCreate()` handles it as a root-only insert rather than
+ * (confirmed via `is_subclass_of()`) - `getOrCreate()` handles it as a root-only insert rather than
  * duplicating `CategoryBuilder`'s branch-building logic for a flat list. No native "cable harness"
  * or "application model" dropdown exists in GLPI core (confirmed by table/class search, not
- * assumed) — out of scope for this pass, see the corresponding GitHub issues for why.
+ * assumed): out of scope for this pass, see the corresponding GitHub issues for why.
  *
  * All 27 `*Type` classes extend `CommonDropdown` (directly or via `CommonType`/`CommonDeviceType`)
- * with no `$can_be_translated` override, so the inherited default (`true`) applies — same icon
+ * with no `$can_be_translated` override, so the inherited default (`true`) applies: same icon
  * mechanism as `ManufacturerBuilder`. Six (`RackType`/`PDUType`/`CertificateType`/`ApplianceType`/
  * `DomainType`/`ClusterType`) also carry `entities_id`/`is_recursive` columns (confirmed via
- * `DESCRIBE`) — scoped to the root entity, recursive, same as every other entity-scoped dropdown
+ * `DESCRIBE`): scoped to the root entity, recursive, same as every other entity-scoped dropdown
  * this plugin creates.
  */
 class AssetTypeBuilder
@@ -336,7 +336,7 @@ class AssetTypeBuilder
             ['name' => 'Base vectorielle (IA/RAG)', 'icon' => '🧠'],
         ],
 
-        // Prise/connectique physique (RJ45, fibre, USB, alimentation...) — même table
+        // Prise/connectique physique (RJ45, fibre, USB, alimentation...) : même table
         // `glpi_socketmodels` derriere le "type" et le "modele" de prise dans GLPI (pas deux
         // referentiels distincts), confirmee via DESCRIBE avant d'ecrire ce contenu.
         SocketModel::class => [
@@ -363,7 +363,7 @@ class AssetTypeBuilder
             ['name' => 'Consultant(e)', 'icon' => '💼'],
         ],
 
-        // Categorie de logiciel — CommonTreeDropdown (confirme via is_subclass_of), pas juste un
+        // Categorie de logiciel : CommonTreeDropdown (confirme via is_subclass_of), pas juste un
         // CommonDropdown comme le reste de cette classe : getOrCreate() gere ce cas a part (racine
         // uniquement, pas de sous-arbre) en detectant CommonTreeDropdown au lieu de dupliquer ici la
         // logique de construction d'arbre deja propre a CategoryBuilder.
@@ -380,7 +380,7 @@ class AssetTypeBuilder
             ['name' => 'Métier', 'icon' => '🏢'],
         ],
 
-        // Environnement d'execution (Production/Test/Dev...) — seul referentiel natif GLPI portant
+        // Environnement d'execution (Production/Test/Dev...): seul referentiel natif GLPI portant
         // cette semantique (rattache aux Appliances), reutilise ici au sens large plutot que
         // d'inventer un nouveau referentiel hors GLPI pour un besoin equivalent.
         ApplianceEnvironment::class => [
@@ -427,7 +427,7 @@ class AssetTypeBuilder
     {
         $isEntityScoped = in_array($itemtype, self::ENTITY_SCOPED_ITEMTYPES, true);
         // SoftwareCategory is the one CommonTreeDropdown in this class (confirmed via
-        // is_subclass_of() before writing this) — every entry here is seeded as a root node (no
+        // is_subclass_of() before writing this): every entry here is seeded as a root node (no
         // sub-tree), so the only extra requirement is its own foreign key set to 0 on add(), same
         // "root parent" convention CommonTreeDropdown itself expects.
         $isTreeDropdown = is_subclass_of($itemtype, \CommonTreeDropdown::class);

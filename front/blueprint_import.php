@@ -36,7 +36,7 @@ if (isset($_POST['import'])) {
         } else {
             try {
                 // Validation seule ici (le résultat n'est pas utilisé) : confirme que le fichier
-                // est un Blueprint exploitable avant de créer quoi que ce soit — jamais une ligne
+                // est un Blueprint exploitable avant de créer quoi que ce soit : jamais une ligne
                 // créée à partir d'un fichier qui s'avérerait ensuite inutilisable.
                 BlueprintSerializer::import($decoded, Config::getDefaults());
             } catch (\InvalidArgumentException $e) {
