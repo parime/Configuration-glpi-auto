@@ -22,10 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Plus de tiret cadratin** (issue #390) : dans les textes affichés, les noms des objets créés,
   les traductions et la documentation, il est remplacé par « : », une virgule ou « - » selon le
-  cas. À la mise à jour, les objets créés par une version antérieure sont renommés (nom, nom complet
-  des arborescences, traductions), pour que l'assistant les retrouve au lieu d'en créer un second.
-  Seuls les noms donnés par le plugin sont touchés : un nom modifié par l'administrateur reste tel
-  quel. Les textes déjà enregistrés (descriptions, contenus) ne sont pas réécrits.
+  cas. À la mise à jour, les objets créés par une version antérieure sont renommés (nom, nom de
+  gabarit, nom complet des arborescences, traductions, icône comprise), pour que l'assistant les
+  retrouve au lieu d'en créer un second. Seuls les noms donnés par le plugin sont touchés : un nom
+  modifié par l'administrateur reste tel quel. Les textes déjà enregistrés (descriptions, contenus)
+  ne sont pas réécrits.
 
 ## [1.14.0] - 2026-10-29
 

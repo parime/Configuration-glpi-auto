@@ -43,9 +43,13 @@ final class EmDashRename
         foreach (self::rules() as [$regex, $replacement]) {
             if (preg_match($regex, $name, $matches) === 1) {
                 $new = preg_replace_callback(
-                    '/%(\d+)\$[sd]|%[sd]|\{rest\}/',
+                    '/%(\d+)\$[sd]|%[sd]|\{rest\}|\{lead\}/',
                     static function (array $token) use ($matches): string {
-                        return $token[0] === '{rest}' ? $matches['rest'] : $matches['p' . ($token[1] ?? '')] ?? '';
+                        return match ($token[0]) {
+                            '{rest}' => $matches['rest'],
+                            '{lead}' => $matches['lead'],
+                            default  => $matches['p' . ($token[1] ?? '')] ?? '',
+                        };
                     },
                     $replacement,
                 );
@@ -69,25 +73,30 @@ final class EmDashRename
             if (str_starts_with($table, 'glpi_plugin_') && !str_starts_with($table, 'glpi_plugin_configurationglpiauto_')) {
                 continue;
             }
-            $field = $table === 'glpi_dropdowntranslations' ? 'value' : 'name';
-            if (!$DB->fieldExists($table, $field, false) || !$DB->fieldExists($table, 'id', false)) {
+            if (!$DB->fieldExists($table, 'id', false)) {
                 continue;
             }
             $itemtype = getItemTypeForTable($table);
-            foreach ($DB->request(['SELECT' => ['id', $field], 'FROM' => $table, 'WHERE' => [$field => ['LIKE', '%' . self::DASH . '%']]]) as $data) {
-                $new = self::rename((string) $data[$field]);
-                if ($new === null) {
+            // Un gabarit (projet...) est retrouvé par son template_name, pas par son nom.
+            foreach ($table === 'glpi_dropdowntranslations' ? ['value'] : ['name', 'template_name'] as $field) {
+                if (!$DB->fieldExists($table, $field, false)) {
                     continue;
                 }
-                // Arborescence : la mise à jour par l'objet recalcule le nom complet et celui des
-                // enfants.
-                if (is_a($itemtype, CommonTreeDropdown::class, true)) {
-                    $item = new $itemtype();
-                    $item->update(['id' => (int) $data['id'], $field => $new]);
-                } else {
-                    $DB->update($table, [$field => $new], ['id' => (int) $data['id']]);
+                foreach ($DB->request(['SELECT' => ['id', $field], 'FROM' => $table, 'WHERE' => [$field => ['LIKE', '%' . self::DASH . '%']]]) as $data) {
+                    $new = self::rename((string) $data[$field]);
+                    if ($new === null) {
+                        continue;
+                    }
+                    // Arborescence : la mise à jour par l'objet recalcule le nom complet et celui
+                    // des enfants.
+                    if ($field === 'name' && is_a($itemtype, CommonTreeDropdown::class, true)) {
+                        $item = new $itemtype();
+                        $item->update(['id' => (int) $data['id'], $field => $new]);
+                    } else {
+                        $DB->update($table, [$field => $new], ['id' => (int) $data['id']]);
+                    }
+                    $renamed++;
                 }
-                $renamed++;
             }
         }
         return $renamed;
@@ -124,7 +133,8 @@ final class EmDashRename
                 $position++;
                 return isset($token[1]) ? $token[0] : '%' . $position . '$s';
             }, $new);
-            self::$rules[] = ['/^' . $regex . '(?<rest>.*)$/su', $replacement . '{rest}'];
+            // Un nom peut être précédé de l'icône de l'option « icônes » (« 🆕 Onboarding... »).
+            self::$rules[] = ['/^(?<lead>(?:[^\p{L}\p{N}\s]+\s+)?)' . $regex . '(?<rest>.*)$/su', '{lead}' . $replacement . '{rest}'];
         }
         return self::$rules;
     }
