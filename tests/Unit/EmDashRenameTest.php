@@ -46,6 +46,12 @@ final class EmDashRenameTest extends TestCase
         $this->assertSame('Numéro de série unique - Ordinateurs', EmDashRename::rename("Numéro de série unique \u{2014} Ordinateurs"));
     }
 
+    public function testIconPrefixIsKept(): void
+    {
+        $this->assertSame('🆕 Onboarding: New employee', EmDashRename::rename("🆕 Onboarding \u{2014} New employee"));
+        $this->assertSame('🏠 Projet interne: cycle court', EmDashRename::rename("🏠 Projet interne \u{2014} cycle court"));
+    }
+
     public function testNamesNotGivenByThePluginAreLeftAlone(): void
     {
         $this->assertNull(EmDashRename::rename("Mon gabarit \u{2014} personnel"));

@@ -40,8 +40,8 @@ final class DictionaryRules
     public const PLUGIN_RULE_PREFIXES = [
         'RuleDictionnaryComputerType'               => 'Type d\'ordinateur: normalisation « ',
         'RuleDictionnaryManufacturer'               => 'Fabricant: normalisation « ',
-        'RuleDictionnaryOperatingSystem'            => 'Système d\'exploitation: normalisation « ',
-        'RuleDictionnaryOperatingSystemArchitecture' => 'Système d\'exploitation: normalisation « ',
+        'RuleDictionnaryOperatingSystem'            => 'Système d\'exploitation : normalisation « ',
+        'RuleDictionnaryOperatingSystemArchitecture' => 'Système d\'exploitation : normalisation « ',
         'RuleDictionnaryPrinter'                    => 'Imprimante : ne pas importer « ',
         'RuleDictionnarySoftware'                   => 'Logiciel: normalisation « ',
         'RuleSoftwareCategory'                      => SoftwareCategoryBuilder::RULE_PREFIX,
