@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Variantes régionales des traductions** : en_US, es_MX et les espagnols d'Amérique latine,
+  fr_CA, fr_BE, pt_PT. GLPI ne se replie pas d'une variante vers sa langue de base : un
+  utilisateur réglé en es_MX voyait le plugin en anglais. Copies tenues à jour par
+  `.github/scripts/sync-locale-variants.sh`, vérifiées en CI.
+
+### Added
+
 - **Arrivées et départs** (issue grcmanager #362) : les identifiants des gabarits de tâche et des
   catégories d'arrivée et de départ créés par l'assistant sont enregistrés dans la configuration de
   GLPI (contexte `plugin:configurationglpiauto`, clés `arrival_tasktemplates_id`,
