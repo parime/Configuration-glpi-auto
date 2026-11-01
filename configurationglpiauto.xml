@@ -425,6 +425,11 @@
         <lang>de_DE</lang>
         <lang>it_IT</lang>
         <lang>es_ES</lang>
+        <lang>pt_BR</lang>
+        <lang>pt_PT</lang>
+        <lang>en_US</lang>
+        <lang>es_MX</lang>
+        <lang>fr_CA</lang>
     </langs>
     <license>GPL v3+</license>
     <tags>
