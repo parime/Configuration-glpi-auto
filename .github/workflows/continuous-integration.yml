@@ -207,7 +207,7 @@ jobs:
           git checkout -- locales/en_GB.po
 
       - name: "Check regional variants (es_MX, fr_CA, en_US...) follow their language"
-        run: sh tools/sync-locale-variants.sh --check
+        run: sh .github/scripts/sync-locale-variants.sh --check
 
       - name: "Check every language has a translation for every extracted string"
         run: |
