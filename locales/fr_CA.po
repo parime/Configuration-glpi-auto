@@ -5264,3 +5264,6 @@ msgstr "Vous gérez GLPI pour le compte d'autres entreprises"
 
 msgid "Je configure tout moi-même"
 msgstr "Je configure tout moi-même"
+
+msgid "Sauvegarde automatique avant application"
+msgstr "Sauvegarde automatique avant application"

@@ -72,7 +72,7 @@ if (isset($_POST['import'])) {
     JiraImporter::forgetPending();
 }
 
-Html::header(__('Importer depuis Jira', 'configurationglpiauto'), $url, 'config', ConfigurationProfile::class);
+Html::header(__('Importer depuis Jira', 'configurationglpiauto'), $url, 'config', ConfigurationProfile::class, 'jiraimport');
 
 $statusLabels = [
     JiraMapping::STATUS_NEW          => __('Nouveau', 'configurationglpiauto'),

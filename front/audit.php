@@ -111,7 +111,7 @@ if (isset($_POST['save_report']) || isset($_POST['send_report_now'])) {
     Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
 }
 
-Html::header(__('Audit de configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'), 'config', ConfigurationProfile::class);
+Html::header(__('Audit de configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'), 'config', ConfigurationProfile::class, 'audit');
 
 $findings = AuditService::runAll();
 

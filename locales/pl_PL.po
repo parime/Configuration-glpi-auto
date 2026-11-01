@@ -5145,3 +5145,6 @@ msgstr "Zarządzasz GLPI w imieniu innych firm"
 
 msgid "Je configure tout moi-même"
 msgstr "Wszystko konfiguruję sam"
+
+msgid "Sauvegarde automatique avant application"
+msgstr "Automatyczna kopia przed zastosowaniem"
