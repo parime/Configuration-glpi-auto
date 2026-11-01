@@ -85,8 +85,8 @@ class CategoryBuilder
                 ['name' => 'Business Intelligence', 'comment' => 'Power BI'],
             ]],
             ['icon' => '👤', 'name' => 'Comptes & Identités', 'comment' => 'IAM', 'children' => [
-                ['name' => 'Onboarding / Création de compte'],
-                ['name' => 'Offboarding / Suppression'],
+                ['name' => 'Onboarding / Création de compte', 'staff_movement' => 'arrival'],
+                ['name' => 'Offboarding / Suppression', 'staff_movement' => 'departure'],
                 ['name' => 'Mot de passe & Réinitialisation'],
                 ['name' => 'Authentification forte', 'comment' => 'MFA'],
                 ['name' => 'Droits, Rôles & Groupes AD'],
@@ -244,6 +244,10 @@ class CategoryBuilder
         }
         $itemId = (int) $item->getID();
         $count = 1;
+        // grcmanager #362 : repérable par identifiant par les autres plugins (assetsign).
+        if (isset($node['staff_movement'])) {
+            StaffMovement::record($node['staff_movement'], ITILCategory::class, $itemId);
+        }
 
         // Every node gets its translation once icons are enabled, even leaves that were never
         // given an emoji (Translations::applyIcon() trims a blank icon to just the translated

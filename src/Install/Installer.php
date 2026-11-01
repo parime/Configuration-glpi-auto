@@ -706,6 +706,10 @@ final class Installer
         ]);
         $this->seedAuditReportNotification();
 
+        // grcmanager #362 : identifiants des gabarits et catégories d'arrivée et de départ déjà
+        // créés par une version antérieure (lus par assetsign).
+        \GlpiPlugin\Configurationglpiauto\StaffMovement::recordExisting();
+
         return true;
     }
 
@@ -759,6 +763,7 @@ final class Installer
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::JIRA_IMPORTS_TABLE . "`");
 
         Profile::uninstall();
+        \GlpiPlugin\Configurationglpiauto\StaffMovement::uninstall();
 
         return true;
     }
