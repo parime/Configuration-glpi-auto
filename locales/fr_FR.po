@@ -5246,3 +5246,21 @@ msgstr ""
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Numéro d'inventaire ou nom du poste actuel"
+
+msgid "Un seul site, pas de sous-structure"
+msgstr "Un seul site, pas de sous-structure"
+
+msgid "Plusieurs sites ou services"
+msgstr "Plusieurs sites ou services"
+
+msgid "Une seule entreprise, plusieurs équipes ou sites"
+msgstr "Une seule entreprise, plusieurs équipes ou sites"
+
+msgid "Plusieurs entreprises clientes"
+msgstr "Plusieurs entreprises clientes"
+
+msgid "Vous gérez GLPI pour le compte d'autres entreprises"
+msgstr "Vous gérez GLPI pour le compte d'autres entreprises"
+
+msgid "Je configure tout moi-même"
+msgstr "Je configure tout moi-même"

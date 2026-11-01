@@ -1024,10 +1024,7 @@ msgid ""
 "d'un administrateur"
 msgstr ""
 "Re-run the configuration audit once a week (Configuration > Audit) and flag "
-"new critical findings the next time an administrator visitsRé-exécuter "
-"l'audit de configuration une fois par semaine (Configuration > Audit) et "
-"signaler les nouveaux constats critiques à la prochaine visite d'un "
-"administrateur"
+"new critical findings the next time an administrator visits"
 
 #: templates/wizard.html.twig
 msgid "Activer l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)"
@@ -2742,11 +2739,13 @@ msgstr "Restore a configuration"
 #: src/WorkplaceSafetyFormBuilder.php:175
 #: src/FurnitureRequestFormBuilder.php:189 src/VpnAccessFormBuilder.php:188
 #: src/CurativeMaintenanceFormBuilder.php:173
-#: src/CleanlinessRequestFormBuilder.php:178 src/SupplyOrderFormBuilder.php:167
-#: src/AbroadMissionFormBuilder.php:248 src/MailboxRequestFormBuilder.php:174
-#: src/SocialMediaPostFormBuilder.php:180 src/InvoicePaymentFormBuilder.php:179
-#: src/ProfessionalPhoneFormBuilder.php:202 src/MailPrintingFormBuilder.php:190
-#: src/NewScreenFormBuilder.php:198
+#: src/CleanlinessRequestFormBuilder.php:178
+#: src/SupplyOrderFormBuilder.php:167 src/AbroadMissionFormBuilder.php:248
+#: src/MailboxRequestFormBuilder.php:174
+#: src/SocialMediaPostFormBuilder.php:180
+#: src/InvoicePaymentFormBuilder.php:179
+#: src/ProfessionalPhoneFormBuilder.php:202
+#: src/MailPrintingFormBuilder.php:190 src/NewScreenFormBuilder.php:198
 #: src/InstrumentCalibrationFormBuilder.php:167
 #: src/SoftwareInstallFormBuilder.php:173 src/MeetingRoomFormBuilder.php:233
 #: src/BreakRoomFormBuilder.php:178 src/ItemReturnFormBuilder.php:188
@@ -2786,11 +2785,12 @@ msgstr "Photo or supporting document"
 #: src/WebsiteUpdateFormBuilder.php:205 src/WorkplaceSafetyFormBuilder.php:194
 #: src/FurnitureRequestFormBuilder.php:229
 #: src/CurativeMaintenanceFormBuilder.php:201
-#: src/CleanlinessRequestFormBuilder.php:206 src/SupplyOrderFormBuilder.php:192
-#: src/MailboxRequestFormBuilder.php:202 src/SocialMediaPostFormBuilder.php:213
+#: src/CleanlinessRequestFormBuilder.php:206
+#: src/SupplyOrderFormBuilder.php:192 src/MailboxRequestFormBuilder.php:202
+#: src/SocialMediaPostFormBuilder.php:213
 #: src/InvoicePaymentFormBuilder.php:216
-#: src/ProfessionalPhoneFormBuilder.php:260 src/MailPrintingFormBuilder.php:232
-#: src/NewScreenFormBuilder.php:238
+#: src/ProfessionalPhoneFormBuilder.php:260
+#: src/MailPrintingFormBuilder.php:232 src/NewScreenFormBuilder.php:238
 #: src/InstrumentCalibrationFormBuilder.php:192
 #: src/SoftwareInstallFormBuilder.php:201 src/BreakRoomFormBuilder.php:206
 #: src/ItemReturnFormBuilder.php:225
@@ -3328,9 +3328,7 @@ msgstr "Current model to replace"
 msgid ""
 "Ré-exécute l'audit de configuration et détecte les nouveaux constats "
 "critiques"
-msgstr ""
-"Re-runs the configuration audit and detects new critical findingsRé-exécute "
-"l'audit de configuration et détecte les nouveaux constats critiques"
+msgstr "Re-runs the configuration audit and detects new critical findings"
 
 #: src/Audit/Checks/EntitiesWithoutAddressCheck.php:71
 #, php-format
@@ -3376,8 +3374,7 @@ msgid ""
 "bonne équipe sans au moins une catégorie."
 msgstr ""
 "Tickets cannot be classified or automatically routed to the right team "
-"without at least one category.Les tickets ne peuvent pas être classifiés ni "
-"routés automatiquement vers la bonne équipe sans au moins une catégorie."
+"without at least one category."
 
 #: src/Audit/Checks/NoTicketCategoriesCheck.php:63
 msgid ""
@@ -3433,9 +3430,7 @@ msgid ""
 "GLPI : au moins 8 caractères et une exigence de complexité."
 msgstr ""
 "Strengthen the password policy in GLPI's general configuration: at least 8 "
-"characters and a complexity requirement.Renforcez la politique de mot de "
-"passe dans la configuration générale de GLPI : au moins 8 caractères et une "
-"exigence de complexité."
+"characters and a complexity requirement."
 
 #: src/Audit/Checks/DefaultCredentialsCheck.php:56
 msgid "Comptes par défaut"
@@ -5137,3 +5132,21 @@ msgstr ""
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Inventory number or name of the current workstation"
+
+msgid "Un seul site, pas de sous-structure"
+msgstr "A single site, no sub-structure"
+
+msgid "Plusieurs sites ou services"
+msgstr "Several sites or departments"
+
+msgid "Une seule entreprise, plusieurs équipes ou sites"
+msgstr "One company, several teams or sites"
+
+msgid "Plusieurs entreprises clientes"
+msgstr "Several client companies"
+
+msgid "Vous gérez GLPI pour le compte d'autres entreprises"
+msgstr "You run GLPI on behalf of other companies"
+
+msgid "Je configure tout moi-même"
+msgstr "I configure everything myself"

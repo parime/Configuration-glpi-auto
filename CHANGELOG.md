@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Polonais (pl_PL)** : assistant, audit, formulaires et messages.
 - **Variantes régionales des traductions** : en_US, es_MX et les espagnols d'Amérique latine,
   fr_CA, fr_BE, pt_PT. GLPI ne se replie pas d'une variante vers sa langue de base : un
   utilisateur réglé en es_MX voyait le plugin en anglais. Copies tenues à jour par
@@ -34,6 +35,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   retrouve au lieu d'en créer un second. Seuls les noms donnés par le plugin sont touchés : un nom
   modifié par l'administrateur reste tel quel. Les textes déjà enregistrés (descriptions, contenus)
   ne sont pas réécrits.
+
+### Fixed
+
+- Assistant, étape 1 : les noms et descriptions des profils livrés restaient en français dans
+  toutes les langues ; ils sont traduits (un profil renommé par l'administrateur reste tel quel).
+- Traduction anglaise : quatre textes de l'audit étaient suivis de leur version française.
 
 ## [1.14.0] - 2026-10-29
 

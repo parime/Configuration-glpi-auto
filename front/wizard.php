@@ -1138,8 +1138,10 @@ $config = Config::getConfig();
 $profiles = (new ConfigurationProfile())->find(['is_active' => 1], ['sort_order ASC']);
 
 $profileDefaults = [];
-foreach ($profiles as $profile) {
+foreach ($profiles as $key => $profile) {
     $profileDefaults[$profile['id']] = ConfigurationProfile::getSuggestedDefaults($profile['type']);
+    $profiles[$key]['name'] = ConfigurationProfile::translateDefaultText((string) $profile['name']);
+    $profiles[$key]['description'] = ConfigurationProfile::translateDefaultText((string) ($profile['description'] ?? ''));
 }
 
 $priorityLabels = [];

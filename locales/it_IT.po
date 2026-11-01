@@ -5253,3 +5253,21 @@ msgstr ""
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Numero di inventario o nome della postazione attuale"
+
+msgid "Un seul site, pas de sous-structure"
+msgstr "Un'unica sede, nessuna sottostruttura"
+
+msgid "Plusieurs sites ou services"
+msgstr "Più sedi o reparti"
+
+msgid "Une seule entreprise, plusieurs équipes ou sites"
+msgstr "Un'unica azienda, più team o sedi"
+
+msgid "Plusieurs entreprises clientes"
+msgstr "Più aziende clienti"
+
+msgid "Vous gérez GLPI pour le compte d'autres entreprises"
+msgstr "Gestisci GLPI per conto di altre aziende"
+
+msgid "Je configure tout moi-même"
+msgstr "Configuro tutto da solo"

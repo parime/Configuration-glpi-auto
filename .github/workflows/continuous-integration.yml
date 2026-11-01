@@ -212,7 +212,7 @@ jobs:
       - name: "Check every language has a translation for every extracted string"
         run: |
           status=0
-          for lang in fr_FR en_GB de_DE es_ES it_IT pt_BR; do
+          for lang in fr_FR en_GB de_DE es_ES it_IT pt_BR pl_PL; do
             msgmerge --no-fuzzy-matching --quiet -o /tmp/merged_${lang}.po locales/${lang}.po locales/configurationglpiauto.pot
             missing=$(msgattrib --untranslated /tmp/merged_${lang}.po | grep -c '^msgid "[^"]' || true)
             if [ "$missing" -gt 0 ]; then
