@@ -103,7 +103,7 @@ final class EmDashRename
         }
         $pairs = EmDashNames::PAIRS;
         // Le nom d'origine le plus long d'abord : le plus précis l'emporte.
-        usort($pairs, static fn(array $a, array $b): int => mb_strlen($b[0]) <=> mb_strlen($a[0]));
+        usort($pairs, static fn (array $a, array $b): int => mb_strlen($b[0]) <=> mb_strlen($a[0]));
         self::$rules = [];
         foreach ($pairs as [$old, $new]) {
             $parts = preg_split('/(%(?:\d+\$)?[sd])/', $old, -1, PREG_SPLIT_DELIM_CAPTURE) ?: [$old];
