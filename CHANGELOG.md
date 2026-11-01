@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Variantes régionales des traductions** : en_US, es_MX et les espagnols d'Amérique latine,
   fr_CA, fr_BE, pt_PT. GLPI ne se replie pas d'une variante vers sa langue de base : un
   utilisateur réglé en es_MX voyait le plugin en anglais. Copies tenues à jour par
-  `tools/sync-locale-variants.sh`, vérifiées en CI.
+  `.github/scripts/sync-locale-variants.sh`, vérifiées en CI.
 
 ### Added
 
