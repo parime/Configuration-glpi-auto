@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Catégorie « Sécurité SI > Malware / Ransomware »** (anciennement « Indisponibilité / Malware /
+  Ransomware ») : une indisponibilité est l'effet d'un incident, pas un type d'incident de
+  sécurité ; les pannes ont leurs catégories « Infrastructure & Serveurs » et « Supervision &
+  Alertes ». La mise à jour renomme la catégorie en place (les tickets déjà classés ne bougent
+  pas), traductions comprises. Une catégorie homonyme créée à la main hors de la branche n'est
+  jamais touchée.
+
+### Added
+
+- **Catégories « Sécurité SI » repérables par identifiant** (grcmanager #372) : l'identifiant de
+  la branche et de chacune de ses sous-catégories est enregistré dans la configuration de GLPI
+  (contexte `plugin:configurationglpiauto`, clés `security_itilcategories_id`,
+  `security_malware_itilcategories_id`…), sur le modèle des arrivées et départs. GRC Manager y
+  range ses incidents de sécurité et leurs tickets au lieu de créer ses propres catégories. Une
+  installation antérieure retrouve une seule fois les catégories déjà créées ; un identifiant
+  enregistré n'est jamais remplacé par un homonyme. Supprimé à la désinstallation.
+
 ## [1.15.0] - 2026-11-01
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
