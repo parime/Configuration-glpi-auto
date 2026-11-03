@@ -93,6 +93,49 @@ final class SecurityCategoriesTest extends TestCase
         $this->assertSame('Malware / Ransomware', $translation->fields['value']);
     }
 
+    public function testLegacyAccountCategoryIsSplitIntoAccessAndDataBreach(): void
+    {
+        self::buildItBranch();
+        $ids = SecurityCategories::ids();
+        $accountId = $ids['security_account'];
+        // Installation antérieure : ancien libellé, pas encore de « Fuite de données ».
+        (new ITILCategory())->update(['id' => $accountId, 'name' => 'Compte compromis / Fuite de données']);
+        (new ITILCategory())->delete(['id' => $ids['security_data_breach']], true);
+        SecurityCategories::uninstall();
+
+        SecurityCategories::renameLegacy();
+        SecurityCategories::recordExisting();
+        SecurityCategories::addMissing();
+
+        $account = new ITILCategory();
+        $account->getFromDB($accountId);
+        $this->assertSame('Compte compromis / Accès non autorisé', $account->fields['name'], 'Renommée en place.');
+        $after = SecurityCategories::ids();
+        $this->assertSame($accountId, $after['security_account']);
+        $breach = new ITILCategory();
+        $this->assertTrue($breach->getFromDB($after['security_data_breach']), 'Créée sous la branche.');
+        $this->assertSame('Fuite de données', $breach->fields['name']);
+        $this->assertSame($ids['security'], (int) $breach->fields['itilcategories_id']);
+
+        // Rejouée : ni doublon ni nouvel identifiant.
+        SecurityCategories::addMissing();
+        $this->assertSame($after['security_data_breach'], SecurityCategories::ids()['security_data_breach']);
+        $this->assertSame(1, countElementsInTable('glpi_itilcategories', [
+            'name' => 'Fuite de données', 'itilcategories_id' => $ids['security'],
+        ]));
+    }
+
+    public function testNothingIsAddedWithoutTheSecurityBranch(): void
+    {
+        SecurityCategories::uninstall();
+        $branch = new ITILCategory();
+        if ($branch->getFromDBByCrit(['name' => 'Sécurité SI'])) {
+            $this->markTestSkipped('Branche déjà installée dans cette base de test.');
+        }
+        SecurityCategories::addMissing();
+        $this->assertSame(0, countElementsInTable('glpi_itilcategories', ['name' => 'Fuite de données']));
+    }
+
     public function testCategoryCreatedByHandIsNeverRenamedNorReplaced(): void
     {
         self::buildItBranch();

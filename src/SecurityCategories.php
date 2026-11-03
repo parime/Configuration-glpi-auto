@@ -43,7 +43,8 @@ final class SecurityCategories
         'security_endpoint'        => 'Antivirus & Endpoint',
         'security_phishing'        => 'Phishing & Mails suspects',
         'security_malware'         => 'Malware / Ransomware',
-        'security_account'         => 'Compte compromis / Fuite de données',
+        'security_account'         => 'Compte compromis / Accès non autorisé',
+        'security_data_breach'     => 'Fuite de données',
         'security_certificates'    => 'Certificats SSL',
         'security_removable'       => 'Périphériques & Supports amovibles',
         'security_vulnerabilities' => 'Vulnérabilités',
@@ -56,6 +57,15 @@ final class SecurityCategories
      */
     private const RENAMED = [
         'Indisponibilité / Malware / Ransomware' => 'Malware / Ransomware',
+        // Un compte compromis est un accès non autorisé ; une fuite est une perte de
+        // confidentialité, avec ses propres obligations (notification RGPD) : elle a désormais sa
+        // sous-catégorie, créée par addMissing().
+        'Compte compromis / Fuite de données'    => 'Compte compromis / Accès non autorisé',
+    ];
+
+    /** Sous-catégories ajoutées après la création de la branche : clé => commentaire. */
+    private const ADDED = [
+        'security_data_breach' => 'Perte de confidentialité : notification RGPD sous 72 h si des données personnelles sont concernées',
     ];
 
     public static function configKey(string $key): string
@@ -110,6 +120,41 @@ final class SecurityCategories
             // Le nom traduit suit, avec la même icône (aucune pour une sous-catégorie).
             Translations::applyIcon(ITILCategory::class, (int) $item->getID(), $new, '');
             DropdownTranslation::regenerateAllCompletenameTranslationsFor('ITILCategory', (int) $item->getID());
+        }
+    }
+
+    /**
+     * Mise à jour : crée sous la branche « Sécurité SI » déjà installée les sous-catégories ajoutées
+     * depuis (mêmes réglages que CategoryBuilder), sans rien créer si la branche n'a pas été
+     * choisie dans l'assistant ni si une sous-catégorie de ce nom y existe déjà.
+     */
+    public static function addMissing(): void
+    {
+        $branch = new ITILCategory();
+        $branchId = self::ids()['security'];
+        if ($branchId <= 0 && Lookup::loadFirst($branch, ['name' => self::KEYS['security']])) {
+            $branchId = (int) $branch->getID();
+        }
+        if ($branchId <= 0) {
+            return;
+        }
+        foreach (self::ADDED as $key => $comment) {
+            $item = new ITILCategory();
+            $criteria = ['name' => self::KEYS[$key], 'itilcategories_id' => $branchId];
+            if (!Lookup::loadFirst($item, $criteria)) {
+                $item->add($criteria + [
+                    'comment'            => $comment,
+                    'entities_id'        => 0,
+                    'is_recursive'       => 1,
+                    'is_incident'        => 1,
+                    'is_request'         => 1,
+                    'is_problem'         => 1,
+                    'is_change'          => 1,
+                    'is_helpdeskvisible' => 0,
+                ]);
+                Translations::applyIcon(ITILCategory::class, (int) $item->getID(), self::KEYS[$key], '');
+            }
+            self::record($key, (int) $item->getID());
         }
     }
 

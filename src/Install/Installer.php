@@ -728,6 +728,7 @@ final class Installer
         // déjà créée par une version antérieure (lus par grcmanager).
         \GlpiPlugin\Configurationglpiauto\SecurityCategories::renameLegacy();
         \GlpiPlugin\Configurationglpiauto\SecurityCategories::recordExisting();
+        \GlpiPlugin\Configurationglpiauto\SecurityCategories::addMissing();
 
         return true;
     }
