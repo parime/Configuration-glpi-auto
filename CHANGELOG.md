@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **« Compte compromis / Fuite de données » scindée en deux** (« Sécurité SI ») : un compte
+  compromis est un accès non autorisé, une fuite est une perte de confidentialité, avec ses
+  propres obligations (notification RGPD sous 72 h) et un traitement différent.
+  - La sous-catégorie existante devient « Compte compromis / Accès non autorisé », renommée en
+    place : les tickets déjà classés ne bougent pas ; ceux qui étaient des fuites sont à
+    reclasser à la main.
+  - Nouvelle sous-catégorie « Fuite de données », créée à la mise à jour sous la branche déjà
+    installée (rien n'est créé si la branche n'a pas été choisie), avec sa clé
+    `security_data_breach_itilcategories_id` lue par GRC Manager.
+
+### Changed
+
 - **Catégorie « Sécurité SI > Malware / Ransomware »** (anciennement « Indisponibilité / Malware /
   Ransomware ») : une indisponibilité est l'effet d'un incident, pas un type d'incident de
   sécurité ; les pannes ont leurs catégories « Infrastructure & Serveurs » et « Supervision &

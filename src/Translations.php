@@ -223,7 +223,8 @@ final class Translations
         'Antivirus & Endpoint' => ['en_GB' => 'Antivirus & Endpoint', 'de_DE' => 'Antivirus & Endpoint', 'it_IT' => 'Antivirus ed Endpoint', 'es_ES' => 'Antivirus y Endpoint', 'pt_BR' => 'Antivírus e Endpoint'],
         'Phishing & Mails suspects' => ['en_GB' => 'Phishing & Suspicious emails', 'de_DE' => 'Phishing & Verdächtige E-Mails', 'it_IT' => 'Phishing e Email sospette', 'es_ES' => 'Phishing y Correos sospechosos', 'pt_BR' => 'Phishing e E-mails suspeitos'],
         'Malware / Ransomware' => ['en_GB' => 'Malware / Ransomware', 'de_DE' => 'Malware / Ransomware', 'it_IT' => 'Malware / Ransomware', 'es_ES' => 'Malware / Ransomware', 'pt_BR' => 'Malware / Ransomware'],
-        'Compte compromis / Fuite de données' => ['en_GB' => 'Compromised account / Data leak', 'de_DE' => 'Kompromittiertes Konto / Datenleck', 'it_IT' => 'Account compromesso / Fuga di dati', 'es_ES' => 'Cuenta comprometida / Fuga de datos', 'pt_BR' => 'Conta comprometida / Vazamento de dados'],
+        'Compte compromis / Accès non autorisé' => ['en_GB' => 'Compromised account / Unauthorised access', 'de_DE' => 'Kompromittiertes Konto / Unbefugter Zugriff', 'it_IT' => 'Account compromesso / Accesso non autorizzato', 'es_ES' => 'Cuenta comprometida / Acceso no autorizado', 'pt_BR' => 'Conta comprometida / Acesso não autorizado'],
+        'Fuite de données' => ['en_GB' => 'Data breach', 'de_DE' => 'Datenleck', 'it_IT' => 'Violazione dei dati', 'es_ES' => 'Fuga de datos', 'pt_BR' => 'Vazamento de dados'],
         'Certificats SSL' => ['en_GB' => 'SSL certificates', 'de_DE' => 'SSL-Zertifikate', 'it_IT' => 'Certificati SSL', 'es_ES' => 'Certificados SSL', 'pt_BR' => 'Certificados SSL'],
         'Vulnérabilités' => ['en_GB' => 'Vulnerabilities', 'de_DE' => 'Schwachstellen', 'it_IT' => 'Vulnerabilità', 'es_ES' => 'Vulnerabilidades', 'pt_BR' => 'Vulnerabilidades'],
 
