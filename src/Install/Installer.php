@@ -724,6 +724,10 @@ final class Installer
         // grcmanager #362 : identifiants des gabarits et catégories d'arrivée et de départ déjà
         // créés par une version antérieure (lus par assetsign).
         \GlpiPlugin\Configurationglpiauto\StaffMovement::recordExisting();
+        // grcmanager #372 : sous-catégorie « Sécurité SI » renommée, puis identifiants de la branche
+        // déjà créée par une version antérieure (lus par grcmanager).
+        \GlpiPlugin\Configurationglpiauto\SecurityCategories::renameLegacy();
+        \GlpiPlugin\Configurationglpiauto\SecurityCategories::recordExisting();
 
         return true;
     }
@@ -779,6 +783,7 @@ final class Installer
 
         Profile::uninstall();
         \GlpiPlugin\Configurationglpiauto\StaffMovement::uninstall();
+        \GlpiPlugin\Configurationglpiauto\SecurityCategories::uninstall();
 
         return true;
     }

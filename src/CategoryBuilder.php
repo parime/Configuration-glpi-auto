@@ -107,14 +107,14 @@ class CategoryBuilder
             ['icon' => '🖥️', 'name' => 'Infrastructure & Serveurs', 'children' => []],
             ['icon' => '💾', 'name' => 'Sauvegardes & Restauration', 'children' => []],
             ['icon' => '📊', 'name' => 'Supervision & Alertes', 'children' => []],
-            ['icon' => '🛡️', 'name' => 'Sécurité SI', 'children' => [
-                ['name' => 'Antivirus & Endpoint', 'comment' => 'EDR'],
-                ['name' => 'Phishing & Mails suspects'],
-                ['name' => 'Indisponibilité / Malware / Ransomware'],
-                ['name' => 'Compte compromis / Fuite de données'],
-                ['name' => 'Certificats SSL'],
-                ['name' => 'Périphériques & Supports amovibles', 'comment' => 'Clés USB, disques externes'],
-                ['name' => 'Vulnérabilités', 'comment' => 'Suivi CVE et remédiation, cf. plugin glpi-vulnerability-manager s\'il est actif'],
+            ['icon' => '🛡️', 'name' => 'Sécurité SI', 'security_key' => 'security', 'children' => [
+                ['name' => 'Antivirus & Endpoint', 'comment' => 'EDR', 'security_key' => 'security_endpoint'],
+                ['name' => 'Phishing & Mails suspects', 'security_key' => 'security_phishing'],
+                ['name' => 'Malware / Ransomware', 'security_key' => 'security_malware'],
+                ['name' => 'Compte compromis / Fuite de données', 'security_key' => 'security_account'],
+                ['name' => 'Certificats SSL', 'security_key' => 'security_certificates'],
+                ['name' => 'Périphériques & Supports amovibles', 'comment' => 'Clés USB, disques externes', 'security_key' => 'security_removable'],
+                ['name' => 'Vulnérabilités', 'comment' => 'Suivi CVE et remédiation, cf. plugin glpi-vulnerability-manager s\'il est actif', 'security_key' => 'security_vulnerabilities'],
             ]],
         ]],
         ['key' => 'batiment', 'icon' => '🏢', 'name' => 'Bâtiment & Moyens Généraux', 'children' => [
@@ -247,6 +247,10 @@ class CategoryBuilder
         // grcmanager #362 : repérable par identifiant par les autres plugins (assetsign).
         if (isset($node['staff_movement'])) {
             StaffMovement::record($node['staff_movement'], ITILCategory::class, $itemId);
+        }
+        // grcmanager #372 : catégories « Sécurité SI » repérables par identifiant.
+        if (isset($node['security_key'])) {
+            SecurityCategories::record($node['security_key'], $itemId);
         }
 
         // Every node gets its translation once icons are enabled, even leaves that were never
