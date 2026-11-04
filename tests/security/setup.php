@@ -45,11 +45,11 @@ global $DB;
 if (($argv[1] ?? '') === 'fleet') {
     // Type d'actif Vehicule : son champ « type_carburant » pointe vers une classe de ce plugin, et le
     // controle commun des restes doit le voir retire a la desinstallation.
-    $config = new GlpiPluginConfigurationglpiautoConfig();
-    $config->fields = array_merge(GlpiPluginConfigurationglpiautoConfig::getDefaults(), [
+    $config = new \GlpiPlugin\Configurationglpiauto\Config();
+    $config->fields = array_merge(\GlpiPlugin\Configurationglpiauto\Config::getDefaults(), [
         'category_branches' => json_encode(['flotte']),
     ]);
-    (new GlpiPluginConfigurationglpiautoVehicleAssetBuilder())->build($config);
+    (new \GlpiPlugin\Configurationglpiauto\VehicleAssetBuilder())->build($config);
     exit(0);
 }
 
