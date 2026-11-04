@@ -27,6 +27,7 @@
  *   php plugins/configurationglpiauto/tests/security/setup.php xss       charge XSS dans chaque champ
  *   php plugins/configurationglpiauto/tests/security/setup.php uploads   nombre de profils
  *   php plugins/configurationglpiauto/tests/security/setup.php blueprint fichier Blueprint piege
+ *   php plugins/configurationglpiauto/tests/security/setup.php fleet     type d'actif Vehicule (controle des restes)
  */
 
 require dirname(__DIR__, 4) . '/vendor/autoload.php';
@@ -40,6 +41,17 @@ if (!(new Auth())->login('glpi', 'glpi', false)) {
 }
 
 global $DB;
+
+if (($argv[1] ?? '') === 'fleet') {
+    // Type d'actif Vehicule : son champ « type_carburant » pointe vers une classe de ce plugin, et le
+    // controle commun des restes doit le voir retire a la desinstallation.
+    $config = new GlpiPluginConfigurationglpiautoConfig();
+    $config->fields = array_merge(GlpiPluginConfigurationglpiautoConfig::getDefaults(), [
+        'category_branches' => json_encode(['flotte']),
+    ]);
+    (new GlpiPluginConfigurationglpiautoVehicleAssetBuilder())->build($config);
+    exit(0);
+}
 
 if (($argv[1] ?? '') === 'xss') {
     // Charge piegee dans chaque champ texte libre (configuration, arborescence d'entites, type de
