@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.16.0] - 2026-11-04
 
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
 ### Fixed
 
 - **Désinstallation : champ « type_carburant » du type d'actif Véhicule retiré.** Sa liste est une
