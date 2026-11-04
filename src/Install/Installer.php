@@ -771,6 +771,18 @@ final class Installer
         // enregistrées, liens de documents (par la classe du cœur).
         $pluginItemtype = ['LIKE', 'GlpiPlugin\\\\Configurationglpiauto\\\\%'];
         (new \Document_Item())->deleteByCriteria(['itemtype' => $pluginItemtype], true);
+        // Champ « type_carburant » du type d'actif Véhicule : sa liste est une classe de ce plugin, qui
+        // n'existera plus. Le type d'actif et ses autres champs restent : ils portent les données de
+        // l'administrateur.
+        foreach (
+            $DB->request([
+                'SELECT' => ['id'],
+                'FROM'   => 'glpi_assets_customfielddefinitions',
+                'WHERE'  => ['itemtype' => $pluginItemtype],
+            ]) as $row
+        ) {
+            (new \Glpi\Asset\CustomFieldDefinition())->delete(['id' => $row['id']], true);
+        }
         foreach (['glpi_displaypreferences', 'glpi_notepads', 'glpi_savedsearches'] as $table) {
             $DB->delete($table, ['itemtype' => $pluginItemtype]);
         }

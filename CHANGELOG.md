@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Désinstallation : champ « type_carburant » du type d'actif Véhicule retiré.** Sa liste est une
+  classe du plugin : il restait après la désinstallation et pointait vers une classe disparue. Le
+  type d'actif et ses autres champs sont conservés. Le contrôle commun des restes crée désormais ce
+  type d'actif avant de désinstaller, pour détecter une régression.
+
 ### Changed
 
 - **« Compte compromis / Fuite de données » scindée en deux** (« Sécurité SI ») : un compte
