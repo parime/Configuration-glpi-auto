@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Couleur de la charte des notifications publiée pour les autres plugins** (grcmanager #380) :
+  quand la charte est appliquée, sa couleur est enregistrée dans la configuration de GLPI (contexte
+  `plugin:configurationglpiauto`, clé `notification_branding_color`, valeur `#rrggbb`). GRC Manager
+  l'utilise pour habiller ses rappels de tests d'efficacité. Une charte déjà appliquée publie sa
+  couleur à la mise à jour ; la clé est retirée à la désinstallation.
+
+### Fixed
+
+- **Tests de la charte des notifications** : les modèles créés par la suite sont de nouveau
+  supprimés après chaque test (le motif de nettoyage ne correspondait plus à leur nom).
+
 ## [1.16.0] - 2026-11-04
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

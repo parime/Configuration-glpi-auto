@@ -77,6 +77,44 @@ class NotificationBrandingBuilder
     private const MARKER = '<!-- configurationglpiauto:notification-branding -->';
 
     /**
+     * grcmanager #380 : couleur de la charte publiée dans la configuration de GLPI, pour que les
+     * autres plugins habillent leurs propres notifications de la même couleur sans dépendre de ce
+     * code. Contrat stable, sur le modèle de SecurityCategories : contexte
+     * `plugin:configurationglpiauto`, clé `notification_branding_color`, valeur `#rrggbb` en
+     * minuscules. Écrite quand la charte est appliquée, retirée à la désinstallation.
+     */
+    public const CONTEXT = StaffMovement::CONTEXT;
+    public const COLOR_KEY = 'notification_branding_color';
+
+    public static function recordColor(string $color): void
+    {
+        if (preg_match('/^#[0-9a-fA-F]{6}$/', $color) === 1) {
+            \Config::setConfigurationValues(self::CONTEXT, [self::COLOR_KEY => strtolower($color)]);
+        }
+    }
+
+    /**
+     * Mise à jour : une charte déjà appliquée par une version antérieure publie sa couleur, sans
+     * remplacer une couleur déjà publiée.
+     */
+    public static function recordExisting(): void
+    {
+        $published = \Config::getConfigurationValues(self::CONTEXT, [self::COLOR_KEY]);
+        if (!empty($published[self::COLOR_KEY])) {
+            return;
+        }
+        $config = Config::getConfig();
+        if (!empty($config->fields['notification_branding_enabled'])) {
+            self::recordColor((string) ($config->fields['branding_primary_color'] ?? ''));
+        }
+    }
+
+    public static function uninstall(): void
+    {
+        \Config::deleteConfigurationValues(self::CONTEXT, [self::COLOR_KEY]);
+    }
+
+    /**
      * Chaque evenement definit : un intitule admin, l'evenement natif GLPI, la ligne d'en-tete
      * (meta_label/meta_tag), une liste de lignes cle/valeur (rows), un bloc de mise en avant
      * optionnel (highlight_*, pour le texte libre : contenu du ticket, description d'un suivi/
@@ -526,6 +564,9 @@ class NotificationBrandingBuilder
         if (empty($config->fields['notification_branding_enabled'])) {
             return 0;
         }
+        // Publiée même si les modèles portent déjà le repère (charte appliquée une fois, puis
+        // couleur changée) : les autres plugins suivent la couleur choisie dans l'assistant.
+        self::recordColor($color);
 
         $count = 0;
         foreach (self::TEMPLATES as $definition) {

@@ -729,6 +729,9 @@ final class Installer
         \GlpiPlugin\Configurationglpiauto\SecurityCategories::renameLegacy();
         \GlpiPlugin\Configurationglpiauto\SecurityCategories::recordExisting();
         \GlpiPlugin\Configurationglpiauto\SecurityCategories::addMissing();
+        // grcmanager #380 : couleur de la charte des notifications déjà appliquée par une version
+        // antérieure (lue par grcmanager pour ses rappels).
+        \GlpiPlugin\Configurationglpiauto\NotificationBrandingBuilder::recordExisting();
 
         return true;
     }
@@ -797,6 +800,7 @@ final class Installer
         Profile::uninstall();
         \GlpiPlugin\Configurationglpiauto\StaffMovement::uninstall();
         \GlpiPlugin\Configurationglpiauto\SecurityCategories::uninstall();
+        \GlpiPlugin\Configurationglpiauto\NotificationBrandingBuilder::uninstall();
 
         return true;
     }
