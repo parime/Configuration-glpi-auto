@@ -81,6 +81,10 @@ rules:
         # Issue #345 : coupe les notifications EN MEMOIRE le temps de l'import (retablies dans un
         # finally), jamais en base ; front/jiraimport.php exige le droit natif ticket CREATE.
         - /src/Jira/JiraImporter.php
+        # grcmanager #380 : publie la couleur de la charte dans le contexte de ce plugin
+        # (plugin:configurationglpiauto). apply() n'est appelée par front/wizard.php qu'avec le droit
+        # natif config UPDATE ($canUpdateCoreConfig) ; recordExisting() et uninstall() par l'installateur.
+        - /src/NotificationBrandingBuilder.php
     pattern-either:
       # Nouveau type d'actif personnalise (AssetDefinition::$rightname = 'config').
       - patterns:
