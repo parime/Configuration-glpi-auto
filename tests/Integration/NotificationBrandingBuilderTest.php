@@ -48,6 +48,12 @@ final class NotificationBrandingBuilderTest extends TestCase
     /** @var array<string, int> event => original mailing template id */
     private array $originalTemplateIdByEvent = [];
 
+    /** Couleur publiée avant le test (grcmanager #380), restaurée après. */
+    private ?string $publishedColor = null;
+
+    /** @var array<string, mixed> Ligne de réglages du plugin avant le test, restaurée après. */
+    private array $pluginConfig = [];
+
     protected function setUp(): void
     {
         global $DB;
@@ -58,10 +64,27 @@ final class NotificationBrandingBuilderTest extends TestCase
             $join->getFromDBByCrit(['notifications_id' => $notification->getID(), 'mode' => 'mailing']);
             $this->originalTemplateIdByEvent[$event] = (int) $join->fields['notificationtemplates_id'];
         }
+        $published = \Config::getConfigurationValues(NotificationBrandingBuilder::CONTEXT, [NotificationBrandingBuilder::COLOR_KEY]);
+        $this->publishedColor = isset($published[NotificationBrandingBuilder::COLOR_KEY])
+            ? (string) $published[NotificationBrandingBuilder::COLOR_KEY]
+            : null;
+        $this->pluginConfig = Config::getConfig()->fields;
     }
 
     protected function tearDown(): void
     {
+        NotificationBrandingBuilder::uninstall();
+        if ($this->publishedColor !== null) {
+            \Config::setConfigurationValues(NotificationBrandingBuilder::CONTEXT, [
+                NotificationBrandingBuilder::COLOR_KEY => $this->publishedColor,
+            ]);
+        }
+        global $DB;
+        $DB->update(Config::getTable(), [
+            'notification_branding_enabled' => $this->pluginConfig['notification_branding_enabled'] ?? 0,
+            'branding_primary_color'        => $this->pluginConfig['branding_primary_color'] ?? null,
+        ], ['id' => (int) ($this->pluginConfig['id'] ?? 0)]);
+
         foreach (self::EVENTS as $event) {
             $notification = new Notification();
             $notification->getFromDBByCrit(['itemtype' => 'Ticket', 'event' => $event]);
@@ -72,7 +95,9 @@ final class NotificationBrandingBuilderTest extends TestCase
         }
 
         global $DB;
-        foreach ($DB->request(['FROM' => NotificationTemplate::getTable(), 'WHERE' => ['name' => ['LIKE', 'Notification personnalisée -%']]]) as $row) {
+        // Noms « Notification personnalisée : … » depuis le retrait des tirets : l'ancien motif
+        // « - » ne retirait plus rien, et une seconde exécution de la suite échouait.
+        foreach ($DB->request(['FROM' => NotificationTemplate::getTable(), 'WHERE' => ['name' => ['LIKE', 'Notification personnalisée%']]]) as $row) {
             $DB->delete(NotificationTemplateTranslation::getTable(), ['notificationtemplates_id' => $row['id']]);
             (new NotificationTemplate())->delete(['id' => $row['id']], true);
         }
@@ -196,5 +221,56 @@ final class NotificationBrandingBuilderTest extends TestCase
             $translation->fields['content_html'],
             'Re-applying must restore the marker, not leave the admin-edited content half-owned.'
         );
+    }
+
+    /**
+     * grcmanager #380 : la couleur de la charte est publiée pour les autres plugins (grcmanager
+     * habille ses rappels de tests de la même couleur), y compris quand les modèles sont déjà marqués.
+     */
+    public function testAppliedBrandingPublishesItsColourForOtherPlugins(): void
+    {
+        NotificationBrandingBuilder::uninstall();
+        $builder = new NotificationBrandingBuilder();
+
+        $builder->apply($this->buildConfig(false), '#AA3366', null);
+        $this->assertSame('', $this->publishedColour(), 'Charte désactivée : rien de publié.');
+
+        $builder->apply($this->buildConfig(true), '#AA3366', null);
+        $this->assertSame('#aa3366', $this->publishedColour());
+
+        $builder->apply($this->buildConfig(true), '#117733', null);
+        $this->assertSame('#117733', $this->publishedColour(), 'Nouvelle couleur choisie dans l\'assistant.');
+
+        NotificationBrandingBuilder::recordColor('red;background:url(x)');
+        $this->assertSame('#117733', $this->publishedColour(), 'Valeur invalide ignorée.');
+
+        NotificationBrandingBuilder::uninstall();
+        $this->assertSame('', $this->publishedColour(), 'Retirée à la désinstallation.');
+    }
+
+    public function testUpgradePublishesTheColourOfAnAlreadyAppliedBranding(): void
+    {
+        global $DB;
+
+        NotificationBrandingBuilder::uninstall();
+        $id = (int) Config::getConfig()->getID();
+        $DB->update(Config::getTable(), ['notification_branding_enabled' => 0, 'branding_primary_color' => '#334455'], ['id' => $id]);
+        NotificationBrandingBuilder::recordExisting();
+        $this->assertSame('', $this->publishedColour(), 'Charte jamais appliquée.');
+
+        $DB->update(Config::getTable(), ['notification_branding_enabled' => 1], ['id' => $id]);
+        NotificationBrandingBuilder::recordExisting();
+        $this->assertSame('#334455', $this->publishedColour());
+
+        $DB->update(Config::getTable(), ['branding_primary_color' => '#000000'], ['id' => $id]);
+        NotificationBrandingBuilder::recordExisting();
+        $this->assertSame('#334455', $this->publishedColour(), 'Couleur déjà publiée jamais remplacée.');
+    }
+
+    private function publishedColour(): string
+    {
+        $values = \Config::getConfigurationValues(NotificationBrandingBuilder::CONTEXT, [NotificationBrandingBuilder::COLOR_KEY]);
+
+        return (string) ($values[NotificationBrandingBuilder::COLOR_KEY] ?? '');
     }
 }
