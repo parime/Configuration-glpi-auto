@@ -1,2 +1,18 @@
-{# Issue #355 : contenu d'un ticket importé de Jira (JiraImporter::create()). Texte de Jira échappé, puis mention de son origine. #}
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{#- Issue #355 : contenu d'un ticket importé de Jira (JiraImporter::create()), stocké tel quel. Texte de
+    Jira échappé, puis mention de son origine. -#}
 {{ text|nl2br }}<p><em>{{ __('Importé de Jira : %s', 'configurationglpiauto')|format(key) }}{% if project %} - {{ project }}{% endif %}{% if labels is not empty %} - {{ labels|join(', ') }}{% endif %}</em></p>
