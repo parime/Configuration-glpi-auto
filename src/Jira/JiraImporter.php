@@ -18,6 +18,7 @@
 namespace GlpiPlugin\Configurationglpiauto\Jira;
 
 use CommonITILObject;
+use GlpiPlugin\Configurationglpiauto\PluginTemplate;
 use ITILFollowup;
 use ITILSolution;
 use SolutionType;
@@ -252,17 +253,14 @@ final class JiraImporter
         global $DB;
 
         $key = (string) $issue['key'];
-        $content = trim((string) $issue['description']) !== ''
-            ? nl2br(htmlescape((string) $issue['description']))
-            : htmlescape((string) $issue['summary']);
-        $content .= '<p><em>' . htmlescape(sprintf(__('Importé de Jira : %s', 'configurationglpiauto'), $key));
-        if ((string) $issue['project'] !== '') {
-            $content .= ' - ' . htmlescape((string) $issue['project']);
-        }
-        if ($issue['labels'] !== []) {
-            $content .= ' - ' . htmlescape(implode(', ', $issue['labels']));
-        }
-        $content .= '</em></p>';
+        $content = PluginTemplate::render('jira/ticket_content.html.twig', [
+            'text'    => trim((string) $issue['description']) !== ''
+                ? (string) $issue['description']
+                : (string) $issue['summary'],
+            'key'     => $key,
+            'project' => (string) $issue['project'],
+            'labels'  => $issue['labels'],
+        ]);
         $priority = JiraMapping::defaultPriority((string) $issue['priority']);
         $input = [
             'name'          => (string) $issue['summary'],
@@ -339,11 +337,11 @@ final class JiraImporter
             }
             $author = (string) $comment['author'];
             $usersId = $author !== '' ? $this->resolveUser($author) : 0;
-            $body = nl2br(htmlescape((string) $comment['body']));
-            if ($usersId <= 0 && $author !== '') {
-                $body = '<p><em>' . htmlescape(sprintf(__('Auteur Jira : %s', 'configurationglpiauto'), $author))
-                    . '</em></p>' . $body;
-            }
+            // Auteur nommé seulement quand il n'a pas de compte GLPI.
+            $body = PluginTemplate::render('jira/comment.html.twig', [
+                'author' => $usersId <= 0 ? $author : '',
+                'body'   => (string) $comment['body'],
+            ]);
             $input = [
                 'itemtype'      => Ticket::class,
                 'items_id'      => $ticketsId,

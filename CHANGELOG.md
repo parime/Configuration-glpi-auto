@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Marketplace GLPI** (issue #355) : l'import Jira écrit désormais le contenu des tickets et des
+  commentaires par des gabarits Twig. Plus aucun affichage HTML n'est écrit en PHP dans le plugin.
+
 ## [1.17.0] - 2026-11-06
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

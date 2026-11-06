@@ -1,0 +1,2 @@
+{# Issue #355 : commentaire Jira repris en suivi (JiraImporter::addComments()). Auteur nommé quand il n'a pas de compte GLPI. #}
+{% if author %}<p><em>{{ __('Auteur Jira : %s', 'configurationglpiauto')|format(author) }}</em></p>{% endif %}{{ body|nl2br }}

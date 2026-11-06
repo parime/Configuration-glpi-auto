@@ -1,0 +1,2 @@
+{# Issue #355 : contenu d'un ticket importé de Jira (JiraImporter::create()). Texte de Jira échappé, puis mention de son origine. #}
+{{ text|nl2br }}<p><em>{{ __('Importé de Jira : %s', 'configurationglpiauto')|format(key) }}{% if project %} - {{ project }}{% endif %}{% if labels is not empty %} - {{ labels|join(', ') }}{% endif %}</em></p>
