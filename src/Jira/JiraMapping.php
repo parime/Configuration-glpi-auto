@@ -48,6 +48,12 @@ final class JiraMapping
 
     private const INCIDENT_KEYWORDS = ['incident', 'bug', 'panne', 'anomalie', 'defaut', 'erreur', 'probleme', 'error'];
 
+    /** Étiquettes « Sécurité » reconnues (après JiraCsvParser::slug()). */
+    private const SECURITY_LABELS = [
+        'securite', 'security', 'secu', 'securite si', 'securite informatique', 'cybersecurite', 'cybersecurity',
+        'cyber', 'ssi', 'incident de securite', 'security incident',
+    ];
+
     /** Mots-clés de priorité Jira => priorité GLPI (1 très basse à 5 très haute). */
     private const PRIORITY_KEYWORDS = [
         [['highest', 'critique', 'critical', 'bloquant', 'blocker', 'urgent', 'tres haute'], 5],
@@ -189,6 +195,37 @@ final class JiraMapping
         }
 
         return $summary;
+    }
+
+    /**
+     * Issue #345 : étiquette « Sécurité » (sans casse ni accents, en français ou en anglais) qui
+     * propose de qualifier le ticket en incident de sécurité de grcmanager.
+     */
+    public static function isSecurityLabel(string $label): bool
+    {
+        return in_array(JiraCsvParser::slug($label), self::SECURITY_LABELS, true);
+    }
+
+    /**
+     * @param array<string, mixed> $issue
+     */
+    public static function hasSecurityLabel(array $issue): bool
+    {
+        foreach ((array) ($issue['labels'] ?? []) as $label) {
+            if (self::isSecurityLabel((string) $label)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param list<array<string, mixed>> $issues
+     */
+    public static function countSecurityIssues(array $issues): int
+    {
+        return count(array_filter($issues, static fn (array $issue): bool => self::hasSecurityLabel($issue)));
     }
 
     /**

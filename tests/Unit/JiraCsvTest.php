@@ -26,6 +26,23 @@ use PHPUnit\Framework\TestCase;
  */
 final class JiraCsvTest extends TestCase
 {
+    public function testSecurityLabelsAreRecognisedWithoutCaseOrAccents(): void
+    {
+        foreach (['Sécurité', 'securite', 'SECURITY', 'cyber', 'Sécurité-SI', 'securite_si', 'SSI'] as $label) {
+            $this->assertTrue(JiraMapping::isSecurityLabel($label), $label);
+        }
+        foreach (['securise', 'insecurity', 'reseau', '', 'materiel'] as $label) {
+            $this->assertFalse(JiraMapping::isSecurityLabel($label), $label);
+        }
+        $issues = [
+            ['labels' => ['materiel', 'Sécurité']],
+            ['labels' => ['reseau']],
+            ['labels' => []],
+            ['labels' => ['cybersecurite']],
+        ];
+        $this->assertSame(2, JiraMapping::countSecurityIssues($issues));
+    }
+
     public function testEnglishExportWithRepeatedColumns(): void
     {
         $csv = "Summary,Issue key,Issue id,Issue Type,Status,Project name,Priority,Assignee,Reporter,Created,Resolved,"

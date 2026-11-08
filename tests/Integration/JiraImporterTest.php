@@ -201,6 +201,95 @@ final class JiraImporterTest extends TestCase
     }
 
     /**
+     * Issue #345 : import par lots. Un lot interrompu est rejoué sans doublon, le journal CSV garde
+     * chaque ticket, et le résultat cumulé est conservé une fois l'import fini.
+     */
+    public function testBatchImportResumesWithoutDuplicatesAndKeepsALog(): void
+    {
+        $count = JiraImporter::BATCH_SIZE + 5;
+        $csv = "Summary,Issue key,Issue Type,Status,Created,Labels\n";
+        for ($i = 1; $i <= $count; $i++) {
+            $csv .= "Demande $i,{$this->prefix}-$i,Demande,To Do,20/Oct/26 9:00 AM," . ($i === 2 ? 'Sécurité' : 'divers') . "\n";
+        }
+        JiraImporter::storePending($csv, 0);
+        $issues = JiraImporter::loadPending()['issues'] ?? [];
+        $this->assertCount($count, $issues);
+        $this->assertSame(1, (new JiraImporter())->preview($issues)['security_count']);
+        $options = [
+            'status_map' => [], 'type_map' => [], 'import_labels' => false, 'project_map' => [],
+            // Sans grcmanager actif, la case est ignorée : aucune erreur.
+            'qualify_security' => true,
+        ];
+        JiraImporter::startJob($options, $count);
+
+        $this->assertFalse((new JiraImporter())->runNextBatch(), 'Un lot reste à importer.');
+        $this->assertSame(JiraImporter::BATCH_SIZE, JiraImporter::job()['cursor']);
+        $this->assertSame(JiraImporter::BATCH_SIZE, JiraImporter::job()['result']['created']);
+
+        // Interruption simulée pendant le second lot : la position revient en arrière, le lot est rejoué.
+        $_SESSION['plugin_configurationglpiauto_jira_import']['job']['cursor'] = JiraImporter::BATCH_SIZE - 3;
+        $this->assertTrue((new JiraImporter())->runNextBatch(), 'Import terminé.');
+        $this->assertNull(JiraImporter::job());
+        $last = JiraImporter::last();
+        $this->assertNotNull($last);
+        $this->assertSame($count, $last['result']['created'] + $last['result']['updated'] - 3);
+        $this->assertSame(3, $last['result']['updated'], 'Les tickets rejoués sont mis à jour, pas recréés.');
+        $this->assertSame([], $last['result']['errors']);
+        for ($i = 1; $i <= $count; $i++) {
+            $this->assertSame(1, countElementsInTable(Ticket::getTable(), ['externalid' => "{$this->prefix}-$i"]));
+        }
+
+        // Avec grcmanager actif (instance de développement), le ticket « Sécurité » est relié à un
+        // incident de sécurité ; sans lui (CI), la case est sans effet.
+        $security = JiraImporter::securityAvailable() ? 1 : 0;
+        $this->assertSame($security, $last['result']['security']);
+        if ($security === 1) {
+            $incidents = (array) call_user_func(
+                ['GlpiPlugin\\Grcmanager\\SecurityIncidentTicket', 'getIncidentIdsForTicket'],
+                (new JiraImporter())->findTicket("{$this->prefix}-2")
+            );
+            $this->assertCount(1, $incidents);
+            $incident = getItemForItemtype('PluginGrcmanagerSecurityIncident');
+            $this->assertNotFalse($incident);
+            $incident->delete(['id' => $incidents[0]], true);
+        }
+
+        $log = JiraImporter::logFile();
+        $this->assertNotSame('', $log);
+        $this->assertCount($count + 3 + $security, JiraImporter::logLines(), 'Une ligne par ticket traité, rejeu compris.');
+        $this->assertStringStartsWith("\xEF\xBB\xBF", (string) file_get_contents($log), 'CSV lisible par un tableur.');
+        $this->assertNull(JiraImporter::loadPending(), 'Fichier en attente effacé à la fin.');
+
+        JiraImporter::forgetLast();
+        $this->assertFalse(is_file($log));
+        $this->assertNull(JiraImporter::last());
+    }
+
+    public function testStoppingAnImportKeepsTheImportedTicketsAndThePartialLog(): void
+    {
+        $count = JiraImporter::BATCH_SIZE + 2;
+        $csv = "Summary,Issue key,Issue Type,Status,Created\n";
+        for ($i = 1; $i <= $count; $i++) {
+            $csv .= "Demande $i,{$this->prefix}-$i,Demande,To Do,20/Oct/26 9:00 AM\n";
+        }
+        JiraImporter::storePending($csv, 0);
+        JiraImporter::startJob(
+            ['status_map' => [], 'type_map' => [], 'import_labels' => false, 'project_map' => [], 'qualify_security' => false],
+            $count
+        );
+        (new JiraImporter())->runNextBatch();
+        JiraImporter::abandonJob();
+
+        $this->assertNull(JiraImporter::job());
+        $this->assertNull(JiraImporter::loadPending());
+        $last = JiraImporter::last();
+        $this->assertSame(JiraImporter::BATCH_SIZE, $last['result']['stopped_at']);
+        $this->assertSame(JiraImporter::BATCH_SIZE, $last['result']['created']);
+        $this->assertCount(JiraImporter::BATCH_SIZE + 1, JiraImporter::logLines(), 'Tickets importés et arrêt.');
+        JiraImporter::forgetLast();
+    }
+
+    /**
      * Solution « Demande non retenue », ou suivi équivalent quand GLPI refuse la solution
      * (catégorie obligatoire sur certaines instances).
      */

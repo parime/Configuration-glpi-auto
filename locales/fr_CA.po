@@ -5374,3 +5374,86 @@ msgstr "Entité"
 
 msgid "Catégorie"
 msgstr "Catégorie"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Message"
+msgstr "Message"
+
+#, php-format
+msgid "%s : incident de sécurité non créé"
+msgstr "%s : incident de sécurité non créé"
+
+#, php-format
+msgid "%1$s : ticket %2$d relié à l'incident de sécurité %3$d"
+msgstr "%1$s : ticket %2$d relié à l'incident de sécurité %3$d"
+
+#, php-format
+msgid "Import arrêté par l'utilisateur après %1$d ticket(s) sur %2$d"
+msgstr "Import arrêté par l'utilisateur après %1$d ticket(s) sur %2$d"
+
+#, php-format
+msgid "Un import a été interrompu : %1$d ticket(s) sur %2$d déjà traités. Reprenez-le, ou arrêtez-le (les tickets déjà importés restent)."
+msgstr "Un import a été interrompu : %1$d ticket(s) sur %2$d déjà traités. Reprenez-le, ou arrêtez-le (les tickets déjà importés restent)."
+
+#, php-format
+msgid "Import en cours, par lots de %d tickets. Vous pouvez quitter la page : l'import reprendra où il s'est arrêté à votre retour sur cette page."
+msgstr "Import en cours, par lots de %d tickets. Vous pouvez quitter la page : l'import reprendra où il s'est arrêté à votre retour sur cette page."
+
+#, php-format
+msgid "%1$d ticket(s) traités sur %2$d"
+msgstr "%1$d ticket(s) traités sur %2$d"
+
+msgid "Avancement de l'import"
+msgstr "Avancement de l'import"
+
+#, php-format
+msgid "%d créé(s)"
+msgstr "%d créé(s)"
+
+#, php-format
+msgid "%d mis à jour"
+msgstr "%d mis à jour"
+
+#, php-format
+msgid "%d incident(s) de sécurité"
+msgstr "%d incident(s) de sécurité"
+
+#, php-format
+msgid "%d erreur(s)"
+msgstr "%d erreur(s)"
+
+msgid "Reprendre l'import"
+msgstr "Reprendre l'import"
+
+msgid "Continuer"
+msgstr "Continuer"
+
+msgid "Arrêter l'import"
+msgstr "Arrêter l'import"
+
+msgid "Journal (CSV)"
+msgstr "Journal (CSV)"
+
+#, php-format
+msgid "Import arrêté après %1$d ticket(s) sur %2$d : %3$d créé(s), %4$d mis à jour. Les tickets déjà importés restent ; relancez l'import du même fichier pour le terminer (sans doublon)."
+msgstr "Import arrêté après %1$d ticket(s) sur %2$d : %3$d créé(s), %4$d mis à jour. Les tickets déjà importés restent ; relancez l'import du même fichier pour le terminer (sans doublon)."
+
+#, php-format
+msgid "%d ticket(s) relié(s) à un incident de sécurité."
+msgstr "%d ticket(s) relié(s) à un incident de sécurité."
+
+msgid "Télécharger le journal (CSV)"
+msgstr "Télécharger le journal (CSV)"
+
+msgid "Sécurité"
+msgstr "Sécurité"
+
+#, php-format
+msgid "Créer un incident de sécurité (plugin GRC) relié à chacun des %d ticket(s) étiquetés « Sécurité » ; un ticket déjà relié garde son incident"
+msgstr "Créer un incident de sécurité (plugin GRC) relié à chacun des %d ticket(s) étiquetés « Sécurité » ; un ticket déjà relié garde son incident"
+
+#, php-format
+msgid "%d ticket(s) étiquetés « Sécurité » : avec le plugin GRC (grcmanager) et le droit de créer des incidents de sécurité, ils peuvent être reliés à un incident de sécurité."
+msgstr "%d ticket(s) étiquetés « Sécurité » : avec le plugin GRC (grcmanager) et le droit de créer des incidents de sécurité, ils peuvent être reliés à un incident de sécurité."

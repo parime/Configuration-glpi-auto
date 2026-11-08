@@ -33,8 +33,26 @@ Session::checkRight(Ticket::$rightname, CREATE);
 $url = FrontUrl::get('jiraimport.php');
 
 if (isset($_POST['cancel'])) {
+    // Import par lots en cours : on l'arrête, les tickets déjà importés et le journal restent.
+    if (JiraImporter::job() !== null) {
+        JiraImporter::abandonJob();
+        Html::redirect($url . '?step=result');
+    }
     JiraImporter::forgetPending();
     Html::redirect($url);
+}
+
+// Issue #345 : journal CSV du dernier import (ou de l'import en cours).
+if (isset($_GET['download_log'])) {
+    $log = JiraImporter::logFile();
+    if ($log === '') {
+        Html::redirect($url);
+    }
+    header('Content-Type: text/csv; charset=UTF-8');
+    header('Content-Disposition: attachment; filename="jira-import-journal-' . date('Ymd-His') . '.csv"');
+    header('Content-Length: ' . (string) filesize($log));
+    readfile($log);
+    exit;
 }
 
 if (isset($_POST['upload'])) {
@@ -113,7 +131,8 @@ if (isset($_POST['fetch_api'])) {
     Html::redirect($url . '?step=preview');
 }
 
-$result = null;
+// Issue #345 : import par lots avec reprise. Les correspondances choisies sont gardées en session,
+// chaque requête traite un lot puis la page suivante enchaîne (ou l'utilisateur reprend plus tard).
 if (isset($_POST['import'])) {
     $parsed = JiraImporter::loadPending();
     $entitiesId = JiraImporter::pendingEntity();
@@ -121,20 +140,31 @@ if (isset($_POST['import'])) {
         Session::addMessageAfterRedirect(htmlescape(__('Fichier d\'import expiré : recommencez.', 'configurationglpiauto')), false, ERROR);
         Html::redirect($url);
     }
-    $result = (new JiraImporter())->import(
-        $parsed['issues'],
-        (array) ($_POST['status_map'] ?? []),
-        (array) ($_POST['type_map'] ?? []),
-        $entitiesId,
-        !empty($_POST['import_labels']),
-        JiraImporter::projectMap(
+    JiraImporter::startJob([
+        'status_map'       => (array) ($_POST['status_map'] ?? []),
+        'type_map'         => (array) ($_POST['type_map'] ?? []),
+        'import_labels'    => !empty($_POST['import_labels']),
+        'project_map'      => JiraImporter::projectMap(
             $parsed['issues'],
             (array) ($_POST['project_entity'] ?? []),
             (array) ($_POST['project_category'] ?? []),
             $entitiesId
-        )
-    );
-    JiraImporter::forgetPending();
+        ),
+        'qualify_security' => !empty($_POST['qualify_security']),
+    ], count($parsed['issues']));
+    Html::redirect($url . '?step=run');
+}
+
+if (isset($_POST['continue_import'])) {
+    if (JiraImporter::job() === null) {
+        Html::redirect($url);
+    }
+    if (!Session::haveAccessToEntity(JiraImporter::pendingEntity())) {
+        JiraImporter::abandonJob();
+        Html::redirect($url . '?step=result');
+    }
+    $done = (new JiraImporter())->runNextBatch();
+    Html::redirect($url . ($done ? '?step=result' : '?step=run'));
 }
 
 Html::header(__('Importer depuis Jira', 'configurationglpiauto'), $url, 'config', ConfigurationProfile::class, 'jiraimport');
@@ -161,8 +191,31 @@ $data = [
     'status_labels' => $statusLabels,
     'type_labels'   => $typeLabels,
 ];
-if ($result !== null) {
-    $data += ['step' => 'result', 'result' => $result, 'tickets_url' => Ticket::getSearchURL()];
+$job = JiraImporter::job();
+$last = JiraImporter::last();
+if ($job !== null) {
+    // Import en cours, y compris après une interruption : la page reprend où il s'est arrêté.
+    $data += [
+        'step'       => 'run',
+        'job'        => [
+            'done'     => (int) $job['cursor'],
+            'total'    => (int) $job['total'],
+            'percent'  => (int) $job['total'] > 0 ? (int) floor(100 * (int) $job['cursor'] / (int) $job['total']) : 100,
+            'result'   => $job['result'],
+            'resumed'  => ($_GET['step'] ?? '') !== 'run',
+        ],
+        'batch_size' => JiraImporter::BATCH_SIZE,
+        'log_url'    => $url . '?download_log=1',
+    ];
+} elseif (($_GET['step'] ?? '') === 'result' && $last !== null) {
+    $data += [
+        'step'        => 'result',
+        'result'      => $last['result'],
+        'total'       => (int) $last['total'],
+        'log'         => JiraImporter::logLines(),
+        'log_url'     => $url . '?download_log=1',
+        'tickets_url' => Ticket::getSearchURL(),
+    ];
 } else {
     $parsed = ($_GET['step'] ?? '') === 'preview' ? JiraImporter::loadPending() : null;
     if ($parsed === null) {
