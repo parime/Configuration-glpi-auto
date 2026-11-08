@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.21.0] - 2026-11-08
+
 ### Added
 
 - **Import Jira : sujets fréquents** (issue #345) : l'aperçu montre les mots qui reviennent le plus
