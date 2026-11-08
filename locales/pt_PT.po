@@ -5321,3 +5321,86 @@ msgstr "Entidade"
 
 msgid "Catégorie"
 msgstr "Categoria"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Message"
+msgstr "Mensagem"
+
+#, php-format
+msgid "%s : incident de sécurité non créé"
+msgstr "%s: incidente de segurança não criado"
+
+#, php-format
+msgid "%1$s : ticket %2$d relié à l'incident de sécurité %3$d"
+msgstr "%1$s: chamado %2$d vinculado ao incidente de segurança %3$d"
+
+#, php-format
+msgid "Import arrêté par l'utilisateur après %1$d ticket(s) sur %2$d"
+msgstr "Importação interrompida pelo usuário após %1$d de %2$d chamado(s)"
+
+#, php-format
+msgid "Un import a été interrompu : %1$d ticket(s) sur %2$d déjà traités. Reprenez-le, ou arrêtez-le (les tickets déjà importés restent)."
+msgstr "Uma importação foi interrompida: %1$d de %2$d chamado(s) já processados. Retome-a ou interrompa-a (os chamados já importados permanecem)."
+
+#, php-format
+msgid "Import en cours, par lots de %d tickets. Vous pouvez quitter la page : l'import reprendra où il s'est arrêté à votre retour sur cette page."
+msgstr "Importação em andamento, em lotes de %d chamados. Você pode sair da página: a importação continuará de onde parou quando você voltar a esta página."
+
+#, php-format
+msgid "%1$d ticket(s) traités sur %2$d"
+msgstr "%1$d de %2$d chamado(s) processados"
+
+msgid "Avancement de l'import"
+msgstr "Progresso da importação"
+
+#, php-format
+msgid "%d créé(s)"
+msgstr "%d criado(s)"
+
+#, php-format
+msgid "%d mis à jour"
+msgstr "%d atualizado(s)"
+
+#, php-format
+msgid "%d incident(s) de sécurité"
+msgstr "%d incidente(s) de segurança"
+
+#, php-format
+msgid "%d erreur(s)"
+msgstr "%d erro(s)"
+
+msgid "Reprendre l'import"
+msgstr "Retomar a importação"
+
+msgid "Continuer"
+msgstr "Continuar"
+
+msgid "Arrêter l'import"
+msgstr "Interromper a importação"
+
+msgid "Journal (CSV)"
+msgstr "Registro (CSV)"
+
+#, php-format
+msgid "Import arrêté après %1$d ticket(s) sur %2$d : %3$d créé(s), %4$d mis à jour. Les tickets déjà importés restent ; relancez l'import du même fichier pour le terminer (sans doublon)."
+msgstr "Importação interrompida após %1$d de %2$d chamado(s): %3$d criado(s), %4$d atualizado(s). Os chamados já importados permanecem; importe novamente o mesmo arquivo para concluí-la (sem duplicatas)."
+
+#, php-format
+msgid "%d ticket(s) relié(s) à un incident de sécurité."
+msgstr "%d chamado(s) vinculado(s) a um incidente de segurança."
+
+msgid "Télécharger le journal (CSV)"
+msgstr "Baixar o registro (CSV)"
+
+msgid "Sécurité"
+msgstr "Segurança"
+
+#, php-format
+msgid "Créer un incident de sécurité (plugin GRC) relié à chacun des %d ticket(s) étiquetés « Sécurité » ; un ticket déjà relié garde son incident"
+msgstr "Criar um incidente de segurança (plugin GRC) vinculado a cada um dos %d chamado(s) com a etiqueta «Segurança»; um chamado já vinculado mantém seu incidente"
+
+#, php-format
+msgid "%d ticket(s) étiquetés « Sécurité » : avec le plugin GRC (grcmanager) et le droit de créer des incidents de sécurité, ils peuvent être reliés à un incident de sécurité."
+msgstr "%d chamado(s) com a etiqueta «Segurança»: com o plugin GRC (grcmanager) e o direito de criar incidentes de segurança, eles podem ser vinculados a um incidente de segurança."

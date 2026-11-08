@@ -17,13 +17,57 @@
 <div class="card"><div class="card-body">
    <h3 class="card-title"><i class="ti ti-transfer-in me-1"></i>{{ __('Importer depuis Jira', 'configurationglpiauto') }}</h3>
 
-   {% if step == 'result' %}
-      <div class="alert alert-success">{{ __('Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour.', 'configurationglpiauto')|format(result.created, result.updated) }}
-         {% if result.attachments %} {{ __('%d pièce(s) jointe(s) ajoutée(s).', 'configurationglpiauto')|format(result.attachments) }}{% endif %}
-         {% if result.labels %} {{ __('%d étiquette(s) posée(s).', 'configurationglpiauto')|format(result.labels) }}{% endif %}</div>
+   {% if step == 'run' %}
+      {# Issue #345 : import par lots, la page enchaîne seule ; elle reprend où elle s'est arrêtée. #}
+      {% if job.resumed and job.done > 0 %}
+         <div class="alert alert-warning"><i class="ti ti-player-pause me-1"></i>{{ __('Un import a été interrompu : %1$d ticket(s) sur %2$d déjà traités. Reprenez-le, ou arrêtez-le (les tickets déjà importés restent).', 'configurationglpiauto')|format(job.done, job.total) }}</div>
+      {% else %}
+         <p>{{ __('Import en cours, par lots de %d tickets. Vous pouvez quitter la page : l\'import reprendra où il s\'est arrêté à votre retour sur cette page.', 'configurationglpiauto')|format(batch_size) }}</p>
+      {% endif %}
+      <div class="d-flex justify-content-between small mb-1">
+         <span>{{ __('%1$d ticket(s) traités sur %2$d', 'configurationglpiauto')|format(job.done, job.total) }}</span>
+         <span>{{ job.percent }} %</span>
+      </div>
+      <div class="progress mb-3" style="height: 1.25rem;" role="progressbar" aria-valuenow="{{ job.percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="{{ __('Avancement de l\'import', 'configurationglpiauto') }}">
+         <div class="progress-bar bg-primary" style="width: {{ job.percent }}%"></div>
+      </div>
+      <p>
+         <span class="badge bg-green-lt me-1"><i class="ti ti-plus me-1"></i>{{ __('%d créé(s)', 'configurationglpiauto')|format(job.result.created) }}</span>
+         <span class="badge bg-blue-lt me-1"><i class="ti ti-refresh me-1"></i>{{ __('%d mis à jour', 'configurationglpiauto')|format(job.result.updated) }}</span>
+         {% if job.result.security %}<span class="badge bg-red-lt me-1"><i class="ti ti-shield-exclamation me-1"></i>{{ __('%d incident(s) de sécurité', 'configurationglpiauto')|format(job.result.security) }}</span>{% endif %}
+         {% if job.result.errors is not empty %}<span class="badge bg-orange-lt me-1"><i class="ti ti-alert-triangle me-1"></i>{{ __('%d erreur(s)', 'configurationglpiauto')|format(job.result.errors|length) }}</span>{% endif %}
+      </p>
+      <form method="post" action="{{ url }}" id="cga-jira-continue" data-auto="{{ job.resumed ? '0' : '1' }}" class="d-flex gap-2">
+         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+         <button type="submit" name="continue_import" value="1" class="btn btn-primary"><i class="ti ti-player-play me-1"></i>{{ job.resumed and job.done > 0 ? __('Reprendre l\'import', 'configurationglpiauto') : __('Continuer', 'configurationglpiauto') }}</button>
+         <button type="submit" name="cancel" value="1" class="btn btn-outline-danger"><i class="ti ti-player-stop me-1"></i>{{ __('Arrêter l\'import', 'configurationglpiauto') }}</button>
+         <a class="btn btn-outline-secondary" href="{{ log_url }}"><i class="ti ti-download me-1"></i>{{ __('Journal (CSV)', 'configurationglpiauto') }}</a>
+      </form>
+      <script>
+      (function () {
+        var form = document.getElementById('cga-jira-continue');
+        if (form && form.dataset.auto === '1') {
+          var button = form.querySelector('button[name="continue_import"]');
+          window.setTimeout(function () { button.click(); }, 300);
+        }
+      })();
+      </script>
+
+   {% elseif step == 'result' %}
+      {% if result.stopped_at is defined %}
+         <div class="alert alert-warning"><i class="ti ti-player-stop me-1"></i>{{ __('Import arrêté après %1$d ticket(s) sur %2$d : %3$d créé(s), %4$d mis à jour. Les tickets déjà importés restent ; relancez l\'import du même fichier pour le terminer (sans doublon).', 'configurationglpiauto')|format(result.stopped_at, total, result.created, result.updated) }}</div>
+      {% else %}
+         <div class="alert alert-success">{{ __('Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour.', 'configurationglpiauto')|format(result.created, result.updated) }}
+            {% if result.attachments %} {{ __('%d pièce(s) jointe(s) ajoutée(s).', 'configurationglpiauto')|format(result.attachments) }}{% endif %}
+            {% if result.labels %} {{ __('%d étiquette(s) posée(s).', 'configurationglpiauto')|format(result.labels) }}{% endif %}
+            {% if result.security %} {{ __('%d ticket(s) relié(s) à un incident de sécurité.', 'configurationglpiauto')|format(result.security) }}{% endif %}</div>
+      {% endif %}
       {% for error in result.errors %}<div class="alert alert-danger py-2">{{ error }}</div>{% endfor %}
-      <details><summary>{{ __('Journal de l\'import', 'configurationglpiauto') }}</summary><pre class="small">{{ result.log|join("\n") }}</pre></details>
-      <a class="btn btn-outline-primary mt-3" href="{{ tickets_url }}">{{ __('Voir les tickets', 'configurationglpiauto') }}</a>
+      <details><summary>{{ __('Journal de l\'import', 'configurationglpiauto') }}</summary><pre class="small">{{ log|join("\n") }}</pre></details>
+      <div class="d-flex gap-2 mt-3">
+         <a class="btn btn-outline-primary" href="{{ tickets_url }}"><i class="ti ti-list me-1"></i>{{ __('Voir les tickets', 'configurationglpiauto') }}</a>
+         <a class="btn btn-outline-secondary" href="{{ log_url }}"><i class="ti ti-download me-1"></i>{{ __('Télécharger le journal (CSV)', 'configurationglpiauto') }}</a>
+      </div>
 
    {% elseif step == 'upload' %}
       {# Étape 1 : fichier et entité. #}
@@ -137,6 +181,18 @@
                </div>
             {% else %}
                <p class="text-muted"><i class="ti ti-info-circle me-1"></i>{{ __('Installez le plugin Tag pour importer ces étiquettes ; sans lui, elles sont ignorées.', 'configurationglpiauto') }}</p>
+            {% endif %}
+         {% endif %}
+         {# Issue #345 : tickets étiquetés « Sécurité » vers les incidents de sécurité de grcmanager. #}
+         {% if preview.security_count > 0 %}
+            <h4><i class="ti ti-shield-exclamation me-1 text-danger"></i>{{ __('Sécurité', 'configurationglpiauto') }}</h4>
+            {% if preview.security_available %}
+               <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="qualify_security" name="qualify_security" value="1" checked>
+                  <label class="form-check-label" for="qualify_security">{{ __('Créer un incident de sécurité (plugin GRC) relié à chacun des %d ticket(s) étiquetés « Sécurité » ; un ticket déjà relié garde son incident', 'configurationglpiauto')|format(preview.security_count) }}</label>
+               </div>
+            {% else %}
+               <p class="text-muted"><i class="ti ti-info-circle me-1"></i>{{ __('%d ticket(s) étiquetés « Sécurité » : avec le plugin GRC (grcmanager) et le droit de créer des incidents de sécurité, ils peuvent être reliés à un incident de sécurité.', 'configurationglpiauto')|format(preview.security_count) }}</p>
             {% endif %}
          {% endif %}
          {% if preview.attachments > 0 or preview.attachments_skipped > 0 %}

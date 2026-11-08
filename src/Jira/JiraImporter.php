@@ -36,6 +36,9 @@ use UserEmail;
  *   les doublons ; un nouvel import met à jour le titre et le statut et n'ajoute que les nouveaux
  *   commentaires.
  * - Aucune notification pendant l'import ; dates de création et de résolution conservées.
+ * - Import par lots (BATCH_SIZE tickets par requête) avec reprise : la position est gardée en
+ *   session, un lot interrompu est simplement rejoué (la clé Jira évite les doublons) ; journal
+ *   CSV téléchargeable à la fin.
  */
 final class JiraImporter
 {
@@ -46,6 +49,16 @@ final class JiraImporter
 
     /** Fichier téléversé gardé entre l'aperçu et l'import (dossier temporaire de GLPI). */
     private const SESSION_KEY = 'plugin_configurationglpiauto_jira_import';
+
+    /** Résultat et journal du dernier import terminé (gardés après forgetPending()). */
+    private const LAST_KEY = 'plugin_configurationglpiauto_jira_import_last';
+
+    /** Tickets traités par requête : un lot court reste loin des délais d'exécution de PHP. */
+    public const BATCH_SIZE = 25;
+
+    /** Issue #345 : qualification d'un ticket en incident de sécurité (plugin grcmanager, optionnel). */
+    private const GRC_QUALIFY_CLASS = 'GlpiPlugin\\Grcmanager\\SecurityIncidentTicket';
+    private const GRC_INCIDENT_CLASS = 'PluginGrcmanagerSecurityIncident';
 
     public static function storePending(string $content, int $entitiesId): void
     {
@@ -121,6 +134,183 @@ final class JiraImporter
         }
 
         return JiraCsvParser::parse((string) file_get_contents($file));
+    }
+
+    /**
+     * Issue #345 : démarre un import par lots avec les correspondances choisies dans l'aperçu.
+     *
+     * @param array{status_map: array<string, mixed>, type_map: array<string, mixed>, import_labels: bool,
+     *     project_map: array<string, array{entities_id: int, itilcategories_id: int}>, qualify_security: bool} $options
+     */
+    public static function startJob(array $options, int $total): void
+    {
+        self::forgetLast();
+        $log = GLPI_TMP_DIR . '/jira-import-' . bin2hex(random_bytes(8)) . '.log.csv';
+        $handle = fopen($log, 'w');
+        if ($handle !== false) {
+            fwrite($handle, "\xEF\xBB\xBF");
+            fputcsv($handle, [__('Date', 'configurationglpiauto'), __('Message', 'configurationglpiauto')], ';', '"', '');
+            fclose($handle);
+        }
+        $_SESSION[self::SESSION_KEY]['job'] = $options + [
+            'cursor'  => 0,
+            'total'   => $total,
+            'log'     => $log,
+            'started' => date('Y-m-d H:i:s'),
+            'result'  => ['created' => 0, 'updated' => 0, 'attachments' => 0, 'labels' => 0, 'security' => 0, 'errors' => []],
+        ];
+    }
+
+    /**
+     * Import en cours (lots restants), ou null.
+     *
+     * @return array<string, mixed>|null
+     */
+    public static function job(): ?array
+    {
+        $job = $_SESSION[self::SESSION_KEY]['job'] ?? null;
+
+        return is_array($job) ? $job : null;
+    }
+
+    /**
+     * Traite le lot suivant. Le lot entier est rejoué s'il a été interrompu : la clé Jira fait d'un
+     * ticket déjà créé une mise à jour. À la fin, le résultat et le journal sont gardés, l'import en
+     * attente est effacé.
+     *
+     * @return bool true quand tout est importé
+     */
+    public function runNextBatch(): bool
+    {
+        $job = self::job();
+        $parsed = self::loadPending();
+        if ($job === null || $parsed === null) {
+            return true;
+        }
+        $cursor = (int) $job['cursor'];
+        $batch = array_slice($parsed['issues'], $cursor, self::BATCH_SIZE);
+        $result = $this->import(
+            $batch,
+            (array) $job['status_map'],
+            (array) $job['type_map'],
+            self::pendingEntity(),
+            (bool) $job['import_labels'],
+            (array) $job['project_map'],
+            (bool) $job['qualify_security']
+        );
+        self::appendLog((string) $job['log'], array_merge($result['log'], $result['errors']));
+        foreach (['created', 'updated', 'attachments', 'labels', 'security'] as $counter) {
+            $job['result'][$counter] += $result[$counter];
+        }
+        $job['result']['errors'] = array_merge($job['result']['errors'], $result['errors']);
+        $job['cursor'] = min((int) $job['total'], $cursor + self::BATCH_SIZE);
+        $_SESSION[self::SESSION_KEY]['job'] = $job;
+        if ($job['cursor'] < (int) $job['total']) {
+            return false;
+        }
+        $_SESSION[self::LAST_KEY] = ['result' => $job['result'], 'log' => $job['log'], 'total' => $job['total']];
+        unset($_SESSION[self::SESSION_KEY]['job']);
+        self::forgetPending();
+
+        return true;
+    }
+
+    /**
+     * Dernier import terminé : compteurs, erreurs, fichier du journal.
+     *
+     * @return array{result: array<string, mixed>, log: string, total: int}|null
+     */
+    public static function last(): ?array
+    {
+        $last = $_SESSION[self::LAST_KEY] ?? null;
+
+        return is_array($last) ? $last : null;
+    }
+
+    /** Journal CSV d'un import (en cours ou terminé), s'il a été créé par startJob(). */
+    public static function logFile(): string
+    {
+        $file = (string) (self::job()['log'] ?? self::last()['log'] ?? '');
+
+        return self::isOurLogFile($file) ? $file : '';
+    }
+
+    /** Lignes du journal, pour l'affichage du résultat. */
+    public static function logLines(int $max = 500): array
+    {
+        $file = self::logFile();
+        if ($file === '') {
+            return [];
+        }
+        $lines = [];
+        $handle = fopen($file, 'r');
+        if ($handle === false) {
+            return [];
+        }
+        fgetcsv($handle, null, ';', '"', '');
+        while (count($lines) < $max && ($row = fgetcsv($handle, null, ';', '"', '')) !== false) {
+            $lines[] = implode('  ', array_map('strval', $row));
+        }
+        fclose($handle);
+
+        return $lines;
+    }
+
+    /**
+     * @param list<string> $messages
+     */
+    private static function appendLog(string $file, array $messages): void
+    {
+        if (!self::isOurLogFile($file) || $messages === []) {
+            return;
+        }
+        $handle = fopen($file, 'a');
+        if ($handle === false) {
+            return;
+        }
+        foreach ($messages as $message) {
+            fputcsv($handle, [date('Y-m-d H:i:s'), $message], ';', '"', '');
+        }
+        fclose($handle);
+    }
+
+    private static function isOurLogFile(string $file): bool
+    {
+        return preg_match('/^jira-import-[0-9a-f]{16}\.log\.csv$/', basename($file)) === 1
+            && is_file($file) && realpath(dirname($file)) === realpath(GLPI_TMP_DIR);
+    }
+
+    /**
+     * Arrête un import en cours : les tickets déjà importés restent, le résultat partiel et le
+     * journal sont gardés comme pour un import terminé.
+     */
+    public static function abandonJob(): void
+    {
+        $job = self::job();
+        if ($job !== null) {
+            self::appendLog((string) $job['log'], [sprintf(
+                __('Import arrêté par l\'utilisateur après %1$d ticket(s) sur %2$d', 'configurationglpiauto'),
+                (int) $job['cursor'],
+                (int) $job['total']
+            )]);
+            $_SESSION[self::LAST_KEY] = [
+                'result'  => $job['result'] + ['stopped_at' => (int) $job['cursor']],
+                'log'     => $job['log'],
+                'total'   => $job['total'],
+            ];
+            unset($_SESSION[self::SESSION_KEY]['job']);
+        }
+        self::forgetPending();
+    }
+
+    /** Oublie le dernier import terminé et efface son journal. */
+    public static function forgetLast(): void
+    {
+        $file = (string) (self::last()['log'] ?? '');
+        if (self::isOurLogFile($file)) {
+            @unlink($file); // nosemgrep: php.lang.security.unlink-use.unlink-use
+        }
+        unset($_SESSION[self::LAST_KEY]);
     }
 
     public static function pendingEntity(): int
@@ -265,7 +455,7 @@ final class JiraImporter
      * @return array{summary: array<string, array<string, int>>, statuses: array<string, int|string>,
      *     types: array<string, int>, people_found: array<string, int>, people_missing: list<string>,
      *     already_imported: int, total: int, attachments: int, attachments_skipped: int,
-     *     labels: array<string, int>, tags_available: bool,
+     *     labels: array<string, int>, tags_available: bool, security_count: int, security_available: bool,
      *     subjects: list<array{word: string, count: int, examples: list<string>, forms: list<array{name: string, url: string}>}>}
      */
     public function preview(array $issues): array
@@ -314,6 +504,9 @@ final class JiraImporter
             // Issue #345, phase 2 : étiquettes Jira, importables comme étiquettes du plugin Tag.
             'labels'              => self::countLabels($issues),
             'tags_available'      => self::tagsAvailable(),
+            // Issue #345 : tickets étiquetés « Sécurité », qualifiables en incidents de grcmanager.
+            'security_count'      => JiraMapping::countSecurityIssues($issues),
+            'security_available'  => self::securityAvailable(),
             // Issue #345, bonus : sujets fréquents et formulaires du catalogue qui y répondent.
             'subjects'            => self::withMatchingForms(JiraMapping::frequentSubjects($issues)),
         ];
@@ -338,7 +531,8 @@ final class JiraImporter
      * @param list<array<string, mixed>> $issues
      * @param array<string, mixed> $statusMap statut Jira => statut GLPI (ou STATUS_NOT_RETAINED)
      * @param array<string, mixed> $typeMap   type Jira => type de ticket GLPI
-     * @return array{created: int, updated: int, attachments: int, labels: int, errors: list<string>, log: list<string>}
+     * @return array{created: int, updated: int, attachments: int, labels: int, security: int, errors: list<string>,
+     *     log: list<string>}
      */
     public function import(
         array $issues,
@@ -346,12 +540,17 @@ final class JiraImporter
         array $typeMap,
         int $entitiesId,
         bool $importLabels = false,
-        array $projectMap = []
+        array $projectMap = [],
+        bool $qualifySecurity = false
     ): array {
         global $CFG_GLPI;
 
-        $result = ['created' => 0, 'updated' => 0, 'attachments' => 0, 'labels' => 0, 'errors' => [], 'log' => []];
+        $result = [
+            'created' => 0, 'updated' => 0, 'attachments' => 0, 'labels' => 0, 'security' => 0,
+            'errors'  => [], 'log' => [],
+        ];
         $importLabels = $importLabels && self::tagsAvailable();
+        $qualifySecurity = $qualifySecurity && self::securityAvailable();
         $attachmentsDir = self::pendingAttachmentsDir();
         // Aucune notification pendant l'import (en mémoire seulement, rétabli à la fin).
         $notifications = $CFG_GLPI['use_notifications'] ?? 0;
@@ -368,6 +567,7 @@ final class JiraImporter
                     $result['labels'] += $importLabels ? $this->addLabels($ticketsId, $issue, $entitiesId, $result) : 0;
                     $result['updated']++;
                     $result['log'][] = sprintf(__('%1$s : ticket %2$d mis à jour', 'configurationglpiauto'), $key, $ticketsId);
+                    $this->qualifyIfSecurity($qualifySecurity, $ticketsId, $issue, $result);
                     continue;
                 }
                 // Issue #345 : entité et catégorie propres au projet Jira, sinon celles de l'import.
@@ -387,12 +587,58 @@ final class JiraImporter
                 $result['attachments'] += $this->addAttachments($ticketsId, $issue, $attachmentsDir);
                 $result['labels'] += $importLabels ? $this->addLabels($ticketsId, $issue, $entitiesId, $result) : 0;
                 $result['log'][] = sprintf(__('%1$s : ticket %2$d créé', 'configurationglpiauto'), $key, $ticketsId);
+                $this->qualifyIfSecurity($qualifySecurity, $ticketsId, $issue, $result);
             }
         } finally {
             $CFG_GLPI['use_notifications'] = $notifications;
         }
 
         return $result;
+    }
+
+    /**
+     * Issue #345 : grcmanager est-il actif, avec la qualification d'un ticket en incident de
+     * sécurité, et l'utilisateur peut-il créer un incident ? Classes appelées par leur nom : le
+     * plugin grcmanager est optionnel.
+     */
+    public static function securityAvailable(): bool
+    {
+        $canCreate = [self::GRC_INCIDENT_CLASS, 'canCreate'];
+
+        return \Plugin::isPluginActive('grcmanager')
+            && is_callable([self::GRC_QUALIFY_CLASS, 'qualify'])
+            && is_callable($canCreate)
+            && (bool) call_user_func($canCreate);
+    }
+
+    /**
+     * Ticket étiqueté « Sécurité » : qualifié en incident de sécurité de grcmanager, par la même
+     * fonction que l'action groupée de grcmanager (un ticket déjà qualifié garde son incident).
+     *
+     * @param array<string, mixed> $issue
+     * @param array{security: int, errors: list<string>, log: list<string>} $result
+     */
+    private function qualifyIfSecurity(bool $enabled, int $ticketsId, array $issue, array &$result): void
+    {
+        $qualify = [self::GRC_QUALIFY_CLASS, 'qualify'];
+        $ticket = new Ticket();
+        if (!$enabled || !JiraMapping::hasSecurityLabel($issue) || !is_callable($qualify) || !$ticket->getFromDB($ticketsId)) {
+            return;
+        }
+        $incidentsId = (int) call_user_func($qualify, $ticket);
+        $key = (string) $issue['key'];
+        if ($incidentsId <= 0) {
+            $result['errors'][] = sprintf(__('%s : incident de sécurité non créé', 'configurationglpiauto'), $key);
+
+            return;
+        }
+        $result['security']++;
+        $result['log'][] = sprintf(
+            __('%1$s : ticket %2$d relié à l\'incident de sécurité %3$d', 'configurationglpiauto'),
+            $key,
+            $ticketsId,
+            $incidentsId
+        );
     }
 
     public function findTicket(string $key): int

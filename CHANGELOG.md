@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Import Jira par lots, avec reprise** (issue #345) : 25 tickets par requête, la page enchaîne
+  seule et affiche l'avancement. Une page quittée ou une coupure : au retour, l'import reprend où
+  il s'est arrêté (le lot interrompu est rejoué sans doublon). L'import peut être arrêté en gardant
+  les tickets déjà importés.
+- **Journal de l'import** téléchargeable en CSV (horodatage, message), pendant et après l'import.
+- **Étiquette « Sécurité » vers les incidents de sécurité** (issue #345) : avec le plugin GRC
+  (grcmanager), l'aperçu propose de relier chaque ticket étiqueté « Sécurité » (ou security, SSI,
+  cybersécurité) à un incident de sécurité, par la même fonction que l'action groupée de grcmanager ;
+  un ticket déjà relié garde son incident.
+
+
 ## [1.22.0] - 2026-11-08
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
