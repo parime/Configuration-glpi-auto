@@ -91,6 +91,23 @@
          </div>
          <h4 class="mt-3">{{ __('Personnes', 'configurationglpiauto') }}</h4>
          <p>{{ __('%1$d reconnue(s) dans GLPI, %2$d inconnue(s).', 'configurationglpiauto')|format(preview.people_found|length, preview.people_missing|length) }}</p>
+         {# Issue #345, bonus : sujets fréquents de l'historique et formulaires du catalogue qui y répondent. #}
+         {% if preview.subjects is not empty %}
+            <h4>{{ __('Sujets fréquents', 'configurationglpiauto') }}</h4>
+            <p class="text-muted small">{{ __('Les mots qui reviennent le plus dans les titres importés. Un sujet fréquent sans formulaire est un bon candidat pour le catalogue de services.', 'configurationglpiauto') }}</p>
+            <table class="table table-sm align-middle">
+               {% for subject in preview.subjects %}
+                  <tr>
+                     <td class="text-nowrap"><span class="badge bg-purple-lt">{{ subject.word }}</span> <span class="text-muted">{{ __('%d ticket(s)', 'configurationglpiauto')|format(subject.count) }}</span></td>
+                     <td class="text-muted small">{{ subject.examples|join(' ; ') }}</td>
+                     <td>
+                        {% for form in subject.forms %}<a class="badge bg-green-lt me-1" href="{{ form.url }}"><i class="ti ti-forms me-1"></i>{{ form.name }}</a>{% else %}<span class="text-muted small"><i class="ti ti-bulb me-1"></i>{{ __('aucun formulaire : à créer ?', 'configurationglpiauto') }}</span>{% endfor %}
+                     </td>
+                  </tr>
+               {% endfor %}
+            </table>
+         {% endif %}
+
          {# Issue #345, phase 2 : étiquettes Jira vers le plugin Tag. #}
          {% if preview.labels is not empty %}
             <h4>{{ __('Étiquettes', 'configurationglpiauto') }}</h4>

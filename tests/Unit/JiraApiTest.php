@@ -210,6 +210,25 @@ final class JiraApiTest extends TestCase
         );
     }
 
+    public function testFrequentSubjectsCountEachTicketOnceAndIgnoreStopwords(): void
+    {
+        $issues = array_map(static fn (string $summary): array => ['summary' => $summary], [
+            'Imprimante du 2e étage en panne',
+            'Imprimante imprimante bloquée',
+            'Demande de badge pour un nouvel arrivant',
+            'Badge perdu',
+            'VPN en panne depuis le domicile',
+            'Mot de passe oublié',
+        ]);
+        $subjects = \GlpiPlugin\Configurationglpiauto\Jira\JiraMapping::frequentSubjects($issues);
+
+        $this->assertSame(['badge', 'imprimante', 'panne'], array_column($subjects, 'word'), 'Égalité : ordre alphabétique.');
+        $this->assertSame([2, 2, 2], array_column($subjects, 'count'), '« imprimante » deux fois dans un titre : un ticket.');
+        $this->assertSame(['Imprimante du 2e étage en panne', 'VPN en panne depuis le domicile'], $subjects[2]['examples']);
+        $this->assertNotContains('demande', array_column($subjects, 'word'), 'Mot vide ignoré.');
+        $this->assertSame([], \GlpiPlugin\Configurationglpiauto\Jira\JiraMapping::frequentSubjects([['summary' => 'Unique sujet']]));
+    }
+
     public function testErrorsAreNamedWithoutEverExposingTheToken(): void
     {
         $failing = static fn (string $status): JiraApiClient => new JiraApiClient(

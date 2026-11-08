@@ -5355,3 +5355,16 @@ msgstr "Etiqueta importada de Jira"
 #, php-format
 msgid "%1$s : étiquette « %2$s » non créée"
 msgstr "%1$s: etiqueta «%2$s» no creada"
+
+msgid "Sujets fréquents"
+msgstr "Temas frecuentes"
+
+msgid "Les mots qui reviennent le plus dans les titres importés. Un sujet fréquent sans formulaire est un bon candidat pour le catalogue de services."
+msgstr "Las palabras que más se repiten en los títulos importados. Un tema frecuente sin formulario es un buen candidato para el catálogo de servicios."
+
+#, php-format
+msgid "%d ticket(s)"
+msgstr "%d ticket(s)"
+
+msgid "aucun formulaire : à créer ?"
+msgstr "ningún formulario: ¿crear uno?"

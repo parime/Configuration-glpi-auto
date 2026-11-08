@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Import Jira : sujets fréquents** (issue #345) : l'aperçu montre les mots qui reviennent le plus
+  dans les titres importés (comptés une fois par ticket, mots vides ignorés), avec deux exemples et
+  les formulaires actifs du catalogue de services qui y répondent ; un sujet fréquent sans
+  formulaire est signalé comme candidat au catalogue. Lecture seule.
+
 ## [1.20.0] - 2026-11-08
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

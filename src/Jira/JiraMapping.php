@@ -57,6 +57,50 @@ final class JiraMapping
         [['medium', 'moyenne', 'normal', 'normale'], 3],
     ];
 
+    /** Mots sans valeur de sujet, ignorés dans les titres (français et anglais). */
+    private const STOPWORDS = [
+        'avec', 'pour', 'dans', 'sans', 'plus', 'tres', 'mais', 'nous', 'vous', 'leur', 'leurs', 'cette', 'ceux',
+        'sont', 'etre', 'avoir', 'fait', 'faire', 'peut', 'pouvoir', 'depuis', 'apres', 'avant', 'entre', 'chez',
+        'demande', 'demandes', 'probleme', 'problemes', 'souci', 'besoin', 'merci', 'bonjour', 'urgent', 'ticket',
+        'with', 'from', 'that', 'this', 'have', 'need', 'please', 'issue', 'request', 'problem', 'cannot', 'does',
+        'when', 'what', 'after', 'before', 'into', 'about', 'there',
+    ];
+
+    /**
+     * Issue #345, bonus : sujets les plus fréquents des titres importés (mot de 4 lettres ou plus,
+     * hors mots vides, compté une fois par ticket), pour proposer les formulaires du catalogue qui y
+     * répondent. Seuls les sujets d'au moins `$minimum` tickets sont gardés.
+     *
+     * @param list<array<string, mixed>> $issues
+     * @return list<array{word: string, count: int, examples: list<string>}>
+     */
+    public static function frequentSubjects(array $issues, int $top = 8, int $minimum = 2): array
+    {
+        $counts = [];
+        $examples = [];
+        foreach ($issues as $issue) {
+            $summary = (string) ($issue['summary'] ?? '');
+            $words = array_unique(preg_split('/\s+/', JiraCsvParser::slug($summary)) ?: []);
+            foreach ($words as $word) {
+                if (strlen($word) < 4 || ctype_digit($word) || in_array($word, self::STOPWORDS, true)) {
+                    continue;
+                }
+                $counts[$word] = ($counts[$word] ?? 0) + 1;
+                if (count($examples[$word] ?? []) < 2) {
+                    $examples[$word][] = $summary;
+                }
+            }
+        }
+        $counts = array_filter($counts, static fn (int $count): bool => $count >= $minimum);
+        uksort($counts, static fn (string $a, string $b): int => [$counts[$b], $a] <=> [$counts[$a], $b]);
+        $subjects = [];
+        foreach (array_slice($counts, 0, $top, true) as $word => $count) {
+            $subjects[] = ['word' => (string) $word, 'count' => $count, 'examples' => $examples[$word]];
+        }
+
+        return $subjects;
+    }
+
     public static function defaultStatus(string $jiraStatus): int|string
     {
         $slug = JiraCsvParser::slug($jiraStatus);

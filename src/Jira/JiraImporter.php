@@ -177,6 +177,49 @@ final class JiraImporter
         return $labels;
     }
 
+    /**
+     * Formulaires actifs du catalogue (GLPI 11+) dont le nom contient le sujet, trois au plus.
+     * Lecture seule : rien n'est créé.
+     *
+     * @param list<array{word: string, count: int, examples: list<string>}> $subjects
+     * @return list<array{word: string, count: int, examples: list<string>, forms: list<array{name: string, url: string}>}>
+     */
+    public static function withMatchingForms(array $subjects): array
+    {
+        global $DB;
+
+        $forms = [];
+        if (class_exists(\Glpi\Form\Form::class) && $DB->tableExists(\Glpi\Form\Form::getTable())) {
+            $table = \Glpi\Form\Form::getTable();
+            foreach (
+                $DB->request([
+                    'SELECT' => ['id', 'name'],
+                    'FROM'   => $table,
+                    'WHERE'  => ['is_active' => 1, 'is_deleted' => 0, 'is_draft' => 0]
+                        + getEntitiesRestrictCriteria($table, '', '', true),
+                ]) as $row
+            ) {
+                $forms[] = [
+                    'name' => (string) $row['name'],
+                    'slug' => ' ' . JiraCsvParser::slug((string) $row['name']) . ' ',
+                    'url'  => \Glpi\Form\Form::getFormURLWithID((int) $row['id']),
+                ];
+            }
+        }
+        foreach ($subjects as $i => $subject) {
+            $matches = [];
+            foreach ($forms as $form) {
+                // Mot entier ou début de mot (« imprimante » trouve « imprimantes »).
+                if (str_contains($form['slug'], ' ' . $subject['word']) && count($matches) < 3) {
+                    $matches[] = ['name' => $form['name'], 'url' => $form['url']];
+                }
+            }
+            $subjects[$i]['forms'] = $matches;
+        }
+
+        return $subjects;
+    }
+
     /** @var array<string, int> cache étiquette => identifiant du plugin Tag */
     private array $tags = [];
 
@@ -188,7 +231,8 @@ final class JiraImporter
      * @return array{summary: array<string, array<string, int>>, statuses: array<string, int|string>,
      *     types: array<string, int>, people_found: array<string, int>, people_missing: list<string>,
      *     already_imported: int, total: int, attachments: int, attachments_skipped: int,
-     *     labels: array<string, int>, tags_available: bool}
+     *     labels: array<string, int>, tags_available: bool,
+     *     subjects: list<array{word: string, count: int, examples: list<string>, forms: list<array{name: string, url: string}>}>}
      */
     public function preview(array $issues): array
     {
@@ -236,6 +280,8 @@ final class JiraImporter
             // Issue #345, phase 2 : étiquettes Jira, importables comme étiquettes du plugin Tag.
             'labels'              => self::countLabels($issues),
             'tags_available'      => self::tagsAvailable(),
+            // Issue #345, bonus : sujets fréquents et formulaires du catalogue qui y répondent.
+            'subjects'            => self::withMatchingForms(JiraMapping::frequentSubjects($issues)),
         ];
     }
 
