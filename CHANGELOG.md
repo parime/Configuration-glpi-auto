@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.22.0] - 2026-11-08
+
 ### Added
 
 - **Import Jira : entité et catégorie par projet** (issue #345) : l'aperçu propose, pour chaque
