@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.18.0] - 2026-11-08
 
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
 ### Added
 
 - **Import Jira par l'API REST** (issue #345, phase 2) : en plus de l'export CSV, lecture directe
