@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.20.0] - 2026-11-08
+
 ### Added
 
 - **Import Jira : étiquettes** (issue #345, phase 2) : l'aperçu liste les étiquettes Jira. Avec le
