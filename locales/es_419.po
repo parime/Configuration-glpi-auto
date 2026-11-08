@@ -5276,3 +5276,50 @@ msgstr "Lo configuro todo yo mismo"
 
 msgid "Sauvegarde automatique avant application"
 msgstr "Copia automática antes de aplicar"
+
+msgid "Renseignez l'adresse de Jira (HTTPS), le jeton, la requête JQL (et l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+msgstr "Indique la dirección de Jira (HTTPS), el token, la consulta JQL (y la dirección de correo para Jira Cloud) y una entidad a la que tenga acceso."
+
+msgid "Jira refuse l'accès : vérifiez l'adresse e-mail et le jeton, et les droits du compte sur le projet."
+msgstr "Jira deniega el acceso: compruebe la dirección de correo y el token, y los permisos de la cuenta en el proyecto."
+
+msgid "Adresse introuvable : vérifiez l'adresse de Jira et son type (Cloud ou Data Center)."
+msgstr "Dirección no encontrada: compruebe la dirección de Jira y su tipo (Cloud o Data Center)."
+
+msgid "Jira refuse la requête JQL : vérifiez-la dans Jira."
+msgstr "Jira rechaza la consulta JQL: compruébela en Jira."
+
+msgid "Réponse inattendue : ce n'est pas l'API de Jira."
+msgstr "Respuesta inesperada: no es la API de Jira."
+
+msgid "Jira injoignable depuis le serveur GLPI (réseau, proxy ou certificat)."
+msgstr "Jira no es accesible desde el servidor GLPI (red, proxy o certificado)."
+
+#, php-format
+msgid "Plus de %d tickets : seuls les premiers sont importés, affinez la requête JQL pour le reste."
+msgstr "Más de %d tickets: solo se importan los primeros, acote la consulta JQL para el resto."
+
+msgid "Ou directement depuis l'API de Jira"
+msgstr "O directamente desde la API de Jira"
+
+msgid "Lecture seule. Le jeton sert uniquement à cette lecture : il n'est jamais enregistré. Jira Cloud : adresse e-mail du compte et jeton d'API ; Jira Data Center : jeton d'accès personnel."
+msgstr "Solo lectura. El token solo sirve para esta lectura: nunca se guarda. Jira Cloud: dirección de correo de la cuenta y token de API; Jira Data Center: token de acceso personal."
+
+msgid "Adresse de Jira"
+msgstr "Dirección de Jira"
+
+msgid "Adresse e-mail (Jira Cloud)"
+msgstr "Dirección de correo (Jira Cloud)"
+
+msgid "Jeton d'API"
+msgstr "Token de API"
+
+msgid "Requête JQL"
+msgstr "Consulta JQL"
+
+msgid "Autoriser HTTP (jeton transmis en clair : réseau interne seulement)"
+msgstr "Permitir HTTP (token enviado en claro: solo red interna)"
+
+#, php-format
+msgid "GLPI refuse par défaut les appels vers un réseau privé. Pour un Jira interne, un administrateur ajoute %s à la constante GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (fichier config/local_define.php)."
+msgstr "Por defecto GLPI rechaza las llamadas a una red privada. Para un Jira interno, un administrador añade %s a la constante GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (archivo config/local_define.php)."

@@ -56,6 +56,21 @@ final class JiraImporter
     }
 
     /**
+     * Issue #345, phase 2 : tickets déjà lus par l'API Jira (forme de JiraCsvParser), gardés dans un
+     * fichier temporaire comme l'export CSV ; le jeton d'API, lui, n'est jamais écrit.
+     *
+     * @param list<array<string, mixed>> $issues
+     * @param list<array{line: int, message: string}> $errors
+     */
+    public static function storePendingIssues(array $issues, array $errors, int $entitiesId): void
+    {
+        self::forgetPending();
+        $path = GLPI_TMP_DIR . '/jira-import-' . bin2hex(random_bytes(8)) . '.json';
+        file_put_contents($path, (string) json_encode(['issues' => $issues, 'errors' => $errors]));
+        $_SESSION[self::SESSION_KEY] = ['file' => $path, 'entities_id' => $entitiesId];
+    }
+
+    /**
      * @return array{issues: list<array<string, mixed>>, errors: list<array{line: int, message: string}>}|null
      */
     public static function loadPending(): ?array
@@ -63,6 +78,13 @@ final class JiraImporter
         $file = (string) ($_SESSION[self::SESSION_KEY]['file'] ?? '');
         if ($file === '' || !is_file($file)) {
             return null;
+        }
+        if (str_ends_with($file, '.json')) {
+            $data = json_decode((string) file_get_contents($file), true);
+
+            return is_array($data) && is_array($data['issues'] ?? null)
+                ? ['issues' => array_values($data['issues']), 'errors' => array_values((array) ($data['errors'] ?? []))]
+                : null;
         }
 
         return JiraCsvParser::parse((string) file_get_contents($file));
@@ -77,7 +99,7 @@ final class JiraImporter
     {
         $file = (string) ($_SESSION[self::SESSION_KEY]['file'] ?? '');
         // Seul un fichier créé par storePending() (dossier temporaire de GLPI, nom imposé) est supprimé.
-        $isOurs = preg_match('/^jira-import-[0-9a-f]{16}\.csv$/', basename($file)) === 1
+        $isOurs = preg_match('/^jira-import-[0-9a-f]{16}\.(csv|json)$/', basename($file)) === 1
             && realpath(dirname($file)) === realpath(GLPI_TMP_DIR);
         if ($isOurs && is_file($file)) {
             @unlink($file); // nosemgrep: php.lang.security.unlink-use.unlink-use

@@ -89,6 +89,9 @@ All other screenshots (all 19 steps in detail) are in the [tutorial](docs/TUTORI
   sent)
 - Useful RSS feeds (CERT-FR security advisories, GLPI release notes) and plugin version tracking
   against the latest GitHub release
+- Ticket import from Jira, from a CSV export or directly through the REST API (Jira Cloud or Data
+  Center, token never stored): dry-run preview of status and type mappings, comments as
+  follow-ups, original dates, re-import without duplicates, no notification sent
 - Interface translated into 6 languages (French, English, German, Italian, Spanish, Brazilian Portuguese)
 
 ## Requirements

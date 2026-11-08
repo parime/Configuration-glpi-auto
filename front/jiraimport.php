@@ -19,6 +19,9 @@ use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\FrontUrl;
+use GlpiPlugin\Configurationglpiauto\Jira\JiraApiClient;
+use GlpiPlugin\Configurationglpiauto\Jira\JiraApiMapper;
+use GlpiPlugin\Configurationglpiauto\Jira\JiraConnection;
 use GlpiPlugin\Configurationglpiauto\Jira\JiraImporter;
 use GlpiPlugin\Configurationglpiauto\Jira\JiraMapping;
 
@@ -52,6 +55,54 @@ if (isset($_POST['upload'])) {
         $content = mb_convert_encoding($content, 'UTF-8', 'Windows-1252');
     }
     JiraImporter::storePending($content, $entitiesId);
+    Html::redirect($url . '?step=preview');
+}
+
+// Issue #345, phase 2 : lecture par l'API REST de Jira. Le jeton sert à cette lecture puis est
+// oublié (jamais enregistré) ; HTTPS exigé sauf case cochée explicitement.
+if (isset($_POST['fetch_api'])) {
+    $entitiesId = (int) ($_POST['entities_id'] ?? 0);
+    $flavour = ($_POST['jira_flavour'] ?? '') === JiraApiMapper::FLAVOUR_CLOUD
+        ? JiraApiMapper::FLAVOUR_CLOUD : JiraApiMapper::FLAVOUR_DATACENTER;
+    $baseUrl = JiraApiMapper::normalizeBaseUrl((string) ($_POST['jira_url'] ?? ''), !empty($_POST['allow_http']));
+    $user = trim((string) ($_POST['jira_user'] ?? ''));
+    $token = (string) ($_POST['jira_token'] ?? '');
+    $jql = trim((string) ($_POST['jira_jql'] ?? ''));
+    $missing = $baseUrl === null || $token === '' || $jql === ''
+        || ($flavour === JiraApiMapper::FLAVOUR_CLOUD && $user === '');
+    if ($missing || !Session::haveAccessToEntity($entitiesId)) {
+        Session::addMessageAfterRedirect(
+            htmlescape(__('Renseignez l\'adresse de Jira (HTTPS), le jeton, la requête JQL (et l\'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès.', 'configurationglpiauto')),
+            false,
+            ERROR
+        );
+        Html::redirect($url);
+    }
+    $fetched = (new JiraApiClient())->fetch($baseUrl, $flavour, $user, $token, $jql);
+    unset($token, $_POST['jira_token']);
+    if ($fetched['issues'] === [] && $fetched['errors'] !== []) {
+        $apiErrors = [
+            'api_unauthorized' => __('Jira refuse l\'accès : vérifiez l\'adresse e-mail et le jeton, et les droits du compte sur le projet.', 'configurationglpiauto'),
+            'api_not_found'    => __('Adresse introuvable : vérifiez l\'adresse de Jira et son type (Cloud ou Data Center).', 'configurationglpiauto'),
+            'api_bad_query'    => __('Jira refuse la requête JQL : vérifiez-la dans Jira.', 'configurationglpiauto'),
+            'api_unexpected'   => __('Réponse inattendue : ce n\'est pas l\'API de Jira.', 'configurationglpiauto'),
+            'api_unreachable'  => __('Jira injoignable depuis le serveur GLPI (réseau, proxy ou certificat).', 'configurationglpiauto'),
+            'api_private_network' => sprintf(
+                __('GLPI refuse par défaut les appels vers un réseau privé. Pour un Jira interne, un administrateur ajoute %s à la constante GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (fichier config/local_define.php).', 'configurationglpiauto'),
+                JiraConnection::class
+            ),
+        ];
+        $code = (string) $fetched['errors'][0]['message'];
+        Session::addMessageAfterRedirect(htmlescape($apiErrors[$code] ?? $code), false, ERROR);
+        Html::redirect($url);
+    }
+    if ($fetched['truncated']) {
+        Session::addMessageAfterRedirect(htmlescape(sprintf(
+            __('Plus de %d tickets : seuls les premiers sont importés, affinez la requête JQL pour le reste.', 'configurationglpiauto'),
+            JiraApiClient::MAX_ISSUES
+        )), false, WARNING);
+    }
+    JiraImporter::storePendingIssues($fetched['issues'], $fetched['errors'], $entitiesId);
     Html::redirect($url . '?step=preview');
 }
 
@@ -107,6 +158,12 @@ if ($result !== null) {
             'value'   => Session::getActiveEntity(),
             'entity'  => $_SESSION['glpiactiveentities'],
             'display' => false,
+        ]), 'api_entity_dropdown' => Entity::dropdown([
+            'name'    => 'entities_id',
+            'value'   => Session::getActiveEntity(),
+            'entity'  => $_SESSION['glpiactiveentities'],
+            'display' => false,
+            'rand'    => mt_rand(),
         ])];
     } else {
         // Étape 2 : aperçu à blanc et correspondances.
