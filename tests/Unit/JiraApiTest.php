@@ -197,6 +197,19 @@ final class JiraApiTest extends TestCase
         rmdir($dir);
     }
 
+    public function testLabelsAreCountedOncePerTicketAndSortedForThePreview(): void
+    {
+        $this->assertSame(
+            ['etage-2' => 1, 'imprimante' => 2, 'Reseau' => 1],
+            \GlpiPlugin\Configurationglpiauto\Jira\JiraImporter::countLabels([
+                ['labels' => ['imprimante', ' ', 'etage-2']],
+                ['labels' => ['imprimante', 'Reseau']],
+                ['labels' => []],
+                [],
+            ])
+        );
+    }
+
     public function testErrorsAreNamedWithoutEverExposingTheToken(): void
     {
         $failing = static fn (string $status): JiraApiClient => new JiraApiClient(

@@ -5338,3 +5338,20 @@ msgstr "%d archivo(s) adjunto(s) descartado(s): demasiado grandes (10 MB por arc
 #, php-format
 msgid "%d pièce(s) jointe(s) ajoutée(s)."
 msgstr "%d archivo(s) adjunto(s) añadido(s)."
+
+msgid "Poser ces étiquettes sur les tickets avec le plugin Tag (une étiquette absente est créée, récursive, dans l'entité de l'import)"
+msgstr "Poner estas etiquetas en los tickets con el plugin Tag (una etiqueta que falte se crea, recursiva, en la entidad de la importación)"
+
+msgid "Installez le plugin Tag pour importer ces étiquettes ; sans lui, elles sont ignorées."
+msgstr "Instale el plugin Tag para importar estas etiquetas; sin él, se ignoran."
+
+#, php-format
+msgid "%d étiquette(s) posée(s)."
+msgstr "%d etiqueta(s) aplicada(s)."
+
+msgid "Étiquette importée de Jira"
+msgstr "Etiqueta importada de Jira"
+
+#, php-format
+msgid "%1$s : étiquette « %2$s » non créée"
+msgstr "%1$s: etiqueta «%2$s» no creada"

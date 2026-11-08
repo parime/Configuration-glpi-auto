@@ -149,6 +149,37 @@ final class JiraImporter
         unset($_SESSION[self::SESSION_KEY]);
     }
 
+    /**
+     * Issue #345, phase 2 : le plugin Tag (étiquettes) est-il installé et actif ?
+     */
+    public static function tagsAvailable(): bool
+    {
+        return \Plugin::isPluginActive('tag') && class_exists('PluginTagTag') && class_exists('PluginTagTagItem');
+    }
+
+    /**
+     * @param list<array<string, mixed>> $issues
+     * @return array<string, int> étiquette => nombre de tickets, par ordre alphabétique
+     */
+    public static function countLabels(array $issues): array
+    {
+        $labels = [];
+        foreach ($issues as $issue) {
+            foreach ((array) ($issue['labels'] ?? []) as $label) {
+                $label = trim((string) $label);
+                if ($label !== '') {
+                    $labels[$label] = ($labels[$label] ?? 0) + 1;
+                }
+            }
+        }
+        ksort($labels, SORT_NATURAL | SORT_FLAG_CASE);
+
+        return $labels;
+    }
+
+    /** @var array<string, int> cache étiquette => identifiant du plugin Tag */
+    private array $tags = [];
+
     /** @var array<string, int> cache nom/e-mail => utilisateur */
     private array $users = [];
 
@@ -156,7 +187,8 @@ final class JiraImporter
      * @param list<array<string, mixed>> $issues
      * @return array{summary: array<string, array<string, int>>, statuses: array<string, int|string>,
      *     types: array<string, int>, people_found: array<string, int>, people_missing: list<string>,
-     *     already_imported: int, total: int, attachments: int, attachments_skipped: int}
+     *     already_imported: int, total: int, attachments: int, attachments_skipped: int,
+     *     labels: array<string, int>, tags_available: bool}
      */
     public function preview(array $issues): array
     {
@@ -201,6 +233,9 @@ final class JiraImporter
             // Issue #345, phase 2 : pièces jointes lues par l'API (téléchargées ou écartées).
             'attachments'         => $this->countAttachments($issues, true),
             'attachments_skipped' => $this->countAttachments($issues, false),
+            // Issue #345, phase 2 : étiquettes Jira, importables comme étiquettes du plugin Tag.
+            'labels'              => self::countLabels($issues),
+            'tags_available'      => self::tagsAvailable(),
         ];
     }
 
@@ -223,13 +258,14 @@ final class JiraImporter
      * @param list<array<string, mixed>> $issues
      * @param array<string, mixed> $statusMap statut Jira => statut GLPI (ou STATUS_NOT_RETAINED)
      * @param array<string, mixed> $typeMap   type Jira => type de ticket GLPI
-     * @return array{created: int, updated: int, attachments: int, errors: list<string>, log: list<string>}
+     * @return array{created: int, updated: int, attachments: int, labels: int, errors: list<string>, log: list<string>}
      */
-    public function import(array $issues, array $statusMap, array $typeMap, int $entitiesId): array
+    public function import(array $issues, array $statusMap, array $typeMap, int $entitiesId, bool $importLabels = false): array
     {
         global $CFG_GLPI;
 
-        $result = ['created' => 0, 'updated' => 0, 'attachments' => 0, 'errors' => [], 'log' => []];
+        $result = ['created' => 0, 'updated' => 0, 'attachments' => 0, 'labels' => 0, 'errors' => [], 'log' => []];
+        $importLabels = $importLabels && self::tagsAvailable();
         $attachmentsDir = self::pendingAttachmentsDir();
         // Aucune notification pendant l'import (en mémoire seulement, rétabli à la fin).
         $notifications = $CFG_GLPI['use_notifications'] ?? 0;
@@ -243,6 +279,7 @@ final class JiraImporter
                 if ($ticketsId > 0) {
                     $this->update($ticketsId, $issue, $status);
                     $result['attachments'] += $this->addAttachments($ticketsId, $issue, $attachmentsDir);
+                    $result['labels'] += $importLabels ? $this->addLabels($ticketsId, $issue, $entitiesId, $result) : 0;
                     $result['updated']++;
                     $result['log'][] = sprintf(__('%1$s : ticket %2$d mis à jour', 'configurationglpiauto'), $key, $ticketsId);
                     continue;
@@ -254,6 +291,7 @@ final class JiraImporter
                 }
                 $result['created']++;
                 $result['attachments'] += $this->addAttachments($ticketsId, $issue, $attachmentsDir);
+                $result['labels'] += $importLabels ? $this->addLabels($ticketsId, $issue, $entitiesId, $result) : 0;
                 $result['log'][] = sprintf(__('%1$s : ticket %2$d créé', 'configurationglpiauto'), $key, $ticketsId);
             }
         } finally {
@@ -474,6 +512,68 @@ final class JiraImporter
                 @unlink(GLPI_TMP_DIR . '/' . $prefix . $filename); // nosemgrep: php.lang.security.unlink-use.unlink-use
             }
             if ($documentsId !== false && (int) $documentsId > 0) {
+                $added++;
+            }
+        }
+
+        return $added;
+    }
+
+    /**
+     * Issue #345, phase 2 : étiquettes Jira posées sur le ticket avec le plugin Tag. Une étiquette
+     * active du même nom, visible depuis l'entité de l'import, est réutilisée ; sinon elle est créée
+     * dans cette entité (récursive). Un lien déjà présent n'est pas recréé.
+     *
+     * @param array<string, mixed> $issue
+     * @param array{errors: list<string>} $result
+     */
+    private function addLabels(int $ticketsId, array $issue, int $entitiesId, array &$result): int
+    {
+        global $DB;
+
+        // Classes du plugin Tag (optionnel), obtenues par GLPI : false si le plugin manque.
+        $tagModel = getItemForItemtype('PluginTagTag');
+        $linkModel = getItemForItemtype('PluginTagTagItem');
+        if (!$tagModel instanceof \CommonDBTM || !$linkModel instanceof \CommonDBTM) {
+            return 0;
+        }
+        $added = 0;
+        foreach ((array) ($issue['labels'] ?? []) as $label) {
+            $label = mb_substr(trim((string) $label), 0, 255);
+            if ($label === '') {
+                continue;
+            }
+            if (!isset($this->tags[$label])) {
+                $table = $tagModel::getTable();
+                $found = $DB->request([
+                    'SELECT' => ['id'],
+                    'FROM'   => $table,
+                    'WHERE'  => ['name' => $label, 'is_active' => 1]
+                        + getEntitiesRestrictCriteria($table, '', $entitiesId, true),
+                    'LIMIT'  => 1,
+                ])->current();
+                $tagId = (int) ($found['id'] ?? 0);
+                if ($tagId === 0) {
+                    $tagId = (int) (clone $tagModel)->add([
+                        'name'         => $label,
+                        'entities_id'  => $entitiesId,
+                        'is_recursive' => 1,
+                        'is_active'    => 1,
+                        'comment'      => __('Étiquette importée de Jira', 'configurationglpiauto'),
+                    ]);
+                }
+                $this->tags[$label] = $tagId;
+            }
+            $tagId = $this->tags[$label];
+            if ($tagId <= 0) {
+                $result['errors'][] = sprintf(__('%1$s : étiquette « %2$s » non créée', 'configurationglpiauto'), (string) $issue['key'], $label);
+                continue;
+            }
+            $link = ['plugin_tag_tags_id' => $tagId, 'itemtype' => \Ticket::class, 'items_id' => $ticketsId];
+            if (countElementsInTable($linkModel::getTable(), $link) > 0) {
+                continue;
+            }
+            if ((clone $linkModel)->add($link) !== false) {
                 $added++;
             }
         }

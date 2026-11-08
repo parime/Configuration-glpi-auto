@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Import Jira : étiquettes** (issue #345, phase 2) : l'aperçu liste les étiquettes Jira. Avec le
+  plugin Tag, une case (cochée par défaut) les pose sur les tickets : une étiquette active du même
+  nom est réutilisée, sinon elle est créée (récursive) dans l'entité de l'import ; le réimport ne
+  duplique ni étiquette ni lien. Sans le plugin Tag, une note l'indique et l'import n'est pas
+  modifié.
+
 ## [1.19.0] - 2026-11-08
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

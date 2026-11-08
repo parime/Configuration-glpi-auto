@@ -125,7 +125,8 @@ if (isset($_POST['import'])) {
         $parsed['issues'],
         (array) ($_POST['status_map'] ?? []),
         (array) ($_POST['type_map'] ?? []),
-        $entitiesId
+        $entitiesId,
+        !empty($_POST['import_labels'])
     );
     JiraImporter::forgetPending();
 }

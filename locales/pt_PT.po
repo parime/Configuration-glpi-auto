@@ -5276,3 +5276,20 @@ msgstr "%d anexo(s) descartado(s): grandes demais (10 MB por arquivo, 200 MB no 
 #, php-format
 msgid "%d pièce(s) jointe(s) ajoutée(s)."
 msgstr "%d anexo(s) adicionado(s)."
+
+msgid "Poser ces étiquettes sur les tickets avec le plugin Tag (une étiquette absente est créée, récursive, dans l'entité de l'import)"
+msgstr "Aplicar estas etiquetas aos chamados com o plugin Tag (uma etiqueta ausente é criada, recursiva, na entidade da importação)"
+
+msgid "Installez le plugin Tag pour importer ces étiquettes ; sans lui, elles sont ignorées."
+msgstr "Instale o plugin Tag para importar estas etiquetas; sem ele, elas são ignoradas."
+
+#, php-format
+msgid "%d étiquette(s) posée(s)."
+msgstr "%d etiqueta(s) aplicada(s)."
+
+msgid "Étiquette importée de Jira"
+msgstr "Etiqueta importada do Jira"
+
+#, php-format
+msgid "%1$s : étiquette « %2$s » non créée"
+msgstr "%1$s: etiqueta \"%2$s\" não criada"
