@@ -5232,3 +5232,16 @@ msgstr "Label imported from Jira"
 #, php-format
 msgid "%1$s : étiquette « %2$s » non créée"
 msgstr "%1$s: label \"%2$s\" not created"
+
+msgid "Sujets fréquents"
+msgstr "Frequent subjects"
+
+msgid "Les mots qui reviennent le plus dans les titres importés. Un sujet fréquent sans formulaire est un bon candidat pour le catalogue de services."
+msgstr "The words that come up most in the imported titles. A frequent subject without a form is a good candidate for the service catalogue."
+
+#, php-format
+msgid "%d ticket(s)"
+msgstr "%d ticket(s)"
+
+msgid "aucun formulaire : à créer ?"
+msgstr "no form: create one?"
