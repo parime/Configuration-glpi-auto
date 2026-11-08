@@ -78,7 +78,14 @@ if (isset($_POST['fetch_api'])) {
         );
         Html::redirect($url);
     }
-    $fetched = (new JiraApiClient())->fetch($baseUrl, $flavour, $user, $token, $jql);
+    $client = new JiraApiClient();
+    $fetched = $client->fetch($baseUrl, $flavour, $user, $token, $jql);
+    // Pièces jointes téléchargées maintenant : le jeton est oublié juste après.
+    $attachmentsDir = '';
+    if ($fetched['issues'] !== []) {
+        $attachmentsDir = JiraImporter::newAttachmentsDir();
+        $client->downloadAttachments($fetched['issues'], $baseUrl, $flavour, $user, $token, $attachmentsDir);
+    }
     unset($token, $_POST['jira_token']);
     if ($fetched['issues'] === [] && $fetched['errors'] !== []) {
         $apiErrors = [
@@ -102,7 +109,7 @@ if (isset($_POST['fetch_api'])) {
             JiraApiClient::MAX_ISSUES
         )), false, WARNING);
     }
-    JiraImporter::storePendingIssues($fetched['issues'], $fetched['errors'], $entitiesId);
+    JiraImporter::storePendingIssues($fetched['issues'], $fetched['errors'], $entitiesId, $attachmentsDir);
     Html::redirect($url . '?step=preview');
 }
 

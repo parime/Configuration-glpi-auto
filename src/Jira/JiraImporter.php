@@ -62,12 +62,45 @@ final class JiraImporter
      * @param list<array<string, mixed>> $issues
      * @param list<array{line: int, message: string}> $errors
      */
-    public static function storePendingIssues(array $issues, array $errors, int $entitiesId): void
+    public static function storePendingIssues(array $issues, array $errors, int $entitiesId, string $attachmentsDir = ''): void
     {
+        $dir = $_SESSION[self::SESSION_KEY]['attachments_dir'] ?? '';
+        // Le dossier des pièces jointes vient d'être rempli pour cet import : il n'est pas effacé.
+        unset($_SESSION[self::SESSION_KEY]['attachments_dir']);
         self::forgetPending();
         $path = GLPI_TMP_DIR . '/jira-import-' . bin2hex(random_bytes(8)) . '.json';
         file_put_contents($path, (string) json_encode(['issues' => $issues, 'errors' => $errors]));
-        $_SESSION[self::SESSION_KEY] = ['file' => $path, 'entities_id' => $entitiesId];
+        $_SESSION[self::SESSION_KEY] = [
+            'file'            => $path,
+            'entities_id'     => $entitiesId,
+            'attachments_dir' => $attachmentsDir !== '' ? $attachmentsDir : $dir,
+        ];
+    }
+
+    /**
+     * Issue #345, phase 2 : dossier temporaire des pièces jointes téléchargées pendant la lecture par
+     * l'API, effacé avec l'import en attente (forgetPending()).
+     */
+    public static function newAttachmentsDir(): string
+    {
+        $dir = GLPI_TMP_DIR . '/jira-import-' . bin2hex(random_bytes(8)) . '-files';
+        mkdir($dir, 0700);
+
+        return $dir;
+    }
+
+    /** Dossier des pièces jointes de l'import en attente, s'il a été créé par newAttachmentsDir(). */
+    public static function pendingAttachmentsDir(): string
+    {
+        $dir = (string) ($_SESSION[self::SESSION_KEY]['attachments_dir'] ?? '');
+
+        return self::isOurAttachmentsDir($dir) ? $dir : '';
+    }
+
+    private static function isOurAttachmentsDir(string $dir): bool
+    {
+        return $dir !== '' && preg_match('/^jira-import-[0-9a-f]{16}-files$/', basename($dir)) === 1
+            && is_dir($dir) && realpath(dirname($dir)) === realpath(GLPI_TMP_DIR);
     }
 
     /**
@@ -104,6 +137,15 @@ final class JiraImporter
         if ($isOurs && is_file($file)) {
             @unlink($file); // nosemgrep: php.lang.security.unlink-use.unlink-use
         }
+        $dir = (string) ($_SESSION[self::SESSION_KEY]['attachments_dir'] ?? '');
+        if (self::isOurAttachmentsDir($dir)) {
+            foreach (glob($dir . '/*') ?: [] as $attachment) {
+                if (is_file($attachment)) {
+                    @unlink($attachment); // nosemgrep: php.lang.security.unlink-use.unlink-use
+                }
+            }
+            @rmdir($dir);
+        }
         unset($_SESSION[self::SESSION_KEY]);
     }
 
@@ -114,7 +156,7 @@ final class JiraImporter
      * @param list<array<string, mixed>> $issues
      * @return array{summary: array<string, array<string, int>>, statuses: array<string, int|string>,
      *     types: array<string, int>, people_found: array<string, int>, people_missing: list<string>,
-     *     already_imported: int, total: int}
+     *     already_imported: int, total: int, attachments: int, attachments_skipped: int}
      */
     public function preview(array $issues): array
     {
@@ -156,20 +198,39 @@ final class JiraImporter
                 fn (array $issue): bool => $this->findTicket((string) $issue['key']) > 0
             )),
             'total'            => count($issues),
+            // Issue #345, phase 2 : pièces jointes lues par l'API (téléchargées ou écartées).
+            'attachments'         => $this->countAttachments($issues, true),
+            'attachments_skipped' => $this->countAttachments($issues, false),
         ];
+    }
+
+    /**
+     * @param list<array<string, mixed>> $issues
+     */
+    private function countAttachments(array $issues, bool $downloaded): int
+    {
+        $count = 0;
+        foreach ($issues as $issue) {
+            foreach ((array) ($issue['attachments'] ?? []) as $attachment) {
+                $count += ((string) ($attachment['file'] ?? '') !== '') === $downloaded ? 1 : 0;
+            }
+        }
+
+        return $count;
     }
 
     /**
      * @param list<array<string, mixed>> $issues
      * @param array<string, mixed> $statusMap statut Jira => statut GLPI (ou STATUS_NOT_RETAINED)
      * @param array<string, mixed> $typeMap   type Jira => type de ticket GLPI
-     * @return array{created: int, updated: int, errors: list<string>, log: list<string>}
+     * @return array{created: int, updated: int, attachments: int, errors: list<string>, log: list<string>}
      */
     public function import(array $issues, array $statusMap, array $typeMap, int $entitiesId): array
     {
         global $CFG_GLPI;
 
-        $result = ['created' => 0, 'updated' => 0, 'errors' => [], 'log' => []];
+        $result = ['created' => 0, 'updated' => 0, 'attachments' => 0, 'errors' => [], 'log' => []];
+        $attachmentsDir = self::pendingAttachmentsDir();
         // Aucune notification pendant l'import (en mémoire seulement, rétabli à la fin).
         $notifications = $CFG_GLPI['use_notifications'] ?? 0;
         $CFG_GLPI['use_notifications'] = 0;
@@ -181,6 +242,7 @@ final class JiraImporter
                 $ticketsId = $this->findTicket($key);
                 if ($ticketsId > 0) {
                     $this->update($ticketsId, $issue, $status);
+                    $result['attachments'] += $this->addAttachments($ticketsId, $issue, $attachmentsDir);
                     $result['updated']++;
                     $result['log'][] = sprintf(__('%1$s : ticket %2$d mis à jour', 'configurationglpiauto'), $key, $ticketsId);
                     continue;
@@ -191,6 +253,7 @@ final class JiraImporter
                     continue;
                 }
                 $result['created']++;
+                $result['attachments'] += $this->addAttachments($ticketsId, $issue, $attachmentsDir);
                 $result['log'][] = sprintf(__('%1$s : ticket %2$d créé', 'configurationglpiauto'), $key, $ticketsId);
             }
         } finally {
@@ -347,6 +410,77 @@ final class JiraImporter
      *
      * @param array<string, mixed> $issue
      */
+    /**
+     * Issue #345, phase 2 : pièces jointes téléchargées par l'API, ajoutées au ticket comme documents
+     * GLPI (Document::add(), qui applique les extensions autorisées et le stockage de GLPI). Une
+     * marque dans le commentaire du document évite de la rajouter au réimport.
+     *
+     * @param array<string, mixed> $issue
+     */
+    private function addAttachments(int $ticketsId, array $issue, string $dir): int
+    {
+        global $DB;
+
+        if ($dir === '') {
+            return 0;
+        }
+        $ticket = new \Ticket();
+        if (!$ticket->getFromDB($ticketsId)) {
+            return 0;
+        }
+        $added = 0;
+        foreach ((array) ($issue['attachments'] ?? []) as $attachment) {
+            $file = (string) ($attachment['file'] ?? '');
+            if ($file === '' || preg_match('/^[0-9A-Za-z_-]{1,64}$/', $file) !== 1 || !is_file($dir . '/' . $file)) {
+                continue;
+            }
+            $marker = sprintf('Jira : %s / %s', (string) $issue['key'], $file);
+            $exists = $DB->request([
+                'COUNT'      => 'cpt',
+                'FROM'       => \Document::getTable(),
+                'INNER JOIN' => [
+                    \Document_Item::getTable() => ['FKEY' => [
+                        \Document::getTable()      => 'id',
+                        \Document_Item::getTable() => 'documents_id',
+                    ]],
+                ],
+                'WHERE'      => [
+                    \Document::getTable() . '.comment'       => $marker,
+                    \Document_Item::getTable() . '.itemtype' => \Ticket::class,
+                    \Document_Item::getTable() . '.items_id' => $ticketsId,
+                ],
+            ])->current();
+            if ((int) ($exists['cpt'] ?? 0) > 0) {
+                continue;
+            }
+            $filename = JiraApiMapper::safeFilename((string) $attachment['filename']);
+            $prefix = bin2hex(random_bytes(6)) . '_';
+            if ($filename === '' || !copy($dir . '/' . $file, GLPI_TMP_DIR . '/' . $prefix . $filename)) {
+                continue;
+            }
+            $documentsId = (new \Document())->add([
+                'name'                    => $filename,
+                'entities_id'             => (int) $ticket->fields['entities_id'],
+                'is_recursive'            => 0,
+                'comment'                 => $marker,
+                'itemtype'                => \Ticket::class,
+                'items_id'                => $ticketsId,
+                '_filename'               => [$prefix . $filename],
+                '_prefix_filename'        => [$prefix],
+                '_only_if_upload_succeed' => 1,
+            ]);
+            // Extension refusée par GLPI : le document n'est pas créé et la copie est retirée.
+            if (is_file(GLPI_TMP_DIR . '/' . $prefix . $filename)) {
+                @unlink(GLPI_TMP_DIR . '/' . $prefix . $filename); // nosemgrep: php.lang.security.unlink-use.unlink-use
+            }
+            if ($documentsId !== false && (int) $documentsId > 0) {
+                $added++;
+            }
+        }
+
+        return $added;
+    }
+
     private function addComments(int $ticketsId, array $issue, ?string $after): void
     {
         global $DB;
