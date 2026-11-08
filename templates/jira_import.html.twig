@@ -19,7 +19,8 @@
 
    {% if step == 'result' %}
       <div class="alert alert-success">{{ __('Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour.', 'configurationglpiauto')|format(result.created, result.updated) }}
-         {% if result.attachments %} {{ __('%d pièce(s) jointe(s) ajoutée(s).', 'configurationglpiauto')|format(result.attachments) }}{% endif %}</div>
+         {% if result.attachments %} {{ __('%d pièce(s) jointe(s) ajoutée(s).', 'configurationglpiauto')|format(result.attachments) }}{% endif %}
+         {% if result.labels %} {{ __('%d étiquette(s) posée(s).', 'configurationglpiauto')|format(result.labels) }}{% endif %}</div>
       {% for error in result.errors %}<div class="alert alert-danger py-2">{{ error }}</div>{% endfor %}
       <details><summary>{{ __('Journal de l\'import', 'configurationglpiauto') }}</summary><pre class="small">{{ result.log|join("\n") }}</pre></details>
       <a class="btn btn-outline-primary mt-3" href="{{ tickets_url }}">{{ __('Voir les tickets', 'configurationglpiauto') }}</a>
@@ -90,6 +91,19 @@
          </div>
          <h4 class="mt-3">{{ __('Personnes', 'configurationglpiauto') }}</h4>
          <p>{{ __('%1$d reconnue(s) dans GLPI, %2$d inconnue(s).', 'configurationglpiauto')|format(preview.people_found|length, preview.people_missing|length) }}</p>
+         {# Issue #345, phase 2 : étiquettes Jira vers le plugin Tag. #}
+         {% if preview.labels is not empty %}
+            <h4>{{ __('Étiquettes', 'configurationglpiauto') }}</h4>
+            <p>{% for label, count in preview.labels %}<span class="badge bg-blue-lt me-1 mb-1"><i class="ti ti-tag me-1"></i>{{ label }} <span class="text-muted">{{ count }}</span></span>{% endfor %}</p>
+            {% if preview.tags_available %}
+               <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="import_labels" name="import_labels" value="1" checked>
+                  <label class="form-check-label" for="import_labels">{{ __('Poser ces étiquettes sur les tickets avec le plugin Tag (une étiquette absente est créée, récursive, dans l\'entité de l\'import)', 'configurationglpiauto') }}</label>
+               </div>
+            {% else %}
+               <p class="text-muted"><i class="ti ti-info-circle me-1"></i>{{ __('Installez le plugin Tag pour importer ces étiquettes ; sans lui, elles sont ignorées.', 'configurationglpiauto') }}</p>
+            {% endif %}
+         {% endif %}
          {% if preview.attachments > 0 or preview.attachments_skipped > 0 %}
             <h4>{{ __('Pièces jointes', 'configurationglpiauto') }}</h4>
             <p><i class="ti ti-paperclip me-1"></i>{{ __('%d pièce(s) jointe(s) seront ajoutées aux tickets comme documents GLPI (extensions autorisées par GLPI seulement).', 'configurationglpiauto')|format(preview.attachments) }}</p>

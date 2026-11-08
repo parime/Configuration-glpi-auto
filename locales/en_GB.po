@@ -5215,3 +5215,20 @@ msgstr "%d attachment(s) left out: too large (10 MB per file, 200 MB in total), 
 #, php-format
 msgid "%d pièce(s) jointe(s) ajoutée(s)."
 msgstr "%d attachment(s) added."
+
+msgid "Poser ces étiquettes sur les tickets avec le plugin Tag (une étiquette absente est créée, récursive, dans l'entité de l'import)"
+msgstr "Put these labels on the tickets with the Tag plugin (a missing tag is created, recursive, in the import entity)"
+
+msgid "Installez le plugin Tag pour importer ces étiquettes ; sans lui, elles sont ignorées."
+msgstr "Install the Tag plugin to import these labels; without it, they are ignored."
+
+#, php-format
+msgid "%d étiquette(s) posée(s)."
+msgstr "%d label(s) applied."
+
+msgid "Étiquette importée de Jira"
+msgstr "Label imported from Jira"
+
+#, php-format
+msgid "%1$s : étiquette « %2$s » non créée"
+msgstr "%1$s: label \"%2$s\" not created"

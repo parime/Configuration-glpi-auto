@@ -5210,3 +5210,20 @@ msgstr "Pominięte załączniki: %d (za duże: 10 MB na plik, 200 MB łącznie; 
 #, php-format
 msgid "%d pièce(s) jointe(s) ajoutée(s)."
 msgstr "Dodane załączniki: %d."
+
+msgid "Poser ces étiquettes sur les tickets avec le plugin Tag (une étiquette absente est créée, récursive, dans l'entité de l'import)"
+msgstr "Nadaj te etykiety zgłoszeniom za pomocą wtyczki Tag (brakująca etykieta zostanie utworzona, rekurencyjnie, w jednostce importu)"
+
+msgid "Installez le plugin Tag pour importer ces étiquettes ; sans lui, elles sont ignorées."
+msgstr "Zainstaluj wtyczkę Tag, aby zaimportować te etykiety; bez niej są pomijane."
+
+#, php-format
+msgid "%d étiquette(s) posée(s)."
+msgstr "Nadane etykiety: %d."
+
+msgid "Étiquette importée de Jira"
+msgstr "Etykieta zaimportowana z Jira"
+
+#, php-format
+msgid "%1$s : étiquette « %2$s » non créée"
+msgstr "%1$s: nie utworzono etykiety „%2$s”"
