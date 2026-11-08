@@ -91,6 +91,9 @@ Toutes les autres captures d'écran (les 19 étapes en détail) sont dans le [tu
   notification GLPI modifiable, aucun secret transmis)
 - Flux RSS utiles (avis de securite CERT-FR, notes de version GLPI) et suivi de la version du
   plugin par rapport a la derniere release GitHub
+- Import de tickets depuis Jira, par export CSV ou directement par l'API REST (Jira Cloud ou Data
+  Center, jeton jamais enregistre) : apercu a blanc des correspondances de statuts et de types,
+  commentaires en suivis, dates d'origine, reimport sans doublon, aucune notification envoyee
 - Interface traduite en 6 langues (francais, anglais, allemand, italien, espagnol, portugais du Bresil)
 
 ## Prerequis

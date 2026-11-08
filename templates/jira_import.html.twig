@@ -33,6 +33,26 @@
          <div class="col-md-3"><button type="submit" name="upload" value="1" class="btn btn-primary"><i class="ti ti-eye me-1"></i>{{ __('Aperçu (rien n\'est écrit)', 'configurationglpiauto') }}</button></div>
       </form>
 
+      {# Issue #345, phase 2 : lecture directe par l'API REST de Jira, même aperçu ensuite. #}
+      <hr class="my-4">
+      <h4><i class="ti ti-plug-connected me-1"></i>{{ __('Ou directement depuis l\'API de Jira', 'configurationglpiauto') }}</h4>
+      <p class="text-muted">{{ __('Lecture seule. Le jeton sert uniquement à cette lecture : il n\'est jamais enregistré. Jira Cloud : adresse e-mail du compte et jeton d\'API ; Jira Data Center : jeton d\'accès personnel.', 'configurationglpiauto') }}</p>
+      <form method="post" action="{{ url }}" class="row g-3 align-items-end" autocomplete="off">
+         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+         <div class="col-md-5"><label class="form-label" for="jira_url">{{ __('Adresse de Jira', 'configurationglpiauto') }}</label><input type="url" id="jira_url" name="jira_url" class="form-control" placeholder="https://exemple.atlassian.net" required></div>
+         <div class="col-md-3"><label class="form-label" for="jira_flavour">{{ __('Type', 'configurationglpiauto') }}</label>
+            <select id="jira_flavour" name="jira_flavour" class="form-select">
+               <option value="cloud">Jira Cloud</option>
+               <option value="datacenter">Jira Data Center / Server</option>
+            </select></div>
+         <div class="col-md-4"><label class="form-label" for="jira_user">{{ __('Adresse e-mail (Jira Cloud)', 'configurationglpiauto') }}</label><input type="email" id="jira_user" name="jira_user" class="form-control" autocomplete="off"></div>
+         <div class="col-md-5"><label class="form-label" for="jira_token">{{ __('Jeton d\'API', 'configurationglpiauto') }}</label><input type="password" id="jira_token" name="jira_token" class="form-control" autocomplete="new-password" required></div>
+         <div class="col-md-7"><label class="form-label" for="jira_jql">{{ __('Requête JQL', 'configurationglpiauto') }}</label><input type="text" id="jira_jql" name="jira_jql" class="form-control" value="project = SUP ORDER BY created ASC" required></div>
+         <div class="col-md-5"><div class="form-label">{{ __('Entité des tickets', 'configurationglpiauto') }}</div>{{ api_entity_dropdown|raw }}</div>
+         <div class="col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="allow_http" name="allow_http" value="1"><label class="form-check-label" for="allow_http">{{ __('Autoriser HTTP (jeton transmis en clair : réseau interne seulement)', 'configurationglpiauto') }}</label></div></div>
+         <div class="col-md-3"><button type="submit" name="fetch_api" value="1" class="btn btn-primary"><i class="ti ti-eye me-1"></i>{{ __('Aperçu (rien n\'est écrit)', 'configurationglpiauto') }}</button></div>
+      </form>
+
    {% else %}
       {# Étape 2 : aperçu à blanc et correspondances. #}
       <div class="alert alert-info">{{ __('%1$d ticket(s) lus, dont %2$d déjà importé(s) (mis à jour plutôt que recréés). Entité : %3$s.', 'configurationglpiauto')|format(preview.total, preview.already_imported, entity_name) }}</div>

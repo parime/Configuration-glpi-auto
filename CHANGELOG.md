@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Import Jira par l'API REST** (issue #345, phase 2) : en plus de l'export CSV, lecture directe
+  des tickets par l'API de Jira Cloud (adresse e-mail et jeton d'API) ou Data Center (jeton
+  d'accès personnel), filtrée par une requête JQL, paginée et bornée à 5 000 tickets. Même aperçu
+  à blanc et même import ensuite. Le jeton sert à cette seule lecture, il n'est jamais enregistré ;
+  HTTPS exigé sauf case cochée explicitement. Messages d'erreur dédiés (accès refusé, adresse
+  introuvable, requête JQL refusée) et, sur GLPI 12, explication pour autoriser un Jira interne
+  (réseau privé) par la constante GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS.
+
 ### Changed
 
 - **Marketplace GLPI** (issue #355) : l'import Jira écrit désormais le contenu des tickets et des

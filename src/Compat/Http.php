@@ -24,11 +24,13 @@ namespace GlpiPlugin\Configurationglpiauto\Compat;
 final class Http
 {
     /**
-     * @param array{query?: array<string, scalar>, headers?: array<string, string>, timeout?: int, follow_redirects?: bool, resolve?: array{host: string, port: int, ip: string}} $options
+     * @param array{query?: array<string, scalar>, headers?: array<string, string>, timeout?: int, follow_redirects?: bool, resolve?: array{host: string, port: int, ip: string}, context?: class-string<\CommonGLPI>} $options
      *        `follow_redirects` defaults to true; set it to false where a redirect could reopen an
      *        SSRF the caller already guards against (see ajax/geocode.php). `resolve` pins the
      *        connection to an address the caller already validated, so a second DNS lookup by the
-     *        client (DNS rebinding) cannot swap it for another one in between.
+     *        client (DNS rebinding) cannot swap it for another one in between. `context` (GLPI 12)
+     *        is the class an administrator may list in GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS
+     *        to let this call reach a private network.
      * @return string The response body.
      * @throws \Throwable On any transport failure or non-2xx response.
      */
@@ -41,7 +43,7 @@ final class Http
         $resolve = $options['resolve'] ?? null;
 
         if (class_exists(\Glpi\Toolbox\HttpClient::class)) {
-            return (new \Glpi\Toolbox\HttpClient())->get($url, [
+            return (new \Glpi\Toolbox\HttpClient($options['context'] ?? null))->get($url, [
                 'query' => $query,
                 'headers' => $headers,
                 'timeout' => $timeout,
