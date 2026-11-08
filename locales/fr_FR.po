@@ -5359,3 +5359,18 @@ msgstr "%d ticket(s)"
 
 msgid "aucun formulaire : à créer ?"
 msgstr "aucun formulaire : à créer ?"
+
+msgid "Projets Jira"
+msgstr "Projets Jira"
+
+msgid "Entité et catégorie des tickets créés pour chaque projet. Un ticket déjà importé garde son entité et sa catégorie."
+msgstr "Entité et catégorie des tickets créés pour chaque projet. Un ticket déjà importé garde son entité et sa catégorie."
+
+msgid "Projet"
+msgstr "Projet"
+
+msgid "Entité"
+msgstr "Entité"
+
+msgid "Catégorie"
+msgstr "Catégorie"

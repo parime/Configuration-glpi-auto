@@ -85,6 +85,44 @@ final class JiraImporterTest extends TestCase
             . "Accès compta,$p-3,Demande,Att. retour client,Medium,Alex Phpunitimport,,,22/Oct/26 9:00 AM,,,,\n";
     }
 
+    public function testEachJiraProjectGetsItsEntityAndCategoryOnlyWhenAllowed(): void
+    {
+        $p = $this->prefix;
+        $root = 0;
+        $child = (int) (new \Entity())->add(['name' => 'PHPUnit projet ' . $p, 'entities_id' => $root]);
+        $other = (int) (new \Entity())->add(['name' => 'PHPUnit autre ' . $p, 'entities_id' => $root]);
+        $category = (int) (new \ITILCategory())->add(['name' => 'PHPUnit cat ' . $p, 'entities_id' => $child, 'is_recursive' => 0]);
+        $foreign = (int) (new \ITILCategory())->add(['name' => 'PHPUnit cat autre ' . $p, 'entities_id' => $other, 'is_recursive' => 0]);
+        \Session::changeActiveEntities($root, true);
+        $issues = [
+            ['key' => "$p-1", 'project' => 'Support infra'],
+            ['key' => "$p-2", 'project' => 'Appli [métier] "RH"'],
+            ['key' => "$p-3", 'project' => ''],
+        ];
+        $infra = JiraMapping::projectKey('Support infra');
+        $rh = JiraMapping::projectKey('Appli [métier] "RH"');
+
+        $map = JiraImporter::projectMap($issues, [$infra => $child, $rh => $child], [$infra => $category, $rh => $foreign], $root);
+
+        $this->assertSame(['entities_id' => $child, 'itilcategories_id' => $category], $map['Support infra']);
+        $this->assertSame(
+            ['entities_id' => $child, 'itilcategories_id' => 0],
+            $map['Appli [métier] "RH"'],
+            'Catégorie d\'une autre entité : ignorée.'
+        );
+        $this->assertSame(['entities_id' => $root, 'itilcategories_id' => 0], $map['-'], 'Sans réglage : entité de l\'import.');
+
+        // Entité hors des entités actives de l'utilisateur : celle de l'import à la place.
+        \Session::changeActiveEntities($other, false);
+        $this->assertSame($other, JiraImporter::projectMap($issues, [$infra => $child], [], $other)['Support infra']['entities_id']);
+        \Session::changeActiveEntities($root, true);
+
+        (new \ITILCategory())->delete(['id' => $category], true);
+        (new \ITILCategory())->delete(['id' => $foreign], true);
+        (new \Entity())->delete(['id' => $child], true);
+        (new \Entity())->delete(['id' => $other], true);
+    }
+
     public function testPreviewThenImportThenReimportWithoutDuplicates(): void
     {
         $alex = $this->user('Alex', 'Phpunitimport');

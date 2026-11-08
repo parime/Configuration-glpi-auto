@@ -89,6 +89,24 @@
                </table>
             </div>
          </div>
+         {# Issue #345 : entité et catégorie de tickets par projet Jira (tickets créés ; un ticket déjà importé garde les siennes). #}
+         {% if projects is not empty %}
+            <h4 class="mt-3">{{ __('Projets Jira', 'configurationglpiauto') }}</h4>
+            <p class="text-muted small">{{ __('Entité et catégorie des tickets créés pour chaque projet. Un ticket déjà importé garde son entité et sa catégorie.', 'configurationglpiauto') }}</p>
+            <table class="table table-sm align-middle">
+               <thead><tr><th>{{ __('Projet', 'configurationglpiauto') }}</th><th>{{ __('Entité', 'configurationglpiauto') }}</th><th>{{ __('Catégorie', 'configurationglpiauto') }}</th></tr></thead>
+               {% for project in projects %}
+                  <tr>
+                     <td>{{ project.name }} <span class="badge bg-secondary-lt">{{ project.count }}</span></td>
+                     {# Listes produites par le cœur GLPI (Entity::dropdown(), ITILCategory::dropdown()). #}
+                     {% set project_entity_dropdown = project.entity %}
+                     {% set project_category_dropdown = project.category %}
+                     <td>{{ project_entity_dropdown|raw }}</td>
+                     <td>{{ project_category_dropdown|raw }}</td>
+                  </tr>
+               {% endfor %}
+            </table>
+         {% endif %}
          <h4 class="mt-3">{{ __('Personnes', 'configurationglpiauto') }}</h4>
          <p>{{ __('%1$d reconnue(s) dans GLPI, %2$d inconnue(s).', 'configurationglpiauto')|format(preview.people_found|length, preview.people_missing|length) }}</p>
          {# Issue #345, bonus : sujets fréquents de l'historique et formulaires du catalogue qui y répondent. #}

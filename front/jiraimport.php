@@ -126,7 +126,13 @@ if (isset($_POST['import'])) {
         (array) ($_POST['status_map'] ?? []),
         (array) ($_POST['type_map'] ?? []),
         $entitiesId,
-        !empty($_POST['import_labels'])
+        !empty($_POST['import_labels']),
+        JiraImporter::projectMap(
+            $parsed['issues'],
+            (array) ($_POST['project_entity'] ?? []),
+            (array) ($_POST['project_category'] ?? []),
+            $entitiesId
+        )
     );
     JiraImporter::forgetPending();
 }
@@ -175,9 +181,34 @@ if ($result !== null) {
         ])];
     } else {
         // Étape 2 : aperçu à blanc et correspondances.
+        $preview = (new JiraImporter())->preview($parsed['issues']);
+        // Issue #345 : entité et catégorie par projet Jira (par défaut : entité de l'import).
+        $projects = [];
+        foreach ($preview['summary']['projects'] ?? [] as $project => $count) {
+            $key = JiraMapping::projectKey((string) $project);
+            $projects[] = [
+                'name'     => (string) $project,
+                'count'    => (int) $count,
+                'entity'   => Entity::dropdown([
+                    'name'    => 'project_entity[' . $key . ']',
+                    'value'   => JiraImporter::pendingEntity(),
+                    'entity'  => $_SESSION['glpiactiveentities'],
+                    'display' => false,
+                    'rand'    => mt_rand(),
+                ]),
+                'category' => ITILCategory::dropdown([
+                    'name'    => 'project_category[' . $key . ']',
+                    'value'   => 0,
+                    'entity'  => JiraImporter::pendingEntity(),
+                    'display' => false,
+                    'rand'    => mt_rand(),
+                ]),
+            ];
+        }
         $data += [
             'step'         => 'preview',
-            'preview'      => (new JiraImporter())->preview($parsed['issues']),
+            'preview'      => $preview,
+            'projects'     => $projects,
             'entity_name'  => Dropdown::getDropdownName('glpi_entities', JiraImporter::pendingEntity()),
             'parse_errors' => array_map(
                 static fn (array $error): array => $error + ['label' => $errorLabels[$error['message']] ?? $error['message']],
