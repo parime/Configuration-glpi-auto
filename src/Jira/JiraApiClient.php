@@ -29,6 +29,8 @@ final class JiraApiClient
 {
     public const PAGE_SIZE = 50;
     public const MAX_ISSUES = 5000;
+    public const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024;
+    public const MAX_TOTAL_BYTES = 200 * 1024 * 1024;
 
     /** @var callable(string, array<string, scalar>, array<string, string>): string */
     private $transport;
@@ -119,6 +121,61 @@ final class JiraApiClient
             'errors'    => $errors,
             'truncated' => $more && count($issues) >= self::MAX_ISSUES,
         ];
+    }
+
+    /**
+     * Pièces jointes, téléchargées pendant la lecture (le jeton n'est plus disponible ensuite) dans
+     * `$dir`, sous le nom de leur identifiant Jira. Seulement depuis l'adresse de Jira elle-même
+     * (le jeton n'est jamais envoyé ailleurs), MAX_ATTACHMENT_BYTES par fichier et
+     * MAX_TOTAL_BYTES en tout. Chaque pièce téléchargée reçoit `file` ; les autres sont signalées.
+     *
+     * @param list<array<string, mixed>> $issues modifié : `attachments[*].file`
+     * @return array{downloaded: int, skipped: list<string>}
+     */
+    public function downloadAttachments(
+        array &$issues,
+        string $baseUrl,
+        string $flavour,
+        string $user,
+        string $token,
+        string $dir
+    ): array {
+        $headers = ['Authorization' => self::authHeader($flavour, $user, $token)];
+        $downloaded = 0;
+        $total = 0;
+        $skipped = [];
+        foreach ($issues as $i => $issue) {
+            foreach ((array) ($issue['attachments'] ?? []) as $a => $attachment) {
+                $label = $issue['key'] . ' / ' . $attachment['filename'];
+                $id = (string) $attachment['id'];
+                if (preg_match('/^[0-9A-Za-z_-]{1,64}$/', $id) !== 1
+                    || !JiraApiMapper::isSameOrigin((string) $attachment['url'], $baseUrl)) {
+                    $skipped[] = $label;
+                    continue;
+                }
+                if ((int) $attachment['size'] > self::MAX_ATTACHMENT_BYTES
+                    || $total + (int) $attachment['size'] > self::MAX_TOTAL_BYTES) {
+                    $skipped[] = $label;
+                    continue;
+                }
+                try {
+                    $content = ($this->transport)((string) $attachment['url'], [], $headers);
+                } catch (\Throwable $e) {
+                    $skipped[] = $label;
+                    continue;
+                }
+                if (strlen($content) > self::MAX_ATTACHMENT_BYTES || $total + strlen($content) > self::MAX_TOTAL_BYTES) {
+                    $skipped[] = $label;
+                    continue;
+                }
+                file_put_contents($dir . '/' . $id, $content);
+                $total += strlen($content);
+                $issues[$i]['attachments'][$a]['file'] = $id;
+                $downloaded++;
+            }
+        }
+
+        return ['downloaded' => $downloaded, 'skipped' => $skipped];
     }
 
     /** Message d'erreur affichable : code HTTP reconnu, jamais le jeton. */

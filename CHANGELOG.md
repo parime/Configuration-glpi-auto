@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Import Jira : pièces jointes** (issue #345, phase 2) : lors d'un import par l'API, les pièces
+  jointes sont téléchargées pendant la lecture (le jeton n'est pas conservé), puis ajoutées aux
+  tickets comme documents GLPI, avec les extensions autorisées par GLPI. Téléchargement seulement
+  depuis l'adresse de Jira elle-même (le jeton n'est jamais envoyé ailleurs), 10 Mo par fichier et
+  200 Mo en tout ; les pièces écartées sont comptées dans l'aperçu. Le réimport ne les ajoute pas
+  une seconde fois.
+
 ## [1.18.0] - 2026-11-08
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

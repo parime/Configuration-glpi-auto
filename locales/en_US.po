@@ -5200,3 +5200,18 @@ msgstr "Allow HTTP (token sent in clear text: internal network only)"
 #, php-format
 msgid "GLPI refuse par défaut les appels vers un réseau privé. Pour un Jira interne, un administrateur ajoute %s à la constante GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (fichier config/local_define.php)."
 msgstr "By default GLPI refuses calls to a private network. For an internal Jira, an administrator adds %s to the GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS constant (config/local_define.php file)."
+
+msgid "Pièces jointes"
+msgstr "Attachments"
+
+#, php-format
+msgid "%d pièce(s) jointe(s) seront ajoutées aux tickets comme documents GLPI (extensions autorisées par GLPI seulement)."
+msgstr "%d attachment(s) will be added to the tickets as GLPI documents (only extensions allowed by GLPI)."
+
+#, php-format
+msgid "%d pièce(s) jointe(s) écartée(s) : trop volumineuses (10 Mo par fichier, 200 Mo en tout), hors de l'adresse de Jira ou illisibles."
+msgstr "%d attachment(s) left out: too large (10 MB per file, 200 MB in total), outside the Jira address or unreadable."
+
+#, php-format
+msgid "%d pièce(s) jointe(s) ajoutée(s)."
+msgstr "%d attachment(s) added."

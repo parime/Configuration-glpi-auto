@@ -18,7 +18,8 @@
    <h3 class="card-title"><i class="ti ti-transfer-in me-1"></i>{{ __('Importer depuis Jira', 'configurationglpiauto') }}</h3>
 
    {% if step == 'result' %}
-      <div class="alert alert-success">{{ __('Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour.', 'configurationglpiauto')|format(result.created, result.updated) }}</div>
+      <div class="alert alert-success">{{ __('Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour.', 'configurationglpiauto')|format(result.created, result.updated) }}
+         {% if result.attachments %} {{ __('%d pièce(s) jointe(s) ajoutée(s).', 'configurationglpiauto')|format(result.attachments) }}{% endif %}</div>
       {% for error in result.errors %}<div class="alert alert-danger py-2">{{ error }}</div>{% endfor %}
       <details><summary>{{ __('Journal de l\'import', 'configurationglpiauto') }}</summary><pre class="small">{{ result.log|join("\n") }}</pre></details>
       <a class="btn btn-outline-primary mt-3" href="{{ tickets_url }}">{{ __('Voir les tickets', 'configurationglpiauto') }}</a>
@@ -89,6 +90,13 @@
          </div>
          <h4 class="mt-3">{{ __('Personnes', 'configurationglpiauto') }}</h4>
          <p>{{ __('%1$d reconnue(s) dans GLPI, %2$d inconnue(s).', 'configurationglpiauto')|format(preview.people_found|length, preview.people_missing|length) }}</p>
+         {% if preview.attachments > 0 or preview.attachments_skipped > 0 %}
+            <h4>{{ __('Pièces jointes', 'configurationglpiauto') }}</h4>
+            <p><i class="ti ti-paperclip me-1"></i>{{ __('%d pièce(s) jointe(s) seront ajoutées aux tickets comme documents GLPI (extensions autorisées par GLPI seulement).', 'configurationglpiauto')|format(preview.attachments) }}</p>
+            {% if preview.attachments_skipped > 0 %}
+               <div class="alert alert-warning py-2">{{ __('%d pièce(s) jointe(s) écartée(s) : trop volumineuses (10 Mo par fichier, 200 Mo en tout), hors de l\'adresse de Jira ou illisibles.', 'configurationglpiauto')|format(preview.attachments_skipped) }}</div>
+            {% endif %}
+         {% endif %}
          {% if preview.people_missing is not empty %}
             <div class="alert alert-warning py-2">{{ __('Inconnues (aucun compte créé ; le ticket sera importé sans elles, leurs commentaires gardent leur nom) :', 'configurationglpiauto') }} {{ preview.people_missing|join(', ') }}</div>
          {% endif %}

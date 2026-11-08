@@ -30,7 +30,7 @@ final class JiraApiMapper
     /** Champs demandés à Jira : seulement ce que l'import utilise. */
     public const FIELDS = [
         'summary', 'description', 'issuetype', 'status', 'priority', 'project', 'reporter', 'assignee',
-        'created', 'resolutiondate', 'labels', 'comment',
+        'created', 'resolutiondate', 'labels', 'comment', 'attachment',
     ];
 
     /**
@@ -57,6 +57,21 @@ final class JiraApiMapper
                 'body'   => $body,
             ];
         }
+        $attachments = [];
+        foreach (self::listOf($fields['attachment'] ?? []) as $attachment) {
+            $id = self::text($attachment['id'] ?? '');
+            $filename = self::safeFilename(self::text($attachment['filename'] ?? ''));
+            $url = self::text($attachment['content'] ?? '');
+            if ($id === '' || $filename === '' || $url === '') {
+                continue;
+            }
+            $attachments[] = [
+                'id'       => $id,
+                'filename' => $filename,
+                'size'     => is_numeric($attachment['size'] ?? null) ? (int) $attachment['size'] : 0,
+                'url'      => $url,
+            ];
+        }
         $labels = [];
         foreach (self::listOf($fields['labels'] ?? []) as $label) {
             $label = trim(self::text($label));
@@ -81,6 +96,7 @@ final class JiraApiMapper
             'resolved'       => self::parseDate(self::text($fields['resolutiondate'] ?? '')),
             'labels'         => $labels,
             'comments'       => $comments,
+            'attachments'    => $attachments,
         ];
     }
 
@@ -161,6 +177,37 @@ final class JiraApiMapper
 
         return $scheme . '://' . $parts['host'] . (isset($parts['port']) ? ':' . $parts['port'] : '')
             . rtrim($parts['path'] ?? '', '/');
+    }
+
+    /**
+     * Nom de fichier sûr pour GLPI : sans dossier ni caractère de contrôle, 200 caractères au plus.
+     */
+    public static function safeFilename(string $name): string
+    {
+        $name = basename(str_replace('\\', '/', $name));
+        $name = trim((string) preg_replace('/[\x00-\x1F\x7F]+/', '', $name));
+
+        return $name === '.' || $name === '..' ? '' : mb_substr($name, 0, 200);
+    }
+
+    /**
+     * Une pièce jointe ne se télécharge (avec le jeton) que sur l'adresse de Jira elle-même : même
+     * schéma, même hôte, même port, sous le même chemin de base.
+     */
+    public static function isSameOrigin(string $url, string $baseUrl): bool
+    {
+        $u = parse_url($url);
+        $b = parse_url($baseUrl);
+        if (!is_array($u) || !is_array($b) || !isset($u['scheme'], $u['host'], $b['scheme'], $b['host'])) {
+            return false;
+        }
+        $basePath = rtrim($b['path'] ?? '', '/') . '/';
+
+        return strtolower($u['scheme']) === strtolower($b['scheme'])
+            && strtolower($u['host']) === strtolower($b['host'])
+            && ($u['port'] ?? null) === ($b['port'] ?? null)
+            && !isset($u['user']) && !isset($u['pass'])
+            && str_starts_with(($u['path'] ?? '/'), $basePath);
     }
 
     private static function text(mixed $value): string

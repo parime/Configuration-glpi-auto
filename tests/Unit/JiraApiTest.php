@@ -147,6 +147,56 @@ final class JiraApiTest extends TestCase
         $this->assertSame('Basic ' . base64_encode('a@exemple.test:tok'), $calls[0][2]);
     }
 
+    public function testAttachmentsAreMappedWithSafeNamesAndOnlyFetchedFromJiraItself(): void
+    {
+        $issue = JiraApiMapper::fromApi(['key' => 'SUP-9', 'fields' => [
+            'summary'    => 'Capture jointe',
+            'attachment' => [
+                ['id' => '10001', 'filename' => 'capture.png', 'size' => 1200, 'content' => 'https://j.test/secure/attachment/10001/capture.png'],
+                ['id' => '10002', 'filename' => '../../etc/passwd', 'size' => 10, 'content' => 'https://j.test/secure/attachment/10002/x'],
+                ['id' => '10003', 'filename' => 'ailleurs.pdf', 'size' => 10, 'content' => 'https://autre.test/secure/attachment/10003/a.pdf'],
+                ['id' => '10004', 'filename' => 'enorme.iso', 'size' => 50 * 1024 * 1024, 'content' => 'https://j.test/secure/attachment/10004/e.iso'],
+                ['id' => '', 'filename' => 'sans-id.txt', 'size' => 1, 'content' => 'https://j.test/x'],
+            ],
+        ]]);
+        $this->assertNotNull($issue);
+        $this->assertSame(['capture.png', 'passwd', 'ailleurs.pdf', 'enorme.iso'], array_column($issue['attachments'], 'filename'));
+
+        $this->assertTrue(JiraApiMapper::isSameOrigin('https://j.test/secure/a', 'https://j.test'));
+        $this->assertTrue(JiraApiMapper::isSameOrigin('https://j.test/jira/secure/a', 'https://j.test/jira'));
+        $this->assertFalse(JiraApiMapper::isSameOrigin('https://j.test/autre/secure/a', 'https://j.test/jira'));
+        $this->assertFalse(JiraApiMapper::isSameOrigin('https://j.test.evil/secure/a', 'https://j.test'));
+        $this->assertFalse(JiraApiMapper::isSameOrigin('http://j.test/secure/a', 'https://j.test'), 'Pas de rétrogradation en HTTP.');
+        $this->assertFalse(JiraApiMapper::isSameOrigin('https://j.test:8443/secure/a', 'https://j.test'));
+
+        $dir = sys_get_temp_dir() . '/jira-att-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        $asked = [];
+        $auth = [];
+        $client = new JiraApiClient(static function (string $url, array $query, array $headers) use (&$asked, &$auth): string {
+            $asked[] = $url;
+            $auth[] = $headers['Authorization'];
+
+            return 'contenu de ' . basename($url);
+        });
+        $issues = [$issue];
+        $report = $client->downloadAttachments($issues, 'https://j.test', 'datacenter', '', 'pat', $dir);
+
+        $this->assertSame(2, $report['downloaded'], 'capture.png et passwd (renommé) seulement.');
+        $this->assertSame(['SUP-9 / ailleurs.pdf', 'SUP-9 / enorme.iso'], $report['skipped']);
+        $this->assertSame(
+            ['https://j.test/secure/attachment/10001/capture.png', 'https://j.test/secure/attachment/10002/x'],
+            $asked,
+            'Le jeton ne part jamais vers un autre hôte, ni pour un fichier trop gros.'
+        );
+        $this->assertSame(['Bearer pat', 'Bearer pat'], $auth);
+        $this->assertSame('10001', $issues[0]['attachments'][0]['file']);
+        $this->assertArrayNotHasKey('file', $issues[0]['attachments'][2]);
+        $this->assertSame('contenu de capture.png', file_get_contents($dir . '/10001'));
+        array_map('unlink', glob($dir . '/*') ?: []);
+        rmdir($dir);
+    }
+
     public function testErrorsAreNamedWithoutEverExposingTheToken(): void
     {
         $failing = static fn (string $status): JiraApiClient => new JiraApiClient(

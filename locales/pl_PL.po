@@ -5195,3 +5195,18 @@ msgstr "Zezwól na HTTP (token przesyłany jawnie: tylko sieć wewnętrzna)"
 #, php-format
 msgid "GLPI refuse par défaut les appels vers un réseau privé. Pour un Jira interne, un administrateur ajoute %s à la constante GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (fichier config/local_define.php)."
 msgstr "Domyślnie GLPI odrzuca wywołania do sieci prywatnej. W przypadku wewnętrznej Jiry administrator dodaje %s do stałej GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (plik config/local_define.php)."
+
+msgid "Pièces jointes"
+msgstr "Załączniki"
+
+#, php-format
+msgid "%d pièce(s) jointe(s) seront ajoutées aux tickets comme documents GLPI (extensions autorisées par GLPI seulement)."
+msgstr "Załączniki do dodania do zgłoszeń jako dokumenty GLPI: %d (tylko rozszerzenia dozwolone przez GLPI)."
+
+#, php-format
+msgid "%d pièce(s) jointe(s) écartée(s) : trop volumineuses (10 Mo par fichier, 200 Mo en tout), hors de l'adresse de Jira ou illisibles."
+msgstr "Pominięte załączniki: %d (za duże: 10 MB na plik, 200 MB łącznie; spoza adresu Jira lub nieczytelne)."
+
+#, php-format
+msgid "%d pièce(s) jointe(s) ajoutée(s)."
+msgstr "Dodane załączniki: %d."
