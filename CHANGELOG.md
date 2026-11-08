@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Import Jira : entité et catégorie par projet** (issue #345) : l'aperçu propose, pour chaque
+  projet Jira, l'entité (celle de l'import par défaut) et la catégorie des tickets créés. Une entité
+  hors de celles de l'utilisateur, ou une catégorie invisible depuis l'entité choisie, sont
+  ignorées. Un ticket déjà importé garde son entité et sa catégorie.
+
 ## [1.21.0] - 2026-11-08
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

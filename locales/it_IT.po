@@ -5366,3 +5366,18 @@ msgstr "%d ticket"
 
 msgid "aucun formulaire : à créer ?"
 msgstr "nessun modulo: crearne uno?"
+
+msgid "Projets Jira"
+msgstr "Progetti Jira"
+
+msgid "Entité et catégorie des tickets créés pour chaque projet. Un ticket déjà importé garde son entité et sa catégorie."
+msgstr "Entità e categoria dei ticket creati per ogni progetto. Un ticket già importato mantiene la propria entità e categoria."
+
+msgid "Projet"
+msgstr "Progetto"
+
+msgid "Entité"
+msgstr "Entità"
+
+msgid "Catégorie"
+msgstr "Categoria"

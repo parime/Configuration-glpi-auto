@@ -101,6 +101,12 @@ final class JiraMapping
         return $subjects;
     }
 
+    /** Clé de formulaire d'un projet Jira (nom quelconque, y compris crochets ou guillemets). */
+    public static function projectKey(string $project): string
+    {
+        return substr(hash('sha256', $project), 0, 16);
+    }
+
     public static function defaultStatus(string $jiraStatus): int|string
     {
         $slug = JiraCsvParser::slug($jiraStatus);

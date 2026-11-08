@@ -5240,3 +5240,18 @@ msgstr "Zgłoszenia: %d"
 
 msgid "aucun formulaire : à créer ?"
 msgstr "brak formularza: utworzyć?"
+
+msgid "Projets Jira"
+msgstr "Projekty Jira"
+
+msgid "Entité et catégorie des tickets créés pour chaque projet. Un ticket déjà importé garde son entité et sa catégorie."
+msgstr "Jednostka i kategoria zgłoszeń tworzonych dla każdego projektu. Zgłoszenie już zaimportowane zachowuje swoją jednostkę i kategorię."
+
+msgid "Projet"
+msgstr "Projekt"
+
+msgid "Entité"
+msgstr "Jednostka"
+
+msgid "Catégorie"
+msgstr "Kategoria"

@@ -220,6 +220,40 @@ final class JiraImporter
         return $subjects;
     }
 
+    /**
+     * Issue #345 : correspondance projet Jira => entité et catégorie, lue dans le formulaire de
+     * l'aperçu (clés JiraMapping::projectKey()). Une entité hors des entités de l'utilisateur ou une
+     * catégorie invisible depuis l'entité choisie sont ignorées (valeurs de l'import par défaut).
+     *
+     * @param list<array<string, mixed>> $issues
+     * @param array<mixed> $entities projectKey => entities_id
+     * @param array<mixed> $categories projectKey => itilcategories_id
+     * @return array<string, array{entities_id: int, itilcategories_id: int}>
+     */
+    public static function projectMap(array $issues, array $entities, array $categories, int $defaultEntity): array
+    {
+        $map = [];
+        foreach (array_keys(JiraMapping::summarize($issues)['projects']) as $project) {
+            $project = (string) $project;
+            $key = JiraMapping::projectKey($project);
+            $entity = (int) ($entities[$key] ?? $defaultEntity);
+            if (!\Session::haveAccessToEntity($entity)) {
+                $entity = $defaultEntity;
+            }
+            $categoryId = (int) ($categories[$key] ?? 0);
+            if ($categoryId > 0) {
+                $category = new \ITILCategory();
+                $visible = $category->getFromDB($categoryId)
+                    && in_array((int) $category->fields['entities_id'], getAncestorsOf('glpi_entities', $entity) + [$entity => $entity], true)
+                    && ((int) $category->fields['entities_id'] === $entity || (bool) $category->fields['is_recursive']);
+                $categoryId = $visible ? $categoryId : 0;
+            }
+            $map[$project] = ['entities_id' => $entity, 'itilcategories_id' => $categoryId];
+        }
+
+        return $map;
+    }
+
     /** @var array<string, int> cache étiquette => identifiant du plugin Tag */
     private array $tags = [];
 
@@ -306,8 +340,14 @@ final class JiraImporter
      * @param array<string, mixed> $typeMap   type Jira => type de ticket GLPI
      * @return array{created: int, updated: int, attachments: int, labels: int, errors: list<string>, log: list<string>}
      */
-    public function import(array $issues, array $statusMap, array $typeMap, int $entitiesId, bool $importLabels = false): array
-    {
+    public function import(
+        array $issues,
+        array $statusMap,
+        array $typeMap,
+        int $entitiesId,
+        bool $importLabels = false,
+        array $projectMap = []
+    ): array {
         global $CFG_GLPI;
 
         $result = ['created' => 0, 'updated' => 0, 'attachments' => 0, 'labels' => 0, 'errors' => [], 'log' => []];
@@ -330,7 +370,15 @@ final class JiraImporter
                     $result['log'][] = sprintf(__('%1$s : ticket %2$d mis à jour', 'configurationglpiauto'), $key, $ticketsId);
                     continue;
                 }
-                $ticketsId = $this->create($issue, $status, $type, $entitiesId);
+                // Issue #345 : entité et catégorie propres au projet Jira, sinon celles de l'import.
+                $target = $projectMap[(string) $issue['project']] ?? [];
+                $ticketsId = $this->create(
+                    $issue,
+                    $status,
+                    $type,
+                    (int) ($target['entities_id'] ?? $entitiesId),
+                    (int) ($target['itilcategories_id'] ?? 0)
+                );
                 if ($ticketsId <= 0) {
                     $result['errors'][] = sprintf(__('%s : création du ticket impossible', 'configurationglpiauto'), $key);
                     continue;
@@ -417,7 +465,7 @@ final class JiraImporter
     /**
      * @param array<string, mixed> $issue
      */
-    private function create(array $issue, int|string $status, int $type, int $entitiesId): int
+    private function create(array $issue, int|string $status, int $type, int $entitiesId, int $categoryId = 0): int
     {
         global $DB;
 
@@ -442,6 +490,9 @@ final class JiraImporter
             'externalid'    => $key,
             '_disablenotif' => true,
         ];
+        if ($categoryId > 0) {
+            $input['itilcategories_id'] = $categoryId;
+        }
         if ($issue['created'] !== null) {
             // Date d'ouverture et date affichée dans le fil du ticket : celles de Jira.
             $input['date'] = $issue['created'];
