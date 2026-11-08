@@ -98,8 +98,11 @@
                {% for project in projects %}
                   <tr>
                      <td>{{ project.name }} <span class="badge bg-secondary-lt">{{ project.count }}</span></td>
-                     <td>{{ project.entity|raw }}</td>
-                     <td>{{ project.category|raw }}</td>
+                     {# Listes produites par le cœur GLPI (Entity::dropdown(), ITILCategory::dropdown()). #}
+                     {% set project_entity_dropdown = project.entity %}
+                     {% set project_category_dropdown = project.category %}
+                     <td>{{ project_entity_dropdown|raw }}</td>
+                     <td>{{ project_category_dropdown|raw }}</td>
                   </tr>
                {% endfor %}
             </table>
