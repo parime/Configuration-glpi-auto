@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: >-
+  If you reuse this project (code, data structures, templates or ideas), please cite it
+  and keep its copyright notices. Si vous réutilisez ce projet (code, structures de données,
+  gabarits ou idées), merci de le citer et de conserver ses mentions de copyright.
+title: "Configuration GLPI Auto"
+type: software
+authors:
+  - family-names: GUILLOTTE
+    given-names: Vincent
+repository-code: "https://github.com/parime/Configuration-glpi-auto"
+url: "https://github.com/parime/Configuration-glpi-auto"
+license: GPL-3.0-or-later
+abstract: >-
+  GLPI plugin that configures a GLPI instance automatically through a wizard: entities, categories, SLAs, service catalog forms, notifications, and imports such as Jira.
+keywords:
+  - glpi
+  - glpi-plugin
+  - configuration
+  - service-catalog
+  - itsm
+  - jira-import
