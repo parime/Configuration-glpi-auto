@@ -9,7 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Import générique de tickets depuis un fichier CSV** (issue #430), bouton « Importer des tickets
+  (CSV) » sur la page du plugin : pour quitter un autre outil d'assistance ou un suivi tenu dans un
+  tableur. Fichier en UTF-8 ou Windows-1252, séparateur (virgule, point-virgule, tabulation) détecté.
+  Étape « Colonnes » : la colonne de chaque champ (identifiant d'origine, titre, description,
+  statut, type, priorité, catégorie, demandeur et technicien par nom ou adresse e-mail, groupe de
+  techniciens, dates d'ouverture et de résolution, commentaires, étiquettes) est proposée d'après le
+  nom des en-têtes, en français ou en anglais, avec des exemples de valeurs. Puis le même aperçu à
+  blanc que l'import Jira, avec la correspondance des statuts, types, priorités et catégories (une
+  catégorie GLPI du même nom est proposée), les mêmes lots avec reprise, le même journal CSV et
+  aucune notification. Dates au format français (14/11/2026 09:30) ou ISO.
+- Commentaires dans une seule colonne (un par ligne de la cellule, séparés par « | » ou par un
+  texte au choix ; « date;auteur;texte » garde la date et l'auteur) ou dans un second fichier lié par
+  l'identifiant ; pièces jointes depuis une archive ZIP (un dossier par identifiant, 10 Mo par
+  fichier, 200 Mo en tout).
+- Modèles de correspondance : les choix de colonnes s'enregistrent pour le fichier suivant du même
+  outil, et s'exportent ou s'importent en JSON vers une autre instance.
+- Réimport sans doublon grâce à l'identifiant d'origine, propre à chaque outil : un identifiant
+  « 42 » d'un tableur ne se confond ni avec un autre outil ni avec une clé Jira.
+
 ### Changed
+
+- Import Jira et import CSV partagent le même moteur (aperçu, lots, journal, réimport). Au réimport,
+  un commentaire sans date déjà présent à l'identique n'est plus ajouté une seconde fois ; le groupe
+  de techniciens indiqué par le fichier est ajouté même si une règle métier en attribue un autre.
 
 - Fichiers de citation et d'attribution : `CITATION.cff`, `NOTICE`, `AGENTS.md` (consignes de licence
   pour les assistants de code) et section « Réutilisation et citation » des README.

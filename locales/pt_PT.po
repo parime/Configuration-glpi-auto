@@ -5404,3 +5404,314 @@ msgstr "Criar um incidente de segurança (plugin GRC) vinculado a cada um dos %d
 #, php-format
 msgid "%d ticket(s) étiquetés « Sécurité » : avec le plugin GRC (grcmanager) et le droit de créer des incidents de sécurité, ils peuvent être reliés à un incident de sécurité."
 msgstr "%d chamado(s) com a etiqueta «Segurança»: com o plugin GRC (grcmanager) e o direito de criar incidentes de segurança, eles podem ser vinculados a um incidente de segurança."
+
+msgid "Modèle supprimé."
+msgstr "Modelo excluído."
+
+msgid "Ce fichier n'est pas un modèle d'import exporté par cette page."
+msgstr "Este arquivo não é um modelo de importação exportado por esta página."
+
+#, php-format
+msgid "Modèle « %s » importé."
+msgstr "Modelo \"%s\" importado."
+
+msgid "Choisissez un fichier CSV (20 Mo au plus) et une entité à laquelle vous avez accès."
+msgstr "Escolha um arquivo CSV (no máximo 20 MB) e uma entidade à qual você tenha acesso."
+
+#, php-format
+msgid "%d fichier(s) de l'archive écarté(s) : hors d'un dossier portant l'identifiant du ticket, vides ou trop volumineux (10 Mo par fichier, 200 Mo en tout)."
+msgstr "%d arquivo(s) do pacote descartado(s): fora de uma pasta com o identificador do chamado, vazios ou grandes demais (10 MB por arquivo, 200 MB no total)."
+
+msgid "Fichier vide ou illisible."
+msgstr "Arquivo vazio ou ilegível."
+
+msgid "Choisissez au moins la colonne de l'identifiant d'origine et celle du titre."
+msgstr "Escolha pelo menos a coluna do identificador de origem e a do título."
+
+#, php-format
+msgid "Modèle « %s » enregistré."
+msgstr "Modelo \"%s\" salvo."
+
+msgid "Importer des tickets (CSV)"
+msgstr "Importar chamados (CSV)"
+
+msgid "Identifiant d'origine"
+msgstr "Identificador de origem"
+
+msgid "Statut"
+msgstr "Status"
+
+msgid "Demandeur (nom)"
+msgstr "Requerente (nome)"
+
+msgid "Demandeur (adresse e-mail)"
+msgstr "Requerente (endereço de e-mail)"
+
+msgid "Technicien (nom)"
+msgstr "Técnico (nome)"
+
+msgid "Technicien (adresse e-mail)"
+msgstr "Técnico (endereço de e-mail)"
+
+msgid "Groupe de techniciens"
+msgstr "Grupo de técnicos"
+
+msgid "Date d'ouverture"
+msgstr "Data de abertura"
+
+msgid "Date de résolution"
+msgstr "Data de solução"
+
+msgid "Commentaires"
+msgstr "Comentários"
+
+msgid "Colonnes de l'identifiant d'origine et du titre non choisies."
+msgstr "Colunas do identificador de origem e do título não escolhidas."
+
+msgid "Ligne sans identifiant ou sans titre : ignorée."
+msgstr "Linha sem identificador ou sem título: ignorada."
+
+msgid "Identifiant déjà présent plus haut dans le fichier : ligne ignorée."
+msgstr "Identificador já presente mais acima no arquivo: linha ignorada."
+
+#, php-format
+msgid "Colonne %d"
+msgstr "Coluna %d"
+
+msgid "point-virgule"
+msgstr "ponto e vírgula"
+
+msgid "tabulation"
+msgstr "tabulação"
+
+msgid "barre verticale"
+msgstr "barra vertical"
+
+msgid "virgule"
+msgstr "vírgula"
+
+#, php-format
+msgid "Demande non retenue (importé de %s)."
+msgstr "Solicitação não aceita (importado de %s)."
+
+#, php-format
+msgid "Étiquette importée de %s"
+msgstr "Etiqueta importada de %s"
+
+msgid "1. Fichier"
+msgstr "1. Arquivo"
+
+msgid "2. Colonnes"
+msgstr "2. Colunas"
+
+msgid "3. Aperçu et import"
+msgstr "3. Prévia e importação"
+
+msgid "Apportez l'historique d'un autre outil d'assistance ou d'un suivi tenu dans un tableur : une ligne par ticket. Vous choisissez ensuite quelle colonne correspond à quel champ du ticket, puis un aperçu à blanc, sans rien écrire, montre le résultat avant l'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n'est envoyée."
+msgstr "Traga o histórico de outra ferramenta de suporte ou de um acompanhamento feito em planilha: uma linha por chamado. Em seguida você escolhe qual coluna corresponde a qual campo do chamado, e uma prévia sem gravação mostra o resultado antes da importação. As pessoas são reconhecidas por e-mail ou por nome; uma pessoa desconhecida é sinalizada, nunca criada. Reimportar o mesmo arquivo atualiza os chamados em vez de recriá-los. Nenhuma notificação é enviada."
+
+msgid "Vos tickets viennent de Jira ?"
+msgstr "Seus chamados vêm do Jira?"
+
+msgid "Utilisez l'import Jira"
+msgstr "Use a importação do Jira"
+
+msgid "Fichier CSV des tickets"
+msgstr "Arquivo CSV dos chamados"
+
+msgid "UTF-8 ou Windows-1252 (« CSV » d'Excel), séparateur virgule, point-virgule ou tabulation : détectés seuls."
+msgstr "UTF-8 ou Windows-1252 (\"CSV\" do Excel), separador vírgula, ponto e vírgula ou tabulação: detectados automaticamente."
+
+msgid "Nom de l'outil d'origine"
+msgstr "Nome da ferramenta de origem"
+
+msgid "Ex. : Ancien outil d'assistance"
+msgstr "Ex.: Antiga ferramenta de suporte"
+
+msgid "Mentionné dans chaque ticket. Réimportez avec le même nom pour mettre à jour les tickets au lieu de les recréer."
+msgstr "Mencionado em cada chamado. Reimporte com o mesmo nome para atualizar os chamados em vez de recriá-los."
+
+msgid "Modèle de correspondance"
+msgstr "Modelo de correspondência"
+
+msgid "Aucun : proposer d'après les en-têtes"
+msgstr "Nenhum: sugerir a partir dos cabeçalhos"
+
+msgid "Options : commentaires dans un second fichier, pièces jointes"
+msgstr "Opções: comentários em um segundo arquivo, anexos"
+
+msgid "Fichier CSV des commentaires (facultatif)"
+msgstr "Arquivo CSV dos comentários (opcional)"
+
+msgid "Une ligne par commentaire, avec les colonnes « Identifiant » (celui du ticket), « Date », « Auteur » et « Commentaire »."
+msgstr "Uma linha por comentário, com as colunas \"Identificador\" (o do chamado), \"Data\", \"Autor\" e \"Comentário\"."
+
+msgid "Archive ZIP des pièces jointes (facultatif)"
+msgstr "Arquivo ZIP dos anexos (opcional)"
+
+msgid "Un dossier par ticket, nommé d'après son identifiant d'origine (par exemple 1042/capture.png). 10 Mo par fichier, 200 Mo en tout ; extensions autorisées par GLPI seulement."
+msgstr "Uma pasta por chamado, com o nome do seu identificador de origem (por exemplo 1042/capture.png). 10 MB por arquivo, 200 MB no total; somente extensões permitidas pelo GLPI."
+
+msgid "Suivant : choisir les colonnes"
+msgstr "Próximo: escolher as colunas"
+
+msgid "Préparer le fichier depuis un tableur"
+msgstr "Preparar o arquivo a partir de uma planilha"
+
+msgid "Une ligne par ticket, une première ligne avec le nom des colonnes."
+msgstr "Uma linha por chamado, uma primeira linha com o nome das colunas."
+
+msgid "Une colonne avec un identifiant unique par ticket (numéro de l'ancien outil, ou numérotez simplement les lignes) : c'est lui qui évite les doublons au réimport."
+msgstr "Uma coluna com um identificador único por chamado (número da ferramenta antiga, ou simplesmente numere as linhas): é ele que evita duplicatas na reimportação."
+
+msgid "Dates au format jour/mois/année (14/11/2026 09:30) ou année-mois-jour (2026-11-14 09:30)."
+msgstr "Datas no formato dia/mês/ano (14/11/2026 09:30) ou ano-mês-dia (2026-11-14 09:30)."
+
+msgid "Plusieurs commentaires dans une même cellule : un par ligne de la cellule, ou séparés par « | ». Écrits « date;auteur;texte », ils gardent leur date et leur auteur."
+msgstr "Vários comentários em uma mesma célula: um por linha da célula, ou separados por \"|\". Escritos \"data;autor;texto\", mantêm sua data e seu autor."
+
+msgid "Dans Excel ou LibreOffice : Fichier > Enregistrer sous > CSV."
+msgstr "No Excel ou LibreOffice: Arquivo > Salvar como > CSV."
+
+msgid "Modèles de correspondance"
+msgstr "Modelos de correspondência"
+
+msgid "Un modèle retient la colonne de chaque champ pour les fichiers suivants du même outil. Enregistrez-le à l'étape des colonnes ; exportez-le pour le réutiliser sur une autre instance de GLPI."
+msgstr "Um modelo guarda a coluna de cada campo para os próximos arquivos da mesma ferramenta. Salve-o na etapa das colunas; exporte-o para reutilizá-lo em outra instância do GLPI."
+
+msgid "Modèle"
+msgstr "Modelo"
+
+msgid "Outil d'origine"
+msgstr "Ferramenta de origem"
+
+msgid "Colonnes"
+msgstr "Colunas"
+
+msgid "Exporter"
+msgstr "Exportar"
+
+msgid "Supprimer ce modèle ?"
+msgstr "Excluir este modelo?"
+
+msgid "Supprimer"
+msgstr "Excluir"
+
+msgid "Aucun modèle enregistré."
+msgstr "Nenhum modelo salvo."
+
+msgid "Importer un modèle (JSON)"
+msgstr "Importar um modelo (JSON)"
+
+msgid "Importer le modèle"
+msgstr "Importar o modelo"
+
+msgid "Pour chaque champ du ticket, choisissez la colonne du fichier qui le contient. Les choix proposés viennent du nom des colonnes ; vérifiez-les avec les exemples. Seuls l'identifiant d'origine et le titre sont obligatoires."
+msgstr "Para cada campo do chamado, escolha a coluna do arquivo que o contém. As sugestões vêm do nome das colunas; confira-as com os exemplos. Somente o identificador de origem e o título são obrigatórios."
+
+#, php-format
+msgid "%1$d colonne(s) lue(s), séparateur : %2$s."
+msgstr "%1$d coluna(s) lida(s), separador: %2$s."
+
+#, php-format
+msgid "Modèle appliqué : %s"
+msgstr "Modelo aplicado: %s"
+
+msgid "Champ du ticket GLPI"
+msgstr "Campo do chamado GLPI"
+
+msgid "Colonne du fichier"
+msgstr "Coluna do arquivo"
+
+msgid "obligatoire"
+msgstr "obrigatório"
+
+msgid "Choisissez une colonne"
+msgstr "Escolha uma coluna"
+
+msgid "(ne pas importer)"
+msgstr "(não importar)"
+
+msgid "Plusieurs commentaires dans la colonne « Commentaires »"
+msgstr "Vários comentários na coluna \"Comentários\""
+
+msgid "Non : un seul commentaire par cellule"
+msgstr "Não: um único comentário por célula"
+
+msgid "Un commentaire par ligne de la cellule"
+msgstr "Um comentário por linha da célula"
+
+msgid "Séparés par une ligne vide"
+msgstr "Separados por uma linha vazia"
+
+msgid "Séparés par « | »"
+msgstr "Separados por \"|\""
+
+msgid "Séparés par un autre texte"
+msgstr "Separados por outro texto"
+
+msgid "Autre séparateur"
+msgstr "Outro separador"
+
+#, php-format
+msgid "Fichier des commentaires : %d commentaire(s) lus, rattachés aux tickets par leur identifiant d'origine."
+msgstr "Arquivo de comentários: %d comentário(s) lido(s), vinculados aos chamados pelo identificador de origem."
+
+msgid "Fichier des commentaires ignoré : colonnes « Identifiant » et « Commentaire » introuvables."
+msgstr "Arquivo de comentários ignorado: colunas \"Identificador\" e \"Comentário\" não encontradas."
+
+#, php-format
+msgid "Archive des pièces jointes : %d fichier(s) prêts."
+msgstr "Arquivo de anexos: %d arquivo(s) pronto(s)."
+
+msgid "Début du fichier"
+msgstr "Início do arquivo"
+
+msgid "Enregistrer ces choix comme modèle, pour le prochain fichier du même outil"
+msgstr "Salvar estas escolhas como modelo, para o próximo arquivo da mesma ferramenta"
+
+msgid "Nom du modèle"
+msgstr "Nome do modelo"
+
+#, php-format
+msgid "Outil d'origine : %s."
+msgstr "Ferramenta de origem: %s."
+
+msgid "(vide)"
+msgstr "(vazio)"
+
+msgid "Types"
+msgstr "Tipos"
+
+msgid "Priorités"
+msgstr "Prioridades"
+
+msgid "Une catégorie GLPI du même nom est proposée ; sinon, choisissez-en une ou laissez vide."
+msgstr "Uma categoria do GLPI com o mesmo nome é sugerida; caso contrário, escolha uma ou deixe vazio."
+
+msgid "Groupes de techniciens"
+msgstr "Grupos de técnicos"
+
+#, php-format
+msgid "%1$d reconnu(s) dans GLPI, %2$d inconnu(s)."
+msgstr "%1$d reconhecido(s) no GLPI, %2$d desconhecido(s)."
+
+msgid "Groupes inconnus (aucun groupe créé ; le ticket sera importé sans eux) :"
+msgstr "Grupos desconhecidos (nenhum grupo criado; o chamado será importado sem eles):"
+
+msgid "Revenir aux colonnes"
+msgstr "Voltar às colunas"
+
+msgid "Vos tickets viennent d'un autre outil ou d'un tableur ?"
+msgstr "Seus chamados vêm de outra ferramenta ou de uma planilha?"
+
+msgid "Utilisez l'import CSV"
+msgstr "Use a importação CSV"
+
+#, php-format
+msgid "Auteur : %s"
+msgstr "Autor: %s"
+
+#, php-format
+msgid "Importé de %1$s : %2$s"
+msgstr "Importado de %1$s: %2$s"
