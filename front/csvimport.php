@@ -370,6 +370,7 @@ if ($job !== null) {
             'count'    => $category['count'],
             'dropdown' => ITILCategory::dropdown([
                 'name'    => 'category_map[' . $key . ']',
+                'width'   => '100%',
                 'value'   => $category['default'],
                 'entity'  => $entitiesId,
                 'display' => false,
