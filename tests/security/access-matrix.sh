@@ -82,6 +82,8 @@ expect "front/blueprint_import.php"             $OPEN "$(code "$P/blueprint_impo
 expect "front/history.php"                      $OPEN "$(code "$P/history.php")"
 # Issue #345 : import Jira, exige aussi le droit natif de creer des tickets (absent du delegue).
 expect "front/jiraimport.php"                   $JIRA "$(code "$P/jiraimport.php")"
+# Issue #430 : import CSV generique, memes droits que l import Jira (dont la creation de tickets).
+expect "front/csvimport.php"                    $JIRA "$(code "$P/csvimport.php")"
 # Issue #343 : plan d'adressage, exige aussi les droits natifs sur les VLAN et reseaux IP.
 expect "front/addressplan.php"                  $NET "$(code "$P/addressplan.php")"
 expect "front/addressplan.php (creation)"       $NET "$(code -d "import=1&plan=Securite%091%09Securite%09192.0.2.0/24&_glpi_csrf_token=$(csrf)" "$P/addressplan.php")"
