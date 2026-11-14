@@ -1,0 +1,18 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{#- Issue #430 : contenu d'un ticket importé d'un fichier CSV (CsvTicketImporter), stocké tel quel. Texte
+    d'origine échappé, puis mention de l'outil d'origine et de l'identifiant. -#}
+{{ text|nl2br }}<p><em>{{ __('Importé de %1$s : %2$s', 'configurationglpiauto')|format(source, key) }}{% if labels is not empty %} - {{ labels|join(', ') }}{% endif %}</em></p>
