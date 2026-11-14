@@ -25,6 +25,9 @@
    {% if jira_url %}
       <a class="btn btn-outline-primary" href="{{ jira_url }}"><i class="ti ti-transfer-in"></i> {{ __('Importer depuis Jira (CSV)', 'configurationglpiauto') }}</a>
    {% endif %}
+   {% if csv_url %}
+      <a class="btn btn-outline-primary" href="{{ csv_url }}"><i class="ti ti-file-spreadsheet"></i> {{ __('Importer des tickets (CSV)', 'configurationglpiauto') }}</a>
+   {% endif %}
    {% if address_plan_url %}
       <a class="btn btn-outline-primary" href="{{ address_plan_url }}"><i class="ti ti-network"></i> {{ __('Plan d\'adressage (réseaux et VLAN)', 'configurationglpiauto') }}</a>
    {% endif %}

@@ -43,7 +43,7 @@ class TicketMapping
         [['attente', 'att retour', 'retour', 'feedback', 'waiting', 'pending', 'blocked', 'bloque', 'on hold'],
             self::STATUS_WAITING],
         [['en cours', 'in progress', 'progress', 'review', 'revue', 'test', 'recette'], self::STATUS_ASSIGNED],
-        [['fini', 'termine', 'done', 'resolved', 'resolu', 'closed', 'clos', 'ferme', 'livre'], self::STATUS_CLOSED],
+        [['fini', 'termine', 'done', 'resolved', 'resolu', 'closed', 'clos', 'clotur', 'complete', 'ferme', 'livre'], self::STATUS_CLOSED],
         [['a faire', 'to do', 'todo', 'open', 'ouvert', 'backlog', 'nouveau', 'new', 'selected'], self::STATUS_NEW],
     ];
 

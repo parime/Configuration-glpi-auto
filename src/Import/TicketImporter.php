@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto\Import;
 
+use CommonITILActor;
 use CommonITILObject;
 use ITILFollowup;
 use ITILSolution;
@@ -883,6 +884,12 @@ abstract class TicketImporter
         if ($ticketsId <= 0) {
             return 0;
         }
+        // Une règle métier (attribution automatique, SLA) peut remplacer le groupe du fichier : celui
+        // du fichier est alors ajouté, sans retirer celui de la règle.
+        $assigned = ['tickets_id' => $ticketsId, 'groups_id' => $group, 'type' => CommonITILActor::ASSIGN];
+        if ($group > 0 && countElementsInTable(\Group_Ticket::getTable(), $assigned) === 0) {
+            (new \Group_Ticket())->add($assigned + ['_disablenotif' => true]);
+        }
         // Le ticket importé auparavant a pu être supprimé dans GLPI : sa correspondance, restée en
         // place, bloquait la nouvelle (source et jira_key sont uniques) et faisait échouer tout le
         // réimport.
@@ -1061,7 +1068,8 @@ abstract class TicketImporter
         $last = $after;
         foreach ((array) ($issue['comments'] ?? []) as $comment) {
             $date = $comment['date'] ?? null;
-            if ($after !== null && ($date === null || $date <= $after)) {
+            // Commentaire daté déjà importé : ignoré ; sans date, seul un suivi identique le fait ignorer.
+            if ($after !== null && $date !== null && $date <= $after) {
                 continue;
             }
             $author = (string) $comment['author'];

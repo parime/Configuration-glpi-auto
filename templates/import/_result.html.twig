@@ -1,0 +1,31 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #345 : résultat d'un import (terminé ou arrêté) et journal. Commun aux imports Jira et CSV
+   (issue #430). #}
+{% if result.stopped_at is defined %}
+   <div class="alert alert-warning"><i class="ti ti-player-stop me-1"></i>{{ __('Import arrêté après %1$d ticket(s) sur %2$d : %3$d créé(s), %4$d mis à jour. Les tickets déjà importés restent ; relancez l\'import du même fichier pour le terminer (sans doublon).', 'configurationglpiauto')|format(result.stopped_at, total, result.created, result.updated) }}</div>
+{% else %}
+   <div class="alert alert-success">{{ __('Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour.', 'configurationglpiauto')|format(result.created, result.updated) }}
+      {% if result.attachments %} {{ __('%d pièce(s) jointe(s) ajoutée(s).', 'configurationglpiauto')|format(result.attachments) }}{% endif %}
+      {% if result.labels %} {{ __('%d étiquette(s) posée(s).', 'configurationglpiauto')|format(result.labels) }}{% endif %}
+      {% if result.security %} {{ __('%d ticket(s) relié(s) à un incident de sécurité.', 'configurationglpiauto')|format(result.security) }}{% endif %}</div>
+{% endif %}
+{% for error in result.errors %}<div class="alert alert-danger py-2">{{ error }}</div>{% endfor %}
+<details><summary>{{ __('Journal de l\'import', 'configurationglpiauto') }}</summary><pre class="small">{{ log|join("\n") }}</pre></details>
+<div class="d-flex gap-2 mt-3">
+   <a class="btn btn-outline-primary" href="{{ tickets_url }}"><i class="ti ti-list me-1"></i>{{ __('Voir les tickets', 'configurationglpiauto') }}</a>
+   <a class="btn btn-outline-secondary" href="{{ log_url }}"><i class="ti ti-download me-1"></i>{{ __('Télécharger le journal (CSV)', 'configurationglpiauto') }}</a>
+</div>

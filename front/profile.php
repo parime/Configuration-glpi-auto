@@ -37,6 +37,9 @@ TemplateRenderer::getInstance()->display('@configurationglpiauto/profile_actions
     // Issue #345 : import de tickets Jira (CSV).
     'jira_url'         => Session::haveRight(Config::$rightname, UPDATE) && Session::haveRight(Ticket::$rightname, CREATE)
         ? FrontUrl::get('jiraimport.php') : null,
+    // Issue #430 : import générique de tickets depuis un fichier CSV (mêmes droits).
+    'csv_url'          => Session::haveRight(Config::$rightname, UPDATE) && Session::haveRight(Ticket::$rightname, CREATE)
+        ? FrontUrl::get('csvimport.php') : null,
     // Issue #343 : plan d'adressage (réseaux IP et VLAN par site).
     'address_plan_url' => Session::haveRight(Config::$rightname, UPDATE) && AddressPlanImporter::canImport()
         ? FrontUrl::get('addressplan.php') : null,

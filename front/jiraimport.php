@@ -231,7 +231,7 @@ if ($job !== null) {
             'entity'  => $_SESSION['glpiactiveentities'],
             'display' => false,
             'rand'    => mt_rand(),
-        ])];
+        ]), 'csv_url' => FrontUrl::get('csvimport.php')];
     } else {
         // Étape 2 : aperçu à blanc et correspondances.
         $preview = (new JiraImporter())->preview($parsed['issues']);
