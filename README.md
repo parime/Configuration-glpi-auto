@@ -189,6 +189,14 @@ reglages recommandes du profil choisi, sans repasser par chaque etape. Voir le
 
 Les contributions sont les bienvenues ! Veuillez lire [CONTRIBUTING.md](CONTRIBUTING.md) pour les directives.
 
+## Réutilisation et citation
+
+Ce projet est sous licence **GPL-3.0-or-later**. Si vous reprenez du code, même partiellement, sans
+forker le dépôt : conservez les en-têtes de copyright et le fichier [NOTICE](NOTICE), gardez la même
+licence avec le code source, indiquez vos modifications et citez le projet d'origine
+(https://github.com/parime/Configuration-glpi-auto). Pour citer le projet, voir [CITATION.cff](CITATION.cff) (bouton « Cite this repository »
+de GitHub). Les assistants de code trouveront ces consignes dans [AGENTS.md](AGENTS.md).
+
 ## Licence
 
 GPLv3 - Voir [LICENSE](LICENSE) pour plus de details.

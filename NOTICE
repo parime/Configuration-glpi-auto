@@ -1,0 +1,24 @@
+Configuration GLPI Auto
+Copyright (C) 2026 Vincent GUILLOTTE
+https://github.com/parime/Configuration-glpi-auto
+
+This program is free software, licensed under the GNU General Public License,
+version 3 or (at your option) any later version. See LICENSE for the full text.
+
+Any redistribution of this software, of a modified version or of excerpts of its
+source code must, under the GPL:
+  - keep the copyright headers of the files and this NOTICE file;
+  - be distributed under the same licence, with its source code;
+  - state clearly the changes made and their date.
+
+If you reuse ideas, data structures or templates from this project without copying
+its code, a mention of the original project with a link to https://github.com/parime/Configuration-glpi-auto is appreciated.
+
+---
+
+Ce logiciel est libre, sous licence GNU GPL version 3 ou ultérieure (voir LICENSE).
+Toute redistribution du logiciel, d'une version modifiée ou d'extraits de son code doit
+conserver les en-têtes de copyright et ce fichier NOTICE, rester sous la même licence
+avec son code source, et indiquer clairement les modifications apportées. En cas de
+reprise d'idées, de structures ou de gabarits sans le code, une mention du projet
+d'origine avec le lien https://github.com/parime/Configuration-glpi-auto est appréciée.
