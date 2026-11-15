@@ -192,8 +192,8 @@ final class MailCollectorBuilderTest extends TestCase
         [$id] = $this->ensureCollector($builder, $mailbox);
         [$otherId] = $this->ensureCollector($builder, $this->mailbox());
 
-        $this->assertSame(1, $builder->ensureEntityRule($id, $mailbox));
-        $this->assertSame(1, $builder->ensureEntityRule($id, $mailbox));
+        $results = [$builder->ensureEntityRule($id, $mailbox), $builder->ensureEntityRule($id, $mailbox)];
+        $this->assertSame([1, 1], $results, 'créée puis mise à jour');
         $uuid = MailCollectorBuilder::UUID_PREFIX . 'entity-' . $id;
         $this->assertSame(1, countElementsInTable(Rule::getTable(), ['uuid' => $uuid]));
         $rule = new Rule();
