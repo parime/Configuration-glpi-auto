@@ -195,6 +195,15 @@ Rules shared by all parime plugins, to read before contributing: [common plugin 
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for the guidelines.
 
+## Translations
+
+[![Translation status](https://hosted.weblate.org/widget/configuration-glpi-auto/svg-badge.svg)](https://hosted.weblate.org/engage/configuration-glpi-auto/)
+
+The plugin is translated into French, English, German, Spanish, Italian, Polish and Portuguese
+(Brazil). **Translation contributions are welcome on [Hosted Weblate](https://hosted.weblate.org/engage/configuration-glpi-auto/)**: fixing a term,
+improving domain vocabulary or adding a language is done directly in the browser, without Git.
+Weblate then proposes the translations through a Pull Request, reviewed before being merged.
+
 ## Reuse and citation
 
 This project is licensed under **GPL-3.0-or-later**. If you reuse code, even partially and without
