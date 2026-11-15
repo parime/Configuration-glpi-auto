@@ -67,6 +67,7 @@ use GlpiPlugin\Configurationglpiauto\LeaveRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\LineOperatorBuilder;
 use GlpiPlugin\Configurationglpiauto\LocationBuilder;
 use GlpiPlugin\Configurationglpiauto\MailboxRequestFormBuilder;
+use GlpiPlugin\Configurationglpiauto\MailCollectorBuilder;
 use GlpiPlugin\Configurationglpiauto\MailPrintingFormBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerBuilder;
 use GlpiPlugin\Configurationglpiauto\ManufacturerDictionaryBuilder;
@@ -442,6 +443,18 @@ if (isset($_POST['finish'])) {
     // Calendar::$rightname) : jamais sur le seul droit délégable de ce plugin.
     $canManageSlm = Session::haveRight('slm', CREATE);
     $canManageCalendars = Session::haveRight('calendar', CREATE);
+    // Issue #429 : collecteurs de courriels (MailCollector::$rightname = 'config') et règles des
+    // collecteurs (RuleMailCollector::$rightname = 'rule_mailcollector').
+    $canManageMailCollectorRules = Session::haveRight('rule_mailcollector', UPDATE);
+
+    // Mots de passe des boîtes : lus ici, avant que Config ne normalise la liste (qui les retire),
+    // et transmis seulement à GLPI, qui les chiffre : jamais enregistrés par le plugin.
+    $mailCollectorPasswords = [];
+    foreach ((array) ($_POST['mail_collectors'] ?? []) as $mailboxRow) {
+        if (is_array($mailboxRow) && trim((string) ($mailboxRow['passwd'] ?? '')) !== '') {
+            $mailCollectorPasswords[mb_strtolower(trim((string) ($mailboxRow['address'] ?? '')))] = (string) $mailboxRow['passwd'];
+        }
+    }
 
     $config = Config::getConfig();
     // Fonctionnalité de Rollback (issue #114) : capture l'état COURANT (avant écrasement) comme
@@ -861,6 +874,13 @@ if (isset($_POST['finish'])) {
     // GLPI ($_POST, jamais $config->fields) : voir la docblock de SmtpBuilder pour la raison
     // (jamais faire transiter un mot de passe par Config/BlueprintSerializer/ConfigHistory).
     $smtpApplied = $canUpdateCoreConfig && (new SmtpBuilder())->build($_POST);
+    // Issue #429 : réception des tickets par e-mail, après les entités, catégories et groupes que
+    // ses règles retrouvent par leur nom.
+    $mailCollectorBuilder = new MailCollectorBuilder();
+    $mailCollectorResult = $canUpdateCoreConfig
+        ? $mailCollectorBuilder->build($config, $mailCollectorPasswords, $canManageMailCollectorRules, $canManageTicketRules)
+        : ['created' => 0, 'updated' => 0, 'activated' => 0, 'rules' => 0];
+    unset($mailCollectorPasswords);
     // Guide ITIL complet (issue #124) : crée un tableau de bord GLPI natif (objet partagé "core"),
     // même droit que les autres réglages transverses ci-dessus.
     $dashboardApplied = $canUpdateCoreConfig && !empty($config->fields['dashboard_enabled']) && (new DashboardBuilder())->build();
@@ -973,6 +993,23 @@ if (isset($_POST['finish'])) {
     }
     if ($smtpApplied) {
         $messages[] = __('Configuration SMTP appliquée. Testez l\'envoi depuis Configuration > Notifications.', 'configurationglpiauto');
+    }
+    if ($mailCollectorResult['created'] + $mailCollectorResult['updated'] > 0) {
+        $messages[] = sprintf(
+            __('Réception par e-mail : %1$d collecteur(s) créé(s), %2$d mis à jour, %3$d activé(s), %4$d règle(s) créée(s) ou mise(s) à jour. Testez la connexion depuis Configuration > Collecteurs.', 'configurationglpiauto'),
+            $mailCollectorResult['created'],
+            $mailCollectorResult['updated'],
+            $mailCollectorResult['activated'],
+            $mailCollectorResult['rules']
+        );
+    } elseif ($mailCollectorResult['rules'] > 0) {
+        $messages[] = sprintf(__('Réception par e-mail : %d règle(s) créée(s) ou mise(s) à jour.', 'configurationglpiauto'), $mailCollectorResult['rules']);
+    }
+    if ($mailCollectorBuilder->getUnresolved() !== []) {
+        $messages[] = sprintf(
+            __('Réception par e-mail : introuvable(s) dans GLPI, donc ignoré(s) : %s.', 'configurationglpiauto'),
+            implode(', ', $mailCollectorBuilder->getUnresolved())
+        );
     }
     if ($dashboardApplied) {
         $messages[] = __('Tableau de bord ITIL créé (Tableaux de bord > Tableau de bord ITIL).', 'configurationglpiauto');
@@ -1231,6 +1268,11 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
         'username' => $CFG_GLPI['smtp_username'] ?? '',
         'has_existing_password' => !empty($CFG_GLPI['smtp_passwd']),
     ] : null,
+    // Issue #429 : boîtes enregistrées (jamais de mot de passe), collecteurs existants pour le
+    // test de connexion, et noms proposés pour l'entité, la catégorie et le groupe.
+    'mail_collectors' => $config->getMailCollectors(),
+    'mail_existing_collectors' => Session::haveRight('config', UPDATE) ? MailCollectorBuilder::getExistingCollectors() : [],
+    'mail_suggestions' => MailCollectorBuilder::getSuggestions(),
     'satisfaction_plugin_active' => SatisfactionSurveyBuilder::isThirdPartyPluginActive(),
     'vip_plugin_active' => VipBuilder::isThirdPartyPluginActive(),
     'grcmanager_plugin_active' => GrcmanagerCisoGroupBuilder::isGrcmanagerActive(),

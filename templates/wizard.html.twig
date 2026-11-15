@@ -1804,9 +1804,98 @@
         </div>
       </div>
 
-      {# ---------------------------------------------------------------- Étape 19 : Récapitulatif #}
+      {# ---------------------------------------------------------------- Étape 19 : Réception des tickets par e-mail #}
+      {# Issue #429 : collecteurs de courriels et règles (voir MailCollectorBuilder). Les mots de
+         passe saisis ici partent seulement vers GLPI, qui les chiffre : jamais réaffichés, jamais
+         enregistrés dans la configuration du plugin ni dans un profil exporté. #}
       <div class="cga-wizard-step" data-step="19" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 19 : {{ __('Récapitulatif', 'configurationglpiauto') }}</h3>
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 19 : {{ __('Réception des tickets par e-mail', 'configurationglpiauto') }}</h3>
+        <p class="text-muted">{{ __('Optionnel : GLPI relève une ou plusieurs boîtes aux lettres (par exemple support@ et facturation@) et transforme chaque nouveau message en ticket. Une réponse à un ticket existant devient un suivi de ce ticket, pas un nouveau ticket.', 'configurationglpiauto') }}</p>
+
+        <input type="hidden" name="mail_collectors_form" value="1">
+        <div class="form-check form-switch mb-3">
+          <input type="hidden" name="mail_collectors_enabled" value="0">
+          <input type="checkbox" name="mail_collectors_enabled" value="1" class="form-check-input" id="cga-mail-collectors-enabled" {{ config.mail_collectors_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-mail-collectors-enabled"><i class="ti ti-mail-down me-1"></i>{{ __('Configurer la réception des tickets par e-mail', 'configurationglpiauto') }}</label>
+        </div>
+
+        <div id="cga-mail-collectors-fields" style="display: none;">
+          <h4 class="mb-1"><i class="ti ti-inbox me-1"></i>{{ __('Boîtes aux lettres à relever', 'configurationglpiauto') }}</h4>
+          <p class="text-muted small mb-2">{{ __('Une boîte par adresse. Chaque boîte devient un collecteur GLPI, créé désactivé tant que vous ne cochez pas « Activer la relève ». Relancer l\'assistant met à jour la boîte de même adresse, sans doublon, et ne désactive jamais un collecteur déjà actif.', 'configurationglpiauto') }}</p>
+          <div id="cga-mail-mailboxes"></div>
+          <button type="button" class="btn btn-sm btn-outline-primary mb-3" id="cga-mail-add-mailbox"><i class="ti ti-plus me-1"></i>{{ __('Ajouter une boîte', 'configurationglpiauto') }}</button>
+
+          <datalist id="cga-mail-entity-list">
+            {% for name in mail_suggestions.entities|default([]) %}<option value="{{ name }}"></option>{% endfor %}
+          </datalist>
+          <datalist id="cga-mail-category-list">
+            {% for name in mail_suggestions.categories|default([]) %}<option value="{{ name }}"></option>{% endfor %}
+          </datalist>
+          <datalist id="cga-mail-group-list">
+            {% for name in mail_suggestions.groups|default([]) %}<option value="{{ name }}"></option>{% endfor %}
+          </datalist>
+
+          <h4 class="mb-1"><i class="ti ti-shield-check me-1"></i>{{ __('Messages à refuser', 'configurationglpiauto') }}</h4>
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="mail_reject_auto_replies" value="0">
+            <input type="checkbox" name="mail_reject_auto_replies" value="1" class="form-check-input" id="cga-mail-reject-auto-replies" {{ config.mail_reject_auto_replies|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-mail-reject-auto-replies">{{ __('Refuser les réponses automatiques, les messages d\'absence et les erreurs de distribution', 'configurationglpiauto') }} <span class="badge bg-azure-lt">{{ __('recommandé', 'configurationglpiauto') }}</span></label>
+          </div>
+          <p class="text-muted small mb-2">{{ __('Évite les boucles : un message d\'absence répondant à une notification GLPI recréerait sinon un ticket, puis une notification, puis un message d\'absence... Active les règles natives de GLPI (notifications de GLPI, en-tête Auto-Submitted) et ajoute deux règles : sujets de messages d\'absence, messages de mailer-daemon ou postmaster. Ces messages sont refusés sans réponse.', 'configurationglpiauto') }}</p>
+          <div class="form-check form-switch mb-1">
+            <input type="hidden" name="mail_reject_x_auto_response_suppress" value="0">
+            <input type="checkbox" name="mail_reject_x_auto_response_suppress" value="1" class="form-check-input" id="cga-mail-reject-x-auto" {{ config.mail_reject_x_auto_response_suppress|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="cga-mail-reject-x-auto">{{ __('Refuser aussi les messages portant l\'en-tête X-Auto-Response-Suppress', 'configurationglpiauto') }}</label>
+          </div>
+          <p class="text-muted small mb-2">{{ __('Désactivée par défaut dans GLPI : Outlook et Exchange posent aussi cet en-tête sur certains messages écrits par une personne. À activer seulement si des réponses automatiques passent encore.', 'configurationglpiauto') }}</p>
+          <div class="mb-3" style="max-width: 560px;">
+            <label class="form-label mb-1" for="cga-mail-allowed-domains">{{ __('N\'accepter que les expéditeurs de ces domaines (optionnel)', 'configurationglpiauto') }}</label>
+            <input type="text" name="mail_allowed_domains" id="cga-mail-allowed-domains" class="form-control" value="{{ config.mail_allowed_domains|default('') }}" placeholder="exemple.fr, exemple.com">
+            <p class="text-muted small mb-0">{{ __('Laisser vide pour accepter tout expéditeur connu de GLPI. Rempli, un message venant d\'un autre domaine (fournisseur, client externe) est refusé sans réponse.', 'configurationglpiauto') }}</p>
+          </div>
+
+          <div class="alert alert-info d-flex align-items-start gap-2">
+            <i class="ti ti-info-circle mt-1"></i>
+            <div>
+              {{ __('Les règles créées restent modifiables dans GLPI :', 'configurationglpiauto') }}
+              <a href="{{ config('root_doc') }}/front/rulemailcollector.php" target="_blank" rel="noopener">{{ __('Administration > Règles > Règles d\'affectation d\'un ticket ouvert via un collecteur de courriels', 'configurationglpiauto') }}</a>
+              {{ __('(entité, refus) et', 'configurationglpiauto') }}
+              <a href="{{ config('root_doc') }}/front/ruleticket.php" target="_blank" rel="noopener">{{ __('Règles métier pour les tickets', 'configurationglpiauto') }}</a>
+              {{ __('(catégorie, groupe). La relève automatique passe par l\'action automatique « mailgate » de GLPI.', 'configurationglpiauto') }}
+            </div>
+          </div>
+        </div>
+
+        {% if mail_existing_collectors|default([]) is not empty %}
+          <h4 class="mb-1 mt-3"><i class="ti ti-plug-connected me-1"></i>{{ __('Collecteurs déjà enregistrés dans GLPI', 'configurationglpiauto') }}</h4>
+          <p class="text-muted small mb-2">{{ __('Le test utilise la connexion de GLPI lui-même avec les réglages enregistrés : aucun message n\'est relevé ni déplacé. Une boîte ajoutée ci-dessus se teste après avoir cliqué sur « Terminer ».', 'configurationglpiauto') }}</p>
+          <ul class="list-group mb-3" id="cga-mail-existing-collectors">
+            {% for collector in mail_existing_collectors %}
+              <li class="list-group-item d-flex flex-wrap align-items-center gap-2">
+                <i class="ti ti-mail"></i>
+                <a href="{{ collector.url }}" target="_blank" rel="noopener" class="fw-bold">{{ collector.name }}</a>
+                {% if collector.is_active %}
+                  <span class="badge bg-green-lt"><i class="ti ti-player-play me-1"></i>{{ __('relève active', 'configurationglpiauto') }}</span>
+                {% else %}
+                  <span class="badge bg-secondary-lt"><i class="ti ti-player-pause me-1"></i>{{ __('relève désactivée', 'configurationglpiauto') }}</span>
+                {% endif %}
+                {% if not collector.has_password %}
+                  <span class="badge bg-orange-lt"><i class="ti ti-key-off me-1"></i>{{ __('mot de passe manquant', 'configurationglpiauto') }}</span>
+                {% endif %}
+                {% if collector.errors > 0 %}
+                  <span class="badge bg-red-lt"><i class="ti ti-alert-triangle me-1"></i>{{ __('en erreur', 'configurationglpiauto') }}</span>
+                {% endif %}
+                <button type="button" class="btn btn-sm btn-outline-secondary ms-auto cga-mail-test" data-id="{{ collector.id }}"><i class="ti ti-plug me-1"></i>{{ __('Tester la connexion', 'configurationglpiauto') }}</button>
+                <span class="small w-100 cga-mail-test-result" data-id="{{ collector.id }}" role="status"></span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      {# ---------------------------------------------------------------- Étape 20 : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="20" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 20 : {{ __('Récapitulatif', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer : cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits/modèles de projet.', 'configurationglpiauto') }}</p>
 
         <div class="alert alert-info d-flex align-items-center gap-2 mb-3">
@@ -1870,6 +1959,9 @@
           <li class="list-group-item">
             <strong>{{ __('Projets', 'configurationglpiauto') }} :</strong> <span id="cga-summary-projects"></span>
           </li>
+          <li class="list-group-item">
+            <strong>{{ __('Réception par e-mail', 'configurationglpiauto') }} :</strong> <span id="cga-summary-mail-collectors"></span>
+          </li>
         </ul>
 
         {# Déplacé ici depuis l'étape 14 (Réglages généraux), où il se perdait au milieu d'une
@@ -1918,7 +2010,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 19;
+  var STEP_COUNT = 20;
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -1982,6 +2074,7 @@
     "{{ __('Projets', 'configurationglpiauto')|e('js') }}",
     "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
     "{{ __('Configuration SMTP', 'configurationglpiauto')|e('js') }}",
+    "{{ __('Réception par e-mail', 'configurationglpiauto')|e('js') }}",
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
 
@@ -3837,6 +3930,17 @@
       ? projectsParts.join(', ')
       : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
 
+    // Issue #429
+    var mailboxCount = mailCollectorsEnabledInput.checked
+      ? Array.prototype.filter.call(document.querySelectorAll('.cga-mail-mailbox input[name$="[address]"]'), function (i) { return i.value.trim() !== ''; }).length
+      : 0;
+    var mailboxActiveCount = mailCollectorsEnabledInput.checked
+      ? document.querySelectorAll('.cga-mail-mailbox input[type="checkbox"][name$="[activate]"]:checked').length
+      : 0;
+    document.getElementById('cga-summary-mail-collectors').textContent = mailCollectorsEnabledInput.checked
+      ? "{{ __('%1$s boîte(s), dont %2$s activée(s)', 'configurationglpiauto')|e('js') }}".replace('%1$s', mailboxCount).replace('%2$s', mailboxActiveCount)
+      : "{{ __('Aucun', 'configurationglpiauto')|e('js') }}";
+
     // Chaque bibliothèque/catalogue activé (tâches/solutions, suivis/validations, outils
     // généraux, projets, réglages généraux) pèse pour un poids forfaitaire modeste dans
     // l'estimation : ce sont des catalogues de taille à peu près fixe, pas des listes qui
@@ -3853,6 +3957,246 @@
           : "{{ __('plusieurs minutes', 'configurationglpiauto')|e('js') }}";
     document.getElementById('cga-summary-time-estimate').textContent = estimateLabel;
   }
+
+  // Issue #429 : une carte par boîte à relever (`mail_collectors[i][champ]`). Le mot de passe
+  // n'est jamais prérempli : vide, GLPI garde celui qu'il a déjà enregistré.
+  var mailMailboxesRoot = document.getElementById('cga-mail-mailboxes');
+  var mailMailboxIndex = 0;
+  var mailCollectorsEnabledInput = wireSimpleToggle('cga-mail-collectors-enabled', 'cga-mail-collectors-fields');
+  function cgaMailDefaultPort(protocol, security) {
+    if (protocol === 'pop') { return security === 'ssl' ? 995 : 110; }
+    return security === 'ssl' ? 993 : 143;
+  }
+  function cgaMailField(labelText, input, width) {
+    var wrap = document.createElement('div');
+    if (width) { wrap.style.minWidth = width; }
+    var label = document.createElement('label');
+    label.className = 'form-label small mb-1';
+    label.textContent = labelText;
+    label.htmlFor = input.id;
+    wrap.appendChild(label);
+    wrap.appendChild(input);
+    return wrap;
+  }
+  function cgaMailInput(idx, field, type, value, placeholder) {
+    var input = document.createElement('input');
+    input.type = type;
+    input.name = 'mail_collectors[' + idx + '][' + field + ']';
+    input.id = 'cga-mail-' + field + '-' + idx;
+    input.className = 'form-control form-control-sm';
+    input.value = value === undefined || value === null ? '' : value;
+    if (placeholder) { input.placeholder = placeholder; }
+    return input;
+  }
+  function cgaMailSelect(idx, field, options, value) {
+    var select = document.createElement('select');
+    select.name = 'mail_collectors[' + idx + '][' + field + ']';
+    select.id = 'cga-mail-' + field + '-' + idx;
+    select.className = 'form-select form-select-sm';
+    options.forEach(function (o) {
+      var opt = document.createElement('option');
+      opt.value = o[0];
+      opt.textContent = o[1];
+      if (String(o[0]) === String(value)) { opt.selected = true; }
+      select.appendChild(opt);
+    });
+    return select;
+  }
+  function cgaMailSwitch(idx, field, checked, labelText) {
+    var wrap = document.createElement('div');
+    wrap.className = 'form-check form-switch mb-1';
+    var hidden = document.createElement('input');
+    hidden.type = 'hidden';
+    hidden.name = 'mail_collectors[' + idx + '][' + field + ']';
+    hidden.value = '0';
+    var input = document.createElement('input');
+    input.type = 'checkbox';
+    input.className = 'form-check-input';
+    input.name = hidden.name;
+    input.value = '1';
+    input.id = 'cga-mail-' + field + '-' + idx;
+    input.checked = !!checked;
+    var label = document.createElement('label');
+    label.className = 'form-check-label';
+    label.htmlFor = input.id;
+    label.textContent = labelText;
+    wrap.appendChild(hidden);
+    wrap.appendChild(input);
+    wrap.appendChild(label);
+    return wrap;
+  }
+  function addMailboxCard(data) {
+    data = data || {};
+    var idx = mailMailboxIndex++;
+    var card = document.createElement('div');
+    card.className = 'card card-body mb-2 cga-mail-mailbox';
+
+    var head = document.createElement('div');
+    head.className = 'd-flex align-items-center gap-2 mb-2';
+    var title = document.createElement('strong');
+    title.innerHTML = '<i class="ti ti-mail me-1"></i>';
+    var titleText = document.createElement('span');
+    titleText.textContent = data.address || "{{ __('Nouvelle boîte', 'configurationglpiauto')|e('js') }}";
+    title.appendChild(titleText);
+    head.appendChild(title);
+    var removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'btn btn-sm btn-outline-danger ms-auto';
+    removeBtn.innerHTML = '<i class="ti ti-trash me-1"></i>';
+    removeBtn.appendChild(document.createTextNode("{{ __('Retirer', 'configurationglpiauto')|e('js') }}"));
+    removeBtn.title = "{{ __('Retire la boîte de l\'assistant : le collecteur déjà créé dans GLPI n\'est pas supprimé.', 'configurationglpiauto')|e('js') }}";
+    removeBtn.addEventListener('click', function () { card.remove(); });
+    head.appendChild(removeBtn);
+    card.appendChild(head);
+
+    var protocol = data.protocol || 'imap';
+    var security = data.security || 'ssl';
+
+    var row1 = document.createElement('div');
+    row1.className = 'd-flex flex-wrap gap-2 mb-2';
+    var address = cgaMailInput(idx, 'address', 'email', data.address, 'support@exemple.fr');
+    address.required = false;
+    address.addEventListener('input', function () {
+      titleText.textContent = address.value || "{{ __('Nouvelle boîte', 'configurationglpiauto')|e('js') }}";
+      if (!login.dataset.edited) { login.value = address.value; }
+    });
+    row1.appendChild(cgaMailField("{{ __('Adresse e-mail de la boîte', 'configurationglpiauto')|e('js') }}", address, '240px'));
+    var server = cgaMailInput(idx, 'server', 'text', data.server, 'imap.exemple.fr');
+    row1.appendChild(cgaMailField("{{ __('Serveur de messagerie', 'configurationglpiauto')|e('js') }}", server, '220px'));
+    var protocolSelect = cgaMailSelect(idx, 'protocol', [['imap', 'IMAP'], ['pop', 'POP3']], protocol);
+    row1.appendChild(cgaMailField("{{ __('Protocole', 'configurationglpiauto')|e('js') }}", protocolSelect, '100px'));
+    var securitySelect = cgaMailSelect(idx, 'security', [
+      ['ssl', "{{ __('SSL/TLS (recommandé)', 'configurationglpiauto')|e('js') }}"],
+      ['tls', 'STARTTLS'],
+      ['none', "{{ __('Aucun chiffrement', 'configurationglpiauto')|e('js') }}"]
+    ], security);
+    row1.appendChild(cgaMailField("{{ __('Sécurité', 'configurationglpiauto')|e('js') }}", securitySelect, '170px'));
+    var port = cgaMailInput(idx, 'port', 'number', data.port || cgaMailDefaultPort(protocol, security));
+    port.min = 1;
+    port.max = 65535;
+    port.style.maxWidth = '100px';
+    row1.appendChild(cgaMailField("{{ __('Port', 'configurationglpiauto')|e('js') }}", port));
+    card.appendChild(row1);
+    function syncPort() {
+      port.value = cgaMailDefaultPort(protocolSelect.value, securitySelect.value);
+      imapWrap.style.display = protocolSelect.value === 'imap' ? '' : 'none';
+    }
+    protocolSelect.addEventListener('change', syncPort);
+    securitySelect.addEventListener('change', syncPort);
+
+    var row2 = document.createElement('div');
+    row2.className = 'd-flex flex-wrap gap-2 mb-2 align-items-end';
+    var login = cgaMailInput(idx, 'login', 'text', data.login || data.address || '');
+    login.autocomplete = 'off';
+    login.addEventListener('input', function () { login.dataset.edited = '1'; });
+    if (data.login && data.login !== data.address) { login.dataset.edited = '1'; }
+    row2.appendChild(cgaMailField("{{ __('Identifiant de connexion', 'configurationglpiauto')|e('js') }}", login, '220px'));
+    var passwd = cgaMailInput(idx, 'passwd', 'password', '', data.address
+      ? "{{ __('Laisser vide pour garder celui de GLPI', 'configurationglpiauto')|e('js') }}"
+      : "{{ __('Optionnel, chiffré par GLPI', 'configurationglpiauto')|e('js') }}");
+    passwd.autocomplete = 'new-password';
+    row2.appendChild(cgaMailField("{{ __('Mot de passe', 'configurationglpiauto')|e('js') }}", passwd, '220px'));
+    var certWrap = cgaMailSwitch(idx, 'validate_cert', data.validate_cert === undefined ? true : data.validate_cert, "{{ __('Vérifier le certificat du serveur', 'configurationglpiauto')|e('js') }}");
+    row2.appendChild(certWrap);
+    card.appendChild(row2);
+
+    var imapFields = document.createElement('div');
+    imapFields.className = 'd-flex flex-wrap gap-2 mb-2';
+    imapFields.appendChild(cgaMailField("{{ __('Dossier relevé', 'configurationglpiauto')|e('js') }}", cgaMailInput(idx, 'folder', 'text', data.folder || 'INBOX'), '140px'));
+    imapFields.appendChild(cgaMailField("{{ __('Ranger les messages traités dans', 'configurationglpiauto')|e('js') }}", cgaMailInput(idx, 'accepted_folder', 'text', data.accepted_folder === undefined ? "{{ __('Traités', 'configurationglpiauto')|e('js') }}" : data.accepted_folder), '200px'));
+    imapFields.appendChild(cgaMailField("{{ __('Ranger les messages refusés dans', 'configurationglpiauto')|e('js') }}", cgaMailInput(idx, 'refused_folder', 'text', data.refused_folder === undefined ? "{{ __('Refusés', 'configurationglpiauto')|e('js') }}" : data.refused_folder), '200px'));
+    // Enveloppe sans classe : `.d-flex` (display: flex !important) l'emporterait sur un style en ligne.
+    var imapWrap = document.createElement('div');
+    imapWrap.appendChild(imapFields);
+    imapWrap.style.display = protocol === 'imap' ? '' : 'none';
+    card.appendChild(imapWrap);
+    var folderHint = document.createElement('p');
+    folderHint.className = 'text-muted small mb-2';
+    folderHint.textContent = "{{ __('Les dossiers de rangement doivent exister dans la boîte (IMAP) ; laissés vides ou introuvables, GLPI supprime le message après traitement. En POP3, le message est toujours supprimé.', 'configurationglpiauto')|e('js') }}";
+    card.appendChild(folderHint);
+
+    var sizeOptions = [[0, "{{ __('Ne pas importer les pièces jointes', 'configurationglpiauto')|e('js') }}"]];
+    [2, 5, 10, 20, 30, 50, 99].forEach(function (mb) { sizeOptions.push([mb, mb + ' Mio']); });
+    var sizeSelect = cgaMailSelect(idx, 'filesize_max_mb', sizeOptions, data.filesize_max_mb === undefined ? 10 : data.filesize_max_mb);
+    var row3 = document.createElement('div');
+    row3.className = 'd-flex flex-wrap gap-2 mb-2';
+    row3.appendChild(cgaMailField("{{ __('Taille maximale des pièces jointes', 'configurationglpiauto')|e('js') }}", sizeSelect, '220px'));
+    card.appendChild(row3);
+
+    var routingTitle = document.createElement('p');
+    routingTitle.className = 'small fw-bold mb-1';
+    routingTitle.innerHTML = '<i class="ti ti-route me-1"></i>';
+    routingTitle.appendChild(document.createTextNode("{{ __('Où ranger les tickets de cette boîte (optionnel)', 'configurationglpiauto')|e('js') }}"));
+    card.appendChild(routingTitle);
+    var row4 = document.createElement('div');
+    row4.className = 'd-flex flex-wrap gap-2 mb-1';
+    var entity = cgaMailInput(idx, 'entity', 'text', data.entity, "{{ __('Entité racine par défaut', 'configurationglpiauto')|e('js') }}");
+    entity.setAttribute('list', 'cga-mail-entity-list');
+    row4.appendChild(cgaMailField("{{ __('Entité', 'configurationglpiauto')|e('js') }}", entity, '220px'));
+    var category = cgaMailInput(idx, 'category', 'text', data.category, "{{ __('ex. Sécurité SI', 'configurationglpiauto')|e('js') }}");
+    category.setAttribute('list', 'cga-mail-category-list');
+    row4.appendChild(cgaMailField("{{ __('Catégorie', 'configurationglpiauto')|e('js') }}", category, '220px'));
+    var group = cgaMailInput(idx, 'group', 'text', data.group, "{{ __('ex. Support N1', 'configurationglpiauto')|e('js') }}");
+    group.setAttribute('list', 'cga-mail-group-list');
+    row4.appendChild(cgaMailField("{{ __('Groupe en charge', 'configurationglpiauto')|e('js') }}", group, '220px'));
+    card.appendChild(row4);
+    var routingHint = document.createElement('p');
+    routingHint.className = 'text-muted small mb-2';
+    routingHint.textContent = "{{ __('Noms recherchés dans GLPI après la création des entités et catégories des étapes précédentes : un nom introuvable est signalé à la fin et ignoré.', 'configurationglpiauto')|e('js') }}";
+    card.appendChild(routingHint);
+
+    card.appendChild(cgaMailSwitch(idx, 'activate', !!data.activate, "{{ __('Activer la relève dès maintenant', 'configurationglpiauto')|e('js') }}"));
+    var activateHint = document.createElement('p');
+    activateHint.className = 'text-muted small mb-0';
+    activateHint.textContent = "{{ __('Laissez décoché pour vérifier d\'abord la connexion : la boîte est créée désactivée et ne crée aucun ticket.', 'configurationglpiauto')|e('js') }}";
+    card.appendChild(activateHint);
+
+    mailMailboxesRoot.appendChild(card);
+  }
+  document.getElementById('cga-mail-add-mailbox').addEventListener('click', function () { addMailboxCard({}); });
+  ({{ mail_collectors|default([])|json_encode|raw }}).forEach(function (mailbox) { addMailboxCard(mailbox); });
+  function refreshMailEntitySuggestions() {
+    var list = document.getElementById('cga-mail-entity-list');
+    var known = {};
+    Array.prototype.forEach.call(list.options, function (o) { known[o.value] = true; });
+    (function walk(nodes) {
+      (nodes || []).forEach(function (node) {
+        if (node.name && !known[node.name]) {
+          var opt = document.createElement('option');
+          opt.value = node.name;
+          list.appendChild(opt);
+          known[node.name] = true;
+        }
+        walk(node.children);
+      });
+    })(window.cgaTree || []);
+  }
+  document.querySelectorAll('.cga-mail-test').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var result = document.querySelector('.cga-mail-test-result[data-id="' + button.dataset.id + '"]');
+      var tokenMeta = document.querySelector('meta[property="glpi:csrf_token"]');
+      var body = new URLSearchParams();
+      body.append('id', button.dataset.id);
+      button.disabled = true;
+      result.className = 'small w-100 cga-mail-test-result text-muted';
+      result.textContent = "{{ __('Connexion en cours...', 'configurationglpiauto')|e('js') }}";
+      fetch("{{ config('root_doc') }}/plugins/configurationglpiauto/ajax/mailcollector_test.php", {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-Glpi-Csrf-Token': tokenMeta ? tokenMeta.getAttribute('content') : ''
+        },
+        body: body
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        result.className = 'small w-100 cga-mail-test-result ' + (data.ok ? 'text-success' : 'text-danger');
+        result.textContent = data.message || '';
+      }).catch(function () {
+        result.className = 'small w-100 cga-mail-test-result text-danger';
+        result.textContent = "{{ __('Le test n\'a pas pu être lancé.', 'configurationglpiauto')|e('js') }}";
+      }).finally(function () { button.disabled = false; });
+    });
+  });
 
   function showStep(n) {
     currentStep = Math.max(1, Math.min(STEP_COUNT, n));
@@ -3875,6 +4219,9 @@
       // when it matters (the tree may have changed since last time) rather than on every click.
       renderEntityLogoPanels();
       renderBrandingPerClientPanels();
+    }
+    if (currentStep === 19) {
+      refreshMailEntitySuggestions();
     }
     if (currentStep === 3) {
       renderLocationsTree();

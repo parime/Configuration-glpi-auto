@@ -31,6 +31,7 @@ rules:
           - pattern: (new PaletteBuilder())->$F(...)
           - pattern: (new GeneralSettingsBuilder())->$F(...)
           - pattern: (new SmtpBuilder())->$F(...)
+          - pattern: (new MailCollectorBuilder())->$F(...)
           - pattern: (new DashboardBuilder())->$F(...)
           - pattern: (new NotificationBrandingBuilder())->$F(...)
           - pattern: (new PhysicalSecurityAssetBuilder())->$F(...)
@@ -89,6 +90,10 @@ rules:
         # (plugin:configurationglpiauto). apply() n'est appelée par front/wizard.php qu'avec le droit
         # natif config UPDATE ($canUpdateCoreConfig) ; recordExisting() et uninstall() par l'installateur.
         - /src/NotificationBrandingBuilder.php
+        # Issue #429 : collecteurs (droit natif config) et regles de collecteur / de ticket ;
+        # front/wizard.php l'appelle seulement avec config UPDATE ($canUpdateCoreConfig) et lui passe
+        # rule_mailcollector UPDATE et rule_ticket UPDATE pour chaque famille de regles.
+        - /src/MailCollectorBuilder.php
     pattern-either:
       # Nouveau type d'actif personnalise (AssetDefinition::$rightname = 'config').
       - patterns:

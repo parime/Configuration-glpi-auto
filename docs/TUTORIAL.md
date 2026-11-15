@@ -17,7 +17,7 @@ autres profils (Installation simple, Plusieurs entreprises clientes/MSP, Personn
 pré-remplissent les mêmes étapes différemment, mais la structure du parcours est identique.
 
 À tout moment, vous pouvez revenir en arrière avec **Précédent** sans perdre vos réponses : rien
-n'est enregistré dans GLPI avant l'étape 18 (Récapitulatif). Vous pouvez donc parcourir tout
+n'est enregistré dans GLPI avant l'étape 20 (Récapitulatif). Vous pouvez donc parcourir tout
 l'assistant pour voir ce qu'il propose, sans risque, avant de décider de valider quoi que ce soit.
 
 ### Étape 1 : Profil
@@ -190,9 +190,37 @@ en cours de saisie.
 
 *(Capture d'écran à venir.)*
 
-### Étape 19 : Récapitulatif
+### Étape 19 : Réception des tickets par e-mail
 
-Dernière étape avant la création réelle : relit tous les choix des 18 étapes précédentes. Rien
+Optionnel : GLPI relève une ou plusieurs boîtes aux lettres (par exemple support@ et
+facturation@) et transforme chaque nouveau message en ticket ; une réponse à un ticket existant
+devient un suivi de ce ticket. Pour chaque boîte : adresse, serveur, protocole (IMAP ou POP3),
+sécurité et port, identifiant, mot de passe (facultatif, transmis à GLPI qui le chiffre, jamais
+conservé par l'assistant ni exporté avec un profil), dossiers de rangement des messages traités et
+refusés (IMAP), taille maximale des pièces jointes, et où ranger les tickets : entité, catégorie,
+groupe en charge.
+
+- Chaque boîte devient un collecteur GLPI (Configuration > Collecteurs) **créé désactivé** tant que
+  « Activer la relève dès maintenant » n'est pas cochée ; relancer l'assistant met à jour la boîte
+  de même adresse, sans doublon, et ne désactive jamais un collecteur déjà actif.
+- L'entité se règle par une règle de collecteur (Administration > Règles > Règles d'affectation
+  d'un ticket ouvert via un collecteur de courriels), la catégorie et le groupe par une règle
+  métier des tickets : toutes restent visibles et modifiables dans GLPI.
+- « Refuser les réponses automatiques » (recommandé) active les règles natives de GLPI
+  (notifications de GLPI, en-tête Auto-Submitted) et ajoute le refus des messages d'absence et des
+  erreurs de distribution (mailer-daemon, postmaster), sans réponse, pour éviter les boucles. En
+  option : l'en-tête X-Auto-Response-Suppress, et le refus des expéditeurs hors des domaines
+  autorisés.
+- Les collecteurs déjà enregistrés s'affichent avec un bouton **Tester la connexion** : GLPI se
+  connecte avec les réglages enregistrés et compte les messages, sans en relever ni en déplacer.
+
+L'audit de configuration signale ensuite un collecteur en erreur, l'absence de règle d'entité
+(chaque message serait refusé) et les risques de boucle (boîte relevée qui est aussi une adresse
+d'envoi de GLPI, règles natives de refus désactivées).
+
+### Étape 20 : Récapitulatif
+
+Dernière étape avant la création réelle : relit tous les choix des 19 étapes précédentes. Rien
 n'est créé dans GLPI avant de valider ici : c'est le tout premier moment de tout le parcours où
 quelque chose est réellement écrit en base.
 

@@ -12,7 +12,7 @@
 
 Configuration GLPI Auto is a GLPI plugin that aims to turn a blank installation into an operational platform in just a few clicks.
 
-A fresh GLPI install is a blank page: no entities, no calendar, no SLAs, no ticket categories, no templates. Configuring all of that correctly by hand, while following ITIL best practices and ISO 27001 requirements, typically takes a newcomer administrator several days, with the risk of missing something important (SLA escalation, document classification, per-site rights...). This plugin condenses that work into a guided 19-step wizard: you answer questions about your organization, the wizard builds the matching configuration, and nothing is created in GLPI until you confirm the final summary.
+A fresh GLPI install is a blank page: no entities, no calendar, no SLAs, no ticket categories, no templates. Configuring all of that correctly by hand, while following ITIL best practices and ISO 27001 requirements, typically takes a newcomer administrator several days, with the risk of missing something important (SLA escalation, document classification, per-site rights...). This plugin condenses that work into a guided 20-step wizard: you answer questions about your organization, the wizard builds the matching configuration, and nothing is created in GLPI until you confirm the final summary.
 
 > See [CHANGELOG.md](CHANGELOG.md) for the release history (the "Latest Release" badge above
 > shows the most recent one) and [ROADMAP.md](ROADMAP.md) for what's planned.
@@ -34,15 +34,15 @@ A fresh GLPI install is a blank page: no entities, no calendar, no SLAs, no tick
 
 ## What sets it apart
 
-- **Nothing is created until the end**: the 19 steps only build up a configuration in memory, with a live-updating preview (see screenshot below); you can go back, change anything, start over, without ever touching GLPI before confirming the final summary.
-- **An express mode for the impatient**: a single click at step 1 applies the chosen profile's recommended settings directly, without going through the following 18 steps one by one: for a simple installation, an operational GLPI instance in a few seconds.
+- **Nothing is created until the end**: the 20 steps only build up a configuration in memory, with a live-updating preview (see screenshot below); you can go back, change anything, start over, without ever touching GLPI before confirming the final summary.
+- **An express mode for the impatient**: a single click at step 1 applies the chosen profile's recommended settings directly, without going through the following 19 steps one by one: for a simple installation, an operational GLPI instance in a few seconds.
 - **Built for multi-site and MSP from the start**: the same entity tree, the same SLAs and the same visual customization can be differentiated per site or per client, without juggling several separate GLPI installations.
 - **ISO 27001 compliance built in**: knowledge base document topics and criticality levels are offered right in the wizard, not bolted on afterwards by digging through GLPI's documentation.
 - **No orphaned data**: every setting the wizard proposes (categories, statuses, templates...) is immediately usable: the service catalog generated in step 7 already routes automatically to the right category created in step 6, for example.
 
 ## Screenshots
 
-**The starting profile choice**: four predefined profiles pre-fill the following 18 steps with values suited to your organization, freely adjustable afterwards; an express mode applies the recommended settings directly without going through every step:
+**The starting profile choice**: four predefined profiles pre-fill the following 19 steps with values suited to your organization, freely adjustable afterwards; an express mode applies the recommended settings directly without going through every step:
 
 ![Étape 1 : Choix du profil](docs/screenshots/01-profil.png)
 
@@ -50,11 +50,11 @@ A fresh GLPI install is a blank page: no entities, no calendar, no SLAs, no tick
 
 ![Étape 2 : Structure des entités](docs/screenshots/02-entites.png)
 
-All other screenshots (all 19 steps in detail) are in the [tutorial](docs/TUTORIAL.md).
+All other screenshots (all 20 steps in detail) are in the [tutorial](docs/TUTORIAL.md).
 
 ## Features
 
-- A 19-step graphical wizard with a progress bar and an express mode (applies the recommended
+- A 20-step graphical wizard with a progress bar and an express mode (applies the recommended
   settings directly, without going through every step)
 - 4 predefined profiles (Simple install, Multiple sites or departments, Multiple client companies
   / MSP, Custom) that pre-fill the following steps with values suited to each
@@ -66,6 +66,9 @@ All other screenshots (all 19 steps in detail) are in the [tutorial](docs/TUTORI
 - Asset statuses, additional project statuses and pending reasons with automatic follow-up/closure
 - If the assetsign-glpi plugin is active: its form triggers (handover, return, donation, sale,
   destruction, decommissioning) linked to the created statuses, never changing an existing setting
+- Receiving tickets by email: GLPI mail receivers created disabled (password encrypted by GLPI,
+  never kept by the plugin), per-mailbox routing to an entity, a category and a group, refusal of
+  automatic replies and delivery failures, connection test
 - Visual customization: color and logo, native or custom GLPI palette, settings differentiated
   per client/site in MSP mode
 - Ticket templates (simplified / full) automatically assigned based on the user's GLPI profile,
@@ -171,7 +174,7 @@ A ready-to-use Docker stack (GLPI + MariaDB) for testing the plugin is provided 
 ## Usage
 
 Once the plugin is active, the wizard is available from **Configuration > Configuration
-profiles > Configuration**. Choose a starting profile (step 1), then go through the 19 steps,
+profiles > Configuration**. Choose a starting profile (step 1), then go through the 20 steps,
 adjusting each setting to your needs; nothing is created in GLPI before the last step (Summary).
 Express mode (a button available from step 1) applies the chosen profile's recommended settings
 directly, without going through every step. See the [tutorial](docs/TUTORIAL.md) for a screenshot
@@ -179,7 +182,7 @@ of each step.
 
 ## Documentation
 
-- [Tutorial](docs/TUTORIAL.md): a step-by-step walkthrough of the wizard's 19 steps, with a
+- [Tutorial](docs/TUTORIAL.md): a step-by-step walkthrough of the wizard's 20 steps, with a
   screenshot of each.
 - [ITIL Guide](docs/ITIL_GUIDE.md): why the wizard suggests what it suggests - which ITIL 4
   practice each step translates into concrete GLPI settings.

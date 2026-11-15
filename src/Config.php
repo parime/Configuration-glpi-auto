@@ -213,6 +213,12 @@ class Config extends Compat\Base\ConfigBase
             // self-elevation vectors, without inventing a new bespoke rights bitmask.
             'ldap_rights_profile' => 'Admin',
             'ldap_function_rights' => '[]',
+            // Issue #429 : réception des tickets par e-mail (collecteurs et règles), opt-in.
+            'mail_collectors_enabled' => 0,
+            'mail_collectors' => '[]',
+            'mail_reject_auto_replies' => 1,
+            'mail_reject_x_auto_response_suppress' => 0,
+            'mail_allowed_domains' => '',
             'task_categories_enabled' => 1,
             'task_templates_enabled' => 1,
             'task_template_icons_enabled' => 1,
@@ -482,6 +488,16 @@ class Config extends Compat\Base\ConfigBase
         return is_array($rights) ? $rights : [];
     }
 
+    /**
+     * Issue #429 : boîtes à relever (sans mot de passe), relues et normalisées à chaque lecture.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function getMailCollectors(): array
+    {
+        return MailCollectorBuilder::sanitizeMailboxes((string) ($this->fields['mail_collectors'] ?? '[]'));
+    }
+
     public function prepareInputForUpdate($input)
     {
         return $this->prepareInput($input);
@@ -516,6 +532,19 @@ class Config extends Compat\Base\ConfigBase
 
         if (isset($input['ldap_function_rights'])) {
             $input['ldap_function_rights'] = json_encode($this->sanitizeLdapFunctionRights($input['ldap_function_rights']));
+        }
+
+        // Issue #429 : boîtes à relever, jamais de mot de passe (MailCollectorBuilder::sanitizeMailboxes()
+        // ignore la clé `passwd`). `mail_collectors_form` signale que l'étape a été envoyée : une
+        // liste dont toutes les lignes ont été retirées vide alors bien la configuration.
+        if (array_key_exists('mail_collectors', $input)) {
+            $input['mail_collectors'] = json_encode(MailCollectorBuilder::sanitizeMailboxes($input['mail_collectors']));
+        } elseif (!empty($input['mail_collectors_form'])) {
+            $input['mail_collectors'] = '[]';
+        }
+        unset($input['mail_collectors_form']);
+        if (isset($input['mail_allowed_domains'])) {
+            $input['mail_allowed_domains'] = implode(', ', MailCollectorBuilder::parseDomains((string) $input['mail_allowed_domains']));
         }
 
         if (isset($input['calendar_enabled'])) {
@@ -742,7 +771,7 @@ class Config extends Compat\Base\ConfigBase
             $input['native_palette'] = '';
         }
 
-        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'kb_faq_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled', 'notification_branding_enabled', 'manufacturer_dictionary_enabled', 'dropdown_unicity_enabled', 'software_dictionary_enabled', 'os_dictionary_enabled', 'virtual_printers_ignored', 'software_categories_enabled', 'entity_inventory_rules_enabled', 'location_geocoding_enabled', 'project_templates_enabled', 'request_type_translations_enabled', 'entity_native_address_enabled', 'user_categories_enabled', 'user_category_icons_enabled', 'field_unicity_enabled', 'rss_feeds_enabled', 'line_operators_enabled', 'asset_types_enabled', 'asset_type_icons_enabled', 'software_license_types_enabled', 'software_license_type_icons_enabled', 'certificate_types_enabled', 'certificate_type_icons_enabled', 'recurring_ticket_library_enabled', 'country_holidays_enabled', 'satisfaction_plugin_survey_enabled', 'vip_group_enabled', 'tag_library_enabled', 'assetsign_triggers_enabled', 'grcmanager_ciso_group_enabled', 'grcmanager_periodic_reviews_enabled', 'grcmanager_risk_catalog_enabled', 'grcmanager_ai_risks_enabled', 'assetsign_setup_enabled', 'validation_supervisor_routing_enabled', 'fire_safety_assets_enabled', 'fire_safety_asset_icons_enabled', 'physical_security_assets_enabled', 'physical_security_asset_icons_enabled', 'request_type_icons_enabled'] as $field) {
+        foreach (['task_categories_enabled', 'task_templates_enabled', 'solution_library_enabled', 'solution_type_icons_enabled', 'followup_library_enabled', 'validation_templates_enabled', 'change_problem_templates_enabled', 'locations_enabled', 'manufacturers_enabled', 'manufacturer_icons_enabled', 'kb_categories_enabled', 'kb_faq_enabled', 'project_taxonomy_enabled', 'project_taxonomy_icons_enabled', 'project_task_templates_enabled', 'entity_logos_enabled', 'wait_reason_icons_enabled', 'escalation_enabled', 'escalation_includes_n0', 'escalation_auto_n1_n2', 'escalation_auto_n2_n3', 'support_tier_icons_enabled', 'ticket_template_icons_enabled', 'task_template_icons_enabled', 'solution_template_icons_enabled', 'followup_library_icons_enabled', 'validation_template_icons_enabled', 'change_problem_template_icons_enabled', 'project_task_template_icons_enabled', 'custom_palette_enabled', 'document_management_enabled', 'document_management_icons_enabled', 'planning_events_enabled', 'planning_events_icons_enabled', 'branding_per_client_enabled', 'notification_branding_enabled', 'manufacturer_dictionary_enabled', 'dropdown_unicity_enabled', 'software_dictionary_enabled', 'os_dictionary_enabled', 'virtual_printers_ignored', 'software_categories_enabled', 'entity_inventory_rules_enabled', 'location_geocoding_enabled', 'project_templates_enabled', 'request_type_translations_enabled', 'entity_native_address_enabled', 'user_categories_enabled', 'user_category_icons_enabled', 'field_unicity_enabled', 'rss_feeds_enabled', 'line_operators_enabled', 'asset_types_enabled', 'asset_type_icons_enabled', 'software_license_types_enabled', 'software_license_type_icons_enabled', 'certificate_types_enabled', 'certificate_type_icons_enabled', 'recurring_ticket_library_enabled', 'country_holidays_enabled', 'satisfaction_plugin_survey_enabled', 'vip_group_enabled', 'tag_library_enabled', 'assetsign_triggers_enabled', 'grcmanager_ciso_group_enabled', 'grcmanager_periodic_reviews_enabled', 'grcmanager_risk_catalog_enabled', 'grcmanager_ai_risks_enabled', 'assetsign_setup_enabled', 'validation_supervisor_routing_enabled', 'fire_safety_assets_enabled', 'fire_safety_asset_icons_enabled', 'physical_security_assets_enabled', 'physical_security_asset_icons_enabled', 'request_type_icons_enabled', 'mail_collectors_enabled', 'mail_reject_auto_replies', 'mail_reject_x_auto_response_suppress'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

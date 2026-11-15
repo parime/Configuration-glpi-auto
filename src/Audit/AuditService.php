@@ -25,6 +25,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\DuplicateSoftwareCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\EntitiesWithoutAddressCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\GhostAssetsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\IncompleteAssetsCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\MailCollectorCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\MissingRecommendedStatesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NetworkConsistencyCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoActiveCalendarCheck;
@@ -71,6 +72,8 @@ final class AuditService
             DefaultCredentialsCheck::class,
             WeakPasswordPolicyCheck::class,
             DictionaryRulesCheck::class,
+            // Issue #429 : collecteur en erreur, sans règle, boucle de messages.
+            MailCollectorCheck::class,
         ];
     }
 

@@ -127,6 +127,8 @@ if (($argv[1] ?? '') === 'snapshot') {
     $snapshot['calendars'] = countElementsInTable('glpi_calendars');
     $snapshot['vlans'] = countElementsInTable('glpi_vlans');
     $snapshot['ipnetworks'] = countElementsInTable('glpi_ipnetworks');
+    // Issue #429 : collecteurs de courriels (droit natif config).
+    $snapshot['mailcollectors'] = countElementsInTable('glpi_mailcollectors');
     $snapshot['core:palette'] = (string) (\Config::getConfigurationValues('core', ['palette'])['palette'] ?? '');
     if ($DB->tableExists('glpi_plugin_assetsign_configs')) {
         foreach ($DB->request(['FROM' => 'glpi_plugin_assetsign_configs', 'WHERE' => ['entities_id' => 0]]) as $row) {
@@ -168,6 +170,7 @@ $noNativeRight = [
     'config' => 0, 'entity' => 0, 'rule_ldap' => 0, 'rule_ticket' => 0, 'rule_import' => 0,
     'rule_dictionnary_dropdown' => 0, 'rule_dictionnary_software' => 0,
     'rule_dictionnary_printer' => 0, 'rule_softwarecategories' => 0, 'slm' => 0, 'calendar' => 0,
+    'rule_mailcollector' => 0,
 ];
 // Délégué : tous les droits de ce plugin, aucun droit natif privilégié.
 $account('securite-delegue', 'Securite - delegue assistant', [
