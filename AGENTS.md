@@ -2,6 +2,10 @@
 
 Information for AI coding assistants (and humans) working with this repository.
 
+**Read the common charter first:** [CHARTE.md](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md)
+(licence, translations, security, structure, logic, visual rules, menus, documentation,
+release). It is the single reference for every parime GLPI plugin.
+
 ## Licence and attribution (please read before reusing anything)
 
 - **Configuration GLPI Auto** is licensed under **GPL-3.0-or-later** (see `LICENSE`), copyright (C) 2026 Vincent

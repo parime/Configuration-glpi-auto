@@ -31,7 +31,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_CONFIGURATIONGLPIAUTO_VERSION', '1.24.0');
+define('PLUGIN_CONFIGURATIONGLPIAUTO_VERSION', '1.25.0');
 define('PLUGIN_CONFIGURATIONGLPIAUTO_MIN_GLPI', '11.0.0');
 // GLPI 11 and 12 from a single code base (see src/Compat/).
 define('PLUGIN_CONFIGURATIONGLPIAUTO_MAX_GLPI', '12.99.99');
@@ -93,7 +93,7 @@ function plugin_version_configurationglpiauto(): array
         'name'         => 'Configuration GLPI Auto',
         'version'      => PLUGIN_CONFIGURATIONGLPIAUTO_VERSION,
         'author'       => 'Vincent GUILLOTTE',
-        'license'      => 'GPLv3',
+        'license'      => 'GPL-3.0-or-later',
         'homepage'     => 'https://github.com/parime/Configuration-glpi-auto',
         'requirements' => [
             'glpi' => [

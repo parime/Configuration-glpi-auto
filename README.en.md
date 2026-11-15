@@ -184,6 +184,8 @@ of each step.
 
 ## Documentation
 
+Rules shared by all parime plugins, to read before contributing: [common plugin charter](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md) (in French).
+
 - [Tutorial](docs/TUTORIAL.md): a step-by-step walkthrough of the wizard's 20 steps, with a
   screenshot of each.
 - [ITIL Guide](docs/ITIL_GUIDE.md): why the wizard suggests what it suggests - which ITIL 4
@@ -194,6 +196,15 @@ of each step.
 ## Contributing
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for the guidelines.
+
+## Translations
+
+[![Translation status](https://hosted.weblate.org/widget/configuration-glpi-auto/svg-badge.svg)](https://hosted.weblate.org/engage/configuration-glpi-auto/)
+
+The plugin is translated into French, English, German, Spanish, Italian, Polish and Portuguese
+(Brazil). **Translation contributions are welcome on [Hosted Weblate](https://hosted.weblate.org/engage/configuration-glpi-auto/)**: fixing a term,
+improving domain vocabulary or adding a language is done directly in the browser, without Git.
+Weblate then proposes the translations through a Pull Request, reviewed before being merged.
 
 ## Reuse and citation
 
