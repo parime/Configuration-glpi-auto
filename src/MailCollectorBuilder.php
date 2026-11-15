@@ -210,6 +210,33 @@ final class MailCollectorBuilder
         return $list;
     }
 
+    /**
+     * Noms proposés dans les champs entité, catégorie et groupe de l'étape (listes de suggestions,
+     * la saisie reste libre : une catégorie créée par cette même exécution n'existe pas encore).
+     *
+     * @return array{entities: list<string>, categories: list<string>, groups: list<string>}
+     */
+    public static function getSuggestions(): array
+    {
+        $names = static function (string $itemtype, array $where = []): array {
+            global $DB;
+            $list = [];
+            foreach ($DB->request(['SELECT' => ['id', 'completename'], 'FROM' => $itemtype::getTable(), 'WHERE' => $where, 'ORDER' => 'completename ASC', 'LIMIT' => 300]) as $row) {
+                if ($itemtype !== Entity::class || Session::haveAccessToEntity((int) $row['id'])) {
+                    $list[] = (string) $row['completename'];
+                }
+            }
+
+            return $list;
+        };
+
+        return [
+            'entities' => $names(Entity::class),
+            'categories' => $names(ITILCategory::class),
+            'groups' => $names(Group::class, ['is_assign' => 1]),
+        ];
+    }
+
     /** @return list<string> Noms d'entité, de catégorie ou de groupe saisis mais introuvables. */
     public function getUnresolved(): array
     {

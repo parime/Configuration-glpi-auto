@@ -74,6 +74,11 @@ final class DeploymentRights
                 'hint' => __('nécessaire au rattachement des machines inventoriées par plage IP ou tag', 'configurationglpiauto'),
             ],
             [
+                'label' => __('Gérer les règles des collecteurs de courriels', 'configurationglpiauto'),
+                'ok' => Session::haveRight('rule_mailcollector', UPDATE),
+                'hint' => __('nécessaire à l\'étape Réception des tickets par e-mail (entité de chaque boîte, refus des réponses automatiques)', 'configurationglpiauto'),
+            ],
+            [
                 'label' => __('Gérer les dictionnaires et les catégories de logiciels', 'configurationglpiauto'),
                 'ok' => Session::haveRight('rule_dictionnary_dropdown', UPDATE)
                     && Session::haveRight('rule_dictionnary_software', UPDATE)
