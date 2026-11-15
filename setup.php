@@ -93,7 +93,7 @@ function plugin_version_configurationglpiauto(): array
         'name'         => 'Configuration GLPI Auto',
         'version'      => PLUGIN_CONFIGURATIONGLPIAUTO_VERSION,
         'author'       => 'Vincent GUILLOTTE',
-        'license'      => 'GPLv3',
+        'license'      => 'GPL-3.0-or-later',
         'homepage'     => 'https://github.com/parime/Configuration-glpi-auto',
         'requirements' => [
             'glpi' => [

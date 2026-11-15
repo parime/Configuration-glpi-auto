@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation : lien vers la charte commune des plugins ([CHARTE.md](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md))
   dans `AGENTS.md` et les README ; contrôles de sécurité communs v1.7.0 (charte commune et
   menus, en avertissement).
+- Identifiant de licence standardisé : GPL-3.0-or-later (au lieu de GPLv3) ; contrôle de la
+  charte commune passé en mode bloquant.
 
 ## [1.25.0] - 2026-11-15
 

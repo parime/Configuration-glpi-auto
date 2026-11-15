@@ -16,4 +16,5 @@ jobs:
     uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.7.0
     with:
       plugin-key: configurationglpiauto
+      charter-mode: error
       seed-command: php plugins/configurationglpiauto/tests/security/setup.php && php plugins/configurationglpiauto/tests/security/setup.php fleet
