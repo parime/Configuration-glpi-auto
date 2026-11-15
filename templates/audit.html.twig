@@ -19,6 +19,12 @@
    NotificationsDisabledCheck) : les autres n'affichent qu'une recommandation, jamais une valeur
    inventée à la place de l'administrateur. #}
 
+
+{{ include('_infobox.html.twig', {
+   title: __('À quoi sert cette page ?', 'configurationglpiauto'),
+   content: __('Cette page analyse l'état actuel de votre instance GLPI de manière indépendante. Elle identifie les écarts par rapport aux bonnes pratiques et propose des corrections ou des recommandations. Vous pouvez corriger d'un clic les problèmes dont la solution est non ambiguë.', 'configurationglpiauto')
+}) }}
+
 <div class="card">
   <div class="card-body">
     <p class="text-muted">

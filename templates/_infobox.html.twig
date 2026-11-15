@@ -1,0 +1,51 @@
+{#
+ * Infobox d'aide pour expliquer l'utilité d'une page
+ * Usage: {% include '@configurationglpiauto/_infobox.html.twig' with {'title': 'Titre', 'content': 'Contenu'} %}
+ *}
+<div class="infobox">
+    <div class="infobox-header">
+        <span class="infobox-icon">
+            <i class="fas fa-info-circle"></i>
+        </span>
+        <span class="infobox-title">{{ title | default('À quoi sert cette page ?') | trans }}</span>
+    </div>
+    <div class="infobox-content">
+        {{ content | raw }}
+    </div>
+</div>
+
+<style>
+.infobox {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.infobox-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.infobox-icon {
+    color: #007bff;
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+.infobox-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+.infobox-content {
+    color: #555;
+    line-height: 1.5;
+}
+.infobox-content p {
+    margin: 0 0 10px 0;
+}
+.infobox-content p:last-child {
+    margin-bottom: 0;
+}
+</style>
