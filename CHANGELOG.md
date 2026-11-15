@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Étape « Réception des tickets par e-mail »** dans l'assistant (issue #429, étape 19, le
+  récapitulatif passe en 20) : une ou plusieurs boîtes à relever (adresse, serveur, IMAP ou POP3,
+  sécurité et port, identifiant, dossiers des messages traités et refusés, taille maximale des
+  pièces jointes). Chaque boîte devient un collecteur GLPI natif nommé par son adresse, **créé
+  désactivé** sauf case « Activer la relève dès maintenant » cochée ; réexécution sans doublon, un
+  collecteur déjà actif n'est jamais désactivé. Le mot de passe, facultatif, est transmis à GLPI
+  qui le chiffre : jamais enregistré dans la configuration du plugin, l'historique ou un profil
+  exporté, jamais réaffiché.
+- Routage par boîte : entité (règle de collecteur placée avant la règle « Root » de GLPI),
+  catégorie et groupe en charge (règle métier des tickets, à la création), noms recherchés dans
+  GLPI et signalés s'ils sont introuvables. Règles reconnues par leur identifiant : renommables,
+  déplaçables et désactivables ensuite dans GLPI.
+- Refus des messages automatiques, sans réponse : règles natives de GLPI activées (notifications de
+  GLPI, en-tête Auto-Submitted, et sur option X-Auto-Response-Suppress), messages d'absence (sujets
+  dans les langues du plugin), erreurs de distribution (mailer-daemon, postmaster), et en option
+  les expéditeurs hors des domaines autorisés.
+- Bouton « Tester la connexion » pour les collecteurs déjà enregistrés : connexion de GLPI lui-même
+  (`MailCollector::connect()`), aucun message relevé ni déplacé.
+- Audit de configuration : collecteur en erreur, collecteurs sans règle d'entité active (chaque
+  message serait refusé), boucle de messages (boîte relevée qui est aussi une adresse d'envoi de
+  GLPI, règles natives de refus désactivées).
+- Nouveau droit vérifié avant le déploiement : règles des collecteurs (`rule_mailcollector`) ; les
+  collecteurs eux-mêmes exigent le droit natif de configuration.
+
 ## [1.24.0] - 2026-11-15
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
