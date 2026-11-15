@@ -1,4 +1,9 @@
 <?php
+<?php
+/**
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 
 /**
  * Constantes définies par le cœur GLPI à l'exécution réelle (front-controller), mais absentes du

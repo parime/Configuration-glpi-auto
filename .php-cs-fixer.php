@@ -1,4 +1,9 @@
 <?php
+<?php
+/**
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 
 /**
  * PHP-CS-Fixer configuration for Configuration GLPI Auto plugin

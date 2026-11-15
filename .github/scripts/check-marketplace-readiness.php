@@ -1,4 +1,9 @@
 <?php
+<?php
+/**
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 
 /**
  * Exigences de revue du Marketplace GLPI (glpi-developer-documentation, "Publishing your plugin") :

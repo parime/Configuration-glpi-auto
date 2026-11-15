@@ -1,4 +1,9 @@
 <?php
+<?php
+/**
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 // Charge toutes les classes d'un plugin heritant d'une classe Compat Base, sur le vrai coeur GLPI,
 // et verifie que chaque propriete redeclaree a la valeur attendue, dans un emplacement propre.
 // usage: php smoke.php <glpi src root> <plugin root>
