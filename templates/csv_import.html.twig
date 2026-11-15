@@ -1,0 +1,247 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #430 : import générique de tickets depuis un fichier CSV, en trois temps (fichier, colonnes, aperçu) #}
+<div class="card"><div class="card-body">
+   <h3 class="card-title"><i class="ti ti-file-spreadsheet me-1"></i>{{ __('Importer des tickets (CSV)', 'configurationglpiauto') }}</h3>
+
+   {% if step in ['upload', 'columns', 'preview'] %}
+      {% set steps = {'upload': __('1. Fichier', 'configurationglpiauto'), 'columns': __('2. Colonnes', 'configurationglpiauto'), 'preview': __('3. Aperçu et import', 'configurationglpiauto')} %}
+      <ol class="list-inline mb-3">
+         {% for key, label in steps %}
+            <li class="list-inline-item"><span class="badge {{ key == step ? 'bg-primary text-white' : 'bg-secondary-lt' }}">{{ label }}</span></li>
+         {% endfor %}
+      </ol>
+   {% endif %}
+
+   {% if step == 'run' %}
+      {{ include('@configurationglpiauto/import/_run.html.twig') }}
+   {% elseif step == 'result' %}
+      {{ include('@configurationglpiauto/import/_result.html.twig') }}
+   {% elseif step == 'upload' %}
+      <p>{{ __('Apportez l\'historique d\'un autre outil d\'assistance ou d\'un suivi tenu dans un tableur : une ligne par ticket. Vous choisissez ensuite quelle colonne correspond à quel champ du ticket, puis un aperçu à blanc, sans rien écrire, montre le résultat avant l\'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n\'est envoyée.', 'configurationglpiauto') }}</p>
+      <p class="text-muted small"><i class="ti ti-brand-jira me-1"></i>{{ __('Vos tickets viennent de Jira ?', 'configurationglpiauto') }} <a href="{{ jira_url }}">{{ __('Utilisez l\'import Jira', 'configurationglpiauto') }}</a></p>
+      <form method="post" enctype="multipart/form-data" action="{{ url }}" class="row g-3 align-items-end">
+         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+         <div class="col-md-6"><label class="form-label" for="tickets_csv">{{ __('Fichier CSV des tickets', 'configurationglpiauto') }}</label><input type="file" id="tickets_csv" name="tickets_csv" accept=".csv,.txt,text/csv" class="form-control" required>
+            <div class="form-text">{{ __('UTF-8 ou Windows-1252 (« CSV » d\'Excel), séparateur virgule, point-virgule ou tabulation : détectés seuls.', 'configurationglpiauto') }}</div></div>
+         <div class="col-md-6"><div class="form-label">{{ __('Entité des tickets', 'configurationglpiauto') }}</div>{{ entity_dropdown|raw }}</div>
+         <div class="col-md-6"><label class="form-label" for="source_name">{{ __('Nom de l\'outil d\'origine', 'configurationglpiauto') }}</label><input type="text" id="source_name" name="source_name" class="form-control" maxlength="100" placeholder="{{ __('Ex. : Ancien outil d\'assistance', 'configurationglpiauto') }}">
+            <div class="form-text">{{ __('Mentionné dans chaque ticket. Réimportez avec le même nom pour mettre à jour les tickets au lieu de les recréer.', 'configurationglpiauto') }}</div></div>
+         <div class="col-md-6"><label class="form-label" for="profile_id">{{ __('Modèle de correspondance', 'configurationglpiauto') }}</label>
+            <select id="profile_id" name="profile_id" class="form-select">
+               <option value="0">{{ __('Aucun : proposer d\'après les en-têtes', 'configurationglpiauto') }}</option>
+               {% for profile in profiles %}<option value="{{ profile.id }}">{{ profile.name }}</option>{% endfor %}
+            </select></div>
+         <div class="col-12">
+            <details>
+               <summary>{{ __('Options : commentaires dans un second fichier, pièces jointes', 'configurationglpiauto') }}</summary>
+               <div class="row g-3 mt-1">
+                  <div class="col-md-6"><label class="form-label" for="comments_csv">{{ __('Fichier CSV des commentaires (facultatif)', 'configurationglpiauto') }}</label><input type="file" id="comments_csv" name="comments_csv" accept=".csv,.txt,text/csv" class="form-control">
+                     <div class="form-text">{{ __('Une ligne par commentaire, avec les colonnes « Identifiant » (celui du ticket), « Date », « Auteur » et « Commentaire ».', 'configurationglpiauto') }}</div></div>
+                  {% if zip_available %}
+                     <div class="col-md-6"><label class="form-label" for="attachments_zip">{{ __('Archive ZIP des pièces jointes (facultatif)', 'configurationglpiauto') }}</label><input type="file" id="attachments_zip" name="attachments_zip" accept=".zip,application/zip" class="form-control">
+                        <div class="form-text">{{ __('Un dossier par ticket, nommé d\'après son identifiant d\'origine (par exemple 1042/capture.png). 10 Mo par fichier, 200 Mo en tout ; extensions autorisées par GLPI seulement.', 'configurationglpiauto') }}</div></div>
+                  {% endif %}
+               </div>
+            </details>
+         </div>
+         <div class="col-12"><button type="submit" name="upload" value="1" class="btn btn-primary"><i class="ti ti-arrow-right me-1"></i>{{ __('Suivant : choisir les colonnes', 'configurationglpiauto') }}</button></div>
+      </form>
+
+      <hr class="my-4">
+      <h4><i class="ti ti-bulb me-1 text-warning"></i>{{ __('Préparer le fichier depuis un tableur', 'configurationglpiauto') }}</h4>
+      <ul class="small">
+         <li>{{ __('Une ligne par ticket, une première ligne avec le nom des colonnes.', 'configurationglpiauto') }}</li>
+         <li>{{ __('Une colonne avec un identifiant unique par ticket (numéro de l\'ancien outil, ou numérotez simplement les lignes) : c\'est lui qui évite les doublons au réimport.', 'configurationglpiauto') }}</li>
+         <li>{{ __('Dates au format jour/mois/année (14/11/2026 09:30) ou année-mois-jour (2026-11-14 09:30).', 'configurationglpiauto') }}</li>
+         <li>{{ __('Plusieurs commentaires dans une même cellule : un par ligne de la cellule, ou séparés par « | ». Écrits « date;auteur;texte », ils gardent leur date et leur auteur.', 'configurationglpiauto') }}</li>
+         <li>{{ __('Dans Excel ou LibreOffice : Fichier > Enregistrer sous > CSV.', 'configurationglpiauto') }}</li>
+      </ul>
+
+      <hr class="my-4">
+      <h4><i class="ti ti-template me-1"></i>{{ __('Modèles de correspondance', 'configurationglpiauto') }}</h4>
+      <p class="text-muted small">{{ __('Un modèle retient la colonne de chaque champ pour les fichiers suivants du même outil. Enregistrez-le à l\'étape des colonnes ; exportez-le pour le réutiliser sur une autre instance de GLPI.', 'configurationglpiauto') }}</p>
+      {% if profiles is not empty %}
+         <table class="table table-sm align-middle">
+            <thead><tr><th>{{ __('Modèle', 'configurationglpiauto') }}</th><th>{{ __('Outil d\'origine', 'configurationglpiauto') }}</th><th>{{ __('Colonnes', 'configurationglpiauto') }}</th><th></th></tr></thead>
+            {% for profile in profiles %}
+               <tr>
+                  <td><i class="ti ti-template me-1 text-muted"></i>{{ profile.name }}</td>
+                  <td>{{ profile.source_name }}</td>
+                  <td><span class="badge bg-blue-lt">{{ profile.columns }}</span></td>
+                  <td class="text-end">
+                     <form method="post" action="{{ url }}" class="d-inline">
+                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" name="export_profile" value="{{ profile.id }}" class="btn btn-sm btn-outline-secondary"><i class="ti ti-download me-1"></i>{{ __('Exporter', 'configurationglpiauto') }}</button>
+                     </form>
+                     <form method="post" action="{{ url }}" class="d-inline" onsubmit="return confirm('{{ __('Supprimer ce modèle ?', 'configurationglpiauto')|e('js') }}');">
+                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" name="delete_profile" value="{{ profile.id }}" class="btn btn-sm btn-outline-danger"><i class="ti ti-trash me-1"></i>{{ __('Supprimer', 'configurationglpiauto') }}</button>
+                     </form>
+                  </td>
+               </tr>
+            {% endfor %}
+         </table>
+      {% else %}
+         <p class="text-muted"><i class="ti ti-info-circle me-1"></i>{{ __('Aucun modèle enregistré.', 'configurationglpiauto') }}</p>
+      {% endif %}
+      <form method="post" enctype="multipart/form-data" action="{{ url }}" class="row g-2 align-items-end">
+         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+         <div class="col-md-6"><label class="form-label" for="profile_json">{{ __('Importer un modèle (JSON)', 'configurationglpiauto') }}</label><input type="file" id="profile_json" name="profile_json" accept=".json,application/json" class="form-control" required></div>
+         <div class="col-md-3"><button type="submit" name="import_profile" value="1" class="btn btn-outline-primary"><i class="ti ti-upload me-1"></i>{{ __('Importer le modèle', 'configurationglpiauto') }}</button></div>
+      </form>
+
+   {% elseif step == 'columns' %}
+      <p>{{ __('Pour chaque champ du ticket, choisissez la colonne du fichier qui le contient. Les choix proposés viennent du nom des colonnes ; vérifiez-les avec les exemples. Seuls l\'identifiant d\'origine et le titre sont obligatoires.', 'configurationglpiauto') }}</p>
+      <p class="text-muted small"><i class="ti ti-file-check me-1"></i>{{ __('%1$d colonne(s) lue(s), séparateur : %2$s.', 'configurationglpiauto')|format(columns|length, delimiter) }}
+         {% if profile_loaded %}<span class="badge bg-green-lt ms-1"><i class="ti ti-template me-1"></i>{{ __('Modèle appliqué : %s', 'configurationglpiauto')|format(profile_loaded) }}</span>{% endif %}</p>
+      <form method="post" action="{{ url }}">
+         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+         <table class="table table-sm align-middle">
+            <thead><tr><th>{{ __('Champ du ticket GLPI', 'configurationglpiauto') }}</th><th>{{ __('Colonne du fichier', 'configurationglpiauto') }}</th></tr></thead>
+            {% for field in fields %}
+               <tr>
+                  <td><label for="column_{{ field.name }}">{{ field.label }}</label>{% if field.required %} <span class="badge bg-red-lt">{{ __('obligatoire', 'configurationglpiauto') }}</span>{% endif %}</td>
+                  <td><select id="column_{{ field.name }}" name="column[{{ field.name }}]" class="form-select form-select-sm {{ field.selected >= 0 ? 'border-success' : '' }}" {{ field.required ? 'required' : '' }}>
+                     <option value="">{{ field.required ? __('Choisissez une colonne', 'configurationglpiauto') : __('(ne pas importer)', 'configurationglpiauto') }}</option>
+                     {% for column in columns %}<option value="{{ column.position }}" {{ column.position == field.selected ? 'selected' }}>{{ column.label }}{% if column.sample %} ({{ column.sample }}){% endif %}</option>{% endfor %}
+                  </select></td>
+               </tr>
+            {% endfor %}
+         </table>
+
+         <div class="row g-3 mb-3">
+            <div class="col-md-6"><label class="form-label" for="separator">{{ __('Plusieurs commentaires dans la colonne « Commentaires »', 'configurationglpiauto') }}</label>
+               <select id="separator" name="separator" class="form-select">
+                  {% set separators = {'none': __('Non : un seul commentaire par cellule', 'configurationglpiauto'), 'newline': __('Un commentaire par ligne de la cellule', 'configurationglpiauto'), 'blankline': __('Séparés par une ligne vide', 'configurationglpiauto'), 'pipe': __('Séparés par « | »', 'configurationglpiauto'), 'custom': __('Séparés par un autre texte', 'configurationglpiauto')} %}
+                  {% for value, label in separators %}<option value="{{ value }}" {{ value == separator ? 'selected' }}>{{ label }}</option>{% endfor %}
+               </select></div>
+            <div class="col-md-6"><label class="form-label" for="separator_custom">{{ __('Autre séparateur', 'configurationglpiauto') }}</label><input type="text" id="separator_custom" name="separator_custom" class="form-control" maxlength="20" value="{{ separator_custom }}" placeholder="###"></div>
+         </div>
+
+         {% if has_comments_file %}
+            {% if comments.columns_found %}
+               <div class="alert alert-info py-2"><i class="ti ti-messages me-1"></i>{{ __('Fichier des commentaires : %d commentaire(s) lus, rattachés aux tickets par leur identifiant d\'origine.', 'configurationglpiauto')|format(comments.count) }}</div>
+            {% else %}
+               <div class="alert alert-warning py-2"><i class="ti ti-alert-triangle me-1"></i>{{ __('Fichier des commentaires ignoré : colonnes « Identifiant » et « Commentaire » introuvables.', 'configurationglpiauto') }}</div>
+            {% endif %}
+         {% endif %}
+         {% if attachments_count > 0 %}
+            <div class="alert alert-info py-2"><i class="ti ti-paperclip me-1"></i>{{ __('Archive des pièces jointes : %d fichier(s) prêts.', 'configurationglpiauto')|format(attachments_count) }}</div>
+         {% endif %}
+
+         <h4 class="mt-3">{{ __('Début du fichier', 'configurationglpiauto') }}</h4>
+         <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered small">
+               <thead><tr>{% for column in columns %}<th class="text-nowrap">{{ column.label }}</th>{% endfor %}</tr></thead>
+               {% for row in rows %}<tr>{% for value in row %}<td>{{ value|length > 60 ? value|slice(0, 60) ~ '...' : value }}</td>{% endfor %}</tr>{% endfor %}
+            </table>
+         </div>
+
+         <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="save_profile" name="save_profile" value="1">
+            <label class="form-check-label" for="save_profile">{{ __('Enregistrer ces choix comme modèle, pour le prochain fichier du même outil', 'configurationglpiauto') }}</label>
+         </div>
+         <div class="row g-2 mb-3"><div class="col-md-6"><label class="form-label visually-hidden" for="profile_name">{{ __('Nom du modèle', 'configurationglpiauto') }}</label><input type="text" id="profile_name" name="profile_name" class="form-control" maxlength="255" value="{{ profile_name }}" placeholder="{{ __('Nom du modèle', 'configurationglpiauto') }}"></div></div>
+
+         <div class="d-flex gap-2">
+            <button type="submit" name="save_columns" value="1" class="btn btn-primary"><i class="ti ti-eye me-1"></i>{{ __('Aperçu (rien n\'est écrit)', 'configurationglpiauto') }}</button>
+            <button type="submit" name="cancel" value="1" class="btn btn-outline-secondary" formnovalidate>{{ __('Annuler', 'configurationglpiauto') }}</button>
+         </div>
+      </form>
+
+   {% else %}
+      {# Étape 3 : aperçu à blanc et correspondances des valeurs. #}
+      <div class="alert alert-info">{{ __('%1$d ticket(s) lus, dont %2$d déjà importé(s) (mis à jour plutôt que recréés). Entité : %3$s.', 'configurationglpiauto')|format(preview.total, preview.already_imported, entity_name) }}
+         {{ __('Outil d\'origine : %s.', 'configurationglpiauto')|format(source_name) }}</div>
+      {% for error in parse_errors %}<div class="alert alert-warning py-2">{{ __('Ligne %1$d : %2$s', 'configurationglpiauto')|format(error.line, error.label) }}</div>{% endfor %}
+      <form method="post" action="{{ url }}">
+         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+         <div class="row g-4">
+            <div class="col-lg-6">
+               <h4><i class="ti ti-progress me-1"></i>{{ __('Statuts', 'configurationglpiauto') }}</h4>
+               <table class="table table-sm align-middle">
+                  {% for row in statuses %}
+                     <tr>
+                        <td>{{ row.empty ? __('(vide)', 'configurationglpiauto') : row.value }} <span class="badge bg-secondary-lt">{{ row.count }}</span></td>
+                        <td><select name="status_map[{{ row.key }}]" class="form-select form-select-sm" aria-label="{{ row.value }}">
+                           {% for value, label in status_labels %}<option value="{{ value }}" {{ value ~ '' == row.default ~ '' ? 'selected' }}>{{ label }}</option>{% endfor %}
+                        </select></td>
+                     </tr>
+                  {% endfor %}
+               </table>
+            </div>
+            <div class="col-lg-6">
+               <h4><i class="ti ti-category me-1"></i>{{ __('Types', 'configurationglpiauto') }}</h4>
+               <table class="table table-sm align-middle">
+                  {% for row in types %}
+                     <tr>
+                        <td>{{ row.empty ? __('(vide)', 'configurationglpiauto') : row.value }} <span class="badge bg-secondary-lt">{{ row.count }}</span></td>
+                        <td><select name="type_map[{{ row.key }}]" class="form-select form-select-sm" aria-label="{{ row.value }}">
+                           {% for value, label in type_labels %}<option value="{{ value }}" {{ value == row.default ? 'selected' }}>{{ label }}</option>{% endfor %}
+                        </select></td>
+                     </tr>
+                  {% endfor %}
+               </table>
+            </div>
+            {% if priorities is not empty %}
+               <div class="col-lg-6">
+                  <h4><i class="ti ti-flag me-1"></i>{{ __('Priorités', 'configurationglpiauto') }}</h4>
+                  <table class="table table-sm align-middle">
+                     {% for row in priorities %}
+                        <tr>
+                           <td>{{ row.value }} <span class="badge bg-secondary-lt">{{ row.count }}</span></td>
+                           <td><select name="priority_map[{{ row.key }}]" class="form-select form-select-sm" aria-label="{{ row.value }}">
+                              {% for value, label in priority_labels %}<option value="{{ value }}" {{ value == row.default ? 'selected' }}>{{ label }}</option>{% endfor %}
+                           </select></td>
+                        </tr>
+                     {% endfor %}
+                  </table>
+               </div>
+            {% endif %}
+            {% if categories is not empty %}
+               <div class="col-lg-6">
+                  <h4><i class="ti ti-folders me-1"></i>{{ __('Catégories', 'configurationglpiauto') }}</h4>
+                  <p class="text-muted small">{{ __('Une catégorie GLPI du même nom est proposée ; sinon, choisissez-en une ou laissez vide.', 'configurationglpiauto') }}</p>
+                  <table class="table table-sm align-middle">
+                     {% for row in categories %}
+                        {# Liste produite par le cœur GLPI (ITILCategory::dropdown()). #}
+                        {% set category_dropdown = row.dropdown %}
+                        <tr>
+                           <td>{{ row.value }} <span class="badge bg-secondary-lt">{{ row.count }}</span></td>
+                           <td>{{ category_dropdown|raw }}</td>
+                        </tr>
+                     {% endfor %}
+                  </table>
+               </div>
+            {% endif %}
+         </div>
+         {% if values.groups_found is not empty or values.groups_missing is not empty %}
+            <h4 class="mt-3"><i class="ti ti-users-group me-1"></i>{{ __('Groupes de techniciens', 'configurationglpiauto') }}</h4>
+            <p>{{ __('%1$d reconnu(s) dans GLPI, %2$d inconnu(s).', 'configurationglpiauto')|format(values.groups_found|length, values.groups_missing|length) }}</p>
+            {% if values.groups_missing is not empty %}
+               <div class="alert alert-warning py-2">{{ __('Groupes inconnus (aucun groupe créé ; le ticket sera importé sans eux) :', 'configurationglpiauto') }} {{ values.groups_missing|join(', ') }}</div>
+            {% endif %}
+         {% endif %}
+         {{ include('@configurationglpiauto/import/_preview_common.html.twig') }}
+         <div class="d-flex gap-2 mt-3">
+            <button type="submit" name="import" value="1" class="btn btn-primary"><i class="ti ti-transfer-in me-1"></i>{{ __('Importer %d ticket(s)', 'configurationglpiauto')|format(preview.total) }}</button>
+            <a class="btn btn-outline-secondary" href="{{ url }}?step=columns"><i class="ti ti-arrow-left me-1"></i>{{ __('Revenir aux colonnes', 'configurationglpiauto') }}</a>
+            <button type="submit" name="cancel" value="1" class="btn btn-outline-secondary" formnovalidate>{{ __('Annuler', 'configurationglpiauto') }}</button>
+         </div>
+      </form>
+   {% endif %}
+</div></div>

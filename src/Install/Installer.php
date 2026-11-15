@@ -51,6 +51,7 @@ final class Installer
 
     // Issue #345 : cle Jira -> ticket GLPI importe (un nouvel import met a jour au lieu de recreer).
     private const JIRA_IMPORTS_TABLE = 'glpi_plugin_configurationglpiauto_jiraimports';
+    private const CSV_IMPORT_PROFILES_TABLE = 'glpi_plugin_configurationglpiauto_csvimportprofiles';
 
     public function install(Migration $migration): bool
     {
@@ -532,18 +533,48 @@ final class Installer
 
             $query = "CREATE TABLE `" . self::JIRA_IMPORTS_TABLE . "` (
                 `id` int {$keySign} NOT NULL AUTO_INCREMENT,
+                `source` varchar(255) NOT NULL DEFAULT 'jira',
                 `jira_key` varchar(100) NOT NULL,
                 `tickets_id` int {$keySign} NOT NULL DEFAULT 0,
                 `last_comment_date` timestamp NULL DEFAULT NULL,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
-                UNIQUE KEY `jira_key` (`jira_key`),
+                UNIQUE KEY `source_key` (`source`, `jira_key`),
                 KEY `tickets_id` (`tickets_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
 
             if (!$DB->doQuery($query)) {
                 \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s\n", self::JIRA_IMPORTS_TABLE, $DB->error()));
+
+                return false;
+            }
+        }
+        // Issue #430 : la table sert aussi à l'import CSV générique. L'identifiant d'origine est
+        // unique par source (« jira », « csv:<outil> ») : un ticket « 42 » d'un tableur ne se
+        // confond pas avec la clé Jira « 42 ». Les correspondances existantes restent « jira ».
+        $migration->addField(self::JIRA_IMPORTS_TABLE, 'source', 'string', ['value' => 'jira', 'after' => 'id']);
+        $migration->dropKey(self::JIRA_IMPORTS_TABLE, 'jira_key');
+        $migration->addKey(self::JIRA_IMPORTS_TABLE, ['source', 'jira_key'], 'source_key', 'UNIQUE');
+
+        // Issue #430 : modèles de correspondance des colonnes de l'import CSV générique.
+        if (!$DB->tableExists(self::CSV_IMPORT_PROFILES_TABLE)) {
+            $charset   = DBConnection::getDefaultCharset();
+            $collation = DBConnection::getDefaultCollation();
+            $keySign   = DBConnection::getDefaultPrimaryKeySignOption();
+
+            $query = "CREATE TABLE `" . self::CSV_IMPORT_PROFILES_TABLE . "` (
+                `id` int {$keySign} NOT NULL AUTO_INCREMENT,
+                `name` varchar(255) NOT NULL DEFAULT '',
+                `settings` text,
+                `date_creation` timestamp NULL DEFAULT NULL,
+                `date_mod` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `name` (`name`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
+
+            if (!$DB->doQuery($query)) {
+                \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s\n", self::CSV_IMPORT_PROFILES_TABLE, $DB->error()));
 
                 return false;
             }
@@ -796,6 +827,7 @@ final class Installer
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::FUELTYPES_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::HISTORY_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::JIRA_IMPORTS_TABLE . "`");
+        $DB->doQuery("DROP TABLE IF EXISTS `" . self::CSV_IMPORT_PROFILES_TABLE . "`");
 
         Profile::uninstall();
         \GlpiPlugin\Configurationglpiauto\StaffMovement::uninstall();

@@ -81,6 +81,10 @@ rules:
         # Issue #345 : coupe les notifications EN MEMOIRE le temps de l'import (retablies dans un
         # finally), jamais en base ; front/jiraimport.php exige le droit natif ticket CREATE.
         - /src/Jira/JiraImporter.php
+        # Issue #430 : moteur extrait de JiraImporter et modèles de l import CSV ; appelés seulement
+        # depuis front/jiraimport.php et front/csvimport.php (droit UPDATE du plugin et CREATE ticket).
+        - /src/Import/TicketImporter.php
+        - /src/Import/CsvImportProfile.php
         # grcmanager #380 : publie la couleur de la charte dans le contexte de ce plugin
         # (plugin:configurationglpiauto). apply() n'est appelée par front/wizard.php qu'avec le droit
         # natif config UPDATE ($canUpdateCoreConfig) ; recordExisting() et uninstall() par l'installateur.

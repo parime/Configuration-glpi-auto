@@ -5457,3 +5457,314 @@ msgstr "Créer un incident de sécurité (plugin GRC) relié à chacun des %d ti
 #, php-format
 msgid "%d ticket(s) étiquetés « Sécurité » : avec le plugin GRC (grcmanager) et le droit de créer des incidents de sécurité, ils peuvent être reliés à un incident de sécurité."
 msgstr "%d ticket(s) étiquetés « Sécurité » : avec le plugin GRC (grcmanager) et le droit de créer des incidents de sécurité, ils peuvent être reliés à un incident de sécurité."
+
+msgid "Modèle supprimé."
+msgstr "Modèle supprimé."
+
+msgid "Ce fichier n'est pas un modèle d'import exporté par cette page."
+msgstr "Ce fichier n'est pas un modèle d'import exporté par cette page."
+
+#, php-format
+msgid "Modèle « %s » importé."
+msgstr "Modèle « %s » importé."
+
+msgid "Choisissez un fichier CSV (20 Mo au plus) et une entité à laquelle vous avez accès."
+msgstr "Choisissez un fichier CSV (20 Mo au plus) et une entité à laquelle vous avez accès."
+
+#, php-format
+msgid "%d fichier(s) de l'archive écarté(s) : hors d'un dossier portant l'identifiant du ticket, vides ou trop volumineux (10 Mo par fichier, 200 Mo en tout)."
+msgstr "%d fichier(s) de l'archive écarté(s) : hors d'un dossier portant l'identifiant du ticket, vides ou trop volumineux (10 Mo par fichier, 200 Mo en tout)."
+
+msgid "Fichier vide ou illisible."
+msgstr "Fichier vide ou illisible."
+
+msgid "Choisissez au moins la colonne de l'identifiant d'origine et celle du titre."
+msgstr "Choisissez au moins la colonne de l'identifiant d'origine et celle du titre."
+
+#, php-format
+msgid "Modèle « %s » enregistré."
+msgstr "Modèle « %s » enregistré."
+
+msgid "Importer des tickets (CSV)"
+msgstr "Importer des tickets (CSV)"
+
+msgid "Identifiant d'origine"
+msgstr "Identifiant d'origine"
+
+msgid "Statut"
+msgstr "Statut"
+
+msgid "Demandeur (nom)"
+msgstr "Demandeur (nom)"
+
+msgid "Demandeur (adresse e-mail)"
+msgstr "Demandeur (adresse e-mail)"
+
+msgid "Technicien (nom)"
+msgstr "Technicien (nom)"
+
+msgid "Technicien (adresse e-mail)"
+msgstr "Technicien (adresse e-mail)"
+
+msgid "Groupe de techniciens"
+msgstr "Groupe de techniciens"
+
+msgid "Date d'ouverture"
+msgstr "Date d'ouverture"
+
+msgid "Date de résolution"
+msgstr "Date de résolution"
+
+msgid "Commentaires"
+msgstr "Commentaires"
+
+msgid "Colonnes de l'identifiant d'origine et du titre non choisies."
+msgstr "Colonnes de l'identifiant d'origine et du titre non choisies."
+
+msgid "Ligne sans identifiant ou sans titre : ignorée."
+msgstr "Ligne sans identifiant ou sans titre : ignorée."
+
+msgid "Identifiant déjà présent plus haut dans le fichier : ligne ignorée."
+msgstr "Identifiant déjà présent plus haut dans le fichier : ligne ignorée."
+
+#, php-format
+msgid "Colonne %d"
+msgstr "Colonne %d"
+
+msgid "point-virgule"
+msgstr "point-virgule"
+
+msgid "tabulation"
+msgstr "tabulation"
+
+msgid "barre verticale"
+msgstr "barre verticale"
+
+msgid "virgule"
+msgstr "virgule"
+
+#, php-format
+msgid "Demande non retenue (importé de %s)."
+msgstr "Demande non retenue (importé de %s)."
+
+#, php-format
+msgid "Étiquette importée de %s"
+msgstr "Étiquette importée de %s"
+
+msgid "1. Fichier"
+msgstr "1. Fichier"
+
+msgid "2. Colonnes"
+msgstr "2. Colonnes"
+
+msgid "3. Aperçu et import"
+msgstr "3. Aperçu et import"
+
+msgid "Apportez l'historique d'un autre outil d'assistance ou d'un suivi tenu dans un tableur : une ligne par ticket. Vous choisissez ensuite quelle colonne correspond à quel champ du ticket, puis un aperçu à blanc, sans rien écrire, montre le résultat avant l'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n'est envoyée."
+msgstr "Apportez l'historique d'un autre outil d'assistance ou d'un suivi tenu dans un tableur : une ligne par ticket. Vous choisissez ensuite quelle colonne correspond à quel champ du ticket, puis un aperçu à blanc, sans rien écrire, montre le résultat avant l'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n'est envoyée."
+
+msgid "Vos tickets viennent de Jira ?"
+msgstr "Vos tickets viennent de Jira ?"
+
+msgid "Utilisez l'import Jira"
+msgstr "Utilisez l'import Jira"
+
+msgid "Fichier CSV des tickets"
+msgstr "Fichier CSV des tickets"
+
+msgid "UTF-8 ou Windows-1252 (« CSV » d'Excel), séparateur virgule, point-virgule ou tabulation : détectés seuls."
+msgstr "UTF-8 ou Windows-1252 (« CSV » d'Excel), séparateur virgule, point-virgule ou tabulation : détectés seuls."
+
+msgid "Nom de l'outil d'origine"
+msgstr "Nom de l'outil d'origine"
+
+msgid "Ex. : Ancien outil d'assistance"
+msgstr "Ex. : Ancien outil d'assistance"
+
+msgid "Mentionné dans chaque ticket. Réimportez avec le même nom pour mettre à jour les tickets au lieu de les recréer."
+msgstr "Mentionné dans chaque ticket. Réimportez avec le même nom pour mettre à jour les tickets au lieu de les recréer."
+
+msgid "Modèle de correspondance"
+msgstr "Modèle de correspondance"
+
+msgid "Aucun : proposer d'après les en-têtes"
+msgstr "Aucun : proposer d'après les en-têtes"
+
+msgid "Options : commentaires dans un second fichier, pièces jointes"
+msgstr "Options : commentaires dans un second fichier, pièces jointes"
+
+msgid "Fichier CSV des commentaires (facultatif)"
+msgstr "Fichier CSV des commentaires (facultatif)"
+
+msgid "Une ligne par commentaire, avec les colonnes « Identifiant » (celui du ticket), « Date », « Auteur » et « Commentaire »."
+msgstr "Une ligne par commentaire, avec les colonnes « Identifiant » (celui du ticket), « Date », « Auteur » et « Commentaire »."
+
+msgid "Archive ZIP des pièces jointes (facultatif)"
+msgstr "Archive ZIP des pièces jointes (facultatif)"
+
+msgid "Un dossier par ticket, nommé d'après son identifiant d'origine (par exemple 1042/capture.png). 10 Mo par fichier, 200 Mo en tout ; extensions autorisées par GLPI seulement."
+msgstr "Un dossier par ticket, nommé d'après son identifiant d'origine (par exemple 1042/capture.png). 10 Mo par fichier, 200 Mo en tout ; extensions autorisées par GLPI seulement."
+
+msgid "Suivant : choisir les colonnes"
+msgstr "Suivant : choisir les colonnes"
+
+msgid "Préparer le fichier depuis un tableur"
+msgstr "Préparer le fichier depuis un tableur"
+
+msgid "Une ligne par ticket, une première ligne avec le nom des colonnes."
+msgstr "Une ligne par ticket, une première ligne avec le nom des colonnes."
+
+msgid "Une colonne avec un identifiant unique par ticket (numéro de l'ancien outil, ou numérotez simplement les lignes) : c'est lui qui évite les doublons au réimport."
+msgstr "Une colonne avec un identifiant unique par ticket (numéro de l'ancien outil, ou numérotez simplement les lignes) : c'est lui qui évite les doublons au réimport."
+
+msgid "Dates au format jour/mois/année (14/11/2026 09:30) ou année-mois-jour (2026-11-14 09:30)."
+msgstr "Dates au format jour/mois/année (14/11/2026 09:30) ou année-mois-jour (2026-11-14 09:30)."
+
+msgid "Plusieurs commentaires dans une même cellule : un par ligne de la cellule, ou séparés par « | ». Écrits « date;auteur;texte », ils gardent leur date et leur auteur."
+msgstr "Plusieurs commentaires dans une même cellule : un par ligne de la cellule, ou séparés par « | ». Écrits « date;auteur;texte », ils gardent leur date et leur auteur."
+
+msgid "Dans Excel ou LibreOffice : Fichier > Enregistrer sous > CSV."
+msgstr "Dans Excel ou LibreOffice : Fichier > Enregistrer sous > CSV."
+
+msgid "Modèles de correspondance"
+msgstr "Modèles de correspondance"
+
+msgid "Un modèle retient la colonne de chaque champ pour les fichiers suivants du même outil. Enregistrez-le à l'étape des colonnes ; exportez-le pour le réutiliser sur une autre instance de GLPI."
+msgstr "Un modèle retient la colonne de chaque champ pour les fichiers suivants du même outil. Enregistrez-le à l'étape des colonnes ; exportez-le pour le réutiliser sur une autre instance de GLPI."
+
+msgid "Modèle"
+msgstr "Modèle"
+
+msgid "Outil d'origine"
+msgstr "Outil d'origine"
+
+msgid "Colonnes"
+msgstr "Colonnes"
+
+msgid "Exporter"
+msgstr "Exporter"
+
+msgid "Supprimer ce modèle ?"
+msgstr "Supprimer ce modèle ?"
+
+msgid "Supprimer"
+msgstr "Supprimer"
+
+msgid "Aucun modèle enregistré."
+msgstr "Aucun modèle enregistré."
+
+msgid "Importer un modèle (JSON)"
+msgstr "Importer un modèle (JSON)"
+
+msgid "Importer le modèle"
+msgstr "Importer le modèle"
+
+msgid "Pour chaque champ du ticket, choisissez la colonne du fichier qui le contient. Les choix proposés viennent du nom des colonnes ; vérifiez-les avec les exemples. Seuls l'identifiant d'origine et le titre sont obligatoires."
+msgstr "Pour chaque champ du ticket, choisissez la colonne du fichier qui le contient. Les choix proposés viennent du nom des colonnes ; vérifiez-les avec les exemples. Seuls l'identifiant d'origine et le titre sont obligatoires."
+
+#, php-format
+msgid "%1$d colonne(s) lue(s), séparateur : %2$s."
+msgstr "%1$d colonne(s) lue(s), séparateur : %2$s."
+
+#, php-format
+msgid "Modèle appliqué : %s"
+msgstr "Modèle appliqué : %s"
+
+msgid "Champ du ticket GLPI"
+msgstr "Champ du ticket GLPI"
+
+msgid "Colonne du fichier"
+msgstr "Colonne du fichier"
+
+msgid "obligatoire"
+msgstr "obligatoire"
+
+msgid "Choisissez une colonne"
+msgstr "Choisissez une colonne"
+
+msgid "(ne pas importer)"
+msgstr "(ne pas importer)"
+
+msgid "Plusieurs commentaires dans la colonne « Commentaires »"
+msgstr "Plusieurs commentaires dans la colonne « Commentaires »"
+
+msgid "Non : un seul commentaire par cellule"
+msgstr "Non : un seul commentaire par cellule"
+
+msgid "Un commentaire par ligne de la cellule"
+msgstr "Un commentaire par ligne de la cellule"
+
+msgid "Séparés par une ligne vide"
+msgstr "Séparés par une ligne vide"
+
+msgid "Séparés par « | »"
+msgstr "Séparés par « | »"
+
+msgid "Séparés par un autre texte"
+msgstr "Séparés par un autre texte"
+
+msgid "Autre séparateur"
+msgstr "Autre séparateur"
+
+#, php-format
+msgid "Fichier des commentaires : %d commentaire(s) lus, rattachés aux tickets par leur identifiant d'origine."
+msgstr "Fichier des commentaires : %d commentaire(s) lus, rattachés aux tickets par leur identifiant d'origine."
+
+msgid "Fichier des commentaires ignoré : colonnes « Identifiant » et « Commentaire » introuvables."
+msgstr "Fichier des commentaires ignoré : colonnes « Identifiant » et « Commentaire » introuvables."
+
+#, php-format
+msgid "Archive des pièces jointes : %d fichier(s) prêts."
+msgstr "Archive des pièces jointes : %d fichier(s) prêts."
+
+msgid "Début du fichier"
+msgstr "Début du fichier"
+
+msgid "Enregistrer ces choix comme modèle, pour le prochain fichier du même outil"
+msgstr "Enregistrer ces choix comme modèle, pour le prochain fichier du même outil"
+
+msgid "Nom du modèle"
+msgstr "Nom du modèle"
+
+#, php-format
+msgid "Outil d'origine : %s."
+msgstr "Outil d'origine : %s."
+
+msgid "(vide)"
+msgstr "(vide)"
+
+msgid "Types"
+msgstr "Types"
+
+msgid "Priorités"
+msgstr "Priorités"
+
+msgid "Une catégorie GLPI du même nom est proposée ; sinon, choisissez-en une ou laissez vide."
+msgstr "Une catégorie GLPI du même nom est proposée ; sinon, choisissez-en une ou laissez vide."
+
+msgid "Groupes de techniciens"
+msgstr "Groupes de techniciens"
+
+#, php-format
+msgid "%1$d reconnu(s) dans GLPI, %2$d inconnu(s)."
+msgstr "%1$d reconnu(s) dans GLPI, %2$d inconnu(s)."
+
+msgid "Groupes inconnus (aucun groupe créé ; le ticket sera importé sans eux) :"
+msgstr "Groupes inconnus (aucun groupe créé ; le ticket sera importé sans eux) :"
+
+msgid "Revenir aux colonnes"
+msgstr "Revenir aux colonnes"
+
+msgid "Vos tickets viennent d'un autre outil ou d'un tableur ?"
+msgstr "Vos tickets viennent d'un autre outil ou d'un tableur ?"
+
+msgid "Utilisez l'import CSV"
+msgstr "Utilisez l'import CSV"
+
+#, php-format
+msgid "Auteur : %s"
+msgstr "Auteur : %s"
+
+#, php-format
+msgid "Importé de %1$s : %2$s"
+msgstr "Importé de %1$s : %2$s"

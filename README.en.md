@@ -92,6 +92,10 @@ All other screenshots (all 19 steps in detail) are in the [tutorial](docs/TUTORI
 - Ticket import from Jira, from a CSV export or directly through the REST API (Jira Cloud or Data
   Center, token never stored): dry-run preview of status and type mappings, comments as
   follow-ups, original dates, re-import without duplicates, no notification sent
+- Generic ticket import from a CSV file (another helpdesk tool, a spreadsheet): column mapping
+  suggested from the headers and savable as a template (JSON export/import), dry-run preview with
+  status, type, priority and category mappings, comments and attachments, re-import without
+  duplicates by original identifier
 - Interface translated into 6 languages (French, English, German, Italian, Spanish, Brazilian Portuguese)
 
 ## Requirements

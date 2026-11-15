@@ -17,7 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto\Jira;
 
-use DateTimeImmutable;
+use GlpiPlugin\Configurationglpiauto\Import\CsvReader;
 
 /**
  * Issue #345 : lecture d'un export CSV de Jira (« Toutes les colonnes »), sans dépendance à GLPI
@@ -49,61 +49,36 @@ final class JiraCsvParser
     /** Colonnes que Jira répète : toutes leurs valeurs sont gardées. */
     private const REPEATED = ['labels', 'comment'];
 
-    private const MONTHS = [
-        'janv' => 'Jan', 'janvier' => 'Jan', 'fevr' => 'Feb', 'fevrier' => 'Feb', 'mars' => 'Mar', 'avr' => 'Apr',
-        'avril' => 'Apr', 'mai' => 'May', 'juin' => 'Jun', 'juil' => 'Jul', 'juillet' => 'Jul', 'aout' => 'Aug',
-        'sept' => 'Sep', 'septembre' => 'Sep', 'oct' => 'Oct', 'octobre' => 'Oct', 'nov' => 'Nov',
-        'novembre' => 'Nov', 'dec' => 'Dec', 'decembre' => 'Dec',
-    ];
-
     /**
      * @return array{issues: list<array<string, mixed>>, errors: list<array{line: int, message: string}>}
      */
     public static function parse(string $content): array
     {
-        $content = preg_replace('/^\xEF\xBB\xBF/', '', $content) ?? $content;
-        $handle = fopen('php://temp', 'r+');
-        if ($handle === false) {
-            return ['issues' => [], 'errors' => [['line' => 0, 'message' => 'unreadable']]];
-        }
-        fwrite($handle, $content);
-        rewind($handle);
-
-        $firstLine = strtok($content, "\n") ?: '';
-        $delimiter = substr_count($firstLine, ';') > substr_count($firstLine, ',') ? ';' : ',';
-        $header = fgetcsv($handle, null, $delimiter, '"', '');
-        if (!is_array($header)) {
-            fclose($handle);
+        $table = CsvReader::read($content);
+        if ($table['header'] === []) {
             return ['issues' => [], 'errors' => [['line' => 1, 'message' => 'empty']]];
         }
-        $columns = self::mapHeader($header);
+        $columns = self::mapHeader($table['header']);
         if (!in_array('key', $columns, true) || !in_array('summary', $columns, true)) {
-            fclose($handle);
             return ['issues' => [], 'errors' => [['line' => 1, 'message' => 'missing_columns']]];
         }
 
         $issues = [];
         $errors = [];
-        $line = 1;
-        while (($values = fgetcsv($handle, null, $delimiter, '"', '')) !== false) {
-            $line++;
-            if ($values === [null]) {
-                continue;
-            }
-            $issue = self::buildIssue($columns, $values);
+        foreach ($table['rows'] as $row) {
+            $issue = self::buildIssue($columns, $row['values']);
             if ($issue['key'] === '' || $issue['summary'] === '') {
-                $errors[] = ['line' => $line, 'message' => 'missing_key_or_summary'];
+                $errors[] = ['line' => $row['line'], 'message' => 'missing_key_or_summary'];
                 continue;
             }
             $issues[] = $issue;
         }
-        fclose($handle);
 
         return ['issues' => $issues, 'errors' => $errors];
     }
 
     /**
-     * @param list<?string> $header
+     * @param list<string> $header
      * @return array<int, string>
      */
     private static function mapHeader(array $header): array
@@ -125,7 +100,7 @@ final class JiraCsvParser
 
     /**
      * @param array<int, string> $columns
-     * @param list<?string> $values
+     * @param list<string> $values
      * @return array<string, mixed>
      */
     private static function buildIssue(array $columns, array $values): array
@@ -174,41 +149,15 @@ final class JiraCsvParser
 
     /**
      * Dates des exports Jira (« 24/Oct/26 3:15 PM », « 24/oct./26 15:15 », « 2026-10-24 15:15 »…)
-     * au format Y-m-d H:i:s, ou null.
+     * au format Y-m-d H:i:s, ou null. Lecture commune à tous les imports (CsvReader, issue #430).
      */
     public static function parseDate(string $value): ?string
     {
-        $value = trim($value);
-        if ($value === '') {
-            return null;
-        }
-        $normalized = (string) preg_replace_callback(
-            '/(?<=\/)([[:alpha:]éèûô]+)\.?(?=\/)/u',
-            static function (array $m): string {
-                $month = self::slug($m[1]);
-                return self::MONTHS[$month] ?? ucfirst($month);
-            },
-            $value
-        );
-        $formats = ['d/M/y g:i A', 'd/M/y h:i A', 'd/M/y H:i', 'd/M/Y g:i A', 'd/M/Y H:i', 'Y-m-d H:i', 'Y-m-d H:i:s',
-            'd/m/Y H:i', 'd/m/Y', 'Y-m-d', 'Y-m-d\TH:i:s.vO', 'Y-m-d\TH:i:sP'];
-        foreach ($formats as $format) {
-            $date = DateTimeImmutable::createFromFormat('!' . $format, $normalized);
-            $warnings = DateTimeImmutable::getLastErrors();
-            if ($date !== false && ($warnings === false || ($warnings['warning_count'] === 0 && $warnings['error_count'] === 0))) {
-                return $date->format('Y-m-d H:i:s');
-            }
-        }
-
-        return null;
+        return CsvReader::parseDate($value);
     }
 
     public static function slug(string $value): string
     {
-        $value = mb_strtolower(trim($value));
-        $value = strtr($value, ['é' => 'e', 'è' => 'e', 'ê' => 'e', 'à' => 'a', 'â' => 'a', 'ô' => 'o', 'î' => 'i',
-            'ï' => 'i', 'û' => 'u', 'ù' => 'u', 'ç' => 'c']);
-
-        return trim((string) preg_replace('/[^a-z0-9]+/', ' ', $value));
+        return CsvReader::slug($value);
     }
 }

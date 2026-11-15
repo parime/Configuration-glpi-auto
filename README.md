@@ -94,6 +94,10 @@ Toutes les autres captures d'écran (les 19 étapes en détail) sont dans le [tu
 - Import de tickets depuis Jira, par export CSV ou directement par l'API REST (Jira Cloud ou Data
   Center, jeton jamais enregistre) : apercu a blanc des correspondances de statuts et de types,
   commentaires en suivis, dates d'origine, reimport sans doublon, aucune notification envoyee
+- Import generique de tickets depuis un fichier CSV (autre outil d'assistance, tableur) :
+  correspondance des colonnes proposee d'apres les en-tetes et enregistrable comme modele
+  (export/import JSON), apercu a blanc avec correspondance des statuts, types, priorites et
+  categories, commentaires et pieces jointes, reimport sans doublon par identifiant d'origine
 - Interface traduite en 6 langues (francais, anglais, allemand, italien, espagnol, portugais du Bresil)
 
 ## Prerequis

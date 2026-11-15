@@ -93,6 +93,8 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
             'audit'       => [__('Audit de configuration', 'configurationglpiauto'), 'audit.php', 'ti ti-shield-check'],
             'addressplan' => [__('Plan d\'adressage', 'configurationglpiauto'), 'addressplan.php', 'ti ti-network'],
             'jiraimport'  => [__('Importer depuis Jira', 'configurationglpiauto'), 'jiraimport.php', 'ti ti-file-import'],
+            // Issue #430 : import générique de tickets depuis un fichier CSV.
+            'csvimport'   => [__('Importer des tickets (CSV)', 'configurationglpiauto'), 'csvimport.php', 'ti ti-file-spreadsheet'],
         ];
         foreach ($pages as $key => [$title, $page, $icon]) {
             $menu['options'][$key] = [
