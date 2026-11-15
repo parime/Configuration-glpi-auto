@@ -69,9 +69,9 @@ done
 P=$BASE/plugins/configurationglpiauto/front
 A=$BASE/plugins/configurationglpiauto/ajax
 case "$ROLE" in
-  none)     OPEN=403; AUDIT=403; AUDIT_FIX=403; JIRA=403; NET=403 ;;
-  delegate) OPEN=200; AUDIT=403; AUDIT_FIX=403; JIRA=403; NET=403 ;;
-  *)        OPEN=200; AUDIT=200; AUDIT_FIX=302; JIRA=200; NET=200 ;;
+  none)     OPEN=403; AUDIT=403; AUDIT_FIX=403; JIRA=403; NET=403; MAILTEST=403 ;;
+  delegate) OPEN=200; AUDIT=403; AUDIT_FIX=403; JIRA=403; NET=403; MAILTEST=403 ;;
+  *)        OPEN=200; AUDIT=200; AUDIT_FIX=302; JIRA=200; NET=200; MAILTEST=404 ;;
 esac
 
 # --- Chaque page du plugin : refusee sans droit, utilisable avec ---
@@ -94,6 +94,9 @@ expect "front/fueltype.php"                     $OPEN "$(code "$P/fueltype.php")
 expect "front/fueltype.form.php"                $OPEN "$(code "$P/fueltype.form.php?id=$(id fueltype)")"
 expect "front/audit.php (consultation)"         $AUDIT "$(code "$P/audit.php")"
 expect "front/audit.php (correction)"           $AUDIT_FIX "$(code -d "fix=notifications_disabled&_glpi_csrf_token=$(csrf)" "$P/audit.php")"
+# Issue #429 : test de connexion d'un collecteur, exige aussi le droit natif config (collecteurs) ;
+# le super-admin obtient 404 pour un collecteur inexistant.
+expect "ajax/mailcollector_test.php"            $MAILTEST "$(code -X POST -H "X-Glpi-Csrf-Token: $(csrf)" -H 'X-Requested-With: XMLHttpRequest' -d 'id=0' "$A/mailcollector_test.php")"
 if [ "$ROLE" = none ]; then
   expect "ajax/geocode.php" 403 "$(code "$A/geocode.php?q=rue%20de%20la%20Paix")"
   rm -f "$JAR"; exit $FAIL
@@ -107,7 +110,7 @@ if [ "$ROLE" = delegate ]; then
   # Soumission de l'assistant demandant toutes les regles natives, avec une charge XSS envoyee
   # directement sous les noms de COLONNES (contournement de prepareInput() de la 1.3.0).
   code --data-urlencode "calendar_days=0;alert(document.cookie)//" --data-urlencode "calendar_day_hours=1;alert(1)//" \
-    -d "finish=1&validation_supervisor_routing_enabled=1&field_unicity_enabled=1&manufacturer_dictionary_enabled=1&software_dictionary_enabled=1&os_dictionary_enabled=1&virtual_printers_ignored=1&software_categories_enabled=1&asset_types_enabled=1&assetsign_triggers_enabled=1&custom_palette_enabled=1&_glpi_csrf_token=$(csrf)" \
+    -d "finish=1&validation_supervisor_routing_enabled=1&field_unicity_enabled=1&manufacturer_dictionary_enabled=1&software_dictionary_enabled=1&os_dictionary_enabled=1&virtual_printers_ignored=1&software_categories_enabled=1&asset_types_enabled=1&assetsign_triggers_enabled=1&custom_palette_enabled=1&mail_collectors_enabled=1&mail_collectors%5B0%5D%5Baddress%5D=support%40exemple.test&mail_collectors%5B0%5D%5Bserver%5D=imap.exemple.test&mail_reject_auto_replies=1&mail_allowed_domains=exemple.test&_glpi_csrf_token=$(csrf)" \
     "$P/wizard.php" > /dev/null
   calendar_is_json "assistant soumis avec une charge XSS"
   # Blueprint piege (memes charges, stockees dans le fichier) restaure en entier.
