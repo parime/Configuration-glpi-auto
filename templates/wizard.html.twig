@@ -4079,7 +4079,7 @@
     card.appendChild(row1);
     function syncPort() {
       port.value = cgaMailDefaultPort(protocolSelect.value, securitySelect.value);
-      imapFields.style.display = protocolSelect.value === 'imap' ? '' : 'none';
+      imapWrap.style.display = protocolSelect.value === 'imap' ? '' : 'none';
     }
     protocolSelect.addEventListener('change', syncPort);
     securitySelect.addEventListener('change', syncPort);
@@ -4105,8 +4105,11 @@
     imapFields.appendChild(cgaMailField("{{ __('Dossier relevé', 'configurationglpiauto')|e('js') }}", cgaMailInput(idx, 'folder', 'text', data.folder || 'INBOX'), '140px'));
     imapFields.appendChild(cgaMailField("{{ __('Ranger les messages traités dans', 'configurationglpiauto')|e('js') }}", cgaMailInput(idx, 'accepted_folder', 'text', data.accepted_folder === undefined ? "{{ __('Traités', 'configurationglpiauto')|e('js') }}" : data.accepted_folder), '200px'));
     imapFields.appendChild(cgaMailField("{{ __('Ranger les messages refusés dans', 'configurationglpiauto')|e('js') }}", cgaMailInput(idx, 'refused_folder', 'text', data.refused_folder === undefined ? "{{ __('Refusés', 'configurationglpiauto')|e('js') }}" : data.refused_folder), '200px'));
-    imapFields.style.display = protocol === 'imap' ? '' : 'none';
-    card.appendChild(imapFields);
+    // Enveloppe sans classe : `.d-flex` (display: flex !important) l'emporterait sur un style en ligne.
+    var imapWrap = document.createElement('div');
+    imapWrap.appendChild(imapFields);
+    imapWrap.style.display = protocol === 'imap' ? '' : 'none';
+    card.appendChild(imapWrap);
     var folderHint = document.createElement('p');
     folderHint.className = 'text-muted small mb-2';
     folderHint.textContent = "{{ __('Les dossiers de rangement doivent exister dans la boîte (IMAP) ; laissés vides ou introuvables, GLPI supprime le message après traitement. En POP3, le message est toujours supprimé.', 'configurationglpiauto')|e('js') }}";
