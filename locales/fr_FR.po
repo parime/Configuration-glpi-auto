@@ -5768,3 +5768,248 @@ msgstr "Auteur : %s"
 #, php-format
 msgid "Importé de %1$s : %2$s"
 msgstr "Importé de %1$s : %2$s"
+
+msgid "Collecteur introuvable."
+msgstr "Collecteur introuvable."
+
+msgid "Aucun mot de passe enregistré pour ce collecteur : saisissez-le dans l'assistant ou dans l'écran du collecteur."
+msgstr "Aucun mot de passe enregistré pour ce collecteur : saisissez-le dans l'assistant ou dans l'écran du collecteur."
+
+#, php-format
+msgid "Connexion réussie : %d message(s) dans le dossier relevé."
+msgstr "Connexion réussie : %d message(s) dans le dossier relevé."
+
+#, php-format
+msgid "Échec de la connexion : %s"
+msgstr "Échec de la connexion : %s"
+
+#, php-format
+msgid "Réception par e-mail : %1$d collecteur(s) créé(s), %2$d mis à jour, %3$d activé(s), %4$d règle(s) créée(s) ou mise(s) à jour. Testez la connexion depuis Configuration > Collecteurs."
+msgstr "Réception par e-mail : %1$d collecteur(s) créé(s), %2$d mis à jour, %3$d activé(s), %4$d règle(s) créée(s) ou mise(s) à jour. Testez la connexion depuis Configuration > Collecteurs."
+
+#, php-format
+msgid "Réception par e-mail : %d règle(s) créée(s) ou mise(s) à jour."
+msgstr "Réception par e-mail : %d règle(s) créée(s) ou mise(s) à jour."
+
+#, php-format
+msgid "Réception par e-mail : introuvable(s) dans GLPI, donc ignoré(s) : %s."
+msgstr "Réception par e-mail : introuvable(s) dans GLPI, donc ignoré(s) : %s."
+
+msgid "Réception des tickets par e-mail"
+msgstr "Réception des tickets par e-mail"
+
+#, php-format
+msgid "%d collecteur(s) de courriels en erreur"
+msgstr "%d collecteur(s) de courriels en erreur"
+
+msgid "GLPI n'a pas pu se connecter à ces boîtes lors des dernières relèves : les messages reçus n'y deviennent plus des tickets."
+msgstr "GLPI n'a pas pu se connecter à ces boîtes lors des dernières relèves : les messages reçus n'y deviennent plus des tickets."
+
+msgid "Ouvrez le collecteur, vérifiez le serveur, le port, l'identifiant et le mot de passe, puis cliquez sur « Récupérer les courriels maintenant »."
+msgstr "Ouvrez le collecteur, vérifiez le serveur, le port, l'identifiant et le mot de passe, puis cliquez sur « Récupérer les courriels maintenant »."
+
+msgid "Collecteurs de courriels sans règle"
+msgstr "Collecteurs de courriels sans règle"
+
+msgid "Aucune règle de collecteur active n'affecte d'entité : chaque message relevé est refusé, aucun ticket n'est créé."
+msgstr "Aucune règle de collecteur active n'affecte d'entité : chaque message relevé est refusé, aucun ticket n'est créé."
+
+msgid "Réactivez la règle « Root » de GLPI ou créez une règle d'entité par boîte (étape Réception des tickets par e-mail de l'assistant)."
+msgstr "Réactivez la règle « Root » de GLPI ou créez une règle d'entité par boîte (étape Réception des tickets par e-mail de l'assistant)."
+
+msgid "Boucle de messages : une boîte relevée est aussi une adresse d'envoi de GLPI"
+msgstr "Boucle de messages : une boîte relevée est aussi une adresse d'envoi de GLPI"
+
+msgid "Les notifications envoyées par GLPI arrivent dans une boîte qu'il relève lui-même : elles risquent de revenir en tickets, en boucle."
+msgstr "Les notifications envoyées par GLPI arrivent dans une boîte qu'il relève lui-même : elles risquent de revenir en tickets, en boucle."
+
+msgid "Utilisez une adresse d'expédition distincte (par exemple ne-pas-repondre@) dans Configuration > Notifications > Configuration des suivis par courriels."
+msgstr "Utilisez une adresse d'expédition distincte (par exemple ne-pas-repondre@) dans Configuration > Notifications > Configuration des suivis par courriels."
+
+msgid "Risque de boucle : refus des messages automatiques désactivé"
+msgstr "Risque de boucle : refus des messages automatiques désactivé"
+
+#, php-format
+msgid "Règle(s) de collecteur native(s) de GLPI désactivée(s) : %s. Les messages d'absence et les notifications de GLPI peuvent alors créer des tickets en boucle."
+msgstr "Règle(s) de collecteur native(s) de GLPI désactivée(s) : %s. Les messages d'absence et les notifications de GLPI peuvent alors créer des tickets en boucle."
+
+msgid "Réactivez ces règles dans Administration > Règles > Règles d'affectation d'un ticket ouvert via un collecteur de courriels."
+msgstr "Réactivez ces règles dans Administration > Règles > Règles d'affectation d'un ticket ouvert via un collecteur de courriels."
+
+msgid "Gérer les règles des collecteurs de courriels"
+msgstr "Gérer les règles des collecteurs de courriels"
+
+msgid "nécessaire à l'étape Réception des tickets par e-mail (entité de chaque boîte, refus des réponses automatiques)"
+msgstr "nécessaire à l'étape Réception des tickets par e-mail (entité de chaque boîte, refus des réponses automatiques)"
+
+msgid "Créé par l'assistant Configuration GLPI Auto."
+msgstr "Créé par l'assistant Configuration GLPI Auto."
+
+msgid "Règle créée par l'assistant Configuration GLPI Auto (réception des tickets par e-mail)."
+msgstr "Règle créée par l'assistant Configuration GLPI Auto (réception des tickets par e-mail)."
+
+msgid "Optionnel : GLPI relève une ou plusieurs boîtes aux lettres (par exemple support@ et facturation@) et transforme chaque nouveau message en ticket. Une réponse à un ticket existant devient un suivi de ce ticket, pas un nouveau ticket."
+msgstr "Optionnel : GLPI relève une ou plusieurs boîtes aux lettres (par exemple support@ et facturation@) et transforme chaque nouveau message en ticket. Une réponse à un ticket existant devient un suivi de ce ticket, pas un nouveau ticket."
+
+msgid "Configurer la réception des tickets par e-mail"
+msgstr "Configurer la réception des tickets par e-mail"
+
+msgid "Boîtes aux lettres à relever"
+msgstr "Boîtes aux lettres à relever"
+
+msgid "Une boîte par adresse. Chaque boîte devient un collecteur GLPI, créé désactivé tant que vous ne cochez pas « Activer la relève ». Relancer l'assistant met à jour la boîte de même adresse, sans doublon, et ne désactive jamais un collecteur déjà actif."
+msgstr "Une boîte par adresse. Chaque boîte devient un collecteur GLPI, créé désactivé tant que vous ne cochez pas « Activer la relève ». Relancer l'assistant met à jour la boîte de même adresse, sans doublon, et ne désactive jamais un collecteur déjà actif."
+
+msgid "Ajouter une boîte"
+msgstr "Ajouter une boîte"
+
+msgid "Messages à refuser"
+msgstr "Messages à refuser"
+
+msgid "Refuser les réponses automatiques, les messages d'absence et les erreurs de distribution"
+msgstr "Refuser les réponses automatiques, les messages d'absence et les erreurs de distribution"
+
+msgid "Évite les boucles : un message d'absence répondant à une notification GLPI recréerait sinon un ticket, puis une notification, puis un message d'absence... Active les règles natives de GLPI (notifications de GLPI, en-tête Auto-Submitted) et ajoute deux règles : sujets de messages d'absence, messages de mailer-daemon ou postmaster. Ces messages sont refusés sans réponse."
+msgstr "Évite les boucles : un message d'absence répondant à une notification GLPI recréerait sinon un ticket, puis une notification, puis un message d'absence... Active les règles natives de GLPI (notifications de GLPI, en-tête Auto-Submitted) et ajoute deux règles : sujets de messages d'absence, messages de mailer-daemon ou postmaster. Ces messages sont refusés sans réponse."
+
+msgid "Refuser aussi les messages portant l'en-tête X-Auto-Response-Suppress"
+msgstr "Refuser aussi les messages portant l'en-tête X-Auto-Response-Suppress"
+
+msgid "Désactivée par défaut dans GLPI : Outlook et Exchange posent aussi cet en-tête sur certains messages écrits par une personne. À activer seulement si des réponses automatiques passent encore."
+msgstr "Désactivée par défaut dans GLPI : Outlook et Exchange posent aussi cet en-tête sur certains messages écrits par une personne. À activer seulement si des réponses automatiques passent encore."
+
+msgid "N'accepter que les expéditeurs de ces domaines (optionnel)"
+msgstr "N'accepter que les expéditeurs de ces domaines (optionnel)"
+
+msgid "Laisser vide pour accepter tout expéditeur connu de GLPI. Rempli, un message venant d'un autre domaine (fournisseur, client externe) est refusé sans réponse."
+msgstr "Laisser vide pour accepter tout expéditeur connu de GLPI. Rempli, un message venant d'un autre domaine (fournisseur, client externe) est refusé sans réponse."
+
+msgid "Les règles créées restent modifiables dans GLPI :"
+msgstr "Les règles créées restent modifiables dans GLPI :"
+
+msgid "Administration > Règles > Règles d'affectation d'un ticket ouvert via un collecteur de courriels"
+msgstr "Administration > Règles > Règles d'affectation d'un ticket ouvert via un collecteur de courriels"
+
+msgid "(entité, refus) et"
+msgstr "(entité, refus) et"
+
+msgid "Règles métier pour les tickets"
+msgstr "Règles métier pour les tickets"
+
+msgid "(catégorie, groupe). La relève automatique passe par l'action automatique « mailgate » de GLPI."
+msgstr "(catégorie, groupe). La relève automatique passe par l'action automatique « mailgate » de GLPI."
+
+msgid "Collecteurs déjà enregistrés dans GLPI"
+msgstr "Collecteurs déjà enregistrés dans GLPI"
+
+msgid "Le test utilise la connexion de GLPI lui-même avec les réglages enregistrés : aucun message n'est relevé ni déplacé. Une boîte ajoutée ci-dessus se teste après avoir cliqué sur « Terminer »."
+msgstr "Le test utilise la connexion de GLPI lui-même avec les réglages enregistrés : aucun message n'est relevé ni déplacé. Une boîte ajoutée ci-dessus se teste après avoir cliqué sur « Terminer »."
+
+msgid "relève active"
+msgstr "relève active"
+
+msgid "relève désactivée"
+msgstr "relève désactivée"
+
+msgid "mot de passe manquant"
+msgstr "mot de passe manquant"
+
+msgid "en erreur"
+msgstr "en erreur"
+
+msgid "Tester la connexion"
+msgstr "Tester la connexion"
+
+msgid "Réception par e-mail"
+msgstr "Réception par e-mail"
+
+#, php-format
+msgid "%1$s boîte(s), dont %2$s activée(s)"
+msgstr "%1$s boîte(s), dont %2$s activée(s)"
+
+msgid "Nouvelle boîte"
+msgstr "Nouvelle boîte"
+
+msgid "Retire la boîte de l'assistant : le collecteur déjà créé dans GLPI n'est pas supprimé."
+msgstr "Retire la boîte de l'assistant : le collecteur déjà créé dans GLPI n'est pas supprimé."
+
+msgid "Adresse e-mail de la boîte"
+msgstr "Adresse e-mail de la boîte"
+
+msgid "Serveur de messagerie"
+msgstr "Serveur de messagerie"
+
+msgid "Protocole"
+msgstr "Protocole"
+
+msgid "SSL/TLS (recommandé)"
+msgstr "SSL/TLS (recommandé)"
+
+msgid "Aucun chiffrement"
+msgstr "Aucun chiffrement"
+
+msgid "Identifiant de connexion"
+msgstr "Identifiant de connexion"
+
+msgid "Laisser vide pour garder celui de GLPI"
+msgstr "Laisser vide pour garder celui de GLPI"
+
+msgid "Optionnel, chiffré par GLPI"
+msgstr "Optionnel, chiffré par GLPI"
+
+msgid "Vérifier le certificat du serveur"
+msgstr "Vérifier le certificat du serveur"
+
+msgid "Dossier relevé"
+msgstr "Dossier relevé"
+
+msgid "Ranger les messages traités dans"
+msgstr "Ranger les messages traités dans"
+
+msgid "Traités"
+msgstr "Traités"
+
+msgid "Ranger les messages refusés dans"
+msgstr "Ranger les messages refusés dans"
+
+msgid "Refusés"
+msgstr "Refusés"
+
+msgid "Les dossiers de rangement doivent exister dans la boîte (IMAP) ; laissés vides ou introuvables, GLPI supprime le message après traitement. En POP3, le message est toujours supprimé."
+msgstr "Les dossiers de rangement doivent exister dans la boîte (IMAP) ; laissés vides ou introuvables, GLPI supprime le message après traitement. En POP3, le message est toujours supprimé."
+
+msgid "Ne pas importer les pièces jointes"
+msgstr "Ne pas importer les pièces jointes"
+
+msgid "Taille maximale des pièces jointes"
+msgstr "Taille maximale des pièces jointes"
+
+msgid "Où ranger les tickets de cette boîte (optionnel)"
+msgstr "Où ranger les tickets de cette boîte (optionnel)"
+
+msgid "Entité racine par défaut"
+msgstr "Entité racine par défaut"
+
+msgid "ex. Sécurité SI"
+msgstr "ex. Sécurité SI"
+
+msgid "ex. Support N1"
+msgstr "ex. Support N1"
+
+msgid "Groupe en charge"
+msgstr "Groupe en charge"
+
+msgid "Noms recherchés dans GLPI après la création des entités et catégories des étapes précédentes : un nom introuvable est signalé à la fin et ignoré."
+msgstr "Noms recherchés dans GLPI après la création des entités et catégories des étapes précédentes : un nom introuvable est signalé à la fin et ignoré."
+
+msgid "Activer la relève dès maintenant"
+msgstr "Activer la relève dès maintenant"
+
+msgid "Laissez décoché pour vérifier d'abord la connexion : la boîte est créée désactivée et ne crée aucun ticket."
+msgstr "Laissez décoché pour vérifier d'abord la connexion : la boîte est créée désactivée et ne crée aucun ticket."
+
+msgid "Connexion en cours..."
+msgstr "Connexion en cours..."
+
+msgid "Le test n'a pas pu être lancé."
+msgstr "Le test n'a pas pu être lancé."

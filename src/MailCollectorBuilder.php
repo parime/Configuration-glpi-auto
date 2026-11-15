@@ -118,7 +118,8 @@ final class MailCollectorBuilder
                 $server = '';
             }
             $protocol = ($row['protocol'] ?? 'imap') === 'pop' ? 'pop' : 'imap';
-            $security = in_array($row['security'] ?? 'ssl', ['ssl', 'tls', 'none'], true) ? (string) $row['security'] : 'ssl';
+            $security = (string) ($row['security'] ?? 'ssl');
+            $security = in_array($security, ['ssl', 'tls', 'none'], true) ? $security : 'ssl';
             $port = (int) ($row['port'] ?? 0);
             if ($port < 1 || $port > 65535) {
                 $port = self::defaultPort($protocol, $security);
@@ -132,7 +133,8 @@ final class MailCollectorBuilder
                 'protocol' => $protocol,
                 'security' => $security,
                 'port' => $port,
-                'validate_cert' => !empty($row['validate_cert']),
+                // Vérification du certificat par défaut : seule une case explicitement décochée l'enlève.
+                'validate_cert' => !array_key_exists('validate_cert', $row) || !empty($row['validate_cert']),
                 // POP n'a qu'une boîte de réception : ni dossier relevé, ni dossiers de classement.
                 'folder' => $protocol === 'imap' ? self::cleanText($row['folder'] ?? 'INBOX', 'INBOX') : '',
                 'login' => self::cleanText($row['login'] ?? '', $address),

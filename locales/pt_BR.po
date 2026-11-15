@@ -5715,3 +5715,248 @@ msgstr "Autor: %s"
 #, php-format
 msgid "Importé de %1$s : %2$s"
 msgstr "Importado de %1$s: %2$s"
+
+msgid "Collecteur introuvable."
+msgstr "Coletor de e-mails não encontrado."
+
+msgid "Aucun mot de passe enregistré pour ce collecteur : saisissez-le dans l'assistant ou dans l'écran du collecteur."
+msgstr "Nenhuma senha salva para este coletor de e-mails: informe-a no assistente ou na ficha do coletor."
+
+#, php-format
+msgid "Connexion réussie : %d message(s) dans le dossier relevé."
+msgstr "Conexão bem-sucedida: %d mensagem(ns) na pasta coletada."
+
+#, php-format
+msgid "Échec de la connexion : %s"
+msgstr "Falha na conexão: %s"
+
+#, php-format
+msgid "Réception par e-mail : %1$d collecteur(s) créé(s), %2$d mis à jour, %3$d activé(s), %4$d règle(s) créée(s) ou mise(s) à jour. Testez la connexion depuis Configuration > Collecteurs."
+msgstr "Recebimento por e-mail: %1$d coletor(es) criado(s), %2$d atualizado(s), %3$d ativado(s), %4$d regra(s) criada(s) ou atualizada(s). Teste a conexão em Configurar > Coletores."
+
+#, php-format
+msgid "Réception par e-mail : %d règle(s) créée(s) ou mise(s) à jour."
+msgstr "Recebimento por e-mail: %d regra(s) criada(s) ou atualizada(s)."
+
+#, php-format
+msgid "Réception par e-mail : introuvable(s) dans GLPI, donc ignoré(s) : %s."
+msgstr "Recebimento por e-mail: não encontrado(s) no GLPI, portanto ignorado(s): %s."
+
+msgid "Réception des tickets par e-mail"
+msgstr "Recebimento de chamados por e-mail"
+
+#, php-format
+msgid "%d collecteur(s) de courriels en erreur"
+msgstr "%d coletor(es) de e-mails com erro"
+
+msgid "GLPI n'a pas pu se connecter à ces boîtes lors des dernières relèves : les messages reçus n'y deviennent plus des tickets."
+msgstr "O GLPI não conseguiu se conectar a estas caixas nas últimas coletas: as mensagens recebidas não viram mais chamados."
+
+msgid "Ouvrez le collecteur, vérifiez le serveur, le port, l'identifiant et le mot de passe, puis cliquez sur « Récupérer les courriels maintenant »."
+msgstr "Abra o coletor de e-mails, verifique o servidor, a porta, o login e a senha e clique em \"Obter chamados por e-mail agora\"."
+
+msgid "Collecteurs de courriels sans règle"
+msgstr "Coletores de e-mails sem regra"
+
+msgid "Aucune règle de collecteur active n'affecte d'entité : chaque message relevé est refusé, aucun ticket n'est créé."
+msgstr "Nenhuma regra de coletor ativa atribui uma entidade: cada mensagem coletada é recusada e nenhum chamado é criado."
+
+msgid "Réactivez la règle « Root » de GLPI ou créez une règle d'entité par boîte (étape Réception des tickets par e-mail de l'assistant)."
+msgstr "Reative a regra \"Root\" do GLPI ou crie uma regra de entidade por caixa (etapa Recebimento de chamados por e-mail do assistente)."
+
+msgid "Boucle de messages : une boîte relevée est aussi une adresse d'envoi de GLPI"
+msgstr "Loop de mensagens: uma caixa coletada também é um endereço de envio do GLPI"
+
+msgid "Les notifications envoyées par GLPI arrivent dans une boîte qu'il relève lui-même : elles risquent de revenir en tickets, en boucle."
+msgstr "As notificações enviadas pelo GLPI chegam a uma caixa que ele mesmo coleta: podem voltar como chamados, em loop."
+
+msgid "Utilisez une adresse d'expédition distincte (par exemple ne-pas-repondre@) dans Configuration > Notifications > Configuration des suivis par courriels."
+msgstr "Use um endereço de envio distinto (por exemplo nao-responda@) em Configurar > Notificações > Configuração de acompanhamentos por e-mail."
+
+msgid "Risque de boucle : refus des messages automatiques désactivé"
+msgstr "Risco de loop: recusa de mensagens automáticas desativada"
+
+#, php-format
+msgid "Règle(s) de collecteur native(s) de GLPI désactivée(s) : %s. Les messages d'absence et les notifications de GLPI peuvent alors créer des tickets en boucle."
+msgstr "Regra(s) de coletor nativa(s) do GLPI desativada(s): %s. Mensagens de ausência e notificações do GLPI podem então criar chamados em loop."
+
+msgid "Réactivez ces règles dans Administration > Règles > Règles d'affectation d'un ticket ouvert via un collecteur de courriels."
+msgstr "Reative estas regras em Administração > Regras > Regras de atribuição de um chamado criado por um coletor de e-mails."
+
+msgid "Gérer les règles des collecteurs de courriels"
+msgstr "Gerenciar as regras dos coletores de e-mails"
+
+msgid "nécessaire à l'étape Réception des tickets par e-mail (entité de chaque boîte, refus des réponses automatiques)"
+msgstr "necessário para a etapa Recebimento de chamados por e-mail (entidade de cada caixa, recusa de respostas automáticas)"
+
+msgid "Créé par l'assistant Configuration GLPI Auto."
+msgstr "Criado pelo assistente Configuration GLPI Auto."
+
+msgid "Règle créée par l'assistant Configuration GLPI Auto (réception des tickets par e-mail)."
+msgstr "Regra criada pelo assistente Configuration GLPI Auto (recebimento de chamados por e-mail)."
+
+msgid "Optionnel : GLPI relève une ou plusieurs boîtes aux lettres (par exemple support@ et facturation@) et transforme chaque nouveau message en ticket. Une réponse à un ticket existant devient un suivi de ce ticket, pas un nouveau ticket."
+msgstr "Opcional: o GLPI coleta uma ou mais caixas de correio (por exemplo suporte@ e faturamento@) e transforma cada nova mensagem em chamado. Uma resposta a um chamado existente vira um acompanhamento desse chamado, não um novo chamado."
+
+msgid "Configurer la réception des tickets par e-mail"
+msgstr "Configurar o recebimento de chamados por e-mail"
+
+msgid "Boîtes aux lettres à relever"
+msgstr "Caixas de correio a coletar"
+
+msgid "Une boîte par adresse. Chaque boîte devient un collecteur GLPI, créé désactivé tant que vous ne cochez pas « Activer la relève ». Relancer l'assistant met à jour la boîte de même adresse, sans doublon, et ne désactive jamais un collecteur déjà actif."
+msgstr "Uma caixa por endereço. Cada caixa vira um coletor do GLPI, criado desativado enquanto você não marcar \"Ativar a coleta\". Executar o assistente de novo atualiza a caixa com o mesmo endereço, sem duplicatas, e nunca desativa um coletor já ativo."
+
+msgid "Ajouter une boîte"
+msgstr "Adicionar uma caixa"
+
+msgid "Messages à refuser"
+msgstr "Mensagens a recusar"
+
+msgid "Refuser les réponses automatiques, les messages d'absence et les erreurs de distribution"
+msgstr "Recusar respostas automáticas, mensagens de ausência e falhas de entrega"
+
+msgid "Évite les boucles : un message d'absence répondant à une notification GLPI recréerait sinon un ticket, puis une notification, puis un message d'absence... Active les règles natives de GLPI (notifications de GLPI, en-tête Auto-Submitted) et ajoute deux règles : sujets de messages d'absence, messages de mailer-daemon ou postmaster. Ces messages sont refusés sans réponse."
+msgstr "Evita loops: caso contrário, uma mensagem de ausência respondendo a uma notificação do GLPI recriaria um chamado, depois uma notificação, depois uma mensagem de ausência... Ativa as regras nativas do GLPI (notificações do GLPI, cabeçalho Auto-Submitted) e adiciona duas regras: assuntos de mensagens de ausência, mensagens de mailer-daemon ou postmaster. Essas mensagens são recusadas sem resposta."
+
+msgid "Refuser aussi les messages portant l'en-tête X-Auto-Response-Suppress"
+msgstr "Recusar também as mensagens com o cabeçalho X-Auto-Response-Suppress"
+
+msgid "Désactivée par défaut dans GLPI : Outlook et Exchange posent aussi cet en-tête sur certains messages écrits par une personne. À activer seulement si des réponses automatiques passent encore."
+msgstr "Desativada por padrão no GLPI: o Outlook e o Exchange também colocam esse cabeçalho em algumas mensagens escritas por uma pessoa. Ative somente se respostas automáticas ainda passarem."
+
+msgid "N'accepter que les expéditeurs de ces domaines (optionnel)"
+msgstr "Aceitar somente remetentes destes domínios (opcional)"
+
+msgid "Laisser vide pour accepter tout expéditeur connu de GLPI. Rempli, un message venant d'un autre domaine (fournisseur, client externe) est refusé sans réponse."
+msgstr "Deixe vazio para aceitar qualquer remetente conhecido pelo GLPI. Preenchido, uma mensagem vinda de outro domínio (fornecedor, cliente externo) é recusada sem resposta."
+
+msgid "Les règles créées restent modifiables dans GLPI :"
+msgstr "As regras criadas continuam editáveis no GLPI:"
+
+msgid "Administration > Règles > Règles d'affectation d'un ticket ouvert via un collecteur de courriels"
+msgstr "Administração > Regras > Regras de atribuição de um chamado criado por um coletor de e-mails"
+
+msgid "(entité, refus) et"
+msgstr "(entidade, recusa) e"
+
+msgid "Règles métier pour les tickets"
+msgstr "Regras de negócio para chamados"
+
+msgid "(catégorie, groupe). La relève automatique passe par l'action automatique « mailgate » de GLPI."
+msgstr "(categoria, grupo). A coleta automática passa pela ação automática \"mailgate\" do GLPI."
+
+msgid "Collecteurs déjà enregistrés dans GLPI"
+msgstr "Coletores de e-mails já salvos no GLPI"
+
+msgid "Le test utilise la connexion de GLPI lui-même avec les réglages enregistrés : aucun message n'est relevé ni déplacé. Une boîte ajoutée ci-dessus se teste après avoir cliqué sur « Terminer »."
+msgstr "O teste usa a própria conexão do GLPI com as configurações salvas: nenhuma mensagem é coletada nem movida. Uma caixa adicionada acima pode ser testada depois de clicar em \"Concluir\"."
+
+msgid "relève active"
+msgstr "coleta ativa"
+
+msgid "relève désactivée"
+msgstr "coleta desativada"
+
+msgid "mot de passe manquant"
+msgstr "senha ausente"
+
+msgid "en erreur"
+msgstr "com erro"
+
+msgid "Tester la connexion"
+msgstr "Testar a conexão"
+
+msgid "Réception par e-mail"
+msgstr "Recebimento por e-mail"
+
+#, php-format
+msgid "%1$s boîte(s), dont %2$s activée(s)"
+msgstr "%1$s caixa(s), sendo %2$s ativada(s)"
+
+msgid "Nouvelle boîte"
+msgstr "Nova caixa"
+
+msgid "Retire la boîte de l'assistant : le collecteur déjà créé dans GLPI n'est pas supprimé."
+msgstr "Remove a caixa do assistente: o coletor já criado no GLPI não é excluído."
+
+msgid "Adresse e-mail de la boîte"
+msgstr "Endereço de e-mail da caixa"
+
+msgid "Serveur de messagerie"
+msgstr "Servidor de e-mail"
+
+msgid "Protocole"
+msgstr "Protocolo"
+
+msgid "SSL/TLS (recommandé)"
+msgstr "SSL/TLS (recomendado)"
+
+msgid "Aucun chiffrement"
+msgstr "Sem criptografia"
+
+msgid "Identifiant de connexion"
+msgstr "Login"
+
+msgid "Laisser vide pour garder celui de GLPI"
+msgstr "Deixe vazio para manter a salva no GLPI"
+
+msgid "Optionnel, chiffré par GLPI"
+msgstr "Opcional, criptografada pelo GLPI"
+
+msgid "Vérifier le certificat du serveur"
+msgstr "Verificar o certificado do servidor"
+
+msgid "Dossier relevé"
+msgstr "Pasta coletada"
+
+msgid "Ranger les messages traités dans"
+msgstr "Mover as mensagens processadas para"
+
+msgid "Traités"
+msgstr "Processados"
+
+msgid "Ranger les messages refusés dans"
+msgstr "Mover as mensagens recusadas para"
+
+msgid "Refusés"
+msgstr "Recusados"
+
+msgid "Les dossiers de rangement doivent exister dans la boîte (IMAP) ; laissés vides ou introuvables, GLPI supprime le message après traitement. En POP3, le message est toujours supprimé."
+msgstr "As pastas de destino devem existir na caixa (IMAP); se ficarem vazias ou não forem encontradas, o GLPI exclui a mensagem após o processamento. Em POP3, a mensagem é sempre excluída."
+
+msgid "Ne pas importer les pièces jointes"
+msgstr "Não importar anexos"
+
+msgid "Taille maximale des pièces jointes"
+msgstr "Tamanho máximo dos anexos"
+
+msgid "Où ranger les tickets de cette boîte (optionnel)"
+msgstr "Onde colocar os chamados desta caixa (opcional)"
+
+msgid "Entité racine par défaut"
+msgstr "Entidade raiz por padrão"
+
+msgid "ex. Sécurité SI"
+msgstr "ex. Segurança de TI"
+
+msgid "ex. Support N1"
+msgstr "ex. Suporte N1"
+
+msgid "Groupe en charge"
+msgstr "Grupo responsável"
+
+msgid "Noms recherchés dans GLPI après la création des entités et catégories des étapes précédentes : un nom introuvable est signalé à la fin et ignoré."
+msgstr "Os nomes são buscados no GLPI depois da criação das entidades e categorias das etapas anteriores: um nome não encontrado é informado no final e ignorado."
+
+msgid "Activer la relève dès maintenant"
+msgstr "Ativar a coleta agora"
+
+msgid "Laissez décoché pour vérifier d'abord la connexion : la boîte est créée désactivée et ne crée aucun ticket."
+msgstr "Deixe desmarcado para verificar a conexão primeiro: a caixa é criada desativada e não cria nenhum chamado."
+
+msgid "Connexion en cours..."
+msgstr "Conectando..."
+
+msgid "Le test n'a pas pu être lancé."
+msgstr "Não foi possível iniciar o teste."
