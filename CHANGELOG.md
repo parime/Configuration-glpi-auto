@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- CI : contrôles de sécurité communs v1.7.1 (exceptions de menus de la charte, correction du jeu de données du contrôle de désinstallation).
 - CI : le contrôle « Sécurité commune » ne tourne plus sur chaque push de branche de travail, seulement sur les PR et les branches principales (moins d'exécutions en double et de notifications d'échec).
 - Traductions collaboratives sur Hosted Weblate : section « Traductions » des README avec le badge
   d'avancement et le lien pour contribuer.
