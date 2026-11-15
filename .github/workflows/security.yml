@@ -3,7 +3,10 @@
 name: Sécurité commune
 
 on:
+  # Push : seulement les branches principales ; les branches de travail sont contrôlées par leur
+  # PR. Évite deux exécutions (et deux notifications d'échec) pour chaque commit d'une PR.
   push:
+    branches: [main]
   pull_request:
   # Lancement manuel possible (onglet Actions), par exemple pour revérifier une branche.
   workflow_dispatch:
