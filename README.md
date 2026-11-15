@@ -198,6 +198,16 @@ Règles communes à tous les plugins de parime, à lire avant de contribuer : [c
 
 Les contributions sont les bienvenues ! Veuillez lire [CONTRIBUTING.md](CONTRIBUTING.md) pour les directives.
 
+## Traductions
+
+[![État de la traduction](https://hosted.weblate.org/widget/configuration-glpi-auto/svg-badge.svg)](https://hosted.weblate.org/engage/configuration-glpi-auto/)
+
+Le plugin est traduit en français, anglais, allemand, espagnol, italien, polonais et portugais
+(Brésil). **Les contributions de traduction sont bienvenues sur [Hosted Weblate](https://hosted.weblate.org/engage/configuration-glpi-auto/)** :
+corriger un terme, améliorer le vocabulaire métier ou ajouter une langue se fait directement dans
+le navigateur, sans Git. Weblate propose ensuite les traductions par une Pull Request, relue avant
+d'être fusionnée.
+
 ## Réutilisation et citation
 
 Ce projet est sous licence **GPL-3.0-or-later**. Si vous reprenez du code, même partiellement, sans
