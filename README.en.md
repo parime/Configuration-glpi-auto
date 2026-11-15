@@ -182,6 +182,8 @@ of each step.
 
 ## Documentation
 
+Rules shared by all parime plugins, to read before contributing: [common plugin charter](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md) (in French).
+
 - [Tutorial](docs/TUTORIAL.md): a step-by-step walkthrough of the wizard's 20 steps, with a
   screenshot of each.
 - [ITIL Guide](docs/ITIL_GUIDE.md): why the wizard suggests what it suggests - which ITIL 4
