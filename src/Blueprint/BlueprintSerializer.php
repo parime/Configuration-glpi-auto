@@ -42,6 +42,7 @@ final class BlueprintSerializer
     private const JSON_ENCODED_FIELDS = [
         'entity_tree', 'calendar_days', 'calendar_day_hours', 'sla_tiers',
         'ola_tiers', 'category_branches', 'state_names', 'ldap_function_rights',
+        'mail_collectors',
     ];
 
     /**

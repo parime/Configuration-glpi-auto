@@ -61,6 +61,8 @@ final class FieldGroupLabel
             'locations' => __('Lieux', 'configurationglpiauto'), 'manufacturers' => __('Fabricants', 'configurationglpiauto'),
             'os' => __('Systèmes d\'exploitation', 'configurationglpiauto'), 'dropdown' => __('Unicité des intitulés', 'configurationglpiauto'),
             'assetsign' => __('Déclencheurs assetsign', 'configurationglpiauto'),
+            // Issue #429
+            'mail' => __('Réception des tickets par e-mail', 'configurationglpiauto'),
         ];
     }
 

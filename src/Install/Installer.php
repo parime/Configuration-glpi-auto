@@ -173,6 +173,11 @@ final class Installer
                 `ldap_rights_group_template` varchar(255) NOT NULL DEFAULT 'GLPI_{ENTITY}',
                 `ldap_rights_profile` varchar(255) NOT NULL DEFAULT 'Admin',
                 `ldap_function_rights` text,
+                `mail_collectors_enabled` tinyint NOT NULL DEFAULT 0,
+                `mail_collectors` text,
+                `mail_reject_auto_replies` tinyint NOT NULL DEFAULT 1,
+                `mail_reject_x_auto_response_suppress` tinyint NOT NULL DEFAULT 0,
+                `mail_allowed_domains` varchar(255) NOT NULL DEFAULT '',
                 `task_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `task_templates_enabled` tinyint NOT NULL DEFAULT 0,
                 `task_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
@@ -460,6 +465,12 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'audit_report_only_on_change', 'bool', ['value' => 1]);
             $migration->addField(self::CONFIGS_TABLE, 'audit_report_emails', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'audit_report_state', 'text');
+            // Issue #429 : réception des tickets par e-mail (collecteurs et règles).
+            $migration->addField(self::CONFIGS_TABLE, 'mail_collectors_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'mail_collectors', 'text');
+            $migration->addField(self::CONFIGS_TABLE, 'mail_reject_auto_replies', 'bool', ['value' => 1]);
+            $migration->addField(self::CONFIGS_TABLE, 'mail_reject_x_auto_response_suppress', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'mail_allowed_domains', 'string', ['value' => '']);
         }
 
         // Flat CommonDropdown table, GLPI has no native "fuel type" concept: same minimal shape
