@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.24.0] - 2026-11-15
+
 ### Added
 
 - **Import générique de tickets depuis un fichier CSV** (issue #430), bouton « Importer des tickets
