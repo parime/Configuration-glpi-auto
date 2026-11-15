@@ -185,6 +185,8 @@ reglages recommandes du profil choisi, sans repasser par chaque etape. Voir le
 
 ## Documentation
 
+Règles communes à tous les plugins de parime, à lire avant de contribuer : [charte commune des plugins](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md).
+
 - [Tutoriel](docs/TUTORIAL.md) : parcours pas a pas des 20 etapes de l'assistant, avec capture
   d'ecran de chacune.
 - [Guide ITIL](docs/ITIL_GUIDE.md) : pourquoi l'assistant propose ce qu'il propose - quelle
