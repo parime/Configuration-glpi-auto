@@ -62,7 +62,9 @@ All other screenshots (all 20 steps in detail) are in the [tutorial](docs/TUTORI
 - Calendar, SLA/OLA with automatic escalation between support tiers (L1 -> L2 -> L3), fixed-date
   public holidays per country (dedicated calendar per country, France by default)
 - Topic-based ticket categories (11 selectable branches, up to 3 levels) and a self-service
-  catalog (native GLPI 11 forms, automatic routing to the right category)
+  catalog (native GLPI 11 and 12 forms, automatic routing to the right category, conditional
+  sections and questions, urgency, device, observers and approval taken from the answers, forms
+  updated without duplicates unless they were edited in GLPI)
 - Asset statuses, additional project statuses and pending reasons with automatic follow-up/closure
 - If the assetsign-glpi plugin is active: its form triggers (handover, return, donation, sale,
   destruction, decommissioning) linked to the created statuses, never changing an existing setting

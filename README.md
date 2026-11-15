@@ -62,8 +62,9 @@ Toutes les autres captures d'écran (les 20 étapes en détail) sont dans le [tu
 - Calendrier, SLA/OLA avec escalade automatique entre niveaux de support (N1 -> N2 -> N3), jours
   feries a date fixe par pays (calendrier dedie par pays, France par defaut)
 - Categories de tickets thematiques (11 branches selectionnables, jusqu'a 3 niveaux) et catalogue
-  de services en libre-service (formulaires natifs GLPI 11, routage automatique vers la bonne
-  categorie)
+  de services en libre-service (formulaires natifs GLPI 11 et 12, routage automatique vers la bonne
+  categorie, sections et questions conditionnelles, urgence, appareil, observateurs et approbation
+  repris des reponses, mise a jour sans doublon des formulaires non retouches)
 - Statuts d'elements, statuts de projet supplementaires et raisons d'attente avec relance/cloture
   automatiques
 - Si le plugin assetsign-glpi est actif : ses declencheurs de fiches (remise, restitution, don,

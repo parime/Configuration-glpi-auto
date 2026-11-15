@@ -89,6 +89,17 @@ sélectionnées à l'étape précédente : chaque service route automatiquement 
 sans que l'utilisateur final ait à la choisir lui-même : il décrit son besoin en langage courant
 ("mon écran ne s'allume plus"), pas en jargon de classification ITIL.
 
+Les formulaires ne posent que les questions utiles : dans « Arrivée d'un nouveau collaborateur »,
+le modèle de portable n'est demandé que si l'ordinateur portable est coché ; dans « Signaler un
+e-mail suspect ou un incident de sécurité », les questions sur l'e-mail n'apparaissent que pour un
+e-mail suspect, et une urgence haute demande qui est touché. Le ticket reprend les réponses :
+urgence, lieu, appareil concerné, responsable en observateur, approbation du responsable désigné,
+et même la catégorie quand elle dépend de ce qui est signalé.
+
+Relancer l'assistant met à jour ces formulaires quand une nouvelle version du plugin les
+améliore, sans créer de doublon. Un formulaire que vous avez modifié dans GLPI (question
+renommée, destination ajustée...) n'est plus jamais modifié par l'assistant.
+
 ![Étape 7 : Catalogue de services](screenshots/07-catalogue-services.png)
 
 ### Étape 8 : Statuts

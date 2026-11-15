@@ -107,6 +107,12 @@ class ServiceCatalogBuilder
         ['branch' => 'it', 'name' => 'Nouveau site ou entrepôt dans une application', 'path' => ['Application métier', 'Paramétrage'], 'smart' => true, 'smart_title' => true],
         ['branch' => 'it', 'name' => 'Mouvement de stock en masse', 'path' => ['Application métier', 'Données & Corrections'], 'smart' => true, 'smart_title' => true],
         ['branch' => 'it', 'name' => "Nouveau modèle d'étiquette ou modification", 'path' => ['Impression', 'Étiquettes & Codes-barres'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        // Issue #320 : construits par RequestFormLibraryBuilder (sections et questions conditionnelles).
+        ['branch' => 'it', 'name' => "Arrivée d'un nouveau collaborateur", 'path' => ['Comptes & Identités', 'Onboarding / Création de compte'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        ['branch' => 'it', 'name' => "Départ d'un collaborateur", 'path' => ['Comptes & Identités', 'Offboarding / Suppression'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        ['branch' => 'it', 'name' => "Demande d'accès à une application", 'path' => ['Comptes & Identités', 'Droits, Rôles & Groupes AD'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        ['branch' => 'it', 'name' => 'Signaler un e-mail suspect ou un incident de sécurité', 'path' => ['Sécurité SI', 'Phishing & Mails suspects'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
+        ['branch' => 'it', 'name' => 'Demande de droits administrateur', 'path' => ['Comptes & Identités', 'Droits, Rôles & Groupes AD'], 'smart' => true, 'smart_title' => true, 'smart_conditional' => true],
         // Bâtiment & Moyens Généraux
         ['branch' => 'batiment', 'name' => 'Signaler un problème de chauffage ou climatisation', 'path' => ['CVC'], 'smart' => true, 'smart_title' => true],
         ['branch' => 'batiment', 'name' => "Demande d'intervention électricité", 'path' => ['Électricité & Éclairage'], 'smart' => true, 'smart_title' => true],
