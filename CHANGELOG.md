@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CI** : contrôles des points d'entrée, de la matrice d'accès et des exigences marketplace repris
   par les contrôles communs (glpi-plugin-security v1.8.0, issue parime/glpi-plugin-security#11) ;
   les copies de `.github/scripts/` sont retirées. Les fichiers de réglage restent dans ce dépôt.
+- **Traductions** : `locales/configurationglpiauto.pot` est désormais versionné, source unique lue
+  par Hosted Weblate ; le job « Locale Completeness » échoue s'il n'est plus à jour avec le code.
+  Langue des msgid écrite dans `CONTRIBUTING.md` et `AGENTS.md` : le français, sans mélange, sans
+  migration imposée (charte commune, sections 2 et 2 bis ; issue #439).
 
 ### Added
 
