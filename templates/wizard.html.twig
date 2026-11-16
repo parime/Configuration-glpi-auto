@@ -28,6 +28,12 @@
   </ul>
 {% endmacro %}
 
+{% include '@configurationglpiauto/_page_help.html.twig' with {
+   page: 'wizard',
+   purpose: __('Mettre en place la configuration de GLPI pas à pas : entités, lieux, calendrier, niveaux de service, catégories, catalogue de services, statuts, notifications et autres réglages, appliqués en une seule fois à la fin.', 'configurationglpiauto'),
+   expected: __('Choisissez un profil, parcourez les étapes (la plupart sont optionnelles), vérifiez le récapitulatif, puis cliquez une seule fois sur « Terminer ». Ce qui existe déjà est réutilisé, rien n\'est supprimé.', 'configurationglpiauto'),
+} %}
+
 <div class="card">
   <div class="card-body">
 

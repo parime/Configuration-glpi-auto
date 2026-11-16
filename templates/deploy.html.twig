@@ -13,6 +13,11 @@
  # -------------------------------------------------------------------------
  #}
 {# Issue #338 : récapitulatif avant le déploiement direct de la configuration chargée. #}
+{% include '@configurationglpiauto/_page_help.html.twig' with {
+   page: 'deploy',
+   purpose: __('Déployer en une fois une configuration chargée (Blueprint importé ou sauvegarde restaurée), sans repasser par chaque étape de l\'assistant.', 'configurationglpiauto'),
+   expected: __('Vérifiez ce qui sera déployé et vos droits, puis cliquez sur « Déployer maintenant », ou revoyez d\'abord les réglages dans l\'assistant.', 'configurationglpiauto'),
+} %}
 <div class="card">
   <div class="card-header">
     <h2 class="card-title"><i class="ti ti-rocket me-2"></i>{{ __('Déployer la configuration', 'configurationglpiauto') }}</h2>

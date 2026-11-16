@@ -60,7 +60,7 @@ final class ConfigHistory extends Compat\Base\ConfigHistoryBase implements Defau
 
     public static function getIcon(): string
     {
-        return 'fas fa-history';
+        return 'ti ti-history';
     }
 
     // Pas de front/confighistory.form.php conventionnel : une ligne d'historique n'est jamais

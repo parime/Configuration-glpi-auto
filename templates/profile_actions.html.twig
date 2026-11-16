@@ -14,6 +14,11 @@
  #}
 
 {# Barre d'actions de la liste des profils de configuration (front/profile.php) #}
+{% include '@configurationglpiauto/_page_help.html.twig' with {
+   page: 'profiles',
+   purpose: __('Retrouver les profils de configuration (Blueprints) : chacun pré-remplit l\'assistant avec des valeurs adaptées à un type d\'organisation.', 'configurationglpiauto'),
+   expected: __('Lancez l\'assistant, l\'audit ou un import avec les boutons ci-dessous, ou ouvrez un profil de la liste pour le consulter ou l\'exporter.', 'configurationglpiauto'),
+} %}
 <div class="mb-3 d-flex flex-wrap gap-2">
    <a class="btn btn-outline-primary" href="{{ wizard_url }}"><i class="ti ti-wand"></i> {{ __('Lancer l\'assistant de configuration', 'configurationglpiauto') }}</a>
    {% if audit_url %}

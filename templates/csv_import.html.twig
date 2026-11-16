@@ -14,6 +14,11 @@
  #}
 
 {# Issue #430 : import générique de tickets depuis un fichier CSV, en trois temps (fichier, colonnes, aperçu) #}
+{% include '@configurationglpiauto/_page_help.html.twig' with {
+   page: 'csvimport',
+   purpose: __('Reprendre dans GLPI les tickets d\'un autre outil d\'assistance ou d\'un tableur, à partir d\'un fichier CSV.', 'configurationglpiauto'),
+   expected: __('Déposez le fichier, indiquez quelle colonne correspond à quel champ, vérifiez l\'aperçu à blanc, puis lancez l\'import. Rien n\'est écrit avant cette dernière étape.', 'configurationglpiauto'),
+} %}
 <div class="card"><div class="card-body">
    <h3 class="card-title"><i class="ti ti-file-spreadsheet me-1"></i>{{ __('Importer des tickets (CSV)', 'configurationglpiauto') }}</h3>
 

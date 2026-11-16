@@ -6161,3 +6161,69 @@ msgstr "Wyjaśnij, dlaczego pomoc technika nie wystarczy: uprawnienia administra
 
 msgid "Responsable qui valide la demande"
 msgstr "Przełożony zatwierdzający wniosek"
+
+msgid "À quoi sert cette page ?"
+msgstr "Do czego służy ta strona?"
+
+msgid "Ce qui est attendu :"
+msgstr "Czego się oczekuje:"
+
+msgid "Critique"
+msgstr "Krytyczne"
+
+msgid "À surveiller"
+msgstr "Do obserwacji"
+
+msgid "Information"
+msgstr "Informacja"
+
+msgid "Mettre en place la configuration de GLPI pas à pas : entités, lieux, calendrier, niveaux de service, catégories, catalogue de services, statuts, notifications et autres réglages, appliqués en une seule fois à la fin."
+msgstr "Konfiguracja GLPI krok po kroku: jednostki, lokalizacje, kalendarz, poziomy usług, kategorie, katalog usług, statusy, powiadomienia i inne ustawienia, stosowane jednorazowo na końcu."
+
+msgid "Choisissez un profil, parcourez les étapes (la plupart sont optionnelles), vérifiez le récapitulatif, puis cliquez une seule fois sur « Terminer ». Ce qui existe déjà est réutilisé, rien n'est supprimé."
+msgstr "Wybierz profil, przejdź przez kolejne kroki (większość jest opcjonalna), sprawdź podsumowanie, a następnie kliknij jeden raz „Zakończ”. To, co już istnieje, zostaje użyte ponownie, nic nie jest usuwane."
+
+msgid "Traitez les constats en commençant par les plus graves. Un bouton de correction n'apparaît que lorsque le bon réglage ne fait aucun doute et que vous avez le droit de modifier la configuration ; sinon, suivez la recommandation."
+msgstr "Zajmij się ustaleniami, zaczynając od najpoważniejszych. Przycisk poprawki pojawia się tylko wtedy, gdy właściwe ustawienie nie budzi wątpliwości i masz prawo zmieniać konfigurację; w przeciwnym razie postępuj zgodnie z zaleceniem."
+
+msgid "Collez le tableau depuis un tableur, choisissez un fichier CSV ou partez du modèle pour un nouveau site, vérifiez l'aperçu, puis créez les lignes valides."
+msgstr "Wklej tabelę z arkusza kalkulacyjnego, wybierz plik CSV lub zacznij od szablonu dla nowej lokalizacji, sprawdź podgląd, a następnie utwórz prawidłowe wiersze."
+
+msgid "Ajouter un profil de configuration à partir d'un fichier Blueprint (JSON), par exemple exporté d'une autre instance GLPI."
+msgstr "Dodanie profilu konfiguracji z pliku Blueprint (JSON), na przykład wyeksportowanego z innej instancji GLPI."
+
+msgid "Choisissez le fichier, donnez un nom au profil si besoin, puis importez. Le profil rejoint la liste et ne change rien tant qu'il n'est pas appliqué par l'assistant."
+msgstr "Wybierz plik, w razie potrzeby nadaj profilowi nazwę, a następnie zaimportuj. Profil trafia na listę i niczego nie zmienia, dopóki nie zostanie zastosowany przez kreator."
+
+msgid "Reprendre dans GLPI les tickets d'un autre outil d'assistance ou d'un tableur, à partir d'un fichier CSV."
+msgstr "Przeniesienie do GLPI zgłoszeń z innego narzędzia pomocy technicznej lub z arkusza kalkulacyjnego, na podstawie pliku CSV."
+
+msgid "Déposez le fichier, indiquez quelle colonne correspond à quel champ, vérifiez l'aperçu à blanc, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+msgstr "Prześlij plik, wskaż, która kolumna odpowiada któremu polu, sprawdź podgląd próbny, a następnie uruchom import. Przed tym ostatnim krokiem nic nie jest zapisywane."
+
+msgid "Reprendre dans GLPI les tickets d'un projet Jira, à partir de son export CSV."
+msgstr "Przeniesienie do GLPI zgłoszeń z projektu Jira, na podstawie jego eksportu CSV."
+
+msgid "Déposez l'export, vérifiez dans l'aperçu à blanc les correspondances de statuts et de types, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+msgstr "Prześlij eksport, sprawdź w podglądzie próbnym odwzorowanie statusów i typów, a następnie uruchom import. Przed tym ostatnim krokiem nic nie jest zapisywane."
+
+msgid "Retrouver les profils de configuration (Blueprints) : chacun pré-remplit l'assistant avec des valeurs adaptées à un type d'organisation."
+msgstr "Przegląd profili konfiguracji (Blueprintów): każdy wstępnie wypełnia kreator wartościami dopasowanymi do rodzaju organizacji."
+
+msgid "Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou ouvrez un profil de la liste pour le consulter ou l'exporter."
+msgstr "Uruchom kreator, audyt lub import za pomocą przycisków poniżej albo otwórz profil z listy, aby go przejrzeć lub wyeksportować."
+
+msgid "Retrouver les sauvegardes de la configuration : une automatique à chaque application de l'assistant, et les points de sauvegarde créés à la main, pour comparer ou revenir en arrière."
+msgstr "Przegląd kopii konfiguracji (automatycznej przy każdym zastosowaniu kreatora oraz ręcznie utworzonych punktów kontrolnych), aby je porównać lub przywrócić poprzedni stan."
+
+msgid "Créez un point de sauvegarde avant un changement important. Ouvrez une sauvegarde de la liste pour la comparer à la configuration actuelle et la restaurer."
+msgstr "Utwórz punkt kontrolny przed ważną zmianą. Otwórz kopię z listy, aby porównać ją z bieżącą konfiguracją i ją przywrócić."
+
+msgid "Comparer, réglage par réglage, la configuration actuelle et la sauvegarde choisie."
+msgstr "Porównanie, ustawienie po ustawieniu, bieżącej konfiguracji z wybraną kopią."
+
+msgid "Déployer en une fois une configuration chargée (Blueprint importé ou sauvegarde restaurée), sans repasser par chaque étape de l'assistant."
+msgstr "Jednorazowe wdrożenie wczytanej konfiguracji (zaimportowanego Blueprintu lub przywróconej kopii) bez ponownego przechodzenia przez każdy krok kreatora."
+
+msgid "Vérifiez ce qui sera déployé et vos droits, puis cliquez sur « Déployer maintenant », ou revoyez d'abord les réglages dans l'assistant."
+msgstr "Sprawdź, co zostanie wdrożone, oraz swoje uprawnienia, a następnie kliknij „Wdróż teraz” albo najpierw przejrzyj ustawienia w kreatorze."

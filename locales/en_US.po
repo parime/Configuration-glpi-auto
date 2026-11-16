@@ -6166,3 +6166,69 @@ msgstr "Explain why a technician's help is not enough: administrator rights are 
 
 msgid "Responsable qui valide la demande"
 msgstr "Manager who approves the request"
+
+msgid "À quoi sert cette page ?"
+msgstr "What is this page for?"
+
+msgid "Ce qui est attendu :"
+msgstr "What is expected:"
+
+msgid "Critique"
+msgstr "Critical"
+
+msgid "À surveiller"
+msgstr "To watch"
+
+msgid "Information"
+msgstr "Information"
+
+msgid "Mettre en place la configuration de GLPI pas à pas : entités, lieux, calendrier, niveaux de service, catégories, catalogue de services, statuts, notifications et autres réglages, appliqués en une seule fois à la fin."
+msgstr "Set up the GLPI configuration step by step: entities, locations, calendar, service levels, categories, service catalogue, statuses, notifications and other settings, all applied at once at the end."
+
+msgid "Choisissez un profil, parcourez les étapes (la plupart sont optionnelles), vérifiez le récapitulatif, puis cliquez une seule fois sur « Terminer ». Ce qui existe déjà est réutilisé, rien n'est supprimé."
+msgstr "Choose a profile, go through the steps (most are optional), check the summary, then click \"Finish\" once. Whatever already exists is reused; nothing is deleted."
+
+msgid "Traitez les constats en commençant par les plus graves. Un bouton de correction n'apparaît que lorsque le bon réglage ne fait aucun doute et que vous avez le droit de modifier la configuration ; sinon, suivez la recommandation."
+msgstr "Deal with the findings starting with the most serious. A fix button only appears when the right setting is beyond doubt and you are allowed to change the configuration; otherwise, follow the recommendation."
+
+msgid "Collez le tableau depuis un tableur, choisissez un fichier CSV ou partez du modèle pour un nouveau site, vérifiez l'aperçu, puis créez les lignes valides."
+msgstr "Paste the table from a spreadsheet, choose a CSV file or start from the template for a new site, check the preview, then create the valid lines."
+
+msgid "Ajouter un profil de configuration à partir d'un fichier Blueprint (JSON), par exemple exporté d'une autre instance GLPI."
+msgstr "Add a configuration profile from a Blueprint file (JSON), for example one exported from another GLPI instance."
+
+msgid "Choisissez le fichier, donnez un nom au profil si besoin, puis importez. Le profil rejoint la liste et ne change rien tant qu'il n'est pas appliqué par l'assistant."
+msgstr "Choose the file, name the profile if needed, then import. The profile joins the list and changes nothing until it is applied through the wizard."
+
+msgid "Reprendre dans GLPI les tickets d'un autre outil d'assistance ou d'un tableur, à partir d'un fichier CSV."
+msgstr "Bring into GLPI the tickets of another help desk tool or of a spreadsheet, from a CSV file."
+
+msgid "Déposez le fichier, indiquez quelle colonne correspond à quel champ, vérifiez l'aperçu à blanc, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+msgstr "Upload the file, say which column matches which field, check the dry-run preview, then start the import. Nothing is written before this last step."
+
+msgid "Reprendre dans GLPI les tickets d'un projet Jira, à partir de son export CSV."
+msgstr "Bring into GLPI the tickets of a Jira project, from its CSV export."
+
+msgid "Déposez l'export, vérifiez dans l'aperçu à blanc les correspondances de statuts et de types, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+msgstr "Upload the export, check the status and type mappings in the dry-run preview, then start the import. Nothing is written before this last step."
+
+msgid "Retrouver les profils de configuration (Blueprints) : chacun pré-remplit l'assistant avec des valeurs adaptées à un type d'organisation."
+msgstr "Find the configuration profiles (Blueprints): each one pre-fills the wizard with values suited to a type of organisation."
+
+msgid "Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou ouvrez un profil de la liste pour le consulter ou l'exporter."
+msgstr "Start the wizard, the audit or an import with the buttons below, or open a profile in the list to view or export it."
+
+msgid "Retrouver les sauvegardes de la configuration : une automatique à chaque application de l'assistant, et les points de sauvegarde créés à la main, pour comparer ou revenir en arrière."
+msgstr "Find the configuration backups (an automatic one each time the wizard is applied, and the checkpoints created by hand), to compare or roll back."
+
+msgid "Créez un point de sauvegarde avant un changement important. Ouvrez une sauvegarde de la liste pour la comparer à la configuration actuelle et la restaurer."
+msgstr "Create a checkpoint before a major change. Open a backup in the list to compare it with the current configuration and restore it."
+
+msgid "Comparer, réglage par réglage, la configuration actuelle et la sauvegarde choisie."
+msgstr "Compare, setting by setting, the current configuration and the chosen backup."
+
+msgid "Déployer en une fois une configuration chargée (Blueprint importé ou sauvegarde restaurée), sans repasser par chaque étape de l'assistant."
+msgstr "Deploy a loaded configuration (imported Blueprint or restored backup) in one go, without going through each step of the wizard again."
+
+msgid "Vérifiez ce qui sera déployé et vos droits, puis cliquez sur « Déployer maintenant », ou revoyez d'abord les réglages dans l'assistant."
+msgstr "Check what will be deployed and your rights, then click \"Deploy now\", or review the settings in the wizard first."

@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Encadré d'aide « À quoi sert cette page ? »** en tête de chaque page d'usage (assistant, profils
+  de configuration, audit, historique et restauration, déploiement, imports CSV, Jira, Blueprint et
+  plan d'adressage) : ce que fait la page et ce qui est attendu, repliable, choix mémorisé par page
+  (charte commune, section 8 ; issue #440). Gravité des constats de l'audit en badge commun
+  (Critique, À surveiller, Information). Icônes Tabler à la place des deux dernières icônes Font
+  Awesome (historique, profils de configuration). Textes traduits dans les 18 langues.
 - **Catalogue de services : formulaires plus complets et plus conditionnels** (issue #320, premier
   lot). Cinq nouveaux formulaires dans la rubrique IT & SI : « Arrivée d'un nouveau
   collaborateur » (identité, date, responsable, contrat, site, matériel, accès ; le modèle de

@@ -6280,3 +6280,69 @@ msgstr "Expliquez pourquoi l'intervention d'un technicien ne suffit pas : les dr
 
 msgid "Responsable qui valide la demande"
 msgstr "Responsable qui valide la demande"
+
+msgid "À quoi sert cette page ?"
+msgstr "À quoi sert cette page ?"
+
+msgid "Ce qui est attendu :"
+msgstr "Ce qui est attendu :"
+
+msgid "Critique"
+msgstr "Critique"
+
+msgid "À surveiller"
+msgstr "À surveiller"
+
+msgid "Information"
+msgstr "Information"
+
+msgid "Mettre en place la configuration de GLPI pas à pas : entités, lieux, calendrier, niveaux de service, catégories, catalogue de services, statuts, notifications et autres réglages, appliqués en une seule fois à la fin."
+msgstr "Mettre en place la configuration de GLPI pas à pas : entités, lieux, calendrier, niveaux de service, catégories, catalogue de services, statuts, notifications et autres réglages, appliqués en une seule fois à la fin."
+
+msgid "Choisissez un profil, parcourez les étapes (la plupart sont optionnelles), vérifiez le récapitulatif, puis cliquez une seule fois sur « Terminer ». Ce qui existe déjà est réutilisé, rien n'est supprimé."
+msgstr "Choisissez un profil, parcourez les étapes (la plupart sont optionnelles), vérifiez le récapitulatif, puis cliquez une seule fois sur « Terminer ». Ce qui existe déjà est réutilisé, rien n'est supprimé."
+
+msgid "Traitez les constats en commençant par les plus graves. Un bouton de correction n'apparaît que lorsque le bon réglage ne fait aucun doute et que vous avez le droit de modifier la configuration ; sinon, suivez la recommandation."
+msgstr "Traitez les constats en commençant par les plus graves. Un bouton de correction n'apparaît que lorsque le bon réglage ne fait aucun doute et que vous avez le droit de modifier la configuration ; sinon, suivez la recommandation."
+
+msgid "Collez le tableau depuis un tableur, choisissez un fichier CSV ou partez du modèle pour un nouveau site, vérifiez l'aperçu, puis créez les lignes valides."
+msgstr "Collez le tableau depuis un tableur, choisissez un fichier CSV ou partez du modèle pour un nouveau site, vérifiez l'aperçu, puis créez les lignes valides."
+
+msgid "Ajouter un profil de configuration à partir d'un fichier Blueprint (JSON), par exemple exporté d'une autre instance GLPI."
+msgstr "Ajouter un profil de configuration à partir d'un fichier Blueprint (JSON), par exemple exporté d'une autre instance GLPI."
+
+msgid "Choisissez le fichier, donnez un nom au profil si besoin, puis importez. Le profil rejoint la liste et ne change rien tant qu'il n'est pas appliqué par l'assistant."
+msgstr "Choisissez le fichier, donnez un nom au profil si besoin, puis importez. Le profil rejoint la liste et ne change rien tant qu'il n'est pas appliqué par l'assistant."
+
+msgid "Reprendre dans GLPI les tickets d'un autre outil d'assistance ou d'un tableur, à partir d'un fichier CSV."
+msgstr "Reprendre dans GLPI les tickets d'un autre outil d'assistance ou d'un tableur, à partir d'un fichier CSV."
+
+msgid "Déposez le fichier, indiquez quelle colonne correspond à quel champ, vérifiez l'aperçu à blanc, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+msgstr "Déposez le fichier, indiquez quelle colonne correspond à quel champ, vérifiez l'aperçu à blanc, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+
+msgid "Reprendre dans GLPI les tickets d'un projet Jira, à partir de son export CSV."
+msgstr "Reprendre dans GLPI les tickets d'un projet Jira, à partir de son export CSV."
+
+msgid "Déposez l'export, vérifiez dans l'aperçu à blanc les correspondances de statuts et de types, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+msgstr "Déposez l'export, vérifiez dans l'aperçu à blanc les correspondances de statuts et de types, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+
+msgid "Retrouver les profils de configuration (Blueprints) : chacun pré-remplit l'assistant avec des valeurs adaptées à un type d'organisation."
+msgstr "Retrouver les profils de configuration (Blueprints) : chacun pré-remplit l'assistant avec des valeurs adaptées à un type d'organisation."
+
+msgid "Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou ouvrez un profil de la liste pour le consulter ou l'exporter."
+msgstr "Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou ouvrez un profil de la liste pour le consulter ou l'exporter."
+
+msgid "Retrouver les sauvegardes de la configuration : une automatique à chaque application de l'assistant, et les points de sauvegarde créés à la main, pour comparer ou revenir en arrière."
+msgstr "Retrouver les sauvegardes de la configuration : une automatique à chaque application de l'assistant, et les points de sauvegarde créés à la main, pour comparer ou revenir en arrière."
+
+msgid "Créez un point de sauvegarde avant un changement important. Ouvrez une sauvegarde de la liste pour la comparer à la configuration actuelle et la restaurer."
+msgstr "Créez un point de sauvegarde avant un changement important. Ouvrez une sauvegarde de la liste pour la comparer à la configuration actuelle et la restaurer."
+
+msgid "Comparer, réglage par réglage, la configuration actuelle et la sauvegarde choisie."
+msgstr "Comparer, réglage par réglage, la configuration actuelle et la sauvegarde choisie."
+
+msgid "Déployer en une fois une configuration chargée (Blueprint importé ou sauvegarde restaurée), sans repasser par chaque étape de l'assistant."
+msgstr "Déployer en une fois une configuration chargée (Blueprint importé ou sauvegarde restaurée), sans repasser par chaque étape de l'assistant."
+
+msgid "Vérifiez ce qui sera déployé et vos droits, puis cliquez sur « Déployer maintenant », ou revoyez d'abord les réglages dans l'assistant."
+msgstr "Vérifiez ce qui sera déployé et vos droits, puis cliquez sur « Déployer maintenant », ou revoyez d'abord les réglages dans l'assistant."

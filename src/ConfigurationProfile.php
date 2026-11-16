@@ -73,7 +73,7 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
 
     public static function getIcon(): string
     {
-        return 'fas fa-cogs';
+        return 'ti ti-settings';
     }
 
     /**
