@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **CI** : contrôles des points d'entrée, de la matrice d'accès et des exigences marketplace repris
+  par les contrôles communs (glpi-plugin-security v1.8.0, issue parime/glpi-plugin-security#11) ;
+  les copies de `.github/scripts/` sont retirées. Les fichiers de réglage restent dans ce dépôt.
+
 ### Added
 
 - **Catalogue de services : formulaires plus complets et plus conditionnels** (issue #320, premier
