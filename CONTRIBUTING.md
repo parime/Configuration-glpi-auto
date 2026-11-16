@@ -52,6 +52,26 @@ docker compose -f docker-compose.test.yml exec -w /var/www/html/glpi/plugins/con
 
 Au-delà de la suite qualité, tout changement visible dans l'assistant (nouvelle étape, nouveau réglage) doit être vérifié en le soumettant réellement via l'interface (ou Playwright) et en contrôlant l'état créé en base. La suite qualité seule ne détecte pas une régression Twig ou un mauvais mapping de champ. Voir `CHANGELOG.md` pour la profondeur de vérification attendue sur ce projet.
 
+### Traductions
+
+- **Langue des chaînes sources (msgid) : le français**, pour tout le plugin. Une nouvelle chaîne
+  s'écrit en français, même si la charte commune retient l'anglais pour les nouveaux plugins : un
+  plugin ne mélange jamais deux langues de msgid. Pas de migration imposée (charte commune,
+  section 2) ; le plan, si elle est décidée un jour, est décrit dans l'issue #439.
+- **Source unique : `locales/configurationglpiauto.pot`**, versionné. Hosted Weblate le lit avec
+  les `.po` du dépôt (langue source « français », anglais en langue secondaire). Après tout ajout
+  ou changement de chaîne :
+
+  ```bash
+  vendor/bin/extract-locales        # régénère le .pot (et réécrit en_GB.po depuis zéro)
+  git checkout -- locales/en_GB.po  # garde la vraie traduction anglaise
+  ```
+
+  puis traduisez la chaîne dans chaque langue de base (`fr_FR en_GB de_DE es_ES it_IT pl_PL
+  pt_BR`), lancez `sh .github/scripts/sync-locale-variants.sh` pour les variantes et compilez les
+  `.mo` (`msgfmt -c`). Le job « Locale Completeness » échoue si le `.pot` versionné n'est pas à
+  jour ou si une langue de base n'a pas toutes ses traductions.
+
 ### Messages de commit
 
 Ce dépôt écrit ses messages de commit en français, à l'impératif, et explique le **pourquoi** plutôt que de reformuler le diff. `git log` sur ce dépôt donne le ton à suivre.
@@ -142,6 +162,26 @@ docker compose -f docker-compose.test.yml exec -w /var/www/html/glpi/plugins/con
 ### Functional verification
 
 Beyond the quality suite, any change visible in the wizard (new step, new setting) must be verified by actually submitting it through the interface (or Playwright) and checking the resulting state in the database. The quality suite alone won't catch a Twig regression or a wrong field mapping. See `CHANGELOG.md` for the depth of verification expected on this project.
+
+### Translations
+
+- **Source strings (msgid) are in French** throughout the plugin. A new string is written in
+  French, even though the common charter uses English for new plugins: a plugin never mixes two
+  msgid languages. No migration is required (common charter, section 2); the plan, should it be
+  decided one day, is described in issue #439.
+- **Single source: `locales/configurationglpiauto.pot`**, under version control. Hosted Weblate
+  reads it together with the repository's `.po` files (source language "French", English as a
+  secondary language). After adding or changing a string:
+
+  ```bash
+  vendor/bin/extract-locales        # regenerates the .pot (and rewrites en_GB.po from scratch)
+  git checkout -- locales/en_GB.po  # keep the real English translation
+  ```
+
+  then translate the string in every base language (`fr_FR en_GB de_DE es_ES it_IT pl_PL pt_BR`),
+  run `sh .github/scripts/sync-locale-variants.sh` for the variants and compile the `.mo` files
+  (`msgfmt -c`). The "Locale Completeness" job fails if the committed `.pot` is out of date or if
+  a base language is missing a translation.
 
 ### Commit messages
 

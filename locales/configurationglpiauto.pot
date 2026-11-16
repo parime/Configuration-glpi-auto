@@ -1,0 +1,6472 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-16 13:18+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: templates/history_checkpoint.html.twig src/ConfigHistory.php:84
+msgid "Label du point de sauvegarde"
+msgstr ""
+
+#: templates/history_checkpoint.html.twig
+msgid "Créer un point de sauvegarde"
+msgstr ""
+
+#: templates/jira_import.html.twig src/ConfigurationProfile.php:95
+#: front/jiraimport.php:170
+msgid "Importer depuis Jira"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid ""
+"Dans Jira, exportez les tickets en CSV (« Toutes les colonnes »). L'import "
+"se fait en deux temps : un aperçu à blanc, sans rien écrire, où vous "
+"vérifiez les correspondances de statuts et de types, puis l'import. Les "
+"personnes sont reconnues par adresse e-mail ou par nom ; une personne "
+"inconnue est signalée, jamais créée. Réimporter le même fichier met à jour "
+"les tickets au lieu de les recréer. Aucune notification n'est envoyée."
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Vos tickets viennent d'un autre outil ou d'un tableur ?"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Utilisez l'import CSV"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Export CSV de Jira"
+msgstr ""
+
+#: templates/jira_import.html.twig templates/csv_import.html.twig
+msgid "Entité des tickets"
+msgstr ""
+
+#: templates/jira_import.html.twig templates/csv_import.html.twig
+msgid "Aperçu (rien n'est écrit)"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Ou directement depuis l'API de Jira"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid ""
+"Lecture seule. Le jeton sert uniquement à cette lecture : il n'est jamais "
+"enregistré. Jira Cloud : adresse e-mail du compte et jeton d'API ; Jira Data "
+"Center : jeton d'accès personnel."
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Adresse de Jira"
+msgstr ""
+
+#: templates/jira_import.html.twig src/ConfigurationProfile.php:150
+#: front/csvimport.php:222
+msgid "Type"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Adresse e-mail (Jira Cloud)"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Jeton d'API"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Requête JQL"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Autoriser HTTP (jeton transmis en clair : réseau interne seulement)"
+msgstr ""
+
+#: templates/jira_import.html.twig templates/csv_import.html.twig
+#, php-format
+msgid ""
+"%1$d ticket(s) lus, dont %2$d déjà importé(s) (mis à jour plutôt que "
+"recréés). Entité : %3$s."
+msgstr ""
+
+#: templates/jira_import.html.twig templates/csv_import.html.twig
+#, php-format
+msgid "Ligne %1$d : %2$s"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Statuts Jira"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Types de ticket Jira"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Projets Jira"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid ""
+"Entité et catégorie des tickets créés pour chaque projet. Un ticket déjà "
+"importé garde son entité et sa catégorie."
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Projet"
+msgstr ""
+
+#: templates/jira_import.html.twig templates/wizard.html.twig
+msgid "Entité"
+msgstr ""
+
+#: templates/jira_import.html.twig templates/wizard.html.twig
+#: front/csvimport.php:224
+msgid "Catégorie"
+msgstr ""
+
+#: templates/jira_import.html.twig templates/csv_import.html.twig
+#, php-format
+msgid "Importer %d ticket(s)"
+msgstr ""
+
+#: templates/jira_import.html.twig templates/csv_import.html.twig
+#: templates/deploy.html.twig
+msgid "Annuler"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig templates/wizard.html.twig
+msgid "Arborescence"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+#: templates/address_plan.html.twig
+msgid "Aperçu"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid ""
+"Se met à jour en direct pendant que vous réglez les options à gauche : rien "
+"n'est enregistré tant que vous ne validez pas."
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid ""
+"Un nœud par client. Chaque client peut avoir un nombre différent de sous-"
+"entités, à sa propre profondeur."
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Ajouter un client"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Ex : Entreprise Dupont"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Votre société (MSP)"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid ""
+"Un nœud par site/service de premier niveau. Chacun peut avoir un nombre "
+"différent de sous-entités, à sa propre profondeur."
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Ajouter une entité"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Ex : Paris, Lyon..."
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig templates/wizard.html.twig
+msgid "Entité racine"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Nom de la sous-entité"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Ajouter une sous-entité"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig templates/wizard.html.twig
+msgid "Retirer"
+msgstr ""
+
+#: templates/_entity_structure_fields.html.twig
+msgid "Aucune entité ajoutée pour l'instant."
+msgstr ""
+
+#: templates/audit.html.twig
+msgid ""
+"Analyse de l'état actuel de votre instance GLPI : indépendante de ce que cet "
+"assistant a lui-même configuré."
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Aucun problème détecté par cet audit."
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Corriger"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Contrôles du parc"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid ""
+"Ces contrôles ne modifient jamais le matériel : « Créer les tickets » ouvre "
+"des tickets liés au matériel concerné, que l'équipe traite. Mettre 0 "
+"désactive un contrôle."
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Matériel qui ne remonte plus à l'inventaire depuis (jours)"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Garanties qui expirent dans (jours)"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Enregistrer"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Rapport périodique par e-mail"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid ""
+"Reçoit automatiquement la synthèse de cet audit : nombre de contrôles OK, en "
+"alerte et en échec, points à traiter avec leur recommandation et évolution "
+"depuis le rapport précédent. Aucun mot de passe ni secret n'est envoyé, "
+"seulement les constats."
+msgstr ""
+
+#: templates/audit.html.twig front/audit.php:94
+msgid ""
+"Les notifications par e-mail de GLPI sont désactivées : activez-les dans "
+"Configuration > Notifications."
+msgstr ""
+
+#: templates/audit.html.twig src/RequestFormLibraryBuilder.php:277
+msgid "Fréquence"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Désactivé"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Hebdomadaire"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Mensuel"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "N'envoyer que s'il y a un changement ou une anomalie"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Adresses supplémentaires (facultatif)"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid ""
+"Une adresse par ligne, pour des destinataires sans compte GLPI. Par défaut, "
+"le rapport part à l'administrateur GLPI ; profils et groupes se choisissent "
+"dans les destinataires de la notification."
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Enregistrer et envoyer maintenant"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Modifier le modèle et les destinataires"
+msgstr ""
+
+#: templates/audit.html.twig
+#, php-format
+msgid "Dernier rapport envoyé le %s"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Aucun rapport envoyé pour l'instant."
+msgstr ""
+
+#: templates/csvimport/ticket_content.html.twig
+#, php-format
+msgid "Importé de %1$s : %2$s"
+msgstr ""
+
+#: templates/csvimport/comment.html.twig
+#, php-format
+msgid "Auteur : %s"
+msgstr ""
+
+#: templates/csv_import.html.twig templates/profile_actions.html.twig
+#: src/ConfigurationProfile.php:97 front/csvimport.php:215
+msgid "Importer des tickets (CSV)"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "1. Fichier"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "2. Colonnes"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "3. Aperçu et import"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Apportez l'historique d'un autre outil d'assistance ou d'un suivi tenu dans "
+"un tableur : une ligne par ticket. Vous choisissez ensuite quelle colonne "
+"correspond à quel champ du ticket, puis un aperçu à blanc, sans rien écrire, "
+"montre le résultat avant l'import. Les personnes sont reconnues par adresse "
+"e-mail ou par nom ; une personne inconnue est signalée, jamais créée. "
+"Réimporter le même fichier met à jour les tickets au lieu de les recréer. "
+"Aucune notification n'est envoyée."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Vos tickets viennent de Jira ?"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Utilisez l'import Jira"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Fichier CSV des tickets"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"UTF-8 ou Windows-1252 (« CSV » d'Excel), séparateur virgule, point-virgule "
+"ou tabulation : détectés seuls."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Nom de l'outil d'origine"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Ex. : Ancien outil d'assistance"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Mentionné dans chaque ticket. Réimportez avec le même nom pour mettre à jour "
+"les tickets au lieu de les recréer."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Modèle de correspondance"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Aucun : proposer d'après les en-têtes"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Options : commentaires dans un second fichier, pièces jointes"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Fichier CSV des commentaires (facultatif)"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Une ligne par commentaire, avec les colonnes « Identifiant » (celui du "
+"ticket), « Date », « Auteur » et « Commentaire »."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Archive ZIP des pièces jointes (facultatif)"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Un dossier par ticket, nommé d'après son identifiant d'origine (par exemple "
+"1042/capture.png). 10 Mo par fichier, 200 Mo en tout ; extensions autorisées "
+"par GLPI seulement."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Suivant : choisir les colonnes"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Préparer le fichier depuis un tableur"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Une ligne par ticket, une première ligne avec le nom des colonnes."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Une colonne avec un identifiant unique par ticket (numéro de l'ancien outil, "
+"ou numérotez simplement les lignes) : c'est lui qui évite les doublons au "
+"réimport."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Dates au format jour/mois/année (14/11/2026 09:30) ou année-mois-jour "
+"(2026-11-14 09:30)."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Plusieurs commentaires dans une même cellule : un par ligne de la cellule, "
+"ou séparés par « | ». Écrits « date;auteur;texte », ils gardent leur date et "
+"leur auteur."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Dans Excel ou LibreOffice : Fichier > Enregistrer sous > CSV."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Modèles de correspondance"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Un modèle retient la colonne de chaque champ pour les fichiers suivants du "
+"même outil. Enregistrez-le à l'étape des colonnes ; exportez-le pour le "
+"réutiliser sur une autre instance de GLPI."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Modèle"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Outil d'origine"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Colonnes"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Exporter"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Supprimer ce modèle ?"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Supprimer"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Aucun modèle enregistré."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Importer un modèle (JSON)"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Importer le modèle"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Pour chaque champ du ticket, choisissez la colonne du fichier qui le "
+"contient. Les choix proposés viennent du nom des colonnes ; vérifiez-les "
+"avec les exemples. Seuls l'identifiant d'origine et le titre sont "
+"obligatoires."
+msgstr ""
+
+#: templates/csv_import.html.twig
+#, php-format
+msgid "%1$d colonne(s) lue(s), séparateur : %2$s."
+msgstr ""
+
+#: templates/csv_import.html.twig
+#, php-format
+msgid "Modèle appliqué : %s"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Champ du ticket GLPI"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Colonne du fichier"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "obligatoire"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Choisissez une colonne"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "(ne pas importer)"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Plusieurs commentaires dans la colonne « Commentaires »"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Non : un seul commentaire par cellule"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Un commentaire par ligne de la cellule"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Séparés par une ligne vide"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Séparés par « | »"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Séparés par un autre texte"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Autre séparateur"
+msgstr ""
+
+#: templates/csv_import.html.twig
+#, php-format
+msgid ""
+"Fichier des commentaires : %d commentaire(s) lus, rattachés aux tickets par "
+"leur identifiant d'origine."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Fichier des commentaires ignoré : colonnes « Identifiant » et "
+"« Commentaire » introuvables."
+msgstr ""
+
+#: templates/csv_import.html.twig
+#, php-format
+msgid "Archive des pièces jointes : %d fichier(s) prêts."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Début du fichier"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Enregistrer ces choix comme modèle, pour le prochain fichier du même outil"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Nom du modèle"
+msgstr ""
+
+#: templates/csv_import.html.twig
+#, php-format
+msgid "Outil d'origine : %s."
+msgstr ""
+
+#: templates/csv_import.html.twig templates/wizard.html.twig
+#: src/Blueprint/FieldGroupLabel.php:45
+msgid "Statuts"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "(vide)"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Types"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Priorités"
+msgstr ""
+
+#: templates/csv_import.html.twig templates/wizard.html.twig
+#: src/Blueprint/FieldGroupLabel.php:45
+msgid "Catégories"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Une catégorie GLPI du même nom est proposée ; sinon, choisissez-en une ou "
+"laissez vide."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Groupes de techniciens"
+msgstr ""
+
+#: templates/csv_import.html.twig
+#, php-format
+msgid "%1$d reconnu(s) dans GLPI, %2$d inconnu(s)."
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid ""
+"Groupes inconnus (aucun groupe créé ; le ticket sera importé sans eux) :"
+msgstr ""
+
+#: templates/csv_import.html.twig
+msgid "Revenir aux colonnes"
+msgstr ""
+
+#: templates/jira/ticket_content.html.twig
+#, php-format
+msgid "Importé de Jira : %s"
+msgstr ""
+
+#: templates/jira/comment.html.twig
+#, php-format
+msgid "Auteur Jira : %s"
+msgstr ""
+
+#: templates/history_restore.html.twig
+msgid ""
+"Choisissez les réglages à restaurer, ou restaurez l'intégralité de cette "
+"configuration. Rien n'est appliqué directement : après confirmation, "
+"vérifiez chaque étape de l'assistant avant de valider."
+msgstr ""
+
+#: templates/history_restore.html.twig
+msgid "Corrections automatiques"
+msgstr ""
+
+#: templates/history_restore.html.twig
+msgid ""
+"ces valeurs ne sont plus valides sur cette instance et seront "
+"automatiquement ajustées à l'application."
+msgstr ""
+
+#: templates/history_restore.html.twig
+msgid ""
+"Cette configuration est déjà identique à la configuration actuelle : rien à "
+"restaurer."
+msgstr ""
+
+#: templates/history_restore.html.twig
+msgid "Déployer cette configuration"
+msgstr ""
+
+#: templates/history_restore.html.twig src/RequestFormLibraryBuilder.php:260
+msgid "Valeur actuelle"
+msgstr ""
+
+#: templates/history_restore.html.twig
+msgid "Valeur dans la sauvegarde"
+msgstr ""
+
+#: templates/history_restore.html.twig
+msgid "Restaurer la sélection"
+msgstr ""
+
+#: templates/history_restore.html.twig
+msgid "Restaurer intégralement"
+msgstr ""
+
+#: templates/history_restore.html.twig
+msgid ""
+"Applique la sélection puis affiche le récapitulatif du déploiement, sans "
+"repasser par l'assistant"
+msgstr ""
+
+#: templates/history_restore.html.twig
+msgid "Appliquer la sélection et déployer"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Version du plugin"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Version installée"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Dernière version sur GitHub"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Vérification de l'environnement"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"certains points ci-dessous peuvent limiter des fonctionnalités du wizard. "
+"Cela n'empêche pas de continuer, mais corrigez-les si la fonctionnalité "
+"concernée vous intéresse."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Droits de l'opérateur actuel"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"certains droits GLPI natifs vous manquent : les fonctionnalités "
+"correspondantes seront silencieusement ignorées à l'étape finale. Cela "
+"n'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée "
+"vous intéresse."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Étape"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Profil"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Quel profil correspond le mieux à votre organisation ? Ce choix pré-remplit "
+"la structure d'entités, le calendrier et les SLA des étapes suivantes avec "
+"des valeurs adaptées : vous pourrez tout ajuster ensuite."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Configuration express"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"applique tout de suite les réglages recommandés ci-dessus pour le profil "
+"sélectionné, sans repasser par chacune des 18 étapes. Idéal pour une "
+"installation simple/mono-site ; pour une structure multi-site ou MSP, "
+"l'arborescence réelle (étape 2) reste à construire ensuite, sans quoi tout "
+"s'applique à l'entité racine seule."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Ceci va créer/modifier de vraies entités dans GLPI selon les réglages "
+"recommandés du profil sélectionné, sans passer en revue chaque étape. "
+"Continuer ?"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Terminer avec les réglages recommandés"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Structure des entités"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Choisissez la structure d'entités à mettre en place : l'aperçu à droite se "
+"met à jour en direct."
+msgstr ""
+
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:47
+#: src/Blueprint/FieldGroupLabel.php:61
+msgid "Lieux"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : associez une adresse (ou plus) à une entité de l'arborescence : "
+"rue, ville, coordonnées GPS, alias, téléphone... Aucune adresse saisie, "
+"aucun lieu créé, comme sur une installation GLPI neuve."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Une fois les lieux créés, déclarez leurs réseaux IP et VLAN, ou importez-les "
+"depuis un tableau :"
+msgstr ""
+
+#: templates/wizard.html.twig templates/profile_actions.html.twig
+msgid "Plan d'adressage (réseaux et VLAN)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Associer une adresse à des entités de l'arborescence"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Parcourez l'arborescence ci-dessous et ouvrez « Ajouter une adresse » sur "
+"les entités qui en ont une (site, agence...) : les autres n'auront aucun "
+"lieu créé, comme sur une installation GLPI neuve."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Assistant d'adresse (suggestions de rue pendant la saisie, ville/région/pays "
+"pré-remplis)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Envoie chaque saisie à un service externe (OpenStreetMap Nominatim par "
+"défaut) pour proposer des suggestions : activé par défaut, désactivable ci-"
+"dessus si l'envoi de l'adresse en cours de saisie à ce service pose problème."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Service de géocodage (avancé)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Instance Nominatim/Photon auto-hébergée ou compatible, pour un usage réel au-"
+"delà d'un essai ponctuel."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Compléter aussi la fiche adresse native de chaque entité (GLPI > Entités > "
+"Adresse)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Reprend l'adresse déjà saisie ci-dessous pour chaque entité, sans la "
+"retaper : ajoute juste téléphone/fax/site web/e-mail, propres à la fiche "
+"entité."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Fermetures automatiques selon le pays (jours fériés)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Ajoute les jours fériés à date fixe du pays saisi ci-dessous, rattachés "
+"automatiquement au calendrier du site/client concerné : France par défaut si "
+"aucun pays n'est saisi (y compris en mode mono-site sans adresse). Un pays "
+"saisi mais non reconnu est simplement ignoré, sans rien inventer."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Sans adresse complétée ci-dessous pour un site/client, celui-ci recevra les "
+"jours fériés français par défaut : complétez au moins le champ \"Pays\" de "
+"chaque site pour que les sites hors France reçoivent leurs propres jours "
+"fériés."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Rattacher les machines inventoriées à leur entité (plage d'adresses IP ou "
+"tag de l'agent)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Pour chaque entité : les plages IP du site (ex. 192.168.10.0/24, "
+"10.1.0.0/16) et/ou le tag configuré dans l'agent GLPI. Une machine qui ne "
+"correspond à rien reste dans l'entité par défaut ; une machine déjà "
+"rattachée n'est pas déplacée. Les règles se retrouvent dans Administration > "
+"Règles > Affectation d'un élément à une entité."
+msgstr ""
+
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:44
+msgid "Calendrier"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Configurez, si besoin, les horaires d'ouverture appliqués aux entités créées."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Calendrier différent par site ou client"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer un calendrier d'horaires d'ouverture"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Nom du calendrier"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Jours ouvrés et horaires"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Un horaire par jour coché : modifiez-le librement pour un jour qui diffère "
+"des autres (ex. vendredi 9h-12h seulement)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Coupure déjeuner"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Début pause"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Fin pause"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Si activée, tout jour dont les horaires couvrent la pause est scindé en deux "
+"plages (matin + après-midi) au lieu d'une plage continue."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Les jours fériés sont désormais ajoutés automatiquement selon le pays saisi "
+"à l'étape \"Lieux\" (France par défaut si aucun pays n'est saisi) : voir la "
+"case \"Fermetures automatiques selon le pays\" à cette étape."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Niveaux de service (SLA)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : délais standards de prise en charge et de résolution des "
+"tickets, appliqués aux entités créées."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "SLA différent par site ou client"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer des SLA standards"
+msgstr ""
+
+#: templates/wizard.html.twig front/csvimport.php:223
+msgid "Priorité"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Prise en charge (h)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Résolution (h)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Astreinte (couverture 24h/24, 7j/7 : le délai continue de courir en dehors "
+"des horaires ouvrés)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "SLA déjà créés"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Les SLA existants correspondent à la configuration enregistrée (ou "
+"n'existent pas encore)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Différences entre les SLA existants et la configuration enregistrée :"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Élément"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Actuel"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Après mise à jour"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Mettre à jour les SLA existants (calendrier et délais)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Désactivé par défaut : relancer l'assistant crée ce qui manque sans jamais "
+"modifier un SLA existant. Cochée, cette option réaligne le calendrier et les "
+"délais des SLA (et OLA) existants sur ce formulaire ; les tickets déjà "
+"ouverts gardent leurs échéances. L'aperçu ci-dessus compare avec la "
+"configuration de la dernière exécution, pas avec les modifications en cours "
+"dans ce formulaire."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter des engagements internes (OLA)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"L'OLA est un engagement interne entre le support et les équipes techniques, "
+"plus court que le SLA externe : il doit être tenu pour que le SLA le soit "
+"aussi."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Escalade automatique avant échéance"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Déclenchement à"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"du délai écoulé → priorité relevée d'un cran (résolution, et engagement "
+"interne si activé)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"S'applique à tout SLA/OLA créé sur cette étape : partagé ou par site/client."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Activer l'escalade entre niveaux de support (N1 → N2 → N3)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Crée 3 groupes techniciens (Support N1/N2/N3 : convention ITSM la plus "
+"répandue). Tout ticket créé démarre au N1 ; l'escalade automatique (ci-"
+"dessous) le réaffecte au niveau suivant si le SLA de résolution approche ou "
+"dépasse son échéance."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes (repérage rapide dans les listes d'affectation)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Inclure le niveau N0 (portail libre-service) dans le récapitulatif"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"N0 = le libre-service déjà configuré aux étapes Catalogue de services / "
+"Formulaire d'accueil : pas un groupe supplémentaire, juste un repère pour "
+"situer où commence le support humain."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Escalade automatique N1 → N2 (au seuil ci-dessus)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Escalade automatique N2 → N3 (à l'échéance du SLA)"
+msgstr ""
+
+#: templates/wizard.html.twig src/Audit/Checks/NoTicketCategoriesCheck.php:40
+msgid "Catégories de tickets"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : une arborescence de catégories thématiques (IT, Bâtiment, "
+"Flotte, RH...), pas une par type ITIL : le type (Incident/Demande) est déjà "
+"géré nativement par GLPI. Décochez les branches qui ne s'appliquent pas à "
+"votre organisation."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les catégories de tickets"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Profil métier : préremplit les branches ci-dessous et le SLA de l'étape 5 "
+"(physique/administratif traité plus lentement que l'IT). Toujours ajustable "
+"ensuite, dans les deux cas."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "💻 IT pur"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "👤 RH & Support interne"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "🏢 Bâtiment & Moyens généraux"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "🧩 Multi-services (toutes verticales)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Ajouter des icônes (visibles dans la liste, le nom lui-même reste sans icône)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Actif personnalisé ESM (Enterprise Service Management) : en plus de l'actif "
+"\"Local\" créé automatiquement pour cette branche."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer un type d'actif \"Sécurité incendie & premiers secours\" (extincteurs, "
+"RIA, désenfumage, DAE...)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Champ de conformité : date de vérification périodique. Pas réservable (n'a "
+"pas de sens pour ce type d'équipement)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Actif personnalisé ESM (Enterprise Service Management), aligné sur ISO/IEC "
+"27001:2022 Annexe A.7 \"Mesures physiques\" (contrôle d'accès, "
+"vidéosurveillance, alarme intrusion)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer un type d'actif \"Sécurité physique\" (caméras, alarme intrusion, "
+"contrôle d'accès...)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Champs : zone couverte, date de dernière maintenance/vérification."
+msgstr ""
+
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:51
+msgid "Catalogue de services"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des formulaires prêts à l'emploi dans le portail libre-service : "
+"l'utilisateur choisit un service précis, jamais une catégorie ; le ticket "
+"est automatiquement routé vers la bonne catégorie."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Quelques services vont plus loin avec de vraies questions (dates, "
+"quantités...) : le titre du ticket est alors calculé automatiquement, et/ou "
+"certaines questions ne s'affichent que selon une réponse précédente (voir "
+"les badges ci-dessous)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer le catalogue de services"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Un service par ligne, groupé par branche cochée à l'étape Catégories : "
+"décocher une branche là-bas retire aussi ses services ici."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Titre de ticket calculé automatiquement à partir des réponses"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "titre calculé"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Certaines questions ne s'affichent que selon la réponse donnée à une "
+"question précédente"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "question conditionnelle"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Pilote : un formulaire plus avancé que les autres services ci-dessus, avec "
+"de vraies questions (pays, dates) et un titre de ticket calculé "
+"automatiquement à partir des réponses (nouveau moteur de formulaires GLPI "
+"11)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer le service \"Demande de droit d'accès / mission à l'étranger\" "
+"(branche Ressources Humaines)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Questions : pays de destination, date de début, date de fin, motif / "
+"précisions"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Titre du ticket calculé automatiquement : nom du formulaire + dates de début/"
+"fin + pays"
+msgstr ""
+
+#: templates/wizard.html.twig
+#: src/Audit/Checks/MissingRecommendedStatesCheck.php:43
+#: src/Audit/Checks/NoStatesConfiguredCheck.php:41
+msgid "Statuts des éléments"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : un jeu de statuts standards pour le parc (ordinateurs, "
+"moniteurs, téléphones...) : aucun n'existe par défaut dans GLPI."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les statuts d'éléments standards"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Le statut décrit la situation d'un équipement dans son cycle de vie (en "
+"stock, attribué, en panne...) : il sert à filtrer et suivre le parc, "
+"indépendamment de sa localisation ou de son entité. Ne cochez que les "
+"statuts qui correspondent à des situations réelles chez vous ; chacun peut "
+"être appliqué aux ordinateurs, téléphones, moniteurs, licences, etc."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Les statuts marqués « recommandé » sont ceux utilisés par assetsign-glpi "
+"(déclenchement automatique remise/don/vente/destruction/restitution) : les "
+"décocher n'empêche rien de fonctionner mais réduit l'interopérabilité entre "
+"les deux plugins si vous utilisez assetsign-glpi."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "recommandé"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Remise (attribution)"
+msgstr ""
+
+#: templates/wizard.html.twig src/RequestFormLibraryBuilder.php:454
+msgid "Restitution"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Don"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Vente"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Destruction"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Réforme (date de mise au rebut)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Plugin assetsign détecté : relier ses déclencheurs de fiches à ces statuts"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Quand un matériel passe dans l'un de ces statuts, assetsign crée la fiche "
+"correspondante à faire signer. Un déclencheur déjà réglé dans assetsign "
+"n'est jamais modifié. La restitution est déclenchée par « Attente "
+"restitution » : le retour en stock s'accompagne en général du retrait de "
+"l'utilisateur, déjà géré par assetsign lui-même."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "sera réglé"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "déjà réglé, conservé"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "statut à créer (cochez-le ci-dessus)"
+msgstr ""
+
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:50
+msgid "Raisons d'attente"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des raisons de mise en attente avec relance et clôture "
+"automatiques : évite les tickets qui traînent indéfiniment. Le moteur "
+"d'automatisation de GLPI est déjà actif par défaut, seules les raisons "
+"manquent."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les raisons d'attente standards"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Relance toutes les"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "semaines"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "semaine"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "clôture automatique après"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "relances sans réponse"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Pas de relance automatique : catégorisation uniquement"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Modèles de tickets"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : sépare le formulaire de création de ticket en deux : le minimum "
+"pour un utilisateur de base, l'interface complète pour le support."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer deux modèles de tickets et les assigner aux profils"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes sur les modèles"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Simplifié : Self-Service, Read-Only"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Titre + description uniquement"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Catégorie visible mais limitée aux 11 branches parentes"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Urgence, impact, statut, lieu, attribution, niveaux de service (SLA/OLA) : "
+"masqués"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Complet : tous les autres profils"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Interface complète (aucun champ masqué)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Catégorie et urgence obligatoires"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Masquer Urgence, Observateurs et Lieu sur les formulaires natifs « Signaler "
+"un incident » / « Faire une demande »"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Ces formulaires du portail libre-service sont un système distinct des "
+"modèles de tickets ci-dessus (nouveau moteur de formulaires GLPI 11) : un "
+"utilisateur de base n'a pas la visibilité nécessaire pour juger de l'urgence "
+"réelle de sa demande, c'est au support de la qualifier."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Tâches & solutions"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des intitulés prêts à l'emploi pour qualifier le travail "
+"technique et clôturer les tickets, aucun n'existe par défaut dans GLPI."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les catégories de tâches"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les gabarits de tâche (checklists réutilisables)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les types et gabarits de solution"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Une taxonomie de clôture standard (assistance, résolution technique, "
+"sécurité, informationnel, gestion des accès), chacune visible seulement sur "
+"les types de ticket ITIL pertinents."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes sur les types de solution"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes sur les gabarits de solution"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Suivis, validations & modèles"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des messages types pour garder le demandeur informé, des "
+"gabarits de demande de validation, et un modèle par défaut pour les "
+"changements et les problèmes."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les gabarits de suivis"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les gabarits de validation"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer un modèle de changement et de problème par défaut"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Changement standard"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Problème standard"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service "
+"n'a aucun droit sur les changements/problèmes, la distinction base/support "
+"ne s'applique pas."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Droits LDAP par entité"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : une règle d'affectation automatique (entité + profil) par site, "
+"déclenchée par le groupe AD/LDAP de l'utilisateur lors de la "
+"synchronisation : ne sert que si une synchronisation LDAP est prévue. Sans "
+"arborescence multi-site (étape 2), il n'y a rien à générer."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Générer une règle de droits par site"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Gabarit de nom de groupe AD/LDAP"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "{ENTITY} est remplacé par le nom du site (espaces convertis en _)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Profil attribué"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"« Admin » (par défaut) couvre la gestion quotidienne sans le risque d'auto-"
+"élévation de « Super-Admin » : contrairement à Super-Admin, Admin ne peut ni "
+"éditer les profils GLPI (donc pas s'en attribuer plus), ni modifier les "
+"règles LDAP/import qui gèrent justement cette synchronisation."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Une règle par site (feuille de l'arborescence) : aperçu en fonction de "
+"l'arborescence construite à l'étape 2 :"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Règles par fonction/département (optionnel)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"En complément de la règle par site ci-dessus, indépendant du site de "
+"l'utilisateur : ex. le groupe AD \"Finance\" reçoit toujours tel profil, "
+"quel que soit son site. Chaque ligne devient une règle GLPI distincte, qui "
+"n'affecte que le profil (pas l'entité)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "+ Ajouter une règle"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Réglages généraux GLPI"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : quelques réglages généraux de GLPI ont des valeurs par défaut "
+"peu pratiques à l'usage : activez chaque groupe indépendamment selon vos "
+"besoins."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Tout sélectionner"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Interface & ergonomie"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Agencement des boutons d'action divisé (Répondre / Observation / Solution "
+"séparés)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Afficher le moteur de recherche au-dessus des résultats"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Afficher la pagination au-dessus des résultats"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Montrer les nouveaux tickets sur la page d'accueil"
+msgstr ""
+
+#: templates/wizard.html.twig
+#: src/Audit/Checks/NotificationsDisabledCheck.php:41
+#: src/Blueprint/FieldGroupLabel.php:46
+msgid "Notifications"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Activer les notifications (par e-mail et dans le navigateur)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Activer les notifications de mise à jour, pièce jointe et relance "
+"automatique de ticket"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Activer les tâches automatiques d'alerte cartouches, consommables et "
+"expiration de licences (désactivées par défaut, alors que les notifications "
+"correspondantes le sont déjà)"
+msgstr ""
+
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:56
+msgid "Informations financières"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Activer les informations financières et administratives par défaut"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Statuts des tâches de projet"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Configurer les statuts des tâches de projet (non démarré / en cours / "
+"terminé)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Enquête de satisfaction"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Activer l'enquête de satisfaction native (1 à 5 étoiles, sur chaque ticket "
+"clos)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Validation comité"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Ajouter une étape de validation « Comité (2/3) » pour les décisions "
+"collégiales"
+msgstr ""
+
+#: templates/wizard.html.twig src/DashboardBuilder.php:92
+msgid "Tableau de bord ITIL"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer un tableau de bord natif GLPI mettant en avant la conformité SLA "
+"(tickets en retard par technicien et par groupe), en plus des indicateurs "
+"déjà présents sur le tableau de bord « Assistance »"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Analyse continue de la configuration"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Ré-exécuter l'audit de configuration une fois par semaine (Configuration > "
+"Audit) et signaler les nouveaux constats critiques à la prochaine visite "
+"d'un administrateur"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Activer l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Ouvre l'endpoint d'inventaire de GLPI (Configuration > Inventaire) pour que "
+"les agents installés sur le parc puissent remonter leurs données "
+"automatiquement. Décochée par défaut, comme la validation N+1 ci-dessous : "
+"ceci ouvre un vrai point d'entrée réseau, pas juste du contenu : à activer "
+"seulement si vous comptez réellement déployer des agents."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Validation automatique par le supérieur hiérarchique du demandeur (« N+1 »)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Envoie automatiquement une demande d'approbation au supérieur hiérarchique "
+"du demandeur (champ natif GLPI « Superviseur ») pour chaque ticket de type "
+"Demande. Décochée par défaut, contrairement au reste de cette page : ceci "
+"change un vrai comportement (approbation obligatoire), pas juste du "
+"contenu : et ne fait quelque chose que si le champ Superviseur des "
+"utilisateurs est renseigné (import LDAP ou saisie manuelle). Sans supérieur "
+"renseigné, aucune validation n'est créée."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Plugin \"More satisfaction\" détecté : créer une enquête de satisfaction "
+"toute faite"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"3 questions courantes (note sur 5, résolution oui/non, remarques libres), "
+"activée sur toute l'instance. Différent de l'enquête native ci-dessus : le "
+"plugin permet plusieurs questions et un rappel automatique, la case native "
+"ne fait qu'une note sur 5."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Plugin \"VIP\" détecté : créer le groupe \"VIP\" et l'activer"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Crée un groupe natif \"VIP\" (à ne pas confondre avec un groupe de "
+"techniciens) et le marque comme groupe VIP auprès du plugin : ajoutez-y les "
+"personnes ou groupes prioritaires (direction, actionnaires...) dont les "
+"tickets doivent être mis en évidence."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Plugin assetsign détecté : renseigner l'entreprise et le lien de la charte "
+"informatique"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"L'entreprise apparaît en tête des PDF de remise ; le lien de la charte est "
+"le prérequis des campagnes de charte d'assetsign. Seuls les réglages encore "
+"vides dans assetsign sont renseignés."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Entreprise"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Lien de la charte informatique"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Plugin GRC Manager détecté : créer le groupe \"RSSI\" et le déclarer dans "
+"GRC Manager"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Ses membres liront les documents de tous les audits internes et les copies "
+"de quiz des formations. Sans effet si un groupe RSSI est déjà choisi dans la "
+"configuration de GRC Manager."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Activer les revues périodiques du SMSI de GRC Manager"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Droits d'accès, comptes à privilèges, matrice des flux, registre des "
+"risques, tests de restauration et de continuité… : un ticket récurrent par "
+"revue, à la fréquence recommandée, attribué au groupe RSSI. Les revues déjà "
+"actives ne sont pas modifiées."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Amorcer le registre des risques de GRC Manager avec les risques types "
+"d'infrastructure"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter aussi les risques types des systèmes d'IA (ISO/IEC 27090)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Point de départ de l'appréciation des risques ISO 27001 : chaque risque type "
+"est créé « identifié », avec ses menaces, les questions à se poser et les "
+"mesures de l'Annexe A liées, à évaluer ensuite. Un risque type déjà importé "
+"n'est jamais recréé. Nécessite le droit de création sur le registre des "
+"risques."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Plugin \"Tag\" détecté : créer une bibliothèque de tags courants"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"6 tags génériques utilisables sur tout objet GLPI (Prioritaire, Urgent, À "
+"vérifier, Obsolète, Garantie active, Confidentiel), avec une couleur "
+"distincte chacun."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Général & Outils"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des intitulés que GLPI ne propose pas par défaut, hors périmètre "
+"Assistance direct mais utiles dès la mise en service."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer une liste de fabricants courants"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter des icônes (par catégorie de fabricant)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer un dictionnaire pour normaliser les variantes de nom (ex. Hewlett-"
+"Packard, HP Inc. → HP)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Un fabricant remonté par l'inventaire sous un autre nom (« Hewlett-"
+"Packard », « LENOVO », « Dell Inc. »…) est rattaché à la fiche existante au "
+"lieu d'en créer une en double. Une soixantaine de marques sont couvertes, y "
+"compris les noms que l'agent lit dans les écrans. Si les types de matériel "
+"sont aussi créés (ci-dessous), les types de châssis remontés par l'agent "
+"(« Notebook », « Mini Tower »…) sont ramenés aux types en français "
+"(« Ordinateur portable », « Ordinateur de bureau »…)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Interdire les fabricants et éditeurs, logiciels, modèles, types et systèmes "
+"d'exploitation en double"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"GLPI ne le vérifie pas : on peut créer dix fois « Lenovo » à la main, par un "
+"import ou par l'API. Avec cette option, une création ou un renommage vers un "
+"nom qui existe déjà (aux majuscules, accents et espaces près) est refusé, "
+"avec le numéro de l'entrée existante. Un logiciel est en double s'il a le "
+"même nom et le même éditeur dans la même entité : chaque entité cliente peut "
+"avoir le sien. L'inventaire n'est jamais bloqué : il réutilise déjà les noms "
+"existants."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer un dictionnaire des logiciels courants (une seule fiche par logiciel)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"L'agent remonte « Mozilla Firefox (x64 fr) », « Mozilla Firefox 131.0 (x64 "
+"en-US) »… : sans dictionnaire, GLPI crée un logiciel par variante et le "
+"nombre d'installations ou de licences devient faux. Le nom est ramené à "
+"« Mozilla Firefox », la version reste dans la version du logiciel. Java, "
+"Python et Visual C++ gardent leur version majeure, car plusieurs "
+"s'installent côte à côte."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Classer automatiquement les logiciels courants (navigateurs, bureautique, "
+"sécurité...)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Crée 13 catégories de logiciels et les règles qui y rangent les logiciels "
+"courants, à l'inventaire comme à la création manuelle. Une catégorie choisie "
+"à la main n'est jamais remplacée. Pour les logiciels déjà en base, le mode "
+"Audit propose « Classer »."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer un dictionnaire des systèmes d'exploitation et des architectures"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"GLPI enregistre le nom complet du système, dans la langue du poste : "
+"« Microsoft Windows 11 Professionnel » et « Microsoft Windows 11 Pro » font "
+"deux systèmes, « Ubuntu 22.04.3 LTS » et « 22.04.4 LTS » aussi. Les éditions "
+"Windows sont ramenées à leur nom anglais, les distributions Linux et macOS à "
+"leur version majeure, et « 64 bits », « 64-bit », « amd64 » deviennent "
+"« x86_64 »."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ne pas importer les imprimantes virtuelles des postes"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Chaque poste remonte ses imprimantes virtuelles (PDF, XPS, OneNote, Fax, "
+"imprimantes redirigées par le Bureau à distance) : elles deviennent autant "
+"de fausses imprimantes dans le parc. Elles sont écartées aux prochains "
+"inventaires ; rien n'est supprimé de ce qui existe déjà."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les opérateurs téléphoniques français courants"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer les types courants de matériel (ordinateurs, écrans, réseau, racks, "
+"câbles, disques durs...)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer les types de licence logicielle courants (OEM, volume, abonnement, "
+"open source...)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer les types de certificat courants (SSL/TLS, signature de code, S/"
+"MIME...)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer des modèles de tickets pour les tâches récurrentes courantes (revue "
+"utilisateurs, maintenance, mises à jour)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Contenu prêt à l'emploi uniquement : aucune planification automatique "
+"créée : à sélectionner vous-même dans Configuration > Intitulés > Assistance "
+"> Tickets récurrents une fois le groupe et la fréquence décidés."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Traduire les sources de demande natives de GLPI"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"GLPI installe ces 6 valeurs en anglais quelle que soit la langue choisie, "
+"sans traduction : une session française (ou allemande, italienne, espagnole) "
+"les voit telles quelles tant qu'aucune traduction n'existe."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer des catégories d'utilisateur courantes"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Classification indépendante des profils/droits : qui est la personne pour "
+"l'organisation (salarié, prestataire...), pas ce qu'elle peut faire dans "
+"GLPI. Importable depuis un attribut LDAP, utilisable en critère de ciblage "
+"de notification et en statistiques."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Interdire les numéros de série en double"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Bloque la création ou la modification d'un élément si son numéro de série "
+"existe déjà sur un autre élément du même type : évite les doublons issus "
+"d'une saisie manuelle ou d'un import incohérent. Un numéro de série vide "
+"n'est jamais considéré comme un doublon."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter des flux RSS utiles (sécurité CERT-FR, notes de version GLPI)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Visible dans Outils > Flux RSS pour toute l'instance : utile pour suivre les "
+"vulnérabilités affectant le parc et les nouvelles versions de GLPI sans "
+"quitter l'outil."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les catégories de la base de connaissances"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Mêmes thèmes que les catégories de tickets (étape 6), pour que le libre-"
+"service et la base de connaissances s'organisent pareil."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter des articles de FAQ pour les utilisateurs finaux"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Visibles dans la FAQ du portail libre-service : comment utiliser le "
+"catalogue de services, comment signaler un incident ou faire une demande, et "
+"12 fiches de bonnes pratiques de sécurité (mot de passe, hameçonnage, mises "
+"à jour, que faire en cas d'incident...)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les rubriques de documents et les niveaux de criticité"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Rubriques des documents"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Classification de sensibilité (norme ISO 27001, à affiner selon vos besoins)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Criticités"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Impact métier d'un actif (matériel, logiciel...), utilisé dans ses "
+"informations financières."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les catégories et gabarits d'évènements de planning"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Catégories d'évènements"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Chacune avec une couleur distincte dans le planning GLPI."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Gabarits d'évènements externes"
+msgstr ""
+
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:48
+msgid "Projets"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : des intitulés pour le module Projets, aucun n'existe par défaut "
+"dans GLPI (hors les 3 statuts natifs, déjà suffisants : non modifiés dans "
+"l'export de production audité)."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les types de projet et de tâche de projet"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Types de projet"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Types de tâche de projet"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Statuts de projet supplémentaires"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "En plus des 3 statuts natifs GLPI (Nouveau, En cours, Fermé)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer les gabarits de tâches de projets"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer des modèles de projet pré-structurés (tâches déjà liées)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Un vrai projet marqué comme modèle, avec ses tâches déjà rattachées - \"+ "
+"Nouveau\" sur Projets propose ensuite de démarrer depuis ce modèle, tâches "
+"incluses."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Personnalisation graphique"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : une couleur principale appliquée à l'interface des entités "
+"créées."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Personnaliser la couleur principale"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Couleur principale"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Aperçu en direct de l'en-tête GLPI"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Nouveau ticket"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Créer une palette GLPI personnalisée avec cette couleur (sélectionnable par "
+"tous, appliquée par défaut)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Différent de la case ci-dessus : celle-ci force la couleur sur toutes les "
+"entités créées ; celle-ci ajoute une palette GLPI native (Configuration > "
+"Générale > Apparence) que chaque utilisateur peut choisir dans ses propres "
+"préférences, définie ici comme choix par défaut."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "...ou choisir une des palettes GLPI existantes comme choix par défaut"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Aucune (garder Auror, le thème GLPI par défaut)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "sombre"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Couleur différente par client/site (au lieu d'une seule couleur partagée)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Une couleur par nœud de premier niveau de l'arborescence (étape 2) : "
+"préremplie avec la couleur ci-dessus, ajustable individuellement."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter un logo par entité"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Un logo par site/client de l'arborescence (étape 2) : remplace le logo GLPI "
+"dans l'en-tête pour les utilisateurs de cette entité. PNG/JPEG/WebP/GIF, 1 "
+"Mo maximum. L'emplacement dans l'en-tête GLPI est petit (environ 100×55 "
+"px) : une image large ou carrée sera automatiquement réduite pour y tenir "
+"sans déformation, un format proche de ce ratio donnera le meilleur rendu. "
+"Choisissez un fichier pour le voir dans l'aperçu ci-dessus."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Habiller les e-mails de notification (Nouveau ticket, Mise à jour, "
+"Résolution, Suivi)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Remplace le modèle de notification GLPI par défaut de ces 4 évènements par "
+"une version HTML reprenant la couleur et le logo ci-dessus : un e-mail "
+"modifié à la main ensuite n'est plus jamais réécrit par une réexécution de "
+"l'assistant."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Configuration SMTP"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : révise directement les réglages d'envoi d'e-mail natifs de GLPI "
+"(Configuration > Notifications). Le test de connexion se fait après "
+"application, depuis cet écran natif : GLPI teste toujours la configuration "
+"réellement enregistrée, jamais un formulaire en cours de saisie."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Modifier la configuration SMTP"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Mode d'envoi"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Fonction mail() native de PHP"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Serveur SMTP"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Port"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Adresse d'expédition"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Nom d'utilisateur"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Mot de passe"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Laisser vide pour conserver le mot de passe enregistré"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Effacer le mot de passe enregistré"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Vérifier le certificat TLS du serveur"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Une fois cette étape terminée, testez l'envoi d'un e-mail réel depuis"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Configuration > Notifications"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"- GLPI y envoie un vrai message de test et affiche le résultat détaillé."
+msgstr ""
+
+#: templates/wizard.html.twig src/Audit/Checks/MailCollectorCheck.php:59
+#: src/Blueprint/FieldGroupLabel.php:65
+msgid "Réception des tickets par e-mail"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : GLPI relève une ou plusieurs boîtes aux lettres (par exemple "
+"support@ et facturation@) et transforme chaque nouveau message en ticket. "
+"Une réponse à un ticket existant devient un suivi de ce ticket, pas un "
+"nouveau ticket."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Configurer la réception des tickets par e-mail"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Boîtes aux lettres à relever"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Une boîte par adresse. Chaque boîte devient un collecteur GLPI, créé "
+"désactivé tant que vous ne cochez pas « Activer la relève ». Relancer "
+"l'assistant met à jour la boîte de même adresse, sans doublon, et ne "
+"désactive jamais un collecteur déjà actif."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter une boîte"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Messages à refuser"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Refuser les réponses automatiques, les messages d'absence et les erreurs de "
+"distribution"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Évite les boucles : un message d'absence répondant à une notification GLPI "
+"recréerait sinon un ticket, puis une notification, puis un message "
+"d'absence... Active les règles natives de GLPI (notifications de GLPI, en-"
+"tête Auto-Submitted) et ajoute deux règles : sujets de messages d'absence, "
+"messages de mailer-daemon ou postmaster. Ces messages sont refusés sans "
+"réponse."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Refuser aussi les messages portant l'en-tête X-Auto-Response-Suppress"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Désactivée par défaut dans GLPI : Outlook et Exchange posent aussi cet en-"
+"tête sur certains messages écrits par une personne. À activer seulement si "
+"des réponses automatiques passent encore."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "N'accepter que les expéditeurs de ces domaines (optionnel)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Laisser vide pour accepter tout expéditeur connu de GLPI. Rempli, un message "
+"venant d'un autre domaine (fournisseur, client externe) est refusé sans "
+"réponse."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Les règles créées restent modifiables dans GLPI :"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Administration > Règles > Règles d'affectation d'un ticket ouvert via un "
+"collecteur de courriels"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "(entité, refus) et"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Règles métier pour les tickets"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"(catégorie, groupe). La relève automatique passe par l'action automatique "
+"« mailgate » de GLPI."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Collecteurs déjà enregistrés dans GLPI"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Le test utilise la connexion de GLPI lui-même avec les réglages "
+"enregistrés : aucun message n'est relevé ni déplacé. Une boîte ajoutée ci-"
+"dessus se teste après avoir cliqué sur « Terminer »."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "relève active"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "relève désactivée"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "mot de passe manquant"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "en erreur"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Tester la connexion"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Récapitulatif"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Vérifiez vos choix avant de terminer : cette étape crée réellement les "
+"entités, le calendrier, les SLA, les catégories, le catalogue de services, "
+"les statuts, les raisons d'attente, la personnalisation graphique, les "
+"réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de "
+"tâches/solutions/validations, les lieux/fabricants/catégories de base de "
+"connaissances, et les types/gabarits/modèles de projet."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Durée estimée"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"estimation indicative, selon le nombre d'options cochées (arborescence multi-"
+"site, actifs personnalisés, bibliothèques de gabarits...) : ne fermez pas "
+"cette page et ne cliquez qu'une seule fois sur \"Terminer\"."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Structure"
+msgstr ""
+
+#: templates/wizard.html.twig src/Audit/Checks/NoSlaConfiguredCheck.php:39
+#: src/Blueprint/FieldGroupLabel.php:44
+msgid "SLA"
+msgstr ""
+
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:46
+#: src/Blueprint/FieldGroupLabel.php:59
+msgid "Personnalisation"
+msgstr ""
+
+#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:56
+msgid "Réglages généraux"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Droits LDAP"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Suivis, validations & modèles CP"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Réception par e-mail"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Marketplace & plugins recommandés"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Optionnel : une clé d'enregistrement GLPI Network (au moins gratuite) "
+"débloque le marketplace natif de GLPI (Configuration > Plugins > "
+"Marketplace) : sans elle, la liste des plugins y reste vide."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Clé d'enregistrement GLPI Network"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "S'obtient gratuitement sur"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Une fois le marketplace débloqué, ces plugins sont installables en un clic "
+"depuis Configuration > Plugins > Marketplace : non installés automatiquement "
+"par cet assistant."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Précédent"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Suivant"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Ceci va créer/modifier de vraies entités dans GLPI (et, si activés, un "
+"calendrier et une personnalisation graphique) selon les choix faits. "
+"Continuer ?"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Terminer"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Création en cours..."
+msgstr ""
+
+#: templates/wizard.html.twig
+#: src/Audit/Checks/EntitiesWithoutAddressCheck.php:40
+#: src/Blueprint/FieldGroupLabel.php:44
+msgid "Entités"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Suivis & validations"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "(sans nom)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Aperçu :"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Rue, numéro..."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Code postal"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ville"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Région / État"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Pays"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Bâtiment"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Pièce"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Code"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Alias"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Commentaire"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Latitude"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Longitude"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Altitude"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Téléphone"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Fax"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Site web"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "E-mail"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Lieux enfants (bâtiment, étage, salle...)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ajouter un lieu enfant"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Nom du lieu enfant (ex. Bâtiment A)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "+ Ajouter une adresse"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Réduire"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Plages IP (ex. 192.168.10.0/24)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Tag de l'agent"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Définissez d'abord vos entités à l'étape 2 : sans entité, toutes les "
+"machines restent dans l'entité racine."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Aucun site dans l'arborescence (étape 2) : rien à générer."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Le gabarit doit contenir {ENTITY}."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Nom du groupe AD/LDAP"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer un calendrier pour cette entité"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Utiliser le SLA par défaut"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Créer un SLA pour cette entité"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Astreinte (24h/24, 7j/7)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Utiliser le réglage d'escalade par défaut"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Activer l'escalade pour cette entité"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Escalade automatique N1 → N2"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Escalade automatique N2 → N3"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Aucun"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "site(s)/client(s) avec un calendrier propre"
+msgstr ""
+
+#: templates/wizard.html.twig src/Config.php:135 src/CalendarBuilder.php:76
+msgid "Horaires standard"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "horaires variables selon les jours"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "coupure déjeuner"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "jours fériés"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "escalade à"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "escalade N1→N2→N3"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "site(s)/client(s) avec un SLA propre"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "astreinte 24h/24, 7j/7"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "+ OLA (engagements internes)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Aucune"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "branches"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "(avec icônes)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "branches avec services"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "statuts"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "raisons d'attente"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "logo(s) par entité"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Tous les groupes appliqués"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "groupe(s) appliqué(s)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Simplifié + Complet, assignés aux profils"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "(+ formulaires libre-service allégés)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "règle(s)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "catégories de tâches"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "gabarits de tâche"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "types/gabarits de solution"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "gabarits de suivis"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "gabarits de validation"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "modèles changement/problème"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "lieux"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "fabricants"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "catégories base de connaissances"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "articles de FAQ"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "types de projet/tâche"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "gabarits de tâches de projets"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "modèles de projet"
+msgstr ""
+
+#: templates/wizard.html.twig
+#, php-format
+msgid "%1$s boîte(s), dont %2$s activée(s)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "quelques secondes"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "moins d'une minute"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "une à quelques minutes"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "plusieurs minutes"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Nouvelle boîte"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Retire la boîte de l'assistant : le collecteur déjà créé dans GLPI n'est pas "
+"supprimé."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Adresse e-mail de la boîte"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Serveur de messagerie"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Protocole"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "SSL/TLS (recommandé)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Aucun chiffrement"
+msgstr ""
+
+#: templates/wizard.html.twig templates/import/_preview_common.html.twig
+msgid "Sécurité"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Identifiant de connexion"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Laisser vide pour garder celui de GLPI"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Optionnel, chiffré par GLPI"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Vérifier le certificat du serveur"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Dossier relevé"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ranger les messages traités dans"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Traités"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ranger les messages refusés dans"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Refusés"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Les dossiers de rangement doivent exister dans la boîte (IMAP) ; laissés "
+"vides ou introuvables, GLPI supprime le message après traitement. En POP3, "
+"le message est toujours supprimé."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Ne pas importer les pièces jointes"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Taille maximale des pièces jointes"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Où ranger les tickets de cette boîte (optionnel)"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Entité racine par défaut"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "ex. Sécurité SI"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "ex. Support N1"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Groupe en charge"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Noms recherchés dans GLPI après la création des entités et catégories des "
+"étapes précédentes : un nom introuvable est signalé à la fin et ignoré."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Activer la relève dès maintenant"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Laissez décoché pour vérifier d'abord la connexion : la boîte est créée "
+"désactivée et ne crée aucun ticket."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Connexion en cours..."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Le test n'a pas pu être lancé."
+msgstr ""
+
+#: templates/profile_actions.html.twig
+msgid "Lancer l'assistant de configuration"
+msgstr ""
+
+#: templates/profile_actions.html.twig
+msgid "Lancer l'audit"
+msgstr ""
+
+#: templates/profile_actions.html.twig
+msgid "Importer un Blueprint (JSON)"
+msgstr ""
+
+#: templates/profile_actions.html.twig
+msgid "Importer depuis Jira (CSV)"
+msgstr ""
+
+#: templates/profile_actions.html.twig
+msgid "Historique & Rollback"
+msgstr ""
+
+#: templates/deploy.html.twig front/deploy.php:32
+msgid "Déployer la configuration"
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid ""
+"La configuration chargée (Blueprint importé ou sauvegarde restaurée) va être "
+"déployée exactement comme avec le bouton « Terminer » de l'assistant : "
+"entités, catégories, statuts, SLA, formulaires et réglages activés ci-"
+"dessous. Les éléments déjà présents sont réutilisés, rien n'est supprimé."
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid "Ce qui sera déployé"
+msgstr ""
+
+#: templates/deploy.html.twig
+#, php-format
+msgid "%d entité de premier niveau (client ou site)"
+msgid_plural "%d entités de premier niveau (clients ou sites)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/deploy.html.twig
+msgid "Aucune fonctionnalité n'est activée dans cette configuration."
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid "Vos droits GLPI"
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid "manquant : partie ignorée"
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid "Lancer le déploiement maintenant ?"
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid "Déployer maintenant"
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid "Revoir dans l'assistant"
+msgstr ""
+
+#: templates/profile_form_actions.html.twig
+msgid "Enregistrer la configuration actuelle comme Blueprint"
+msgstr ""
+
+#: templates/profile_form_actions.html.twig
+msgid "Appliquer ce Blueprint (via l'assistant)"
+msgstr ""
+
+#: templates/profile_form_actions.html.twig
+msgid "Exporter ce Blueprint (JSON)"
+msgstr ""
+
+#: templates/profile_form_actions.html.twig
+msgid ""
+"Ce fichier peut contenir des informations propres à votre organisation "
+"(adresses d'entités...) : vérifiez son contenu avant de le partager."
+msgstr ""
+
+#: templates/address_plan.html.twig src/ConfigurationProfile.php:94
+#: front/addressplan.php:71
+msgid "Plan d'adressage"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Retour"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid ""
+"Déclarez les réseaux IP et VLAN de chaque site. Ils sont créés comme objets "
+"natifs de GLPI (Configuration > Intitulés > VLAN, et Réseaux IP), reliés "
+"entre eux et rattachés à l'entité du site. Relancer l'import met à jour les "
+"noms au lieu de dupliquer."
+msgstr ""
+
+#: templates/address_plan.html.twig
+#, php-format
+msgid ""
+"%1$d VLAN créé(s), %2$d mis à jour ; %3$d réseau(x) créé(s), %4$d mis à jour."
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Tableau du plan"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid ""
+"Colonnes : site, VLAN, nom, réseau, passerelle, rôle. Copiez-collez depuis "
+"un tableur (la première ligne peut porter les titres), ou choisissez un "
+"fichier CSV."
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Fichier CSV"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Modèle pour un nouveau site"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid ""
+"Un VLAN et un réseau /24 par usage : postes, serveurs, voix, imprimantes, "
+"administration, invités isolés, DMZ. Le tableau est rempli pour être relu et "
+"modifié avant l'aperçu."
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Site"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Réseau du site (/16)"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Indiquez un site et un réseau IPv4 en /16, par exemple 10.20.0.0/16."
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Remplir le tableau"
+msgstr ""
+
+#: templates/address_plan.html.twig
+#, php-format
+msgid "%d ligne(s) valide(s)"
+msgstr ""
+
+#: templates/address_plan.html.twig
+#, php-format
+msgid "%d ligne(s) en erreur, ignorée(s)"
+msgstr ""
+
+#: templates/address_plan.html.twig
+#, php-format
+msgid "Seules les %d premières lignes sont lues."
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Créer les lignes valides"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Ligne"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "VLAN"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Nom"
+msgstr ""
+
+#: templates/address_plan.html.twig
+#: src/Audit/Checks/NetworkConsistencyCheck.php:50
+msgid "Réseau"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Passerelle"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "Résultat"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "à créer"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "nom mis à jour"
+msgstr ""
+
+#: templates/address_plan.html.twig
+msgid "déjà à jour"
+msgstr ""
+
+#: templates/blueprint_import.html.twig
+msgid "Fichier Blueprint (.json)"
+msgstr ""
+
+#: templates/blueprint_import.html.twig
+msgid "Nom du profil (facultatif, repris du fichier sinon)"
+msgstr ""
+
+#: templates/blueprint_import.html.twig
+msgid ""
+"N'importez que des fichiers Blueprint dont vous connaissez la provenance : "
+"ce fichier reconfigurera votre instance une fois appliqué via l'assistant."
+msgstr ""
+
+#: templates/profile_export.html.twig
+msgid ""
+"Choisissez les réglages à inclure dans le fichier exporté, ou exportez "
+"l'intégralité de la configuration."
+msgstr ""
+
+#: templates/profile_export.html.twig
+msgid "Exporter la sélection"
+msgstr ""
+
+#: templates/profile_export.html.twig
+msgid "Exporter l'intégralité"
+msgstr ""
+
+#: templates/import/_run.html.twig
+#, php-format
+msgid ""
+"Un import a été interrompu : %1$d ticket(s) sur %2$d déjà traités. Reprenez-"
+"le, ou arrêtez-le (les tickets déjà importés restent)."
+msgstr ""
+
+#: templates/import/_run.html.twig
+#, php-format
+msgid ""
+"Import en cours, par lots de %d tickets. Vous pouvez quitter la page : "
+"l'import reprendra où il s'est arrêté à votre retour sur cette page."
+msgstr ""
+
+#: templates/import/_run.html.twig
+#, php-format
+msgid "%1$d ticket(s) traités sur %2$d"
+msgstr ""
+
+#: templates/import/_run.html.twig
+msgid "Avancement de l'import"
+msgstr ""
+
+#: templates/import/_run.html.twig
+#, php-format
+msgid "%d créé(s)"
+msgstr ""
+
+#: templates/import/_run.html.twig
+#, php-format
+msgid "%d mis à jour"
+msgstr ""
+
+#: templates/import/_run.html.twig
+#, php-format
+msgid "%d incident(s) de sécurité"
+msgstr ""
+
+#: templates/import/_run.html.twig
+#, php-format
+msgid "%d erreur(s)"
+msgstr ""
+
+#: templates/import/_run.html.twig
+msgid "Reprendre l'import"
+msgstr ""
+
+#: templates/import/_run.html.twig
+msgid "Continuer"
+msgstr ""
+
+#: templates/import/_run.html.twig
+msgid "Arrêter l'import"
+msgstr ""
+
+#: templates/import/_run.html.twig
+msgid "Journal (CSV)"
+msgstr ""
+
+#: templates/import/_result.html.twig
+#, php-format
+msgid ""
+"Import arrêté après %1$d ticket(s) sur %2$d : %3$d créé(s), %4$d mis à jour. "
+"Les tickets déjà importés restent ; relancez l'import du même fichier pour "
+"le terminer (sans doublon)."
+msgstr ""
+
+#: templates/import/_result.html.twig
+#, php-format
+msgid "Import terminé : %1$d ticket(s) créé(s), %2$d mis à jour."
+msgstr ""
+
+#: templates/import/_result.html.twig
+#, php-format
+msgid "%d pièce(s) jointe(s) ajoutée(s)."
+msgstr ""
+
+#: templates/import/_result.html.twig
+#, php-format
+msgid "%d étiquette(s) posée(s)."
+msgstr ""
+
+#: templates/import/_result.html.twig
+#, php-format
+msgid "%d ticket(s) relié(s) à un incident de sécurité."
+msgstr ""
+
+#: templates/import/_result.html.twig
+msgid "Journal de l'import"
+msgstr ""
+
+#: templates/import/_result.html.twig
+msgid "Voir les tickets"
+msgstr ""
+
+#: templates/import/_result.html.twig
+msgid "Télécharger le journal (CSV)"
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+msgid "Personnes"
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+#, php-format
+msgid "%1$d reconnue(s) dans GLPI, %2$d inconnue(s)."
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+msgid "Sujets fréquents"
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+msgid ""
+"Les mots qui reviennent le plus dans les titres importés. Un sujet fréquent "
+"sans formulaire est un bon candidat pour le catalogue de services."
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+#, php-format
+msgid "%d ticket(s)"
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+msgid "aucun formulaire : à créer ?"
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+#: src/Blueprint/FieldGroupLabel.php:55 front/csvimport.php:233
+msgid "Étiquettes"
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+msgid ""
+"Poser ces étiquettes sur les tickets avec le plugin Tag (une étiquette "
+"absente est créée, récursive, dans l'entité de l'import)"
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+msgid ""
+"Installez le plugin Tag pour importer ces étiquettes ; sans lui, elles sont "
+"ignorées."
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+#, php-format
+msgid ""
+"Créer un incident de sécurité (plugin GRC) relié à chacun des %d ticket(s) "
+"étiquetés « Sécurité » ; un ticket déjà relié garde son incident"
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+#, php-format
+msgid ""
+"%d ticket(s) étiquetés « Sécurité » : avec le plugin GRC (grcmanager) et le "
+"droit de créer des incidents de sécurité, ils peuvent être reliés à un "
+"incident de sécurité."
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+msgid "Pièces jointes"
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+#, php-format
+msgid ""
+"%d pièce(s) jointe(s) seront ajoutées aux tickets comme documents GLPI "
+"(extensions autorisées par GLPI seulement)."
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+#, php-format
+msgid ""
+"%d pièce(s) jointe(s) écartée(s) : trop volumineuses (10 Mo par fichier, 200 "
+"Mo en tout), hors de l'adresse de Jira ou illisibles."
+msgstr ""
+
+#: templates/import/_preview_common.html.twig
+msgid ""
+"Inconnues (aucun compte créé ; le ticket sera importé sans elles, leurs "
+"commentaires gardent leur nom) :"
+msgstr ""
+
+#: src/MailboxRequestFormBuilder.php:174 src/OfficeSuppliesFormBuilder.php:169
+#: src/SoftwareLicenseFormBuilder.php:171
+#: src/SocialMediaPostFormBuilder.php:180
+#: src/SoftwareInstallFormBuilder.php:173
+#: src/ProfessionalPhoneFormBuilder.php:202
+#: src/PasswordResetFormBuilder.php:196 src/BreakRoomFormBuilder.php:178
+#: src/WifiAccessFormBuilder.php:183
+#: src/InstrumentCalibrationFormBuilder.php:167
+#: src/EventSupportFormBuilder.php:182 src/DoorLockBadgeFormBuilder.php:228
+#: src/AuditRequestFormBuilder.php:176
+#: src/ElectricalInterventionFormBuilder.php:180
+#: src/VehicleMaintenanceFormBuilder.php:216
+#: src/MailPrintingFormBuilder.php:190
+#: src/UserAccountDeactivationFormBuilder.php:176
+#: src/RemoteWorkFormBuilder.php:201 src/CurativeMaintenanceFormBuilder.php:173
+#: src/VideoSurveillanceFormBuilder.php:222
+#: src/StaffMovementFormBuilder.php:195 src/NewScreenFormBuilder.php:198
+#: src/FuelCardFormBuilder.php:220 src/HeatingClimateFormBuilder.php:183
+#: src/VpnAccessFormBuilder.php:188 src/TrainingRequestFormBuilder.php:175
+#: src/RecyclingRequestFormBuilder.php:179 src/LaptopRequestFormBuilder.php:202
+#: src/TeamCollaborationSpaceFormBuilder.php:172
+#: src/AbroadMissionFormBuilder.php:248 src/WaterLeakFormBuilder.php:182
+#: src/MeetingRoomFormBuilder.php:233 src/SoftwareBugFormBuilder.php:209
+#: src/WorkplaceSafetyFormBuilder.php:175
+#: src/RelocationArchivingFormBuilder.php:174
+#: src/ContractReviewFormBuilder.php:171
+#: src/PreventiveMaintenanceFormBuilder.php:168
+#: src/WebsiteUpdateFormBuilder.php:177
+#: src/CleanlinessRequestFormBuilder.php:178 src/AccessBadgeFormBuilder.php:170
+#: src/UserAccountCreationFormBuilder.php:168
+#: src/RequestFormLibraryBuilder.php:691
+#: src/DeliveryTrackingFormBuilder.php:167 src/SupplyOrderFormBuilder.php:167
+#: src/ItemReturnFormBuilder.php:188 src/NonConformityFormBuilder.php:188
+#: src/LeaveRequestFormBuilder.php:212 src/InvoicePaymentFormBuilder.php:179
+#: src/FurnitureRequestFormBuilder.php:189
+#: src/VehicleIncidentFormBuilder.php:277
+msgid "Votre demande"
+msgstr ""
+
+#: src/MailboxRequestFormBuilder.php:181 src/SoftwareInstallFormBuilder.php:189
+#: src/MailPrintingFormBuilder.php:197 src/RemoteWorkFormBuilder.php:208
+#: src/MeetingRoomFormBuilder.php:240 src/WorkplaceSafetyFormBuilder.php:182
+#: src/RelocationArchivingFormBuilder.php:181
+#: src/CleanlinessRequestFormBuilder.php:194 src/ItemReturnFormBuilder.php:204
+#: src/InvoicePaymentFormBuilder.php:195
+msgid "Type de demande"
+msgstr ""
+
+#: src/MailboxRequestFormBuilder.php:193
+msgid "Adresse ou nom souhaité"
+msgstr ""
+
+#: src/MailboxRequestFormBuilder.php:202 src/OfficeSuppliesFormBuilder.php:194
+#: src/SocialMediaPostFormBuilder.php:213
+#: src/SoftwareInstallFormBuilder.php:201
+#: src/ProfessionalPhoneFormBuilder.php:260
+#: src/PasswordResetFormBuilder.php:231 src/BreakRoomFormBuilder.php:206
+#: src/WifiAccessFormBuilder.php:239
+#: src/InstrumentCalibrationFormBuilder.php:192
+#: src/EventSupportFormBuilder.php:224 src/DoorLockBadgeFormBuilder.php:280
+#: src/AuditRequestFormBuilder.php:209
+#: src/ElectricalInterventionFormBuilder.php:208
+#: src/VehicleMaintenanceFormBuilder.php:258
+#: src/MailPrintingFormBuilder.php:232
+#: src/UserAccountDeactivationFormBuilder.php:218
+#: src/RemoteWorkFormBuilder.php:265 src/CurativeMaintenanceFormBuilder.php:201
+#: src/VideoSurveillanceFormBuilder.php:274 src/NewScreenFormBuilder.php:238
+#: src/FuelCardFormBuilder.php:274 src/HeatingClimateFormBuilder.php:211
+#: src/TrainingRequestFormBuilder.php:205
+#: src/RecyclingRequestFormBuilder.php:207 src/LaptopRequestFormBuilder.php:250
+#: src/TeamCollaborationSpaceFormBuilder.php:200
+#: src/WaterLeakFormBuilder.php:210 src/SoftwareBugFormBuilder.php:261
+#: src/WorkplaceSafetyFormBuilder.php:194
+#: src/RelocationArchivingFormBuilder.php:202
+#: src/ContractReviewFormBuilder.php:196
+#: src/PreventiveMaintenanceFormBuilder.php:198
+#: src/WebsiteUpdateFormBuilder.php:205
+#: src/CleanlinessRequestFormBuilder.php:206
+#: src/UserAccountCreationFormBuilder.php:207
+#: src/DeliveryTrackingFormBuilder.php:183 src/SupplyOrderFormBuilder.php:192
+#: src/ItemReturnFormBuilder.php:225 src/NonConformityFormBuilder.php:225
+#: src/InvoicePaymentFormBuilder.php:216
+#: src/FurnitureRequestFormBuilder.php:229
+#: src/VehicleIncidentFormBuilder.php:375
+msgid "Précisions complémentaires"
+msgstr ""
+
+#: src/OfficeSuppliesFormBuilder.php:176
+msgid "Article souhaité"
+msgstr ""
+
+#: src/OfficeSuppliesFormBuilder.php:185 src/SupplyOrderFormBuilder.php:183
+msgid "Quantité"
+msgstr ""
+
+#: src/SoftwareLicenseFormBuilder.php:178
+#: src/SoftwareInstallFormBuilder.php:180 src/SoftwareBugFormBuilder.php:216
+msgid "Logiciel concerné"
+msgstr ""
+
+#: src/SoftwareLicenseFormBuilder.php:187
+msgid "Quantité de licences"
+msgstr ""
+
+#: src/SoftwareLicenseFormBuilder.php:197 src/RequestFormLibraryBuilder.php:248
+#: src/RequestFormLibraryBuilder.php:329
+msgid "Précisions"
+msgstr ""
+
+#: src/Config.php:100
+msgid "Configuration"
+msgstr ""
+
+#: src/Config.php:106
+msgid "Mono-entité : une seule structure, pas de sous-entités"
+msgstr ""
+
+#: src/Config.php:107
+msgid "Multi-entité : plusieurs sites ou services d'une même entreprise"
+msgstr ""
+
+#: src/Config.php:108
+msgid "Multi-entité : infogérance de plusieurs entreprises clientes (MSP)"
+msgstr ""
+
+#: src/SocialMediaPostFormBuilder.php:187
+msgid "Réseau(x) concerné(s)"
+msgstr ""
+
+#: src/SocialMediaPostFormBuilder.php:199
+msgid "Date de publication souhaitée"
+msgstr ""
+
+#: src/ProfessionalPhoneFormBuilder.php:209
+msgid "Type d'appareil souhaité"
+msgstr ""
+
+#: src/ProfessionalPhoneFormBuilder.php:221 src/NewScreenFormBuilder.php:226
+#: src/LaptopRequestFormBuilder.php:209
+msgid "Motif de la demande"
+msgstr ""
+
+#: src/ProfessionalPhoneFormBuilder.php:246
+msgid "Modèle actuel à remplacer"
+msgstr ""
+
+#: src/PasswordResetFormBuilder.php:204
+msgid "Compte utilisateur concerné"
+msgstr ""
+
+#: src/PasswordResetFormBuilder.php:219
+#: src/UserAccountDeactivationFormBuilder.php:206
+#: src/FuelCardFormBuilder.php:262 src/RequestFormLibraryBuilder.php:437
+#: src/FurnitureRequestFormBuilder.php:217
+msgid "Motif"
+msgstr ""
+
+#: src/BreakRoomFormBuilder.php:185
+msgid "Espace concerné"
+msgstr ""
+
+#: src/BreakRoomFormBuilder.php:194 src/DoorLockBadgeFormBuilder.php:244
+#: src/ElectricalInterventionFormBuilder.php:196
+#: src/HeatingClimateFormBuilder.php:199 src/WaterLeakFormBuilder.php:198
+msgid "Nature du problème"
+msgstr ""
+
+#: src/WifiAccessFormBuilder.php:190 src/RequestFormLibraryBuilder.php:158
+msgid "Type d'accès"
+msgstr ""
+
+#: src/WifiAccessFormBuilder.php:214
+msgid "Appareil ou nom du visiteur"
+msgstr ""
+
+#: src/WifiAccessFormBuilder.php:223
+#: src/UserAccountDeactivationFormBuilder.php:192
+#: src/VpnAccessFormBuilder.php:228
+msgid "Date de fin d'accès souhaitée"
+msgstr ""
+
+#: src/InstrumentCalibrationFormBuilder.php:174
+msgid "Instrument concerné"
+msgstr ""
+
+#: src/InstrumentCalibrationFormBuilder.php:183
+msgid "Référence ou numéro de série"
+msgstr ""
+
+#: src/EventSupportFormBuilder.php:189
+msgid "Nom de l'événement"
+msgstr ""
+
+#: src/EventSupportFormBuilder.php:198
+msgid "Date de l'événement"
+msgstr ""
+
+#: src/EventSupportFormBuilder.php:212
+msgid "Type de support souhaité"
+msgstr ""
+
+#: src/DoorLockBadgeFormBuilder.php:235
+#: src/ElectricalInterventionFormBuilder.php:187
+#: src/WaterLeakFormBuilder.php:189 src/CleanlinessRequestFormBuilder.php:185
+msgid "Localisation précise"
+msgstr ""
+
+#: src/DoorLockBadgeFormBuilder.php:261
+#: src/VideoSurveillanceFormBuilder.php:255
+msgid "Équipement concerné (si déjà référencé)"
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:96
+#, php-format
+msgid "Plan d'adressage : site : %1$s, rôle : %2$s"
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:137
+#, php-format
+msgid "Ligne %1$d : GLPI a refusé le réseau %2$s."
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:253
+msgid "Postes de travail"
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:254
+msgid "Serveurs"
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:255
+msgid "Téléphonie (voix)"
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:256
+msgid "Imprimantes et équipements"
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:257
+msgid "Administration"
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:258
+msgid "Invités"
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:259
+msgid "DMZ"
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:308
+msgid "Site manquant."
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:309
+msgid ""
+"Site inconnu : créez d'abord ce lieu dans GLPI (étape « Lieux » de "
+"l'assistant)."
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:310
+msgid "Numéro de VLAN hors de la plage 1 à 4094."
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:311
+msgid "Ni VLAN ni réseau sur cette ligne."
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:312
+msgid "Réseau illisible : notation attendue 192.0.2.0/24."
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:313
+#, php-format
+msgid "Ce n'est pas l'adresse du réseau : vouliez-vous %s ?"
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:314
+msgid "La passerelle n'est pas dans ce réseau."
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:315
+msgid "Passerelle indiquée sans réseau."
+msgstr ""
+
+#: src/AddressPlan/AddressPlanImporter.php:316
+#, php-format
+msgid "Chevauche le réseau de la ligne %s."
+msgstr ""
+
+#: src/AuditRequestFormBuilder.php:183
+msgid "Type d'audit"
+msgstr ""
+
+#: src/AuditRequestFormBuilder.php:195 src/TrainingRequestFormBuilder.php:191
+#: src/PreventiveMaintenanceFormBuilder.php:184
+msgid "Période souhaitée"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:45
+msgid "Rapport d'audit périodique"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:52
+msgid "Adresses supplémentaires (réglage du rapport d'audit)"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:88
+msgid "Premier rapport : pas encore de comparaison possible."
+msgstr ""
+
+#: src/NotificationTargetConfig.php:91
+#, php-format
+msgid "Aucune évolution depuis le rapport du %s."
+msgstr ""
+
+#: src/NotificationTargetConfig.php:96
+#, php-format
+msgid ""
+"Depuis le rapport du %1$s : %2$d contrôle(s) dégradé(s), %3$d amélioré(s)."
+msgstr ""
+
+#: src/NotificationTargetConfig.php:104
+msgid "En échec"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:105
+msgid "En alerte"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:134
+msgid "Contrôles exécutés"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:135
+msgid "Contrôles OK"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:136
+msgid "Contrôles en alerte"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:137
+msgid "Contrôles en échec"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:138
+msgid "Évolution depuis le rapport précédent"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:140 src/RequestFormLibraryBuilder.php:562
+msgid "Gravité"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:141
+msgid "Domaine"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:142
+msgid "Constat"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:143
+msgid "Recommandation"
+msgstr ""
+
+#: src/NotificationTargetConfig.php:150
+msgid "Points à traiter"
+msgstr ""
+
+#: src/VehicleMaintenanceFormBuilder.php:225 src/FuelCardFormBuilder.php:229
+#: src/VehicleIncidentFormBuilder.php:286
+msgid "Véhicule concerné"
+msgstr ""
+
+#: src/VehicleMaintenanceFormBuilder.php:237 src/FuelCardFormBuilder.php:241
+#: src/VehicleIncidentFormBuilder.php:299
+msgid "Véhicule concerné (immatriculation)"
+msgstr ""
+
+#: src/VehicleMaintenanceFormBuilder.php:246
+msgid "Type d'entretien"
+msgstr ""
+
+#: src/ConfigurationProfile.php:71
+msgid "Profil de configuration"
+msgid_plural "Profils de configuration"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/ConfigurationProfile.php:93 src/Blueprint/FieldGroupLabel.php:60
+#: front/audit.php:114
+msgid "Audit de configuration"
+msgstr ""
+
+#: src/ConfigurationProfile.php:114 src/ConfigurationProfile.php:129
+msgid "Installation simple"
+msgstr ""
+
+#: src/ConfigurationProfile.php:115
+msgid "Plusieurs sites ou services (une seule entreprise)"
+msgstr ""
+
+#: src/ConfigurationProfile.php:116
+msgid "Plusieurs entreprises clientes (infogérance)"
+msgstr ""
+
+#: src/ConfigurationProfile.php:117 src/ConfigurationProfile.php:135
+msgid "Personnalisé"
+msgstr ""
+
+#: src/ConfigurationProfile.php:130
+msgid "Un seul site, pas de sous-structure"
+msgstr ""
+
+#: src/ConfigurationProfile.php:131
+msgid "Plusieurs sites ou services"
+msgstr ""
+
+#: src/ConfigurationProfile.php:132
+msgid "Une seule entreprise, plusieurs équipes ou sites"
+msgstr ""
+
+#: src/ConfigurationProfile.php:133
+msgid "Plusieurs entreprises clientes"
+msgstr ""
+
+#: src/ConfigurationProfile.php:134
+msgid "Vous gérez GLPI pour le compte d'autres entreprises"
+msgstr ""
+
+#: src/ConfigurationProfile.php:136
+msgid "Je configure tout moi-même"
+msgstr ""
+
+#: src/DropdownUnicity.php:188
+#, php-format
+msgid ""
+"« %1$s » existe déjà (%2$s n° %3$d) : utilisez cette entrée plutôt que d'en "
+"créer une en double."
+msgstr ""
+
+#: src/MailPrintingFormBuilder.php:221
+msgid "Destinataire et adresse"
+msgstr ""
+
+#: src/UserAccountDeactivationFormBuilder.php:183
+msgid "Nom de la personne concernée"
+msgstr ""
+
+#: src/RemoteWorkFormBuilder.php:238
+msgid "Date concernée"
+msgstr ""
+
+#: src/RemoteWorkFormBuilder.php:254
+msgid "Jour(s) souhaité(s)"
+msgstr ""
+
+#: src/SlaBuilder.php:120
+#, php-format
+msgid "Calendrier du niveau de service « %s »"
+msgstr ""
+
+#: src/SlaBuilder.php:132 src/SlaBuilder.php:414
+#, php-format
+msgid "Prise en charge - %s"
+msgstr ""
+
+#: src/SlaBuilder.php:133 src/SlaBuilder.php:415
+#, php-format
+msgid "Résolution - %s"
+msgstr ""
+
+#: src/SlaBuilder.php:137 src/SlaBuilder.php:421
+#, php-format
+msgid "OLA prise en charge - %s"
+msgstr ""
+
+#: src/SlaBuilder.php:138 src/SlaBuilder.php:422
+#, php-format
+msgid "OLA résolution - %s"
+msgstr ""
+
+#: src/SlaBuilder.php:178
+msgid "Aucun (24h/24, 7j/7)"
+msgstr ""
+
+#: src/SlaBuilder.php:238
+#, php-format
+msgid "SLA - %s"
+msgstr ""
+
+#: src/SlaBuilder.php:475
+#, php-format
+msgid "Escalade - %s"
+msgstr ""
+
+#: src/SlaBuilder.php:486
+#, php-format
+msgid "Escalade N3 - %s"
+msgstr ""
+
+#: src/DeploymentRights.php:37
+msgid "Créer des entités"
+msgstr ""
+
+#: src/DeploymentRights.php:39
+msgid ""
+"nécessaire pour construire l'arborescence (étape 2) : les entités déjà "
+"existantes restent utilisables, mais aucune nouvelle ne sera créée"
+msgstr ""
+
+#: src/DeploymentRights.php:42
+msgid "Modifier des entités"
+msgstr ""
+
+#: src/DeploymentRights.php:44
+msgid ""
+"nécessaire pour la personnalisation par entité (adresses, logos, calendrier/"
+"SLA par client...)"
+msgstr ""
+
+#: src/DeploymentRights.php:47
+msgid "Gérer les règles d'affectation LDAP"
+msgstr ""
+
+#: src/DeploymentRights.php:49
+msgid "nécessaire aux droits LDAP par entité (étape 13)"
+msgstr ""
+
+#: src/DeploymentRights.php:52
+msgid "Modifier la configuration générale de GLPI"
+msgstr ""
+
+#: src/DeploymentRights.php:54
+msgid "nécessaire aux réglages généraux (étape 14)"
+msgstr ""
+
+#: src/DeploymentRights.php:57
+msgid "Gérer les règles métier pour les tickets"
+msgstr ""
+
+#: src/DeploymentRights.php:59
+msgid ""
+"nécessaire à l'affectation automatique des SLA/OLA et au circuit de "
+"validation"
+msgstr ""
+
+#: src/DeploymentRights.php:62
+msgid "Créer des niveaux de service (SLM)"
+msgstr ""
+
+#: src/DeploymentRights.php:64
+msgid "nécessaire aux SLA, OLA et à leurs niveaux d'escalade (étape SLA)"
+msgstr ""
+
+#: src/DeploymentRights.php:67
+msgid "Créer des calendriers"
+msgstr ""
+
+#: src/DeploymentRights.php:69
+msgid "nécessaire aux horaires ouvrés et jours fériés (étape Calendrier)"
+msgstr ""
+
+#: src/DeploymentRights.php:72
+msgid "Gérer les règles d'affectation d'un élément à une entité"
+msgstr ""
+
+#: src/DeploymentRights.php:74
+msgid ""
+"nécessaire au rattachement des machines inventoriées par plage IP ou tag"
+msgstr ""
+
+#: src/DeploymentRights.php:77
+msgid "Gérer les règles des collecteurs de courriels"
+msgstr ""
+
+#: src/DeploymentRights.php:79
+msgid ""
+"nécessaire à l'étape Réception des tickets par e-mail (entité de chaque "
+"boîte, refus des réponses automatiques)"
+msgstr ""
+
+#: src/DeploymentRights.php:82
+msgid "Gérer les dictionnaires et les catégories de logiciels"
+msgstr ""
+
+#: src/DeploymentRights.php:87
+msgid ""
+"chaque dictionnaire (fabricants, logiciels, systèmes d'exploitation, "
+"imprimantes, types d'ordinateurs) est ignoré si le droit correspondant manque"
+msgstr ""
+
+#: src/DeploymentRights.php:90
+msgid "Modifier la configuration d'assetsign"
+msgstr ""
+
+#: src/DeploymentRights.php:92
+msgid "nécessaire pour relier les déclencheurs d'assetsign aux statuts créés"
+msgstr ""
+
+#: src/CalendarBuilder.php:114
+#, php-format
+msgid "Horaires - %s"
+msgstr ""
+
+#: src/CurativeMaintenanceFormBuilder.php:180
+#: src/PreventiveMaintenanceFormBuilder.php:175
+msgid "Équipement ou installation concerné"
+msgstr ""
+
+#: src/CurativeMaintenanceFormBuilder.php:189
+msgid "L'équipement est-il à l'arrêt ?"
+msgstr ""
+
+#: src/ConfigHistory.php:58
+msgid "Historique de configuration"
+msgid_plural "Historique de configuration"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/ConfigHistory.php:85
+msgid "Point de sauvegarde manuel"
+msgstr ""
+
+#: src/ConfigHistory.php:107
+msgid "Sauvegarde automatique avant application"
+msgstr ""
+
+#: src/VideoSurveillanceFormBuilder.php:229
+msgid "Localisation de l'équipement concerné"
+msgstr ""
+
+#: src/VideoSurveillanceFormBuilder.php:238
+msgid "Type de dysfonctionnement"
+msgstr ""
+
+#: src/StaffMovementFormBuilder.php:202
+msgid "Nom du salarié concerné"
+msgstr ""
+
+#: src/StaffMovementFormBuilder.php:211 src/RequestFormLibraryBuilder.php:340
+msgid "Type de mouvement"
+msgstr ""
+
+#: src/StaffMovementFormBuilder.php:247 src/RequestFormLibraryBuilder.php:589
+msgid "Poste concerné"
+msgstr ""
+
+#: src/StaffMovementFormBuilder.php:258
+msgid "Date d'effet"
+msgstr ""
+
+#: src/StaffMovementFormBuilder.php:293
+msgid "le"
+msgstr ""
+
+#: src/NewScreenFormBuilder.php:205
+msgid "Nombre d'écrans souhaités"
+msgstr ""
+
+#: src/NewScreenFormBuilder.php:217
+msgid "Taille souhaitée (ex : 24 pouces)"
+msgstr ""
+
+#: src/NewScreenFormBuilder.php:249
+msgid "Poste auquel connecter l'écran (si déjà connu)"
+msgstr ""
+
+#: src/FuelCardFormBuilder.php:250
+msgid "Type demandé"
+msgstr ""
+
+#: src/HeatingClimateFormBuilder.php:190
+msgid "Localisation précise (bâtiment, étage, bureau ou salle)"
+msgstr ""
+
+#: src/VpnAccessFormBuilder.php:195
+msgid "Réseau ou ressource à atteindre"
+msgstr ""
+
+#: src/VpnAccessFormBuilder.php:204
+msgid "Durée d'accès"
+msgstr ""
+
+#: src/FuelType.php:44
+msgid "Type de carburant"
+msgid_plural "Types de carburant"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/TrainingRequestFormBuilder.php:182
+msgid "Intitulé de la formation souhaitée"
+msgstr ""
+
+#: src/RecyclingRequestFormBuilder.php:186
+msgid "Type de déchet concerné"
+msgstr ""
+
+#: src/RecyclingRequestFormBuilder.php:198
+msgid "Localisation à collecter"
+msgstr ""
+
+#: src/LaptopRequestFormBuilder.php:236
+msgid "Poste actuel à remplacer"
+msgstr ""
+
+#: src/TeamCollaborationSpaceFormBuilder.php:179
+msgid "Nom de l'équipe ou du projet"
+msgstr ""
+
+#: src/TeamCollaborationSpaceFormBuilder.php:188
+msgid "Type d'accès souhaité"
+msgstr ""
+
+#: src/Jira/JiraImporter.php:69
+msgid "Demande non retenue (importé de Jira)."
+msgstr ""
+
+#: src/Jira/JiraImporter.php:74
+msgid "Étiquette importée de Jira"
+msgstr ""
+
+#: src/AbroadMissionFormBuilder.php:261
+msgid "Pays de destination"
+msgstr ""
+
+#: src/AbroadMissionFormBuilder.php:270 src/LeaveRequestFormBuilder.php:242
+msgid "Date de début"
+msgstr ""
+
+#: src/AbroadMissionFormBuilder.php:280 src/RequestFormLibraryBuilder.php:213
+#: src/LeaveRequestFormBuilder.php:252
+msgid "Date de fin"
+msgstr ""
+
+#: src/AbroadMissionFormBuilder.php:290
+msgid "Motif / précisions"
+msgstr ""
+
+#: src/AbroadMissionFormBuilder.php:320 src/AccessBadgeFormBuilder.php:232
+#: src/LeaveRequestFormBuilder.php:306
+msgid "du"
+msgstr ""
+
+#: src/AbroadMissionFormBuilder.php:321 src/AccessBadgeFormBuilder.php:233
+#: src/LeaveRequestFormBuilder.php:307
+msgid "au"
+msgstr ""
+
+#: src/MeetingRoomFormBuilder.php:273 src/MeetingRoomFormBuilder.php:288
+msgid "Salle souhaitée"
+msgstr ""
+
+#: src/MeetingRoomFormBuilder.php:299 src/RequestFormLibraryBuilder.php:297
+msgid "Date souhaitée"
+msgstr ""
+
+#: src/MeetingRoomFormBuilder.php:315
+msgid "Équipement concerné"
+msgstr ""
+
+#: src/MeetingRoomFormBuilder.php:326
+msgid "Description du problème"
+msgstr ""
+
+#: src/SoftwareBugFormBuilder.php:225
+msgid "Le problème vous empêche-t-il de travailler ?"
+msgstr ""
+
+#: src/SoftwareBugFormBuilder.php:240
+msgid "Poste ou appareil concerné (si le bug est lié à un poste précis)"
+msgstr ""
+
+#: src/SoftwareBugFormBuilder.php:252
+msgid "Capture d'écran de l'erreur"
+msgstr ""
+
+#: src/Import/CsvTicketImporter.php:353
+#, php-format
+msgid "Demande non retenue (importé de %s)."
+msgstr ""
+
+#: src/Import/CsvTicketImporter.php:358
+#, php-format
+msgid "Étiquette importée de %s"
+msgstr ""
+
+#: src/Import/TicketImporter.php:216
+msgid "Date"
+msgstr ""
+
+#: src/Import/TicketImporter.php:216
+msgid "Message"
+msgstr ""
+
+#: src/Import/TicketImporter.php:357
+#, php-format
+msgid "Import arrêté par l'utilisateur après %1$d ticket(s) sur %2$d"
+msgstr ""
+
+#: src/Import/TicketImporter.php:652
+#, php-format
+msgid "%1$s : ticket %2$d mis à jour"
+msgstr ""
+
+#: src/Import/TicketImporter.php:675
+#, php-format
+msgid "%s : création du ticket impossible"
+msgstr ""
+
+#: src/Import/TicketImporter.php:681
+#, php-format
+msgid "%1$s : ticket %2$d créé"
+msgstr ""
+
+#: src/Import/TicketImporter.php:723
+#, php-format
+msgid "%s : incident de sécurité non créé"
+msgstr ""
+
+#: src/Import/TicketImporter.php:729
+#, php-format
+msgid "%1$s : ticket %2$d relié à l'incident de sécurité %3$d"
+msgstr ""
+
+#: src/Import/TicketImporter.php:1042
+#, php-format
+msgid "%1$s : étiquette « %2$s » non créée"
+msgstr ""
+
+#: src/Audit/Checks/DefaultAdminEmailCheck.php:43
+msgid "Configuration générale"
+msgstr ""
+
+#: src/Audit/Checks/DefaultAdminEmailCheck.php:59
+msgid "Adresse email d'administration non configurée"
+msgstr ""
+
+#: src/Audit/Checks/DefaultAdminEmailCheck.php:61
+msgid "Aucune adresse email d'administration n'est renseignée."
+msgstr ""
+
+#: src/Audit/Checks/DefaultAdminEmailCheck.php:63
+#, php-format
+msgid "L'adresse email d'administration est toujours celle par défaut (%s)."
+msgstr ""
+
+#: src/Audit/Checks/DefaultAdminEmailCheck.php:67
+msgid ""
+"Renseignez une véritable adresse email d'administration dans la "
+"configuration générale de GLPI."
+msgstr ""
+
+#: src/Audit/Checks/MissingRecommendedStatesCheck.php:62
+#, php-format
+msgid "Statuts recommandés absents : %s."
+msgstr ""
+
+#: src/Audit/Checks/MissingRecommendedStatesCheck.php:69
+msgid ""
+"Le plugin assetsign ne peut pas déclencher toutes ses fiches (attribution, "
+"restitution, don, vente, destruction...) sans ces statuts."
+msgstr ""
+
+#: src/Audit/Checks/MissingRecommendedStatesCheck.php:78
+msgid "Des statuts recommandés manquent"
+msgstr ""
+
+#: src/Audit/Checks/MissingRecommendedStatesCheck.php:81
+msgid ""
+"Corrigez en un clic : les statuts manquants sont créés comme le fait "
+"l'assistant, puis reliés aux déclencheurs d'assetsign encore vides (un "
+"réglage existant n'est jamais remplacé)."
+msgstr ""
+
+#: src/Audit/Checks/DictionaryRulesCheck.php:48
+#: src/Audit/Checks/IncompleteAssetsCheck.php:43
+#: src/Audit/Checks/DuplicateSoftwareCheck.php:39
+#: src/Audit/Checks/DuplicateDropdownsCheck.php:41
+#: src/Audit/Checks/UncategorizedSoftwareCheck.php:41
+#: src/Audit/Checks/WarrantyCheck.php:45
+#: src/Audit/Checks/GhostAssetsCheck.php:49
+msgid "Parc"
+msgstr ""
+
+#: src/Audit/Checks/DictionaryRulesCheck.php:113
+msgid ""
+"Relancez l'assistant (étape « Général & Outils », dictionnaires et "
+"catégories de logiciels) : il recrée les catégories manquantes et réactive "
+"les règles concernées. Aucune réactivation automatique ici."
+msgstr ""
+
+#: src/Audit/Checks/DictionaryRulesCheck.php:125
+#, php-format
+msgid "%d règle de catégorie de logiciel vise une catégorie supprimée"
+msgid_plural ""
+"%d règles de catégorie de logiciel visent une catégorie supprimée"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/DictionaryRulesCheck.php:142
+#, php-format
+msgid "%d règle de dictionnaire de l'assistant est désactivée"
+msgid_plural "%d règles de dictionnaire de l'assistant sont désactivées"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/DictionaryRulesCheck.php:149
+msgid ""
+"Si ce n'est pas volontaire (une suppression de catégorie, par exemple, "
+"désactive les règles qui la visent), réactivez-les depuis leur fiche ou "
+"relancez l'assistant."
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:77
+#, php-format
+msgid "%d collecteur(s) de courriels en erreur"
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:78
+msgid ""
+"GLPI n'a pas pu se connecter à ces boîtes lors des dernières relèves : les "
+"messages reçus n'y deviennent plus des tickets."
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:79
+msgid ""
+"Ouvrez le collecteur, vérifiez le serveur, le port, l'identifiant et le mot "
+"de passe, puis cliquez sur « Récupérer les courriels maintenant »."
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:89
+msgid "Collecteurs de courriels sans règle"
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:90
+msgid ""
+"Aucune règle de collecteur active n'affecte d'entité : chaque message relevé "
+"est refusé, aucun ticket n'est créé."
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:91
+msgid ""
+"Réactivez la règle « Root » de GLPI ou créez une règle d'entité par boîte "
+"(étape Réception des tickets par e-mail de l'assistant)."
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:107
+msgid ""
+"Boucle de messages : une boîte relevée est aussi une adresse d'envoi de GLPI"
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:108
+msgid ""
+"Les notifications envoyées par GLPI arrivent dans une boîte qu'il relève lui-"
+"même : elles risquent de revenir en tickets, en boucle."
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:109
+msgid ""
+"Utilisez une adresse d'expédition distincte (par exemple ne-pas-repondre@) "
+"dans Configuration > Notifications > Configuration des suivis par courriels."
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:120
+msgid "Risque de boucle : refus des messages automatiques désactivé"
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:122
+#, php-format
+msgid ""
+"Règle(s) de collecteur native(s) de GLPI désactivée(s) : %s. Les messages "
+"d'absence et les notifications de GLPI peuvent alors créer des tickets en "
+"boucle."
+msgstr ""
+
+#: src/Audit/Checks/MailCollectorCheck.php:125
+msgid ""
+"Réactivez ces règles dans Administration > Règles > Règles d'affectation "
+"d'un ticket ouvert via un collecteur de courriels."
+msgstr ""
+
+#: src/Audit/Checks/IncompleteAssetsCheck.php:77
+msgid "statut"
+msgstr ""
+
+#: src/Audit/Checks/IncompleteAssetsCheck.php:80
+msgid "lieu"
+msgstr ""
+
+#: src/Audit/Checks/IncompleteAssetsCheck.php:83
+msgid "utilisateur (statut « Attribué »)"
+msgstr ""
+
+#: src/Audit/Checks/IncompleteAssetsCheck.php:103
+#, php-format
+msgid "%d matériel à compléter"
+msgid_plural "%d matériels à compléter"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/IncompleteAssetsCheck.php:105
+#, php-format
+msgid "%1$s (sans %2$s)"
+msgstr ""
+
+#: src/Audit/Checks/IncompleteAssetsCheck.php:109
+msgid ""
+"Sans statut, sans lieu ou « Attribué » sans utilisateur : ce matériel "
+"échappe aux recherches et aux rapports. « Créer les tickets » ouvre un "
+"ticket regroupant ces matériels, lié à chacun. Rien n'est complété "
+"automatiquement."
+msgstr ""
+
+#: src/Audit/Checks/IncompleteAssetsCheck.php:113
+#: src/Audit/Checks/WarrantyCheck.php:119
+#: src/Audit/Checks/GhostAssetsCheck.php:117
+msgid "Créer les tickets"
+msgstr ""
+
+#: src/Audit/Checks/IncompleteAssetsCheck.php:132
+#, php-format
+msgid "%1$s : sans %2$s"
+msgstr ""
+
+#: src/Audit/Checks/IncompleteAssetsCheck.php:142
+msgid "Ces matériels sont incomplets dans GLPI :"
+msgstr ""
+
+#: src/Audit/Checks/IncompleteAssetsCheck.php:144
+msgid ""
+"Complétez chaque fiche (statut, lieu, utilisateur). Ce ticket a été ouvert "
+"par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n'a "
+"été modifiée."
+msgstr ""
+
+#: src/Audit/Checks/DuplicateSoftwareCheck.php:55
+#, php-format
+msgid "%d logiciel en double"
+msgid_plural "%d logiciels en double"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/DuplicateSoftwareCheck.php:58
+#, php-format
+msgid "%1$s%2$s : %3$d fiche(s) en trop, %4$d installation(s) à reporter"
+msgstr ""
+
+#: src/Audit/Checks/DuplicateSoftwareCheck.php:67
+#, php-format
+msgid ""
+"« Fusionner » garde la plus ancienne fiche de chaque logiciel et y reporte "
+"les versions, les %d installation(s), les licences, documents et tickets des "
+"doublons, puis supprime les doublons. Aucune installation n'est perdue."
+msgstr ""
+
+#: src/Audit/Checks/DuplicateSoftwareCheck.php:71
+msgid "Fusionner"
+msgstr ""
+
+#: src/Audit/Checks/NetworkConsistencyCheck.php:74
+#, php-format
+msgid "%d adresse IP portée par plusieurs éléments"
+msgid_plural "%d adresses IP portées par plusieurs éléments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/NetworkConsistencyCheck.php:82
+msgid ""
+"Une même adresse sur deux équipements provoque des coupures difficiles à "
+"diagnostiquer. Vérifiez l'attribution (réservation DHCP, adresse fixe "
+"recopiée, ancien équipement encore inventorié) ; une adresse virtuelle "
+"partagée volontairement (cluster, VRRP) peut être ignorée."
+msgstr ""
+
+#: src/Audit/Checks/NetworkConsistencyCheck.php:101
+#, php-format
+msgid "%d paire de réseaux IP qui se chevauchent"
+msgid_plural "%d paires de réseaux IP qui se chevauchent"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/NetworkConsistencyCheck.php:106
+#, php-format
+msgid "%1$s et %2$s"
+msgstr ""
+
+#: src/Audit/Checks/NetworkConsistencyCheck.php:112
+msgid ""
+"Deux sites ou un partenaire relié par VPN qui utilisent la même plage ne "
+"peuvent pas communiquer correctement. Renumérotez l'un des réseaux, ou "
+"mettez en place une traduction d'adresses, puis corrigez le plan d'adressage."
+msgstr ""
+
+#: src/Audit/Checks/NetworkConsistencyCheck.php:122
+#, php-format
+msgid "%d VLAN sans réseau IP associé"
+msgid_plural "%d VLAN sans réseau IP associé"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/NetworkConsistencyCheck.php:126
+msgid ""
+"Associez chaque VLAN à son réseau IP (onglet VLAN du réseau, ou plan "
+"d'adressage) pour que le schéma réseau reste complet."
+msgstr ""
+
+#: src/Audit/Checks/NetworkConsistencyCheck.php:147
+#, php-format
+msgid "%d adresse inventoriée hors de tout réseau déclaré"
+msgid_plural "%d adresses inventoriées hors de tout réseau déclaré"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/NetworkConsistencyCheck.php:154
+msgid ""
+"Le plan d'adressage est incomplet, ou l'équipement est dans un réseau "
+"inattendu. Déclarez le réseau manquant (plan d'adressage) ou vérifiez "
+"l'équipement."
+msgstr ""
+
+#: src/Audit/Checks/NoActiveCalendarCheck.php:39
+msgid "Calendriers"
+msgstr ""
+
+#: src/Audit/Checks/NoActiveCalendarCheck.php:56
+msgid "Aucun calendrier n'est configuré"
+msgstr ""
+
+#: src/Audit/Checks/NoActiveCalendarCheck.php:58
+msgid ""
+"Les échéances SLA/OLA (heures ouvrées) ne peuvent pas être calculées sans "
+"calendrier."
+msgstr ""
+
+#: src/Audit/Checks/NoActiveCalendarCheck.php:62
+msgid ""
+"Créez au moins un calendrier via l'assistant de configuration ou "
+"manuellement."
+msgstr ""
+
+#: src/Audit/Checks/NoSlaConfiguredCheck.php:56
+msgid "Aucun SLA n'est configuré"
+msgstr ""
+
+#: src/Audit/Checks/NoSlaConfiguredCheck.php:58
+msgid ""
+"Aucun engagement de délai (temps de résolution, escalade...) n'est suivi sur "
+"les tickets."
+msgstr ""
+
+#: src/Audit/Checks/NoSlaConfiguredCheck.php:62
+msgid ""
+"Définissez au moins un SLA via l'assistant de configuration si des "
+"engagements de délai s'appliquent."
+msgstr ""
+
+#: src/Audit/Checks/DuplicateDropdownsCheck.php:65
+#, php-format
+msgid "… et %d autre(s) groupe(s)."
+msgstr ""
+
+#: src/Audit/Checks/DuplicateDropdownsCheck.php:72
+#, php-format
+msgid "%d entrée(s) en double (fabricants, modèles, types...)"
+msgstr ""
+
+#: src/Audit/Checks/DuplicateDropdownsCheck.php:75
+msgid ""
+"Corrigez en un clic : pour chaque groupe, une seule entrée est gardée (le "
+"nom exact de la marque s'il existe, sinon la plus ancienne) et tous les "
+"matériels, modèles et logiciels qui utilisaient les doublons sont reportés "
+"dessus, puis les doublons sont supprimés."
+msgstr ""
+
+#: src/Audit/Checks/NoStatesConfiguredCheck.php:58
+msgid "Aucun statut d'élément n'est défini"
+msgstr ""
+
+#: src/Audit/Checks/NoStatesConfiguredCheck.php:60
+msgid ""
+"Le parc ne peut pas exprimer \"en stock\", \"attribué\", \"en panne\"... "
+"sans au moins un statut."
+msgstr ""
+
+#: src/Audit/Checks/NoStatesConfiguredCheck.php:64
+msgid ""
+"Utilisez l'assistant de configuration (étape Statuts) ou créez-en "
+"manuellement."
+msgstr ""
+
+#: src/Audit/Checks/UncategorizedSoftwareCheck.php:84
+#, php-format
+msgid "%d logiciel sans catégorie peut être classé"
+msgid_plural "%d logiciels sans catégorie peuvent être classés"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/UncategorizedSoftwareCheck.php:87
+msgid ""
+"Les règles « Catégories de logiciels » de l'assistant savent les classer "
+"(navigateurs, bureautique, sécurité...). « Classer » leur applique la "
+"catégorie trouvée, sans toucher aux logiciels qui en ont déjà une."
+msgstr ""
+
+#: src/Audit/Checks/UncategorizedSoftwareCheck.php:91
+msgid "Classer"
+msgstr ""
+
+#: src/Audit/Checks/WarrantyCheck.php:105
+#, php-format
+msgid "Garanties : %1$d expirée(s), %2$d expirent dans les %3$d jours"
+msgstr ""
+
+#: src/Audit/Checks/WarrantyCheck.php:111
+#, php-format
+msgid "%1$s (fin le %2$s)"
+msgstr ""
+
+#: src/Audit/Checks/WarrantyCheck.php:115
+msgid ""
+"Prolonger la garantie, prévoir le remplacement, ou accepter le risque ? "
+"« Créer les tickets » ouvre un ticket regroupant ces matériels, lié à "
+"chacun. Rien n'est modifié sur le matériel. Le délai se règle plus bas, dans "
+"« Contrôles du parc »."
+msgstr ""
+
+#: src/Audit/Checks/WarrantyCheck.php:138
+#, php-format
+msgid "%1$s : fin de garantie le %2$s"
+msgstr ""
+
+#: src/Audit/Checks/WarrantyCheck.php:148
+msgid ""
+"Ces matériels en service ont une garantie expirée ou qui expire bientôt :"
+msgstr ""
+
+#: src/Audit/Checks/WarrantyCheck.php:150
+msgid ""
+"Pour chacun : prolonger la garantie, prévoir le remplacement, ou accepter le "
+"risque. Ce ticket a été ouvert par le mode Audit de Configuration GLPI "
+"Auto : aucune donnée du matériel n'a été modifiée."
+msgstr ""
+
+#: src/Audit/Checks/WeakPasswordPolicyCheck.php:44
+msgid "Mots de passe"
+msgstr ""
+
+#: src/Audit/Checks/WeakPasswordPolicyCheck.php:60
+msgid "longueur minimale inférieure à 8 caractères"
+msgstr ""
+
+#: src/Audit/Checks/WeakPasswordPolicyCheck.php:69
+msgid "aucune exigence de complexité (chiffre, lettre, majuscule ou symbole)"
+msgstr ""
+
+#: src/Audit/Checks/WeakPasswordPolicyCheck.php:80
+msgid "La politique de mot de passe est faible"
+msgstr ""
+
+#: src/Audit/Checks/WeakPasswordPolicyCheck.php:83
+msgid ""
+"Renforcez la politique de mot de passe dans la configuration générale de "
+"GLPI : au moins 8 caractères et une exigence de complexité."
+msgstr ""
+
+#: src/Audit/Checks/GhostAssetsCheck.php:104
+#, php-format
+msgid "%1$d matériel ne remonte plus à l'inventaire depuis %2$d jours"
+msgid_plural ""
+"%1$d matériels ne remontent plus à l'inventaire depuis %2$d jours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/GhostAssetsCheck.php:109
+#, php-format
+msgid "%1$s (dernier inventaire le %2$s)"
+msgstr ""
+
+#: src/Audit/Checks/GhostAssetsCheck.php:113
+msgid ""
+"Perdu, volé, en panne, ou sorti du parc sans être déclaré ? « Créer les "
+"tickets » ouvre un ticket par matériel, lié à lui, pour que l'équipe "
+"vérifie. Rien n'est modifié sur le matériel. Le délai se règle plus bas, "
+"dans « Contrôles du parc »."
+msgstr ""
+
+#: src/Audit/Checks/GhostAssetsCheck.php:135
+msgid "personne"
+msgstr ""
+
+#: src/Audit/Checks/GhostAssetsCheck.php:138
+#, php-format
+msgid ""
+"%1$s ne remonte plus à l'inventaire depuis le %2$s. Utilisateur dans GLPI : "
+"%3$s."
+msgstr ""
+
+#: src/Audit/Checks/GhostAssetsCheck.php:144
+msgid ""
+"Vérifiez si le matériel est perdu, volé, en panne, ou sorti du parc sans "
+"être déclaré, puis mettez à jour sa fiche. Ce ticket a été ouvert par le "
+"mode Audit de Configuration GLPI Auto : aucune donnée du matériel n'a été "
+"modifiée."
+msgstr ""
+
+#: src/Audit/Checks/NoTicketCategoriesCheck.php:57
+msgid "Aucune catégorie de ticket n'est configurée"
+msgstr ""
+
+#: src/Audit/Checks/NoTicketCategoriesCheck.php:59
+msgid ""
+"Les tickets ne peuvent pas être classifiés ni routés automatiquement vers la "
+"bonne équipe sans au moins une catégorie."
+msgstr ""
+
+#: src/Audit/Checks/NoTicketCategoriesCheck.php:63
+msgid ""
+"Utilisez l'assistant de configuration (étape Catégories de tickets) ou créez-"
+"en manuellement."
+msgstr ""
+
+#: src/Audit/Checks/NotificationsDisabledCheck.php:54
+msgid "Les notifications sont désactivées"
+msgstr ""
+
+#: src/Audit/Checks/NotificationsDisabledCheck.php:56
+msgid ""
+"Aucune notification (nouveau ticket, réponse, rappel...) n'est envoyée par "
+"GLPI."
+msgstr ""
+
+#: src/Audit/Checks/NotificationsDisabledCheck.php:59
+msgid "Activez les notifications dans la configuration générale de GLPI."
+msgstr ""
+
+#: src/Audit/Checks/DefaultCredentialsCheck.php:56
+msgid "Comptes par défaut"
+msgstr ""
+
+#: src/Audit/Checks/DefaultCredentialsCheck.php:89
+#, php-format
+msgid "%d compte par défaut utilise encore son mot de passe d'usine"
+msgid_plural "%d comptes par défaut utilisent encore leur mot de passe d'usine"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/DefaultCredentialsCheck.php:98
+msgid ""
+"Changez immédiatement le mot de passe de ces comptes, ou désactivez-les "
+"s'ils ne sont pas utilisés : ce sont des identifiants publiquement connus."
+msgstr ""
+
+#: src/Audit/Checks/EntitiesWithoutAddressCheck.php:71
+#, php-format
+msgid "%d entité sans adresse renseignée"
+msgid_plural "%d entités sans adresse renseignée"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/EntitiesWithoutAddressCheck.php:80
+msgid ""
+"Renseignez l'adresse de chaque entité concernée, utile pour les documents "
+"générés et la conformité."
+msgstr ""
+
+#: src/Audit/AuditReportCron.php:49
+msgid "Envoie par e-mail le rapport périodique de l'audit de configuration"
+msgstr ""
+
+#: src/Audit/ParkAudit.php:101
+#, php-format
+msgid "… et %d autre(s)"
+msgstr ""
+
+#: src/Audit/ParkAudit.php:203
+#, php-format
+msgid "%d ticket ouvert."
+msgid_plural "%d tickets ouverts."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/ParkAudit.php:204
+msgid ""
+"Aucun nouveau ticket : les matériels concernés ont déjà un ticket ouvert."
+msgstr ""
+
+#: src/Audit/AuditWatchCron.php:45
+msgid ""
+"Ré-exécute l'audit de configuration et détecte les nouveaux constats "
+"critiques"
+msgstr ""
+
+#: src/RelocationArchivingFormBuilder.php:193
+msgid "Localisation concernée (départ et/ou arrivée)"
+msgstr ""
+
+#: src/ContractReviewFormBuilder.php:178
+msgid "Type de contrat concerné"
+msgstr ""
+
+#: src/ContractReviewFormBuilder.php:187
+msgid "Document à faire relire ou signer"
+msgstr ""
+
+#: src/WebsiteUpdateFormBuilder.php:184
+msgid "Page ou section concernée"
+msgstr ""
+
+#: src/WebsiteUpdateFormBuilder.php:193
+msgid "Type de modification"
+msgstr ""
+
+#: src/AccessBadgeFormBuilder.php:183
+msgid "Zone ou local concerné"
+msgstr ""
+
+#: src/AccessBadgeFormBuilder.php:192
+msgid "Date de début d'accès"
+msgstr ""
+
+#: src/AccessBadgeFormBuilder.php:202 src/RequestFormLibraryBuilder.php:498
+msgid "Date de fin d'accès"
+msgstr ""
+
+#: src/UserAccountCreationFormBuilder.php:175
+msgid "Nom complet de la personne concernée"
+msgstr ""
+
+#: src/UserAccountCreationFormBuilder.php:184
+msgid "Date d'arrivée souhaitée"
+msgstr ""
+
+#: src/UserAccountCreationFormBuilder.php:198
+msgid "Poste ou service"
+msgstr ""
+
+#: src/ServiceCatalogBuilder.php:307 front/csvimport.php:219
+msgid "Titre"
+msgstr ""
+
+#: src/ServiceCatalogBuilder.php:316 front/csvimport.php:220
+msgid "Description"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:150
+msgid ""
+"Ouvrir, modifier ou retirer l'accès à un dossier du réseau. Le responsable "
+"du dossier approuve la demande."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:156
+msgid "Dossier ou partage concerné"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:157
+msgid "Chemin complet tel qu'affiché dans l'explorateur, ou nom du dossier."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:160
+msgid "Responsable du dossier (approbateur)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:161
+msgid "Date de fin d'accès (si temporaire)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:162 src/RequestFormLibraryBuilder.php:214
+#: src/RequestFormLibraryBuilder.php:262 src/RequestFormLibraryBuilder.php:346
+#: src/RequestFormLibraryBuilder.php:502 src/RequestFormLibraryBuilder.php:599
+msgid "Justification"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:167
+msgid ""
+"Impossible de vous connecter à votre session, à la messagerie ou à une "
+"application."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:172
+msgid "Compte concerné"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:174
+msgid "Quelle application ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:176
+msgid "Message d'erreur affiché"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:181
+msgid ""
+"Récupérer un fichier, un dossier, une boîte mail ou une base supprimés ou "
+"abîmés, à partir d'une sauvegarde."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:187
+msgid "Que faut-il restaurer ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:190
+msgid "Emplacement (chemin, serveur, application)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:191
+msgid "Date de la version souhaitée"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:192 src/RequestFormLibraryBuilder.php:343
+#: src/RequestFormLibraryBuilder.php:564
+msgid "Urgence"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:194
+msgid "Quel travail est bloqué en attendant ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:195
+msgid "Aide le support à traiter les demandes urgentes en premier."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:197
+msgid "Précisions (noms de fichiers, cause de la perte)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:202
+msgid ""
+"Autoriser ou bloquer une clé USB, un disque externe ou un autre support "
+"amovible."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:207 src/RequestFormLibraryBuilder.php:356
+#: front/csvimport.php:245 front/jiraimport.php:182
+msgid "Demande"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:209
+msgid "Périphérique (type, marque, numéro de série)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:210 src/RequestFormLibraryBuilder.php:496
+#: src/RequestFormLibraryBuilder.php:595
+msgid "Durée"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:219
+msgid "Une étiquette ou un code-barres ne s'imprime pas, ou mal."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:224
+msgid "Imprimante concernée (nom ou emplacement)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:225
+msgid "Application qui lance l'impression"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:226
+msgid "Modèle d'étiquette"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:227
+msgid "Symptôme"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:230
+msgid "Photo ou exemple de l'étiquette"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:235
+msgid ""
+"Transmettre une demande technique d'un client, d'un fournisseur ou d'un "
+"prestataire."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:240
+msgid "Partenaire"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:241
+msgid "Objet"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:244
+msgid "Échéance demandée par le partenaire"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:245
+msgid "Demande qui revient chaque année ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:247
+msgid "Demande du partenaire (pièce jointe)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:253
+msgid ""
+"Corriger une valeur erronée dans une application, après approbation d'un "
+"responsable."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:259
+msgid "Enregistrement concerné (numéro, référence)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:261
+msgid "Valeur attendue"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:263
+msgid "Responsable qui valide la correction"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:264
+msgid "La correction ne sera faite qu'après son approbation dans le ticket."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:265
+msgid "Capture d'écran ou fichier"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:270
+msgid "Obtenir une extraction ponctuelle ou un rapport envoyé régulièrement."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:275
+msgid "Données souhaitées"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:276
+msgid "Filtres (période, site, client, statut…)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:279
+msgid "Format"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:281
+msgid "Destinataires"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:287
+msgid ""
+"Proposer une amélioration ou une nouvelle fonction dans une application."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:292
+msgid "Application concernée"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:293
+msgid "Besoin métier"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:294
+msgid "Gain attendu (temps, erreurs évitées, chiffre)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:295
+msgid "Utilisateurs concernés"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:302
+msgid ""
+"Un import, un échange avec un partenaire ou un traitement de nuit est en "
+"erreur."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:307
+msgid "Interface ou traitement (import, échange partenaire, lot de nuit…)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:308
+msgid "Date de l'erreur"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:309
+msgid "Message d'erreur"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:310
+msgid "Volume touché (commandes, lignes, fichiers)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:311
+msgid "Impact"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:313
+msgid "Fichier ou journal"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:318
+msgid ""
+"Préparer l'ouverture d'un site ou d'un entrepôt dans les applications de "
+"l'entreprise."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:323
+msgid "Nom du site ou de l'entrepôt"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:324
+msgid "Date de démarrage"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:325
+msgid "Paramétrage à prévoir"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:328
+msgid "Responsable du site"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:334
+msgid ""
+"Déstocker, transférer ou ajuster un grand nombre d'articles à partir d'un "
+"fichier, après approbation."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:342
+msgid "Fichier des articles et quantités"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:345
+msgid "Responsable qui valide le mouvement"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:351
+msgid "Créer un modèle d'étiquette ou modifier un modèle existant."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:358
+msgid "Modèle à modifier"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:360
+msgid "Informations à faire figurer"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:361
+msgid "Format (dimensions, imprimante)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:362
+msgid "Exemple ou maquette"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:369
+msgid "Préparer le poste, le matériel et les accès d'une personne qui arrive."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:377
+msgid "Le nouveau collaborateur"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:379
+msgid "Prénom et nom"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:380
+msgid "Poste occupé"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:381
+msgid "Date d'arrivée"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:382
+msgid ""
+"Prévenez au moins une semaine avant : le matériel doit être commandé et "
+"préparé."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:383 src/RequestFormLibraryBuilder.php:436
+msgid "Responsable hiérarchique"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:384
+msgid "Il suit le ticket et reçoit les informations de connexion."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:385
+msgid "Type de contrat"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:387
+msgid "Date de fin de contrat"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:388
+msgid "Les comptes seront fermés automatiquement à cette date."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:390
+msgid "Site de travail"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:394
+msgid "Matériel"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:396
+msgid "Matériel nécessaire"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:399
+msgid "Modèle de portable"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:402
+msgid "Type de téléphone"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:408
+msgid "Accès"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:410
+msgid "Adresse e-mail"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:412
+msgid "Mêmes accès qu'un collègue (facultatif)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:413
+msgid "Le support reprend ses groupes, dossiers partagés et applications."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:414
+msgid "Applications et dossiers partagés nécessaires"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:415
+msgid "Accès à distance (VPN)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:424
+msgid ""
+"Prévenir le service informatique d'un départ : comptes à fermer, matériel à "
+"récupérer, données à conserver."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:431
+msgid "Le collaborateur"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:433
+msgid "Collaborateur qui part"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:434
+msgid "Dernier jour de présence"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:435
+msgid "Les accès sont fermés le soir de ce jour."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:440
+msgid "Site ou entité de destination"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:441
+msgid "Ses comptes sont alors déplacés, pas fermés."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:446
+msgid "Matériel à restituer"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:449
+msgid "Matériel à récupérer"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:452
+msgid "Autre matériel"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:460
+msgid "Messagerie et fichiers"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:462
+msgid "Boîte mail"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:464
+msgid "Collègue qui reprend la messagerie"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:466
+msgid "Fichiers personnels"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:468
+msgid "Collègue qui reçoit les fichiers"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:470
+msgid "Accès particuliers à retirer (applications, comptes partagés)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:478
+msgid ""
+"Obtenir un accès ou des droits supplémentaires dans une application. Votre "
+"responsable approuve la demande."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:485
+msgid "Pour qui ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:487
+msgid "Collègue concerné"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:489
+msgid "Application"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:490
+msgid "Nom de l'application tel qu'il apparaît à l'écran."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:491
+msgid "Niveau d'accès"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:493
+msgid "Pourquoi un accès d'administration est-il nécessaire ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:495
+msgid "Mêmes droits qu'un collègue (facultatif)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:500
+msgid "Responsable qui valide l'accès"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:501
+msgid "L'accès n'est ouvert qu'après son approbation dans le ticket."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:508
+msgid ""
+"E-mail suspect, virus, compte piraté, appareil perdu ou données envoyées par "
+"erreur : signalez-le tout de suite, même en cas de doute."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:525
+msgid "Que se passe-t-il ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:526
+msgid ""
+"Ne supprimez rien et n'éteignez pas votre poste : l'équipe sécurité peut en "
+"avoir besoin."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:528
+msgid "Ce que vous signalez"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:532
+msgid "Ce que vous avez constaté"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:536 src/RequestFormLibraryBuilder.php:546
+msgid "L'e-mail suspect"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:539
+msgid "Adresse de l'expéditeur"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:540
+msgid "Avez-vous cliqué sur un lien ou ouvert une pièce jointe ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:542
+msgid "Avez-vous saisi un mot de passe ou un code ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:543
+msgid ""
+"Si oui, changez tout de suite ce mot de passe, sur tous les sites où vous "
+"l'utilisez."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:547
+msgid ""
+"Enregistrez l'e-mail (fichier .eml ou .msg) ou faites une capture d'écran, "
+"puis joignez-le ici. Ne le transférez pas à vos collègues."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:551
+msgid "L'appareil"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:554
+msgid "Appareil concerné"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:555
+msgid ""
+"Choisissez-le parmi vos équipements ; s'il n'y figure pas, décrivez-le ci-"
+"dessous."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:556
+msgid "Appareil (s'il ne figure pas dans la liste)"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:557
+msgid "Où et quand l'appareil a-t-il été perdu ou volé ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:566
+msgid "Qui est touché ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:569
+msgid "Des données personnelles (clients, salariés) sont-elles concernées ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:570
+msgid ""
+"Si oui, l'entreprise peut devoir prévenir l'autorité de protection des "
+"données dans les 72 heures."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:580
+msgid ""
+"Obtenir des droits d'administration sur un poste, un serveur ou une "
+"application, pour une durée limitée et après approbation."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:587
+msgid "Sur quoi ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:591
+msgid "Nom du serveur ou de l'application"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:593
+msgid "Pour quoi faire ?"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:597
+msgid "Fin des droits"
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:600
+msgid ""
+"Expliquez pourquoi l'intervention d'un technicien ne suffit pas : les droits "
+"d'administration sont accordés au plus juste et pour la durée la plus courte."
+msgstr ""
+
+#: src/RequestFormLibraryBuilder.php:601
+msgid "Responsable qui valide la demande"
+msgstr ""
+
+#: src/DeliveryTrackingFormBuilder.php:174
+msgid "Numéro de commande ou de bon de livraison"
+msgstr ""
+
+#: src/SupplyOrderFormBuilder.php:174
+msgid "Article ou référence souhaité"
+msgstr ""
+
+#: src/ItemReturnFormBuilder.php:195
+msgid "Article concerné"
+msgstr ""
+
+#: src/ItemReturnFormBuilder.php:216
+msgid "Photo du défaut ou preuve d'achat"
+msgstr ""
+
+#: src/MailCollectorBuilder.php:326
+msgid "Créé par l'assistant Configuration GLPI Auto."
+msgstr ""
+
+#: src/MailCollectorBuilder.php:509
+msgid ""
+"Règle créée par l'assistant Configuration GLPI Auto (réception des tickets "
+"par e-mail)."
+msgstr ""
+
+#: src/NonConformityFormBuilder.php:195
+msgid "Type de non-conformité"
+msgstr ""
+
+#: src/NonConformityFormBuilder.php:207
+msgid "Domaine ou service concerné"
+msgstr ""
+
+#: src/NonConformityFormBuilder.php:216
+msgid "Photo ou preuve documentaire"
+msgstr ""
+
+#: src/LeaveRequestFormBuilder.php:225
+msgid "Type de congé"
+msgstr ""
+
+#: src/LeaveRequestFormBuilder.php:272
+msgid "Date de réception du justificatif médical"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:44
+msgid "OLA"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:45
+msgid "Escalade"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:46
+msgid "LDAP"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:47
+msgid "Tickets"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:47
+msgid "Tâches"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:47
+msgid "Validations"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:48
+msgid "Changements"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:48
+msgid "Base de connaissances"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:49 src/Blueprint/FieldGroupLabel.php:61
+msgid "Fabricants"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:49
+msgid "Documents"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:49
+msgid "Planning"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:50
+msgid "Satisfaction"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:50
+msgid "Comité de validation"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:51
+msgid "Missions à l'étranger"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:51
+msgid "Solutions"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:52
+msgid "Suivis"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:52
+msgid "Utilisateurs"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:52
+msgid "Unicité des champs"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:53
+msgid "Flux RSS"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:53
+msgid "Lignes téléphoniques"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:53
+msgid "Types d'actifs"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:54
+msgid "Licences logicielles"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:54
+msgid "Certificats"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:54
+msgid "Tickets récurrents"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:55
+msgid "Jours fériés"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:55
+msgid "Groupe VIP"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:55
+msgid "Sécurité incendie"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:56
+msgid "Sécurité physique"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:57
+msgid "Inventaire"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:57
+msgid "Types de requête"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:59
+msgid "Groupes de support"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:60
+msgid "Tableaux de bord"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:62
+msgid "Systèmes d'exploitation"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:62
+msgid "Unicité des intitulés"
+msgstr ""
+
+#: src/Blueprint/FieldGroupLabel.php:63
+msgid "Déclencheurs assetsign"
+msgstr ""
+
+#: src/InvoicePaymentFormBuilder.php:186
+msgid "Numéro de facture ou référence"
+msgstr ""
+
+#: src/InvoicePaymentFormBuilder.php:207
+msgid "Justificatif (facture, bon de commande...)"
+msgstr ""
+
+#: src/FurnitureRequestFormBuilder.php:196
+msgid "Type de mobilier concerné"
+msgstr ""
+
+#: src/FurnitureRequestFormBuilder.php:208
+msgid "Localisation du poste"
+msgstr ""
+
+#: src/VehicleIncidentFormBuilder.php:308
+msgid "Date du sinistre"
+msgstr ""
+
+#: src/VehicleIncidentFormBuilder.php:322
+msgid "Dans quelle mesure le véhicule est-il immobilisé ou inutilisable ?"
+msgstr ""
+
+#: src/VehicleIncidentFormBuilder.php:331
+msgid "Un tiers est-il impliqué ?"
+msgstr ""
+
+#: src/VehicleIncidentFormBuilder.php:355
+msgid "Coordonnées et informations du tiers"
+msgstr ""
+
+#: src/VehicleIncidentFormBuilder.php:366
+msgid "Photos des dommages"
+msgstr ""
+
+#: ajax/mailcollector_test.php:43
+msgid "Collecteur introuvable."
+msgstr ""
+
+#: ajax/mailcollector_test.php:48
+msgid ""
+"Aucun mot de passe enregistré pour ce collecteur : saisissez-le dans "
+"l'assistant ou dans l'écran du collecteur."
+msgstr ""
+
+#: ajax/mailcollector_test.php:57
+#, php-format
+msgid "Connexion réussie : %d message(s) dans le dossier relevé."
+msgstr ""
+
+#: ajax/mailcollector_test.php:62
+#, php-format
+msgid "Échec de la connexion : %s"
+msgstr ""
+
+#: front/wizard.php:374
+msgid "Dossier des palettes personnalisées inscriptible"
+msgstr ""
+
+#: front/wizard.php:376
+#, php-format
+msgid ""
+"nécessaire à la palette personnalisée (étape 17) : vérifiez les droits sur %s"
+msgstr ""
+
+#: front/wizard.php:379
+msgid "Dossier de cache GLPI inscriptible"
+msgstr ""
+
+#: front/wizard.php:381
+#, php-format
+msgid ""
+"nécessaire au bon fonctionnement général de GLPI : vérifiez les droits sur %s"
+msgstr ""
+
+#: front/wizard.php:384
+msgid "Extension GD ou Imagick disponible"
+msgstr ""
+
+#: front/wizard.php:386
+msgid ""
+"utile pour valider les logos uploadés (étape 17) : ni l'une ni l'autre n'est "
+"chargée"
+msgstr ""
+
+#: front/wizard.php:893
+msgid "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
+msgstr ""
+
+#: front/wizard.php:894
+#, php-format
+msgid "Structure créée : %s."
+msgstr ""
+
+#: front/wizard.php:896
+msgid "Calendrier créé et assigné."
+msgstr ""
+
+#: front/wizard.php:900
+#, php-format
+msgid ""
+"%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre "
+"sites du même pays)."
+msgstr ""
+
+#: front/wizard.php:905
+msgid "SLA créés et assignés."
+msgstr ""
+
+#: front/wizard.php:908
+msgid "OLA (engagements internes) créés et assignés."
+msgstr ""
+
+#: front/wizard.php:911
+msgid "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
+msgstr ""
+
+#: front/wizard.php:914
+#, php-format
+msgid "%d client(s) avec des réglages personnalisés."
+msgstr ""
+
+#: front/wizard.php:917
+#, php-format
+msgid "%d catégories de tickets créées."
+msgstr ""
+
+#: front/wizard.php:920
+msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
+msgstr ""
+
+#: front/wizard.php:923
+msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
+msgstr ""
+
+#: front/wizard.php:926
+msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
+msgstr ""
+
+#: front/wizard.php:929
+msgid ""
+"Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche "
+"Bâtiment)."
+msgstr ""
+
+#: front/wizard.php:932
+msgid ""
+"Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection "
+"des Personnes)."
+msgstr ""
+
+#: front/wizard.php:935
+#, php-format
+msgid "%d services créés dans le catalogue."
+msgstr ""
+
+#: front/wizard.php:938
+msgid ""
+"Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de "
+"ticket calculé automatiquement)."
+msgstr ""
+
+#: front/wizard.php:941
+msgid ""
+"Service \"Demande de licence logicielle\" enrichi (titre de ticket calculé "
+"automatiquement)."
+msgstr ""
+
+#: front/wizard.php:944
+msgid ""
+"Service \"Demande d'accès VPN\" enrichi (question conditionnelle, titre de "
+"ticket calculé automatiquement)."
+msgstr ""
+
+#: front/wizard.php:947
+msgid ""
+"Service \"Demande de badge d'accès\" enrichi (titre de ticket calculé "
+"automatiquement)."
+msgstr ""
+
+#: front/wizard.php:950
+msgid ""
+"Service \"Demande de congé ou absence\" enrichi (question conditionnelle, "
+"titre de ticket calculé automatiquement)."
+msgstr ""
+
+#: front/wizard.php:953
+msgid ""
+"Service \"Déclarer une arrivée, un départ ou une mutation\" enrichi "
+"(question conditionnelle, titre de ticket calculé automatiquement)."
+msgstr ""
+
+#: front/wizard.php:956
+msgid ""
+"Service \"Réservation ou problème d'équipement de salle de réunion\" enrichi "
+"(question conditionnelle)."
+msgstr ""
+
+#: front/wizard.php:959
+#, php-format
+msgid ""
+"%d autres services du catalogue enrichis avec des questions ciblées et un "
+"titre de ticket calculé automatiquement."
+msgstr ""
+
+#: front/wizard.php:962
+#, php-format
+msgid "%d statuts d'éléments créés."
+msgstr ""
+
+#: front/wizard.php:965
+#, php-format
+msgid "%d raisons d'attente créées."
+msgstr ""
+
+#: front/wizard.php:968
+msgid "Personnalisation graphique appliquée."
+msgstr ""
+
+#: front/wizard.php:971
+#, php-format
+msgid "%d logo(s) d'entité appliqué(s)."
+msgstr ""
+
+#: front/wizard.php:976
+#, php-format
+msgid ""
+"%d logo(s) trop volumineux pour être appliqué(s) : utilisez un fichier plus "
+"léger (idéalement sous 40 Ko) ou configurez-le manuellement depuis "
+"Configuration > Entités > onglet Général."
+msgstr ""
+
+#: front/wizard.php:981
+#, php-format
+msgid "%d couleur(s) par client/site appliquée(s)."
+msgstr ""
+
+#: front/wizard.php:984
+#, php-format
+msgid "%d modèle(s) de notification personnalisés."
+msgstr ""
+
+#: front/wizard.php:988
+msgid "Palette GLPI personnalisée créée et définie par défaut."
+msgstr ""
+
+#: front/wizard.php:989
+msgid "Palette GLPI native définie par défaut."
+msgstr ""
+
+#: front/wizard.php:992
+msgid "Réglages généraux GLPI appliqués."
+msgstr ""
+
+#: front/wizard.php:995
+msgid ""
+"Configuration SMTP appliquée. Testez l'envoi depuis Configuration > "
+"Notifications."
+msgstr ""
+
+#: front/wizard.php:999
+#, php-format
+msgid ""
+"Réception par e-mail : %1$d collecteur(s) créé(s), %2$d mis à jour, %3$d "
+"activé(s), %4$d règle(s) créée(s) ou mise(s) à jour. Testez la connexion "
+"depuis Configuration > Collecteurs."
+msgstr ""
+
+#: front/wizard.php:1006
+#, php-format
+msgid "Réception par e-mail : %d règle(s) créée(s) ou mise(s) à jour."
+msgstr ""
+
+#: front/wizard.php:1010
+#, php-format
+msgid "Réception par e-mail : introuvable(s) dans GLPI, donc ignoré(s) : %s."
+msgstr ""
+
+#: front/wizard.php:1015
+msgid "Tableau de bord ITIL créé (Tableaux de bord > Tableau de bord ITIL)."
+msgstr ""
+
+#: front/wizard.php:1018
+msgid "Modèles de tickets créés et assignés aux profils."
+msgstr ""
+
+#: front/wizard.php:1021
+msgid "Champs masqués sur les formulaires de création en libre-service."
+msgstr ""
+
+#: front/wizard.php:1024
+#, php-format
+msgid "%d règle(s) de droits LDAP créées."
+msgstr ""
+
+#: front/wizard.php:1027
+#, php-format
+msgid "%d règle(s) de droits par fonction créées."
+msgstr ""
+
+#: front/wizard.php:1030
+#, php-format
+msgid "%d catégories de tâches créées."
+msgstr ""
+
+#: front/wizard.php:1033
+#, php-format
+msgid "%d gabarits de tâche créés."
+msgstr ""
+
+#: front/wizard.php:1036
+#, php-format
+msgid "%d gabarits de solution créés."
+msgstr ""
+
+#: front/wizard.php:1039
+#, php-format
+msgid "%d gabarits de suivis créés."
+msgstr ""
+
+#: front/wizard.php:1042
+#, php-format
+msgid "%d gabarits de validation créés."
+msgstr ""
+
+#: front/wizard.php:1045
+msgid "Modèles de changement et de problème créés et assignés aux profils."
+msgstr ""
+
+#: front/wizard.php:1048
+#, php-format
+msgid "%d lieux créés."
+msgstr ""
+
+#: front/wizard.php:1051
+#, php-format
+msgid "%d fabricants créés."
+msgstr ""
+
+#: front/wizard.php:1054
+#, php-format
+msgid "%d règle(s) de dictionnaire fabricant créées."
+msgstr ""
+
+#: front/wizard.php:1057
+#, php-format
+msgid "%d règle(s) de dictionnaire des logiciels créées."
+msgstr ""
+
+#: front/wizard.php:1060
+#, php-format
+msgid ""
+"%d règle(s) de rattachement à l'entité (plage IP, tag) créées ou complétées."
+msgstr ""
+
+#: front/wizard.php:1063
+#, php-format
+msgid "%d règle(s) de catégorie de logiciels créées."
+msgstr ""
+
+#: front/wizard.php:1066
+#, php-format
+msgid "%d règle(s) de dictionnaire des systèmes d'exploitation créées."
+msgstr ""
+
+#: front/wizard.php:1069
+#, php-format
+msgid "%d règle(s) pour ignorer les imprimantes virtuelles créées."
+msgstr ""
+
+#: front/wizard.php:1072
+#, php-format
+msgid "%d règle(s) de dictionnaire des types d'ordinateur créées."
+msgstr ""
+
+#: front/wizard.php:1075
+#, php-format
+msgid "%d opérateurs téléphoniques créés."
+msgstr ""
+
+#: front/wizard.php:1078
+#, php-format
+msgid "%d types de matériel créés."
+msgstr ""
+
+#: front/wizard.php:1081
+#, php-format
+msgid "%d types de licence logicielle créés."
+msgstr ""
+
+#: front/wizard.php:1084
+#, php-format
+msgid "%d types de certificat créés."
+msgstr ""
+
+#: front/wizard.php:1087
+#, php-format
+msgid "%d modèles de tickets récurrents créés."
+msgstr ""
+
+#: front/wizard.php:1090
+#, php-format
+msgid "%d catégories de base de connaissances créées."
+msgstr ""
+
+#: front/wizard.php:1093
+#, php-format
+msgid "%d articles de FAQ créés."
+msgstr ""
+
+#: front/wizard.php:1096
+#, php-format
+msgid "%d rubriques de documents/criticités créées."
+msgstr ""
+
+#: front/wizard.php:1099
+#, php-format
+msgid "%d catégories/gabarits d'évènements de planning créés."
+msgstr ""
+
+#: front/wizard.php:1102
+#, php-format
+msgid "%d types de projet/tâche de projet/statuts de projet créés."
+msgstr ""
+
+#: front/wizard.php:1105
+#, php-format
+msgid "%d gabarits de tâches de projets créés."
+msgstr ""
+
+#: front/wizard.php:1108
+#, php-format
+msgid "%d modèle(s) de projet créés, structure de tâches incluse."
+msgstr ""
+
+#: front/wizard.php:1111
+#, php-format
+msgid "%d source(s) de demande traduites."
+msgstr ""
+
+#: front/wizard.php:1114
+#, php-format
+msgid "%d fiche(s) d'entité complétées avec leur adresse."
+msgstr ""
+
+#: front/wizard.php:1117
+#, php-format
+msgid "%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s)."
+msgstr ""
+
+#: front/wizard.php:1120
+#, php-format
+msgid "%d déclencheur(s) assetsign relié(s) aux statuts d'éléments."
+msgstr ""
+
+#: front/wizard.php:1123
+msgid "Enquête de satisfaction créée (plugin More satisfaction)."
+msgstr ""
+
+#: front/wizard.php:1126
+msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
+msgstr ""
+
+#: front/wizard.php:1129
+msgid "Groupe \"RSSI\" créé et déclaré dans GRC Manager."
+msgstr ""
+
+#: front/wizard.php:1133
+#, php-format
+msgid "%d réglage(s) d'assetsign renseigné(s) (entreprise, lien de la charte)."
+msgstr ""
+
+#: front/wizard.php:1139
+#, php-format
+msgid ""
+"%d revue(s) périodique(s) activée(s) dans GRC Manager (tickets récurrents)."
+msgstr ""
+
+#: front/wizard.php:1145
+#, php-format
+msgid "%d risque(s) type(s) ajouté(s) au registre de GRC Manager, à évaluer."
+msgstr ""
+
+#: front/wizard.php:1150
+#, php-format
+msgid "%d tag(s) créé(s) (plugin Tag)."
+msgstr ""
+
+#: front/wizard.php:1153
+msgid "Règle de validation automatique (supérieur hiérarchique) créée."
+msgstr ""
+
+#: front/wizard.php:1156
+#, php-format
+msgid "%d catégories d'utilisateur créées."
+msgstr ""
+
+#: front/wizard.php:1159
+#, php-format
+msgid "%d règle(s) d'unicité de numéro de série créées."
+msgstr ""
+
+#: front/wizard.php:1162
+#, php-format
+msgid "%d flux RSS ajouté(s)."
+msgstr ""
+
+#: front/wizard.php:1165
+msgid "Clé d'enregistrement GLPI Network enregistrée."
+msgstr ""
+
+#: front/wizard.php:1172
+msgid "Assistant de configuration"
+msgstr ""
+
+#: front/history_restore.php:45
+msgid "Ce Blueprint n'est pas exploitable."
+msgstr ""
+
+#: front/history_restore.php:67
+msgid "Restauration appliquée. Vérifiez chaque étape avant de valider."
+msgstr ""
+
+#: front/history_restore.php:71
+msgid "Restaurer une configuration"
+msgstr ""
+
+#: front/history.php:29
+msgid "Veuillez indiquer un nom pour ce point de sauvegarde."
+msgstr ""
+
+#: front/history.php:34
+msgid "Point de sauvegarde créé."
+msgstr ""
+
+#: front/history.php:42
+msgid "Seuls les points de sauvegarde manuels peuvent être supprimés."
+msgstr ""
+
+#: front/csvimport.php:81
+msgid "Modèle supprimé."
+msgstr ""
+
+#: front/csvimport.php:89
+msgid "Ce fichier n'est pas un modèle d'import exporté par cette page."
+msgstr ""
+
+#: front/csvimport.php:95
+#, php-format
+msgid "Modèle « %s » importé."
+msgstr ""
+
+#: front/csvimport.php:106
+msgid ""
+"Choisissez un fichier CSV (20 Mo au plus) et une entité à laquelle vous avez "
+"accès."
+msgstr ""
+
+#: front/csvimport.php:130
+#, php-format
+msgid ""
+"%d fichier(s) de l'archive écarté(s) : hors d'un dossier portant "
+"l'identifiant du ticket, vides ou trop volumineux (10 Mo par fichier, 200 Mo "
+"en tout)."
+msgstr ""
+
+#: front/csvimport.php:137
+msgid "Fichier vide ou illisible."
+msgstr ""
+
+#: front/csvimport.php:147 front/csvimport.php:182 front/jiraimport.php:140
+msgid "Fichier d'import expiré : recommencez."
+msgstr ""
+
+#: front/csvimport.php:160
+msgid ""
+"Choisissez au moins la colonne de l'identifiant d'origine et celle du titre."
+msgstr ""
+
+#: front/csvimport.php:172
+#, php-format
+msgid "Modèle « %s » enregistré."
+msgstr ""
+
+#: front/csvimport.php:218
+msgid "Identifiant d'origine"
+msgstr ""
+
+#: front/csvimport.php:221
+msgid "Statut"
+msgstr ""
+
+#: front/csvimport.php:225
+msgid "Demandeur (nom)"
+msgstr ""
+
+#: front/csvimport.php:226
+msgid "Demandeur (adresse e-mail)"
+msgstr ""
+
+#: front/csvimport.php:227
+msgid "Technicien (nom)"
+msgstr ""
+
+#: front/csvimport.php:228
+msgid "Technicien (adresse e-mail)"
+msgstr ""
+
+#: front/csvimport.php:229
+msgid "Groupe de techniciens"
+msgstr ""
+
+#: front/csvimport.php:230
+msgid "Date d'ouverture"
+msgstr ""
+
+#: front/csvimport.php:231
+msgid "Date de résolution"
+msgstr ""
+
+#: front/csvimport.php:232
+msgid "Commentaires"
+msgstr ""
+
+#: front/csvimport.php:236 front/jiraimport.php:173
+msgid "Nouveau"
+msgstr ""
+
+#: front/csvimport.php:237 front/jiraimport.php:174
+msgid "En cours (attribué)"
+msgstr ""
+
+#: front/csvimport.php:238 front/jiraimport.php:175
+msgid "En attente"
+msgstr ""
+
+#: front/csvimport.php:239 front/jiraimport.php:176
+msgid "Résolu"
+msgstr ""
+
+#: front/csvimport.php:240 front/jiraimport.php:177
+msgid "Clos"
+msgstr ""
+
+#: front/csvimport.php:241 front/jiraimport.php:178
+msgid "Clos: « Demande non retenue »"
+msgstr ""
+
+#: front/csvimport.php:244 front/jiraimport.php:181
+msgid "Incident"
+msgstr ""
+
+#: front/csvimport.php:252
+msgid "Colonnes de l'identifiant d'origine et du titre non choisies."
+msgstr ""
+
+#: front/csvimport.php:253 front/jiraimport.php:186
+msgid "Fichier vide."
+msgstr ""
+
+#: front/csvimport.php:254
+msgid "Ligne sans identifiant ou sans titre : ignorée."
+msgstr ""
+
+#: front/csvimport.php:255
+msgid "Identifiant déjà présent plus haut dans le fichier : ligne ignorée."
+msgstr ""
+
+#: front/csvimport.php:309
+#, php-format
+msgid "Colonne %d"
+msgstr ""
+
+#: front/csvimport.php:330
+msgid "point-virgule"
+msgstr ""
+
+#: front/csvimport.php:331
+msgid "tabulation"
+msgstr ""
+
+#: front/csvimport.php:332
+msgid "barre verticale"
+msgstr ""
+
+#: front/csvimport.php:333
+msgid "virgule"
+msgstr ""
+
+#: front/profile.form.php:54
+msgid "Configuration actuelle enregistrée comme Blueprint."
+msgstr ""
+
+#: front/profile.form.php:69 front/profile.form.php:74
+msgid "Ce profil ne contient aucun Blueprint exploitable."
+msgstr ""
+
+#: front/profile.form.php:88
+msgid "Exporter ce Blueprint"
+msgstr ""
+
+#: front/jiraimport.php:65
+msgid ""
+"Choisissez un export CSV de Jira (20 Mo au plus) et une entité à laquelle "
+"vous avez accès."
+msgstr ""
+
+#: front/jiraimport.php:93
+msgid ""
+"Renseignez l'adresse de Jira (HTTPS), le jeton, la requête JQL (et l'adresse "
+"e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+msgstr ""
+
+#: front/jiraimport.php:110
+msgid ""
+"Jira refuse l'accès : vérifiez l'adresse e-mail et le jeton, et les droits "
+"du compte sur le projet."
+msgstr ""
+
+#: front/jiraimport.php:111
+msgid ""
+"Adresse introuvable : vérifiez l'adresse de Jira et son type (Cloud ou Data "
+"Center)."
+msgstr ""
+
+#: front/jiraimport.php:112
+msgid "Jira refuse la requête JQL : vérifiez-la dans Jira."
+msgstr ""
+
+#: front/jiraimport.php:113
+msgid "Réponse inattendue : ce n'est pas l'API de Jira."
+msgstr ""
+
+#: front/jiraimport.php:114
+msgid "Jira injoignable depuis le serveur GLPI (réseau, proxy ou certificat)."
+msgstr ""
+
+#: front/jiraimport.php:116
+#, php-format
+msgid ""
+"GLPI refuse par défaut les appels vers un réseau privé. Pour un Jira "
+"interne, un administrateur ajoute %s à la constante "
+"GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (fichier config/"
+"local_define.php)."
+msgstr ""
+
+#: front/jiraimport.php:126
+#, php-format
+msgid ""
+"Plus de %d tickets : seuls les premiers sont importés, affinez la requête "
+"JQL pour le reste."
+msgstr ""
+
+#: front/jiraimport.php:185
+msgid ""
+"En-tête sans colonnes « Clé » et « Résumé » : ce n'est pas un export Jira."
+msgstr ""
+
+#: front/jiraimport.php:187
+msgid "Ligne sans clé ou sans résumé : ignorée."
+msgstr ""
+
+#: front/blueprint_import.php:29
+msgid "Veuillez choisir un fichier Blueprint (.json)."
+msgstr ""
+
+#: front/blueprint_import.php:35
+msgid "Ce fichier n'est pas un JSON valide."
+msgstr ""
+
+#: front/blueprint_import.php:55
+msgid "Blueprint importé"
+msgstr ""
+
+#: front/blueprint_import.php:71
+msgid "Blueprint importé comme nouveau profil."
+msgstr ""
+
+#: front/blueprint_import.php:74
+#, php-format
+msgid ""
+"Un profil s'appelait déjà « %1$s » : le nouveau profil s'appelle « %2$s »."
+msgstr ""
+
+#: front/blueprint_import.php:82
+msgid "Importer un Blueprint"
+msgstr ""
+
+#: front/audit.php:39
+msgid "Correction appliquée."
+msgstr ""
+
+#: front/audit.php:58
+msgid "Contrôles du parc enregistrés."
+msgstr ""
+
+#: front/audit.php:99
+msgid "Rapport d'audit mis en file d'envoi."
+msgstr ""
+
+#: front/audit.php:102
+msgid ""
+"Aucune notification active n'a pu envoyer le rapport : vérifiez la "
+"notification et ses destinataires."
+msgstr ""
+
+#: front/audit.php:108
+msgid "Réglages du rapport d'audit enregistrés."
+msgstr ""
+
+#: front/audit.php:138
+#, php-format
+msgid ""
+"%d nouveau constat critique détecté depuis la dernière vérification "
+"automatique."
+msgid_plural ""
+"%d nouveaux constats critiques détectés depuis la dernière vérification "
+"automatique."
+msgstr[0] ""
+msgstr[1] ""

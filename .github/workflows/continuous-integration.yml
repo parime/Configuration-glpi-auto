@@ -202,6 +202,19 @@ jobs:
           # languages: merged against the fresh .pot, not blindly regenerated.
           git checkout -- locales/en_GB.po
 
+      # #439 : le .pot versionné est la source unique lue par Hosted Weblate (charte commune,
+      # section 2 bis). Il doit donc suivre le code : comparaison sans les références de ligne
+      # ni la date de génération, qui changent à chaque extraction.
+      - name: "Le .pot versionné est à jour"
+        run: |
+          if ! diff <(msgcat --sort-output --no-location locales/configurationglpiauto.pot | grep -v POT-Creation) \
+                    <(git show HEAD:locales/configurationglpiauto.pot | msgcat --sort-output --no-location - \
+                      | grep -v POT-Creation); then
+            echo "::error::locales/configurationglpiauto.pot n'est pas à jour : relancer vendor/bin/extract-locales"
+            echo "::error::(puis git checkout -- locales/en_GB.po) et versionner le .pot"
+            exit 1
+          fi
+
       - name: "Check regional variants (es_MX, fr_CA, en_US...) follow their language"
         run: sh .github/scripts/sync-locale-variants.sh --check
 
