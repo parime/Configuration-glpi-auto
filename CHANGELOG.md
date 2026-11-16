@@ -30,6 +30,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   urgence (reprise sur le ticket) et, si elle est haute, le travail bloqué.
 - Texte de présentation de chaque formulaire de la bibliothèque dans le catalogue.
 
+## [1.25.1] - 2026-11-16
+
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
 ### Changed
 
 - Relancer l'assistant **met à jour** un formulaire de la bibliothèque dont la définition a
