@@ -5894,3 +5894,270 @@ msgstr "Łączenie..."
 
 msgid "Le test n'a pas pu être lancé."
 msgstr "Nie udało się uruchomić testu."
+
+msgid "Ouvrir, modifier ou retirer l'accès à un dossier du réseau. Le responsable du dossier approuve la demande."
+msgstr "Nadanie, zmiana lub odebranie dostępu do folderu sieciowego. Wniosek zatwierdza właściciel folderu."
+
+msgid "Impossible de vous connecter à votre session, à la messagerie ou à une application."
+msgstr "Nie możesz zalogować się do sesji, poczty lub aplikacji."
+
+msgid "Récupérer un fichier, un dossier, une boîte mail ou une base supprimés ou abîmés, à partir d'une sauvegarde."
+msgstr "Odzyskanie z kopii zapasowej usuniętego lub uszkodzonego pliku, folderu, skrzynki pocztowej lub bazy danych."
+
+msgid "Quel travail est bloqué en attendant ?"
+msgstr "Jaka praca jest w tym czasie wstrzymana?"
+
+msgid "Aide le support à traiter les demandes urgentes en premier."
+msgstr "Pomaga zespołowi wsparcia obsłużyć najpierw pilne zgłoszenia."
+
+msgid "Autoriser ou bloquer une clé USB, un disque externe ou un autre support amovible."
+msgstr "Zezwolenie na pamięć USB, dysk zewnętrzny lub inny nośnik wymienny albo jego zablokowanie."
+
+msgid "Une étiquette ou un code-barres ne s'imprime pas, ou mal."
+msgstr "Etykieta lub kod kreskowy nie drukuje się albo drukuje się źle."
+
+msgid "Transmettre une demande technique d'un client, d'un fournisseur ou d'un prestataire."
+msgstr "Przekazanie prośby technicznej od klienta, dostawcy lub usługodawcy."
+
+msgid "Corriger une valeur erronée dans une application, après approbation d'un responsable."
+msgstr "Poprawienie błędnej wartości w aplikacji po zatwierdzeniu przez przełożonego."
+
+msgid "Obtenir une extraction ponctuelle ou un rapport envoyé régulièrement."
+msgstr "Uzyskanie jednorazowego wyciągu danych lub raportu wysyłanego regularnie."
+
+msgid "Proposer une amélioration ou une nouvelle fonction dans une application."
+msgstr "Zaproponowanie ulepszenia lub nowej funkcji w aplikacji."
+
+msgid "Un import, un échange avec un partenaire ou un traitement de nuit est en erreur."
+msgstr "Import, wymiana danych z partnerem lub zadanie nocne zakończyły się błędem."
+
+msgid "Préparer l'ouverture d'un site ou d'un entrepôt dans les applications de l'entreprise."
+msgstr "Przygotowanie otwarcia oddziału lub magazynu w aplikacjach firmy."
+
+msgid "Déstocker, transférer ou ajuster un grand nombre d'articles à partir d'un fichier, après approbation."
+msgstr "Wydanie, przesunięcie lub korekta dużej liczby pozycji na podstawie pliku, po zatwierdzeniu."
+
+msgid "Créer un modèle d'étiquette ou modifier un modèle existant."
+msgstr "Utworzenie szablonu etykiety lub zmiana istniejącego."
+
+msgid "Préparer le poste, le matériel et les accès d'une personne qui arrive."
+msgstr "Przygotowanie stanowiska, sprzętu i dostępów dla nowej osoby."
+
+msgid "Le nouveau collaborateur"
+msgstr "Nowy pracownik"
+
+msgid "Prénom et nom"
+msgstr "Imię i nazwisko"
+
+msgid "Poste occupé"
+msgstr "Stanowisko"
+
+msgid "Date d'arrivée"
+msgstr "Data rozpoczęcia pracy"
+
+msgid "Prévenez au moins une semaine avant : le matériel doit être commandé et préparé."
+msgstr "Zgłoś co najmniej tydzień wcześniej: sprzęt trzeba zamówić i przygotować."
+
+msgid "Responsable hiérarchique"
+msgstr "Przełożony"
+
+msgid "Il suit le ticket et reçoit les informations de connexion."
+msgstr "Obserwuje zgłoszenie i otrzymuje dane logowania."
+
+msgid "Type de contrat"
+msgstr "Rodzaj umowy"
+
+msgid "Date de fin de contrat"
+msgstr "Data zakończenia umowy"
+
+msgid "Les comptes seront fermés automatiquement à cette date."
+msgstr "Konta zostaną automatycznie zamknięte w tym dniu."
+
+msgid "Site de travail"
+msgstr "Miejsce pracy"
+
+msgid "Matériel"
+msgstr "Sprzęt"
+
+msgid "Matériel nécessaire"
+msgstr "Potrzebny sprzęt"
+
+msgid "Modèle de portable"
+msgstr "Model laptopa"
+
+msgid "Type de téléphone"
+msgstr "Rodzaj telefonu"
+
+msgid "Accès"
+msgstr "Dostępy"
+
+msgid "Adresse e-mail"
+msgstr "Adres e-mail"
+
+msgid "Mêmes accès qu'un collègue (facultatif)"
+msgstr "Takie same dostępy jak współpracownik (opcjonalnie)"
+
+msgid "Le support reprend ses groupes, dossiers partagés et applications."
+msgstr "Wsparcie skopiuje jego grupy, foldery współdzielone i aplikacje."
+
+msgid "Applications et dossiers partagés nécessaires"
+msgstr "Potrzebne aplikacje i foldery współdzielone"
+
+msgid "Accès à distance (VPN)"
+msgstr "Dostęp zdalny (VPN)"
+
+msgid "Prévenir le service informatique d'un départ : comptes à fermer, matériel à récupérer, données à conserver."
+msgstr "Powiadomienie działu IT o odejściu: konta do zamknięcia, sprzęt do odebrania, dane do zachowania."
+
+msgid "Le collaborateur"
+msgstr "Pracownik"
+
+msgid "Collaborateur qui part"
+msgstr "Odchodzący pracownik"
+
+msgid "Dernier jour de présence"
+msgstr "Ostatni dzień pracy"
+
+msgid "Les accès sont fermés le soir de ce jour."
+msgstr "Dostępy zostaną zamknięte wieczorem tego dnia."
+
+msgid "Site ou entité de destination"
+msgstr "Docelowy oddział lub jednostka"
+
+msgid "Ses comptes sont alors déplacés, pas fermés."
+msgstr "Jego konta zostaną wtedy przeniesione, a nie zamknięte."
+
+msgid "Matériel à restituer"
+msgstr "Sprzęt do zwrotu"
+
+msgid "Matériel à récupérer"
+msgstr "Sprzęt do odebrania"
+
+msgid "Autre matériel"
+msgstr "Inny sprzęt"
+
+msgid "Messagerie et fichiers"
+msgstr "Poczta i pliki"
+
+msgid "Boîte mail"
+msgstr "Skrzynka pocztowa"
+
+msgid "Collègue qui reprend la messagerie"
+msgstr "Współpracownik przejmujący pocztę"
+
+msgid "Fichiers personnels"
+msgstr "Pliki osobiste"
+
+msgid "Collègue qui reçoit les fichiers"
+msgstr "Współpracownik otrzymujący pliki"
+
+msgid "Accès particuliers à retirer (applications, comptes partagés)"
+msgstr "Szczególne dostępy do odebrania (aplikacje, konta współdzielone)"
+
+msgid "Obtenir un accès ou des droits supplémentaires dans une application. Votre responsable approuve la demande."
+msgstr "Uzyskanie dostępu lub dodatkowych uprawnień w aplikacji. Wniosek zatwierdza przełożony."
+
+msgid "Pour qui ?"
+msgstr "Dla kogo?"
+
+msgid "Collègue concerné"
+msgstr "Współpracownik, którego to dotyczy"
+
+msgid "Application"
+msgstr "Aplikacja"
+
+msgid "Nom de l'application tel qu'il apparaît à l'écran."
+msgstr "Nazwa aplikacji widoczna na ekranie."
+
+msgid "Niveau d'accès"
+msgstr "Poziom dostępu"
+
+msgid "Pourquoi un accès d'administration est-il nécessaire ?"
+msgstr "Dlaczego potrzebny jest dostęp administracyjny?"
+
+msgid "Mêmes droits qu'un collègue (facultatif)"
+msgstr "Takie same uprawnienia jak współpracownik (opcjonalnie)"
+
+msgid "Responsable qui valide l'accès"
+msgstr "Przełożony zatwierdzający dostęp"
+
+msgid "L'accès n'est ouvert qu'après son approbation dans le ticket."
+msgstr "Dostęp zostanie nadany dopiero po jego zatwierdzeniu w zgłoszeniu."
+
+msgid "E-mail suspect, virus, compte piraté, appareil perdu ou données envoyées par erreur : signalez-le tout de suite, même en cas de doute."
+msgstr "Podejrzany e-mail, wirus, przejęte konto, zgubione urządzenie lub dane wysłane przez pomyłkę: zgłoś to od razu, nawet w razie wątpliwości."
+
+msgid "Que se passe-t-il ?"
+msgstr "Co się dzieje?"
+
+msgid "Ne supprimez rien et n'éteignez pas votre poste : l'équipe sécurité peut en avoir besoin."
+msgstr "Niczego nie usuwaj i nie wyłączaj komputera: zespół bezpieczeństwa może go potrzebować."
+
+msgid "Ce que vous signalez"
+msgstr "Co zgłaszasz"
+
+msgid "Ce que vous avez constaté"
+msgstr "Co zauważyłeś"
+
+msgid "L'e-mail suspect"
+msgstr "Podejrzany e-mail"
+
+msgid "Adresse de l'expéditeur"
+msgstr "Adres nadawcy"
+
+msgid "Avez-vous cliqué sur un lien ou ouvert une pièce jointe ?"
+msgstr "Czy kliknąłeś link lub otworzyłeś załącznik?"
+
+msgid "Avez-vous saisi un mot de passe ou un code ?"
+msgstr "Czy wpisałeś hasło lub kod?"
+
+msgid "Si oui, changez tout de suite ce mot de passe, sur tous les sites où vous l'utilisez."
+msgstr "Jeśli tak, natychmiast zmień to hasło we wszystkich serwisach, w których go używasz."
+
+msgid "Enregistrez l'e-mail (fichier .eml ou .msg) ou faites une capture d'écran, puis joignez-le ici. Ne le transférez pas à vos collègues."
+msgstr "Zapisz wiadomość (plik .eml lub .msg) albo zrób zrzut ekranu i dołącz go tutaj. Nie przekazuj jej współpracownikom."
+
+msgid "L'appareil"
+msgstr "Urządzenie"
+
+msgid "Appareil concerné"
+msgstr "Urządzenie, którego to dotyczy"
+
+msgid "Choisissez-le parmi vos équipements ; s'il n'y figure pas, décrivez-le ci-dessous."
+msgstr "Wybierz je spośród swojego sprzętu; jeśli go nie ma, opisz je poniżej."
+
+msgid "Appareil (s'il ne figure pas dans la liste)"
+msgstr "Urządzenie (jeśli nie ma go na liście)"
+
+msgid "Où et quand l'appareil a-t-il été perdu ou volé ?"
+msgstr "Gdzie i kiedy urządzenie zostało zgubione lub skradzione?"
+
+msgid "Qui est touché ?"
+msgstr "Kogo to dotyczy?"
+
+msgid "Des données personnelles (clients, salariés) sont-elles concernées ?"
+msgstr "Czy dotyczy to danych osobowych (klientów, pracowników)?"
+
+msgid "Si oui, l'entreprise peut devoir prévenir l'autorité de protection des données dans les 72 heures."
+msgstr "Jeśli tak, firma może być zobowiązana powiadomić organ ochrony danych w ciągu 72 godzin."
+
+msgid "Obtenir des droits d'administration sur un poste, un serveur ou une application, pour une durée limitée et après approbation."
+msgstr "Uzyskanie uprawnień administratora na komputerze, serwerze lub w aplikacji, na ograniczony czas i po zatwierdzeniu."
+
+msgid "Sur quoi ?"
+msgstr "Na czym?"
+
+msgid "Nom du serveur ou de l'application"
+msgstr "Nazwa serwera lub aplikacji"
+
+msgid "Pour quoi faire ?"
+msgstr "W jakim celu?"
+
+msgid "Fin des droits"
+msgstr "Koniec uprawnień"
+
+msgid "Expliquez pourquoi l'intervention d'un technicien ne suffit pas : les droits d'administration sont accordés au plus juste et pour la durée la plus courte."
+msgstr "Wyjaśnij, dlaczego pomoc technika nie wystarczy: uprawnienia administratora są przyznawane w minimalnym zakresie i na możliwie najkrótszy czas."
+
+msgid "Responsable qui valide la demande"
+msgstr "Przełożony zatwierdzający wniosek"

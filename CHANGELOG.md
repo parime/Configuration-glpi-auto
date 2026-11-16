@@ -9,12 +9,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Catalogue de services : formulaires plus complets et plus conditionnels** (issue #320, premier
+  lot). Cinq nouveaux formulaires dans la rubrique IT & SI : « Arrivée d'un nouveau
+  collaborateur » (identité, date, responsable, contrat, site, matériel, accès ; le modèle de
+  portable ou le type de téléphone n'est demandé que si ce matériel est coché, la date de fin que
+  pour un contrat temporaire), « Départ d'un collaborateur » (matériel à récupérer, sauf mutation ;
+  messagerie et fichiers, avec le collègue qui les reprend), « Demande d'accès à une application »
+  (niveau d'accès, durée, approbation du responsable désigné), « Signaler un e-mail suspect ou un
+  incident de sécurité » (questions propres à l'hameçonnage, à l'appareil perdu ou infecté, à la
+  gravité ; la catégorie du ticket suit ce qui est signalé) et « Demande de droits administrateur »
+  (périmètre, poste concerné, durée, justification, approbation).
+- Formulaires construits en plusieurs **sections**, elles-mêmes conditionnelles, avec de nouvelles
+  conditions (une option parmi plusieurs, case cochée, urgence au moins haute) et de nouveaux types
+  de question (urgence, lieu, appareil de l'utilisateur, adresse e-mail).
+- Ticket calculé depuis les réponses : urgence, lieu, appareil associé, responsable en
+  observateur, approbation, et catégorie selon la réponse (une destination par catégorie, créée
+  seulement si l'option est choisie). « Restauration de données » demande désormais une vraie
+  urgence (reprise sur le ticket) et, si elle est haute, le travail bloqué.
+- Texte de présentation de chaque formulaire de la bibliothèque dans le catalogue.
+
 ## [1.25.1] - 2026-11-16
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
 
 ### Changed
 
+- Relancer l'assistant **met à jour** un formulaire de la bibliothèque dont la définition a
+  changé, sur place (même formulaire, mêmes droits d'accès, même rubrique) et sans doublon, sauf
+  s'il a été retouché dans GLPI depuis sa création : il est alors laissé tel quel. Un formulaire mis
+  à la corbeille n'est pas recréé ; un formulaire créé par une version précédente n'est pas modifié
+  (le supprimer pour obtenir la nouvelle version). Nouvelle table
+  `glpi_plugin_configurationglpiauto_managedforms` (empreintes des formulaires construits).
 - CI : contrôles de sécurité communs v1.7.1 (exceptions de menus de la charte, correction du jeu de données du contrôle de désinstallation).
 - CI : le contrôle « Sécurité commune » ne tourne plus sur chaque push de branche de travail, seulement sur les PR et les branches principales (moins d'exécutions en double et de notifications d'échec).
 - Traductions collaboratives sur Hosted Weblate : section « Traductions » des README avec le badge

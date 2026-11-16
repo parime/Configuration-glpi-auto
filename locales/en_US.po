@@ -5899,3 +5899,270 @@ msgstr "Connecting..."
 
 msgid "Le test n'a pas pu être lancé."
 msgstr "The test could not be started."
+
+msgid "Ouvrir, modifier ou retirer l'accès à un dossier du réseau. Le responsable du dossier approuve la demande."
+msgstr "Grant, change or remove access to a network folder. The folder owner approves the request."
+
+msgid "Impossible de vous connecter à votre session, à la messagerie ou à une application."
+msgstr "You cannot sign in to your session, your mailbox or an application."
+
+msgid "Récupérer un fichier, un dossier, une boîte mail ou une base supprimés ou abîmés, à partir d'une sauvegarde."
+msgstr "Recover a deleted or damaged file, folder, mailbox or database from a backup."
+
+msgid "Quel travail est bloqué en attendant ?"
+msgstr "What work is blocked in the meantime?"
+
+msgid "Aide le support à traiter les demandes urgentes en premier."
+msgstr "Helps the support team handle urgent requests first."
+
+msgid "Autoriser ou bloquer une clé USB, un disque externe ou un autre support amovible."
+msgstr "Allow or block a USB stick, an external drive or other removable media."
+
+msgid "Une étiquette ou un code-barres ne s'imprime pas, ou mal."
+msgstr "A label or barcode does not print, or prints badly."
+
+msgid "Transmettre une demande technique d'un client, d'un fournisseur ou d'un prestataire."
+msgstr "Pass on a technical request from a customer, supplier or service provider."
+
+msgid "Corriger une valeur erronée dans une application, après approbation d'un responsable."
+msgstr "Correct a wrong value in an application, after approval by a manager."
+
+msgid "Obtenir une extraction ponctuelle ou un rapport envoyé régulièrement."
+msgstr "Get a one-off data extract or a report sent on a regular basis."
+
+msgid "Proposer une amélioration ou une nouvelle fonction dans une application."
+msgstr "Suggest an improvement or a new feature in an application."
+
+msgid "Un import, un échange avec un partenaire ou un traitement de nuit est en erreur."
+msgstr "An import, an exchange with a partner or a nightly job has failed."
+
+msgid "Préparer l'ouverture d'un site ou d'un entrepôt dans les applications de l'entreprise."
+msgstr "Prepare the opening of a site or warehouse in the company's applications."
+
+msgid "Déstocker, transférer ou ajuster un grand nombre d'articles à partir d'un fichier, après approbation."
+msgstr "Remove, transfer or adjust a large number of items from a file, after approval."
+
+msgid "Créer un modèle d'étiquette ou modifier un modèle existant."
+msgstr "Create a label template or change an existing one."
+
+msgid "Préparer le poste, le matériel et les accès d'une personne qui arrive."
+msgstr "Prepare the workstation, equipment and access for a new starter."
+
+msgid "Le nouveau collaborateur"
+msgstr "The new employee"
+
+msgid "Prénom et nom"
+msgstr "First and last name"
+
+msgid "Poste occupé"
+msgstr "Job title"
+
+msgid "Date d'arrivée"
+msgstr "Start date"
+
+msgid "Prévenez au moins une semaine avant : le matériel doit être commandé et préparé."
+msgstr "Tell us at least one week ahead: equipment must be ordered and prepared."
+
+msgid "Responsable hiérarchique"
+msgstr "Line manager"
+
+msgid "Il suit le ticket et reçoit les informations de connexion."
+msgstr "They follow the ticket and receive the sign-in details."
+
+msgid "Type de contrat"
+msgstr "Contract type"
+
+msgid "Date de fin de contrat"
+msgstr "Contract end date"
+
+msgid "Les comptes seront fermés automatiquement à cette date."
+msgstr "The accounts will be closed automatically on that date."
+
+msgid "Site de travail"
+msgstr "Work site"
+
+msgid "Matériel"
+msgstr "Equipment"
+
+msgid "Matériel nécessaire"
+msgstr "Equipment needed"
+
+msgid "Modèle de portable"
+msgstr "Laptop model"
+
+msgid "Type de téléphone"
+msgstr "Phone type"
+
+msgid "Accès"
+msgstr "Access"
+
+msgid "Adresse e-mail"
+msgstr "Email address"
+
+msgid "Mêmes accès qu'un collègue (facultatif)"
+msgstr "Same access as a colleague (optional)"
+
+msgid "Le support reprend ses groupes, dossiers partagés et applications."
+msgstr "Support copies their groups, shared folders and applications."
+
+msgid "Applications et dossiers partagés nécessaires"
+msgstr "Applications and shared folders needed"
+
+msgid "Accès à distance (VPN)"
+msgstr "Remote access (VPN)"
+
+msgid "Prévenir le service informatique d'un départ : comptes à fermer, matériel à récupérer, données à conserver."
+msgstr "Tell IT about a departure: accounts to close, equipment to collect, data to keep."
+
+msgid "Le collaborateur"
+msgstr "The employee"
+
+msgid "Collaborateur qui part"
+msgstr "Employee who is leaving"
+
+msgid "Dernier jour de présence"
+msgstr "Last working day"
+
+msgid "Les accès sont fermés le soir de ce jour."
+msgstr "Access is closed on the evening of that day."
+
+msgid "Site ou entité de destination"
+msgstr "Destination site or entity"
+
+msgid "Ses comptes sont alors déplacés, pas fermés."
+msgstr "Their accounts are then moved, not closed."
+
+msgid "Matériel à restituer"
+msgstr "Equipment to return"
+
+msgid "Matériel à récupérer"
+msgstr "Equipment to collect"
+
+msgid "Autre matériel"
+msgstr "Other equipment"
+
+msgid "Messagerie et fichiers"
+msgstr "Mailbox and files"
+
+msgid "Boîte mail"
+msgstr "Mailbox"
+
+msgid "Collègue qui reprend la messagerie"
+msgstr "Colleague taking over the mailbox"
+
+msgid "Fichiers personnels"
+msgstr "Personal files"
+
+msgid "Collègue qui reçoit les fichiers"
+msgstr "Colleague receiving the files"
+
+msgid "Accès particuliers à retirer (applications, comptes partagés)"
+msgstr "Specific access to remove (applications, shared accounts)"
+
+msgid "Obtenir un accès ou des droits supplémentaires dans une application. Votre responsable approuve la demande."
+msgstr "Get access or additional rights in an application. Your manager approves the request."
+
+msgid "Pour qui ?"
+msgstr "For whom?"
+
+msgid "Collègue concerné"
+msgstr "Colleague concerned"
+
+msgid "Application"
+msgstr "Application"
+
+msgid "Nom de l'application tel qu'il apparaît à l'écran."
+msgstr "Name of the application as shown on screen."
+
+msgid "Niveau d'accès"
+msgstr "Access level"
+
+msgid "Pourquoi un accès d'administration est-il nécessaire ?"
+msgstr "Why is administrator access needed?"
+
+msgid "Mêmes droits qu'un collègue (facultatif)"
+msgstr "Same rights as a colleague (optional)"
+
+msgid "Responsable qui valide l'accès"
+msgstr "Manager who approves the access"
+
+msgid "L'accès n'est ouvert qu'après son approbation dans le ticket."
+msgstr "Access is only granted after their approval in the ticket."
+
+msgid "E-mail suspect, virus, compte piraté, appareil perdu ou données envoyées par erreur : signalez-le tout de suite, même en cas de doute."
+msgstr "Suspicious email, virus, hacked account, lost device or data sent by mistake: report it straight away, even if you are unsure."
+
+msgid "Que se passe-t-il ?"
+msgstr "What is happening?"
+
+msgid "Ne supprimez rien et n'éteignez pas votre poste : l'équipe sécurité peut en avoir besoin."
+msgstr "Do not delete anything and do not switch off your computer: the security team may need it."
+
+msgid "Ce que vous signalez"
+msgstr "What you are reporting"
+
+msgid "Ce que vous avez constaté"
+msgstr "What you noticed"
+
+msgid "L'e-mail suspect"
+msgstr "The suspicious email"
+
+msgid "Adresse de l'expéditeur"
+msgstr "Sender address"
+
+msgid "Avez-vous cliqué sur un lien ou ouvert une pièce jointe ?"
+msgstr "Did you click a link or open an attachment?"
+
+msgid "Avez-vous saisi un mot de passe ou un code ?"
+msgstr "Did you enter a password or a code?"
+
+msgid "Si oui, changez tout de suite ce mot de passe, sur tous les sites où vous l'utilisez."
+msgstr "If so, change that password straight away on every site where you use it."
+
+msgid "Enregistrez l'e-mail (fichier .eml ou .msg) ou faites une capture d'écran, puis joignez-le ici. Ne le transférez pas à vos collègues."
+msgstr "Save the email (.eml or .msg file) or take a screenshot, then attach it here. Do not forward it to colleagues."
+
+msgid "L'appareil"
+msgstr "The device"
+
+msgid "Appareil concerné"
+msgstr "Device concerned"
+
+msgid "Choisissez-le parmi vos équipements ; s'il n'y figure pas, décrivez-le ci-dessous."
+msgstr "Pick it from your equipment; if it is not listed, describe it below."
+
+msgid "Appareil (s'il ne figure pas dans la liste)"
+msgstr "Device (if it is not in the list)"
+
+msgid "Où et quand l'appareil a-t-il été perdu ou volé ?"
+msgstr "Where and when was the device lost or stolen?"
+
+msgid "Qui est touché ?"
+msgstr "Who is affected?"
+
+msgid "Des données personnelles (clients, salariés) sont-elles concernées ?"
+msgstr "Is personal data (customers, employees) involved?"
+
+msgid "Si oui, l'entreprise peut devoir prévenir l'autorité de protection des données dans les 72 heures."
+msgstr "If so, the company may have to notify the data protection authority within 72 hours."
+
+msgid "Obtenir des droits d'administration sur un poste, un serveur ou une application, pour une durée limitée et après approbation."
+msgstr "Get administrator rights on a computer, server or application, for a limited time and after approval."
+
+msgid "Sur quoi ?"
+msgstr "On what?"
+
+msgid "Nom du serveur ou de l'application"
+msgstr "Server or application name"
+
+msgid "Pour quoi faire ?"
+msgstr "What for?"
+
+msgid "Fin des droits"
+msgstr "Rights end date"
+
+msgid "Expliquez pourquoi l'intervention d'un technicien ne suffit pas : les droits d'administration sont accordés au plus juste et pour la durée la plus courte."
+msgstr "Explain why a technician's help is not enough: administrator rights are granted as narrowly and for as short a time as possible."
+
+msgid "Responsable qui valide la demande"
+msgstr "Manager who approves the request"

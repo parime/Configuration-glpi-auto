@@ -6013,3 +6013,270 @@ msgstr "Connexion en cours..."
 
 msgid "Le test n'a pas pu être lancé."
 msgstr "Le test n'a pas pu être lancé."
+
+msgid "Ouvrir, modifier ou retirer l'accès à un dossier du réseau. Le responsable du dossier approuve la demande."
+msgstr "Ouvrir, modifier ou retirer l'accès à un dossier du réseau. Le responsable du dossier approuve la demande."
+
+msgid "Impossible de vous connecter à votre session, à la messagerie ou à une application."
+msgstr "Impossible de vous connecter à votre session, à la messagerie ou à une application."
+
+msgid "Récupérer un fichier, un dossier, une boîte mail ou une base supprimés ou abîmés, à partir d'une sauvegarde."
+msgstr "Récupérer un fichier, un dossier, une boîte mail ou une base supprimés ou abîmés, à partir d'une sauvegarde."
+
+msgid "Quel travail est bloqué en attendant ?"
+msgstr "Quel travail est bloqué en attendant ?"
+
+msgid "Aide le support à traiter les demandes urgentes en premier."
+msgstr "Aide le support à traiter les demandes urgentes en premier."
+
+msgid "Autoriser ou bloquer une clé USB, un disque externe ou un autre support amovible."
+msgstr "Autoriser ou bloquer une clé USB, un disque externe ou un autre support amovible."
+
+msgid "Une étiquette ou un code-barres ne s'imprime pas, ou mal."
+msgstr "Une étiquette ou un code-barres ne s'imprime pas, ou mal."
+
+msgid "Transmettre une demande technique d'un client, d'un fournisseur ou d'un prestataire."
+msgstr "Transmettre une demande technique d'un client, d'un fournisseur ou d'un prestataire."
+
+msgid "Corriger une valeur erronée dans une application, après approbation d'un responsable."
+msgstr "Corriger une valeur erronée dans une application, après approbation d'un responsable."
+
+msgid "Obtenir une extraction ponctuelle ou un rapport envoyé régulièrement."
+msgstr "Obtenir une extraction ponctuelle ou un rapport envoyé régulièrement."
+
+msgid "Proposer une amélioration ou une nouvelle fonction dans une application."
+msgstr "Proposer une amélioration ou une nouvelle fonction dans une application."
+
+msgid "Un import, un échange avec un partenaire ou un traitement de nuit est en erreur."
+msgstr "Un import, un échange avec un partenaire ou un traitement de nuit est en erreur."
+
+msgid "Préparer l'ouverture d'un site ou d'un entrepôt dans les applications de l'entreprise."
+msgstr "Préparer l'ouverture d'un site ou d'un entrepôt dans les applications de l'entreprise."
+
+msgid "Déstocker, transférer ou ajuster un grand nombre d'articles à partir d'un fichier, après approbation."
+msgstr "Déstocker, transférer ou ajuster un grand nombre d'articles à partir d'un fichier, après approbation."
+
+msgid "Créer un modèle d'étiquette ou modifier un modèle existant."
+msgstr "Créer un modèle d'étiquette ou modifier un modèle existant."
+
+msgid "Préparer le poste, le matériel et les accès d'une personne qui arrive."
+msgstr "Préparer le poste, le matériel et les accès d'une personne qui arrive."
+
+msgid "Le nouveau collaborateur"
+msgstr "Le nouveau collaborateur"
+
+msgid "Prénom et nom"
+msgstr "Prénom et nom"
+
+msgid "Poste occupé"
+msgstr "Poste occupé"
+
+msgid "Date d'arrivée"
+msgstr "Date d'arrivée"
+
+msgid "Prévenez au moins une semaine avant : le matériel doit être commandé et préparé."
+msgstr "Prévenez au moins une semaine avant : le matériel doit être commandé et préparé."
+
+msgid "Responsable hiérarchique"
+msgstr "Responsable hiérarchique"
+
+msgid "Il suit le ticket et reçoit les informations de connexion."
+msgstr "Il suit le ticket et reçoit les informations de connexion."
+
+msgid "Type de contrat"
+msgstr "Type de contrat"
+
+msgid "Date de fin de contrat"
+msgstr "Date de fin de contrat"
+
+msgid "Les comptes seront fermés automatiquement à cette date."
+msgstr "Les comptes seront fermés automatiquement à cette date."
+
+msgid "Site de travail"
+msgstr "Site de travail"
+
+msgid "Matériel"
+msgstr "Matériel"
+
+msgid "Matériel nécessaire"
+msgstr "Matériel nécessaire"
+
+msgid "Modèle de portable"
+msgstr "Modèle de portable"
+
+msgid "Type de téléphone"
+msgstr "Type de téléphone"
+
+msgid "Accès"
+msgstr "Accès"
+
+msgid "Adresse e-mail"
+msgstr "Adresse e-mail"
+
+msgid "Mêmes accès qu'un collègue (facultatif)"
+msgstr "Mêmes accès qu'un collègue (facultatif)"
+
+msgid "Le support reprend ses groupes, dossiers partagés et applications."
+msgstr "Le support reprend ses groupes, dossiers partagés et applications."
+
+msgid "Applications et dossiers partagés nécessaires"
+msgstr "Applications et dossiers partagés nécessaires"
+
+msgid "Accès à distance (VPN)"
+msgstr "Accès à distance (VPN)"
+
+msgid "Prévenir le service informatique d'un départ : comptes à fermer, matériel à récupérer, données à conserver."
+msgstr "Prévenir le service informatique d'un départ : comptes à fermer, matériel à récupérer, données à conserver."
+
+msgid "Le collaborateur"
+msgstr "Le collaborateur"
+
+msgid "Collaborateur qui part"
+msgstr "Collaborateur qui part"
+
+msgid "Dernier jour de présence"
+msgstr "Dernier jour de présence"
+
+msgid "Les accès sont fermés le soir de ce jour."
+msgstr "Les accès sont fermés le soir de ce jour."
+
+msgid "Site ou entité de destination"
+msgstr "Site ou entité de destination"
+
+msgid "Ses comptes sont alors déplacés, pas fermés."
+msgstr "Ses comptes sont alors déplacés, pas fermés."
+
+msgid "Matériel à restituer"
+msgstr "Matériel à restituer"
+
+msgid "Matériel à récupérer"
+msgstr "Matériel à récupérer"
+
+msgid "Autre matériel"
+msgstr "Autre matériel"
+
+msgid "Messagerie et fichiers"
+msgstr "Messagerie et fichiers"
+
+msgid "Boîte mail"
+msgstr "Boîte mail"
+
+msgid "Collègue qui reprend la messagerie"
+msgstr "Collègue qui reprend la messagerie"
+
+msgid "Fichiers personnels"
+msgstr "Fichiers personnels"
+
+msgid "Collègue qui reçoit les fichiers"
+msgstr "Collègue qui reçoit les fichiers"
+
+msgid "Accès particuliers à retirer (applications, comptes partagés)"
+msgstr "Accès particuliers à retirer (applications, comptes partagés)"
+
+msgid "Obtenir un accès ou des droits supplémentaires dans une application. Votre responsable approuve la demande."
+msgstr "Obtenir un accès ou des droits supplémentaires dans une application. Votre responsable approuve la demande."
+
+msgid "Pour qui ?"
+msgstr "Pour qui ?"
+
+msgid "Collègue concerné"
+msgstr "Collègue concerné"
+
+msgid "Application"
+msgstr "Application"
+
+msgid "Nom de l'application tel qu'il apparaît à l'écran."
+msgstr "Nom de l'application tel qu'il apparaît à l'écran."
+
+msgid "Niveau d'accès"
+msgstr "Niveau d'accès"
+
+msgid "Pourquoi un accès d'administration est-il nécessaire ?"
+msgstr "Pourquoi un accès d'administration est-il nécessaire ?"
+
+msgid "Mêmes droits qu'un collègue (facultatif)"
+msgstr "Mêmes droits qu'un collègue (facultatif)"
+
+msgid "Responsable qui valide l'accès"
+msgstr "Responsable qui valide l'accès"
+
+msgid "L'accès n'est ouvert qu'après son approbation dans le ticket."
+msgstr "L'accès n'est ouvert qu'après son approbation dans le ticket."
+
+msgid "E-mail suspect, virus, compte piraté, appareil perdu ou données envoyées par erreur : signalez-le tout de suite, même en cas de doute."
+msgstr "E-mail suspect, virus, compte piraté, appareil perdu ou données envoyées par erreur : signalez-le tout de suite, même en cas de doute."
+
+msgid "Que se passe-t-il ?"
+msgstr "Que se passe-t-il ?"
+
+msgid "Ne supprimez rien et n'éteignez pas votre poste : l'équipe sécurité peut en avoir besoin."
+msgstr "Ne supprimez rien et n'éteignez pas votre poste : l'équipe sécurité peut en avoir besoin."
+
+msgid "Ce que vous signalez"
+msgstr "Ce que vous signalez"
+
+msgid "Ce que vous avez constaté"
+msgstr "Ce que vous avez constaté"
+
+msgid "L'e-mail suspect"
+msgstr "L'e-mail suspect"
+
+msgid "Adresse de l'expéditeur"
+msgstr "Adresse de l'expéditeur"
+
+msgid "Avez-vous cliqué sur un lien ou ouvert une pièce jointe ?"
+msgstr "Avez-vous cliqué sur un lien ou ouvert une pièce jointe ?"
+
+msgid "Avez-vous saisi un mot de passe ou un code ?"
+msgstr "Avez-vous saisi un mot de passe ou un code ?"
+
+msgid "Si oui, changez tout de suite ce mot de passe, sur tous les sites où vous l'utilisez."
+msgstr "Si oui, changez tout de suite ce mot de passe, sur tous les sites où vous l'utilisez."
+
+msgid "Enregistrez l'e-mail (fichier .eml ou .msg) ou faites une capture d'écran, puis joignez-le ici. Ne le transférez pas à vos collègues."
+msgstr "Enregistrez l'e-mail (fichier .eml ou .msg) ou faites une capture d'écran, puis joignez-le ici. Ne le transférez pas à vos collègues."
+
+msgid "L'appareil"
+msgstr "L'appareil"
+
+msgid "Appareil concerné"
+msgstr "Appareil concerné"
+
+msgid "Choisissez-le parmi vos équipements ; s'il n'y figure pas, décrivez-le ci-dessous."
+msgstr "Choisissez-le parmi vos équipements ; s'il n'y figure pas, décrivez-le ci-dessous."
+
+msgid "Appareil (s'il ne figure pas dans la liste)"
+msgstr "Appareil (s'il ne figure pas dans la liste)"
+
+msgid "Où et quand l'appareil a-t-il été perdu ou volé ?"
+msgstr "Où et quand l'appareil a-t-il été perdu ou volé ?"
+
+msgid "Qui est touché ?"
+msgstr "Qui est touché ?"
+
+msgid "Des données personnelles (clients, salariés) sont-elles concernées ?"
+msgstr "Des données personnelles (clients, salariés) sont-elles concernées ?"
+
+msgid "Si oui, l'entreprise peut devoir prévenir l'autorité de protection des données dans les 72 heures."
+msgstr "Si oui, l'entreprise peut devoir prévenir l'autorité de protection des données dans les 72 heures."
+
+msgid "Obtenir des droits d'administration sur un poste, un serveur ou une application, pour une durée limitée et après approbation."
+msgstr "Obtenir des droits d'administration sur un poste, un serveur ou une application, pour une durée limitée et après approbation."
+
+msgid "Sur quoi ?"
+msgstr "Sur quoi ?"
+
+msgid "Nom du serveur ou de l'application"
+msgstr "Nom du serveur ou de l'application"
+
+msgid "Pour quoi faire ?"
+msgstr "Pour quoi faire ?"
+
+msgid "Fin des droits"
+msgstr "Fin des droits"
+
+msgid "Expliquez pourquoi l'intervention d'un technicien ne suffit pas : les droits d'administration sont accordés au plus juste et pour la durée la plus courte."
+msgstr "Expliquez pourquoi l'intervention d'un technicien ne suffit pas : les droits d'administration sont accordés au plus juste et pour la durée la plus courte."
+
+msgid "Responsable qui valide la demande"
+msgstr "Responsable qui valide la demande"

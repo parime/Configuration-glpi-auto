@@ -94,6 +94,11 @@ rules:
         # front/wizard.php l'appelle seulement avec config UPDATE ($canUpdateCoreConfig) et lui passe
         # rule_mailcollector UPDATE et rule_ticket UPDATE pour chaque famille de regles.
         - /src/MailCollectorBuilder.php
+        # Issue #320 : registre des formulaires crees par l'assistant (table propre au plugin,
+        # glpi_plugin_configurationglpiauto_managedforms : cle, formulaire, empreintes). Aucune ecriture
+        # dans le coeur ; appele par RequestFormLibraryBuilder depuis front/wizard.php, qui exige deja
+        # le droit de modifier la configuration du plugin.
+        - /src/ManagedForm.php
     pattern-either:
       # Nouveau type d'actif personnalise (AssetDefinition::$rightname = 'config').
       - patterns:

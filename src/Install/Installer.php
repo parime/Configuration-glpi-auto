@@ -53,6 +53,9 @@ final class Installer
     private const JIRA_IMPORTS_TABLE = 'glpi_plugin_configurationglpiauto_jiraimports';
     private const CSV_IMPORT_PROFILES_TABLE = 'glpi_plugin_configurationglpiauto_csvimportprofiles';
 
+    // Issue #320 : formulaires du catalogue construits par le plugin (mise à jour sans doublon).
+    private const MANAGED_FORMS_TABLE = 'glpi_plugin_configurationglpiauto_managedforms';
+
     public function install(Migration $migration): bool
     {
         global $DB;
@@ -591,6 +594,34 @@ final class Installer
             }
         }
 
+        // Issue #320 : empreintes des formulaires du catalogue construits par le plugin, pour les
+        // mettre à jour à la relance de l'assistant sans écraser les retouches d'un administrateur
+        // (voir GlpiPlugin\Configurationglpiauto\ManagedForm).
+        if (!$DB->tableExists(self::MANAGED_FORMS_TABLE)) {
+            $charset   = DBConnection::getDefaultCharset();
+            $collation = DBConnection::getDefaultCollation();
+            $keySign   = DBConnection::getDefaultPrimaryKeySignOption();
+
+            $query = "CREATE TABLE `" . self::MANAGED_FORMS_TABLE . "` (
+                `id` int {$keySign} NOT NULL AUTO_INCREMENT,
+                `form_key` varchar(100) NOT NULL,
+                `forms_forms_id` int {$keySign} NOT NULL DEFAULT 0,
+                `definition_hash` varchar(64) NOT NULL DEFAULT '',
+                `structure_hash` varchar(64) NOT NULL DEFAULT '',
+                `date_creation` timestamp NULL DEFAULT NULL,
+                `date_mod` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `form_key` (`form_key`),
+                KEY `forms_forms_id` (`forms_forms_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
+
+            if (!$DB->doQuery($query)) {
+                \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s\n", self::MANAGED_FORMS_TABLE, $DB->error()));
+
+                return false;
+            }
+        }
+
         // ITIL/ISO27001 ne sont pas des tailles d'organisation, ce sont des cadres de bonnes
         // pratiques que n'importe quel profil peut suivre : retires de la liste des profils
         // proposes (Sprint 11, voir ConfigurationProfile::getSuggestedDefaults()). Desactivation,
@@ -839,6 +870,7 @@ final class Installer
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::HISTORY_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::JIRA_IMPORTS_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::CSV_IMPORT_PROFILES_TABLE . "`");
+        $DB->doQuery("DROP TABLE IF EXISTS `" . self::MANAGED_FORMS_TABLE . "`");
 
         Profile::uninstall();
         \GlpiPlugin\Configurationglpiauto\StaffMovement::uninstall();
