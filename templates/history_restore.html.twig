@@ -19,11 +19,13 @@
    audit.html.twig : pas de widget de diff visuel riche, juste les valeurs actuelle/sauvegardée
    côte à côte. #}
 
+{% include '@configurationglpiauto/_page_help.html.twig' with {
+   page: 'history_restore',
+   purpose: __('Comparer, réglage par réglage, la configuration actuelle et la sauvegarde choisie.', 'configurationglpiauto'),
+   expected: __('Choisissez les réglages à restaurer, ou restaurez l\'intégralité de cette configuration. Rien n\'est appliqué directement : après confirmation, vérifiez chaque étape de l\'assistant avant de valider.', 'configurationglpiauto'),
+} %}
 <div class="card">
   <div class="card-body">
-    <p class="text-muted">
-      {{ __('Choisissez les réglages à restaurer, ou restaurez l\'intégralité de cette configuration. Rien n\'est appliqué directement : après confirmation, vérifiez chaque étape de l\'assistant avant de valider.', 'configurationglpiauto') }}
-    </p>
 
     {# Issue #117 ("Import/Export avancé"), volet "validation automatique" : informatif, jamais
        bloquant : même esprit que les bandeaux prereq_checks/rights_preview de l'assistant (#115). #}

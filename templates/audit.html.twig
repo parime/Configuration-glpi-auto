@@ -19,11 +19,13 @@
    NotificationsDisabledCheck) : les autres n'affichent qu'une recommandation, jamais une valeur
    inventée à la place de l'administrateur. #}
 
+{% include '@configurationglpiauto/_page_help.html.twig' with {
+   page: 'audit',
+   purpose: __('Analyse de l\'état actuel de votre instance GLPI : indépendante de ce que cet assistant a lui-même configuré.', 'configurationglpiauto'),
+   expected: __('Traitez les constats en commençant par les plus graves. Un bouton de correction n\'apparaît que lorsque le bon réglage ne fait aucun doute et que vous avez le droit de modifier la configuration ; sinon, suivez la recommandation.', 'configurationglpiauto'),
+} %}
 <div class="card">
   <div class="card-body">
-    <p class="text-muted">
-      {{ __('Analyse de l\'état actuel de votre instance GLPI : indépendante de ce que cet assistant a lui-même configuré.', 'configurationglpiauto') }}
-    </p>
 
     {# Issue #131 ("Analyse continue") : compteur accumulé par la tâche planifiée AuditWatchCron
        depuis la dernière visite de cet écran : déjà remis à zéro côté PHP au moment du rendu, cette
@@ -48,9 +50,18 @@
           'warning': 'alert-warning',
           'info': 'alert-info'
         }[finding.severity]|default('alert-info') %}
+        {# Badge commun (charte, section 8) : même couleur et même icône dans tous les plugins. #}
+        {% set severityBadge = {
+          'critical': ['danger', __('Critique', 'configurationglpiauto')],
+          'warning': ['warning', __('À surveiller', 'configurationglpiauto')],
+          'info': ['info', __('Information', 'configurationglpiauto')]
+        }[finding.severity]|default(['info', __('Information', 'configurationglpiauto')]) %}
         <div class="alert {{ severityClass }} d-flex justify-content-between align-items-start gap-3">
           <div>
-            <div class="text-muted small">{{ finding.domain }}</div>
+            <div class="text-muted small">
+              {% include '@configurationglpiauto/_badge.html.twig' with {kind: severityBadge[0], label: severityBadge[1]} %}
+              {{ finding.domain }}
+            </div>
             <strong>{{ finding.title }}</strong>
             <p class="mb-1">{{ finding.description }}</p>
             <p class="mb-0 small">{{ finding.recommendation }}</p>

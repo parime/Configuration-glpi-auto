@@ -20,9 +20,11 @@
       <a class="btn btn-outline-secondary ms-auto" href="{{ back_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Retour', 'configurationglpiauto') }}</a>
    </div>
 
-   <div class="alert alert-info">
-      <i class="ti ti-info-circle me-1"></i>{{ __('Déclarez les réseaux IP et VLAN de chaque site. Ils sont créés comme objets natifs de GLPI (Configuration > Intitulés > VLAN, et Réseaux IP), reliés entre eux et rattachés à l\'entité du site. Relancer l\'import met à jour les noms au lieu de dupliquer.', 'configurationglpiauto') }}
-   </div>
+   {% include '@configurationglpiauto/_page_help.html.twig' with {
+      page: 'addressplan',
+      purpose: __('Déclarez les réseaux IP et VLAN de chaque site. Ils sont créés comme objets natifs de GLPI (Configuration > Intitulés > VLAN, et Réseaux IP), reliés entre eux et rattachés à l\'entité du site. Relancer l\'import met à jour les noms au lieu de dupliquer.', 'configurationglpiauto'),
+      expected: __('Collez le tableau depuis un tableur, choisissez un fichier CSV ou partez du modèle pour un nouveau site, vérifiez l\'aperçu, puis créez les lignes valides.', 'configurationglpiauto'),
+   } %}
 
    {% if result %}
       <div class="alert {{ result.errors is empty ? 'alert-success' : 'alert-warning' }}">

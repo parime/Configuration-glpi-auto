@@ -14,6 +14,11 @@
  #}
 
 {# Issue #345 : import de tickets Jira (export CSV), en deux temps (issue #355 : passé de PHP à Twig) #}
+{% include '@configurationglpiauto/_page_help.html.twig' with {
+   page: 'jiraimport',
+   purpose: __('Reprendre dans GLPI les tickets d\'un projet Jira, à partir de son export CSV.', 'configurationglpiauto'),
+   expected: __('Déposez l\'export, vérifiez dans l\'aperçu à blanc les correspondances de statuts et de types, puis lancez l\'import. Rien n\'est écrit avant cette dernière étape.', 'configurationglpiauto'),
+} %}
 <div class="card"><div class="card-body">
    <h3 class="card-title"><i class="ti ti-transfer-in me-1"></i>{{ __('Importer depuis Jira', 'configurationglpiauto') }}</h3>
 

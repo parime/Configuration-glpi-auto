@@ -14,6 +14,11 @@
  #}
 
 {# Import d'un Blueprint (JSON) comme nouveau profil (issue #355 : passé de PHP à Twig) #}
+{% include '@configurationglpiauto/_page_help.html.twig' with {
+   page: 'blueprint_import',
+   purpose: __('Ajouter un profil de configuration à partir d\'un fichier Blueprint (JSON), par exemple exporté d\'une autre instance GLPI.', 'configurationglpiauto'),
+   expected: __('Choisissez le fichier, donnez un nom au profil si besoin, puis importez. Le profil rejoint la liste et ne change rien tant qu\'il n\'est pas appliqué par l\'assistant.', 'configurationglpiauto'),
+} %}
 <form method="post" action="{{ action }}" enctype="multipart/form-data" class="card">
    <div class="card-body">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">

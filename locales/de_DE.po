@@ -6320,3 +6320,69 @@ msgstr "Erklären Sie, warum die Hilfe eines Technikers nicht ausreicht: Adminis
 
 msgid "Responsable qui valide la demande"
 msgstr "Verantwortliche Person, die die Anfrage genehmigt"
+
+msgid "À quoi sert cette page ?"
+msgstr "Wozu dient diese Seite?"
+
+msgid "Ce qui est attendu :"
+msgstr "Was erwartet wird:"
+
+msgid "Critique"
+msgstr "Kritisch"
+
+msgid "À surveiller"
+msgstr "Zu beobachten"
+
+msgid "Information"
+msgstr "Information"
+
+msgid "Mettre en place la configuration de GLPI pas à pas : entités, lieux, calendrier, niveaux de service, catégories, catalogue de services, statuts, notifications et autres réglages, appliqués en une seule fois à la fin."
+msgstr "Die GLPI-Konfiguration Schritt für Schritt einrichten: Entitäten, Standorte, Kalender, Service-Level, Kategorien, Servicekatalog, Status, Benachrichtigungen und weitere Einstellungen, die am Ende in einem Zug angewendet werden."
+
+msgid "Choisissez un profil, parcourez les étapes (la plupart sont optionnelles), vérifiez le récapitulatif, puis cliquez une seule fois sur « Terminer ». Ce qui existe déjà est réutilisé, rien n'est supprimé."
+msgstr "Wählen Sie ein Profil, gehen Sie die Schritte durch (die meisten sind optional), prüfen Sie die Zusammenfassung und klicken Sie dann ein einziges Mal auf „Fertigstellen“. Bereits Vorhandenes wird wiederverwendet, nichts wird gelöscht."
+
+msgid "Traitez les constats en commençant par les plus graves. Un bouton de correction n'apparaît que lorsque le bon réglage ne fait aucun doute et que vous avez le droit de modifier la configuration ; sinon, suivez la recommandation."
+msgstr "Bearbeiten Sie die Befunde, beginnend mit den schwerwiegendsten. Eine Korrekturschaltfläche erscheint nur, wenn die richtige Einstellung zweifelsfrei feststeht und Sie die Konfiguration ändern dürfen; andernfalls folgen Sie der Empfehlung."
+
+msgid "Collez le tableau depuis un tableur, choisissez un fichier CSV ou partez du modèle pour un nouveau site, vérifiez l'aperçu, puis créez les lignes valides."
+msgstr "Fügen Sie die Tabelle aus einer Tabellenkalkulation ein, wählen Sie eine CSV-Datei oder gehen Sie von der Vorlage für einen neuen Standort aus, prüfen Sie die Vorschau und legen Sie dann die gültigen Zeilen an."
+
+msgid "Ajouter un profil de configuration à partir d'un fichier Blueprint (JSON), par exemple exporté d'une autre instance GLPI."
+msgstr "Ein Konfigurationsprofil aus einer Blueprint-Datei (JSON) hinzufügen, zum Beispiel aus einer anderen GLPI-Instanz exportiert."
+
+msgid "Choisissez le fichier, donnez un nom au profil si besoin, puis importez. Le profil rejoint la liste et ne change rien tant qu'il n'est pas appliqué par l'assistant."
+msgstr "Wählen Sie die Datei, geben Sie dem Profil bei Bedarf einen Namen und importieren Sie dann. Das Profil erscheint in der Liste und ändert nichts, solange es nicht über den Assistenten angewendet wird."
+
+msgid "Reprendre dans GLPI les tickets d'un autre outil d'assistance ou d'un tableur, à partir d'un fichier CSV."
+msgstr "Tickets aus einem anderen Helpdesk-Werkzeug oder einer Tabellenkalkulation anhand einer CSV-Datei in GLPI übernehmen."
+
+msgid "Déposez le fichier, indiquez quelle colonne correspond à quel champ, vérifiez l'aperçu à blanc, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+msgstr "Laden Sie die Datei hoch, geben Sie an, welche Spalte welchem Feld entspricht, prüfen Sie die Probelauf-Vorschau und starten Sie dann den Import. Vor diesem letzten Schritt wird nichts geschrieben."
+
+msgid "Reprendre dans GLPI les tickets d'un projet Jira, à partir de son export CSV."
+msgstr "Die Tickets eines Jira-Projekts anhand seines CSV-Exports in GLPI übernehmen."
+
+msgid "Déposez l'export, vérifiez dans l'aperçu à blanc les correspondances de statuts et de types, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+msgstr "Laden Sie den Export hoch, prüfen Sie in der Probelauf-Vorschau die Zuordnung von Status und Typen und starten Sie dann den Import. Vor diesem letzten Schritt wird nichts geschrieben."
+
+msgid "Retrouver les profils de configuration (Blueprints) : chacun pré-remplit l'assistant avec des valeurs adaptées à un type d'organisation."
+msgstr "Die Konfigurationsprofile (Blueprints) finden: Jedes füllt den Assistenten mit Werten vor, die zu einer Art von Organisation passen."
+
+msgid "Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou ouvrez un profil de la liste pour le consulter ou l'exporter."
+msgstr "Starten Sie den Assistenten, das Audit oder einen Import über die Schaltflächen unten, oder öffnen Sie ein Profil aus der Liste, um es anzusehen oder zu exportieren."
+
+msgid "Retrouver les sauvegardes de la configuration : une automatique à chaque application de l'assistant, et les points de sauvegarde créés à la main, pour comparer ou revenir en arrière."
+msgstr "Die Sicherungen der Konfiguration finden (eine automatische bei jeder Anwendung des Assistenten sowie die manuell erstellten Sicherungspunkte), um zu vergleichen oder zurückzukehren."
+
+msgid "Créez un point de sauvegarde avant un changement important. Ouvrez une sauvegarde de la liste pour la comparer à la configuration actuelle et la restaurer."
+msgstr "Erstellen Sie vor einer wichtigen Änderung einen Sicherungspunkt. Öffnen Sie eine Sicherung aus der Liste, um sie mit der aktuellen Konfiguration zu vergleichen und wiederherzustellen."
+
+msgid "Comparer, réglage par réglage, la configuration actuelle et la sauvegarde choisie."
+msgstr "Die aktuelle Konfiguration und die gewählte Sicherung Einstellung für Einstellung vergleichen."
+
+msgid "Déployer en une fois une configuration chargée (Blueprint importé ou sauvegarde restaurée), sans repasser par chaque étape de l'assistant."
+msgstr "Eine geladene Konfiguration (importierter Blueprint oder wiederhergestellte Sicherung) in einem Zug bereitstellen, ohne jeden Schritt des Assistenten erneut zu durchlaufen."
+
+msgid "Vérifiez ce qui sera déployé et vos droits, puis cliquez sur « Déployer maintenant », ou revoyez d'abord les réglages dans l'assistant."
+msgstr "Prüfen Sie, was bereitgestellt wird, und Ihre Rechte, und klicken Sie dann auf „Jetzt bereitstellen“, oder sehen Sie die Einstellungen zuerst im Assistenten durch."

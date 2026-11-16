@@ -15,6 +15,11 @@
 
 {# Historique de la configuration : création d'un point de sauvegarde manuel (#355, ex-HTML écrit
    dans front/history.php). #}
+{% include '@configurationglpiauto/_page_help.html.twig' with {
+   page: 'history',
+   purpose: __('Retrouver les sauvegardes de la configuration : une automatique à chaque application de l\'assistant, et les points de sauvegarde créés à la main, pour comparer ou revenir en arrière.', 'configurationglpiauto'),
+   expected: __('Créez un point de sauvegarde avant un changement important. Ouvrez une sauvegarde de la liste pour la comparer à la configuration actuelle et la restaurer.', 'configurationglpiauto'),
+} %}
 <form method="post" action="{{ action }}" class="card mb-3">
   <div class="card-body d-flex gap-2 align-items-end">
     <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">

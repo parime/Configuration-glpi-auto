@@ -6227,3 +6227,69 @@ msgstr "Explique por que a ajuda de um técnico não basta: as permissões de ad
 
 msgid "Responsable qui valide la demande"
 msgstr "Responsável que aprova a solicitação"
+
+msgid "À quoi sert cette page ?"
+msgstr "Para que serve esta página?"
+
+msgid "Ce qui est attendu :"
+msgstr "O que se espera:"
+
+msgid "Critique"
+msgstr "Crítico"
+
+msgid "À surveiller"
+msgstr "A acompanhar"
+
+msgid "Information"
+msgstr "Informação"
+
+msgid "Mettre en place la configuration de GLPI pas à pas : entités, lieux, calendrier, niveaux de service, catégories, catalogue de services, statuts, notifications et autres réglages, appliqués en une seule fois à la fin."
+msgstr "Configurar o GLPI passo a passo: entidades, locais, calendário, níveis de serviço, categorias, catálogo de serviços, status, notificações e outros ajustes, aplicados de uma só vez no final."
+
+msgid "Choisissez un profil, parcourez les étapes (la plupart sont optionnelles), vérifiez le récapitulatif, puis cliquez une seule fois sur « Terminer ». Ce qui existe déjà est réutilisé, rien n'est supprimé."
+msgstr "Escolha um perfil, percorra as etapas (a maioria é opcional), verifique o resumo e clique uma única vez em \"Finalizar\". O que já existe é reutilizado; nada é excluído."
+
+msgid "Traitez les constats en commençant par les plus graves. Un bouton de correction n'apparaît que lorsque le bon réglage ne fait aucun doute et que vous avez le droit de modifier la configuration ; sinon, suivez la recommandation."
+msgstr "Trate as constatações começando pelas mais graves. Um botão de correção só aparece quando o ajuste certo não deixa dúvidas e você tem o direito de modificar a configuração; caso contrário, siga a recomendação."
+
+msgid "Collez le tableau depuis un tableur, choisissez un fichier CSV ou partez du modèle pour un nouveau site, vérifiez l'aperçu, puis créez les lignes valides."
+msgstr "Cole a tabela de uma planilha, escolha um arquivo CSV ou parta do modelo para um novo site, verifique a pré-visualização e depois crie as linhas válidas."
+
+msgid "Ajouter un profil de configuration à partir d'un fichier Blueprint (JSON), par exemple exporté d'une autre instance GLPI."
+msgstr "Adicionar um perfil de configuração a partir de um arquivo Blueprint (JSON), por exemplo exportado de outra instância do GLPI."
+
+msgid "Choisissez le fichier, donnez un nom au profil si besoin, puis importez. Le profil rejoint la liste et ne change rien tant qu'il n'est pas appliqué par l'assistant."
+msgstr "Escolha o arquivo, dê um nome ao perfil se necessário e importe. O perfil entra na lista e não altera nada enquanto não for aplicado pelo assistente."
+
+msgid "Reprendre dans GLPI les tickets d'un autre outil d'assistance ou d'un tableur, à partir d'un fichier CSV."
+msgstr "Trazer para o GLPI os chamados de outra ferramenta de suporte ou de uma planilha, a partir de um arquivo CSV."
+
+msgid "Déposez le fichier, indiquez quelle colonne correspond à quel champ, vérifiez l'aperçu à blanc, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+msgstr "Envie o arquivo, indique qual coluna corresponde a qual campo, verifique a pré-visualização simulada e inicie a importação. Nada é gravado antes desta última etapa."
+
+msgid "Reprendre dans GLPI les tickets d'un projet Jira, à partir de son export CSV."
+msgstr "Trazer para o GLPI os chamados de um projeto Jira, a partir da sua exportação CSV."
+
+msgid "Déposez l'export, vérifiez dans l'aperçu à blanc les correspondances de statuts et de types, puis lancez l'import. Rien n'est écrit avant cette dernière étape."
+msgstr "Envie a exportação, verifique na pré-visualização simulada as correspondências de status e de tipos e inicie a importação. Nada é gravado antes desta última etapa."
+
+msgid "Retrouver les profils de configuration (Blueprints) : chacun pré-remplit l'assistant avec des valeurs adaptées à un type d'organisation."
+msgstr "Encontrar os perfis de configuração (Blueprints): cada um preenche o assistente com valores adequados a um tipo de organização."
+
+msgid "Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou ouvrez un profil de la liste pour le consulter ou l'exporter."
+msgstr "Inicie o assistente, a auditoria ou uma importação com os botões abaixo, ou abra um perfil da lista para consultá-lo ou exportá-lo."
+
+msgid "Retrouver les sauvegardes de la configuration : une automatique à chaque application de l'assistant, et les points de sauvegarde créés à la main, pour comparer ou revenir en arrière."
+msgstr "Encontrar os backups da configuração (um automático a cada aplicação do assistente e os pontos de backup criados manualmente), para comparar ou voltar atrás."
+
+msgid "Créez un point de sauvegarde avant un changement important. Ouvrez une sauvegarde de la liste pour la comparer à la configuration actuelle et la restaurer."
+msgstr "Crie um ponto de backup antes de uma mudança importante. Abra um backup da lista para compará-lo com a configuração atual e restaurá-lo."
+
+msgid "Comparer, réglage par réglage, la configuration actuelle et la sauvegarde choisie."
+msgstr "Comparar, ajuste por ajuste, a configuração atual e o backup escolhido."
+
+msgid "Déployer en une fois une configuration chargée (Blueprint importé ou sauvegarde restaurée), sans repasser par chaque étape de l'assistant."
+msgstr "Implantar de uma só vez uma configuração carregada (Blueprint importado ou backup restaurado), sem passar novamente por cada etapa do assistente."
+
+msgid "Vérifiez ce qui sera déployé et vos droits, puis cliquez sur « Déployer maintenant », ou revoyez d'abord les réglages dans l'assistant."
+msgstr "Verifique o que será implantado e os seus direitos e clique em \"Implantar agora\", ou revise antes os ajustes no assistente."
