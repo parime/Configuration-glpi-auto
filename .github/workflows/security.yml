@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   security:
-    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.7.1
+    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.8.0
     with:
       plugin-key: configurationglpiauto
       charter-mode: error

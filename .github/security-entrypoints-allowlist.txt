@@ -1,2 +1,2 @@
 # Points d'entree autorises sans Session::checkRight()/checkLoginUser()/->check(), lus par
-# .github/scripts/check-entrypoints-auth.sh. Format : chemin : justification (obligatoire).
+# checks/check-entrypoints-auth.sh de parime/glpi-plugin-security (job security). Format : chemin : justification (obligatoire).
