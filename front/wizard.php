@@ -39,6 +39,7 @@ use GlpiPlugin\Configurationglpiauto\CurativeMaintenanceFormBuilder;
 use GlpiPlugin\Configurationglpiauto\DashboardBuilder;
 use GlpiPlugin\Configurationglpiauto\DeliveryTrackingFormBuilder;
 use GlpiPlugin\Configurationglpiauto\DeploymentRights;
+use GlpiPlugin\Configurationglpiauto\DockerInventorySetup;
 use GlpiPlugin\Configurationglpiauto\DocumentManagementBuilder;
 use GlpiPlugin\Configurationglpiauto\DoorLockBadgeFormBuilder;
 use GlpiPlugin\Configurationglpiauto\ElectricalInterventionFormBuilder;
@@ -1285,6 +1286,9 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'assetsign_trigger_preview' => AssetsignTriggerBuilder::preview(),
     'assetsign_trigger_fields' => $config->getAssetsignTriggerFields(),
     'support_tiers_preview' => SupportTierBuilder::getTiersPreview(),
+    // Issue #452 : étape « Inventaire Docker », seulement si le plugin est actif. Les connexions
+    // sont testées et créées par ajax/dockerinventory_connection.php, jamais par « Terminer ».
+    'docker_inventory' => DockerInventorySetup::viewData(),
     'installed_version'     => PLUGIN_CONFIGURATIONGLPIAUTO_VERSION,
     'latest_github_version' => Config::getLatestGithubVersion(),
     'csrf_token'       => Session::getNewCSRFToken(),

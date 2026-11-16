@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 17:18+0000\n"
+"POT-Creation-Date: 2026-11-16 18:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -298,7 +298,7 @@ msgid ""
 "vous intéresse."
 msgstr ""
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig templates/wizard_docker_inventory.html.twig
 msgid "Étape"
 msgstr ""
 
@@ -1799,7 +1799,7 @@ msgstr ""
 msgid "Nom d'utilisateur"
 msgstr ""
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig templates/wizard_docker_inventory.html.twig
 msgid "Mot de passe"
 msgstr ""
 
@@ -1954,7 +1954,7 @@ msgstr ""
 msgid "en erreur"
 msgstr ""
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig templates/wizard_docker_inventory.html.twig
 msgid "Tester la connexion"
 msgstr ""
 
@@ -2020,6 +2020,16 @@ msgstr ""
 
 #: templates/wizard.html.twig
 msgid "Réception par e-mail"
+msgstr ""
+
+#: templates/wizard.html.twig templates/wizard_docker_inventory.html.twig
+msgid "Inventaire Docker"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"les connexions sont enregistrées à l'étape 20, par « Enregistrer la "
+"connexion », et non par « Terminer »."
 msgstr ""
 
 #: templates/wizard.html.twig
@@ -2534,11 +2544,11 @@ msgid ""
 "désactivée et ne crée aucun ticket."
 msgstr ""
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig templates/wizard_docker_inventory.html.twig
 msgid "Connexion en cours..."
 msgstr ""
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig templates/wizard_docker_inventory.html.twig
 msgid "Le test n'a pas pu être lancé."
 msgstr ""
 
@@ -2873,6 +2883,218 @@ msgstr ""
 
 #: templates/audit.html.twig
 msgid "Aucun rapport envoyé pour l'instant."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Facultatif : déclarez les sources que le plugin Inventaire Docker lit "
+"(conteneurs, versions des images, vulnérabilités). Le plugin les lit "
+"seulement, sans rien y modifier."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Chaque connexion est d'abord testée, puis enregistrée tout de suite quand "
+"vous cliquez sur « Enregistrer la connexion » : pas besoin d'aller jusqu'à "
+"« Terminer ». Rien n'est importé automatiquement : lancez le premier import "
+"depuis la page du plugin."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Vous n'avez pas le droit de créer une connexion dans Inventaire Docker "
+"(droit « Configuration » en modification). Demandez à un administrateur de "
+"GLPI, ou passez cette étape."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Connexions déjà déclarées"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Elles ne sont jamais modifiées par l'assistant : ouvrez-les dans Inventaire "
+"Docker pour les changer."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Conteneurs, stacks et services"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Versions disponibles des images"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Registre, images et vulnérabilités"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Applications d'un cluster"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Limites de Portainer CE"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Portainer CE n'a pas de rôle en lecture seule. Un utilisateur standard ne "
+"voit que les ressources en accès « Public » ou attribuées à son équipe : le "
+"reste lui est invisible, sans erreur. Le test le signale par un "
+"avertissement."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Pour tout inventorier : passer les ressources en accès « Public », ou "
+"utiliser le jeton d'un compte administrateur dédié à GLPI, gardé secret et "
+"révoqué au moindre doute. Portainer BE : rôle « Read-only user » sur chaque "
+"environnement."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Utilisez un compte au rôle « ro » (lecture seule) de WUD. Laissez le compte "
+"vide si WUD n'a pas d'authentification."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Utilisez un compte robot Harbor avec le seul droit de lecture (pull). "
+"Laissez le compte vide pour ne lire que les projets publics."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Jeton d'un compte de service en lecture seule (voir le README d'Inventaire "
+"Docker). HTTPS obligatoire."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig templates/address_plan.html.twig
+msgid "Nom"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "production"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Facultatif : à défaut, le type et l'hôte de l'adresse."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Adresse"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Champ « server » du fichier kubeconfig."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Adresse de l'interface, sans /api ni /v2 à la fin."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Hôte dans les images"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Seulement s'il diffère de l'adresse (début des images, par exemple "
+"registry.exemple.test:5000)."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Compte robot"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Compte"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Jeton d'accès (clé d'API)"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Jeton du compte de service"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Chiffré avec la clé de GLPI par Inventaire Docker, jamais réaffiché."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Certificat d'autorité du cluster"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Facultatif : contenu PEM (ca.crt) si le cluster a sa propre autorité ; "
+"vide : autorités du système."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Autoriser une adresse en HTTP"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "déconseillé"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Le jeton ou le mot de passe circule alors en clair sur le réseau."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Enregistrer la connexion"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Lancer un premier import"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Registres maîtrisés"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Hôtes des registres d'où les images déployées doivent venir, un par ligne. "
+"Une image venue d'ailleurs n'est ni analysée ni contrôlée : elle est "
+"signalée. Vide : les hôtes des connexions Harbor."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Hôtes des registres maîtrisés"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Enregistrer les registres maîtrisés"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid ""
+"Ouvre la page des connexions d'Inventaire Docker : choisissez une connexion, "
+"puis « Importer maintenant ». Les imports suivants tournent ensuite tout "
+"seuls."
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Réussi"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Avertissement"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "Échec"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
+msgid "En cours"
 msgstr ""
 
 #: templates/_entity_structure_fields.html.twig
@@ -3411,10 +3633,6 @@ msgid "VLAN"
 msgstr ""
 
 #: templates/address_plan.html.twig
-msgid "Nom"
-msgstr ""
-
-#: templates/address_plan.html.twig
 #: src/Audit/Checks/NetworkConsistencyCheck.php:50
 msgid "Réseau"
 msgstr ""
@@ -3524,6 +3742,18 @@ msgstr ""
 
 #: templates/history_restore.html.twig
 msgid "Appliquer la sélection et déployer"
+msgstr ""
+
+#: ajax/dockerinventory_connection.php:47
+msgid "Le plugin Inventaire Docker n'est pas actif."
+msgstr ""
+
+#: ajax/dockerinventory_connection.php:53 src/DockerInventorySetup.php:420
+msgid "Vous n'avez pas le droit de créer une connexion dans Inventaire Docker."
+msgstr ""
+
+#: ajax/dockerinventory_connection.php:71
+msgid "Action inconnue."
 msgstr ""
 
 #: ajax/mailcollector_test.php:43
@@ -3870,176 +4100,176 @@ msgstr ""
 msgid "Exporter ce Blueprint"
 msgstr ""
 
-#: front/wizard.php:374
+#: front/wizard.php:375
 msgid "Dossier des palettes personnalisées inscriptible"
 msgstr ""
 
-#: front/wizard.php:376
+#: front/wizard.php:377
 #, php-format
 msgid ""
 "nécessaire à la palette personnalisée (étape 17) : vérifiez les droits sur %s"
 msgstr ""
 
-#: front/wizard.php:379
+#: front/wizard.php:380
 msgid "Dossier de cache GLPI inscriptible"
 msgstr ""
 
-#: front/wizard.php:381
+#: front/wizard.php:382
 #, php-format
 msgid ""
 "nécessaire au bon fonctionnement général de GLPI : vérifiez les droits sur %s"
 msgstr ""
 
-#: front/wizard.php:384
+#: front/wizard.php:385
 msgid "Extension GD ou Imagick disponible"
 msgstr ""
 
-#: front/wizard.php:386
+#: front/wizard.php:387
 msgid ""
 "utile pour valider les logos uploadés (étape 17) : ni l'une ni l'autre n'est "
 "chargée"
 msgstr ""
 
-#: front/wizard.php:893
+#: front/wizard.php:894
 msgid "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
 msgstr ""
 
-#: front/wizard.php:894
+#: front/wizard.php:895
 #, php-format
 msgid "Structure créée : %s."
 msgstr ""
 
-#: front/wizard.php:896
+#: front/wizard.php:897
 msgid "Calendrier créé et assigné."
 msgstr ""
 
-#: front/wizard.php:900
+#: front/wizard.php:901
 #, php-format
 msgid ""
 "%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre "
 "sites du même pays)."
 msgstr ""
 
-#: front/wizard.php:905
+#: front/wizard.php:906
 msgid "SLA créés et assignés."
 msgstr ""
 
-#: front/wizard.php:908
+#: front/wizard.php:909
 msgid "OLA (engagements internes) créés et assignés."
 msgstr ""
 
-#: front/wizard.php:911
+#: front/wizard.php:912
 msgid "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
 msgstr ""
 
-#: front/wizard.php:914
+#: front/wizard.php:915
 #, php-format
 msgid "%d client(s) avec des réglages personnalisés."
 msgstr ""
 
-#: front/wizard.php:917
+#: front/wizard.php:918
 #, php-format
 msgid "%d catégories de tickets créées."
 msgstr ""
 
-#: front/wizard.php:920
+#: front/wizard.php:921
 msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
 msgstr ""
 
-#: front/wizard.php:923
+#: front/wizard.php:924
 msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
 msgstr ""
 
-#: front/wizard.php:926
+#: front/wizard.php:927
 msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
 msgstr ""
 
-#: front/wizard.php:929
+#: front/wizard.php:930
 msgid ""
 "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche "
 "Bâtiment)."
 msgstr ""
 
-#: front/wizard.php:932
+#: front/wizard.php:933
 msgid ""
 "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection "
 "des Personnes)."
 msgstr ""
 
-#: front/wizard.php:935
+#: front/wizard.php:936
 #, php-format
 msgid "%d services créés dans le catalogue."
 msgstr ""
 
-#: front/wizard.php:938
+#: front/wizard.php:939
 msgid ""
 "Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de "
 "ticket calculé automatiquement)."
 msgstr ""
 
-#: front/wizard.php:941
+#: front/wizard.php:942
 msgid ""
 "Service \"Demande de licence logicielle\" enrichi (titre de ticket calculé "
 "automatiquement)."
 msgstr ""
 
-#: front/wizard.php:944
+#: front/wizard.php:945
 msgid ""
 "Service \"Demande d'accès VPN\" enrichi (question conditionnelle, titre de "
 "ticket calculé automatiquement)."
 msgstr ""
 
-#: front/wizard.php:947
+#: front/wizard.php:948
 msgid ""
 "Service \"Demande de badge d'accès\" enrichi (titre de ticket calculé "
 "automatiquement)."
 msgstr ""
 
-#: front/wizard.php:950
+#: front/wizard.php:951
 msgid ""
 "Service \"Demande de congé ou absence\" enrichi (question conditionnelle, "
 "titre de ticket calculé automatiquement)."
 msgstr ""
 
-#: front/wizard.php:953
+#: front/wizard.php:954
 msgid ""
 "Service \"Déclarer une arrivée, un départ ou une mutation\" enrichi "
 "(question conditionnelle, titre de ticket calculé automatiquement)."
 msgstr ""
 
-#: front/wizard.php:956
+#: front/wizard.php:957
 msgid ""
 "Service \"Réservation ou problème d'équipement de salle de réunion\" enrichi "
 "(question conditionnelle)."
 msgstr ""
 
-#: front/wizard.php:959
+#: front/wizard.php:960
 #, php-format
 msgid ""
 "%d autres services du catalogue enrichis avec des questions ciblées et un "
 "titre de ticket calculé automatiquement."
 msgstr ""
 
-#: front/wizard.php:962
+#: front/wizard.php:963
 #, php-format
 msgid "%d statuts d'éléments créés."
 msgstr ""
 
-#: front/wizard.php:965
+#: front/wizard.php:966
 #, php-format
 msgid "%d raisons d'attente créées."
 msgstr ""
 
-#: front/wizard.php:968
+#: front/wizard.php:969
 msgid "Personnalisation graphique appliquée."
 msgstr ""
 
-#: front/wizard.php:971
+#: front/wizard.php:972
 #, php-format
 msgid "%d logo(s) d'entité appliqué(s)."
 msgstr ""
 
-#: front/wizard.php:976
+#: front/wizard.php:977
 #, php-format
 msgid ""
 "%d logo(s) trop volumineux pour être appliqué(s) : utilisez un fichier plus "
@@ -4047,35 +4277,35 @@ msgid ""
 "Configuration > Entités > onglet Général."
 msgstr ""
 
-#: front/wizard.php:981
+#: front/wizard.php:982
 #, php-format
 msgid "%d couleur(s) par client/site appliquée(s)."
 msgstr ""
 
-#: front/wizard.php:984
+#: front/wizard.php:985
 #, php-format
 msgid "%d modèle(s) de notification personnalisés."
 msgstr ""
 
-#: front/wizard.php:988
+#: front/wizard.php:989
 msgid "Palette GLPI personnalisée créée et définie par défaut."
 msgstr ""
 
-#: front/wizard.php:989
+#: front/wizard.php:990
 msgid "Palette GLPI native définie par défaut."
 msgstr ""
 
-#: front/wizard.php:992
+#: front/wizard.php:993
 msgid "Réglages généraux GLPI appliqués."
 msgstr ""
 
-#: front/wizard.php:995
+#: front/wizard.php:996
 msgid ""
 "Configuration SMTP appliquée. Testez l'envoi depuis Configuration > "
 "Notifications."
 msgstr ""
 
-#: front/wizard.php:999
+#: front/wizard.php:1000
 #, php-format
 msgid ""
 "Réception par e-mail : %1$d collecteur(s) créé(s), %2$d mis à jour, %3$d "
@@ -4083,250 +4313,250 @@ msgid ""
 "depuis Configuration > Collecteurs."
 msgstr ""
 
-#: front/wizard.php:1006
+#: front/wizard.php:1007
 #, php-format
 msgid "Réception par e-mail : %d règle(s) créée(s) ou mise(s) à jour."
 msgstr ""
 
-#: front/wizard.php:1010
+#: front/wizard.php:1011
 #, php-format
 msgid "Réception par e-mail : introuvable(s) dans GLPI, donc ignoré(s) : %s."
 msgstr ""
 
-#: front/wizard.php:1015
+#: front/wizard.php:1016
 msgid "Tableau de bord ITIL créé (Tableaux de bord > Tableau de bord ITIL)."
 msgstr ""
 
-#: front/wizard.php:1018
+#: front/wizard.php:1019
 msgid "Modèles de tickets créés et assignés aux profils."
 msgstr ""
 
-#: front/wizard.php:1021
+#: front/wizard.php:1022
 msgid "Champs masqués sur les formulaires de création en libre-service."
 msgstr ""
 
-#: front/wizard.php:1024
+#: front/wizard.php:1025
 #, php-format
 msgid "%d règle(s) de droits LDAP créées."
 msgstr ""
 
-#: front/wizard.php:1027
+#: front/wizard.php:1028
 #, php-format
 msgid "%d règle(s) de droits par fonction créées."
 msgstr ""
 
-#: front/wizard.php:1030
+#: front/wizard.php:1031
 #, php-format
 msgid "%d catégories de tâches créées."
 msgstr ""
 
-#: front/wizard.php:1033
+#: front/wizard.php:1034
 #, php-format
 msgid "%d gabarits de tâche créés."
 msgstr ""
 
-#: front/wizard.php:1036
+#: front/wizard.php:1037
 #, php-format
 msgid "%d gabarits de solution créés."
 msgstr ""
 
-#: front/wizard.php:1039
+#: front/wizard.php:1040
 #, php-format
 msgid "%d gabarits de suivis créés."
 msgstr ""
 
-#: front/wizard.php:1042
+#: front/wizard.php:1043
 #, php-format
 msgid "%d gabarits de validation créés."
 msgstr ""
 
-#: front/wizard.php:1045
+#: front/wizard.php:1046
 msgid "Modèles de changement et de problème créés et assignés aux profils."
 msgstr ""
 
-#: front/wizard.php:1048
+#: front/wizard.php:1049
 #, php-format
 msgid "%d lieux créés."
 msgstr ""
 
-#: front/wizard.php:1051
+#: front/wizard.php:1052
 #, php-format
 msgid "%d fabricants créés."
 msgstr ""
 
-#: front/wizard.php:1054
+#: front/wizard.php:1055
 #, php-format
 msgid "%d règle(s) de dictionnaire fabricant créées."
 msgstr ""
 
-#: front/wizard.php:1057
+#: front/wizard.php:1058
 #, php-format
 msgid "%d règle(s) de dictionnaire des logiciels créées."
 msgstr ""
 
-#: front/wizard.php:1060
+#: front/wizard.php:1061
 #, php-format
 msgid ""
 "%d règle(s) de rattachement à l'entité (plage IP, tag) créées ou complétées."
 msgstr ""
 
-#: front/wizard.php:1063
+#: front/wizard.php:1064
 #, php-format
 msgid "%d règle(s) de catégorie de logiciels créées."
 msgstr ""
 
-#: front/wizard.php:1066
+#: front/wizard.php:1067
 #, php-format
 msgid "%d règle(s) de dictionnaire des systèmes d'exploitation créées."
 msgstr ""
 
-#: front/wizard.php:1069
+#: front/wizard.php:1070
 #, php-format
 msgid "%d règle(s) pour ignorer les imprimantes virtuelles créées."
 msgstr ""
 
-#: front/wizard.php:1072
+#: front/wizard.php:1073
 #, php-format
 msgid "%d règle(s) de dictionnaire des types d'ordinateur créées."
 msgstr ""
 
-#: front/wizard.php:1075
+#: front/wizard.php:1076
 #, php-format
 msgid "%d opérateurs téléphoniques créés."
 msgstr ""
 
-#: front/wizard.php:1078
+#: front/wizard.php:1079
 #, php-format
 msgid "%d types de matériel créés."
 msgstr ""
 
-#: front/wizard.php:1081
+#: front/wizard.php:1082
 #, php-format
 msgid "%d types de licence logicielle créés."
 msgstr ""
 
-#: front/wizard.php:1084
+#: front/wizard.php:1085
 #, php-format
 msgid "%d types de certificat créés."
 msgstr ""
 
-#: front/wizard.php:1087
+#: front/wizard.php:1088
 #, php-format
 msgid "%d modèles de tickets récurrents créés."
 msgstr ""
 
-#: front/wizard.php:1090
+#: front/wizard.php:1091
 #, php-format
 msgid "%d catégories de base de connaissances créées."
 msgstr ""
 
-#: front/wizard.php:1093
+#: front/wizard.php:1094
 #, php-format
 msgid "%d articles de FAQ créés."
 msgstr ""
 
-#: front/wizard.php:1096
+#: front/wizard.php:1097
 #, php-format
 msgid "%d rubriques de documents/criticités créées."
 msgstr ""
 
-#: front/wizard.php:1099
+#: front/wizard.php:1100
 #, php-format
 msgid "%d catégories/gabarits d'évènements de planning créés."
 msgstr ""
 
-#: front/wizard.php:1102
+#: front/wizard.php:1103
 #, php-format
 msgid "%d types de projet/tâche de projet/statuts de projet créés."
 msgstr ""
 
-#: front/wizard.php:1105
+#: front/wizard.php:1106
 #, php-format
 msgid "%d gabarits de tâches de projets créés."
 msgstr ""
 
-#: front/wizard.php:1108
+#: front/wizard.php:1109
 #, php-format
 msgid "%d modèle(s) de projet créés, structure de tâches incluse."
 msgstr ""
 
-#: front/wizard.php:1111
+#: front/wizard.php:1112
 #, php-format
 msgid "%d source(s) de demande traduites."
 msgstr ""
 
-#: front/wizard.php:1114
+#: front/wizard.php:1115
 #, php-format
 msgid "%d fiche(s) d'entité complétées avec leur adresse."
 msgstr ""
 
-#: front/wizard.php:1117
+#: front/wizard.php:1118
 #, php-format
 msgid "%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s)."
 msgstr ""
 
-#: front/wizard.php:1120
+#: front/wizard.php:1121
 #, php-format
 msgid "%d déclencheur(s) assetsign relié(s) aux statuts d'éléments."
 msgstr ""
 
-#: front/wizard.php:1123
+#: front/wizard.php:1124
 msgid "Enquête de satisfaction créée (plugin More satisfaction)."
 msgstr ""
 
-#: front/wizard.php:1126
+#: front/wizard.php:1127
 msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
 msgstr ""
 
-#: front/wizard.php:1129
+#: front/wizard.php:1130
 msgid "Groupe \"RSSI\" créé et déclaré dans GRC Manager."
 msgstr ""
 
-#: front/wizard.php:1133
+#: front/wizard.php:1134
 #, php-format
 msgid "%d réglage(s) d'assetsign renseigné(s) (entreprise, lien de la charte)."
 msgstr ""
 
-#: front/wizard.php:1139
+#: front/wizard.php:1140
 #, php-format
 msgid ""
 "%d revue(s) périodique(s) activée(s) dans GRC Manager (tickets récurrents)."
 msgstr ""
 
-#: front/wizard.php:1145
+#: front/wizard.php:1146
 #, php-format
 msgid "%d risque(s) type(s) ajouté(s) au registre de GRC Manager, à évaluer."
 msgstr ""
 
-#: front/wizard.php:1150
+#: front/wizard.php:1151
 #, php-format
 msgid "%d tag(s) créé(s) (plugin Tag)."
 msgstr ""
 
-#: front/wizard.php:1153
+#: front/wizard.php:1154
 msgid "Règle de validation automatique (supérieur hiérarchique) créée."
 msgstr ""
 
-#: front/wizard.php:1156
+#: front/wizard.php:1157
 #, php-format
 msgid "%d catégories d'utilisateur créées."
 msgstr ""
 
-#: front/wizard.php:1159
+#: front/wizard.php:1160
 #, php-format
 msgid "%d règle(s) d'unicité de numéro de série créées."
 msgstr ""
 
-#: front/wizard.php:1162
+#: front/wizard.php:1163
 #, php-format
 msgid "%d flux RSS ajouté(s)."
 msgstr ""
 
-#: front/wizard.php:1165
+#: front/wizard.php:1166
 msgid "Clé d'enregistrement GLPI Network enregistrée."
 msgstr ""
 
-#: front/wizard.php:1172
+#: front/wizard.php:1173
 msgid "Assistant de configuration"
 msgstr ""
 
@@ -5456,6 +5686,51 @@ msgstr ""
 
 #: src/DeploymentRights.php:92
 msgid "nécessaire pour relier les déclencheurs d'assetsign aux statuts créés"
+msgstr ""
+
+#: src/DockerInventorySetup.php:251
+#, php-format
+msgid ""
+"Une connexion existe déjà pour cette adresse (« %s ») : elle n'est pas "
+"modifiée. Ouvrez-la dans Inventaire Docker pour la changer."
+msgstr ""
+
+#: src/DockerInventorySetup.php:262
+#, php-format
+msgid "Connexion non enregistrée, le test a échoué : %s"
+msgstr ""
+
+#: src/DockerInventorySetup.php:276
+msgid "La connexion n'a pas pu être enregistrée."
+msgstr ""
+
+#: src/DockerInventorySetup.php:283
+msgid "Connexion enregistrée."
+msgstr ""
+
+#: src/DockerInventorySetup.php:319
+msgid "Registres maîtrisés : ceux des connexions Harbor (aucun hôte saisi)."
+msgstr ""
+
+#: src/DockerInventorySetup.php:320
+#, php-format
+msgid "Registres maîtrisés enregistrés : %s"
+msgstr ""
+
+#: src/DockerInventorySetup.php:412
+msgid "Type de connexion inconnu."
+msgstr ""
+
+#: src/DockerInventorySetup.php:449
+msgid "Saisie refusée par Inventaire Docker."
+msgstr ""
+
+#: src/DockerInventorySetup.php:466
+msgid "Test de connexion indisponible."
+msgstr ""
+
+#: src/DockerInventorySetup.php:472
+msgid "Le test de connexion a échoué."
 msgstr ""
 
 #: src/DoorLockBadgeFormBuilder.php:261

@@ -17,7 +17,9 @@ autres profils (Installation simple, Plusieurs entreprises clientes/MSP, Personn
 pré-remplissent les mêmes étapes différemment, mais la structure du parcours est identique.
 
 À tout moment, vous pouvez revenir en arrière avec **Précédent** sans perdre vos réponses : rien
-n'est enregistré dans GLPI avant l'étape 20 (Récapitulatif). Vous pouvez donc parcourir tout
+n'est enregistré dans GLPI avant le Récapitulatif (étape 20, ou 21 avec l'étape « Inventaire
+Docker »), à une exception près : les connexions de l'étape « Inventaire Docker » s'enregistrent
+dès que vous cliquez sur « Enregistrer la connexion ». Vous pouvez donc parcourir tout
 l'assistant pour voir ce qu'il propose, sans risque, avant de décider de valider quoi que ce soit.
 
 ### Étape 1 : Profil
@@ -229,7 +231,38 @@ L'audit de configuration signale ensuite un collecteur en erreur, l'absence de r
 (chaque message serait refusé) et les risques de boucle (boîte relevée qui est aussi une adresse
 d'envoi de GLPI, règles natives de refus désactivées).
 
-### Étape 20 : Récapitulatif
+### Étape 20 : Inventaire Docker (si le plugin est installé)
+
+Cette étape n'apparaît que si le plugin **Inventaire Docker** (`dockerinventory`, version 0.7.0 ou
+plus) est installé et actif. Elle déclare les sources qu'il lit, sans passer par ses écrans :
+
+- **Portainer** : adresse et jeton d'accès d'un compte dédié. Un encadré rappelle les limites de
+  Portainer CE : il n'a pas de rôle en lecture seule, et un utilisateur standard ne voit que les
+  ressources en accès « Public » ou attribuées à son équipe.
+- **What's Up Docker (WUD)** : adresse, et compte au rôle `ro` (lecture seule) si WUD demande une
+  authentification.
+- **Harbor** : adresse, compte robot en lecture (pull), hôte dans les images s'il diffère, et
+  **registres maîtrisés** (hôtes d'où les images déployées doivent venir), enregistrés par leur
+  propre bouton.
+- **Kubernetes** (avec Inventaire Docker 0.8.0) : adresse de l'API (HTTPS), jeton d'un compte de
+  service en lecture seule, certificat d'autorité si le cluster a la sienne.
+
+Pour chaque source, **Tester la connexion** interroge le serveur sans rien enregistrer et affiche
+le résultat tel quel : vert si tout va bien, orange pour un avertissement (par exemple un compte
+Portainer qui ne voit aucun conteneur), rouge en cas d'échec. **Enregistrer la connexion** refait
+ce test, puis crée la connexion dans Inventaire Docker s'il a réussi, même avec un avertissement.
+Le jeton ou le mot de passe est chiffré par Inventaire Docker avec la clé de GLPI ; il n'est jamais
+réaffiché. Une connexion qui existe déjà pour la même adresse n'est jamais modifiée : ouvrez-la
+dans Inventaire Docker pour la changer.
+
+Rien n'est importé automatiquement : le bouton **Lancer un premier import** ouvre la connexion (ou
+la page des connexions) dans Inventaire Docker, où le bouton « Importer maintenant » lance la
+première lecture. Les imports suivants tournent ensuite tout seuls.
+
+L'étape demande le droit « Configuration » de GLPI en modification, celui qu'Inventaire Docker
+exige pour créer une connexion. Sans lui, elle l'indique et ne propose aucun formulaire.
+
+### Étape 20 ou 21 : Récapitulatif
 
 Dernière étape avant la création réelle : relit tous les choix des 19 étapes précédentes. Rien
 n'est créé dans GLPI avant de valider ici : c'est le tout premier moment de tout le parcours où
@@ -430,6 +463,20 @@ wizard, from GLPI's native screen (Setup > Notifications): GLPI only ever tests 
 actually saved there, never a form still being filled in.
 
 *(Screenshot coming soon.)*
+
+### Docker Inventory step (if the plugin is installed)
+
+This step only appears when the **Docker Inventory** plugin (`dockerinventory`, 0.7.0 or later)
+is installed and active, just before the summary. It declares the sources that plugin reads:
+Portainer (address and access token, with a reminder of Portainer CE limits: no read-only role),
+What's Up Docker (address, account with the `ro` role), Harbor (address, read-only robot account,
+managed registries) and, with Docker Inventory 0.8.0, Kubernetes (API address, service account
+token, certificate authority). **Test the connection** checks each source without saving anything
+and shows the result as is: a warning stays a warning. **Save the connection** runs the same test,
+then creates the connection in Docker Inventory, which encrypts the secret with the GLPI key; it is
+never shown again. An existing connection with the same address is never changed. Nothing is
+imported automatically: **Run a first import** opens the plugin page. Requires the GLPI
+"Setup" right with update, the one Docker Inventory requires to create a connection.
 
 ### Step 19 : Summary
 

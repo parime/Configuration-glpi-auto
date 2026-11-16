@@ -6293,3 +6293,180 @@ msgstr "Implantar de uma só vez uma configuração carregada (Blueprint importa
 
 msgid "Vérifiez ce qui sera déployé et vos droits, puis cliquez sur « Déployer maintenant », ou revoyez d'abord les réglages dans l'assistant."
 msgstr "Verifique o que será implantado e os seus direitos e clique em \"Implantar agora\", ou revise antes os ajustes no assistente."
+
+msgid "Inventaire Docker"
+msgstr "Inventário Docker"
+
+msgid "les connexions sont enregistrées à l'étape 20, par « Enregistrer la connexion », et non par « Terminer »."
+msgstr "as conexões são salvas na etapa 20, com «Salvar a conexão», e não com «Concluir»."
+
+msgid "Facultatif : déclarez les sources que le plugin Inventaire Docker lit (conteneurs, versions des images, vulnérabilités). Le plugin les lit seulement, sans rien y modifier."
+msgstr "Opcional: declare as fontes lidas pelo plugin Inventário Docker (contêineres, versões das imagens, vulnerabilidades). O plugin apenas as lê, sem alterar nada nelas."
+
+msgid "Chaque connexion est d'abord testée, puis enregistrée tout de suite quand vous cliquez sur « Enregistrer la connexion » : pas besoin d'aller jusqu'à « Terminer ». Rien n'est importé automatiquement : lancez le premier import depuis la page du plugin."
+msgstr "Cada conexão é testada primeiro e salva na hora quando você clica em «Salvar a conexão»: não é preciso ir até «Concluir». Nada é importado automaticamente: inicie a primeira importação na página do plugin."
+
+msgid "Vous n'avez pas le droit de créer une connexion dans Inventaire Docker (droit « Configuration » en modification). Demandez à un administrateur de GLPI, ou passez cette étape."
+msgstr "Você não tem permissão para criar uma conexão no Inventário Docker (permissão «Configuração» com alteração). Peça a um administrador do GLPI ou pule esta etapa."
+
+msgid "Connexions déjà déclarées"
+msgstr "Conexões já declaradas"
+
+msgid "Elles ne sont jamais modifiées par l'assistant : ouvrez-les dans Inventaire Docker pour les changer."
+msgstr "O assistente nunca as altera: abra-as no Inventário Docker para mudá-las."
+
+msgid "Conteneurs, stacks et services"
+msgstr "Contêineres, stacks e serviços"
+
+msgid "Versions disponibles des images"
+msgstr "Versões disponíveis das imagens"
+
+msgid "Registre, images et vulnérabilités"
+msgstr "Registro, imagens e vulnerabilidades"
+
+msgid "Applications d'un cluster"
+msgstr "Aplicações de um cluster"
+
+msgid "Limites de Portainer CE"
+msgstr "Limites do Portainer CE"
+
+msgid "Portainer CE n'a pas de rôle en lecture seule. Un utilisateur standard ne voit que les ressources en accès « Public » ou attribuées à son équipe : le reste lui est invisible, sans erreur. Le test le signale par un avertissement."
+msgstr "O Portainer CE não tem papel somente leitura. Um usuário padrão só vê os recursos com acesso «Public» ou atribuídos à sua equipe: o resto fica invisível para ele, sem erro. O teste sinaliza isso com um aviso."
+
+msgid "Pour tout inventorier : passer les ressources en accès « Public », ou utiliser le jeton d'un compte administrateur dédié à GLPI, gardé secret et révoqué au moindre doute. Portainer BE : rôle « Read-only user » sur chaque environnement."
+msgstr "Para inventariar tudo: passar os recursos para acesso «Public», ou usar o token de uma conta de administrador dedicada ao GLPI, mantido em segredo e revogado à menor dúvida. Portainer BE: papel «Read-only user» em cada ambiente."
+
+msgid "Utilisez un compte au rôle « ro » (lecture seule) de WUD. Laissez le compte vide si WUD n'a pas d'authentification."
+msgstr "Use uma conta do WUD com o papel «ro» (somente leitura). Deixe a conta vazia se o WUD não tiver autenticação."
+
+msgid "Utilisez un compte robot Harbor avec le seul droit de lecture (pull). Laissez le compte vide pour ne lire que les projets publics."
+msgstr "Use uma conta robô do Harbor só com permissão de leitura (pull). Deixe a conta vazia para ler apenas os projetos públicos."
+
+msgid "Jeton d'un compte de service en lecture seule (voir le README d'Inventaire Docker). HTTPS obligatoire."
+msgstr "Token de uma conta de serviço somente leitura (veja o README do Inventário Docker). HTTPS obrigatório."
+
+msgid "production"
+msgstr "produção"
+
+msgid "Facultatif : à défaut, le type et l'hôte de l'adresse."
+msgstr "Opcional: por padrão, o tipo e o host do endereço."
+
+msgid "Adresse"
+msgstr "Endereço"
+
+msgid "Champ « server » du fichier kubeconfig."
+msgstr "Campo «server» do arquivo kubeconfig."
+
+msgid "Adresse de l'interface, sans /api ni /v2 à la fin."
+msgstr "Endereço da interface, sem /api nem /v2 no final."
+
+msgid "Hôte dans les images"
+msgstr "Host nas imagens"
+
+msgid "Seulement s'il diffère de l'adresse (début des images, par exemple registry.exemple.test:5000)."
+msgstr "Somente se for diferente do endereço (início das imagens, por exemplo registry.exemple.test:5000)."
+
+msgid "Compte robot"
+msgstr "Conta robô"
+
+msgid "Compte"
+msgstr "Conta"
+
+msgid "Jeton d'accès (clé d'API)"
+msgstr "Token de acesso (chave de API)"
+
+msgid "Jeton du compte de service"
+msgstr "Token da conta de serviço"
+
+msgid "Chiffré avec la clé de GLPI par Inventaire Docker, jamais réaffiché."
+msgstr "Criptografado com a chave do GLPI pelo Inventário Docker, nunca mais exibido."
+
+msgid "Certificat d'autorité du cluster"
+msgstr "Certificado de autoridade do cluster"
+
+msgid "Facultatif : contenu PEM (ca.crt) si le cluster a sa propre autorité ; vide : autorités du système."
+msgstr "Opcional: conteúdo PEM (ca.crt) se o cluster tiver sua própria autoridade; vazio: autoridades do sistema."
+
+msgid "Autoriser une adresse en HTTP"
+msgstr "Permitir um endereço HTTP"
+
+msgid "déconseillé"
+msgstr "não recomendado"
+
+msgid "Le jeton ou le mot de passe circule alors en clair sur le réseau."
+msgstr "O token ou a senha trafegam então em texto claro pela rede."
+
+msgid "Enregistrer la connexion"
+msgstr "Salvar a conexão"
+
+msgid "Lancer un premier import"
+msgstr "Iniciar uma primeira importação"
+
+msgid "Registres maîtrisés"
+msgstr "Registros gerenciados"
+
+msgid "Hôtes des registres d'où les images déployées doivent venir, un par ligne. Une image venue d'ailleurs n'est ni analysée ni contrôlée : elle est signalée. Vide : les hôtes des connexions Harbor."
+msgstr "Hosts dos registros de onde as imagens implantadas devem vir, um por linha. Uma imagem vinda de outro lugar não é analisada nem controlada: ela é sinalizada. Vazio: os hosts das conexões Harbor."
+
+msgid "Hôtes des registres maîtrisés"
+msgstr "Hosts dos registros gerenciados"
+
+msgid "Enregistrer les registres maîtrisés"
+msgstr "Salvar os registros gerenciados"
+
+msgid "Ouvre la page des connexions d'Inventaire Docker : choisissez une connexion, puis « Importer maintenant ». Les imports suivants tournent ensuite tout seuls."
+msgstr "Abre a página de conexões do Inventário Docker: escolha uma conexão e depois «Importar agora». As importações seguintes rodam então sozinhas."
+
+msgid "Réussi"
+msgstr "Concluído"
+
+msgid "Avertissement"
+msgstr "Aviso"
+
+msgid "Échec"
+msgstr "Falha"
+
+msgid "En cours"
+msgstr "Em andamento"
+
+msgid "Le plugin Inventaire Docker n'est pas actif."
+msgstr "O plugin Inventário Docker não está ativo."
+
+msgid "Vous n'avez pas le droit de créer une connexion dans Inventaire Docker."
+msgstr "Você não tem permissão para criar uma conexão no Inventário Docker."
+
+msgid "Action inconnue."
+msgstr "Ação desconhecida."
+
+#, php-format
+msgid "Une connexion existe déjà pour cette adresse (« %s ») : elle n'est pas modifiée. Ouvrez-la dans Inventaire Docker pour la changer."
+msgstr "Já existe uma conexão para este endereço («%s»): ela não é alterada. Abra-a no Inventário Docker para mudá-la."
+
+#, php-format
+msgid "Connexion non enregistrée, le test a échoué : %s"
+msgstr "Conexão não salva, o teste falhou: %s"
+
+msgid "La connexion n'a pas pu être enregistrée."
+msgstr "Não foi possível salvar a conexão."
+
+msgid "Connexion enregistrée."
+msgstr "Conexão salva."
+
+msgid "Registres maîtrisés : ceux des connexions Harbor (aucun hôte saisi)."
+msgstr "Registros gerenciados: os das conexões Harbor (nenhum host informado)."
+
+#, php-format
+msgid "Registres maîtrisés enregistrés : %s"
+msgstr "Registros gerenciados salvos: %s"
+
+msgid "Type de connexion inconnu."
+msgstr "Tipo de conexão desconhecido."
+
+msgid "Saisie refusée par Inventaire Docker."
+msgstr "Dados recusados pelo Inventário Docker."
+
+msgid "Test de connexion indisponible."
+msgstr "Teste de conexão indisponível."
+
+msgid "Le test de connexion a échoué."
+msgstr "O teste de conexão falhou."

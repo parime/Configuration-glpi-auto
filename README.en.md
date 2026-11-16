@@ -68,6 +68,9 @@ All other screenshots (all 20 steps in detail) are in the [tutorial](docs/TUTORI
 - Asset statuses, additional project statuses and pending reasons with automatic follow-up/closure
 - If the assetsign-glpi plugin is active: its form triggers (handover, return, donation, sale,
   destruction, decommissioning) linked to the created statuses, never changing an existing setting
+- If the Docker Inventory plugin (0.7.0 or later) is active: a step declares its Portainer, WUD,
+  Harbor and Kubernetes connections, each tested before saving (secret encrypted by that plugin
+  with the GLPI key), with no automatic import and no change to an existing connection
 - Receiving tickets by email: GLPI mail receivers created disabled (password encrypted by GLPI,
   never kept by the plugin), per-mailbox routing to an entity, a category and a group, refusal of
   automatic replies and delivery failures, connection test

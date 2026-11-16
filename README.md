@@ -69,6 +69,9 @@ Toutes les autres captures d'écran (les 20 étapes en détail) sont dans le [tu
   automatiques
 - Si le plugin assetsign-glpi est actif : ses declencheurs de fiches (remise, restitution, don,
   vente, destruction, reforme) relies aux statuts crees, sans jamais modifier un reglage existant
+- Si le plugin Inventaire Docker (0.7.0 et plus) est actif : une etape declare ses connexions
+  Portainer, WUD, Harbor et Kubernetes, chacune testee avant l'enregistrement (secret chiffre par le
+  plugin avec la cle de GLPI), sans import automatique ni modification d'une connexion existante
 - Reception des tickets par e-mail : collecteurs GLPI crees desactives (mot de passe chiffre par
   GLPI, jamais conserve par le plugin), routage par boite vers une entite, une categorie et un
   groupe, refus des reponses automatiques et des erreurs de distribution, test de connexion

@@ -69,9 +69,9 @@ done
 P=$BASE/plugins/configurationglpiauto/front
 A=$BASE/plugins/configurationglpiauto/ajax
 case "$ROLE" in
-  none)     OPEN=403; AUDIT=403; AUDIT_FIX=403; JIRA=403; NET=403; MAILTEST=403 ;;
-  delegate) OPEN=200; AUDIT=403; AUDIT_FIX=403; JIRA=403; NET=403; MAILTEST=403 ;;
-  *)        OPEN=200; AUDIT=200; AUDIT_FIX=302; JIRA=200; NET=200; MAILTEST=404 ;;
+  none)     OPEN=403; AUDIT=403; AUDIT_FIX=403; JIRA=403; NET=403; MAILTEST=403; DOCKER=403 ;;
+  delegate) OPEN=200; AUDIT=403; AUDIT_FIX=403; JIRA=403; NET=403; MAILTEST=403; DOCKER=403 ;;
+  *)        OPEN=200; AUDIT=200; AUDIT_FIX=302; JIRA=200; NET=200; MAILTEST=404; DOCKER=404 ;;
 esac
 
 # --- Chaque page du plugin : refusee sans droit, utilisable avec ---
@@ -97,6 +97,9 @@ expect "front/audit.php (correction)"           $AUDIT_FIX "$(code -d "fix=notif
 # Issue #429 : test de connexion d'un collecteur, exige aussi le droit natif config (collecteurs) ;
 # le super-admin obtient 404 pour un collecteur inexistant.
 expect "ajax/mailcollector_test.php"            $MAILTEST "$(code -X POST -H "X-Glpi-Csrf-Token: $(csrf)" -H 'X-Requested-With: XMLHttpRequest' -d 'id=0' "$A/mailcollector_test.php")"
+# Issue #452 : connexions d'Inventaire Docker, exige aussi le droit natif config ; le super-admin
+# obtient 404 quand le plugin Inventaire Docker n'est pas installe (cas de la CI).
+expect "ajax/dockerinventory_connection.php"    $DOCKER "$(code -X POST -H "X-Glpi-Csrf-Token: $(csrf)" -H 'X-Requested-With: XMLHttpRequest' -d 'action=test&type=portainer' "$A/dockerinventory_connection.php")"
 if [ "$ROLE" = none ]; then
   expect "ajax/geocode.php" 403 "$(code "$A/geocode.php?q=rue%20de%20la%20Paix")"
   rm -f "$JAR"; exit $FAIL

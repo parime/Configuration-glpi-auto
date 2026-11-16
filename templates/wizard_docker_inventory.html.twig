@@ -1,0 +1,271 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #452 : étape « Inventaire Docker » de l'assistant, incluse seulement si le plugin
+   dockerinventory est actif. Les champs n'ont pas d'attribut name : ils ne partent jamais avec
+   « Terminer ». Chaque source se teste et s'enregistre à part (ajax/dockerinventory_connection.php),
+   les secrets sont chiffrés par Inventaire Docker et jamais réaffichés. #}
+{% set di = docker_inventory %}
+{% set type_meta = {
+   'portainer': {label: 'Portainer', icon: 'ti-brand-docker', color: 'bg-blue-lt'},
+   'wud': {label: "What's Up Docker (WUD)", icon: 'ti-tags', color: 'bg-teal-lt'},
+   'harbor': {label: 'Harbor', icon: 'ti-building-warehouse', color: 'bg-indigo-lt'},
+   'kubernetes': {label: 'Kubernetes', icon: 'ti-brand-kubernetes', color: 'bg-azure-lt'},
+} %}
+
+<h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} {{ step_number }} : {{ __('Inventaire Docker', 'configurationglpiauto') }}</h3>
+<p class="text-muted">{{ __('Facultatif : déclarez les sources que le plugin Inventaire Docker lit (conteneurs, versions des images, vulnérabilités). Le plugin les lit seulement, sans rien y modifier.', 'configurationglpiauto') }}</p>
+
+<div class="alert alert-info d-flex align-items-start gap-2">
+  <i class="ti ti-info-circle mt-1" aria-hidden="true"></i>
+  <div>
+    {{ __('Chaque connexion est d\'abord testée, puis enregistrée tout de suite quand vous cliquez sur « Enregistrer la connexion » : pas besoin d\'aller jusqu\'à « Terminer ». Rien n\'est importé automatiquement : lancez le premier import depuis la page du plugin.', 'configurationglpiauto') }}
+  </div>
+</div>
+
+{% if not di.can_create %}
+  <div class="alert alert-warning d-flex align-items-start gap-2">
+    <i class="ti ti-lock mt-1" aria-hidden="true"></i>
+    <div>{{ __('Vous n\'avez pas le droit de créer une connexion dans Inventaire Docker (droit « Configuration » en modification). Demandez à un administrateur de GLPI, ou passez cette étape.', 'configurationglpiauto') }}</div>
+  </div>
+{% else %}
+  {% if di.existing is not empty %}
+    <h4 class="mb-1"><i class="ti ti-plug-connected me-1" aria-hidden="true"></i>{{ __('Connexions déjà déclarées', 'configurationglpiauto') }}</h4>
+    <p class="text-muted small mb-2">{{ __('Elles ne sont jamais modifiées par l\'assistant : ouvrez-les dans Inventaire Docker pour les changer.', 'configurationglpiauto') }}</p>
+    <ul class="list-group mb-3">
+      {% for connection in di.existing %}
+        <li class="list-group-item d-flex flex-wrap align-items-center gap-2">
+          <span class="badge bg-secondary-lt">{{ connection.type }}</span>
+          <a href="{{ connection.url }}" target="_blank" rel="noopener">{{ connection.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% for type in di.types %}
+    {% set meta = type_meta[type] %}
+    <div class="card mb-3 cga-docker-source" data-type="{{ type }}">
+      <div class="card-header">
+        <h4 class="card-title mb-0">
+          <span class="badge {{ meta.color }} me-2"><i class="ti {{ meta.icon }} me-1" aria-hidden="true"></i>{{ meta.label }}</span>
+          {% if type == 'portainer' %}{{ __('Conteneurs, stacks et services', 'configurationglpiauto') }}
+          {% elseif type == 'wud' %}{{ __('Versions disponibles des images', 'configurationglpiauto') }}
+          {% elseif type == 'harbor' %}{{ __('Registre, images et vulnérabilités', 'configurationglpiauto') }}
+          {% else %}{{ __('Applications d\'un cluster', 'configurationglpiauto') }}{% endif %}
+        </h4>
+      </div>
+      <div class="card-body">
+        {% if type == 'portainer' %}
+          <div class="alert alert-warning d-flex align-items-start gap-2">
+            <i class="ti ti-alert-triangle mt-1" aria-hidden="true"></i>
+            <div>
+              <strong>{{ __('Limites de Portainer CE', 'configurationglpiauto') }}</strong> -
+              {{ __('Portainer CE n\'a pas de rôle en lecture seule. Un utilisateur standard ne voit que les ressources en accès « Public » ou attribuées à son équipe : le reste lui est invisible, sans erreur. Le test le signale par un avertissement.', 'configurationglpiauto') }}
+              {{ __('Pour tout inventorier : passer les ressources en accès « Public », ou utiliser le jeton d\'un compte administrateur dédié à GLPI, gardé secret et révoqué au moindre doute. Portainer BE : rôle « Read-only user » sur chaque environnement.', 'configurationglpiauto') }}
+            </div>
+          </div>
+        {% elseif type == 'wud' %}
+          <p class="text-muted small">{{ __('Utilisez un compte au rôle « ro » (lecture seule) de WUD. Laissez le compte vide si WUD n\'a pas d\'authentification.', 'configurationglpiauto') }}</p>
+        {% elseif type == 'harbor' %}
+          <p class="text-muted small">{{ __('Utilisez un compte robot Harbor avec le seul droit de lecture (pull). Laissez le compte vide pour ne lire que les projets publics.', 'configurationglpiauto') }}</p>
+        {% else %}
+          <p class="text-muted small">{{ __('Jeton d\'un compte de service en lecture seule (voir le README d\'Inventaire Docker). HTTPS obligatoire.', 'configurationglpiauto') }}</p>
+        {% endif %}
+
+        <div class="row g-2">
+          <div class="col-md-6">
+            <label class="form-label mb-1" for="cga-docker-{{ type }}-name">{{ __('Nom', 'configurationglpiauto') }}</label>
+            <input type="text" class="form-control" id="cga-docker-{{ type }}-name" data-field="name" maxlength="255" placeholder="{{ meta.label }} - {{ __('production', 'configurationglpiauto') }}">
+            <p class="text-muted small mb-0">{{ __('Facultatif : à défaut, le type et l\'hôte de l\'adresse.', 'configurationglpiauto') }}</p>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label mb-1" for="cga-docker-{{ type }}-url">{{ __('Adresse', 'configurationglpiauto') }} <span class="text-danger">*</span></label>
+            {% set placeholder = {
+               'portainer': 'https://portainer.exemple.test:9443',
+               'wud': 'https://wud.exemple.test:3000',
+               'harbor': 'https://harbor.exemple.test',
+               'kubernetes': 'https://kubernetes.exemple.test:6443',
+            }[type] %}
+            <input type="text" inputmode="url" class="form-control" id="cga-docker-{{ type }}-url" data-field="url" maxlength="255" placeholder="{{ placeholder }}" autocomplete="off">
+            <p class="text-muted small mb-0">
+              {% if type == 'kubernetes' %}{{ __('Champ « server » du fichier kubeconfig.', 'configurationglpiauto') }}
+              {% else %}{{ __('Adresse de l\'interface, sans /api ni /v2 à la fin.', 'configurationglpiauto') }}{% endif %}
+            </p>
+          </div>
+          {% if type == 'harbor' %}
+            <div class="col-md-6">
+              <label class="form-label mb-1" for="cga-docker-harbor-registry_host">{{ __('Hôte dans les images', 'configurationglpiauto') }}</label>
+              <input type="text" class="form-control" id="cga-docker-harbor-registry_host" data-field="registry_host" maxlength="255" placeholder="harbor.exemple.test" autocomplete="off">
+              <p class="text-muted small mb-0">{{ __('Seulement s\'il diffère de l\'adresse (début des images, par exemple registry.exemple.test:5000).', 'configurationglpiauto') }}</p>
+            </div>
+          {% endif %}
+          {% if type == 'wud' or type == 'harbor' %}
+            <div class="col-md-6">
+              <label class="form-label mb-1" for="cga-docker-{{ type }}-username">{{ type == 'harbor' ? __('Compte robot', 'configurationglpiauto') : __('Compte', 'configurationglpiauto') }}</label>
+              <input type="text" class="form-control" id="cga-docker-{{ type }}-username" data-field="username" maxlength="255" placeholder="{{ type == 'harbor' ? 'robot$lecture' : 'lecture' }}" autocomplete="off">
+            </div>
+          {% endif %}
+          <div class="col-md-6">
+            <label class="form-label mb-1" for="cga-docker-{{ type }}-api_key">
+              {% if type == 'portainer' %}{{ __('Jeton d\'accès (clé d\'API)', 'configurationglpiauto') }} <span class="text-danger">*</span>
+              {% elseif type == 'kubernetes' %}{{ __('Jeton du compte de service', 'configurationglpiauto') }} <span class="text-danger">*</span>
+              {% else %}{{ __('Mot de passe', 'configurationglpiauto') }}{% endif %}
+            </label>
+            <input type="password" class="form-control" id="cga-docker-{{ type }}-api_key" data-field="api_key" autocomplete="new-password">
+            <p class="text-muted small mb-0">{{ __('Chiffré avec la clé de GLPI par Inventaire Docker, jamais réaffiché.', 'configurationglpiauto') }}</p>
+          </div>
+          {% if type == 'kubernetes' %}
+            <div class="col-12">
+              <label class="form-label mb-1" for="cga-docker-kubernetes-ca_certificate">{{ __('Certificat d\'autorité du cluster', 'configurationglpiauto') }}</label>
+              <textarea class="form-control font-monospace" rows="3" id="cga-docker-kubernetes-ca_certificate" data-field="ca_certificate" placeholder="-----BEGIN CERTIFICATE-----"></textarea>
+              <p class="text-muted small mb-0">{{ __('Facultatif : contenu PEM (ca.crt) si le cluster a sa propre autorité ; vide : autorités du système.', 'configurationglpiauto') }}</p>
+            </div>
+          {% else %}
+            <div class="col-12">
+              <div class="form-check form-switch mb-0">
+                <input type="checkbox" class="form-check-input" id="cga-docker-{{ type }}-allow_http" data-field="allow_http" value="1">
+                <label class="form-check-label" for="cga-docker-{{ type }}-allow_http">{{ __('Autoriser une adresse en HTTP', 'configurationglpiauto') }} <span class="badge bg-orange-lt">{{ __('déconseillé', 'configurationglpiauto') }}</span></label>
+              </div>
+              <p class="text-muted small mb-0">{{ __('Le jeton ou le mot de passe circule alors en clair sur le réseau.', 'configurationglpiauto') }}</p>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+          <button type="button" class="btn btn-outline-secondary cga-docker-action" data-action="test"><i class="ti ti-plug me-1" aria-hidden="true"></i>{{ __('Tester la connexion', 'configurationglpiauto') }}</button>
+          <button type="button" class="btn btn-primary cga-docker-action" data-action="save"><i class="ti ti-device-floppy me-1" aria-hidden="true"></i>{{ __('Enregistrer la connexion', 'configurationglpiauto') }}</button>
+          <a class="btn btn-outline-primary cga-docker-import" href="#" target="_blank" rel="noopener" style="display: none;"><i class="ti ti-player-play me-1" aria-hidden="true"></i>{{ __('Lancer un premier import', 'configurationglpiauto') }}</a>
+        </div>
+        <div class="small mt-2 cga-docker-result" role="status" aria-live="polite"></div>
+
+        {% if type == 'harbor' %}
+          <hr class="my-3">
+          <h5 class="mb-1"><i class="ti ti-shield-check me-1" aria-hidden="true"></i>{{ __('Registres maîtrisés', 'configurationglpiauto') }}</h5>
+          <p class="text-muted small mb-2">{{ __('Hôtes des registres d\'où les images déployées doivent venir, un par ligne. Une image venue d\'ailleurs n\'est ni analysée ni contrôlée : elle est signalée. Vide : les hôtes des connexions Harbor.', 'configurationglpiauto') }}</p>
+          <label class="form-label mb-1" for="cga-docker-managed-registries">{{ __('Hôtes des registres maîtrisés', 'configurationglpiauto') }}</label>
+          <textarea class="form-control font-monospace mb-2" rows="3" id="cga-docker-managed-registries" placeholder="registry.exemple.test:5000">{{ di.managed_registries }}</textarea>
+          <button type="button" class="btn btn-outline-secondary" id="cga-docker-registries-save"><i class="ti ti-device-floppy me-1" aria-hidden="true"></i>{{ __('Enregistrer les registres maîtrisés', 'configurationglpiauto') }}</button>
+          <div class="small mt-2" id="cga-docker-registries-result" role="status" aria-live="polite"></div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+
+  <div class="d-flex flex-wrap align-items-center gap-2">
+    <a class="btn btn-outline-primary" href="{{ di.plugin_url }}" target="_blank" rel="noopener"><i class="ti ti-player-play me-1" aria-hidden="true"></i>{{ __('Lancer un premier import', 'configurationglpiauto') }}</a>
+    <span class="text-muted small">{{ __('Ouvre la page des connexions d\'Inventaire Docker : choisissez une connexion, puis « Importer maintenant ». Les imports suivants tournent ensuite tout seuls.', 'configurationglpiauto') }}</span>
+  </div>
+
+  <script>
+  (function () {
+    var endpoint = "{{ (config('root_doc') ~ '/plugins/configurationglpiauto/ajax/dockerinventory_connection.php')|e('js') }}";
+    var badges = {
+      ok: ['bg-green-lt', 'ti-circle-check', "{{ __('Réussi', 'configurationglpiauto')|e('js') }}"],
+      warning: ['bg-orange-lt', 'ti-alert-triangle', "{{ __('Avertissement', 'configurationglpiauto')|e('js') }}"],
+      error: ['bg-red-lt', 'ti-alert-octagon', "{{ __('Échec', 'configurationglpiauto')|e('js') }}"],
+      info: ['bg-blue-lt', 'ti-loader', "{{ __('En cours', 'configurationglpiauto')|e('js') }}"]
+    };
+
+    function show(target, level, message) {
+      var style = badges[level] || badges.error;
+      target.textContent = '';
+      var badge = document.createElement('span');
+      badge.className = 'badge me-2 ' + style[0];
+      var icon = document.createElement('i');
+      icon.className = 'ti me-1 ' + style[1];
+      icon.setAttribute('aria-hidden', 'true');
+      badge.appendChild(icon);
+      badge.appendChild(document.createTextNode(style[2]));
+      target.appendChild(badge);
+      target.appendChild(document.createTextNode(message || ''));
+    }
+
+    function post(body) {
+      var tokenMeta = document.querySelector('meta[property="glpi:csrf_token"]');
+      return fetch(endpoint, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-Glpi-Csrf-Token': tokenMeta ? tokenMeta.getAttribute('content') : ''
+        },
+        body: body
+      }).then(function (r) { return r.json(); });
+    }
+
+    var failed = "{{ __('Le test n\'a pas pu être lancé.', 'configurationglpiauto')|e('js') }}";
+    var running = "{{ __('Connexion en cours...', 'configurationglpiauto')|e('js') }}";
+
+    document.querySelectorAll('.cga-docker-source').forEach(function (card) {
+      var result = card.querySelector('.cga-docker-result');
+      var importLink = card.querySelector('.cga-docker-import');
+      var buttons = card.querySelectorAll('.cga-docker-action');
+      // Entrée dans un champ : jamais la soumission de tout l'assistant.
+      card.querySelectorAll('input').forEach(function (input) {
+        input.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter') { event.preventDefault(); }
+        });
+      });
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          var body = new URLSearchParams();
+          body.append('action', button.dataset.action);
+          body.append('type', card.dataset.type);
+          card.querySelectorAll('[data-field]').forEach(function (field) {
+            if (field.type === 'checkbox') {
+              body.append(field.dataset.field, field.checked ? '1' : '0');
+            } else {
+              body.append(field.dataset.field, field.value);
+            }
+          });
+          buttons.forEach(function (b) { b.disabled = true; });
+          show(result, 'info', running);
+          post(body).then(function (data) {
+            show(result, data.level, data.message);
+            if (data.url) {
+              importLink.href = data.url;
+              importLink.style.display = data.saved ? '' : 'none';
+            }
+            if (data.saved) {
+              // Secret enregistré (chiffré) : effacé de la page.
+              card.querySelectorAll('[data-field="api_key"]').forEach(function (field) { field.value = ''; });
+            }
+          }).catch(function () {
+            show(result, 'error', failed);
+          }).finally(function () {
+            buttons.forEach(function (b) { b.disabled = false; });
+          });
+        });
+      });
+    });
+
+    var registriesButton = document.getElementById('cga-docker-registries-save');
+    if (registriesButton) {
+      registriesButton.addEventListener('click', function () {
+        var target = document.getElementById('cga-docker-registries-result');
+        var body = new URLSearchParams();
+        body.append('action', 'registries');
+        body.append('managed_registries', document.getElementById('cga-docker-managed-registries').value);
+        registriesButton.disabled = true;
+        post(body).then(function (data) {
+          show(target, data.level, data.message);
+        }).catch(function () {
+          show(target, 'error', failed);
+        }).finally(function () { registriesButton.disabled = false; });
+      });
+    }
+  })();
+  </script>
+{% endif %}
