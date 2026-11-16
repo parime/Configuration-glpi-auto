@@ -38,6 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   à la corbeille n'est pas recréé ; un formulaire créé par une version précédente n'est pas modifié
   (le supprimer pour obtenir la nouvelle version). Nouvelle table
   `glpi_plugin_configurationglpiauto_managedforms` (empreintes des formulaires construits).
+- CI : contrôles de sécurité communs v1.7.1 (exceptions de menus de la charte, correction du jeu de données du contrôle de désinstallation).
+- CI : le contrôle « Sécurité commune » ne tourne plus sur chaque push de branche de travail, seulement sur les PR et les branches principales (moins d'exécutions en double et de notifications d'échec).
 - Traductions collaboratives sur Hosted Weblate : section « Traductions » des README avec le badge
   d'avancement et le lien pour contribuer.
 - Documentation : lien vers la charte commune des plugins ([CHARTE.md](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md))
@@ -47,6 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   charte commune passé en mode bloquant.
 
 ## [1.25.0] - 2026-11-15
+
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
 
 ### Added
 
