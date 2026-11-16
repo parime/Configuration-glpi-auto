@@ -38,7 +38,7 @@ final class DockerInventorySetupTest extends TestCase
         if (!DockerInventorySetup::isAvailable()) {
             return;
         }
-        $class = DockerInventorySetup::CONNECTION_CLASS;
+        $class = DockerInventorySetup::connectionClass();
         $connection = new $class();
         foreach ([self::URL, self::OTHER_URL] as $url) {
             foreach ($connection->find(['url' => $url]) as $row) {
@@ -57,7 +57,7 @@ final class DockerInventorySetupTest extends TestCase
 
     private static function countFor(string $url): int
     {
-        $class = DockerInventorySetup::CONNECTION_CLASS;
+        $class = DockerInventorySetup::connectionClass();
 
         return count((new $class())->find(['url' => $url]));
     }
@@ -140,7 +140,7 @@ final class DockerInventorySetupTest extends TestCase
         $this->assertTrue($saved['saved'] ?? false);
         $this->assertStringNotContainsString(self::SECRET, (string) json_encode($saved), 'secret jamais renvoyé');
 
-        $class = DockerInventorySetup::CONNECTION_CLASS;
+        $class = DockerInventorySetup::connectionClass();
         $connection = new $class();
         $this->assertTrue($connection->getFromDB((int) $saved['id']));
         $this->assertSame(self::URL, $connection->fields['url'], 'adresse normalisée par le plugin');
@@ -189,7 +189,7 @@ final class DockerInventorySetupTest extends TestCase
 
             return;
         }
-        $class = DockerInventorySetup::CONNECTION_CLASS;
+        $class = DockerInventorySetup::connectionClass();
         $right = $class::RIGHTNAME;
         $original = $_SESSION['glpiactiveprofile'][$right] ?? null;
         try {

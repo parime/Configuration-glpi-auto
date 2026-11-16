@@ -6409,3 +6409,6 @@ msgstr "Connection test unavailable."
 
 msgid "Le test de connexion a échoué."
 msgstr "The connection test failed."
+
+msgid "Ouvrir la connexion existante"
+msgstr "Open the existing connection"

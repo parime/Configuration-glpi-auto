@@ -147,6 +147,7 @@
           <button type="button" class="btn btn-outline-secondary cga-docker-action" data-action="test"><i class="ti ti-plug me-1" aria-hidden="true"></i>{{ __('Tester la connexion', 'configurationglpiauto') }}</button>
           <button type="button" class="btn btn-primary cga-docker-action" data-action="save"><i class="ti ti-device-floppy me-1" aria-hidden="true"></i>{{ __('Enregistrer la connexion', 'configurationglpiauto') }}</button>
           <a class="btn btn-outline-primary cga-docker-import" href="#" target="_blank" rel="noopener" style="display: none;"><i class="ti ti-player-play me-1" aria-hidden="true"></i>{{ __('Lancer un premier import', 'configurationglpiauto') }}</a>
+          <a class="btn btn-outline-secondary cga-docker-existing" href="#" target="_blank" rel="noopener" style="display: none;"><i class="ti ti-external-link me-1" aria-hidden="true"></i>{{ __('Ouvrir la connexion existante', 'configurationglpiauto') }}</a>
         </div>
         <div class="small mt-2 cga-docker-result" role="status" aria-live="polite"></div>
 
@@ -211,6 +212,7 @@
     document.querySelectorAll('.cga-docker-source').forEach(function (card) {
       var result = card.querySelector('.cga-docker-result');
       var importLink = card.querySelector('.cga-docker-import');
+      var existingLink = card.querySelector('.cga-docker-existing');
       var buttons = card.querySelectorAll('.cga-docker-action');
       // Entrée dans un champ : jamais la soumission de tout l'assistant.
       card.querySelectorAll('input').forEach(function (input) {
@@ -234,9 +236,13 @@
           show(result, 'info', running);
           post(body).then(function (data) {
             show(result, data.level, data.message);
+            // Connexion créée : premier import ; doublon refusé : lien vers celle qui existe.
+            importLink.style.display = 'none';
+            existingLink.style.display = 'none';
             if (data.url) {
-              importLink.href = data.url;
-              importLink.style.display = data.saved ? '' : 'none';
+              var link = data.saved ? importLink : existingLink;
+              link.href = data.url;
+              link.style.display = '';
             }
             if (data.saved) {
               // Secret enregistré (chiffré) : effacé de la page.

@@ -6563,3 +6563,6 @@ msgstr "Verbindungstest nicht verfügbar."
 
 msgid "Le test de connexion a échoué."
 msgstr "Der Verbindungstest ist fehlgeschlagen."
+
+msgid "Ouvrir la connexion existante"
+msgstr "Vorhandene Verbindung öffnen"

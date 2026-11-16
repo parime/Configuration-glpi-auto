@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 18:38+0000\n"
+"POT-Creation-Date: 2026-11-16 19:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3056,6 +3056,10 @@ msgid "Lancer un premier import"
 msgstr ""
 
 #: templates/wizard_docker_inventory.html.twig
+msgid "Ouvrir la connexion existante"
+msgstr ""
+
+#: templates/wizard_docker_inventory.html.twig
 msgid "Registres maîtrisés"
 msgstr ""
 
@@ -3748,7 +3752,7 @@ msgstr ""
 msgid "Le plugin Inventaire Docker n'est pas actif."
 msgstr ""
 
-#: ajax/dockerinventory_connection.php:53 src/DockerInventorySetup.php:420
+#: ajax/dockerinventory_connection.php:53 src/DockerInventorySetup.php:428
 msgid "Vous n'avez pas le droit de créer une connexion dans Inventaire Docker."
 msgstr ""
 
@@ -5688,48 +5692,48 @@ msgstr ""
 msgid "nécessaire pour relier les déclencheurs d'assetsign aux statuts créés"
 msgstr ""
 
-#: src/DockerInventorySetup.php:251
+#: src/DockerInventorySetup.php:259
 #, php-format
 msgid ""
 "Une connexion existe déjà pour cette adresse (« %s ») : elle n'est pas "
 "modifiée. Ouvrez-la dans Inventaire Docker pour la changer."
 msgstr ""
 
-#: src/DockerInventorySetup.php:262
+#: src/DockerInventorySetup.php:270
 #, php-format
 msgid "Connexion non enregistrée, le test a échoué : %s"
 msgstr ""
 
-#: src/DockerInventorySetup.php:276
+#: src/DockerInventorySetup.php:284
 msgid "La connexion n'a pas pu être enregistrée."
 msgstr ""
 
-#: src/DockerInventorySetup.php:283
+#: src/DockerInventorySetup.php:291
 msgid "Connexion enregistrée."
 msgstr ""
 
-#: src/DockerInventorySetup.php:319
+#: src/DockerInventorySetup.php:327
 msgid "Registres maîtrisés : ceux des connexions Harbor (aucun hôte saisi)."
 msgstr ""
 
-#: src/DockerInventorySetup.php:320
+#: src/DockerInventorySetup.php:328
 #, php-format
 msgid "Registres maîtrisés enregistrés : %s"
 msgstr ""
 
-#: src/DockerInventorySetup.php:412
+#: src/DockerInventorySetup.php:420
 msgid "Type de connexion inconnu."
 msgstr ""
 
-#: src/DockerInventorySetup.php:449
+#: src/DockerInventorySetup.php:457
 msgid "Saisie refusée par Inventaire Docker."
 msgstr ""
 
-#: src/DockerInventorySetup.php:466
+#: src/DockerInventorySetup.php:474
 msgid "Test de connexion indisponible."
 msgstr ""
 
-#: src/DockerInventorySetup.php:472
+#: src/DockerInventorySetup.php:480
 msgid "Le test de connexion a échoué."
 msgstr ""
 

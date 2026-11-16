@@ -6404,3 +6404,6 @@ msgstr "Test połączenia niedostępny."
 
 msgid "Le test de connexion a échoué."
 msgstr "Test połączenia nie powiódł się."
+
+msgid "Ouvrir la connexion existante"
+msgstr "Otwórz istniejące połączenie"

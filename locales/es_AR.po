@@ -6532,3 +6532,6 @@ msgstr "Prueba de conexión no disponible."
 
 msgid "Le test de connexion a échoué."
 msgstr "La prueba de conexión falló."
+
+msgid "Ouvrir la connexion existante"
+msgstr "Abrir la conexión existente"

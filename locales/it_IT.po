@@ -6530,3 +6530,6 @@ msgstr "Test di connessione non disponibile."
 
 msgid "Le test de connexion a échoué."
 msgstr "Il test di connessione non è riuscito."
+
+msgid "Ouvrir la connexion existante"
+msgstr "Apri la connessione esistente"

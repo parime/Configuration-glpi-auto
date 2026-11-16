@@ -6470,3 +6470,6 @@ msgstr "Teste de conexão indisponível."
 
 msgid "Le test de connexion a échoué."
 msgstr "O teste de conexão falhou."
+
+msgid "Ouvrir la connexion existante"
+msgstr "Abrir a conexão existente"

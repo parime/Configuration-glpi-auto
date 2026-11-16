@@ -83,6 +83,14 @@ final class DockerInventorySetup
     }
 
     /**
+     * Classe `Connection` d'Inventaire Docker (plugin facultatif, absent de l'analyse statique).
+     */
+    public static function connectionClass(): string
+    {
+        return self::CONNECTION_CLASS;
+    }
+
+    /**
      * Plugin actif, en version 0.7.0 ou plus, et sa classe chargée.
      */
     public static function isAvailable(): bool
@@ -114,7 +122,7 @@ final class DockerInventorySetup
         if (!self::isAvailable()) {
             return false;
         }
-        $class = self::CONNECTION_CLASS;
+        $class = self::connectionClass();
 
         return (bool) $class::canCreate();
     }
@@ -276,7 +284,7 @@ final class DockerInventorySetup
                 'message' => $errors !== '' ? $errors : __('La connexion n\'a pas pu être enregistrée.', 'configurationglpiauto'),
             ];
         }
-        $class = self::CONNECTION_CLASS;
+        $class = self::connectionClass();
 
         return [
             'level'   => $result['level'],
@@ -331,7 +339,7 @@ final class DockerInventorySetup
         if (!self::canCreate()) {
             return [];
         }
-        $class = self::CONNECTION_CLASS;
+        $class = self::connectionClass();
         $labels = self::typeLabels();
         $list = [];
         foreach ((new $class())->find([], ['type', 'name']) as $row) {
@@ -374,7 +382,7 @@ final class DockerInventorySetup
         if (!self::isAvailable()) {
             return '';
         }
-        $class = self::CONNECTION_CLASS;
+        $class = self::connectionClass();
 
         return (string) $class::getSearchURL();
     }
@@ -386,7 +394,7 @@ final class DockerInventorySetup
      */
     public static function findExisting(string $type, string $url): ?array
     {
-        $class = self::CONNECTION_CLASS;
+        $class = self::connectionClass();
         if ($url === '' || !class_exists($class)) {
             return null;
         }
@@ -427,7 +435,7 @@ final class DockerInventorySetup
 
     private function newConnection(): \CommonDBTM
     {
-        $class = self::CONNECTION_CLASS;
+        $class = self::connectionClass();
         $connection = new $class();
         assert($connection instanceof \CommonDBTM);
 
