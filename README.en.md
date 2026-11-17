@@ -20,8 +20,20 @@ A fresh GLPI install is a blank page: no entities, no calendar, no SLAs, no tick
 📖 **[See the full tutorial](docs/TUTORIAL.md)**: all 19 wizard steps, one screenshot per step
 (available in French and English).
 
+## Where to start?
+
+Pick your role: each guide is a few steps, with the exact menus ([all guides](docs/ROLES.en.md)).
+
+| You are... | You want to... | Guide |
+|---|---|---|
+| GLPI administrator | Install the plugin and run the wizard (first configuration in 10 steps) | [GLPI administrator](docs/ROLES.en.md#glpi-administrator) |
+| Asset manager | Statuses, locations, asset types, dictionaries, fleet checks | [Asset manager](docs/ROLES.en.md#asset-manager) |
+| Helpdesk manager | Form catalog, SLAs, receiving tickets by email | [Helpdesk manager](docs/ROLES.en.md#helpdesk-manager) |
+| Configuration auditor | Check the instance and follow up on gaps | [Configuration auditor](docs/ROLES.en.md#configuration-auditor) |
+
 ## Table of contents
 
+- [Where to start?](#where-to-start)
 - [What sets it apart](#what-sets-it-apart)
 - [Screenshots](#screenshots)
 - [Features](#features)
@@ -189,6 +201,8 @@ of each step.
 
 Rules shared by all parime plugins, to read before contributing: [common plugin charter](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md) (in French).
 
+- [Guides by role](docs/ROLES.en.md): GLPI administrator, asset manager, helpdesk manager,
+  configuration auditor.
 - [Tutorial](docs/TUTORIAL.md): a step-by-step walkthrough of the wizard's 20 steps, with a
   screenshot of each.
 - [ITIL Guide](docs/ITIL_GUIDE.md): why the wizard suggests what it suggests - which ITIL 4

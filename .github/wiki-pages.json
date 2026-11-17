@@ -6,6 +6,12 @@
     "section": "Documentation (FR)"
   },
   {
+    "page": "Parcours-par-role",
+    "source": "docs/ROLES.md",
+    "title": "Parcours par rôle",
+    "section": "Documentation (FR)"
+  },
+  {
     "page": "Tutoriel",
     "source": "docs/TUTORIAL.md",
     "title": "Tutoriel",
@@ -27,6 +33,12 @@
     "page": "Home-en",
     "source": "README.en.md",
     "title": "Home",
+    "section": "Documentation (EN)"
+  },
+  {
+    "page": "Guides-by-role",
+    "source": "docs/ROLES.en.md",
+    "title": "Guides by role",
     "section": "Documentation (EN)"
   },
   {

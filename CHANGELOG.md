@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Documentation par rôle** (issue #445) : section « Par où commencer ? » en tête des README et
+  parcours courts par rôle (administrateur GLPI avec une première configuration en 10 étapes,
+  responsable du parc, responsable du helpdesk, auditeur de configuration) dans `docs/ROLES.md` et
+  `docs/ROLES.en.md`, avec les menus et étapes actuels ; pages ajoutées au wiki.
 - **Assistant : étape « Inventaire Docker »** (issue #452), affichée seulement si le plugin
   Inventaire Docker (`dockerinventory`, 0.7.0 et plus) est actif. Elle déclare ses connexions sans
   passer par les écrans du plugin : Portainer (adresse, jeton, rappel des limites de Portainer CE),
