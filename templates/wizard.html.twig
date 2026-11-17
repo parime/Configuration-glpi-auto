@@ -1899,9 +1899,18 @@
         {% endif %}
       </div>
 
-      {# ---------------------------------------------------------------- Étape 20 : Récapitulatif #}
-      <div class="cga-wizard-step" data-step="20" style="display: none;">
-        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} 20 : {{ __('Récapitulatif', 'configurationglpiauto') }}</h3>
+      {# Issue #452 : étape « Inventaire Docker », seulement si le plugin dockerinventory est actif
+         (le récapitulatif passe alors en étape 21). #}
+      {% set summary_step = docker_inventory ? 21 : 20 %}
+      {% if docker_inventory %}
+        <div class="cga-wizard-step" data-step="20" style="display: none;" id="cga-docker-inventory-step">
+          {% include '@configurationglpiauto/wizard_docker_inventory.html.twig' with {step_number: 20} %}
+        </div>
+      {% endif %}
+
+      {# ---------------------------------------------------------------- Dernière étape : Récapitulatif #}
+      <div class="cga-wizard-step" data-step="{{ summary_step }}" style="display: none;">
+        <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} {{ summary_step }} : {{ __('Récapitulatif', 'configurationglpiauto') }}</h3>
         <p class="text-muted">{{ __('Vérifiez vos choix avant de terminer : cette étape crée réellement les entités, le calendrier, les SLA, les catégories, le catalogue de services, les statuts, les raisons d\'attente, la personnalisation graphique, les réglages généraux, les modèles de tickets, les droits LDAP, les intitulés de tâches/solutions/validations, les lieux/fabricants/catégories de base de connaissances, et les types/gabarits/modèles de projet.', 'configurationglpiauto') }}</p>
 
         <div class="alert alert-info d-flex align-items-center gap-2 mb-3">
@@ -1968,6 +1977,12 @@
           <li class="list-group-item">
             <strong>{{ __('Réception par e-mail', 'configurationglpiauto') }} :</strong> <span id="cga-summary-mail-collectors"></span>
           </li>
+          {% if docker_inventory %}
+            <li class="list-group-item">
+              <strong>{{ __('Inventaire Docker', 'configurationglpiauto') }} :</strong>
+              {{ __('les connexions sont enregistrées à l\'étape 20, par « Enregistrer la connexion », et non par « Terminer ».', 'configurationglpiauto') }}
+            </li>
+          {% endif %}
         </ul>
 
         {# Déplacé ici depuis l'étape 14 (Réglages généraux), où il se perdait au milieu d'une
@@ -2016,7 +2031,7 @@
 
 <script>
 (function () {
-  var STEP_COUNT = 20;
+  var STEP_COUNT = {{ docker_inventory ? 21 : 20 }};
   var currentStep = 1;
   var steps = document.querySelectorAll('.cga-wizard-step');
   var progressBar = document.getElementById('cga-wizard-progress');
@@ -2081,6 +2096,7 @@
     "{{ __('Personnalisation', 'configurationglpiauto')|e('js') }}",
     "{{ __('Configuration SMTP', 'configurationglpiauto')|e('js') }}",
     "{{ __('Réception par e-mail', 'configurationglpiauto')|e('js') }}",
+    {% if docker_inventory %}"{{ __('Inventaire Docker', 'configurationglpiauto')|e('js') }}",{% endif %}
     "{{ __('Récapitulatif', 'configurationglpiauto')|e('js') }}"
   ];
 

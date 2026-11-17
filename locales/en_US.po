@@ -6232,3 +6232,183 @@ msgstr "Deploy a loaded configuration (imported Blueprint or restored backup) in
 
 msgid "Vérifiez ce qui sera déployé et vos droits, puis cliquez sur « Déployer maintenant », ou revoyez d'abord les réglages dans l'assistant."
 msgstr "Check what will be deployed and your rights, then click \"Deploy now\", or review the settings in the wizard first."
+
+msgid "Inventaire Docker"
+msgstr "Docker Inventory"
+
+msgid "les connexions sont enregistrées à l'étape 20, par « Enregistrer la connexion », et non par « Terminer »."
+msgstr "connections are saved at step 20, with \"Save the connection\", not with \"Finish\"."
+
+msgid "Facultatif : déclarez les sources que le plugin Inventaire Docker lit (conteneurs, versions des images, vulnérabilités). Le plugin les lit seulement, sans rien y modifier."
+msgstr "Optional: declare the sources read by the Docker Inventory plugin (containers, image versions, vulnerabilities). The plugin only reads them, without changing anything there."
+
+msgid "Chaque connexion est d'abord testée, puis enregistrée tout de suite quand vous cliquez sur « Enregistrer la connexion » : pas besoin d'aller jusqu'à « Terminer ». Rien n'est importé automatiquement : lancez le premier import depuis la page du plugin."
+msgstr "Each connection is tested first, then saved straight away when you click \"Save the connection\": no need to go on to \"Finish\". Nothing is imported automatically: run the first import from the plugin page."
+
+msgid "Vous n'avez pas le droit de créer une connexion dans Inventaire Docker (droit « Configuration » en modification). Demandez à un administrateur de GLPI, ou passez cette étape."
+msgstr "You are not allowed to create a connection in Docker Inventory (\"Setup\" right with update). Ask a GLPI administrator, or skip this step."
+
+msgid "Connexions déjà déclarées"
+msgstr "Connections already declared"
+
+msgid "Elles ne sont jamais modifiées par l'assistant : ouvrez-les dans Inventaire Docker pour les changer."
+msgstr "The wizard never changes them: open them in Docker Inventory to change them."
+
+msgid "Conteneurs, stacks et services"
+msgstr "Containers, stacks and services"
+
+msgid "Versions disponibles des images"
+msgstr "Available image versions"
+
+msgid "Registre, images et vulnérabilités"
+msgstr "Registry, images and vulnerabilities"
+
+msgid "Applications d'un cluster"
+msgstr "Applications of a cluster"
+
+msgid "Limites de Portainer CE"
+msgstr "Portainer CE limits"
+
+msgid "Portainer CE n'a pas de rôle en lecture seule. Un utilisateur standard ne voit que les ressources en accès « Public » ou attribuées à son équipe : le reste lui est invisible, sans erreur. Le test le signale par un avertissement."
+msgstr "Portainer CE has no read-only role. A standard user only sees resources with \"Public\" access or assigned to their team: the rest is invisible to them, with no error. The test reports this with a warning."
+
+msgid "Pour tout inventorier : passer les ressources en accès « Public », ou utiliser le jeton d'un compte administrateur dédié à GLPI, gardé secret et révoqué au moindre doute. Portainer BE : rôle « Read-only user » sur chaque environnement."
+msgstr "To inventory everything: set the resources to \"Public\" access, or use the token of an administrator account dedicated to GLPI, kept secret and revoked at the slightest doubt. Portainer BE: \"Read-only user\" role on each environment."
+
+msgid "Utilisez un compte au rôle « ro » (lecture seule) de WUD. Laissez le compte vide si WUD n'a pas d'authentification."
+msgstr "Use a WUD account with the \"ro\" (read-only) role. Leave the account empty if WUD has no authentication."
+
+msgid "Utilisez un compte robot Harbor avec le seul droit de lecture (pull). Laissez le compte vide pour ne lire que les projets publics."
+msgstr "Use a Harbor robot account with the read (pull) permission only. Leave the account empty to read public projects only."
+
+msgid "Jeton d'un compte de service en lecture seule (voir le README d'Inventaire Docker). HTTPS obligatoire."
+msgstr "Token of a read-only service account (see the Docker Inventory README). HTTPS required."
+
+msgid "production"
+msgstr "production"
+
+msgid "Facultatif : à défaut, le type et l'hôte de l'adresse."
+msgstr "Optional: by default, the type and the host of the address."
+
+msgid "Adresse"
+msgstr "Address"
+
+msgid "Champ « server » du fichier kubeconfig."
+msgstr "\"server\" field of the kubeconfig file."
+
+msgid "Adresse de l'interface, sans /api ni /v2 à la fin."
+msgstr "Address of the interface, without /api or /v2 at the end."
+
+msgid "Hôte dans les images"
+msgstr "Host in the images"
+
+msgid "Seulement s'il diffère de l'adresse (début des images, par exemple registry.exemple.test:5000)."
+msgstr "Only if it differs from the address (start of the images, for example registry.exemple.test:5000)."
+
+msgid "Compte robot"
+msgstr "Robot account"
+
+msgid "Compte"
+msgstr "Account"
+
+msgid "Jeton d'accès (clé d'API)"
+msgstr "Access token (API key)"
+
+msgid "Jeton du compte de service"
+msgstr "Service account token"
+
+msgid "Chiffré avec la clé de GLPI par Inventaire Docker, jamais réaffiché."
+msgstr "Encrypted with the GLPI key by Docker Inventory, never shown again."
+
+msgid "Certificat d'autorité du cluster"
+msgstr "Cluster certificate authority"
+
+msgid "Facultatif : contenu PEM (ca.crt) si le cluster a sa propre autorité ; vide : autorités du système."
+msgstr "Optional: PEM content (ca.crt) if the cluster has its own authority; empty: system authorities."
+
+msgid "Autoriser une adresse en HTTP"
+msgstr "Allow an HTTP address"
+
+msgid "déconseillé"
+msgstr "not recommended"
+
+msgid "Le jeton ou le mot de passe circule alors en clair sur le réseau."
+msgstr "The token or password then travels in clear text over the network."
+
+msgid "Enregistrer la connexion"
+msgstr "Save the connection"
+
+msgid "Lancer un premier import"
+msgstr "Run a first import"
+
+msgid "Registres maîtrisés"
+msgstr "Managed registries"
+
+msgid "Hôtes des registres d'où les images déployées doivent venir, un par ligne. Une image venue d'ailleurs n'est ni analysée ni contrôlée : elle est signalée. Vide : les hôtes des connexions Harbor."
+msgstr "Hosts of the registries deployed images must come from, one per line. An image from elsewhere is neither scanned nor checked: it is reported. Empty: the hosts of the Harbor connections."
+
+msgid "Hôtes des registres maîtrisés"
+msgstr "Hosts of the managed registries"
+
+msgid "Enregistrer les registres maîtrisés"
+msgstr "Save the managed registries"
+
+msgid "Ouvre la page des connexions d'Inventaire Docker : choisissez une connexion, puis « Importer maintenant ». Les imports suivants tournent ensuite tout seuls."
+msgstr "Opens the Docker Inventory connections page: choose a connection, then \"Import now\". The following imports then run on their own."
+
+msgid "Réussi"
+msgstr "Succeeded"
+
+msgid "Avertissement"
+msgstr "Warning"
+
+msgid "Échec"
+msgstr "Failed"
+
+msgid "En cours"
+msgstr "In progress"
+
+msgid "Le plugin Inventaire Docker n'est pas actif."
+msgstr "The Docker Inventory plugin is not active."
+
+msgid "Vous n'avez pas le droit de créer une connexion dans Inventaire Docker."
+msgstr "You are not allowed to create a connection in Docker Inventory."
+
+msgid "Action inconnue."
+msgstr "Unknown action."
+
+#, php-format
+msgid "Une connexion existe déjà pour cette adresse (« %s ») : elle n'est pas modifiée. Ouvrez-la dans Inventaire Docker pour la changer."
+msgstr "A connection already exists for this address (\"%s\"): it is not changed. Open it in Docker Inventory to change it."
+
+#, php-format
+msgid "Connexion non enregistrée, le test a échoué : %s"
+msgstr "Connection not saved, the test failed: %s"
+
+msgid "La connexion n'a pas pu être enregistrée."
+msgstr "The connection could not be saved."
+
+msgid "Connexion enregistrée."
+msgstr "Connection saved."
+
+msgid "Registres maîtrisés : ceux des connexions Harbor (aucun hôte saisi)."
+msgstr "Managed registries: those of the Harbor connections (no host entered)."
+
+#, php-format
+msgid "Registres maîtrisés enregistrés : %s"
+msgstr "Managed registries saved: %s"
+
+msgid "Type de connexion inconnu."
+msgstr "Unknown connection type."
+
+msgid "Saisie refusée par Inventaire Docker."
+msgstr "Input rejected by Docker Inventory."
+
+msgid "Test de connexion indisponible."
+msgstr "Connection test unavailable."
+
+msgid "Le test de connexion a échoué."
+msgstr "The connection test failed."
+
+msgid "Ouvrir la connexion existante"
+msgstr "Open the existing connection"

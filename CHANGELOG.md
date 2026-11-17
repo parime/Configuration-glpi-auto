@@ -22,6 +22,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Assistant : étape « Inventaire Docker »** (issue #452), affichée seulement si le plugin
+  Inventaire Docker (`dockerinventory`, 0.7.0 et plus) est actif. Elle déclare ses connexions sans
+  passer par les écrans du plugin : Portainer (adresse, jeton, rappel des limites de Portainer CE),
+  WUD (adresse, compte au rôle `ro`), Harbor (adresse, compte robot, registres maîtrisés) et, avec
+  Inventaire Docker 0.8.0, Kubernetes (adresse, jeton, certificat d'autorité). Chaque source se
+  teste avant l'enregistrement, et le résultat s'affiche tel quel : un avertissement reste un
+  avertissement. L'enregistrement refait le test et passe par la classe `Connection` du plugin, qui
+  chiffre le secret avec la clé de GLPI ; il n'est jamais renvoyé ni journalisé. Une connexion de
+  même adresse déjà déclarée n'est jamais modifiée. Rien n'est importé : « Lancer un premier
+  import » ouvre la page du plugin. Exige le droit « Configuration » en modification, celui
+  d'Inventaire Docker pour créer une connexion. Nouveau point d'entrée
+  `ajax/dockerinventory_connection.php`, ajouté à la matrice d'accès.
+
 - **Encadré d'aide « À quoi sert cette page ? »** en tête de chaque page d'usage (assistant, profils
   de configuration, audit, historique et restauration, déploiement, imports CSV, Jira, Blueprint et
   plan d'adressage) : ce que fait la page et ce qui est attendu, repliable, choix mémorisé par page
