@@ -20,8 +20,21 @@ Une installation GLPI neuve est une page blanche : aucune entité, aucun calendr
 📖 **[Voir le tutoriel complet](docs/TUTORIAL.md)** : les 20 étapes de l'assistant, une capture
 d'écran par étape (disponible en français et en anglais).
 
+## Par où commencer ?
+
+Choisissez votre rôle : chaque parcours tient en quelques étapes, avec les menus exacts
+([tous les parcours](docs/ROLES.md)).
+
+| Vous êtes... | Vous voulez... | Parcours |
+|---|---|---|
+| Administrateur GLPI | Installer le plugin et lancer l'assistant (première configuration en 10 étapes) | [Administrateur GLPI](docs/ROLES.md#administrateur-glpi) |
+| Responsable du parc | Statuts, lieux, types d'actifs, dictionnaires, contrôles du parc | [Responsable du parc](docs/ROLES.md#responsable-du-parc) |
+| Responsable du helpdesk | Catalogue de formulaires, SLA, réception des tickets par e-mail | [Responsable du helpdesk](docs/ROLES.md#responsable-du-helpdesk) |
+| Auditeur de configuration | Vérifier l'instance et suivre les écarts | [Auditeur de configuration](docs/ROLES.md#auditeur-de-configuration) |
+
 ## Table des matieres
 
+- [Par où commencer ?](#par-où-commencer-)
 - [Ce qui le distingue](#ce-qui-le-distingue)
 - [Aperçu](#aperçu)
 - [Fonctionnalites](#fonctionnalites)
@@ -191,6 +204,8 @@ reglages recommandes du profil choisi, sans repasser par chaque etape. Voir le
 
 Règles communes à tous les plugins de parime, à lire avant de contribuer : [charte commune des plugins](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md).
 
+- [Parcours par rôle](docs/ROLES.md) : administrateur GLPI, responsable du parc, responsable du
+  helpdesk, auditeur de configuration.
 - [Tutoriel](docs/TUTORIAL.md) : parcours pas a pas des 20 etapes de l'assistant, avec capture
   d'ecran de chacune.
 - [Guide ITIL](docs/ITIL_GUIDE.md) : pourquoi l'assistant propose ce qu'il propose - quelle
