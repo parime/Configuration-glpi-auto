@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.26.0] - 2026-11-17
 
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
 ### Changed
 
 - CI : contrôles de sécurité communs v1.8.2 (scripts communs bien pris à la version appelée).
