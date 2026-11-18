@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- CI : contrôles de sécurité communs glpi-plugin-security v1.9.0 (charte commune et contrôle des menus bloquants par défaut).
+
 ## [1.26.0] - 2026-11-17
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
