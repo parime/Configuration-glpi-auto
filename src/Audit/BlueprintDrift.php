@@ -49,12 +49,12 @@ final class BlueprintDrift
 
     /**
      * Vrai si un Blueprint a déjà été appliqué : chaque application (assistant, restauration)
-     * laisse une sauvegarde automatique dans l'historique. Sans elle, tout apparaîtrait « supprimé »
-     * sur une instance jamais configurée par le plugin.
+     * laisse une sauvegarde automatique dans l'historique (un point manuel ne compte pas). Sans elle,
+     * tout apparaîtrait « supprimé » sur une instance jamais configurée par le plugin.
      */
     public static function wasApplied(): bool
     {
-        return countElementsInTable(ConfigHistory::getTable()) > 0;
+        return countElementsInTable(ConfigHistory::getTable(), ['is_manual' => 0]) > 0;
     }
 
     /**

@@ -73,6 +73,8 @@ if (($argv[1] ?? '') === 'xss') {
         $canary,
         PLUGIN_CONFIGURATIONGLPIAUTO_VERSION
     );
+    // #468 : une application simulée affiche les écarts de l'audit (calendrier piégé absent).
+    \GlpiPlugin\Configurationglpiauto\ConfigHistory::captureAutomatic($config);
     $profileItem = new \GlpiPlugin\Configurationglpiauto\ConfigurationProfile();
     $ids = [
         'profile'  => (int) $profileItem->add([
