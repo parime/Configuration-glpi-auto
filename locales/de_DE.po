@@ -6642,3 +6642,159 @@ msgid "%d compte à privilèges ne s'est jamais connecté"
 msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
 msgstr[0] "%d privilegiertes Konto hat sich nie angemeldet"
 msgstr[1] "%d privilegierte Konten haben sich nie angemeldet"
+
+msgid "Notifications activées"
+msgstr "Benachrichtigungen aktiviert"
+
+msgid "Adresse des entités"
+msgstr "Adressen der Einheiten"
+
+msgid "Adresse e-mail de l'administrateur"
+msgstr "E-Mail-Adresse des Administrators"
+
+msgid "Statuts des éléments définis"
+msgstr "Elementstatus definiert"
+
+msgid "Statuts recommandés présents"
+msgstr "Empfohlene Status vorhanden"
+
+msgid "Intitulés en double"
+msgstr "Doppelte Auswahlwerte"
+
+msgid "Logiciels en double"
+msgstr "Doppelte Software"
+
+msgid "Matériel qui ne remonte plus"
+msgstr "Hardware ohne Inventarmeldung"
+
+msgid "Garanties expirées ou proches"
+msgstr "Abgelaufene oder bald ablaufende Garantien"
+
+msgid "Fin de support des systèmes et du matériel"
+msgstr "Supportende von Systemen und Hardware"
+
+msgid "Fiches de matériel incomplètes"
+msgstr "Unvollständige Hardware-Datensätze"
+
+msgid "Cohérence du réseau"
+msgstr "Netzwerkkonsistenz"
+
+msgid "Logiciels sans catégorie"
+msgstr "Software ohne Kategorie"
+
+msgid "Calendrier actif"
+msgstr "Aktiver Kalender"
+
+msgid "SLA définis"
+msgstr "SLAs definiert"
+
+msgid "Catégories de tickets définies"
+msgstr "Ticketkategorien definiert"
+
+msgid "Comptes par défaut neutralisés"
+msgstr "Standardkonten entschärft"
+
+msgid "Politique de mots de passe"
+msgstr "Passwortrichtlinie"
+
+msgid "Double authentification des comptes à privilèges"
+msgstr "Zwei-Faktor-Authentifizierung privilegierter Konten"
+
+msgid "Revue des comptes à privilèges"
+msgstr "Überprüfung privilegierter Konten"
+
+msgid "Dictionnaires d'inventaire"
+msgstr "Inventarwörterbücher"
+
+msgid "Collecteurs de messagerie"
+msgstr "E-Mail-Abholer"
+
+msgid "Page d'audit"
+msgstr "Audit-Seite"
+
+msgid "Rapport périodique"
+msgstr "Periodischer Bericht"
+
+msgid "Note de durcissement"
+msgstr "Härtungsnote"
+
+msgid "Aucun contrôle applicable"
+msgstr "Keine anwendbare Prüfung"
+
+#, php-format
+msgid "Calculée sur %d contrôles applicables."
+msgstr "Berechnet auf %d anwendbaren Prüfungen."
+
+msgid "Non applicables (désactivés dans les réglages) :"
+msgstr "Nicht anwendbar (in den Einstellungen deaktiviert):"
+
+msgid "Comment la note est-elle calculée ?"
+msgstr "Wie wird die Note berechnet?"
+
+#, php-format
+msgid "Chaque contrôle applicable a un poids : %1$d pour la sécurité (comptes par défaut, mots de passe, double authentification, comptes à privilèges, fin de support), %2$d pour l'exploitation (notifications, réseau, matériel, garanties, collecteurs), %3$d pour la qualité des données."
+msgstr "Jede anwendbare Prüfung hat ein Gewicht: %1$d für Sicherheit (Standardkonten, Passwörter, Zwei-Faktor-Authentifizierung, privilegierte Konten, Supportende), %2$d für den Betrieb (Benachrichtigungen, Netzwerk, Hardware, Garantien, Abholer), %3$d für die Datenqualität."
+
+msgid "Un contrôle sans constat rapporte tout son poids, un contrôle à surveiller la moitié, un contrôle critique rien ; une simple information ne retire aucun point."
+msgstr "Eine Prüfung ohne Befund bringt ihr volles Gewicht, eine zu beobachtende die Hälfte, eine kritische nichts; eine reine Information zieht keine Punkte ab."
+
+msgid "Note = points obtenus / points possibles. Les contrôles désactivés dans les réglages ne comptent pas."
+msgstr "Note = erreichte Punkte / mögliche Punkte. In den Einstellungen deaktivierte Prüfungen zählen nicht."
+
+msgid "Bon : de 80 à 100"
+msgstr "Gut: 80 bis 100"
+
+msgid "À améliorer : de 50 à 79"
+msgstr "Verbesserungsbedarf: 50 bis 79"
+
+msgid "Insuffisant : moins de 50"
+msgstr "Unzureichend: unter 50"
+
+msgid "La note ne modifie rien : elle résume les constats affichés plus bas."
+msgstr "Die Note ändert nichts: Sie fasst die unten angezeigten Befunde zusammen."
+
+msgid "Historique et comparaison des audits"
+msgstr "Audit-Verlauf und Vergleich"
+
+msgid "Une photo par jour est gardée : à chaque ouverture de cette page et à chaque rapport périodique. Choisissez deux audits pour voir ce qui a changé."
+msgstr "Ein Schnappschuss pro Tag wird aufbewahrt: bei jedem Öffnen dieser Seite und bei jedem periodischen Bericht. Wählen Sie zwei Audits, um die Änderungen zu sehen."
+
+msgid "Un seul audit enregistré pour l'instant : la comparaison sera possible dès demain ou au prochain rapport périodique."
+msgstr "Bisher nur ein Audit gespeichert: Der Vergleich ist ab morgen oder beim nächsten periodischen Bericht möglich."
+
+msgid "Audit de référence"
+msgstr "Referenz-Audit"
+
+msgid "Audit comparé"
+msgstr "Verglichenes Audit"
+
+msgid "Comparer"
+msgstr "Vergleichen"
+
+msgid "Choisissez deux audits différents."
+msgstr "Wählen Sie zwei verschiedene Audits."
+
+#, php-format
+msgid "Du %1$s au %2$s"
+msgstr "Vom %1$s bis %2$s"
+
+msgid "points"
+msgstr "Punkte"
+
+msgid "Contrôles dégradés"
+msgstr "Verschlechterte Prüfungen"
+
+msgid "Contrôles améliorés"
+msgstr "Verbesserte Prüfungen"
+
+msgid "Nouveaux contrôles"
+msgstr "Neue Prüfungen"
+
+msgid "Contrôles retirés ou désactivés"
+msgstr "Entfernte oder deaktivierte Prüfungen"
+
+msgid "Aucun changement"
+msgstr "Keine Änderung"
+
+msgid "Origine"
+msgstr "Herkunft"

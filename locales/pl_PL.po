@@ -6488,3 +6488,159 @@ msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
 msgstr[0] "%d konto uprzywilejowane nigdy się nie zalogowało"
 msgstr[1] "%d konta uprzywilejowane nigdy się nie zalogowały"
 msgstr[2] "%d kont uprzywilejowanych nigdy się nie zalogowało"
+
+msgid "Notifications activées"
+msgstr "Powiadomienia włączone"
+
+msgid "Adresse des entités"
+msgstr "Adresy jednostek"
+
+msgid "Adresse e-mail de l'administrateur"
+msgstr "Adres e-mail administratora"
+
+msgid "Statuts des éléments définis"
+msgstr "Statusy elementów zdefiniowane"
+
+msgid "Statuts recommandés présents"
+msgstr "Zalecane statusy obecne"
+
+msgid "Intitulés en double"
+msgstr "Zduplikowane wartości list"
+
+msgid "Logiciels en double"
+msgstr "Zduplikowane oprogramowanie"
+
+msgid "Matériel qui ne remonte plus"
+msgstr "Sprzęt, który przestał się zgłaszać"
+
+msgid "Garanties expirées ou proches"
+msgstr "Gwarancje wygasłe lub wygasające"
+
+msgid "Fin de support des systèmes et du matériel"
+msgstr "Koniec wsparcia systemów i sprzętu"
+
+msgid "Fiches de matériel incomplètes"
+msgstr "Niekompletne karty sprzętu"
+
+msgid "Cohérence du réseau"
+msgstr "Spójność sieci"
+
+msgid "Logiciels sans catégorie"
+msgstr "Oprogramowanie bez kategorii"
+
+msgid "Calendrier actif"
+msgstr "Aktywny kalendarz"
+
+msgid "SLA définis"
+msgstr "Zdefiniowane SLA"
+
+msgid "Catégories de tickets définies"
+msgstr "Zdefiniowane kategorie zgłoszeń"
+
+msgid "Comptes par défaut neutralisés"
+msgstr "Konta domyślne zneutralizowane"
+
+msgid "Politique de mots de passe"
+msgstr "Zasady haseł"
+
+msgid "Double authentification des comptes à privilèges"
+msgstr "Uwierzytelnianie dwuskładnikowe kont uprzywilejowanych"
+
+msgid "Revue des comptes à privilèges"
+msgstr "Przegląd kont uprzywilejowanych"
+
+msgid "Dictionnaires d'inventaire"
+msgstr "Słowniki inwentaryzacji"
+
+msgid "Collecteurs de messagerie"
+msgstr "Kolektory poczty"
+
+msgid "Page d'audit"
+msgstr "Strona audytu"
+
+msgid "Rapport périodique"
+msgstr "Raport okresowy"
+
+msgid "Note de durcissement"
+msgstr "Ocena utwardzenia"
+
+msgid "Aucun contrôle applicable"
+msgstr "Brak mających zastosowanie kontroli"
+
+#, php-format
+msgid "Calculée sur %d contrôles applicables."
+msgstr "Obliczona na podstawie %d mających zastosowanie kontroli."
+
+msgid "Non applicables (désactivés dans les réglages) :"
+msgstr "Nie mają zastosowania (wyłączone w ustawieniach):"
+
+msgid "Comment la note est-elle calculée ?"
+msgstr "Jak obliczana jest ocena?"
+
+#, php-format
+msgid "Chaque contrôle applicable a un poids : %1$d pour la sécurité (comptes par défaut, mots de passe, double authentification, comptes à privilèges, fin de support), %2$d pour l'exploitation (notifications, réseau, matériel, garanties, collecteurs), %3$d pour la qualité des données."
+msgstr "Każda mająca zastosowanie kontrola ma wagę: %1$d dla bezpieczeństwa (konta domyślne, hasła, uwierzytelnianie dwuskładnikowe, konta uprzywilejowane, koniec wsparcia), %2$d dla eksploatacji (powiadomienia, sieć, sprzęt, gwarancje, kolektory), %3$d dla jakości danych."
+
+msgid "Un contrôle sans constat rapporte tout son poids, un contrôle à surveiller la moitié, un contrôle critique rien ; une simple information ne retire aucun point."
+msgstr "Kontrola bez ustaleń daje pełną wagę, kontrola do obserwacji połowę, kontrola krytyczna nic; sama informacja nie odejmuje punktów."
+
+msgid "Note = points obtenus / points possibles. Les contrôles désactivés dans les réglages ne comptent pas."
+msgstr "Ocena = uzyskane punkty / możliwe punkty. Kontrole wyłączone w ustawieniach nie są liczone."
+
+msgid "Bon : de 80 à 100"
+msgstr "Dobra: od 80 do 100"
+
+msgid "À améliorer : de 50 à 79"
+msgstr "Do poprawy: od 50 do 79"
+
+msgid "Insuffisant : moins de 50"
+msgstr "Niewystarczająca: poniżej 50"
+
+msgid "La note ne modifie rien : elle résume les constats affichés plus bas."
+msgstr "Ocena niczego nie zmienia: podsumowuje ustalenia pokazane niżej."
+
+msgid "Historique et comparaison des audits"
+msgstr "Historia i porównanie audytów"
+
+msgid "Une photo par jour est gardée : à chaque ouverture de cette page et à chaque rapport périodique. Choisissez deux audits pour voir ce qui a changé."
+msgstr "Zachowywana jest jedna migawka dziennie: przy każdym otwarciu tej strony i przy każdym raporcie okresowym. Wybierz dwa audyty, aby zobaczyć zmiany."
+
+msgid "Un seul audit enregistré pour l'instant : la comparaison sera possible dès demain ou au prochain rapport périodique."
+msgstr "Na razie zapisano tylko jeden audyt: porównanie będzie możliwe od jutra lub przy następnym raporcie okresowym."
+
+msgid "Audit de référence"
+msgstr "Audyt odniesienia"
+
+msgid "Audit comparé"
+msgstr "Porównywany audyt"
+
+msgid "Comparer"
+msgstr "Porównaj"
+
+msgid "Choisissez deux audits différents."
+msgstr "Wybierz dwa różne audyty."
+
+#, php-format
+msgid "Du %1$s au %2$s"
+msgstr "Od %1$s do %2$s"
+
+msgid "points"
+msgstr "pkt"
+
+msgid "Contrôles dégradés"
+msgstr "Kontrole pogorszone"
+
+msgid "Contrôles améliorés"
+msgstr "Kontrole poprawione"
+
+msgid "Nouveaux contrôles"
+msgstr "Nowe kontrole"
+
+msgid "Contrôles retirés ou désactivés"
+msgstr "Kontrole usunięte lub wyłączone"
+
+msgid "Aucun changement"
+msgstr "Brak zmian"
+
+msgid "Origine"
+msgstr "Pochodzenie"

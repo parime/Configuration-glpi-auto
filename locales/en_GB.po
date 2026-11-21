@@ -6488,3 +6488,159 @@ msgid "%d compte à privilèges ne s'est jamais connecté"
 msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
 msgstr[0] "%d privileged account has never logged in"
 msgstr[1] "%d privileged accounts have never logged in"
+
+msgid "Notifications activées"
+msgstr "Notifications enabled"
+
+msgid "Adresse des entités"
+msgstr "Entity addresses"
+
+msgid "Adresse e-mail de l'administrateur"
+msgstr "Administrator email address"
+
+msgid "Statuts des éléments définis"
+msgstr "Item statuses defined"
+
+msgid "Statuts recommandés présents"
+msgstr "Recommended statuses present"
+
+msgid "Intitulés en double"
+msgstr "Duplicate dropdown values"
+
+msgid "Logiciels en double"
+msgstr "Duplicate software"
+
+msgid "Matériel qui ne remonte plus"
+msgstr "Hardware no longer reporting"
+
+msgid "Garanties expirées ou proches"
+msgstr "Expired or expiring warranties"
+
+msgid "Fin de support des systèmes et du matériel"
+msgstr "End of support of systems and hardware"
+
+msgid "Fiches de matériel incomplètes"
+msgstr "Incomplete hardware records"
+
+msgid "Cohérence du réseau"
+msgstr "Network consistency"
+
+msgid "Logiciels sans catégorie"
+msgstr "Uncategorized software"
+
+msgid "Calendrier actif"
+msgstr "Active calendar"
+
+msgid "SLA définis"
+msgstr "SLAs defined"
+
+msgid "Catégories de tickets définies"
+msgstr "Ticket categories defined"
+
+msgid "Comptes par défaut neutralisés"
+msgstr "Default accounts neutralized"
+
+msgid "Politique de mots de passe"
+msgstr "Password policy"
+
+msgid "Double authentification des comptes à privilèges"
+msgstr "Two-factor authentication of privileged accounts"
+
+msgid "Revue des comptes à privilèges"
+msgstr "Privileged account review"
+
+msgid "Dictionnaires d'inventaire"
+msgstr "Inventory dictionaries"
+
+msgid "Collecteurs de messagerie"
+msgstr "Mail collectors"
+
+msgid "Page d'audit"
+msgstr "Audit page"
+
+msgid "Rapport périodique"
+msgstr "Periodic report"
+
+msgid "Note de durcissement"
+msgstr "Hardening score"
+
+msgid "Aucun contrôle applicable"
+msgstr "No applicable control"
+
+#, php-format
+msgid "Calculée sur %d contrôles applicables."
+msgstr "Calculated on %d applicable controls."
+
+msgid "Non applicables (désactivés dans les réglages) :"
+msgstr "Not applicable (disabled in the settings):"
+
+msgid "Comment la note est-elle calculée ?"
+msgstr "How is the score calculated?"
+
+#, php-format
+msgid "Chaque contrôle applicable a un poids : %1$d pour la sécurité (comptes par défaut, mots de passe, double authentification, comptes à privilèges, fin de support), %2$d pour l'exploitation (notifications, réseau, matériel, garanties, collecteurs), %3$d pour la qualité des données."
+msgstr "Each applicable control has a weight: %1$d for security (default accounts, passwords, two-factor authentication, privileged accounts, end of support), %2$d for operations (notifications, network, hardware, warranties, collectors), %3$d for data quality."
+
+msgid "Un contrôle sans constat rapporte tout son poids, un contrôle à surveiller la moitié, un contrôle critique rien ; une simple information ne retire aucun point."
+msgstr "A control with no finding earns its full weight, a control to watch half of it, a critical control nothing; a mere information never removes points."
+
+msgid "Note = points obtenus / points possibles. Les contrôles désactivés dans les réglages ne comptent pas."
+msgstr "Score = points earned / possible points. Controls disabled in the settings do not count."
+
+msgid "Bon : de 80 à 100"
+msgstr "Good: 80 to 100"
+
+msgid "À améliorer : de 50 à 79"
+msgstr "To improve: 50 to 79"
+
+msgid "Insuffisant : moins de 50"
+msgstr "Insufficient: below 50"
+
+msgid "La note ne modifie rien : elle résume les constats affichés plus bas."
+msgstr "The score changes nothing: it sums up the findings shown below."
+
+msgid "Historique et comparaison des audits"
+msgstr "Audit history and comparison"
+
+msgid "Une photo par jour est gardée : à chaque ouverture de cette page et à chaque rapport périodique. Choisissez deux audits pour voir ce qui a changé."
+msgstr "One snapshot per day is kept: each time this page is opened and at each periodic report. Pick two audits to see what changed."
+
+msgid "Un seul audit enregistré pour l'instant : la comparaison sera possible dès demain ou au prochain rapport périodique."
+msgstr "Only one audit recorded so far: comparison will be possible from tomorrow or at the next periodic report."
+
+msgid "Audit de référence"
+msgstr "Reference audit"
+
+msgid "Audit comparé"
+msgstr "Compared audit"
+
+msgid "Comparer"
+msgstr "Compare"
+
+msgid "Choisissez deux audits différents."
+msgstr "Pick two different audits."
+
+#, php-format
+msgid "Du %1$s au %2$s"
+msgstr "From %1$s to %2$s"
+
+msgid "points"
+msgstr "points"
+
+msgid "Contrôles dégradés"
+msgstr "Controls that got worse"
+
+msgid "Contrôles améliorés"
+msgstr "Improved controls"
+
+msgid "Nouveaux contrôles"
+msgstr "New controls"
+
+msgid "Contrôles retirés ou désactivés"
+msgstr "Removed or disabled controls"
+
+msgid "Aucun changement"
+msgstr "No change"
+
+msgid "Origine"
+msgstr "Origin"

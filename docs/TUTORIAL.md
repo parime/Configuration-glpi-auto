@@ -294,6 +294,14 @@ planifiée. Vous pouvez relancer l'assistant à tout moment (par exemple pour aj
 site ou ajuster un SLA) : les réglages déjà en place ne sont pas dupliqués, seuls les éléments
 manquants sont créés.
 
+**Note de durcissement** : en haut de l'audit de configuration, une note en pourcentage résume
+les contrôles applicables, globalement et par domaine (vert à partir de 80, orange de 50 à 79,
+rouge en dessous). Les contrôles de sécurité pèsent 3, ceux d'exploitation 2, ceux de qualité des
+données 1 ; un contrôle à surveiller rapporte la moitié de son poids, un contrôle critique rien.
+Une photo par jour est gardée dans l'historique : choisissez deux audits pour voir les contrôles
+améliorés, dégradés, nouveaux ou retirés, par exemple avant et après un chantier de durcissement.
+La note ne corrige rien.
+
 Pour le détail technique de chaque fonctionnalité (ce qui est généré, pourquoi, et les décisions
 prises en cours de route), voir [CHANGELOG.md](../CHANGELOG.md) et [ROADMAP.md](../ROADMAP.md).
 
@@ -522,6 +530,13 @@ SLAs, categories, service catalog, statuses, templates and rights are in place a
 next login; no need to restart GLPI or wait for a scheduled task. You can re-run the wizard at
 any time (for example to add a new site or adjust an SLA): settings already in place aren't
 duplicated, only missing elements are created.
+
+**Hardening score**: at the top of the configuration audit, a percentage sums up the applicable
+controls, overall and per domain (green from 80, orange from 50 to 79, red below). Security controls
+weigh 3, operations controls 2, data quality controls 1; a control to watch earns half its weight, a
+critical control nothing. One snapshot per day is kept in the history: pick two audits to see the
+controls that improved, got worse, are new or were removed, for example before and after a hardening
+project. The score never fixes anything.
 
 For the technical detail of each feature (what gets generated, why, and the decisions made along
 the way), see [CHANGELOG.md](../CHANGELOG.md) and [ROADMAP.md](../ROADMAP.md).
