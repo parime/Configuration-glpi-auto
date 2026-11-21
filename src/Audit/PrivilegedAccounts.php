@@ -17,7 +17,6 @@
 
 namespace GlpiPlugin\Configurationglpiauto\Audit;
 
-use Auth;
 use AuthLDAP;
 use ProfileRight;
 
@@ -34,6 +33,11 @@ final class PrivilegedAccounts
      * Compte interne de GLPI (tâches automatiques) : n'ouvre jamais de session interactive.
      */
     public const SYSTEM_USER_NAME = 'glpi-system';
+
+    /**
+     * Valeur de `Auth::DB_GLPI` (base locale), recopiée pour garder le classement testable sans GLPI.
+     */
+    private const AUTH_LOCAL = 1;
 
     /**
      * @return list<array{id: int, name: string, profiles: list<int>, authtype: int, last_login: ?string, date_creation: ?string, has_2fa: bool, super_admin: bool}>
@@ -136,7 +140,7 @@ final class PrivilegedAccounts
      */
     public static function isLocal(int $authtype): bool
     {
-        return $authtype === Auth::DB_GLPI;
+        return $authtype === self::AUTH_LOCAL;
     }
 
     private static function dateOrNull(mixed $value): ?string
