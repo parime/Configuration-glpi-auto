@@ -6602,3 +6602,159 @@ msgid "%d compte à privilèges ne s'est jamais connecté"
 msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
 msgstr[0] "%d compte à privilèges ne s'est jamais connecté"
 msgstr[1] "%d comptes à privilèges ne se sont jamais connectés"
+
+msgid "Notifications activées"
+msgstr "Notifications activées"
+
+msgid "Adresse des entités"
+msgstr "Adresse des entités"
+
+msgid "Adresse e-mail de l'administrateur"
+msgstr "Adresse e-mail de l'administrateur"
+
+msgid "Statuts des éléments définis"
+msgstr "Statuts des éléments définis"
+
+msgid "Statuts recommandés présents"
+msgstr "Statuts recommandés présents"
+
+msgid "Intitulés en double"
+msgstr "Intitulés en double"
+
+msgid "Logiciels en double"
+msgstr "Logiciels en double"
+
+msgid "Matériel qui ne remonte plus"
+msgstr "Matériel qui ne remonte plus"
+
+msgid "Garanties expirées ou proches"
+msgstr "Garanties expirées ou proches"
+
+msgid "Fin de support des systèmes et du matériel"
+msgstr "Fin de support des systèmes et du matériel"
+
+msgid "Fiches de matériel incomplètes"
+msgstr "Fiches de matériel incomplètes"
+
+msgid "Cohérence du réseau"
+msgstr "Cohérence du réseau"
+
+msgid "Logiciels sans catégorie"
+msgstr "Logiciels sans catégorie"
+
+msgid "Calendrier actif"
+msgstr "Calendrier actif"
+
+msgid "SLA définis"
+msgstr "SLA définis"
+
+msgid "Catégories de tickets définies"
+msgstr "Catégories de tickets définies"
+
+msgid "Comptes par défaut neutralisés"
+msgstr "Comptes par défaut neutralisés"
+
+msgid "Politique de mots de passe"
+msgstr "Politique de mots de passe"
+
+msgid "Double authentification des comptes à privilèges"
+msgstr "Double authentification des comptes à privilèges"
+
+msgid "Revue des comptes à privilèges"
+msgstr "Revue des comptes à privilèges"
+
+msgid "Dictionnaires d'inventaire"
+msgstr "Dictionnaires d'inventaire"
+
+msgid "Collecteurs de messagerie"
+msgstr "Collecteurs de messagerie"
+
+msgid "Page d'audit"
+msgstr "Page d'audit"
+
+msgid "Rapport périodique"
+msgstr "Rapport périodique"
+
+msgid "Note de durcissement"
+msgstr "Note de durcissement"
+
+msgid "Aucun contrôle applicable"
+msgstr "Aucun contrôle applicable"
+
+#, php-format
+msgid "Calculée sur %d contrôles applicables."
+msgstr "Calculée sur %d contrôles applicables."
+
+msgid "Non applicables (désactivés dans les réglages) :"
+msgstr "Non applicables (désactivés dans les réglages) :"
+
+msgid "Comment la note est-elle calculée ?"
+msgstr "Comment la note est-elle calculée ?"
+
+#, php-format
+msgid "Chaque contrôle applicable a un poids : %1$d pour la sécurité (comptes par défaut, mots de passe, double authentification, comptes à privilèges, fin de support), %2$d pour l'exploitation (notifications, réseau, matériel, garanties, collecteurs), %3$d pour la qualité des données."
+msgstr "Chaque contrôle applicable a un poids : %1$d pour la sécurité (comptes par défaut, mots de passe, double authentification, comptes à privilèges, fin de support), %2$d pour l'exploitation (notifications, réseau, matériel, garanties, collecteurs), %3$d pour la qualité des données."
+
+msgid "Un contrôle sans constat rapporte tout son poids, un contrôle à surveiller la moitié, un contrôle critique rien ; une simple information ne retire aucun point."
+msgstr "Un contrôle sans constat rapporte tout son poids, un contrôle à surveiller la moitié, un contrôle critique rien ; une simple information ne retire aucun point."
+
+msgid "Note = points obtenus / points possibles. Les contrôles désactivés dans les réglages ne comptent pas."
+msgstr "Note = points obtenus / points possibles. Les contrôles désactivés dans les réglages ne comptent pas."
+
+msgid "Bon : de 80 à 100"
+msgstr "Bon : de 80 à 100"
+
+msgid "À améliorer : de 50 à 79"
+msgstr "À améliorer : de 50 à 79"
+
+msgid "Insuffisant : moins de 50"
+msgstr "Insuffisant : moins de 50"
+
+msgid "La note ne modifie rien : elle résume les constats affichés plus bas."
+msgstr "La note ne modifie rien : elle résume les constats affichés plus bas."
+
+msgid "Historique et comparaison des audits"
+msgstr "Historique et comparaison des audits"
+
+msgid "Une photo par jour est gardée : à chaque ouverture de cette page et à chaque rapport périodique. Choisissez deux audits pour voir ce qui a changé."
+msgstr "Une photo par jour est gardée : à chaque ouverture de cette page et à chaque rapport périodique. Choisissez deux audits pour voir ce qui a changé."
+
+msgid "Un seul audit enregistré pour l'instant : la comparaison sera possible dès demain ou au prochain rapport périodique."
+msgstr "Un seul audit enregistré pour l'instant : la comparaison sera possible dès demain ou au prochain rapport périodique."
+
+msgid "Audit de référence"
+msgstr "Audit de référence"
+
+msgid "Audit comparé"
+msgstr "Audit comparé"
+
+msgid "Comparer"
+msgstr "Comparer"
+
+msgid "Choisissez deux audits différents."
+msgstr "Choisissez deux audits différents."
+
+#, php-format
+msgid "Du %1$s au %2$s"
+msgstr "Du %1$s au %2$s"
+
+msgid "points"
+msgstr "points"
+
+msgid "Contrôles dégradés"
+msgstr "Contrôles dégradés"
+
+msgid "Contrôles améliorés"
+msgstr "Contrôles améliorés"
+
+msgid "Nouveaux contrôles"
+msgstr "Nouveaux contrôles"
+
+msgid "Contrôles retirés ou désactivés"
+msgstr "Contrôles retirés ou désactivés"
+
+msgid "Aucun changement"
+msgstr "Aucun changement"
+
+msgid "Origine"
+msgstr "Origine"
