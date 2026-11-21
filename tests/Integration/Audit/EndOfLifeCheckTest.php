@@ -85,12 +85,14 @@ final class EndOfLifeCheckTest extends TestCase
         ]));
 
         $this->configure(false, "$os = $product");
-        $this->assertCount(0, (new EndOfLifeCheck())->analyze(), 'facultatif : rien tant que le contrôle n\'est pas activé');
+        $disabled = (new EndOfLifeCheck())->analyze();
+        $this->assertCount(0, $disabled, 'facultatif : rien tant que le contrôle n\'est pas activé');
 
         $this->configure(true, "$os = $product");
-        $findings = (new EndOfLifeCheck())->analyze();
-        $this->assertSame(AuditFinding::SEVERITY_WARNING, $findings[0]->severity);
-        $this->assertTrue($findings[0]->fixable);
+        $first = (new EndOfLifeCheck())->analyze()[0] ?? null;
+        $this->assertInstanceOf(AuditFinding::class, $first);
+        $this->assertSame(AuditFinding::SEVERITY_WARNING, $first->severity);
+        $this->assertTrue($first->fixable);
         $this->assertContains($computer, array_map(static fn (array $f): int => (int) $f['row']['id'], EndOfLifeCheck::evaluate()['found']));
 
         $before = new Computer();
