@@ -172,6 +172,12 @@ configure son application à sa prochaine connexion ; décocher un profil ne ret
 obligation existante (onglet « Sécurité » du profil). L'audit de configuration
 liste les comptes à privilèges sans double authentification.
 
+**Revue des comptes à privilèges** : l'audit de configuration signale aussi plus de 3 comptes
+Super-Admin, les comptes de l'interface standard sans connexion depuis plus de 90 jours, ceux qui
+ne se sont jamais connectés (créés depuis plus de 30 jours) et, quand un annuaire LDAP est actif,
+plus d'un compte local à privilèges (un compte local de secours reste normal). Chaque compte est
+un lien vers sa fiche ; rien n'est désactivé automatiquement.
+
 ![Étape 14 : Réglages généraux GLPI](screenshots/14-reglages-generaux.png)
 
 ### Étape 15 : Général & Outils
@@ -441,6 +447,12 @@ until you turn it on. Each profile shows whether it is already required and how 
 accounts have no authenticator app. Each person sets up their app at their next login; unticking a
 profile never removes an existing obligation (use the profile's "Security" tab).
 The configuration audit lists privileged accounts that have no two-factor authentication.
+
+**Privileged account review**: the configuration audit also reports more than 3 Super-Admin
+accounts, standard interface accounts with no login for more than 90 days, accounts that never
+logged in (created more than 30 days ago) and, when an LDAP directory is active, more than one
+local privileged account (one local emergency account is normal). Each account links to its form;
+nothing is deactivated automatically.
 
 ![Étape 14 : Réglages généraux GLPI](screenshots/14-reglages-generaux.png)
 

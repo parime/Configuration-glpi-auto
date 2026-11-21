@@ -6575,3 +6575,37 @@ msgstr "Modificare i profili"
 
 msgid "nécessaire pour imposer la double authentification aux profils choisis (étape 14)"
 msgstr "necessario per imporre l'autenticazione a due fattori ai profili scelti (passo 14)"
+
+msgid "Comptes à privilèges"
+msgstr "Account privilegiati"
+
+msgid "%1$d comptes Super-Admin actifs (%2$d au plus recommandés)"
+msgstr "%1$d account Super-Admin attivi (consigliati al massimo %2$d)"
+
+msgid "Un compte Super-Admin peut tout modifier, y compris les droits des autres. Gardez-en le moins possible : donnez le profil Admin ou Technicien aux personnes qui n'administrent pas GLPI lui-même (fiche de l'utilisateur, onglet « Habilitations »)."
+msgstr "Un account Super-Admin può modificare tutto, compresi i diritti degli altri. Tenetene il meno possibile: assegnate il profilo Admin o Tecnico a chi non amministra GLPI stesso (scheda dell'utente, scheda «Autorizzazioni»)."
+
+msgid "Un compte inutilisé garde ses droits et peut être détourné sans que personne ne le remarque. Vérifiez avec le responsable de chaque personne : désactivez le compte (case « Actif » de la fiche) ou retirez son profil s'il n'est plus utile."
+msgstr "Un account inutilizzato conserva i suoi diritti e può essere sfruttato senza che nessuno se ne accorga. Verificate con il responsabile di ogni persona: disattivate l'account (casella «Attivo» della scheda) o togliete il profilo se non serve più."
+
+msgid "Ces comptes existent depuis plus de %d jours sans aucune connexion : comptes créés par erreur, en double ou oubliés. Désactivez ceux qui ne servent pas."
+msgstr "Questi account esistono da più di %d giorni senza alcun accesso: account creati per errore, duplicati o dimenticati. Disattivate quelli non utilizzati."
+
+msgid "%d comptes locaux à privilèges alors qu'un annuaire LDAP est actif"
+msgstr "%d account locali privilegiati mentre una directory LDAP è attiva"
+
+msgid "Le mot de passe de ces comptes est géré par GLPI et non par l'annuaire : ils restent ouverts après le départ de la personne. Gardez un seul compte local de secours, documenté, et rattachez les autres à l'annuaire."
+msgstr "La password di questi account è gestita da GLPI e non dalla directory: restano aperti dopo l'uscita della persona. Tenete un solo account locale di emergenza, documentato, e collegate gli altri alla directory."
+
+msgid "%1$s (dernière connexion le %2$s)"
+msgstr "%1$s (ultimo accesso il %2$s)"
+
+msgid "%1$d compte à privilèges sans connexion depuis plus de %2$d jours"
+msgid_plural "%1$d comptes à privilèges sans connexion depuis plus de %2$d jours"
+msgstr[0] "%1$d account privilegiato senza accesso da più di %2$d giorni"
+msgstr[1] "%1$d account privilegiati senza accesso da più di %2$d giorni"
+
+msgid "%d compte à privilèges ne s'est jamais connecté"
+msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
+msgstr[0] "%d account privilegiato non ha mai effettuato l'accesso"
+msgstr[1] "%d account privilegiati non hanno mai effettuato l'accesso"

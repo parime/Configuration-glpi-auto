@@ -6452,3 +6452,39 @@ msgstr "Modyfikować profile"
 
 msgid "nécessaire pour imposer la double authentification aux profils choisis (étape 14)"
 msgstr "wymagane, aby narzucić uwierzytelnianie dwuskładnikowe wybranym profilom (krok 14)"
+
+msgid "Comptes à privilèges"
+msgstr "Konta uprzywilejowane"
+
+msgid "%1$d comptes Super-Admin actifs (%2$d au plus recommandés)"
+msgstr "Aktywne konta Super-Admin: %1$d (zalecane najwyżej %2$d)"
+
+msgid "Un compte Super-Admin peut tout modifier, y compris les droits des autres. Gardez-en le moins possible : donnez le profil Admin ou Technicien aux personnes qui n'administrent pas GLPI lui-même (fiche de l'utilisateur, onglet « Habilitations »)."
+msgstr "Konto Super-Admin może zmienić wszystko, także uprawnienia innych. Utrzymuj ich jak najmniej: osobom, które nie administrują samym GLPI, nadaj profil Admin lub Technik (karta użytkownika, zakładka „Uprawnienia”)."
+
+msgid "Un compte inutilisé garde ses droits et peut être détourné sans que personne ne le remarque. Vérifiez avec le responsable de chaque personne : désactivez le compte (case « Actif » de la fiche) ou retirez son profil s'il n'est plus utile."
+msgstr "Nieużywane konto zachowuje uprawnienia i może zostać przejęte niezauważenie. Sprawdź z przełożonym każdej osoby: wyłącz konto (pole „Aktywny” w karcie) lub odbierz profil, jeśli nie jest już potrzebny."
+
+msgid "Ces comptes existent depuis plus de %d jours sans aucune connexion : comptes créés par erreur, en double ou oubliés. Désactivez ceux qui ne servent pas."
+msgstr "Te konta istnieją od ponad %d dni bez żadnego logowania: utworzone przez pomyłkę, zdublowane lub zapomniane. Wyłącz te, które nie są używane."
+
+msgid "%d comptes locaux à privilèges alors qu'un annuaire LDAP est actif"
+msgstr "Lokalne konta uprzywilejowane przy aktywnym katalogu LDAP: %d"
+
+msgid "Le mot de passe de ces comptes est géré par GLPI et non par l'annuaire : ils restent ouverts après le départ de la personne. Gardez un seul compte local de secours, documenté, et rattachez les autres à l'annuaire."
+msgstr "Hasłem tych kont zarządza GLPI, a nie katalog: pozostają otwarte po odejściu osoby. Zachowaj jedno udokumentowane lokalne konto awaryjne, a pozostałe powiąż z katalogiem."
+
+msgid "%1$s (dernière connexion le %2$s)"
+msgstr "%1$s (ostatnie logowanie %2$s)"
+
+msgid "%1$d compte à privilèges sans connexion depuis plus de %2$d jours"
+msgid_plural "%1$d comptes à privilèges sans connexion depuis plus de %2$d jours"
+msgstr[0] "%1$d konto uprzywilejowane bez logowania od ponad %2$d dni"
+msgstr[1] "%1$d konta uprzywilejowane bez logowania od ponad %2$d dni"
+msgstr[2] "%1$d kont uprzywilejowanych bez logowania od ponad %2$d dni"
+
+msgid "%d compte à privilèges ne s'est jamais connecté"
+msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
+msgstr[0] "%d konto uprzywilejowane nigdy się nie zalogowało"
+msgstr[1] "%d konta uprzywilejowane nigdy się nie zalogowały"
+msgstr[2] "%d kont uprzywilejowanych nigdy się nie zalogowało"

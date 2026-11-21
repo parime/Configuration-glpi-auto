@@ -18,6 +18,7 @@
 namespace GlpiPlugin\Configurationglpiauto;
 
 use Glpi\Security\TOTPManager;
+use GlpiPlugin\Configurationglpiauto\Audit\PrivilegedAccounts;
 use Profile;
 
 /**
@@ -41,11 +42,6 @@ class TwoFactorBuilder
      * appliqués sans la case maîtresse de l'étape).
      */
     public const RECOMMENDED_PROFILE_NAMES = ['Super-Admin', 'Admin', 'Technician'];
-
-    /**
-     * Compte interne de GLPI (tâches automatiques) : n'ouvre jamais de session interactive.
-     */
-    private const SYSTEM_USER_NAME = 'glpi-system';
 
     /**
      * Vrai si l'instance connaît la 2FA native (GLPI 11 et plus).
@@ -110,39 +106,19 @@ class TwoFactorBuilder
      */
     public static function findPrivilegedUsersWithout2fa(): array
     {
-        global $DB;
-
         if (!self::isAvailable()) {
             return [];
         }
 
         $users = [];
-        foreach (
-            $DB->request([
-                'SELECT'     => ['glpi_users.id', 'glpi_users.name', 'glpi_profiles_users.profiles_id'],
-                'FROM'       => 'glpi_users',
-                'INNER JOIN' => [
-                    'glpi_profiles_users' => ['ON' => ['glpi_profiles_users' => 'users_id', 'glpi_users' => 'id']],
-                    'glpi_profiles'       => ['ON' => ['glpi_profiles' => 'id', 'glpi_profiles_users' => 'profiles_id']],
-                ],
-                'WHERE'      => [
-                    'glpi_users.is_active'   => 1,
-                    'glpi_users.is_deleted'  => 0,
-                    'glpi_profiles.interface' => 'central',
-                    'NOT'                    => ['glpi_users.name' => self::SYSTEM_USER_NAME],
-                    'OR'                     => [
-                        ['glpi_users.2fa' => null],
-                        ['glpi_users.2fa' => ''],
-                    ],
-                ],
-                'ORDER'      => 'glpi_users.name',
-            ]) as $row
-        ) {
-            $id = (int) $row['id'];
-            $users[$id] ??= ['id' => $id, 'name' => (string) $row['name'], 'profiles' => [], 'covered' => false];
-            $profileId = (int) $row['profiles_id'];
-            if (!in_array($profileId, $users[$id]['profiles'], true)) {
-                $users[$id]['profiles'][] = $profileId;
+        foreach (PrivilegedAccounts::findActive() as $account) {
+            if (!$account['has_2fa']) {
+                $users[$account['id']] = [
+                    'id'       => $account['id'],
+                    'name'     => $account['name'],
+                    'profiles' => $account['profiles'],
+                    'covered'  => false,
+                ];
             }
         }
 
