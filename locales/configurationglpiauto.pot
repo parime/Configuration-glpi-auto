@@ -7460,3 +7460,117 @@ msgstr ""
 #: templates/audit/_hardening_score.html.twig
 msgid "À améliorer : de 50 à 79"
 msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Conformité au dernier Blueprint appliqué"
+msgstr ""
+
+#: src/Audit/BlueprintDrift.php
+msgid "Niveaux de service (SLA, OLA)"
+msgstr ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php
+msgid "Blueprint"
+msgstr ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php
+msgid "La configuration s'écarte du dernier Blueprint appliqué"
+msgstr ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php
+#, php-format
+msgid ""
+"%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la "
+"main)."
+msgid_plural ""
+"%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la "
+"main)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php
+msgid ""
+"Relisez les écarts plus bas sur cette page : réappliquez le Blueprint si la "
+"modification n'était pas voulue, sinon reportez la nouvelle valeur dans "
+"l'assistant."
+msgstr ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php
+msgid "Voir les écarts"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Adopter les nouvelles valeurs dans l'assistant"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Ajouté"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid ""
+"Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à "
+"comparer."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid ""
+"Aucun écart : la configuration de GLPI correspond au dernier Blueprint "
+"appliqué."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid ""
+"Compare les SLA, le calendrier, les catégories de tickets et les statuts "
+"créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette "
+"vérification ne modifie rien."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Dans GLPI"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Dans le Blueprint"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid ""
+"Modification voulue : reportez la nouvelle valeur dans l'assistant, elle "
+"deviendra la référence au prochain déploiement. Modification accidentelle : "
+"réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Modifié"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Ouvrir l'assistant"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Réappliquer le Blueprint (avec aperçu)"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Supprimé"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Écart"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig templates/deploy.html.twig
+msgid "Écarts avec le dernier Blueprint appliqué"
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid ""
+"Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément "
+"ajouté à la main est conservé."
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid "Réaligner aussi les SLA et OLA déjà créés sur cette configuration"
+msgstr ""

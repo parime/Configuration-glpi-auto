@@ -7444,8 +7444,74 @@ msgstr "Origin"
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Inventory number or name of the current workstation"
 
+msgid "Niveaux de service (SLA, OLA)"
+msgstr "Service levels (SLA, OLA)"
+
+msgid "Blueprint"
+msgstr "Blueprint"
+
+msgid "La configuration s'écarte du dernier Blueprint appliqué"
+msgstr "The configuration has drifted from the last applied Blueprint"
+
+msgid "Relisez les écarts plus bas sur cette page : réappliquez le Blueprint si la modification n'était pas voulue, sinon reportez la nouvelle valeur dans l'assistant."
+msgstr "Review the differences further down this page: reapply the Blueprint if the change was not intended, otherwise copy the new value into the wizard."
+
+msgid "Voir les écarts"
+msgstr "View the differences"
+
+msgid "Écarts avec le dernier Blueprint appliqué"
+msgstr "Differences from the last applied Blueprint"
+
+msgid "Compare les SLA, le calendrier, les catégories de tickets et les statuts créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette vérification ne modifie rien."
+msgstr "Compares the SLAs, calendar, ticket categories and statuses created by the plugin with what they are in GLPI today. This check changes nothing."
+
+msgid "Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à comparer."
+msgstr "No Blueprint has been applied with the wizard yet: there is nothing to compare."
+
+msgid "Ouvrir l'assistant"
+msgstr "Open the wizard"
+
+msgid "Aucun écart : la configuration de GLPI correspond au dernier Blueprint appliqué."
+msgstr "No differences: the GLPI configuration matches the last applied Blueprint."
+
+msgid "Ajouté"
+msgstr "Added"
+
+msgid "Modifié"
+msgstr "Modified"
+
+msgid "Supprimé"
+msgstr "Removed"
+
+msgid "Écart"
+msgstr "Difference"
+
+msgid "Dans GLPI"
+msgstr "In GLPI"
+
+msgid "Dans le Blueprint"
+msgstr "In the Blueprint"
+
+msgid "Modification voulue : reportez la nouvelle valeur dans l'assistant, elle deviendra la référence au prochain déploiement. Modification accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
+msgstr "Intended change: copy the new value into the wizard, it becomes the reference at the next deployment. Accidental change: reapply the Blueprint. An item added by hand is never deleted."
+
+msgid "Réappliquer le Blueprint (avec aperçu)"
+msgstr "Reapply the Blueprint (with preview)"
+
+msgid "Adopter les nouvelles valeurs dans l'assistant"
+msgstr "Adopt the new values in the wizard"
+
+msgid "Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément ajouté à la main est conservé."
+msgstr "Removed or modified items are recreated or realigned; an item added by hand is kept."
+
+msgid "Réaligner aussi les SLA et OLA déjà créés sur cette configuration"
+msgstr "Also realign the SLAs and OLAs already created with this configuration"
+
+msgid "Conformité au dernier Blueprint appliqué"
+msgstr "Compliance with the last applied Blueprint"
+
 #, php-format
 msgid "%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
 msgid_plural "%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la main)."
-msgstr[0] "%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
-msgstr[1] "%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la main)."
+msgstr[0] "%d difference found (SLAs, calendar, categories or statuses changed by hand)."
+msgstr[1] "%d differences found (SLAs, calendar, categories or statuses changed by hand)."
