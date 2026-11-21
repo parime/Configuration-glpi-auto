@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.29.0] - 2026-11-21
+
 ### Added
 
 - **Audit : fin de support des systèmes et du matériel** (issue #467) : contrôle facultatif
