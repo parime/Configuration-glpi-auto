@@ -1,0 +1,188 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #466 : note de durcissement en %, historique et comparaison entre deux audits. Lecture
+   seule : la note résume les constats affichés plus bas, elle ne corrige rien. #}
+{% set sourceLabels = {
+  'page': __('Page d\'audit', 'configurationglpiauto'),
+  'report': __('Rapport périodique', 'configurationglpiauto')
+} %}
+<div class="card mb-3">
+  <div class="card-header">
+    <h3 class="card-title">
+      <i class="ti ti-shield-check me-1"></i>
+      {{ __('Note de durcissement', 'configurationglpiauto') }}
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+      {% if hardening.score is null %}
+        <span class="badge bg-secondary-subtle text-secondary-emphasis fs-2">
+          {{ __('Aucun contrôle applicable', 'configurationglpiauto') }}
+        </span>
+      {% else %}
+        <span class="badge bg-{{ hardening.level }}-subtle text-{{ hardening.level }}-emphasis fs-1" data-testid="hardening-score">
+          <i class="ti ti-gauge me-1"></i>{{ hardening.score }} %
+        </span>
+      {% endif %}
+      <span class="text-secondary">
+        {{ __('Calculée sur %d contrôles applicables.', 'configurationglpiauto')|format(hardening.applicable) }}
+        {% if hardening.not_applicable is not empty %}
+          <br>{{ __('Non applicables (désactivés dans les réglages) :', 'configurationglpiauto') }}
+          {{ hardening.not_applicable|join(', ') }}
+        {% endif %}
+      </span>
+    </div>
+
+    {% if hardening.domains is not empty %}
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        {% for domain in hardening.domains %}
+          <span class="badge bg-{{ domain.level }}-subtle text-{{ domain.level }}-emphasis">
+            {{ domain.domain }} : {{ domain.score }} %
+          </span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="alert alert-info mb-0">
+      <div class="d-flex">
+        <i class="ti ti-help-circle me-2 fs-2"></i>
+        <div>
+          <strong>{{ __('Comment la note est-elle calculée ?', 'configurationglpiauto') }}</strong>
+          <ul class="mb-1">
+            <li>{{ __('Chaque contrôle applicable a un poids : %1$d pour la sécurité (comptes par défaut, mots de passe, double authentification, comptes à privilèges, fin de support), %2$d pour l\'exploitation (notifications, réseau, matériel, garanties, collecteurs), %3$d pour la qualité des données.', 'configurationglpiauto')|format(hardening.weights.security, hardening.weights.operations, hardening.weights.data) }}</li>
+            <li>{{ __('Un contrôle sans constat rapporte tout son poids, un contrôle à surveiller la moitié, un contrôle critique rien ; une simple information ne retire aucun point.', 'configurationglpiauto') }}</li>
+            <li>{{ __('Note = points obtenus / points possibles. Les contrôles désactivés dans les réglages ne comptent pas.', 'configurationglpiauto') }}</li>
+          </ul>
+          <span class="badge bg-success-subtle text-success-emphasis">{{ __('Bon : de 80 à 100', 'configurationglpiauto') }}</span>
+          <span class="badge bg-warning-subtle text-warning-emphasis">{{ __('À améliorer : de 50 à 79', 'configurationglpiauto') }}</span>
+          <span class="badge bg-danger-subtle text-danger-emphasis">{{ __('Insuffisant : moins de 50', 'configurationglpiauto') }}</span>
+          <div class="mt-1 small">{{ __('La note ne modifie rien : elle résume les constats affichés plus bas.', 'configurationglpiauto') }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header">
+    <h3 class="card-title">
+      <i class="ti ti-history me-1"></i>
+      {{ __('Historique et comparaison des audits', 'configurationglpiauto') }}
+    </h3>
+  </div>
+  <div class="card-body">
+    <p class="text-secondary">
+      {{ __('Une photo par jour est gardée : à chaque ouverture de cette page et à chaque rapport périodique. Choisissez deux audits pour voir ce qui a changé.', 'configurationglpiauto') }}
+    </p>
+
+    {% if audit_runs|length < 2 %}
+      <div class="alert alert-secondary mb-0">
+        <i class="ti ti-info-circle me-1"></i>
+        {{ __('Un seul audit enregistré pour l\'instant : la comparaison sera possible dès demain ou au prochain rapport périodique.', 'configurationglpiauto') }}
+      </div>
+    {% else %}
+      <form method="get" action="" class="row g-2 align-items-end mb-3">
+        <div class="col-auto">
+          <label class="form-label" for="cga-compare-from">{{ __('Audit de référence', 'configurationglpiauto') }}</label>
+          <select class="form-select" id="cga-compare-from" name="compare_from">
+            {% for run in audit_runs %}
+              <option value="{{ run.id }}" {{ run.id == compare_from ? 'selected' : '' }}>{{ run.date_label }} ({{ run.score is null ? '-' : run.score ~ ' %' }})</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-auto">
+          <label class="form-label" for="cga-compare-to">{{ __('Audit comparé', 'configurationglpiauto') }}</label>
+          <select class="form-select" id="cga-compare-to" name="compare_to">
+            {% for run in audit_runs %}
+              <option value="{{ run.id }}" {{ run.id == compare_to ? 'selected' : '' }}>{{ run.date_label }} ({{ run.score is null ? '-' : run.score ~ ' %' }})</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-outline-primary">
+            <i class="ti ti-arrows-diff me-1"></i>{{ __('Comparer', 'configurationglpiauto') }}
+          </button>
+        </div>
+      </form>
+
+      {% if comparison is null %}
+        <div class="alert alert-warning">
+          <i class="ti ti-alert-circle me-1"></i>
+          {{ __('Choisissez deux audits différents.', 'configurationglpiauto') }}
+        </div>
+      {% else %}
+        <p data-testid="hardening-comparison">
+          {{ __('Du %1$s au %2$s', 'configurationglpiauto')|format(comparison.before.date_label, comparison.after.date_label) }} :
+          {% if comparison.delta is not null %}
+            {% set deltaLevel = comparison.delta > 0 ? 'success' : (comparison.delta < 0 ? 'danger' : 'secondary') %}
+            <span class="badge bg-{{ deltaLevel }}-subtle text-{{ deltaLevel }}-emphasis">
+              {{ comparison.delta > 0 ? '+' : '' }}{{ comparison.delta }} {{ __('points', 'configurationglpiauto') }}
+            </span>
+          {% endif %}
+        </p>
+        {% set groups = [
+          ['worsened', 'danger', 'ti-trending-down', __('Contrôles dégradés', 'configurationglpiauto')],
+          ['improved', 'success', 'ti-trending-up', __('Contrôles améliorés', 'configurationglpiauto')],
+          ['new', 'info', 'ti-sparkles', __('Nouveaux contrôles', 'configurationglpiauto')],
+          ['removed', 'secondary', 'ti-minus', __('Contrôles retirés ou désactivés', 'configurationglpiauto')]
+        ] %}
+        <div class="row g-2 mb-3">
+          {% for group in groups %}
+            <div class="col-md-6 col-xl-3">
+              <div class="border rounded p-2 h-100">
+                <span class="badge bg-{{ group[1] }}-subtle text-{{ group[1] }}-emphasis mb-1">
+                  <i class="ti {{ group[2] }} me-1"></i>{{ group[3] }} ({{ comparison.groups[group[0]]|length }})
+                </span>
+                {% if comparison.groups[group[0]] is empty %}
+                  <div class="text-secondary small">{{ __('Aucun changement', 'configurationglpiauto') }}</div>
+                {% else %}
+                  <ul class="mb-0 small">
+                    {% for label in comparison.groups[group[0]] %}
+                      <li>{{ label }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="table-responsive">
+        <table class="table table-sm table-striped mb-0">
+          <thead>
+            <tr>
+              <th>{{ __('Date') }}</th>
+              <th>{{ __('Note de durcissement', 'configurationglpiauto') }}</th>
+              <th>{{ __('Origine', 'configurationglpiauto') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for run in audit_runs %}
+              <tr>
+                <td>{{ run.date_label }}</td>
+                <td>
+                  <span class="badge bg-{{ run.level }}-subtle text-{{ run.level }}-emphasis">{{ run.score is null ? '-' : run.score ~ ' %' }}</span>
+                </td>
+                <td>{{ sourceLabels[run.source]|default(run.source) }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+</div>

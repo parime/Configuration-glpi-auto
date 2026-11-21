@@ -73,7 +73,12 @@ final class AuditReportCron
             static fn (string $checkClass): string => (new $checkClass())->getKey(),
             AuditService::getRegisteredChecks()
         );
-        $report = AuditReport::build($checkKeys, AuditService::runAll());
+        $findings = AuditService::runAll();
+        $report = AuditReport::build($checkKeys, $findings);
+
+        // Issue #466 : le rapport périodique alimente aussi l'historique des audits.
+        $statuses = HardeningScore::statuses($checkKeys, $findings, AuditControlCatalog::notApplicable($config->fields));
+        AuditHistory::record(HardeningScore::score($statuses, AuditControlCatalog::weights($checkKeys)), $statuses, 'report');
 
         $state = json_decode((string) ($config->fields['audit_report_state'] ?? ''), true);
         $previousStatuses = is_array($state) && is_array($state['statuses'] ?? null) ? $state['statuses'] : null;

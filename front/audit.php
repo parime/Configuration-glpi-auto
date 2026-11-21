@@ -15,6 +15,8 @@
  * -------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Configurationglpiauto\Audit\AuditControlCatalog;
+use GlpiPlugin\Configurationglpiauto\Audit\AuditHistory;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditReportCron;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditService;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\EndOfLifeCheck;
@@ -176,7 +178,14 @@ if (isset($_POST['save_report']) || isset($_POST['send_report_now'])) {
 
 Html::header(__('Audit de configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'), 'config', ConfigurationProfile::class, 'audit');
 
-$findings = AuditService::runAll();
+// Issue #466 : note de durcissement (lecture seule) et photo du jour dans l'historique des audits.
+$evaluation = AuditControlCatalog::evaluate();
+$findings = $evaluation['findings'];
+AuditHistory::record($evaluation['score'], $evaluation['statuses'], 'page');
+$auditRuns = AuditHistory::list(30);
+$compareFrom = (int) ($_GET['compare_from'] ?? ($auditRuns[1]['id'] ?? 0));
+$compareTo = (int) ($_GET['compare_to'] ?? ($auditRuns[0]['id'] ?? 0));
+$comparison = AuditHistory::comparison($auditRuns, $compareFrom, $compareTo);
 
 $eolCache = [];
 foreach (EndOfLifeCache::all() as $product => $entry) {
@@ -246,6 +255,22 @@ if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_D
         'notifications_on'   => !empty($CFG_GLPI['use_notifications']) && !empty($CFG_GLPI['notifications_mailing']),
     ],
     'findings'              => $findings,
+    'hardening'             => [
+        'score'          => $evaluation['score'],
+        'level'          => $evaluation['level'],
+        'domains'        => $evaluation['domains'],
+        'applicable'     => $evaluation['applicable'],
+        'not_applicable' => $evaluation['not_applicable'],
+        'weights'        => [
+            'security'   => AuditControlCatalog::WEIGHT_SECURITY,
+            'operations' => AuditControlCatalog::WEIGHT_OPERATIONS,
+            'data'       => AuditControlCatalog::WEIGHT_DATA,
+        ],
+    ],
+    'audit_runs'            => $auditRuns,
+    'compare_from'          => $compareFrom,
+    'compare_to'            => $compareTo,
+    'comparison'            => $comparison,
     'park'                  => [
         'ghost_days'    => (int) ($config->fields['audit_ghost_days'] ?? 30),
         'warranty_days' => (int) ($config->fields['audit_warranty_days'] ?? 30),

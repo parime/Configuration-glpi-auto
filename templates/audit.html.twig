@@ -24,6 +24,7 @@
    purpose: __('Analyse de l\'état actuel de votre instance GLPI : indépendante de ce que cet assistant a lui-même configuré.', 'configurationglpiauto'),
    expected: __('Traitez les constats en commençant par les plus graves. Un bouton de correction n\'apparaît que lorsque le bon réglage ne fait aucun doute et que vous avez le droit de modifier la configuration ; sinon, suivez la recommandation.', 'configurationglpiauto'),
 } %}
+{% include '@configurationglpiauto/audit/_hardening_score.html.twig' %}
 <div class="card">
   <div class="card-body">
 

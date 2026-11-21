@@ -7244,3 +7244,219 @@ msgstr ""
 #: src/WifiAccessFormBuilder.php:214
 msgid "Appareil ou nom du visiteur"
 msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Notifications activées"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Adresse des entités"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Adresse e-mail de l'administrateur"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Statuts des éléments définis"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Statuts recommandés présents"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Intitulés en double"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Logiciels en double"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Matériel qui ne remonte plus"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Garanties expirées ou proches"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Fiches de matériel incomplètes"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Cohérence du réseau"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Logiciels sans catégorie"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Calendrier actif"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "SLA définis"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Catégories de tickets définies"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Comptes par défaut neutralisés"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Politique de mots de passe"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Double authentification des comptes à privilèges"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Revue des comptes à privilèges"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Dictionnaires d'inventaire"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php
+msgid "Collecteurs de messagerie"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Aucun changement"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Aucun contrôle applicable"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Audit comparé"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Audit de référence"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Bon : de 80 à 100"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+#, php-format
+msgid "Calculée sur %d contrôles applicables."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+#, php-format
+msgid ""
+"Chaque contrôle applicable a un poids : %1$d pour la sécurité (comptes par "
+"défaut, mots de passe, double authentification, comptes à privilèges, fin de "
+"support), %2$d pour l'exploitation (notifications, réseau, matériel, "
+"garanties, collecteurs), %3$d pour la qualité des données."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Choisissez deux audits différents."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Comment la note est-elle calculée ?"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Comparer"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Contrôles améliorés"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Contrôles dégradés"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Contrôles retirés ou désactivés"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+#, php-format
+msgid "Du %1$s au %2$s"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Historique et comparaison des audits"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Insuffisant : moins de 50"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "La note ne modifie rien : elle résume les constats affichés plus bas."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Non applicables (désactivés dans les réglages) :"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid ""
+"Note = points obtenus / points possibles. Les contrôles désactivés dans les "
+"réglages ne comptent pas."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Note de durcissement"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Nouveaux contrôles"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Origine"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Page d'audit"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Rapport périodique"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid ""
+"Un contrôle sans constat rapporte tout son poids, un contrôle à surveiller "
+"la moitié, un contrôle critique rien ; une simple information ne retire "
+"aucun point."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid ""
+"Un seul audit enregistré pour l'instant : la comparaison sera possible dès "
+"demain ou au prochain rapport périodique."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid ""
+"Une photo par jour est gardée : à chaque ouverture de cette page et à chaque "
+"rapport périodique. Choisissez deux audits pour voir ce qui a changé."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "points"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "À améliorer : de 50 à 79"
+msgstr ""
