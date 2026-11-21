@@ -17,6 +17,7 @@
 
 namespace GlpiPlugin\Configurationglpiauto\Audit;
 
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\BlueprintDriftCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultAdminEmailCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultCredentialsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DictionaryRulesCheck;
@@ -80,6 +81,8 @@ final class AuditService
             DictionaryRulesCheck::class,
             // Issue #429 : collecteur en erreur, sans règle, boucle de messages.
             MailCollectorCheck::class,
+            // Issue #468 : écarts avec le dernier Blueprint appliqué.
+            BlueprintDriftCheck::class,
         ];
     }
 

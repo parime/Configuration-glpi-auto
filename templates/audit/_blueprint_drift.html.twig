@@ -1,0 +1,83 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #468 : écarts avec le dernier Blueprint appliqué, en lecture seule. #}
+<div class="card mt-3" id="blueprint-drift">
+  <div class="card-header">
+    <h3 class="card-title"><i class="ti ti-git-compare me-2"></i>{{ __('Écarts avec le dernier Blueprint appliqué', 'configurationglpiauto') }}</h3>
+  </div>
+  <div class="card-body">
+    <p class="text-muted">
+      {{ __('Compare les SLA, le calendrier, les catégories de tickets et les statuts créés par le plugin à ce qu\'ils sont aujourd\'hui dans GLPI. Cette vérification ne modifie rien.', 'configurationglpiauto') }}
+    </p>
+    {% if not drift.applied %}
+      <div class="alert alert-info mb-0">
+        <i class="ti ti-info-circle me-1"></i>
+        {{ __('Aucun Blueprint n\'a encore été appliqué avec l\'assistant : il n\'y a rien à comparer.', 'configurationglpiauto') }}
+        <a href="{{ drift.wizard_url }}">{{ __('Ouvrir l\'assistant', 'configurationglpiauto') }}</a>
+      </div>
+    {% elseif drift.items is empty %}
+      <div class="alert alert-success mb-0">
+        <i class="ti ti-circle-check me-1"></i>
+        {{ __('Aucun écart : la configuration de GLPI correspond au dernier Blueprint appliqué.', 'configurationglpiauto') }}
+      </div>
+    {% else %}
+      {% set changeBadges = {
+        'added': ['info', __('Ajouté', 'configurationglpiauto')],
+        'modified': ['warning', __('Modifié', 'configurationglpiauto')],
+        'removed': ['danger', __('Supprimé', 'configurationglpiauto')]
+      } %}
+      <div class="table-responsive">
+        <table class="table table-sm table-striped">
+          <thead>
+            <tr>
+              <th>{{ __('Écart', 'configurationglpiauto') }}</th>
+              <th>{{ __('Objet', 'configurationglpiauto') }}</th>
+              <th>{{ __('Élément', 'configurationglpiauto') }}</th>
+              <th>{{ __('Dans GLPI', 'configurationglpiauto') }}</th>
+              <th>{{ __('Dans le Blueprint', 'configurationglpiauto') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in drift.items %}
+              {% set badge = changeBadges[item.change]|default(['neutral', item.change]) %}
+              <tr>
+                <td>{% include '@configurationglpiauto/_badge.html.twig' with {kind: badge[0], label: badge[1]} %}</td>
+                <td>{{ item.object }}</td>
+                <td>{{ item.item }}</td>
+                <td>{{ item.current is empty ? '-' : item.current }}</td>
+                <td>{{ item.expected is empty ? '-' : item.expected }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="small mb-2">
+        <i class="ti ti-bulb me-1"></i>
+        {{ __('Modification voulue : reportez la nouvelle valeur dans l\'assistant, elle deviendra la référence au prochain déploiement. Modification accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n\'est jamais supprimé.', 'configurationglpiauto') }}
+      </p>
+      <div class="d-flex flex-wrap gap-2">
+        {% if drift.deploy_url %}
+          <a class="btn btn-sm btn-primary" href="{{ drift.deploy_url }}">
+            <i class="ti ti-player-play me-1"></i>{{ __('Réappliquer le Blueprint (avec aperçu)', 'configurationglpiauto') }}
+          </a>
+        {% endif %}
+        <a class="btn btn-sm btn-outline-secondary" href="{{ drift.wizard_url }}">
+          <i class="ti ti-adjustments me-1"></i>{{ __('Adopter les nouvelles valeurs dans l\'assistant', 'configurationglpiauto') }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
