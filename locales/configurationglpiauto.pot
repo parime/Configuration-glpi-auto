@@ -6954,3 +6954,67 @@ msgid ""
 "GLPI ne vaut que pour l'obligation générale : ici, la configuration est "
 "demandée dès la prochaine connexion."
 msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
+msgid "Comptes à privilèges"
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
+#, php-format
+msgid "%1$d comptes Super-Admin actifs (%2$d au plus recommandés)"
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
+msgid ""
+"Un compte Super-Admin peut tout modifier, y compris les droits des autres. "
+"Gardez-en le moins possible : donnez le profil Admin ou Technicien aux "
+"personnes qui n'administrent pas GLPI lui-même (fiche de l'utilisateur, "
+"onglet « Habilitations »)."
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
+#, php-format
+msgid "%1$d compte à privilèges sans connexion depuis plus de %2$d jours"
+msgid_plural ""
+"%1$d comptes à privilèges sans connexion depuis plus de %2$d jours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
+msgid ""
+"Un compte inutilisé garde ses droits et peut être détourné sans que personne"
+" ne le remarque. Vérifiez avec le responsable de chaque personne : "
+"désactivez le compte (case « Actif » de la fiche) ou retirez son profil s'il"
+" n'est plus utile."
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
+#, php-format
+msgid "%d compte à privilèges ne s'est jamais connecté"
+msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
+#, php-format
+msgid ""
+"Ces comptes existent depuis plus de %d jours sans aucune connexion : comptes"
+" créés par erreur, en double ou oubliés. Désactivez ceux qui ne servent pas."
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
+#, php-format
+msgid "%d comptes locaux à privilèges alors qu'un annuaire LDAP est actif"
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
+msgid ""
+"Le mot de passe de ces comptes est géré par GLPI et non par l'annuaire : ils"
+" restent ouverts après le départ de la personne. Gardez un seul compte local"
+" de secours, documenté, et rattachez les autres à l'annuaire."
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
+#, php-format
+msgid "%1$s (dernière connexion le %2$s)"
+msgstr ""
