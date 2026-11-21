@@ -85,7 +85,7 @@ final class EndOfLifeCheckTest extends TestCase
         ]));
 
         $this->configure(false, "$os = $product");
-        $this->assertSame([], (new EndOfLifeCheck())->analyze(), 'facultatif : rien tant que le contrôle n\'est pas activé');
+        $this->assertCount(0, (new EndOfLifeCheck())->analyze(), 'facultatif : rien tant que le contrôle n\'est pas activé');
 
         $this->configure(true, "$os = $product");
         $findings = (new EndOfLifeCheck())->analyze();
