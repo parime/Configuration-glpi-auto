@@ -33,7 +33,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoSlaConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoStatesConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoTicketCategoriesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NotificationsDisabledCheck;
-use GlpiPluginConfigurationglpiautoAuditChecksPrivilegedAccountsReviewCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\PrivilegedAccountsReviewCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\PrivilegedAccountsWithout2faCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\UncategorizedSoftwareCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\WarrantyCheck;

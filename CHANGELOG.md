@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Audit : revue des comptes à privilèges** (issue #465) : nouveau contrôle qui signale plus de
+  3 comptes Super-Admin (profils pouvant modifier la configuration générale), les comptes de
+  l'interface standard sans connexion depuis plus de 90 jours, ceux qui ne se sont jamais
+  connectés (créés depuis plus de 30 jours) et, quand un annuaire LDAP est actif, plus d'un compte
+  local à privilèges. Chaque compte renvoie vers sa fiche. Lecture seule, jamais corrigé
+  automatiquement. Le contrôle de double authentification partage la même liste de comptes.
+
 ## [1.27.0] - 2026-11-21
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
