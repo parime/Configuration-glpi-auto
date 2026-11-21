@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.30.0] - 2026-11-21
+
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
+### Added
+
+- **Audit : note de durcissement en %, historique et comparaison entre deux audits** (issue #466) :
+  la page d'audit affiche une note globale et une note par domaine, calculées sur les contrôles
+  applicables (les contrôles désactivés dans les réglages ne comptent pas), avec des badges
+  colorés et un encadré qui explique la pondération : 3 pour la sécurité (comptes par défaut, mots
+  de passe, double authentification, comptes à privilèges, fin de support), 2 pour l'exploitation,
+  1 pour la qualité des données ; un contrôle à surveiller rapporte la moitié de son poids, un
+  contrôle critique rien, une information ne retire aucun point. Une photo par jour (note et statut
+  de chaque contrôle, sans aucun détail des constats) est gardée dans un historique, alimenté par
+  la page et par le rapport périodique ; deux audits se comparent : contrôles améliorés, dégradés,
+  nouveaux et retirés, et écart de points. Lecture seule : rien n'est corrigé.
+
 ## [1.29.0] - 2026-11-21
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

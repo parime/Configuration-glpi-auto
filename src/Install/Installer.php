@@ -779,6 +779,31 @@ final class Installer
             }
         }
 
+        // Issue #466 : historique des audits (note de durcissement et statut de chaque contrôle).
+        if (!$DB->tableExists(\GlpiPlugin\Configurationglpiauto\Audit\AuditHistory::TABLE)) {
+            $charset   = DBConnection::getDefaultCharset();
+            $collation = DBConnection::getDefaultCollation();
+            $keySign   = DBConnection::getDefaultPrimaryKeySignOption();
+
+            $query = "CREATE TABLE `" . \GlpiPlugin\Configurationglpiauto\Audit\AuditHistory::TABLE . "` (
+                `id` int {$keySign} NOT NULL AUTO_INCREMENT,
+                `date_creation` timestamp NULL DEFAULT NULL,
+                `users_id` int {$keySign} NOT NULL DEFAULT 0,
+                `source` varchar(20) NOT NULL DEFAULT 'page',
+                `score` tinyint unsigned DEFAULT NULL,
+                `statuses` text,
+                PRIMARY KEY (`id`),
+                KEY `date_creation` (`date_creation`),
+                KEY `users_id` (`users_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
+
+            if (!$DB->doQuery($query)) {
+                \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s\n", \GlpiPlugin\Configurationglpiauto\Audit\AuditHistory::TABLE, $DB->error()));
+
+                return false;
+            }
+        }
+
         Profile::install($migration);
 
         $migration->executeMigration();
@@ -911,6 +936,7 @@ final class Installer
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::CSV_IMPORT_PROFILES_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::EOL_CACHE_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::MANAGED_FORMS_TABLE . "`");
+        $DB->doQuery("DROP TABLE IF EXISTS `" . \GlpiPlugin\Configurationglpiauto\Audit\AuditHistory::TABLE . "`");
 
         Profile::uninstall();
         \GlpiPlugin\Configurationglpiauto\StaffMovement::uninstall();
