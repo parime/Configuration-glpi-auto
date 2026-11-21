@@ -33,6 +33,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoSlaConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoStatesConfiguredCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoTicketCategoriesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NotificationsDisabledCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\PrivilegedAccountsWithout2faCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\UncategorizedSoftwareCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\WarrantyCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\WeakPasswordPolicyCheck;
@@ -71,6 +72,7 @@ final class AuditService
             NoTicketCategoriesCheck::class,
             DefaultCredentialsCheck::class,
             WeakPasswordPolicyCheck::class,
+            PrivilegedAccountsWithout2faCheck::class,
             DictionaryRulesCheck::class,
             // Issue #429 : collecteur en erreur, sans règle, boucle de messages.
             MailCollectorCheck::class,

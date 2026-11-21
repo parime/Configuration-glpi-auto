@@ -54,6 +54,11 @@ final class DeploymentRights
                 'hint' => __('nécessaire aux réglages généraux (étape 14)', 'configurationglpiauto'),
             ],
             [
+                'label' => __('Modifier les profils', 'configurationglpiauto'),
+                'ok' => Session::haveRight('profile', UPDATE),
+                'hint' => __('nécessaire pour imposer la double authentification aux profils choisis (étape 14)', 'configurationglpiauto'),
+            ],
+            [
                 'label' => __('Gérer les règles métier pour les tickets', 'configurationglpiauto'),
                 'ok' => Session::haveRight('rule_ticket', UPDATE),
                 'hint' => __('nécessaire à l\'affectation automatique des SLA/OLA et au circuit de validation', 'configurationglpiauto'),

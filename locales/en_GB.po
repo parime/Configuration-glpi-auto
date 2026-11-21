@@ -6412,3 +6412,45 @@ msgstr "The connection test failed."
 
 msgid "Ouvrir la connexion existante"
 msgstr "Open the existing connection"
+
+msgid "Double authentification : l'imposer aux profils à privilèges"
+msgstr "Two-factor authentication: require it for privileged profiles"
+
+msgid "Coche la case native « Forcer 2FA » (onglet « Sécurité » du profil) des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Sécurité » du profil. Le délai de grâce de GLPI ne vaut que pour l'obligation générale : ici, la configuration est demandée dès la prochaine connexion."
+msgstr "Ticks the native \"Enforce 2FA\" box (profile's \"Security\" tab) of the profiles chosen below. Each person concerned sets up their authenticator app (6-digit code) at their next login, with the GLPI screen. Unticked by default: this changes how real people log in. Unticking a profile never removes an obligation already in place: do that in the profile's \"Security\" tab. GLPI's grace period only applies to the general obligation: here, setup is requested at the next login."
+
+msgid "Déjà imposée"
+msgstr "Already required"
+
+msgid "Non imposée"
+msgstr "Not required"
+
+msgid "%d compte sans double authentification"
+msgid_plural "%d comptes sans double authentification"
+msgstr[0] "%d account without two-factor authentication"
+msgstr[1] "%d accounts without two-factor authentication"
+
+msgid "Aucun profil de l'interface standard."
+msgstr "No standard interface profile."
+
+msgid "Double authentification imposée à %d profil : chaque membre la configurera à sa prochaine connexion."
+msgid_plural "Double authentification imposée à %d profils : chaque membre la configurera à sa prochaine connexion."
+msgstr[0] "Two-factor authentication required for %d profile: each member will set it up at their next login."
+msgstr[1] "Two-factor authentication required for %d profiles: each member will set it up at their next login."
+
+msgid "Double authentification"
+msgstr "Two-factor authentication"
+
+msgid "%d compte à privilèges n'a pas de double authentification"
+msgid_plural "%d comptes à privilèges n'ont pas de double authentification"
+msgstr[0] "%d privileged account has no two-factor authentication"
+msgstr[1] "%d privileged accounts have no two-factor authentication"
+
+msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque personne configure son application à sa prochaine connexion."
+msgstr "Require GLPI's native two-factor authentication for standard interface profiles (Super-Admin, Admin, Technician): in the wizard, \"General GLPI settings\" step, \"Two-factor authentication\" block, or in each profile's \"Security\" tab (\"Enforce 2FA\" box). Each person sets up their app at their next login."
+
+msgid "Modifier les profils"
+msgstr "Update profiles"
+
+msgid "nécessaire pour imposer la double authentification aux profils choisis (étape 14)"
+msgstr "required to enforce two-factor authentication on the chosen profiles (step 14)"

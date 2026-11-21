@@ -103,7 +103,10 @@ All other screenshots (all 20 steps in detail) are in the [tutorial](docs/TUTORI
   instance types, on top of standard equipment types (computers, monitors, network, peripherals,
   phones)
 - Optional activation of GLPI's native inventory (FusionInventory/GLPI Agent)
-- Configuration audit of the GLPI instance (default accounts, password policy, notifications,
+- Offer to require GLPI's native two-factor authentication for privileged profiles
+  (Super-Admin, Admin, Technician), at the administrator's choice
+- Configuration audit of the GLPI instance (default accounts, password policy, privileged
+  accounts without two-factor authentication, notifications,
   SLAs, statuses...) with one-click fixes when the right setting is unambiguous, continuous
   checking and a periodic email report (weekly or monthly, editable GLPI notification, no secret
   sent)

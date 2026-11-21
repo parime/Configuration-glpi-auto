@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 19:04+0000\n"
+"POT-Creation-Date: 2026-11-21 05:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1269,6 +1269,29 @@ msgid ""
 "contenu : et ne fait quelque chose que si le champ Superviseur des "
 "utilisateurs est renseigné (import LDAP ou saisie manuelle). Sans supérieur "
 "renseigné, aucune validation n'est créée."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Double authentification : l'imposer aux profils à privilèges"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Déjà imposée"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Non imposée"
+msgstr ""
+
+#: templates/wizard.html.twig
+#, php-format
+msgid "%d compte sans double authentification"
+msgid_plural "%d comptes sans double authentification"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/wizard.html.twig
+msgid "Aucun profil de l'interface standard."
 msgstr ""
 
 #: templates/wizard.html.twig
@@ -4104,176 +4127,176 @@ msgstr ""
 msgid "Exporter ce Blueprint"
 msgstr ""
 
-#: front/wizard.php:375
+#: front/wizard.php:376
 msgid "Dossier des palettes personnalisées inscriptible"
 msgstr ""
 
-#: front/wizard.php:377
+#: front/wizard.php:378
 #, php-format
 msgid ""
 "nécessaire à la palette personnalisée (étape 17) : vérifiez les droits sur %s"
 msgstr ""
 
-#: front/wizard.php:380
+#: front/wizard.php:381
 msgid "Dossier de cache GLPI inscriptible"
 msgstr ""
 
-#: front/wizard.php:382
+#: front/wizard.php:383
 #, php-format
 msgid ""
 "nécessaire au bon fonctionnement général de GLPI : vérifiez les droits sur %s"
 msgstr ""
 
-#: front/wizard.php:385
+#: front/wizard.php:386
 msgid "Extension GD ou Imagick disponible"
 msgstr ""
 
-#: front/wizard.php:387
+#: front/wizard.php:388
 msgid ""
 "utile pour valider les logos uploadés (étape 17) : ni l'une ni l'autre n'est "
 "chargée"
 msgstr ""
 
-#: front/wizard.php:894
+#: front/wizard.php:898
 msgid "Aucune entité à créer (mode mono-entité, ou arborescence vide)."
 msgstr ""
 
-#: front/wizard.php:895
+#: front/wizard.php:899
 #, php-format
 msgid "Structure créée : %s."
 msgstr ""
 
-#: front/wizard.php:897
+#: front/wizard.php:901
 msgid "Calendrier créé et assigné."
 msgstr ""
 
-#: front/wizard.php:901
+#: front/wizard.php:905
 #, php-format
 msgid ""
 "%d site(s) rattaché(s) à un calendrier dédié à leur pays (partagé entre "
 "sites du même pays)."
 msgstr ""
 
-#: front/wizard.php:906
+#: front/wizard.php:910
 msgid "SLA créés et assignés."
 msgstr ""
 
-#: front/wizard.php:909
+#: front/wizard.php:913
 msgid "OLA (engagements internes) créés et assignés."
 msgstr ""
 
-#: front/wizard.php:912
+#: front/wizard.php:916
 msgid "Groupes de support N1/N2/N3 créés, escalade automatique configurée."
 msgstr ""
 
-#: front/wizard.php:915
+#: front/wizard.php:919
 #, php-format
 msgid "%d client(s) avec des réglages personnalisés."
 msgstr ""
 
-#: front/wizard.php:918
+#: front/wizard.php:922
 #, php-format
 msgid "%d catégories de tickets créées."
 msgstr ""
 
-#: front/wizard.php:921
+#: front/wizard.php:925
 msgid "Actif personnalisé \"Véhicule\" créé (branche Flotte Automobile)."
 msgstr ""
 
-#: front/wizard.php:924
+#: front/wizard.php:928
 msgid "Actif personnalisé \"Serveur\" créé (branche IT & SI)."
 msgstr ""
 
-#: front/wizard.php:927
+#: front/wizard.php:931
 msgid "Actif personnalisé \"Local\" créé (branche Bâtiment)."
 msgstr ""
 
-#: front/wizard.php:930
+#: front/wizard.php:934
 msgid ""
 "Actif personnalisé \"Sécurité incendie & premiers secours\" créé (branche "
 "Bâtiment)."
 msgstr ""
 
-#: front/wizard.php:933
+#: front/wizard.php:937
 msgid ""
 "Actif personnalisé \"Sécurité physique\" créé (branche Sécurité & Protection "
 "des Personnes)."
 msgstr ""
 
-#: front/wizard.php:936
+#: front/wizard.php:940
 #, php-format
 msgid "%d services créés dans le catalogue."
 msgstr ""
 
-#: front/wizard.php:939
+#: front/wizard.php:943
 msgid ""
 "Service \"Demande de droit d'accès / mission à l'étranger\" créé (titre de "
 "ticket calculé automatiquement)."
 msgstr ""
 
-#: front/wizard.php:942
+#: front/wizard.php:946
 msgid ""
 "Service \"Demande de licence logicielle\" enrichi (titre de ticket calculé "
 "automatiquement)."
 msgstr ""
 
-#: front/wizard.php:945
+#: front/wizard.php:949
 msgid ""
 "Service \"Demande d'accès VPN\" enrichi (question conditionnelle, titre de "
 "ticket calculé automatiquement)."
 msgstr ""
 
-#: front/wizard.php:948
+#: front/wizard.php:952
 msgid ""
 "Service \"Demande de badge d'accès\" enrichi (titre de ticket calculé "
 "automatiquement)."
 msgstr ""
 
-#: front/wizard.php:951
+#: front/wizard.php:955
 msgid ""
 "Service \"Demande de congé ou absence\" enrichi (question conditionnelle, "
 "titre de ticket calculé automatiquement)."
 msgstr ""
 
-#: front/wizard.php:954
+#: front/wizard.php:958
 msgid ""
 "Service \"Déclarer une arrivée, un départ ou une mutation\" enrichi "
 "(question conditionnelle, titre de ticket calculé automatiquement)."
 msgstr ""
 
-#: front/wizard.php:957
+#: front/wizard.php:961
 msgid ""
 "Service \"Réservation ou problème d'équipement de salle de réunion\" enrichi "
 "(question conditionnelle)."
 msgstr ""
 
-#: front/wizard.php:960
+#: front/wizard.php:964
 #, php-format
 msgid ""
 "%d autres services du catalogue enrichis avec des questions ciblées et un "
 "titre de ticket calculé automatiquement."
 msgstr ""
 
-#: front/wizard.php:963
+#: front/wizard.php:967
 #, php-format
 msgid "%d statuts d'éléments créés."
 msgstr ""
 
-#: front/wizard.php:966
+#: front/wizard.php:970
 #, php-format
 msgid "%d raisons d'attente créées."
 msgstr ""
 
-#: front/wizard.php:969
+#: front/wizard.php:973
 msgid "Personnalisation graphique appliquée."
 msgstr ""
 
-#: front/wizard.php:972
+#: front/wizard.php:976
 #, php-format
 msgid "%d logo(s) d'entité appliqué(s)."
 msgstr ""
 
-#: front/wizard.php:977
+#: front/wizard.php:981
 #, php-format
 msgid ""
 "%d logo(s) trop volumineux pour être appliqué(s) : utilisez un fichier plus "
@@ -4281,35 +4304,46 @@ msgid ""
 "Configuration > Entités > onglet Général."
 msgstr ""
 
-#: front/wizard.php:982
+#: front/wizard.php:986
 #, php-format
 msgid "%d couleur(s) par client/site appliquée(s)."
 msgstr ""
 
-#: front/wizard.php:985
+#: front/wizard.php:989
 #, php-format
 msgid "%d modèle(s) de notification personnalisés."
 msgstr ""
 
-#: front/wizard.php:989
+#: front/wizard.php:993
 msgid "Palette GLPI personnalisée créée et définie par défaut."
 msgstr ""
 
-#: front/wizard.php:990
+#: front/wizard.php:994
 msgid "Palette GLPI native définie par défaut."
 msgstr ""
 
-#: front/wizard.php:993
+#: front/wizard.php:997
 msgid "Réglages généraux GLPI appliqués."
 msgstr ""
 
-#: front/wizard.php:996
+#: front/wizard.php:1002
+#, php-format
+msgid ""
+"Double authentification imposée à %d profil : chaque membre la configurera à "
+"sa prochaine connexion."
+msgid_plural ""
+"Double authentification imposée à %d profils : chaque membre la configurera "
+"à sa prochaine connexion."
+msgstr[0] ""
+msgstr[1] ""
+
+#: front/wizard.php:1011
 msgid ""
 "Configuration SMTP appliquée. Testez l'envoi depuis Configuration > "
 "Notifications."
 msgstr ""
 
-#: front/wizard.php:1000
+#: front/wizard.php:1015
 #, php-format
 msgid ""
 "Réception par e-mail : %1$d collecteur(s) créé(s), %2$d mis à jour, %3$d "
@@ -4317,250 +4351,250 @@ msgid ""
 "depuis Configuration > Collecteurs."
 msgstr ""
 
-#: front/wizard.php:1007
+#: front/wizard.php:1022
 #, php-format
 msgid "Réception par e-mail : %d règle(s) créée(s) ou mise(s) à jour."
 msgstr ""
 
-#: front/wizard.php:1011
+#: front/wizard.php:1026
 #, php-format
 msgid "Réception par e-mail : introuvable(s) dans GLPI, donc ignoré(s) : %s."
 msgstr ""
 
-#: front/wizard.php:1016
+#: front/wizard.php:1031
 msgid "Tableau de bord ITIL créé (Tableaux de bord > Tableau de bord ITIL)."
 msgstr ""
 
-#: front/wizard.php:1019
+#: front/wizard.php:1034
 msgid "Modèles de tickets créés et assignés aux profils."
 msgstr ""
 
-#: front/wizard.php:1022
-msgid "Champs masqués sur les formulaires de création en libre-service."
-msgstr ""
-
-#: front/wizard.php:1025
-#, php-format
-msgid "%d règle(s) de droits LDAP créées."
-msgstr ""
-
-#: front/wizard.php:1028
-#, php-format
-msgid "%d règle(s) de droits par fonction créées."
-msgstr ""
-
-#: front/wizard.php:1031
-#, php-format
-msgid "%d catégories de tâches créées."
-msgstr ""
-
-#: front/wizard.php:1034
-#, php-format
-msgid "%d gabarits de tâche créés."
-msgstr ""
-
 #: front/wizard.php:1037
-#, php-format
-msgid "%d gabarits de solution créés."
+msgid "Champs masqués sur les formulaires de création en libre-service."
 msgstr ""
 
 #: front/wizard.php:1040
 #, php-format
-msgid "%d gabarits de suivis créés."
+msgid "%d règle(s) de droits LDAP créées."
 msgstr ""
 
 #: front/wizard.php:1043
 #, php-format
-msgid "%d gabarits de validation créés."
+msgid "%d règle(s) de droits par fonction créées."
 msgstr ""
 
 #: front/wizard.php:1046
-msgid "Modèles de changement et de problème créés et assignés aux profils."
+#, php-format
+msgid "%d catégories de tâches créées."
 msgstr ""
 
 #: front/wizard.php:1049
 #, php-format
-msgid "%d lieux créés."
+msgid "%d gabarits de tâche créés."
 msgstr ""
 
 #: front/wizard.php:1052
 #, php-format
-msgid "%d fabricants créés."
+msgid "%d gabarits de solution créés."
 msgstr ""
 
 #: front/wizard.php:1055
 #, php-format
-msgid "%d règle(s) de dictionnaire fabricant créées."
+msgid "%d gabarits de suivis créés."
 msgstr ""
 
 #: front/wizard.php:1058
 #, php-format
-msgid "%d règle(s) de dictionnaire des logiciels créées."
+msgid "%d gabarits de validation créés."
 msgstr ""
 
 #: front/wizard.php:1061
+msgid "Modèles de changement et de problème créés et assignés aux profils."
+msgstr ""
+
+#: front/wizard.php:1064
+#, php-format
+msgid "%d lieux créés."
+msgstr ""
+
+#: front/wizard.php:1067
+#, php-format
+msgid "%d fabricants créés."
+msgstr ""
+
+#: front/wizard.php:1070
+#, php-format
+msgid "%d règle(s) de dictionnaire fabricant créées."
+msgstr ""
+
+#: front/wizard.php:1073
+#, php-format
+msgid "%d règle(s) de dictionnaire des logiciels créées."
+msgstr ""
+
+#: front/wizard.php:1076
 #, php-format
 msgid ""
 "%d règle(s) de rattachement à l'entité (plage IP, tag) créées ou complétées."
 msgstr ""
 
-#: front/wizard.php:1064
+#: front/wizard.php:1079
 #, php-format
 msgid "%d règle(s) de catégorie de logiciels créées."
 msgstr ""
 
-#: front/wizard.php:1067
+#: front/wizard.php:1082
 #, php-format
 msgid "%d règle(s) de dictionnaire des systèmes d'exploitation créées."
 msgstr ""
 
-#: front/wizard.php:1070
+#: front/wizard.php:1085
 #, php-format
 msgid "%d règle(s) pour ignorer les imprimantes virtuelles créées."
 msgstr ""
 
-#: front/wizard.php:1073
+#: front/wizard.php:1088
 #, php-format
 msgid "%d règle(s) de dictionnaire des types d'ordinateur créées."
 msgstr ""
 
-#: front/wizard.php:1076
+#: front/wizard.php:1091
 #, php-format
 msgid "%d opérateurs téléphoniques créés."
 msgstr ""
 
-#: front/wizard.php:1079
+#: front/wizard.php:1094
 #, php-format
 msgid "%d types de matériel créés."
 msgstr ""
 
-#: front/wizard.php:1082
+#: front/wizard.php:1097
 #, php-format
 msgid "%d types de licence logicielle créés."
 msgstr ""
 
-#: front/wizard.php:1085
+#: front/wizard.php:1100
 #, php-format
 msgid "%d types de certificat créés."
 msgstr ""
 
-#: front/wizard.php:1088
+#: front/wizard.php:1103
 #, php-format
 msgid "%d modèles de tickets récurrents créés."
 msgstr ""
 
-#: front/wizard.php:1091
+#: front/wizard.php:1106
 #, php-format
 msgid "%d catégories de base de connaissances créées."
 msgstr ""
 
-#: front/wizard.php:1094
+#: front/wizard.php:1109
 #, php-format
 msgid "%d articles de FAQ créés."
 msgstr ""
 
-#: front/wizard.php:1097
+#: front/wizard.php:1112
 #, php-format
 msgid "%d rubriques de documents/criticités créées."
 msgstr ""
 
-#: front/wizard.php:1100
+#: front/wizard.php:1115
 #, php-format
 msgid "%d catégories/gabarits d'évènements de planning créés."
 msgstr ""
 
-#: front/wizard.php:1103
+#: front/wizard.php:1118
 #, php-format
 msgid "%d types de projet/tâche de projet/statuts de projet créés."
 msgstr ""
 
-#: front/wizard.php:1106
+#: front/wizard.php:1121
 #, php-format
 msgid "%d gabarits de tâches de projets créés."
 msgstr ""
 
-#: front/wizard.php:1109
+#: front/wizard.php:1124
 #, php-format
 msgid "%d modèle(s) de projet créés, structure de tâches incluse."
 msgstr ""
 
-#: front/wizard.php:1112
+#: front/wizard.php:1127
 #, php-format
 msgid "%d source(s) de demande traduites."
 msgstr ""
 
-#: front/wizard.php:1115
+#: front/wizard.php:1130
 #, php-format
 msgid "%d fiche(s) d'entité complétées avec leur adresse."
 msgstr ""
 
-#: front/wizard.php:1118
+#: front/wizard.php:1133
 #, php-format
 msgid "%d jour(s) férié(s) créés et rattachés au(x) calendrier(s) concerné(s)."
 msgstr ""
 
-#: front/wizard.php:1121
+#: front/wizard.php:1136
 #, php-format
 msgid "%d déclencheur(s) assetsign relié(s) aux statuts d'éléments."
 msgstr ""
 
-#: front/wizard.php:1124
+#: front/wizard.php:1139
 msgid "Enquête de satisfaction créée (plugin More satisfaction)."
 msgstr ""
 
-#: front/wizard.php:1127
+#: front/wizard.php:1142
 msgid "Groupe \"VIP\" créé et activé (plugin VIP)."
 msgstr ""
 
-#: front/wizard.php:1130
+#: front/wizard.php:1145
 msgid "Groupe \"RSSI\" créé et déclaré dans GRC Manager."
 msgstr ""
 
-#: front/wizard.php:1134
+#: front/wizard.php:1149
 #, php-format
 msgid "%d réglage(s) d'assetsign renseigné(s) (entreprise, lien de la charte)."
 msgstr ""
 
-#: front/wizard.php:1140
+#: front/wizard.php:1155
 #, php-format
 msgid ""
 "%d revue(s) périodique(s) activée(s) dans GRC Manager (tickets récurrents)."
 msgstr ""
 
-#: front/wizard.php:1146
+#: front/wizard.php:1161
 #, php-format
 msgid "%d risque(s) type(s) ajouté(s) au registre de GRC Manager, à évaluer."
 msgstr ""
 
-#: front/wizard.php:1151
+#: front/wizard.php:1166
 #, php-format
 msgid "%d tag(s) créé(s) (plugin Tag)."
 msgstr ""
 
-#: front/wizard.php:1154
+#: front/wizard.php:1169
 msgid "Règle de validation automatique (supérieur hiérarchique) créée."
 msgstr ""
 
-#: front/wizard.php:1157
+#: front/wizard.php:1172
 #, php-format
 msgid "%d catégories d'utilisateur créées."
 msgstr ""
 
-#: front/wizard.php:1160
+#: front/wizard.php:1175
 #, php-format
 msgid "%d règle(s) d'unicité de numéro de série créées."
 msgstr ""
 
-#: front/wizard.php:1163
+#: front/wizard.php:1178
 #, php-format
 msgid "%d flux RSS ajouté(s)."
 msgstr ""
 
-#: front/wizard.php:1166
+#: front/wizard.php:1181
 msgid "Clé d'enregistrement GLPI Network enregistrée."
 msgstr ""
 
-#: front/wizard.php:1173
+#: front/wizard.php:1188
 msgid "Assistant de configuration"
 msgstr ""
 
@@ -5189,6 +5223,18 @@ msgstr ""
 msgid "Activez les notifications dans la configuration générale de GLPI."
 msgstr ""
 
+#: src/Audit/Checks/PrivilegedAccountsWithout2faCheck.php:44
+#: src/Blueprint/FieldGroupLabel.php:66
+msgid "Double authentification"
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsWithout2faCheck.php:66
+#, php-format
+msgid "%d compte à privilèges n'a pas de double authentification"
+msgid_plural "%d comptes à privilèges n'ont pas de double authentification"
+msgstr[0] ""
+msgstr[1] ""
+
 #: src/Audit/Checks/UncategorizedSoftwareCheck.php:84
 #, php-format
 msgid "%d logiciel sans catégorie peut être classé"
@@ -5630,65 +5676,75 @@ msgid "nécessaire aux réglages généraux (étape 14)"
 msgstr ""
 
 #: src/DeploymentRights.php:57
-msgid "Gérer les règles métier pour les tickets"
+msgid "Modifier les profils"
 msgstr ""
 
 #: src/DeploymentRights.php:59
+msgid ""
+"nécessaire pour imposer la double authentification aux profils choisis "
+"(étape 14)"
+msgstr ""
+
+#: src/DeploymentRights.php:62
+msgid "Gérer les règles métier pour les tickets"
+msgstr ""
+
+#: src/DeploymentRights.php:64
 msgid ""
 "nécessaire à l'affectation automatique des SLA/OLA et au circuit de "
 "validation"
 msgstr ""
 
-#: src/DeploymentRights.php:62
+#: src/DeploymentRights.php:67
 msgid "Créer des niveaux de service (SLM)"
 msgstr ""
 
-#: src/DeploymentRights.php:64
+#: src/DeploymentRights.php:69
 msgid "nécessaire aux SLA, OLA et à leurs niveaux d'escalade (étape SLA)"
 msgstr ""
 
-#: src/DeploymentRights.php:67
+#: src/DeploymentRights.php:72
 msgid "Créer des calendriers"
 msgstr ""
 
-#: src/DeploymentRights.php:69
+#: src/DeploymentRights.php:74
 msgid "nécessaire aux horaires ouvrés et jours fériés (étape Calendrier)"
 msgstr ""
 
-#: src/DeploymentRights.php:72
+#: src/DeploymentRights.php:77
 msgid "Gérer les règles d'affectation d'un élément à une entité"
 msgstr ""
 
-#: src/DeploymentRights.php:74
+#: src/DeploymentRights.php:79
 msgid ""
 "nécessaire au rattachement des machines inventoriées par plage IP ou tag"
 msgstr ""
 
-#: src/DeploymentRights.php:77
+#: src/DeploymentRights.php:82
 msgid "Gérer les règles des collecteurs de courriels"
 msgstr ""
 
-#: src/DeploymentRights.php:79
+#: src/DeploymentRights.php:84
 msgid ""
 "nécessaire à l'étape Réception des tickets par e-mail (entité de chaque "
 "boîte, refus des réponses automatiques)"
 msgstr ""
 
-#: src/DeploymentRights.php:82
+#: src/DeploymentRights.php:87
 msgid "Gérer les dictionnaires et les catégories de logiciels"
 msgstr ""
 
-#: src/DeploymentRights.php:87
+#: src/DeploymentRights.php:92
 msgid ""
 "chaque dictionnaire (fabricants, logiciels, systèmes d'exploitation, "
 "imprimantes, types d'ordinateurs) est ignoré si le droit correspondant manque"
 msgstr ""
 
-#: src/DeploymentRights.php:90
+#: src/DeploymentRights.php:95
 msgid "Modifier la configuration d'assetsign"
 msgstr ""
 
-#: src/DeploymentRights.php:92
+#: src/DeploymentRights.php:97
 msgid "nécessaire pour relier les déclencheurs d'assetsign aux statuts créés"
 msgstr ""
 
@@ -6876,4 +6932,25 @@ msgstr ""
 
 #: src/WifiAccessFormBuilder.php:214
 msgid "Appareil ou nom du visiteur"
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsWithout2faCheck.php:75
+msgid ""
+"Imposez la double authentification native de GLPI aux profils de l'interface "
+"standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape "
+"« Réglages généraux GLPI », bloc « Double authentification », ou dans "
+"l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque "
+"personne configure son application à sa prochaine connexion."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Coche la case native « Forcer 2FA » (onglet « Sécurité » du profil) des "
+"profils choisis ci-dessous. Chaque personne concernée configure son "
+"application d'authentification (code à 6 chiffres) à sa prochaine connexion, "
+"avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de "
+"vraies personnes. Décocher un profil ne retire jamais une obligation déjà en "
+"place : faites-le dans l'onglet « Sécurité » du profil. Le délai de grâce de "
+"GLPI ne vaut que pour l'obligation générale : ici, la configuration est "
+"demandée dès la prochaine connexion."
 msgstr ""

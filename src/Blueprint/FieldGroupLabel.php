@@ -63,6 +63,7 @@ final class FieldGroupLabel
             'assetsign' => __('Déclencheurs assetsign', 'configurationglpiauto'),
             // Issue #429
             'mail' => __('Réception des tickets par e-mail', 'configurationglpiauto'),
+            'twofa' => __('Double authentification', 'configurationglpiauto'),
         ];
     }
 
