@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Audit : écarts avec le dernier Blueprint appliqué** (partie de l'issue #468) : nouvelle section
+  de la page d'audit et nouveau contrôle « Conformité au dernier Blueprint appliqué » (poids
+  exploitation). La configuration enregistrée du plugin, dernier Blueprint déployé, est comparée à
+  GLPI : SLA et OLA du « SLA standard » (délais, calendrier, éléments supprimés ou ajoutés à la
+  main), plages du calendrier partagé jour par jour, branches de catégories et statuts choisis mais
+  absents. Chaque écart porte un badge Ajouté, Modifié ou Supprimé, la valeur dans GLPI et celle du
+  Blueprint. Lecture seule : « Réappliquer le Blueprint » ouvre l'écran de déploiement, qui rappelle
+  les écarts et propose (case cochée d'office si des délais ont changé) de réaligner les SLA déjà
+  créés ; « Adopter les nouvelles valeurs » renvoie à l'assistant. Rien n'est comparé tant
+  qu'aucun Blueprint n'a été appliqué.
+
 ## [1.30.0] - 2026-11-21
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

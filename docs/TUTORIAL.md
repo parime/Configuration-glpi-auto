@@ -314,6 +314,14 @@ Une photo par jour est gardée dans l'historique : choisissez deux audits pour v
 améliorés, dégradés, nouveaux ou retirés, par exemple avant et après un chantier de durcissement.
 La note ne corrige rien.
 
+**Écarts avec le Blueprint appliqué** : quelqu'un a changé un délai de SLA, une plage du calendrier
+ou supprimé une catégorie à la main ? La section « Écarts avec le dernier Blueprint appliqué » de
+l'audit compare ce que l'assistant a créé (SLA et OLA du « SLA standard », calendrier partagé,
+branches de catégories, statuts) à ce qui existe aujourd'hui, avec un badge Ajouté, Modifié ou
+Supprimé, la valeur dans GLPI et celle du Blueprint. Rien n'est modifié : si le changement était
+voulu, reportez la valeur dans l'assistant ; sinon, « Réappliquer le Blueprint » ouvre l'écran de
+déploiement, qui rappelle les écarts et propose de réaligner les SLA existants avant de confirmer.
+
 Pour le détail technique de chaque fonctionnalité (ce qui est généré, pourquoi, et les décisions
 prises en cours de route), voir [CHANGELOG.md](../CHANGELOG.md) et [ROADMAP.md](../ROADMAP.md).
 
@@ -560,6 +568,14 @@ weigh 3, operations controls 2, data quality controls 1; a control to watch earn
 critical control nothing. One snapshot per day is kept in the history: pick two audits to see the
 controls that improved, got worse, are new or were removed, for example before and after a hardening
 project. The score never fixes anything.
+
+**Drift from the applied Blueprint**: someone changed an SLA delay or a calendar range, or deleted a
+category by hand? The "Differences from the last applied Blueprint" section of the audit compares
+what the wizard created (SLAs and OLAs of the "SLA standard", shared calendar, category branches,
+statuses) with what exists today, with an Added, Modified or Removed badge, the value in GLPI and
+the one in the Blueprint. Nothing is changed: if the change was intended, copy the value into the
+wizard; otherwise "Reapply the Blueprint" opens the deployment screen, which lists the differences
+and offers to realign the existing SLAs before you confirm.
 
 For the technical detail of each feature (what gets generated, why, and the decisions made along
 the way), see [CHANGELOG.md](../CHANGELOG.md) and [ROADMAP.md](../ROADMAP.md).

@@ -7624,3 +7624,9 @@ msgstr "Origen"
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Número de inventario o nombre del puesto actual"
+
+#, php-format
+msgid "%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
+msgid_plural "%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la main)."
+msgstr[0] "%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
+msgstr[1] "%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la main)."
