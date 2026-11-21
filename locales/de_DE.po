@@ -6570,8 +6570,8 @@ msgstr "Vorhandene Verbindung öffnen"
 msgid "Double authentification : l'imposer aux profils à privilèges"
 msgstr "Zwei-Faktor-Authentifizierung: für privilegierte Profile vorschreiben"
 
-msgid "Coche la case native « Double authentification obligatoire » des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Double authentification » du profil. Le délai de grâce se règle dans Configuration > Générale > Sécurité."
-msgstr "Aktiviert das native Kästchen „Zwei-Faktor-Authentifizierung verpflichtend“ der unten gewählten Profile. Jede betroffene Person richtet ihre Authentifizierungs-App (6-stelliger Code) bei der nächsten Anmeldung über den GLPI-Bildschirm ein. Standardmäßig deaktiviert: Dies ändert die Anmeldung echter Personen. Das Abwählen eines Profils hebt eine bestehende Pflicht nie auf: Tun Sie dies im Reiter „Zwei-Faktor-Authentifizierung“ des Profils. Die Schonfrist wird unter Einrichtung > Allgemein > Sicherheit festgelegt."
+msgid "Coche la case native « Forcer 2FA » (onglet « Sécurité » du profil) des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Sécurité » du profil. Le délai de grâce de GLPI ne vaut que pour l'obligation générale : ici, la configuration est demandée dès la prochaine connexion."
+msgstr "Aktiviert das native Kästchen „2FA-Pflicht aktivieren“ (Reiter „Sicherheit“ des Profils) der unten gewählten Profile. Jede betroffene Person richtet ihre Authentifizierungs-App (6-stelliger Code) bei der nächsten Anmeldung über den GLPI-Bildschirm ein. Standardmäßig deaktiviert: Dies ändert die Anmeldung echter Personen. Das Abwählen eines Profils hebt eine bestehende Pflicht nie auf: Tun Sie dies im Reiter „Sicherheit“ des Profils. Die Schonfrist von GLPI gilt nur für die allgemeine Pflicht: Hier wird die Einrichtung bei der nächsten Anmeldung verlangt."
 
 msgid "Déjà imposée"
 msgstr "Bereits vorgeschrieben"
@@ -6600,8 +6600,8 @@ msgid_plural "%d comptes à privilèges n'ont pas de double authentification"
 msgstr[0] "%d privilegiertes Konto hat keine Zwei-Faktor-Authentifizierung"
 msgstr[1] "%d privilegierte Konten haben keine Zwei-Faktor-Authentifizierung"
 
-msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Double authentification » de chaque profil. Chaque personne configure son application à sa prochaine connexion."
-msgstr "Schreiben Sie die native Zwei-Faktor-Authentifizierung von GLPI für die Profile der Standardoberfläche vor (Super-Admin, Admin, Techniker): im Assistenten, Schritt „Allgemeine GLPI-Einstellungen“, Block „Zwei-Faktor-Authentifizierung“, oder im Reiter „Zwei-Faktor-Authentifizierung“ jedes Profils. Jede Person richtet ihre App bei der nächsten Anmeldung ein."
+msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque personne configure son application à sa prochaine connexion."
+msgstr "Schreiben Sie die native Zwei-Faktor-Authentifizierung von GLPI für die Profile der Standardoberfläche vor (Super-Admin, Admin, Techniker): im Assistenten, Schritt „Allgemeine GLPI-Einstellungen“, Block „Zwei-Faktor-Authentifizierung“, oder im Reiter „Sicherheit“ jedes Profils (Kästchen „2FA-Pflicht aktivieren“). Jede Person richtet ihre App bei der nächsten Anmeldung ein."
 
 msgid "Modifier les profils"
 msgstr "Profile ändern"

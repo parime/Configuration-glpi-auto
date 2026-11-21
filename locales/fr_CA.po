@@ -6530,8 +6530,8 @@ msgstr "Ouvrir la connexion existante"
 msgid "Double authentification : l'imposer aux profils à privilèges"
 msgstr "Double authentification : l'imposer aux profils à privilèges"
 
-msgid "Coche la case native « Double authentification obligatoire » des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Double authentification » du profil. Le délai de grâce se règle dans Configuration > Générale > Sécurité."
-msgstr "Coche la case native « Double authentification obligatoire » des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Double authentification » du profil. Le délai de grâce se règle dans Configuration > Générale > Sécurité."
+msgid "Coche la case native « Forcer 2FA » (onglet « Sécurité » du profil) des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Sécurité » du profil. Le délai de grâce de GLPI ne vaut que pour l'obligation générale : ici, la configuration est demandée dès la prochaine connexion."
+msgstr "Coche la case native « Forcer 2FA » (onglet « Sécurité » du profil) des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Sécurité » du profil. Le délai de grâce de GLPI ne vaut que pour l'obligation générale : ici, la configuration est demandée dès la prochaine connexion."
 
 msgid "Déjà imposée"
 msgstr "Déjà imposée"
@@ -6560,8 +6560,8 @@ msgid_plural "%d comptes à privilèges n'ont pas de double authentification"
 msgstr[0] "%d compte à privilèges n'a pas de double authentification"
 msgstr[1] "%d comptes à privilèges n'ont pas de double authentification"
 
-msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Double authentification » de chaque profil. Chaque personne configure son application à sa prochaine connexion."
-msgstr "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Double authentification » de chaque profil. Chaque personne configure son application à sa prochaine connexion."
+msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque personne configure son application à sa prochaine connexion."
+msgstr "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque personne configure son application à sa prochaine connexion."
 
 msgid "Modifier les profils"
 msgstr "Modifier les profils"

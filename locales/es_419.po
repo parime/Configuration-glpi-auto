@@ -6539,8 +6539,8 @@ msgstr "Abrir la conexión existente"
 msgid "Double authentification : l'imposer aux profils à privilèges"
 msgstr "Autenticación de dos factores: exigirla a los perfiles con privilegios"
 
-msgid "Coche la case native « Double authentification obligatoire » des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Double authentification » du profil. Le délai de grâce se règle dans Configuration > Générale > Sécurité."
-msgstr "Marca la casilla nativa «Autenticación de dos factores obligatoria» de los perfiles elegidos abajo. Cada persona afectada configura su aplicación de autenticación (código de 6 cifras) en su próximo inicio de sesión, con la pantalla de GLPI. Desmarcada por defecto: esto cambia el inicio de sesión de personas reales. Desmarcar un perfil nunca retira una obligación ya existente: hágalo en la pestaña «Autenticación de dos factores» del perfil. El periodo de gracia se ajusta en Configuración > General > Seguridad."
+msgid "Coche la case native « Forcer 2FA » (onglet « Sécurité » du profil) des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Sécurité » du profil. Le délai de grâce de GLPI ne vaut que pour l'obligation générale : ici, la configuration est demandée dès la prochaine connexion."
+msgstr "Marca la casilla nativa «Forzar 2FA» (pestaña «Seguridad» del perfil) de los perfiles elegidos abajo. Cada persona afectada configura su aplicación de autenticación (código de 6 cifras) en su próximo inicio de sesión, con la pantalla de GLPI. Desmarcada por defecto: esto cambia el inicio de sesión de personas reales. Desmarcar un perfil nunca retira una obligación ya existente: hágalo en la pestaña «Seguridad» del perfil. El periodo de gracia de GLPI solo se aplica a la obligación general: aquí, la configuración se pide en el próximo inicio de sesión."
 
 msgid "Déjà imposée"
 msgstr "Ya exigida"
@@ -6569,8 +6569,8 @@ msgid_plural "%d comptes à privilèges n'ont pas de double authentification"
 msgstr[0] "%d cuenta con privilegios no tiene autenticación de dos factores"
 msgstr[1] "%d cuentas con privilegios no tienen autenticación de dos factores"
 
-msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Double authentification » de chaque profil. Chaque personne configure son application à sa prochaine connexion."
-msgstr "Exija la autenticación de dos factores nativa de GLPI a los perfiles de la interfaz estándar (Super-Admin, Admin, Técnico): en el asistente, paso «Ajustes generales de GLPI», bloque «Autenticación de dos factores», o en la pestaña «Autenticación de dos factores» de cada perfil. Cada persona configura su aplicación en su próximo inicio de sesión."
+msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque personne configure son application à sa prochaine connexion."
+msgstr "Exija la autenticación de dos factores nativa de GLPI a los perfiles de la interfaz estándar (Super-Admin, Admin, Técnico): en el asistente, paso «Ajustes generales de GLPI», bloque «Autenticación de dos factores», o en la pestaña «Seguridad» de cada perfil (casilla «Forzar 2FA»). Cada persona configura su aplicación en su próximo inicio de sesión."
 
 msgid "Modifier les profils"
 msgstr "Modificar los perfiles"

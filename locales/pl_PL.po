@@ -6411,8 +6411,8 @@ msgstr "Otwórz istniejące połączenie"
 msgid "Double authentification : l'imposer aux profils à privilèges"
 msgstr "Uwierzytelnianie dwuskładnikowe: wymagaj go od profili uprzywilejowanych"
 
-msgid "Coche la case native « Double authentification obligatoire » des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Double authentification » du profil. Le délai de grâce se règle dans Configuration > Générale > Sécurité."
-msgstr "Zaznacza natywne pole „Obowiązkowe uwierzytelnianie dwuskładnikowe” profili wybranych poniżej. Każda zainteresowana osoba konfiguruje aplikację uwierzytelniającą (kod 6-cyfrowy) przy następnym logowaniu, na ekranie GLPI. Domyślnie odznaczone: zmienia to logowanie prawdziwych osób. Odznaczenie profilu nigdy nie usuwa istniejącego obowiązku: zrób to w zakładce „Uwierzytelnianie dwuskładnikowe” profilu. Okres karencji ustawia się w Konfiguracja > Ogólne > Bezpieczeństwo."
+msgid "Coche la case native « Forcer 2FA » (onglet « Sécurité » du profil) des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Sécurité » du profil. Le délai de grâce de GLPI ne vaut que pour l'obligation générale : ici, la configuration est demandée dès la prochaine connexion."
+msgstr "Zaznacza natywne pole „Wymuś 2FA” (zakładka „Bezpieczeństwo” profilu) profili wybranych poniżej. Każda zainteresowana osoba konfiguruje aplikację uwierzytelniającą (kod 6-cyfrowy) przy następnym logowaniu, na ekranie GLPI. Domyślnie odznaczone: zmienia to logowanie prawdziwych osób. Odznaczenie profilu nigdy nie usuwa istniejącego obowiązku: zrób to w zakładce „Bezpieczeństwo” profilu. Okres karencji GLPI dotyczy tylko obowiązku ogólnego: tutaj konfiguracja jest wymagana przy następnym logowaniu."
 
 msgid "Déjà imposée"
 msgstr "Już wymagane"
@@ -6444,8 +6444,8 @@ msgstr[0] "%d konto uprzywilejowane nie ma uwierzytelniania dwuskładnikowego"
 msgstr[1] "%d konta uprzywilejowane nie mają uwierzytelniania dwuskładnikowego"
 msgstr[2] "%d kont uprzywilejowanych nie ma uwierzytelniania dwuskładnikowego"
 
-msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Double authentification » de chaque profil. Chaque personne configure son application à sa prochaine connexion."
-msgstr "Wymagaj natywnego uwierzytelniania dwuskładnikowego GLPI od profili interfejsu standardowego (Super-Admin, Admin, Technik): w kreatorze, krok „Ustawienia ogólne GLPI”, blok „Uwierzytelnianie dwuskładnikowe”, lub w zakładce „Uwierzytelnianie dwuskładnikowe” każdego profilu. Każda osoba konfiguruje aplikację przy następnym logowaniu."
+msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque personne configure son application à sa prochaine connexion."
+msgstr "Wymagaj natywnego uwierzytelniania dwuskładnikowego GLPI od profili interfejsu standardowego (Super-Admin, Admin, Technik): w kreatorze, krok „Ustawienia ogólne GLPI”, blok „Uwierzytelnianie dwuskładnikowe”, lub w zakładce „Bezpieczeństwo” każdego profilu (pole „Wymuś 2FA”). Każda osoba konfiguruje aplikację przy następnym logowaniu."
 
 msgid "Modifier les profils"
 msgstr "Modyfikować profile"

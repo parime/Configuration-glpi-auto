@@ -22,7 +22,7 @@ use Profile;
 
 /**
  * Double authentification native de GLPI (issue #464) : GLPI 11 sait imposer un code TOTP aux
- * membres d'un profil (`glpi_profiles.2fa_enforced`, onglet « Double authentification » du
+ * membres d'un profil (`glpi_profiles.2fa_enforced`, onglet « Sécurité » du
  * profil). Ce plugin n'invente aucun mécanisme : l'assistant propose de cocher cette case native
  * sur les profils à privilèges, l'administrateur choisit lesquels.
  *

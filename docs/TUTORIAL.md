@@ -164,12 +164,12 @@ GLPI recommande, mais qu'il faut connaître et retrouver un par un dans un menu 
 dense.
 
 **Double authentification** (GLPI 11 et plus) : le bloc « Double authentification » propose de
-cocher la case native « double authentification obligatoire » sur les profils de l'interface
+cocher la case native « Forcer 2FA » (onglet « Sécurité » du profil) sur les profils de l'interface
 standard. Super-Admin, Admin et Technicien sont pré-cochés, mais la case principale reste
 décochée : rien ne change tant que vous ne l'activez pas. Chaque profil indique si l'obligation est
 déjà en place et combien de ses comptes n'ont pas d'application d'authentification. Chaque personne
 configure son application à sa prochaine connexion ; décocher un profil ne retire jamais une
-obligation existante (onglet « Double authentification » du profil). L'audit de configuration
+obligation existante (onglet « Sécurité » du profil). L'audit de configuration
 liste les comptes à privilèges sans double authentification.
 
 ![Étape 14 : Réglages généraux GLPI](screenshots/14-reglages-generaux.png)
@@ -435,11 +435,11 @@ self-service forms... settings that GLPI's own official documentation recommends
 otherwise have to know about and find one by one in an already very dense menu.
 
 **Two-factor authentication** (GLPI 11 and later): the "Two-factor authentication" block offers
-to tick GLPI's native "mandatory two-factor authentication" box on standard interface profiles.
+to tick GLPI's native "Enforce 2FA" box (profile's "Security" tab) on standard interface profiles.
 Super-Admin, Admin and Technician are pre-selected, but the main switch stays off: nothing changes
 until you turn it on. Each profile shows whether it is already required and how many of its
 accounts have no authenticator app. Each person sets up their app at their next login; unticking a
-profile never removes an existing obligation (use the profile's "Two-factor authentication" tab).
+profile never removes an existing obligation (use the profile's "Security" tab).
 The configuration audit lists privileged accounts that have no two-factor authentication.
 
 ![Étape 14 : Réglages généraux GLPI](screenshots/14-reglages-generaux.png)

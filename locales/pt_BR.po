@@ -6477,8 +6477,8 @@ msgstr "Abrir a conexão existente"
 msgid "Double authentification : l'imposer aux profils à privilèges"
 msgstr "Autenticação de dois fatores: exigi-la dos perfis com privilégios"
 
-msgid "Coche la case native « Double authentification obligatoire » des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Double authentification » du profil. Le délai de grâce se règle dans Configuration > Générale > Sécurité."
-msgstr "Marca a caixa nativa «Autenticação de dois fatores obrigatória» dos perfis escolhidos abaixo. Cada pessoa envolvida configura seu aplicativo de autenticação (código de 6 dígitos) no próximo login, com a tela do GLPI. Desmarcada por padrão: isso muda o login de pessoas reais. Desmarcar um perfil nunca remove uma obrigação já existente: faça isso na aba «Autenticação de dois fatores» do perfil. O período de carência é definido em Configurar > Geral > Segurança."
+msgid "Coche la case native « Forcer 2FA » (onglet « Sécurité » du profil) des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Sécurité » du profil. Le délai de grâce de GLPI ne vaut que pour l'obligation générale : ici, la configuration est demandée dès la prochaine connexion."
+msgstr "Marca a caixa nativa «Forçar 2FA» (aba «Segurança» do perfil) dos perfis escolhidos abaixo. Cada pessoa envolvida configura seu aplicativo de autenticação (código de 6 dígitos) no próximo login, com a tela do GLPI. Desmarcada por padrão: isso muda o login de pessoas reais. Desmarcar um perfil nunca remove uma obrigação já existente: faça isso na aba «Segurança» do perfil. O período de carência do GLPI vale apenas para a obrigação geral: aqui, a configuração é pedida no próximo login."
 
 msgid "Déjà imposée"
 msgstr "Já exigida"
@@ -6507,8 +6507,8 @@ msgid_plural "%d comptes à privilèges n'ont pas de double authentification"
 msgstr[0] "%d conta com privilégios não tem autenticação de dois fatores"
 msgstr[1] "%d contas com privilégios não têm autenticação de dois fatores"
 
-msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Double authentification » de chaque profil. Chaque personne configure son application à sa prochaine connexion."
-msgstr "Exija a autenticação de dois fatores nativa do GLPI dos perfis da interface padrão (Super-Admin, Admin, Técnico): no assistente, etapa «Configurações gerais do GLPI», bloco «Autenticação de dois fatores», ou na aba «Autenticação de dois fatores» de cada perfil. Cada pessoa configura seu aplicativo no próximo login."
+msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque personne configure son application à sa prochaine connexion."
+msgstr "Exija a autenticação de dois fatores nativa do GLPI dos perfis da interface padrão (Super-Admin, Admin, Técnico): no assistente, etapa «Configurações gerais do GLPI», bloco «Autenticação de dois fatores», ou na aba «Segurança» de cada perfil (caixa «Forçar 2FA»). Cada pessoa configura seu aplicativo no próximo login."
 
 msgid "Modifier les profils"
 msgstr "Modificar perfis"

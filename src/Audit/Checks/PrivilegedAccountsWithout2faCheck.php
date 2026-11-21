@@ -72,7 +72,7 @@ final class PrivilegedAccountsWithout2faCheck implements AuditCheckInterface
             ),
             description: ParkAudit::summarize($names),
             recommendation: __(
-                'Imposez la double authentification native de GLPI aux profils de l\'interface standard (Super-Admin, Admin, Technicien) : dans l\'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l\'onglet « Double authentification » de chaque profil. Chaque personne configure son application à sa prochaine connexion.',
+                'Imposez la double authentification native de GLPI aux profils de l\'interface standard (Super-Admin, Admin, Technicien) : dans l\'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l\'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque personne configure son application à sa prochaine connexion.',
                 'configurationglpiauto'
             ),
             fixable: false
