@@ -6566,3 +6566,45 @@ msgstr "Der Verbindungstest ist fehlgeschlagen."
 
 msgid "Ouvrir la connexion existante"
 msgstr "Vorhandene Verbindung öffnen"
+
+msgid "Double authentification : l'imposer aux profils à privilèges"
+msgstr "Zwei-Faktor-Authentifizierung: für privilegierte Profile vorschreiben"
+
+msgid "Coche la case native « Double authentification obligatoire » des profils choisis ci-dessous. Chaque personne concernée configure son application d'authentification (code à 6 chiffres) à sa prochaine connexion, avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de vraies personnes. Décocher un profil ne retire jamais une obligation déjà en place : faites-le dans l'onglet « Double authentification » du profil. Le délai de grâce se règle dans Configuration > Générale > Sécurité."
+msgstr "Aktiviert das native Kästchen „Zwei-Faktor-Authentifizierung verpflichtend“ der unten gewählten Profile. Jede betroffene Person richtet ihre Authentifizierungs-App (6-stelliger Code) bei der nächsten Anmeldung über den GLPI-Bildschirm ein. Standardmäßig deaktiviert: Dies ändert die Anmeldung echter Personen. Das Abwählen eines Profils hebt eine bestehende Pflicht nie auf: Tun Sie dies im Reiter „Zwei-Faktor-Authentifizierung“ des Profils. Die Schonfrist wird unter Einrichtung > Allgemein > Sicherheit festgelegt."
+
+msgid "Déjà imposée"
+msgstr "Bereits vorgeschrieben"
+
+msgid "Non imposée"
+msgstr "Nicht vorgeschrieben"
+
+msgid "%d compte sans double authentification"
+msgid_plural "%d comptes sans double authentification"
+msgstr[0] "%d Konto ohne Zwei-Faktor-Authentifizierung"
+msgstr[1] "%d Konten ohne Zwei-Faktor-Authentifizierung"
+
+msgid "Aucun profil de l'interface standard."
+msgstr "Kein Profil der Standardoberfläche."
+
+msgid "Double authentification imposée à %d profil : chaque membre la configurera à sa prochaine connexion."
+msgid_plural "Double authentification imposée à %d profils : chaque membre la configurera à sa prochaine connexion."
+msgstr[0] "Zwei-Faktor-Authentifizierung für %d Profil vorgeschrieben: Jedes Mitglied richtet sie bei der nächsten Anmeldung ein."
+msgstr[1] "Zwei-Faktor-Authentifizierung für %d Profile vorgeschrieben: Jedes Mitglied richtet sie bei der nächsten Anmeldung ein."
+
+msgid "Double authentification"
+msgstr "Zwei-Faktor-Authentifizierung"
+
+msgid "%d compte à privilèges n'a pas de double authentification"
+msgid_plural "%d comptes à privilèges n'ont pas de double authentification"
+msgstr[0] "%d privilegiertes Konto hat keine Zwei-Faktor-Authentifizierung"
+msgstr[1] "%d privilegierte Konten haben keine Zwei-Faktor-Authentifizierung"
+
+msgid "Imposez la double authentification native de GLPI aux profils de l'interface standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape « Réglages généraux GLPI », bloc « Double authentification », ou dans l'onglet « Double authentification » de chaque profil. Chaque personne configure son application à sa prochaine connexion."
+msgstr "Schreiben Sie die native Zwei-Faktor-Authentifizierung von GLPI für die Profile der Standardoberfläche vor (Super-Admin, Admin, Techniker): im Assistenten, Schritt „Allgemeine GLPI-Einstellungen“, Block „Zwei-Faktor-Authentifizierung“, oder im Reiter „Zwei-Faktor-Authentifizierung“ jedes Profils. Jede Person richtet ihre App bei der nächsten Anmeldung ein."
+
+msgid "Modifier les profils"
+msgstr "Profile ändern"
+
+msgid "nécessaire pour imposer la double authentification aux profils choisis (étape 14)"
+msgstr "erforderlich, um die Zwei-Faktor-Authentifizierung für die gewählten Profile vorzuschreiben (Schritt 14)"

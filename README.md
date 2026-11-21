@@ -105,7 +105,10 @@ Toutes les autres captures d'écran (les 20 étapes en détail) sont dans le [tu
   d'instance de base de donnees, en plus des types de materiel standards (ordinateurs, ecrans,
   reseau, peripheriques, telephones)
 - Activation optionnelle de l'inventaire natif de GLPI (agents FusionInventory/GLPI Agent)
+- Proposition d'imposer la double authentification native de GLPI aux profils a privileges
+  (Super-Admin, Admin, Technicien), au choix de l'administrateur
 - Audit de configuration de l'instance GLPI (comptes par defaut, politique de mots de passe,
+  comptes a privileges sans double authentification,
   notifications, SLA, statuts...) avec correction en un clic quand le bon reglage est sans
   ambiguite, verification continue et rapport periodique par e-mail (hebdomadaire ou mensuel,
   notification GLPI modifiable, aucun secret transmis)

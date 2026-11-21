@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Double authentification** (issue #464) : l'étape Réglages généraux propose d'imposer la
+  double authentification native de GLPI (GLPI 11 et plus) aux profils de l'interface standard.
+  Super-Admin, Admin et Technicien sont pré-cochés, la case principale reste décochée : rien ne
+  change sans le choix de l'administrateur. Chaque profil affiche son état et le nombre de comptes
+  sans application d'authentification. Purement additif (une obligation en place n'est jamais
+  retirée), droit natif de modification des profils requis, profils retenus par leur nom dans les
+  Blueprints.
+- **Audit** : nouveau contrôle « comptes à privilèges sans double authentification » (comptes
+  actifs ayant un profil de l'interface standard, sans application enregistrée et non soumis à
+  l'obligation). Jamais corrigé automatiquement : la correction est proposée dans l'assistant.
+
 ### Changed
 
 - CI : contrôles de sécurité communs glpi-plugin-security v1.9.0 (charte commune et contrôle des menus bloquants par défaut).
