@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.31.0] - 2026-11-21
+
 ### Added
 
 - **Audit : écarts avec le dernier Blueprint appliqué** (partie de l'issue #468) : nouvelle section
