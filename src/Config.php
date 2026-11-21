@@ -195,6 +195,9 @@ class Config extends Compat\Base\ConfigBase
             // point d'entrée réseau (l'endpoint d'inventaire) plutôt que de générer du contenu,
             // même raisonnement que validation_supervisor_routing_enabled ci-dessous.
             'inventory_enabled' => 0,
+            // Issue #464 : décochée par défaut, comme inventory_enabled : imposer la double
+            // authentification change la connexion de vraies personnes, l'administrateur choisit.
+            'twofa_enforcement_enabled' => 0,
             'ticket_template_enabled' => 1,
             'ticket_template_icons_enabled' => 1,
             'helpdesk_form_hide_fields' => 1,
@@ -700,11 +703,16 @@ class Config extends Compat\Base\ConfigBase
             $input['audit_report_emails'] = implode("\n", self::parseEmails((string) $input['audit_report_emails']));
         }
 
+        // Issue #464 : profils retenus pour la double authentification, en JSON de noms.
+        if (isset($input['twofa_profiles'])) {
+            $input['twofa_profiles'] = json_encode(TwoFactorBuilder::normalizeProfileNames($input['twofa_profiles']));
+        }
+
         if (isset($input['state_icons_enabled'])) {
             $input['state_icons_enabled'] = !empty($input['state_icons_enabled']) ? 1 : 0;
         }
 
-        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled', 'dashboard_enabled', 'audit_watch_enabled', 'audit_report_only_on_change', 'inventory_enabled'] as $field) {
+        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled', 'dashboard_enabled', 'audit_watch_enabled', 'audit_report_only_on_change', 'inventory_enabled', 'twofa_enforcement_enabled'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }

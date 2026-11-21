@@ -120,6 +120,7 @@ use GlpiPlugin\Configurationglpiauto\TaskTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\TeamCollaborationSpaceFormBuilder;
 use GlpiPlugin\Configurationglpiauto\TicketTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\TrainingRequestFormBuilder;
+use GlpiPlugin\Configurationglpiauto\TwoFactorBuilder;
 use GlpiPlugin\Configurationglpiauto\UserAccountCreationFormBuilder;
 use GlpiPlugin\Configurationglpiauto\UserAccountDeactivationFormBuilder;
 use GlpiPlugin\Configurationglpiauto\UserCategoryBuilder;
@@ -871,6 +872,9 @@ if (isset($_POST['finish'])) {
     $paletteApplied = $canUpdateCoreConfig && (new PaletteBuilder())->apply($config);
 
     $generalSettingsApplied = $canUpdateCoreConfig && (new GeneralSettingsBuilder())->apply($config);
+    // Issue #464 : obligation de double authentification sur les profils choisis : droit natif de
+    // modification des profils, jamais le seul droit délégable de ce plugin.
+    $twofaProfilesUpdated = Session::haveRight('profile', UPDATE) ? (new TwoFactorBuilder())->apply($config) : 0;
     // Configuration SMTP avancée (issue #121) : écrit directement dans la configuration native
     // GLPI ($_POST, jamais $config->fields) : voir la docblock de SmtpBuilder pour la raison
     // (jamais faire transiter un mot de passe par Config/BlueprintSerializer/ConfigHistory).
@@ -991,6 +995,17 @@ if (isset($_POST['finish'])) {
     }
     if ($generalSettingsApplied) {
         $messages[] = __('Réglages généraux GLPI appliqués.', 'configurationglpiauto');
+    }
+    if ($twofaProfilesUpdated > 0) {
+        $messages[] = sprintf(
+            _n(
+                'Double authentification imposée à %d profil : chaque membre la configurera à sa prochaine connexion.',
+                'Double authentification imposée à %d profils : chaque membre la configurera à sa prochaine connexion.',
+                $twofaProfilesUpdated,
+                'configurationglpiauto'
+            ),
+            $twofaProfilesUpdated
+        );
     }
     if ($smtpApplied) {
         $messages[] = __('Configuration SMTP appliquée. Testez l\'envoi depuis Configuration > Notifications.', 'configurationglpiauto');
@@ -1275,6 +1290,13 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'mail_existing_collectors' => Session::haveRight('config', UPDATE) ? MailCollectorBuilder::getExistingCollectors() : [],
     'mail_suggestions' => MailCollectorBuilder::getSuggestions(),
     'satisfaction_plugin_active' => SatisfactionSurveyBuilder::isThirdPartyPluginActive(),
+    // Issue #464 : double authentification native, proposée aux profils de l'interface standard ;
+    // sans choix enregistré, Super-Admin, Admin et Technicien sont pré-cochés.
+    'twofa_available' => TwoFactorBuilder::isAvailable(),
+    'twofa_profiles_preview' => TwoFactorBuilder::getProfilesPreview(),
+    'twofa_selected_profiles' => ($config->fields['twofa_profiles'] ?? null) === null
+        ? TwoFactorBuilder::RECOMMENDED_PROFILE_NAMES
+        : TwoFactorBuilder::normalizeProfileNames($config->fields['twofa_profiles']),
     'vip_plugin_active' => VipBuilder::isThirdPartyPluginActive(),
     'grcmanager_plugin_active' => GrcmanagerCisoGroupBuilder::isGrcmanagerActive(),
     'grcmanager_risk_catalog_available' => GrcmanagerRiskCatalogBuilder::isAvailable(),

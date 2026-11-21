@@ -166,6 +166,8 @@ final class Installer
                 `audit_report_emails` text,
                 `audit_report_state` text,
                 `inventory_enabled` tinyint NOT NULL DEFAULT 0,
+                `twofa_enforcement_enabled` tinyint NOT NULL DEFAULT 0,
+                `twofa_profiles` text,
                 `ticket_template_enabled` tinyint NOT NULL DEFAULT 0,
                 `ticket_template_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `helpdesk_form_hide_fields` tinyint NOT NULL DEFAULT 0,
@@ -451,6 +453,9 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'assetsign_company_name', 'string', ['value' => '']);
             $migration->addField(self::CONFIGS_TABLE, 'assetsign_charter_url', 'string', ['value' => '']);
             $migration->addField(self::CONFIGS_TABLE, 'inventory_enabled', 'bool', ['value' => 0]);
+            // Issue #464 : double authentification des profils à privilèges, décochée par défaut.
+            $migration->addField(self::CONFIGS_TABLE, 'twofa_enforcement_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'twofa_profiles', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'certificate_types_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'certificate_type_icons_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'recurring_ticket_library_enabled', 'bool', ['value' => 0]);
