@@ -178,6 +178,18 @@ ne se sont jamais connectés (créés depuis plus de 30 jours) et, quand un annu
 plus d'un compte local à privilèges (un compte local de secours reste normal). Chaque compte est
 un lien vers sa fiche ; rien n'est désactivé automatiquement.
 
+**Fin de support des systèmes et du matériel** (facultatif) : dans Audit de configuration, carte
+« Fin de support des systèmes et du matériel », cochez « Activer le contrôle de fin de support »,
+puis cliquez sur « Proposer les correspondances » : chaque système d'exploitation reconnu du parc
+reçoit une ligne « Nom dans GLPI = produit » (par exemple `Debian GNU/Linux = debian`). Vérifiez
+ces lignes, ajoutez vos modèles de matériel (`iPhone 12 = iphone 12`), enregistrez, puis cliquez
+sur « Télécharger les dates » : seul le site endoflife.date est contacté, et seulement à ce
+moment-là. Les dates restent en base ; l'audit signale ensuite le matériel en service hors
+support ou qui le sera dans le délai choisi (180 jours par défaut). Sans accès à Internet, cochez
+le mode hors ligne et importez le fichier JSON d'un produit récupéré sur un autre poste.
+« Créer les tickets » ouvre un ticket lié au matériel concerné ; rien n'est modifié sur le
+matériel.
+
 ![Étape 14 : Réglages généraux GLPI](screenshots/14-reglages-generaux.png)
 
 ### Étape 15 : Général & Outils
@@ -453,6 +465,17 @@ accounts, standard interface accounts with no login for more than 90 days, accou
 logged in (created more than 30 days ago) and, when an LDAP directory is active, more than one
 local privileged account (one local emergency account is normal). Each account links to its form;
 nothing is deactivated automatically.
+
+**End of support for systems and hardware** (optional): in Configuration audit, card "End of
+support for systems and hardware", tick "Enable the end-of-support check", then click "Suggest
+mappings": each recognised operating system of the fleet gets a line "Name in GLPI = product"
+(for example `Debian GNU/Linux = debian`). Check these lines, add your hardware models
+(`iPhone 12 = iphone 12`), save, then click "Download dates": only the endoflife.date site is
+contacted, and only at that moment. The dates are kept in the database; the audit then reports
+in-service hardware that is out of support or will be within the chosen delay (180 days by
+default). Without Internet access, tick offline mode and import a product's JSON file fetched on
+another computer. "Create tickets" opens a ticket linked to the hardware concerned; nothing is
+changed on the hardware.
 
 ![Étape 14 : Réglages généraux GLPI](screenshots/14-reglages-generaux.png)
 

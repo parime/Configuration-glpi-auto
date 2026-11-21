@@ -6549,3 +6549,140 @@ msgid "%d compte à privilèges ne s'est jamais connecté"
 msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
 msgstr[0] "%d conta privilegiada nunca acessou"
 msgstr[1] "%d contas privilegiadas nunca acessaram"
+
+msgid "Fin de support des systèmes et du matériel"
+msgstr "Fim do suporte de sistemas e hardware"
+
+msgid "Activé"
+msgstr "Ativado"
+
+msgid "Hors ligne"
+msgstr "Offline"
+
+msgid "À quoi sert ce contrôle ?"
+msgstr "Para que serve este controle?"
+
+msgid "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates ». Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+msgstr "Sinaliza os sistemas operacionais e modelos de hardware em serviço cujo suporte do fabricante terminou ou termina em breve, segundo as datas públicas do site endoflife.date. Nada é baixado enquanto não estiver ativado, apenas endoflife.date é contatado, e somente quando você clica em «Baixar as datas». O controle lê depois essas datas guardadas na base: nunca modifica o hardware."
+
+msgid "Activer le contrôle de fin de support"
+msgstr "Ativar o controle de fim de suporte"
+
+msgid "Mode hors ligne : ne jamais contacter endoflife.date, importer les fichiers à la main"
+msgstr "Modo offline: nunca contatar endoflife.date, importar os arquivos manualmente"
+
+msgid "Signaler une fin de support dans les (jours)"
+msgstr "Sinalizar um fim de suporte nos próximos (dias)"
+
+msgid "Correspondances : une ligne par nom de système ou de modèle, tel qu'il apparaît dans GLPI"
+msgstr "Correspondências: uma linha por nome de sistema ou de modelo, como aparece no GLPI"
+
+msgid "Forme : « Nom dans GLPI = produit », ou « Nom dans GLPI = produit cycle » pour imposer le cycle. Le produit est l'identifiant de la page endoflife.date (par exemple windows pour endoflife.date/windows). Les noms sans correspondance ne sont pas contrôlés."
+msgstr "Formato: «Nome no GLPI = produto», ou «Nome no GLPI = produto ciclo» para impor o ciclo. O produto é o identificador da página endoflife.date (por exemplo windows para endoflife.date/windows). Os nomes sem correspondência não são controlados."
+
+msgid "Proposer les correspondances"
+msgstr "Propor as correspondências"
+
+msgid "Télécharger les dates"
+msgstr "Baixar as datas"
+
+msgid "Dates gardées en base"
+msgstr "Datas guardadas na base"
+
+msgid "Aucune date pour l'instant."
+msgstr "Nenhuma data por enquanto."
+
+msgid "Produit"
+msgstr "Produto"
+
+msgid "Cycles"
+msgstr "Ciclos"
+
+msgid "Mis à jour le"
+msgstr "Atualizado em"
+
+msgid "Sans accès à Internet : sur un autre poste, enregistrez https://endoflife.date/api/v1/products/<produit>/ dans un fichier, puis importez-le ici."
+msgstr "Sem acesso à Internet: em outro computador, salve https://endoflife.date/api/v1/products/<produto>/ em um arquivo e depois importe-o aqui."
+
+msgid "Fichier JSON endoflife.date"
+msgstr "Arquivo JSON do endoflife.date"
+
+msgid "Importer"
+msgstr "Importar"
+
+msgid "Réglages de fin de support enregistrés."
+msgstr "Configurações de fim de suporte salvas."
+
+msgid "Correspondances proposées ajoutées : vérifiez-les avant de télécharger les dates."
+msgstr "Correspondências propostas adicionadas: verifique-as antes de baixar as datas."
+
+msgid "Activez d'abord le contrôle de fin de support."
+msgstr "Ative primeiro o controle de fim de suporte."
+
+msgid "Mode hors ligne : aucun téléchargement. Importez un fichier endoflife.date à la place."
+msgstr "Modo offline: nenhum download. Importe um arquivo do endoflife.date no lugar."
+
+msgid "Aucune correspondance : rien à télécharger."
+msgstr "Nenhuma correspondência: nada a baixar."
+
+#, php-format
+msgid "Dates téléchargées pour %d produit(s)."
+msgstr "Datas baixadas para %d produto(s)."
+
+#, php-format
+msgid "Téléchargement impossible pour : %s (produit inconnu d'endoflife.date ou site injoignable). Les dates déjà en cache sont gardées."
+msgstr "Download impossível para: %s (produto desconhecido do endoflife.date ou site inacessível). As datas já em cache são mantidas."
+
+#, php-format
+msgid "%1$d cycle(s) importé(s) pour %2$s."
+msgstr "%1$d ciclo(s) importado(s) para %2$s."
+
+msgid "Fichier refusé : choisissez le fichier JSON d'un produit endoflife.date (2 Mo au plus) et indiquez son identifiant, par exemple « windows »."
+msgstr "Arquivo recusado: escolha o arquivo JSON de um produto do endoflife.date (2 MB no máximo) e indique seu identificador, por exemplo «windows»."
+
+msgid "date inconnue"
+msgstr "data desconhecida"
+
+#, php-format
+msgid "%1$s : %2$s (cycle %3$s), fin de support le %4$s"
+msgstr "%1$s: %2$s (ciclo %3$s), fim do suporte em %4$s"
+
+msgid "Fin de support : aucune correspondance avec endoflife.date"
+msgstr "Fim do suporte: nenhuma correspondência com endoflife.date"
+
+msgid "Le contrôle est activé, mais aucun système ni modèle n'est relié à un produit endoflife.date."
+msgstr "O controle está ativado, mas nenhum sistema nem modelo está ligado a um produto do endoflife.date."
+
+msgid "Plus bas, dans « Fin de support », cliquez sur « Proposer les correspondances » ou saisissez une ligne par nom, par exemple « Microsoft Windows 10 Professionnel = windows »."
+msgstr "Mais abaixo, em «Fim do suporte», clique em «Propor as correspondências» ou digite uma linha por nome, por exemplo «Microsoft Windows 10 Professional = windows»."
+
+#, php-format
+msgid "Fin de support : %1$d élément(s) hors support, %2$d bientôt hors support (dans les %3$d jours)"
+msgstr "Fim do suporte: %1$d item(ns) sem suporte, %2$d em breve sem suporte (nos próximos %3$d dias)"
+
+msgid "Un système ou un matériel hors support ne reçoit plus de correctifs de sécurité : mettre à jour, remplacer, ou accepter et documenter le risque. « Créer les tickets » ouvre un ticket regroupant ces matériels, lié à chacun. Rien n'est modifié sur le matériel."
+msgstr "Um sistema ou hardware sem suporte não recebe mais correções de segurança: atualizar, substituir, ou aceitar e documentar o risco. «Criar os chamados» abre um chamado que agrupa esses equipamentos, ligado a cada um. Nada é modificado no hardware."
+
+#, php-format
+msgid "dates non téléchargées : %s"
+msgstr "datas não baixadas: %s"
+
+#, php-format
+msgid "cycle non reconnu : %s"
+msgstr "ciclo não reconhecido: %s"
+
+#, php-format
+msgid "dates de plus de %1$d jours : %2$s"
+msgstr "datas com mais de %1$d dias: %2$s"
+
+msgid "Fin de support : correspondances à compléter"
+msgstr "Fim do suporte: correspondências a completar"
+
+msgid "Plus bas, dans « Fin de support » : « Télécharger les dates » (ou importez un fichier en mode hors ligne), et précisez le cycle d'un nom non reconnu, par exemple « Debian 12 = debian 12 »."
+msgstr "Mais abaixo, em «Fim do suporte»: «Baixar as datas» (ou importe um arquivo no modo offline), e precise o ciclo de um nome não reconhecido, por exemplo «Debian 12 = debian 12»."
+
+msgid "Ces matériels en service utilisent un système ou un modèle hors support, ou bientôt hors support (dates endoflife.date) :"
+msgstr "Estes equipamentos em serviço usam um sistema ou modelo sem suporte, ou em breve sem suporte (datas do endoflife.date):"
+
+msgid "Pour chacun : mettre à jour, remplacer, ou accepter et documenter le risque. Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n'a été modifiée."
+msgstr "Para cada um: atualizar, substituir, ou aceitar e documentar o risco. Este chamado foi aberto pelo modo Auditoria do Configuration GLPI Auto: nenhum dado do equipamento foi modificado."
