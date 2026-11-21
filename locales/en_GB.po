@@ -6540,8 +6540,8 @@ msgstr "Cycles"
 msgid "Mis à jour le"
 msgstr "Updated on"
 
-msgid "Sans accès à Internet : sur un autre poste, enregistrez https://endoflife.date/api/v1/products/<produit>/ dans un fichier, puis importez-le ici."
-msgstr "Without Internet access: on another computer, save https://endoflife.date/api/v1/products/<product>/ to a file, then import it here."
+msgid "Sans accès à Internet : sur un autre poste, enregistrez https://endoflife.date/api/v1/products/windows/ dans un fichier (windows étant le produit voulu), puis importez-le ici."
+msgstr "Without Internet access: on another computer, save https://endoflife.date/api/v1/products/windows/ to a file (windows being the wanted product), then import it here."
 
 msgid "Fichier JSON endoflife.date"
 msgstr "endoflife.date JSON file"

@@ -6694,8 +6694,8 @@ msgstr "Zyklen"
 msgid "Mis à jour le"
 msgstr "Aktualisiert am"
 
-msgid "Sans accès à Internet : sur un autre poste, enregistrez https://endoflife.date/api/v1/products/<produit>/ dans un fichier, puis importez-le ici."
-msgstr "Ohne Internetzugang: Speichern Sie auf einem anderen Rechner https://endoflife.date/api/v1/products/<produkt>/ in einer Datei und importieren Sie sie hier."
+msgid "Sans accès à Internet : sur un autre poste, enregistrez https://endoflife.date/api/v1/products/windows/ dans un fichier (windows étant le produit voulu), puis importez-le ici."
+msgstr "Ohne Internetzugang: Speichern Sie auf einem anderen Rechner https://endoflife.date/api/v1/products/windows/ in einer Datei (windows steht für das gewünschte Produkt) und importieren Sie sie hier."
 
 msgid "Fichier JSON endoflife.date"
 msgstr "JSON-Datei von endoflife.date"

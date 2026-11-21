@@ -189,7 +189,7 @@
     {% if can_fix and eol.enabled %}
       <form method="post" enctype="multipart/form-data" action="{{ config('root_doc') }}/plugins/configurationglpiauto/front/audit.php" class="row g-2 align-items-end mt-2">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
-        <div class="col-12 small text-muted"><i class="ti ti-wifi-off me-1"></i>{{ __('Sans accès à Internet : sur un autre poste, enregistrez https://endoflife.date/api/v1/products/<produit>/ dans un fichier, puis importez-le ici.', 'configurationglpiauto') }}</div>
+        <div class="col-12 small text-muted"><i class="ti ti-wifi-off me-1"></i>{{ __('Sans accès à Internet : sur un autre poste, enregistrez https://endoflife.date/api/v1/products/windows/ dans un fichier (windows étant le produit voulu), puis importez-le ici.', 'configurationglpiauto') }}</div>
         <div class="col-md-3">
           <label class="form-label" for="cga-eol-product">{{ __('Produit', 'configurationglpiauto') }}</label>
           <input type="text" class="form-control" name="eol_product" id="cga-eol-product" maxlength="64" placeholder="windows" required>
