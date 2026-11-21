@@ -44,6 +44,7 @@ final class AuditControlCatalog
         'warranty_expiring'                => self::WEIGHT_OPERATIONS,
         'network_consistency'              => self::WEIGHT_OPERATIONS,
         'mail_collectors'                  => self::WEIGHT_OPERATIONS,
+        'blueprint_drift'                  => self::WEIGHT_OPERATIONS,
     ];
 
     public static function weight(string $key): int
@@ -90,6 +91,7 @@ final class AuditControlCatalog
             'privileged_accounts_review'       => __('Revue des comptes à privilèges', 'configurationglpiauto'),
             'dictionary_rules'                 => __('Dictionnaires d\'inventaire', 'configurationglpiauto'),
             'mail_collectors'                  => __('Collecteurs de messagerie', 'configurationglpiauto'),
+            'blueprint_drift'                  => __('Conformité au dernier Blueprint appliqué', 'configurationglpiauto'),
         ];
 
         return $labels[$key] ?? $key;

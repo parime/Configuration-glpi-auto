@@ -39,6 +39,17 @@
       </div>
     {% endif %}
 
+    {# Issue #468 : venue de l'audit, la page rappelle les écarts que le déploiement réalignera. #}
+    {% if drift_items is defined and drift_items is not empty %}
+      <h3 class="mt-3">{{ __('Écarts avec le dernier Blueprint appliqué', 'configurationglpiauto') }}</h3>
+      <ul class="small">
+        {% for item in drift_items %}
+          <li>{{ item.object }} : {{ item.item }}{% if item.expected is not empty %} ({{ item.current is empty ? '-' : item.current }} &rarr; {{ item.expected }}){% endif %}</li>
+        {% endfor %}
+      </ul>
+      <p class="small text-muted">{{ __('Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément ajouté à la main est conservé.', 'configurationglpiauto') }}</p>
+    {% endif %}
+
     <h3 class="mt-3">{{ __('Vos droits GLPI', 'configurationglpiauto') }}</h3>
     <ul class="list-unstyled">
       {% for right in rights %}
@@ -58,6 +69,12 @@
       {% for name, value in fields %}
         <input type="hidden" name="{{ name }}" value="{{ value }}">
       {% endfor %}
+      {% if can_update_sla|default(false) %}
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" name="sla_update_existing" value="1" id="cga-deploy-sla-update"{% if sla_update_checked|default(false) %} checked{% endif %}>
+          <label class="form-check-label" for="cga-deploy-sla-update">{{ __('Réaligner aussi les SLA et OLA déjà créés sur cette configuration', 'configurationglpiauto') }}</label>
+        </div>
+      {% endif %}
       <div class="d-flex gap-2">
         <button type="submit" name="finish" value="1" class="btn btn-primary" onclick="return confirm('{{ __('Lancer le déploiement maintenant ?', 'configurationglpiauto')|e('js') }}');">
           <i class="ti ti-rocket me-1"></i>{{ __('Déployer maintenant', 'configurationglpiauto') }}

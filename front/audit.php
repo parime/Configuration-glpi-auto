@@ -19,6 +19,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditControlCatalog;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditHistory;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditReportCron;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditService;
+use GlpiPlugin\Configurationglpiauto\Audit\BlueprintDrift;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\EndOfLifeCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\EndOfLife\EndOfLifeCache;
 use GlpiPlugin\Configurationglpiauto\Audit\EndOfLife\EndOfLifeClient;
@@ -229,6 +230,8 @@ if ($newCriticalCount > 0) {
     $config->update(['id' => $config->getID(), 'audit_watch_state' => json_encode($watchState)]);
 }
 
+$driftApplied = BlueprintDrift::wasApplied();
+
 global $DB, $CFG_GLPI;
 $reportNotificationId = 0;
 foreach ($DB->request([
@@ -271,6 +274,13 @@ if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_D
     'compare_from'          => $compareFrom,
     'compare_to'            => $compareTo,
     'comparison'            => $comparison,
+    // Issue #468 : écarts avec le dernier Blueprint appliqué (lecture seule).
+    'drift'                 => [
+        'applied'    => $driftApplied,
+        'items'      => $driftApplied ? BlueprintDrift::detect($config) : [],
+        'deploy_url' => Session::haveRight(Config::$rightname, UPDATE) ? \GlpiPlugin\Configurationglpiauto\FrontUrl::get('deploy.php') . '?drift=1' : null,
+        'wizard_url' => \GlpiPlugin\Configurationglpiauto\FrontUrl::get('wizard.php'),
+    ],
     'park'                  => [
         'ghost_days'    => (int) ($config->fields['audit_ghost_days'] ?? 30),
         'warranty_days' => (int) ($config->fields['audit_warranty_days'] ?? 30),

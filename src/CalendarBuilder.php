@@ -192,22 +192,15 @@ class CalendarBuilder
         }
         $calendarId = (int) $calendar->getID();
 
-        $begin = $this->normalizeTime($begin);
-        $end = $this->normalizeTime($end);
-        $lunchBegin = $this->normalizeTime($lunchBegin);
-        $lunchEnd = $this->normalizeTime($lunchEnd);
+        $segmentsByDay = [];
+        foreach (self::expectedSegments($days, $begin, $end, $dayHours, $lunchBreak, $lunchBegin, $lunchEnd) as $segment) {
+            $segmentsByDay[$segment['day']][] = $segment;
+        }
 
-        foreach ($days as $day) {
-            $dayBegin = isset($dayHours[$day]) ? $this->normalizeTime($dayHours[$day]['begin']) : $begin;
-            $dayEnd = isset($dayHours[$day]) ? $this->normalizeTime($dayHours[$day]['end']) : $end;
-
+        foreach ($segmentsByDay as $day => $segments) {
             $this->clearDaySegments($calendarId, $day);
-
-            if ($lunchBreak && $lunchBegin > $dayBegin && $lunchEnd < $dayEnd && $lunchBegin < $lunchEnd) {
-                $this->addSegment($calendarId, $day, $dayBegin, $lunchBegin);
-                $this->addSegment($calendarId, $day, $lunchEnd, $dayEnd);
-            } else {
-                $this->addSegment($calendarId, $day, $dayBegin, $dayEnd);
+            foreach ($segments as $segment) {
+                $this->addSegment($calendarId, $day, $segment['begin'], $segment['end']);
             }
         }
 
@@ -239,7 +232,73 @@ class CalendarBuilder
         }
     }
 
-    private function normalizeTime(string $time): string
+    /**
+     * Plages horaires que build() écrit, sans rien créer : une par jour ouvré, ou deux quand la
+     * pause déjeuner tombe strictement dans les horaires du jour. Pur PHP, partagé avec la détection
+     * de dérive (#468).
+     *
+     * @param int[] $days
+     * @param array<int, array{begin: string, end: string}> $dayHours
+     * @return list<array{day: int, begin: string, end: string}>
+     */
+    public static function expectedSegments(
+        array $days,
+        string $begin,
+        string $end,
+        array $dayHours = [],
+        bool $lunchBreak = false,
+        string $lunchBegin = '12:00',
+        string $lunchEnd = '13:00',
+    ): array {
+        $begin = self::normalizeTime($begin);
+        $end = self::normalizeTime($end);
+        $lunchBegin = self::normalizeTime($lunchBegin);
+        $lunchEnd = self::normalizeTime($lunchEnd);
+
+        $segments = [];
+        foreach ($days as $day) {
+            $day = (int) $day;
+            $dayBegin = isset($dayHours[$day]) ? self::normalizeTime($dayHours[$day]['begin']) : $begin;
+            $dayEnd = isset($dayHours[$day]) ? self::normalizeTime($dayHours[$day]['end']) : $end;
+
+            if ($lunchBreak && $lunchBegin > $dayBegin && $lunchEnd < $dayEnd && $lunchBegin < $lunchEnd) {
+                $segments[] = ['day' => $day, 'begin' => $dayBegin, 'end' => $lunchBegin];
+                $segments[] = ['day' => $day, 'begin' => $lunchEnd, 'end' => $dayEnd];
+            } else {
+                $segments[] = ['day' => $day, 'begin' => $dayBegin, 'end' => $dayEnd];
+            }
+        }
+
+        return $segments;
+    }
+
+    /**
+     * Plages attendues du calendrier partagé, d'après la configuration.
+     *
+     * @return list<array{day: int, begin: string, end: string}>
+     */
+    public static function expectedSharedSegments(Config $config): array
+    {
+        return self::expectedSegments(
+            $config->getCalendarDays(),
+            (string) ($config->fields['calendar_begin'] ?? '08:00'),
+            (string) ($config->fields['calendar_end'] ?? '18:00'),
+            $config->getCalendarDayHours(),
+            !empty($config->fields['calendar_lunch_break_enabled']),
+            (string) ($config->fields['calendar_lunch_begin'] ?? '12:00'),
+            (string) ($config->fields['calendar_lunch_end'] ?? '13:00'),
+        );
+    }
+
+    /**
+     * Nom du calendrier partagé que build() crée ou réutilise.
+     */
+    public static function sharedCalendarName(Config $config): string
+    {
+        return self::sharedName($config);
+    }
+
+    private static function normalizeTime(string $time): string
     {
         return preg_match('/^\d{2}:\d{2}$/', $time) ? $time . ':00' : $time;
     }

@@ -80,7 +80,7 @@ use SLM;
  */
 class SlaBuilder
 {
-    private const SLM_NAME = 'SLA standard';
+    public const SLM_NAME = 'SLA standard';
 
     /**
      * Issue #322 : par défaut, un SLM/SLA déjà créé n'est jamais modifié (« créer sans écraser ») ;
@@ -123,32 +123,17 @@ class SlaBuilder
             ];
         }
 
-        $tiers = $config->getSlaTiers();
-        $olaTiers = $config->getOlaTiers();
-        foreach (Config::PRIORITY_LEVELS as $priority) {
-            $label = CommonITILObject::getPriorityName($priority);
-            $tier = $tiers[$priority] ?? ['tto_hours' => 4, 'ttr_hours' => 48];
-            $expected = [
-                [SLA::class, SLM::TTO, sprintf(__('Prise en charge - %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours']],
-                [SLA::class, SLM::TTR, sprintf(__('Résolution - %s', 'configurationglpiauto'), $label), (int) $tier['ttr_hours']],
-            ];
-            if (!empty($config->fields['ola_enabled'])) {
-                $olaTier = $olaTiers[$priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
-                $expected[] = [OLA::class, SLM::TTO, sprintf(__('OLA prise en charge - %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours']];
-                $expected[] = [OLA::class, SLM::TTR, sprintf(__('OLA résolution - %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours']];
+        foreach (self::expectedAgreements($config) as [$class, $type, $name, $hours]) {
+            $agreement = new $class();
+            if (!Lookup::loadFirst($agreement, ['slms_id' => $slm->getID(), 'type' => $type, 'name' => $name])) {
+                continue;
             }
-            foreach ($expected as [$class, $type, $name, $hours]) {
-                $agreement = new $class();
-                if (!Lookup::loadFirst($agreement, ['slms_id' => $slm->getID(), 'type' => $type, 'name' => $name])) {
-                    continue;
-                }
-                if (!self::hasDelay($agreement->fields, $hours)) {
-                    $changes[] = [
-                        'item'     => $name,
-                        'current'  => self::delayLabel((int) $agreement->fields['number_time'], (string) $agreement->fields['definition_time']),
-                        'expected' => self::delayLabel($hours, 'hour'),
-                    ];
-                }
+            if (!self::hasDelay($agreement->fields, $hours)) {
+                $changes[] = [
+                    'item'     => $name,
+                    'current'  => self::delayLabel((int) $agreement->fields['number_time'], (string) $agreement->fields['definition_time']),
+                    'expected' => self::delayLabel($hours, 'hour'),
+                ];
             }
         }
 
@@ -156,14 +141,40 @@ class SlaBuilder
     }
 
     /**
+     * SLA et OLA que la configuration fait créer dans le SLM partagé : classe, type (TTO/TTR), nom
+     * et délai en heures. Partagé par l'aperçu de l'assistant (#322) et la détection de dérive (#468).
+     *
+     * @return list<array{0: class-string<SLA|OLA>, 1: int, 2: string, 3: int}>
+     */
+    public static function expectedAgreements(Config $config): array
+    {
+        $tiers = $config->getSlaTiers();
+        $olaTiers = $config->getOlaTiers();
+        $expected = [];
+        foreach (Config::PRIORITY_LEVELS as $priority) {
+            $label = CommonITILObject::getPriorityName($priority);
+            $tier = $tiers[$priority] ?? ['tto_hours' => 4, 'ttr_hours' => 48];
+            $expected[] = [SLA::class, SLM::TTO, sprintf(__('Prise en charge - %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours']];
+            $expected[] = [SLA::class, SLM::TTR, sprintf(__('Résolution - %s', 'configurationglpiauto'), $label), (int) $tier['ttr_hours']];
+            if (!empty($config->fields['ola_enabled'])) {
+                $olaTier = $olaTiers[$priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
+                $expected[] = [OLA::class, SLM::TTO, sprintf(__('OLA prise en charge - %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours']];
+                $expected[] = [OLA::class, SLM::TTR, sprintf(__('OLA résolution - %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours']];
+            }
+        }
+
+        return $expected;
+    }
+
+    /**
      * @param array<string, mixed> $fields
      */
-    private static function hasDelay(array $fields, int $hours): bool
+    public static function hasDelay(array $fields, int $hours): bool
     {
         return (int) $fields['number_time'] === $hours && (string) $fields['definition_time'] === 'hour';
     }
 
-    private static function delayLabel(int $number, string $unit): string
+    public static function delayLabel(int $number, string $unit): string
     {
         return match ($unit) {
             'minute' => sprintf(_n('%d minute', '%d minutes', $number), $number),
@@ -172,7 +183,7 @@ class SlaBuilder
         };
     }
 
-    private static function calendarLabel(int $calendarId): string
+    public static function calendarLabel(int $calendarId): string
     {
         return $calendarId === 0
             ? __('Aucun (24h/24, 7j/7)', 'configurationglpiauto')
