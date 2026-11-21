@@ -22,6 +22,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\DefaultCredentialsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DictionaryRulesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DuplicateDropdownsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\DuplicateSoftwareCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\EndOfLifeCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\EntitiesWithoutAddressCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\GhostAssetsCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\IncompleteAssetsCheck;
@@ -64,6 +65,7 @@ final class AuditService
             DuplicateSoftwareCheck::class,
             GhostAssetsCheck::class,
             WarrantyCheck::class,
+            EndOfLifeCheck::class,
             IncompleteAssetsCheck::class,
             // Issue #344 : adresses en double, réseaux qui se chevauchent, VLAN sans réseau.
             NetworkConsistencyCheck::class,

@@ -6488,3 +6488,140 @@ msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
 msgstr[0] "%d konto uprzywilejowane nigdy się nie zalogowało"
 msgstr[1] "%d konta uprzywilejowane nigdy się nie zalogowały"
 msgstr[2] "%d kont uprzywilejowanych nigdy się nie zalogowało"
+
+msgid "Fin de support des systèmes et du matériel"
+msgstr "Koniec wsparcia systemów i sprzętu"
+
+msgid "Activé"
+msgstr "Włączone"
+
+msgid "Hors ligne"
+msgstr "Offline"
+
+msgid "À quoi sert ce contrôle ?"
+msgstr "Do czego służy ta kontrola?"
+
+msgid "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates ». Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+msgstr "Wskazuje używane systemy operacyjne i modele sprzętu, których wsparcie producenta się zakończyło lub wkrótce się kończy, według publicznych dat serwisu endoflife.date. Nic nie jest pobierane przed włączeniem, kontaktowany jest tylko endoflife.date i tylko po kliknięciu „Pobierz daty”. Kontrola odczytuje potem te daty zapisane w bazie: nigdy nie zmienia sprzętu."
+
+msgid "Activer le contrôle de fin de support"
+msgstr "Włącz kontrolę końca wsparcia"
+
+msgid "Mode hors ligne : ne jamais contacter endoflife.date, importer les fichiers à la main"
+msgstr "Tryb offline: nigdy nie kontaktuj endoflife.date, importuj pliki ręcznie"
+
+msgid "Signaler une fin de support dans les (jours)"
+msgstr "Zgłaszaj koniec wsparcia w ciągu (dni)"
+
+msgid "Correspondances : une ligne par nom de système ou de modèle, tel qu'il apparaît dans GLPI"
+msgstr "Powiązania: jeden wiersz na nazwę systemu lub modelu, tak jak w GLPI"
+
+msgid "Forme : « Nom dans GLPI = produit », ou « Nom dans GLPI = produit cycle » pour imposer le cycle. Le produit est l'identifiant de la page endoflife.date (par exemple windows pour endoflife.date/windows). Les noms sans correspondance ne sont pas contrôlés."
+msgstr "Format: „Nazwa w GLPI = produkt” lub „Nazwa w GLPI = produkt cykl”, aby wymusić cykl. Produkt to identyfikator strony endoflife.date (na przykład windows dla endoflife.date/windows). Nazwy bez powiązania nie są sprawdzane."
+
+msgid "Proposer les correspondances"
+msgstr "Zaproponuj powiązania"
+
+msgid "Télécharger les dates"
+msgstr "Pobierz daty"
+
+msgid "Dates gardées en base"
+msgstr "Daty zapisane w bazie"
+
+msgid "Aucune date pour l'instant."
+msgstr "Na razie brak dat."
+
+msgid "Produit"
+msgstr "Produkt"
+
+msgid "Cycles"
+msgstr "Cykle"
+
+msgid "Mis à jour le"
+msgstr "Zaktualizowano"
+
+msgid "Sans accès à Internet : sur un autre poste, enregistrez https://endoflife.date/api/v1/products/windows/ dans un fichier (windows étant le produit voulu), puis importez-le ici."
+msgstr "Bez dostępu do Internetu: na innym komputerze zapisz https://endoflife.date/api/v1/products/windows/ do pliku (windows to wybrany produkt), a następnie zaimportuj go tutaj."
+
+msgid "Fichier JSON endoflife.date"
+msgstr "Plik JSON endoflife.date"
+
+msgid "Importer"
+msgstr "Importuj"
+
+msgid "Réglages de fin de support enregistrés."
+msgstr "Zapisano ustawienia końca wsparcia."
+
+msgid "Correspondances proposées ajoutées : vérifiez-les avant de télécharger les dates."
+msgstr "Dodano proponowane powiązania: sprawdź je przed pobraniem dat."
+
+msgid "Activez d'abord le contrôle de fin de support."
+msgstr "Najpierw włącz kontrolę końca wsparcia."
+
+msgid "Mode hors ligne : aucun téléchargement. Importez un fichier endoflife.date à la place."
+msgstr "Tryb offline: brak pobierania. Zamiast tego zaimportuj plik endoflife.date."
+
+msgid "Aucune correspondance : rien à télécharger."
+msgstr "Brak powiązań: nic do pobrania."
+
+#, php-format
+msgid "Dates téléchargées pour %d produit(s)."
+msgstr "Pobrano daty dla %d produktu(ów)."
+
+#, php-format
+msgid "Téléchargement impossible pour : %s (produit inconnu d'endoflife.date ou site injoignable). Les dates déjà en cache sont gardées."
+msgstr "Nie można pobrać dla: %s (produkt nieznany w endoflife.date lub serwis nieosiągalny). Daty już zapisane w pamięci podręcznej są zachowane."
+
+#, php-format
+msgid "%1$d cycle(s) importé(s) pour %2$s."
+msgstr "Zaimportowano %1$d cykl(i) dla %2$s."
+
+msgid "Fichier refusé : choisissez le fichier JSON d'un produit endoflife.date (2 Mo au plus) et indiquez son identifiant, par exemple « windows »."
+msgstr "Plik odrzucony: wybierz plik JSON produktu endoflife.date (maksymalnie 2 MB) i podaj jego identyfikator, na przykład „windows”."
+
+msgid "date inconnue"
+msgstr "nieznana data"
+
+#, php-format
+msgid "%1$s : %2$s (cycle %3$s), fin de support le %4$s"
+msgstr "%1$s: %2$s (cykl %3$s), koniec wsparcia %4$s"
+
+msgid "Fin de support : aucune correspondance avec endoflife.date"
+msgstr "Koniec wsparcia: brak powiązań z endoflife.date"
+
+msgid "Le contrôle est activé, mais aucun système ni modèle n'est relié à un produit endoflife.date."
+msgstr "Kontrola jest włączona, ale żaden system ani model nie jest powiązany z produktem endoflife.date."
+
+msgid "Plus bas, dans « Fin de support », cliquez sur « Proposer les correspondances » ou saisissez une ligne par nom, par exemple « Microsoft Windows 10 Professionnel = windows »."
+msgstr "Niżej, w sekcji „Koniec wsparcia”, kliknij „Zaproponuj powiązania” lub wpisz jeden wiersz na nazwę, na przykład „Microsoft Windows 10 Professional = windows”."
+
+#, php-format
+msgid "Fin de support : %1$d élément(s) hors support, %2$d bientôt hors support (dans les %3$d jours)"
+msgstr "Koniec wsparcia: %1$d element(ów) bez wsparcia, %2$d wkrótce bez wsparcia (w ciągu %3$d dni)"
+
+msgid "Un système ou un matériel hors support ne reçoit plus de correctifs de sécurité : mettre à jour, remplacer, ou accepter et documenter le risque. « Créer les tickets » ouvre un ticket regroupant ces matériels, lié à chacun. Rien n'est modifié sur le matériel."
+msgstr "System lub sprzęt bez wsparcia nie otrzymuje już poprawek bezpieczeństwa: zaktualizuj, wymień albo zaakceptuj i udokumentuj ryzyko. „Utwórz zgłoszenia” otwiera jedno zgłoszenie grupujące ten sprzęt, powiązane z każdym elementem. Na sprzęcie nic nie jest zmieniane."
+
+#, php-format
+msgid "dates non téléchargées : %s"
+msgstr "daty niepobrane: %s"
+
+#, php-format
+msgid "cycle non reconnu : %s"
+msgstr "nierozpoznany cykl: %s"
+
+#, php-format
+msgid "dates de plus de %1$d jours : %2$s"
+msgstr "daty starsze niż %1$d dni: %2$s"
+
+msgid "Fin de support : correspondances à compléter"
+msgstr "Koniec wsparcia: powiązania do uzupełnienia"
+
+msgid "Plus bas, dans « Fin de support » : « Télécharger les dates » (ou importez un fichier en mode hors ligne), et précisez le cycle d'un nom non reconnu, par exemple « Debian 12 = debian 12 »."
+msgstr "Niżej, w sekcji „Koniec wsparcia”: „Pobierz daty” (lub zaimportuj plik w trybie offline) i podaj cykl nierozpoznanej nazwy, na przykład „Debian 12 = debian 12”."
+
+msgid "Ces matériels en service utilisent un système ou un modèle hors support, ou bientôt hors support (dates endoflife.date) :"
+msgstr "Ten używany sprzęt korzysta z systemu lub modelu bez wsparcia albo wkrótce bez wsparcia (daty endoflife.date):"
+
+msgid "Pour chacun : mettre à jour, remplacer, ou accepter et documenter le risque. Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune donnée du matériel n'a été modifiée."
+msgstr "Dla każdego: zaktualizuj, wymień albo zaakceptuj i udokumentuj ryzyko. To zgłoszenie zostało otwarte przez tryb audytu Configuration GLPI Auto: żadne dane sprzętu nie zostały zmienione."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-21 05:06+0000\n"
+"POT-Creation-Date: 2026-11-21 14:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1273,6 +1273,18 @@ msgstr ""
 
 #: templates/wizard.html.twig
 msgid "Double authentification : l'imposer aux profils à privilèges"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid ""
+"Coche la case native « Forcer 2FA » (onglet « Sécurité » du profil) des "
+"profils choisis ci-dessous. Chaque personne concernée configure son "
+"application d'authentification (code à 6 chiffres) à sa prochaine connexion, "
+"avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de "
+"vraies personnes. Décocher un profil ne retire jamais une obligation déjà en "
+"place : faites-le dans l'onglet « Sécurité » du profil. Le délai de grâce de "
+"GLPI ne vaut que pour l'obligation générale : ici, la configuration est "
+"demandée dès la prochaine connexion."
 msgstr ""
 
 #: templates/wizard.html.twig
@@ -2843,6 +2855,107 @@ msgid "Enregistrer"
 msgstr ""
 
 #: templates/audit.html.twig
+msgid "Fin de support des systèmes et du matériel"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Activé"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Hors ligne"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Désactivé"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "À quoi sert ce contrôle ?"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid ""
+"Il signale les systèmes d'exploitation et les modèles de matériel en service "
+"dont le support du fabricant est terminé ou se termine bientôt, d'après les "
+"dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il "
+"n'est pas activé, seul endoflife.date est contacté, et seulement quand vous "
+"cliquez sur « Télécharger les dates ». Le contrôle lit ensuite ces dates "
+"gardées en base : il ne modifie jamais le matériel."
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Activer le contrôle de fin de support"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid ""
+"Mode hors ligne : ne jamais contacter endoflife.date, importer les fichiers "
+"à la main"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Signaler une fin de support dans les (jours)"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid ""
+"Correspondances : une ligne par nom de système ou de modèle, tel qu'il "
+"apparaît dans GLPI"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid ""
+"Forme : « Nom dans GLPI = produit », ou « Nom dans GLPI = produit cycle » "
+"pour imposer le cycle. Le produit est l'identifiant de la page "
+"endoflife.date (par exemple windows pour endoflife.date/windows). Les noms "
+"sans correspondance ne sont pas contrôlés."
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Proposer les correspondances"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Télécharger les dates"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Dates gardées en base"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Aucune date pour l'instant."
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Produit"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Cycles"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Mis à jour le"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid ""
+"Sans accès à Internet : sur un autre poste, enregistrez https://"
+"endoflife.date/api/v1/products/windows/ dans un fichier (windows étant le "
+"produit voulu), puis importez-le ici."
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Fichier JSON endoflife.date"
+msgstr ""
+
+#: templates/audit.html.twig
+msgid "Importer"
+msgstr ""
+
+#: templates/audit.html.twig
 msgid "Rapport périodique par e-mail"
 msgstr ""
 
@@ -2854,7 +2967,7 @@ msgid ""
 "seulement les constats."
 msgstr ""
 
-#: templates/audit.html.twig front/audit.php:94
+#: templates/audit.html.twig front/audit.php:157
 msgid ""
 "Les notifications par e-mail de GLPI sont désactivées : activez-les dans "
 "Configuration > Notifications."
@@ -2862,10 +2975,6 @@ msgstr ""
 
 #: templates/audit.html.twig src/RequestFormLibraryBuilder.php:277
 msgid "Fréquence"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "Désactivé"
 msgstr ""
 
 #: templates/audit.html.twig
@@ -3803,34 +3912,81 @@ msgstr ""
 msgid "Échec de la connexion : %s"
 msgstr ""
 
-#: front/audit.php:39
+#: front/audit.php:43
 msgid "Correction appliquée."
 msgstr ""
 
-#: front/audit.php:58
+#: front/audit.php:62
 msgid "Contrôles du parc enregistrés."
 msgstr ""
 
-#: front/audit.php:99
+#: front/audit.php:82
+msgid "Réglages de fin de support enregistrés."
+msgstr ""
+
+#: front/audit.php:88
+msgid ""
+"Correspondances proposées ajoutées : vérifiez-les avant de télécharger les "
+"dates."
+msgstr ""
+
+#: front/audit.php:90
+msgid "Activez d'abord le contrôle de fin de support."
+msgstr ""
+
+#: front/audit.php:94
+msgid ""
+"Mode hors ligne : aucun téléchargement. Importez un fichier endoflife.date à "
+"la place."
+msgstr ""
+
+#: front/audit.php:96
+msgid "Aucune correspondance : rien à télécharger."
+msgstr ""
+
+#: front/audit.php:100
+#, php-format
+msgid "Dates téléchargées pour %d produit(s)."
+msgstr ""
+
+#: front/audit.php:103
+#, php-format
+msgid ""
+"Téléchargement impossible pour : %s (produit inconnu d'endoflife.date ou "
+"site injoignable). Les dates déjà en cache sont gardées."
+msgstr ""
+
+#: front/audit.php:117
+#, php-format
+msgid "%1$d cycle(s) importé(s) pour %2$s."
+msgstr ""
+
+#: front/audit.php:119
+msgid ""
+"Fichier refusé : choisissez le fichier JSON d'un produit endoflife.date (2 "
+"Mo au plus) et indiquez son identifiant, par exemple « windows »."
+msgstr ""
+
+#: front/audit.php:162
 msgid "Rapport d'audit mis en file d'envoi."
 msgstr ""
 
-#: front/audit.php:102
+#: front/audit.php:165
 msgid ""
 "Aucune notification active n'a pu envoyer le rapport : vérifiez la "
 "notification et ses destinataires."
 msgstr ""
 
-#: front/audit.php:108
+#: front/audit.php:171
 msgid "Réglages du rapport d'audit enregistrés."
 msgstr ""
 
-#: front/audit.php:114 src/Blueprint/FieldGroupLabel.php:60
+#: front/audit.php:177 src/Blueprint/FieldGroupLabel.php:60
 #: src/ConfigurationProfile.php:93
 msgid "Audit de configuration"
 msgstr ""
 
-#: front/audit.php:138
+#: front/audit.php:211
 #, php-format
 msgid ""
 "%d nouveau constat critique détecté depuis la dernière vérification "
@@ -4805,6 +4961,7 @@ msgstr ""
 #: src/Audit/Checks/DictionaryRulesCheck.php:48
 #: src/Audit/Checks/DuplicateDropdownsCheck.php:41
 #: src/Audit/Checks/DuplicateSoftwareCheck.php:39
+#: src/Audit/Checks/EndOfLifeCheck.php:78
 #: src/Audit/Checks/GhostAssetsCheck.php:49
 #: src/Audit/Checks/IncompleteAssetsCheck.php:43
 #: src/Audit/Checks/UncategorizedSoftwareCheck.php:41
@@ -4883,6 +5040,93 @@ msgstr ""
 msgid "Fusionner"
 msgstr ""
 
+#: src/Audit/Checks/EndOfLifeCheck.php:222
+msgid "date inconnue"
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:226
+#, php-format
+msgid "%1$s : %2$s (cycle %3$s), fin de support le %4$s"
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:244
+msgid "Fin de support : aucune correspondance avec endoflife.date"
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:245
+msgid ""
+"Le contrôle est activé, mais aucun système ni modèle n'est relié à un "
+"produit endoflife.date."
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:246
+msgid ""
+"Plus bas, dans « Fin de support », cliquez sur « Proposer les "
+"correspondances » ou saisissez une ligne par nom, par exemple « Microsoft "
+"Windows 10 Professionnel = windows »."
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:258
+#, php-format
+msgid ""
+"Fin de support : %1$d élément(s) hors support, %2$d bientôt hors support "
+"(dans les %3$d jours)"
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:265
+msgid ""
+"Un système ou un matériel hors support ne reçoit plus de correctifs de "
+"sécurité : mettre à jour, remplacer, ou accepter et documenter le risque. "
+"« Créer les tickets » ouvre un ticket regroupant ces matériels, lié à "
+"chacun. Rien n'est modifié sur le matériel."
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:269
+#: src/Audit/Checks/GhostAssetsCheck.php:117
+#: src/Audit/Checks/IncompleteAssetsCheck.php:113
+#: src/Audit/Checks/WarrantyCheck.php:119
+msgid "Créer les tickets"
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:274
+#, php-format
+msgid "dates non téléchargées : %s"
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:277
+#, php-format
+msgid "cycle non reconnu : %s"
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:280
+#, php-format
+msgid "dates de plus de %1$d jours : %2$s"
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:287
+msgid "Fin de support : correspondances à compléter"
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:289
+msgid ""
+"Plus bas, dans « Fin de support » : « Télécharger les dates » (ou importez "
+"un fichier en mode hors ligne), et précisez le cycle d'un nom non reconnu, "
+"par exemple « Debian 12 = debian 12 »."
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:319
+msgid ""
+"Ces matériels en service utilisent un système ou un modèle hors support, ou "
+"bientôt hors support (dates endoflife.date) :"
+msgstr ""
+
+#: src/Audit/Checks/EndOfLifeCheck.php:321
+msgid ""
+"Pour chacun : mettre à jour, remplacer, ou accepter et documenter le risque. "
+"Ce ticket a été ouvert par le mode Audit de Configuration GLPI Auto : aucune "
+"donnée du matériel n'a été modifiée."
+msgstr ""
+
 #: src/Audit/Checks/EntitiesWithoutAddressCheck.php:71
 #, php-format
 msgid "%d entité sans adresse renseignée"
@@ -4915,12 +5159,6 @@ msgid ""
 "tickets » ouvre un ticket par matériel, lié à lui, pour que l'équipe "
 "vérifie. Rien n'est modifié sur le matériel. Le délai se règle plus bas, "
 "dans « Contrôles du parc »."
-msgstr ""
-
-#: src/Audit/Checks/GhostAssetsCheck.php:117
-#: src/Audit/Checks/IncompleteAssetsCheck.php:113
-#: src/Audit/Checks/WarrantyCheck.php:119
-msgid "Créer les tickets"
 msgstr ""
 
 #: src/Audit/Checks/GhostAssetsCheck.php:135
@@ -5223,6 +5461,70 @@ msgstr ""
 msgid "Activez les notifications dans la configuration générale de GLPI."
 msgstr ""
 
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php:56
+msgid "Comptes à privilèges"
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php:111
+#, php-format
+msgid "%1$d comptes Super-Admin actifs (%2$d au plus recommandés)"
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php:116
+msgid ""
+"Un compte Super-Admin peut tout modifier, y compris les droits des autres. "
+"Gardez-en le moins possible : donnez le profil Admin ou Technicien aux "
+"personnes qui n'administrent pas GLPI lui-même (fiche de l'utilisateur, "
+"onglet « Habilitations »)."
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php:125
+#, php-format
+msgid "%1$d compte à privilèges sans connexion depuis plus de %2$d jours"
+msgid_plural ""
+"%1$d comptes à privilèges sans connexion depuis plus de %2$d jours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php:134
+msgid ""
+"Un compte inutilisé garde ses droits et peut être détourné sans que personne "
+"ne le remarque. Vérifiez avec le responsable de chaque personne : désactivez "
+"le compte (case « Actif » de la fiche) ou retirez son profil s'il n'est plus "
+"utile."
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php:144
+#, php-format
+msgid "%d compte à privilèges ne s'est jamais connecté"
+msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php:153
+#, php-format
+msgid ""
+"Ces comptes existent depuis plus de %d jours sans aucune connexion : comptes "
+"créés par erreur, en double ou oubliés. Désactivez ceux qui ne servent pas."
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php:163
+#, php-format
+msgid "%d comptes locaux à privilèges alors qu'un annuaire LDAP est actif"
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php:167
+msgid ""
+"Le mot de passe de ces comptes est géré par GLPI et non par l'annuaire : ils "
+"restent ouverts après le départ de la personne. Gardez un seul compte local "
+"de secours, documenté, et rattachez les autres à l'annuaire."
+msgstr ""
+
+#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php:184
+#, php-format
+msgid "%1$s (dernière connexion le %2$s)"
+msgstr ""
+
 #: src/Audit/Checks/PrivilegedAccountsWithout2faCheck.php:44
 #: src/Blueprint/FieldGroupLabel.php:66
 msgid "Double authentification"
@@ -5234,6 +5536,15 @@ msgid "%d compte à privilèges n'a pas de double authentification"
 msgid_plural "%d comptes à privilèges n'ont pas de double authentification"
 msgstr[0] ""
 msgstr[1] ""
+
+#: src/Audit/Checks/PrivilegedAccountsWithout2faCheck.php:75
+msgid ""
+"Imposez la double authentification native de GLPI aux profils de l'interface "
+"standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape "
+"« Réglages généraux GLPI », bloc « Double authentification », ou dans "
+"l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque "
+"personne configure son application à sa prochaine connexion."
+msgstr ""
 
 #: src/Audit/Checks/UncategorizedSoftwareCheck.php:84
 #, php-format
@@ -6932,89 +7243,4 @@ msgstr ""
 
 #: src/WifiAccessFormBuilder.php:214
 msgid "Appareil ou nom du visiteur"
-msgstr ""
-
-#: src/Audit/Checks/PrivilegedAccountsWithout2faCheck.php:75
-msgid ""
-"Imposez la double authentification native de GLPI aux profils de l'interface "
-"standard (Super-Admin, Admin, Technicien) : dans l'assistant, étape "
-"« Réglages généraux GLPI », bloc « Double authentification », ou dans "
-"l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque "
-"personne configure son application à sa prochaine connexion."
-msgstr ""
-
-#: templates/wizard.html.twig
-msgid ""
-"Coche la case native « Forcer 2FA » (onglet « Sécurité » du profil) des "
-"profils choisis ci-dessous. Chaque personne concernée configure son "
-"application d'authentification (code à 6 chiffres) à sa prochaine connexion, "
-"avec l'écran de GLPI. Décochée par défaut : ceci change la connexion de "
-"vraies personnes. Décocher un profil ne retire jamais une obligation déjà en "
-"place : faites-le dans l'onglet « Sécurité » du profil. Le délai de grâce de "
-"GLPI ne vaut que pour l'obligation générale : ici, la configuration est "
-"demandée dès la prochaine connexion."
-msgstr ""
-
-#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
-msgid "Comptes à privilèges"
-msgstr ""
-
-#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
-#, php-format
-msgid "%1$d comptes Super-Admin actifs (%2$d au plus recommandés)"
-msgstr ""
-
-#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
-msgid ""
-"Un compte Super-Admin peut tout modifier, y compris les droits des autres. "
-"Gardez-en le moins possible : donnez le profil Admin ou Technicien aux "
-"personnes qui n'administrent pas GLPI lui-même (fiche de l'utilisateur, "
-"onglet « Habilitations »)."
-msgstr ""
-
-#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
-#, php-format
-msgid "%1$d compte à privilèges sans connexion depuis plus de %2$d jours"
-msgid_plural ""
-"%1$d comptes à privilèges sans connexion depuis plus de %2$d jours"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
-msgid ""
-"Un compte inutilisé garde ses droits et peut être détourné sans que personne"
-" ne le remarque. Vérifiez avec le responsable de chaque personne : "
-"désactivez le compte (case « Actif » de la fiche) ou retirez son profil s'il"
-" n'est plus utile."
-msgstr ""
-
-#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
-#, php-format
-msgid "%d compte à privilèges ne s'est jamais connecté"
-msgid_plural "%d comptes à privilèges ne se sont jamais connectés"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
-#, php-format
-msgid ""
-"Ces comptes existent depuis plus de %d jours sans aucune connexion : comptes"
-" créés par erreur, en double ou oubliés. Désactivez ceux qui ne servent pas."
-msgstr ""
-
-#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
-#, php-format
-msgid "%d comptes locaux à privilèges alors qu'un annuaire LDAP est actif"
-msgstr ""
-
-#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
-msgid ""
-"Le mot de passe de ces comptes est géré par GLPI et non par l'annuaire : ils"
-" restent ouverts après le départ de la personne. Gardez un seul compte local"
-" de secours, documenté, et rattachez les autres à l'annuaire."
-msgstr ""
-
-#: src/Audit/Checks/PrivilegedAccountsReviewCheck.php
-#, php-format
-msgid "%1$s (dernière connexion le %2$s)"
 msgstr ""

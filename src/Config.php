@@ -246,6 +246,10 @@ class Config extends Compat\Base\ConfigBase
             'entity_inventory_rules_enabled' => 0,
             'audit_ghost_days' => 30,
             'audit_warranty_days' => 30,
+            'audit_eol_enabled' => 0,
+            'audit_eol_offline' => 0,
+            'audit_eol_days' => 180,
+            'audit_eol_mapping' => '',
             'kb_categories_enabled' => 1,
             'kb_faq_enabled' => 1,
             'document_management_enabled' => 1,
@@ -703,6 +707,14 @@ class Config extends Compat\Base\ConfigBase
             $input['audit_report_emails'] = implode("\n", self::parseEmails((string) $input['audit_report_emails']));
         }
 
+        // Issue #467 : correspondances endoflife.date rangées (lignes valides seulement), délai borné.
+        if (isset($input['audit_eol_mapping'])) {
+            $input['audit_eol_mapping'] = \GlpiPlugin\Configurationglpiauto\Audit\EndOfLife\EndOfLifeMapping::normalize((string) $input['audit_eol_mapping']);
+        }
+        if (isset($input['audit_eol_days'])) {
+            $input['audit_eol_days'] = max(0, min(3650, (int) $input['audit_eol_days']));
+        }
+
         // Issue #464 : profils retenus pour la double authentification, en JSON de noms.
         if (isset($input['twofa_profiles'])) {
             $input['twofa_profiles'] = json_encode(TwoFactorBuilder::normalizeProfileNames($input['twofa_profiles']));
@@ -712,7 +724,7 @@ class Config extends Compat\Base\ConfigBase
             $input['state_icons_enabled'] = !empty($input['state_icons_enabled']) ? 1 : 0;
         }
 
-        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled', 'dashboard_enabled', 'audit_watch_enabled', 'audit_report_only_on_change', 'inventory_enabled', 'twofa_enforcement_enabled'] as $field) {
+        foreach (['general_ui_enabled', 'notifications_enabled', 'financial_info_enabled', 'project_task_states_enabled', 'satisfaction_survey_enabled', 'committee_validation_enabled', 'dashboard_enabled', 'audit_watch_enabled', 'audit_report_only_on_change', 'inventory_enabled', 'twofa_enforcement_enabled', 'audit_eol_enabled', 'audit_eol_offline'] as $field) {
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }
