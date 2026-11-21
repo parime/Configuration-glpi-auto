@@ -19,6 +19,10 @@ use GlpiPlugin\Configurationglpiauto\Audit\AuditControlCatalog;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditHistory;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditReportCron;
 use GlpiPlugin\Configurationglpiauto\Audit\AuditService;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\EndOfLifeCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\EndOfLife\EndOfLifeCache;
+use GlpiPlugin\Configurationglpiauto\Audit\EndOfLife\EndOfLifeClient;
+use GlpiPlugin\Configurationglpiauto\Audit\EndOfLife\EndOfLifeMapping;
 use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
@@ -58,6 +62,65 @@ if (isset($_POST['save_park'])) {
         'audit_warranty_days' => max(0, min(3650, (int) ($_POST['audit_warranty_days'] ?? 30))),
     ]);
     Session::addMessageAfterRedirect(__('Contrôles du parc enregistrés.', 'configurationglpiauto'));
+
+    Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
+}
+
+// Issue #467 : fin de support (endoflife.date). Rien n'est téléchargé sans activation, et jamais en
+// mode hors ligne : les dates viennent alors d'un fichier importé à la main.
+if (isset($_POST['save_eol']) || isset($_POST['suggest_eol']) || isset($_POST['refresh_eol']) || isset($_POST['import_eol'])) {
+    Session::checkRight(Config::$rightname, UPDATE);
+    Session::checkRight('config', UPDATE);
+
+    $config = Config::getConfig();
+    if (isset($_POST['save_eol'])) {
+        $config->update([
+            'id'                => $config->getID(),
+            'audit_eol_enabled' => !empty($_POST['audit_eol_enabled']) ? 1 : 0,
+            'audit_eol_offline' => !empty($_POST['audit_eol_offline']) ? 1 : 0,
+            'audit_eol_days'    => (int) ($_POST['audit_eol_days'] ?? 180),
+            'audit_eol_mapping' => (string) ($_POST['audit_eol_mapping'] ?? ''),
+        ]);
+        Session::addMessageAfterRedirect(__('Réglages de fin de support enregistrés.', 'configurationglpiauto'));
+    } elseif (isset($_POST['suggest_eol'])) {
+        $config->update([
+            'id'                => $config->getID(),
+            'audit_eol_mapping' => EndOfLifeMapping::withSuggestions(EndOfLifeCheck::mappingText(), EndOfLifeCheck::osNames()),
+        ]);
+        Session::addMessageAfterRedirect(__('Correspondances proposées ajoutées : vérifiez-les avant de télécharger les dates.', 'configurationglpiauto'));
+    } elseif (!EndOfLifeCheck::enabled()) {
+        Session::addMessageAfterRedirect(__('Activez d\'abord le contrôle de fin de support.', 'configurationglpiauto'), false, ERROR);
+    } elseif (isset($_POST['refresh_eol'])) {
+        $products = EndOfLifeMapping::products(EndOfLifeCheck::mappingText());
+        if (!empty($config->fields['audit_eol_offline'])) {
+            Session::addMessageAfterRedirect(__('Mode hors ligne : aucun téléchargement. Importez un fichier endoflife.date à la place.', 'configurationglpiauto'), false, ERROR);
+        } elseif ($products === []) {
+            Session::addMessageAfterRedirect(__('Aucune correspondance : rien à télécharger.', 'configurationglpiauto'), false, ERROR);
+        } else {
+            $failed = EndOfLifeCache::refresh($products);
+            if ($failed === []) {
+                Session::addMessageAfterRedirect(sprintf(__('Dates téléchargées pour %d produit(s).', 'configurationglpiauto'), count($products)));
+            } else {
+                Session::addMessageAfterRedirect(
+                    sprintf(__('Téléchargement impossible pour : %s (produit inconnu d\'endoflife.date ou site injoignable). Les dates déjà en cache sont gardées.', 'configurationglpiauto'), implode(', ', $failed)),
+                    false,
+                    WARNING
+                );
+            }
+        }
+    } else {
+        $product = strtolower(trim((string) ($_POST['eol_product'] ?? '')));
+        $file = $_FILES['eol_file'] ?? null;
+        $json = is_array($file) && (int) ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK && (int) ($file['size'] ?? 0) <= 2 * 1024 * 1024
+            ? (string) file_get_contents((string) $file['tmp_name'])
+            : '';
+        try {
+            $count = EndOfLifeCache::import($product, $json);
+            Session::addMessageAfterRedirect(sprintf(__('%1$d cycle(s) importé(s) pour %2$s.', 'configurationglpiauto'), $count, $product));
+        } catch (\RuntimeException) {
+            Session::addMessageAfterRedirect(__('Fichier refusé : choisissez le fichier JSON d\'un produit endoflife.date (2 Mo au plus) et indiquez son identifiant, par exemple « windows ».', 'configurationglpiauto'), false, ERROR);
+        }
+    }
 
     Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
 }
@@ -123,6 +186,16 @@ $auditRuns = AuditHistory::list(30);
 $compareFrom = (int) ($_GET['compare_from'] ?? ($auditRuns[1]['id'] ?? 0));
 $compareTo = (int) ($_GET['compare_to'] ?? ($auditRuns[0]['id'] ?? 0));
 $comparison = AuditHistory::comparison($auditRuns, $compareFrom, $compareTo);
+
+$eolCache = [];
+foreach (EndOfLifeCache::all() as $product => $entry) {
+    $eolCache[] = [
+        'product' => $product,
+        'cycles'  => count($entry['cycles']),
+        'date'    => Html::convDateTime($entry['date']),
+        'url'     => EndOfLifeClient::productPage($product),
+    ];
+}
 
 $severityOrder = ['critical' => 0, 'warning' => 1, 'info' => 2];
 usort($findings, static fn ($a, $b) => $severityOrder[$a->severity] <=> $severityOrder[$b->severity]);
@@ -201,6 +274,13 @@ if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_D
     'park'                  => [
         'ghost_days'    => (int) ($config->fields['audit_ghost_days'] ?? 30),
         'warranty_days' => (int) ($config->fields['audit_warranty_days'] ?? 30),
+    ],
+    'eol'                   => [
+        'enabled' => !empty($config->fields['audit_eol_enabled']),
+        'offline' => !empty($config->fields['audit_eol_offline']),
+        'days'    => (int) ($config->fields['audit_eol_days'] ?? 180),
+        'mapping' => (string) ($config->fields['audit_eol_mapping'] ?? ''),
+        'cache'   => $eolCache,
     ],
     'can_fix'               => Session::haveRight(Config::$rightname, UPDATE) && Session::haveRight('config', UPDATE),
     'csrf_token'            => Session::getNewCSRFToken(),

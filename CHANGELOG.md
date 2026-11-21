@@ -22,6 +22,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   la page et par le rapport périodique ; deux audits se comparent : contrôles améliorés, dégradés,
   nouveaux et retirés, et écart de points. Lecture seule : rien n'est corrigé.
 
+## [1.29.0] - 2026-11-21
+
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
+### Added
+
+- **Audit : fin de support des systèmes et du matériel** (issue #467) : contrôle facultatif
+  (désactivé par défaut) qui signale le matériel en service dont le système d'exploitation ou le
+  modèle est hors support, ou le sera dans le délai choisi (180 jours par défaut), d'après les
+  dates publiques d'endoflife.date. Correspondance explicite « Nom dans GLPI = produit [cycle] »,
+  avec des propositions pour les systèmes courants ajoutées seulement sur clic. Seule l'API
+  endoflife.date est appelée, et seulement sur « Télécharger les dates » ; les dates sont gardées
+  en base (nouvelle table `glpi_plugin_configurationglpiauto_eolcaches`) et le contrôle ne lit
+  que ce cache. Mode hors ligne : aucun appel, import du fichier JSON d'un produit. Lecture
+  seule : « Créer les tickets » ouvre un ticket lié au matériel, sans jamais le modifier.
+
 ## [1.28.0] - 2026-11-21
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

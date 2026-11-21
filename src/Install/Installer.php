@@ -51,6 +51,8 @@ final class Installer
 
     // Issue #345 : cle Jira -> ticket GLPI importe (un nouvel import met a jour au lieu de recreer).
     private const JIRA_IMPORTS_TABLE = 'glpi_plugin_configurationglpiauto_jiraimports';
+    private const EOL_CACHE_TABLE = \GlpiPlugin\Configurationglpiauto\Audit\EndOfLife\EndOfLifeCache::TABLE;
+
     private const CSV_IMPORT_PROFILES_TABLE = 'glpi_plugin_configurationglpiauto_csvimportprofiles';
 
     // Issue #320 : formulaires du catalogue construits par le plugin (mise à jour sans doublon).
@@ -207,6 +209,10 @@ final class Installer
                 `entity_inventory_rules_enabled` tinyint NOT NULL DEFAULT 0,
                 `audit_ghost_days` int NOT NULL DEFAULT 30,
                 `audit_warranty_days` int NOT NULL DEFAULT 30,
+                `audit_eol_enabled` tinyint NOT NULL DEFAULT 0,
+                `audit_eol_offline` tinyint NOT NULL DEFAULT 0,
+                `audit_eol_days` int NOT NULL DEFAULT 180,
+                `audit_eol_mapping` text,
                 `kb_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `kb_faq_enabled` tinyint NOT NULL DEFAULT 0,
                 `document_management_enabled` tinyint NOT NULL DEFAULT 0,
@@ -392,6 +398,11 @@ final class Installer
             // #306 : délais des contrôles du parc du mode Audit (jours, 0 = contrôle désactivé).
             $migration->addField(self::CONFIGS_TABLE, 'audit_ghost_days', 'integer', ['value' => 30]);
             $migration->addField(self::CONFIGS_TABLE, 'audit_warranty_days', 'integer', ['value' => 30]);
+            // #467 : fin de support (endoflife.date), facultative : rien n'est téléchargé avant activation.
+            $migration->addField(self::CONFIGS_TABLE, 'audit_eol_enabled', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'audit_eol_offline', 'bool', ['value' => 0]);
+            $migration->addField(self::CONFIGS_TABLE, 'audit_eol_days', 'integer', ['value' => 180]);
+            $migration->addField(self::CONFIGS_TABLE, 'audit_eol_mapping', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'kb_categories_enabled', 'bool', ['value' => 0]);
             // #143/#144: explicit default 1 (unlike the plain addField()-with-no-value precedent
             // above): this seeds two ready-to-read FAQ articles, not an empty structure an admin
@@ -575,6 +586,29 @@ final class Installer
         $migration->addField(self::JIRA_IMPORTS_TABLE, 'source', 'string', ['value' => 'jira', 'after' => 'id']);
         $migration->dropKey(self::JIRA_IMPORTS_TABLE, 'jira_key');
         $migration->addKey(self::JIRA_IMPORTS_TABLE, ['source', 'jira_key'], 'source_key', 'UNIQUE');
+
+        // Issue #467 : cache des dates endoflife.date, par produit.
+        if (!$DB->tableExists(self::EOL_CACHE_TABLE)) {
+            $charset   = DBConnection::getDefaultCharset();
+            $collation = DBConnection::getDefaultCollation();
+            $keySign   = DBConnection::getDefaultPrimaryKeySignOption();
+
+            $query = "CREATE TABLE `" . self::EOL_CACHE_TABLE . "` (
+                `id` int {$keySign} NOT NULL AUTO_INCREMENT,
+                `product` varchar(64) NOT NULL,
+                `cycles` longtext,
+                `date_mod` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `product` (`product`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$charset} COLLATE={$collation}";
+
+            if (!$DB->doQuery($query)) {
+                \Toolbox::logInFile('sql-errors', sprintf("[configurationglpiauto] %s: %s
+", self::EOL_CACHE_TABLE, $DB->error()));
+
+                return false;
+            }
+        }
 
         // Issue #430 : modèles de correspondance des colonnes de l'import CSV générique.
         if (!$DB->tableExists(self::CSV_IMPORT_PROFILES_TABLE)) {
@@ -900,6 +934,7 @@ final class Installer
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::HISTORY_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::JIRA_IMPORTS_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::CSV_IMPORT_PROFILES_TABLE . "`");
+        $DB->doQuery("DROP TABLE IF EXISTS `" . self::EOL_CACHE_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . self::MANAGED_FORMS_TABLE . "`");
         $DB->doQuery("DROP TABLE IF EXISTS `" . \GlpiPlugin\Configurationglpiauto\Audit\AuditHistory::TABLE . "`");
 
