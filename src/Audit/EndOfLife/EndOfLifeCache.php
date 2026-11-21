@@ -61,11 +61,7 @@ final class EndOfLifeCache
         global $DB;
 
         $fields = ['cycles' => (string) json_encode($cycles), 'date_mod' => date('Y-m-d H:i:s')];
-        if (countElementsInTable(self::TABLE, ['product' => $product]) > 0) {
-            $DB->update(self::TABLE, $fields, ['product' => $product]);
-        } else {
-            $DB->insert(self::TABLE, ['product' => $product] + $fields);
-        }
+        $DB->updateOrInsert(self::TABLE, $fields, ['product' => $product]);
     }
 
     /**
