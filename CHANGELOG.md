@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.28.0] - 2026-11-21
 
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
 ### Added
 
 - **Audit : revue des comptes à privilèges** (issue #465) : nouveau contrôle qui signale plus de
