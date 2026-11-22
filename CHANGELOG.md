@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Audit : sessions actives et ré-authentification de GLPI 12** (issue #470) : nouvelle section
+  de la page d'audit et nouveau contrôle « Sessions et ré-authentification (GLPI 12) » (poids
+  sécurité). Un tableau explique et vérifie, avec un badge de couleur et un lien vers l'écran de
+  GLPI où il se règle, chaque réglage lié : ré-authentification avant les actions sensibles
+  (constante `GLPI_DISABLE_REAUTH`, critique si elle la désactive), action automatique
+  « session » qui ferme les sessions expirées, durée de « Se souvenir de moi » (plus de 7 jours
+  signalée) et conservation de l'historique des connexions (0 jour signalé). Les comptes à
+  privilèges connectés depuis plus de 24 heures et les autres comptes dont une session a plus de
+  7 jours sont listés, avec un lien vers l'onglet « Sessions » de leur fiche. Lecture seule :
+  aucune session n'est fermée. Sous GLPI 11, la section affiche « Sans objet sous GLPI 11 » et le
+  contrôle sort de la note de durcissement au lieu de paraître conforme.
+
 ## [1.31.0] - 2026-11-21
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

@@ -178,6 +178,14 @@ ne se sont jamais connectés (créés depuis plus de 30 jours) et, quand un annu
 plus d'un compte local à privilèges (un compte local de secours reste normal). Chaque compte est
 un lien vers sa fiche ; rien n'est désactivé automatiquement.
 
+**Sessions et ré-authentification (GLPI 12)** : la page d'audit vérifie les réglages de GLPI 12 qui
+protègent les connexions ouvertes : ré-authentification avant les actions sensibles, nettoyage
+automatique des sessions expirées, durée de « Se souvenir de moi » (7 jours au plus conseillés) et
+conservation de l'historique des connexions. Elle signale les comptes à privilèges connectés
+depuis plus de 24 heures et les autres comptes dont une session a plus de 7 jours, avec un lien
+vers l'onglet « Sessions » de leur fiche. Aucune session n'est fermée automatiquement. Sous
+GLPI 11, la section indique « Sans objet sous GLPI 11 » et le contrôle ne compte pas dans la note.
+
 **Fin de support des systèmes et du matériel** (facultatif) : dans Audit de configuration, carte
 « Fin de support des systèmes et du matériel », cochez « Activer le contrôle de fin de support »,
 puis cliquez sur « Proposer les correspondances » : chaque système d'exploitation reconnu du parc
@@ -481,6 +489,14 @@ accounts, standard interface accounts with no login for more than 90 days, accou
 logged in (created more than 30 days ago) and, when an LDAP directory is active, more than one
 local privileged account (one local emergency account is normal). Each account links to its form;
 nothing is deactivated automatically.
+
+**Sessions and re-authentication (GLPI 12)**: the audit page checks the GLPI 12 settings that
+protect open logins: re-authentication before sensitive actions, automatic clean-up of expired
+sessions, "Remember me" duration (at most 7 days recommended) and login history retention. It
+reports privileged accounts logged in for more than 24 hours and other accounts with a session
+older than 7 days, with a link to the "Sessions" tab of their record. No session is closed
+automatically. On GLPI 11 the section shows "Not applicable on GLPI 11" and the check does not
+count in the score.
 
 **End of support for systems and hardware** (optional): in Configuration audit, card "End of
 support for systems and hardware", tick "Enable the end-of-support check", then click "Suggest
