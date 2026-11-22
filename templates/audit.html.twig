@@ -88,6 +88,7 @@
 </div>
 
 {% if drift is defined %}{% include '@configurationglpiauto/audit/_blueprint_drift.html.twig' %}{% endif %}
+{% if sessions is defined %}{% include '@configurationglpiauto/audit/_session_security.html.twig' %}{% endif %}
 
 {# Issue #306 : délais des contrôles du parc #}
 {% set park = park|default({'ghost_days': 30, 'warranty_days': 30}) %}

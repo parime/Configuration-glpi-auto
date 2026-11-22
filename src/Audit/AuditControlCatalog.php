@@ -37,6 +37,7 @@ final class AuditControlCatalog
         'weak_password_policy'             => self::WEIGHT_SECURITY,
         'privileged_accounts_without_2fa'  => self::WEIGHT_SECURITY,
         'privileged_accounts_review'       => self::WEIGHT_SECURITY,
+        'session_security'                 => self::WEIGHT_SECURITY,
         'end_of_life'                      => self::WEIGHT_SECURITY,
         'notifications_disabled'           => self::WEIGHT_OPERATIONS,
         'default_admin_email'              => self::WEIGHT_OPERATIONS,
@@ -89,6 +90,7 @@ final class AuditControlCatalog
             'weak_password_policy'             => __('Politique de mots de passe', 'configurationglpiauto'),
             'privileged_accounts_without_2fa'  => __('Double authentification des comptes à privilèges', 'configurationglpiauto'),
             'privileged_accounts_review'       => __('Revue des comptes à privilèges', 'configurationglpiauto'),
+            'session_security'                 => __('Sessions et ré-authentification (GLPI 12)', 'configurationglpiauto'),
             'dictionary_rules'                 => __('Dictionnaires d\'inventaire', 'configurationglpiauto'),
             'mail_collectors'                  => __('Collecteurs de messagerie', 'configurationglpiauto'),
             'blueprint_drift'                  => __('Conformité au dernier Blueprint appliqué', 'configurationglpiauto'),
@@ -98,13 +100,14 @@ final class AuditControlCatalog
     }
 
     /**
-     * Contrôles désactivés dans les réglages du plugin (délai à 0, contrôle non activé) : ils sont
+     * Contrôles désactivés dans les réglages du plugin (délai à 0, contrôle non activé) ou sans
+     * objet sur la version de GLPI installée (issue #470 : sessions propres à GLPI 12) : ils sont
      * exclus de la note au lieu de la gonfler par une absence de constat.
      *
      * @param array<string, mixed> $configFields
      * @return list<string>
      */
-    public static function notApplicable(array $configFields): array
+    public static function notApplicable(array $configFields, bool $sessionTracking = true): array
     {
         $keys = [];
         if ((int) ($configFields['audit_ghost_days'] ?? 30) === 0) {
@@ -115,6 +118,9 @@ final class AuditControlCatalog
         }
         if (array_key_exists('audit_eol_enabled', $configFields) && empty($configFields['audit_eol_enabled'])) {
             $keys[] = 'end_of_life';
+        }
+        if (!$sessionTracking) {
+            $keys[] = 'session_security';
         }
 
         return $keys;
@@ -144,7 +150,7 @@ final class AuditControlCatalog
         }
 
         $findings      = AuditService::runAll();
-        $notApplicable = self::notApplicable(Config::getConfig()->fields);
+        $notApplicable = self::notApplicable(Config::getConfig()->fields, SessionSecurity::isAvailable());
         $statuses      = HardeningScore::statuses($keys, $findings, $notApplicable);
         $weights       = self::weights($keys);
         $score         = HardeningScore::score($statuses, $weights);
