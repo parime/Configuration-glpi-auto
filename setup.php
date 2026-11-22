@@ -69,6 +69,11 @@ function plugin_init_configurationglpiauto(): void
     // laisser deux points d'entree incoherents (Sprint 11).
     $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['configurationglpiauto'] = 'front/wizard.php';
 
+    // parime/glpi-plugin-template#10 (charte section 8) : classes bg-X-subtle / text-X-emphasis des
+    // couleurs nommées de Tabler (green, blue...), absentes de GLPI et de Tabler : sans cette feuille,
+    // les badges verts et bleus de la page d'audit s'affichent sans fond.
+    $PLUGIN_HOOKS[Hooks::ADD_CSS]['configurationglpiauto'] = ['css/configurationglpiauto.css'];
+
     Plugin::registerClass(ConfigurationProfile::class);
     // Onglet des profils GLPI : attribuer les droits du plugin depuis l'interface.
     Plugin::registerClass(\GlpiPlugin\Configurationglpiauto\Profile::class, ['addtabon' => ['Profile']]);
