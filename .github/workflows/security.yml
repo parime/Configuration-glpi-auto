@@ -27,3 +27,5 @@ jobs:
       # (navigation-mode: warning sera à ajouter quand le workflow commun aura de nouveau son job
       # « navigation » : il manque depuis v1.10.0, parime/glpi-plugin-security#37.)
       pages-mode: warning
+      # Assertions de test sur des libellés traduits, en avertissement le temps de l'issue #501.
+      translated-assertions-mode: warning
