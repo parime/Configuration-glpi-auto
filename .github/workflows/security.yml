@@ -18,12 +18,12 @@ permissions:
 
 jobs:
   security:
-    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.10.0
+    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.10.1
     with:
       plugin-key: configurationglpiauto
       charter-mode: error
       seed-command: php plugins/configurationglpiauto/tests/security/setup.php && php plugins/configurationglpiauto/tests/security/setup.php fleet
       # Parcours de toutes les pages en avertissement, le temps de l'issue de navigation #495.
       # (navigation-mode: warning sera à ajouter quand le workflow commun aura de nouveau son job
-      # « navigation » : il manque dans v1.10.0, où l'entrée n'existe pas.)
+      # « navigation » : il manque depuis v1.10.0, parime/glpi-plugin-security#37.)
       pages-mode: warning
