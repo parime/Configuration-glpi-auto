@@ -37,3 +37,4 @@
 /.phpstan-bootstrap.php export-ignore
 /phpstan.glpi12.neon export-ignore
 /phpunit.xml export-ignore
+/.glpi-security-exceptions export-ignore

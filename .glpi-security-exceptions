@@ -1,0 +1,7 @@
+# Exceptions justifiées des contrôles de sécurité communs (parime/glpi-plugin-security).
+# Format : « <contrôle> <identifiant> : <justification> », une par ligne ; « # » : commentaire.
+# Charte commune : parime/glpi-plugin-template, CHARTE.md, section 9 (menus et réglages).
+
+# Seule entrée de menu du plugin, dans Configuration : l'assistant configure GLPI lui-même
+# (profils, entités, calendriers, SLA, règles), c'est là qu'un administrateur le cherche.
+menus-entree-native config > GlpiPlugin\Configurationglpiauto\ConfigurationProfile : outil de configuration de GLPI, usage quotidien dans le secteur Configuration (décision du mainteneur 22/11)

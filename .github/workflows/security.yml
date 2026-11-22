@@ -1,5 +1,7 @@
 # Contrôles de sécurité communs à tous les plugins GLPI (parime/glpi-plugin-security) : règles
-# Semgrep, onglets sans droit, cibles de notification, restes après désinstallation.
+# Semgrep, onglets sans droit, cibles de notification, restes après désinstallation, secrets
+# (Gitleaks), dépendances (Trivy, Dependency Review), CodeQL, mise à jour depuis la version publiée,
+# tests d'intégration en français et parcours de toutes les pages (GLPI 11 et 12).
 name: Sécurité commune
 
 on:
@@ -16,8 +18,12 @@ permissions:
 
 jobs:
   security:
-    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.9.0
+    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.10.0
     with:
       plugin-key: configurationglpiauto
       charter-mode: error
       seed-command: php plugins/configurationglpiauto/tests/security/setup.php && php plugins/configurationglpiauto/tests/security/setup.php fleet
+      # Parcours de toutes les pages en avertissement, le temps de l'issue de navigation #495.
+      # (navigation-mode: warning sera à ajouter quand le workflow commun aura de nouveau son job
+      # « navigation » : il manque dans v1.10.0, où l'entrée n'existe pas.)
+      pages-mode: warning
