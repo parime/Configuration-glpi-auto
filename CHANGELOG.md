@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   enregistrée sur un GLPI où le plugin était installé à neuf. Relevé par le test commun de mise à
   jour (glpi-plugin-security v1.10).
 
+### Changed
+
+- CI : contrôles de sécurité communs glpi-plugin-security v1.10.1 (secrets, dépendances, CodeQL,
+  test de mise à jour depuis la version publiée, tests d'intégration en français, parcours de toutes
+  les pages) ; jobs Trivy et Dependency Review de la CI du plugin retirés, couverts par le workflow
+  commun.
+
 ## [1.33.0] - 2026-11-22
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
@@ -294,7 +301,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (grcmanager), l'aperçu propose de relier chaque ticket étiqueté « Sécurité » (ou security, SSI,
   cybersécurité) à un incident de sécurité, par la même fonction que l'action groupée de grcmanager ;
   un ticket déjà relié garde son incident.
-
 
 ## [1.22.0] - 2026-11-08
 

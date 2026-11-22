@@ -1,0 +1,14 @@
+# Exceptions justifiées des contrôles de sécurité communs (parime/glpi-plugin-security).
+# Format : « <contrôle> <identifiant> : <justification> », une par ligne ; « # » : commentaire.
+# Charte commune : parime/glpi-plugin-template, CHARTE.md, section 9 (menus et réglages).
+
+# Seule entrée de menu du plugin, dans Configuration : l'assistant configure GLPI lui-même
+# (profils, entités, calendriers, SLA, règles), c'est là qu'un administrateur le cherche.
+menus-entree-native config > GlpiPlugin\Configurationglpiauto\ConfigurationProfile : outil de configuration de GLPI, usage quotidien dans le secteur Configuration (décision du mainteneur 22/11)
+
+# Valeurs fictives des tests (jeton « ptr_jeton_fictif_… », mot de passe « MotDePasseFictif… » d'un
+# collecteur de courriel sur exemple.test) : elles n'ouvrent aucun service réel.
+gitleaks tests/Integration/DockerInventorySetupTest.php:generic-api-key:34 : jeton fictif de test (ptr_jeton_fictif_), aucun service réel
+gitleaks tests/Integration/MailCollectorBuilderTest.php:generic-api-key:311 : mot de passe fictif de test (exemple.test), aucun service réel
+gitleaks tests/Unit/MailCollectorBuilderTest.php:generic-api-key:33 : mot de passe fictif de test (exemple.test), aucun service réel
+gitleaks tests/Unit/MailCollectorBuilderTest.php:generic-api-key:108 : mot de passe fictif de test (exemple.test), aucun service réel
