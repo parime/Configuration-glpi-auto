@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Types de licence logicielle sur une installation neuve** (#499) : les colonnes
+  `software_license_types_enabled` et `software_license_type_icons_enabled` n'étaient créées que par
+  la migration d'une mise à jour, pas à l'installation ; l'option de l'assistant ne pouvait pas être
+  enregistrée sur un GLPI où le plugin était installé à neuf. Relevé par le test commun de mise à
+  jour (glpi-plugin-security v1.10).
+
 ## [1.33.0] - 2026-11-22
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
