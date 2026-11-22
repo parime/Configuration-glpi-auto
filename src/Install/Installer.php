@@ -258,6 +258,8 @@ final class Installer
                 `physical_security_assets_enabled` tinyint NOT NULL DEFAULT 0,
                 `physical_security_asset_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `certificate_types_enabled` tinyint NOT NULL DEFAULT 0,
+                `software_license_types_enabled` tinyint NOT NULL DEFAULT 0,
+                `software_license_type_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `certificate_type_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `recurring_ticket_library_enabled` tinyint NOT NULL DEFAULT 0,
                 `date_mod` timestamp NULL DEFAULT NULL,
