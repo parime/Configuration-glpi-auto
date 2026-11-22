@@ -281,6 +281,8 @@ if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_D
         'deploy_url' => Session::haveRight(Config::$rightname, UPDATE) ? \GlpiPlugin\Configurationglpiauto\FrontUrl::get('deploy.php') . '?drift=1' : null,
         'wizard_url' => \GlpiPlugin\Configurationglpiauto\FrontUrl::get('wizard.php'),
     ],
+    // Issue #470 : sessions actives et ré-authentification (GLPI 12, sans objet sous GLPI 11).
+    'sessions'              => \GlpiPlugin\Configurationglpiauto\Audit\SessionSecurity::view(),
     'park'                  => [
         'ghost_days'    => (int) ($config->fields['audit_ghost_days'] ?? 30),
         'warranty_days' => (int) ($config->fields['audit_warranty_days'] ?? 30),

@@ -1,0 +1,138 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #470 : sessions actives et ré-authentification (GLPI 12), en lecture seule. Sous GLPI 11,
+   la section dit que le contrôle est sans objet au lieu de le déclarer conforme. #}
+{% set statusBadges = {
+  'ok': ['ok', __('Conforme', 'configurationglpiauto')],
+  'info': ['info', __('Information', 'configurationglpiauto')],
+  'warning': ['warning', __('À surveiller', 'configurationglpiauto')],
+  'danger': ['danger', __('Critique', 'configurationglpiauto')]
+} %}
+<div class="card mt-3" id="cga-sessions">
+  <div class="card-header">
+    <h3 class="card-title"><i class="ti ti-user-shield me-2"></i>{{ __('Sessions et ré-authentification', 'configurationglpiauto') }}</h3>
+    {% if not sessions.available %}
+      <div class="card-actions">
+        {% include '@configurationglpiauto/_badge.html.twig' with {kind: 'neutral', label: __('Sans objet sous GLPI 11', 'configurationglpiauto')} %}
+      </div>
+    {% endif %}
+  </div>
+  <div class="card-body">
+    <p class="text-muted">
+      {{ __('Une session, c\'est une connexion à GLPI restée ouverte sur un navigateur. Cette section vérifie qu\'aucune ne reste ouverte trop longtemps, surtout pour les administrateurs, et que GLPI redemande le mot de passe avant les actions sensibles. Elle ne ferme aucune session et ne modifie aucun réglage.', 'configurationglpiauto') }}
+    </p>
+
+    {% if not sessions.available %}
+      <div class="alert alert-secondary mb-0" data-testid="sessions-not-applicable">
+        <i class="ti ti-info-circle me-1"></i>
+        {{ __('Le suivi des sessions actives et la ré-authentification n\'existent qu\'à partir de GLPI 12. Sur cette version, le contrôle est sans objet : il ne compte pas dans la note de durcissement. Il s\'activera tout seul après la mise à jour vers GLPI 12.', 'configurationglpiauto') }}
+      </div>
+    {% else %}
+      {% set s = sessions.settings %}
+      {% if s.remember_seconds <= 0 %}
+        {% set rememberValue = __('Désactivé', 'configurationglpiauto') %}
+      {% elseif sessions.remember_days > 0 %}
+        {% set rememberValue = __('%d jour(s)', 'configurationglpiauto')|format(sessions.remember_days) %}
+      {% else %}
+        {% set rememberValue = __('%d heure(s)', 'configurationglpiauto')|format(sessions.remember_hours) %}
+      {% endif %}
+      {% set rows = [
+        {
+          'status': sessions.statuses.reauth,
+          'icon': 'ti-lock-check',
+          'label': __('Ré-authentification avant les actions sensibles', 'configurationglpiauto'),
+          'value': s.reauth_disabled ? __('Désactivée', 'configurationglpiauto') : __('Activée', 'configurationglpiauto'),
+          'why': __('GLPI redemande le mot de passe avant de changer des droits ou des réglages de sécurité : une session oubliée ne suffit pas pour les modifier.', 'configurationglpiauto'),
+          'where': __('Fichier config/local_define.php du serveur (constante GLPI_DISABLE_REAUTH)', 'configurationglpiauto'),
+          'url': null
+        },
+        {
+          'status': sessions.statuses.session_cron,
+          'icon': 'ti-clock-cog',
+          'label': __('Nettoyage automatique des sessions expirées', 'configurationglpiauto'),
+          'value': s.session_cron_enabled ? __('Activé', 'configurationglpiauto') : __('Désactivé', 'configurationglpiauto'),
+          'why': __('L\'action automatique « session » ferme chaque jour les sessions inactives.', 'configurationglpiauto'),
+          'where': __('Configuration > Actions automatiques > session', 'configurationglpiauto'),
+          'url': sessions.urls.session_cron
+        },
+        {
+          'status': sessions.statuses.remember,
+          'icon': 'ti-device-desktop-check',
+          'label': __('Durée de « Se souvenir de moi »', 'configurationglpiauto'),
+          'value': rememberValue,
+          'why': __('Pendant cette durée, GLPI reconnecte le navigateur sans mot de passe. %d jours au plus sont conseillés.', 'configurationglpiauto')|format(sessions.thresholds.remember_days),
+          'where': __('Configuration > Générale > Identification automatique', 'configurationglpiauto'),
+          'url': sessions.urls.general
+        },
+        {
+          'status': sessions.statuses.history,
+          'icon': 'ti-history',
+          'label': __('Conservation de l\'historique des connexions', 'configurationglpiauto'),
+          'value': s.history_days > 0 ? __('%d jour(s)', 'configurationglpiauto')|format(s.history_days) : __('Non conservé', 'configurationglpiauto'),
+          'why': __('Permet de retrouver qui s\'est connecté, quand et d\'où, par exemple après un incident.', 'configurationglpiauto'),
+          'where': __('Configuration > Données et Confidentialité > Sessions de connexion', 'configurationglpiauto'),
+          'url': sessions.urls.privacy
+        }
+      ] %}
+      <div class="table-responsive">
+        <table class="table table-sm table-striped" data-testid="sessions-settings">
+          <thead>
+            <tr>
+              <th>{{ __('Réglage de GLPI', 'configurationglpiauto') }}</th>
+              <th>{{ __('Valeur actuelle', 'configurationglpiauto') }}</th>
+              <th>{{ __('État', 'configurationglpiauto') }}</th>
+              <th>{{ __('Pourquoi c\'est important', 'configurationglpiauto') }}</th>
+              <th>{{ __('Où le régler', 'configurationglpiauto') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+              {% set badge = statusBadges[row.status]|default(['neutral', row.status]) %}
+              <tr>
+                <td><i class="ti {{ row.icon }} me-1"></i>{{ row.label }}</td>
+                <td>{{ row.value }}</td>
+                <td>{% include '@configurationglpiauto/_badge.html.twig' with {kind: badge[0], label: badge[1]} %}</td>
+                <td class="small">{{ row.why }}</td>
+                <td class="small">
+                  {% if row.url %}<a href="{{ row.url }}">{{ row.where }}</a>{% else %}{{ row.where }}{% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-2" data-testid="sessions-counters">
+        <span class="badge bg-blue-lt"><i class="ti ti-users me-1"></i>{{ __('Sessions actives : %d', 'configurationglpiauto')|format(sessions.active_sessions) }}</span>
+        {% include '@configurationglpiauto/_badge.html.twig' with {
+          kind: sessions.admin_accounts > 0 ? 'warning' : 'ok',
+          label: __('Comptes à privilèges connectés depuis plus de %1$d heures : %2$d', 'configurationglpiauto')|format(sessions.thresholds.admin_hours, sessions.admin_accounts)
+        } %}
+        {% include '@configurationglpiauto/_badge.html.twig' with {
+          kind: sessions.old_accounts > 0 ? 'info' : 'ok',
+          label: __('Autres comptes avec une session de plus de %1$d jours : %2$d', 'configurationglpiauto')|format(sessions.thresholds.old_days, sessions.old_accounts)
+        } %}
+      </div>
+      <p class="small mb-2">
+        <i class="ti ti-bulb me-1"></i>
+        {{ __('Les comptes concernés sont listés dans les constats plus haut, avec un lien vers l\'onglet « Sessions » de leur fiche. Avant de fermer une session, vérifiez avec la personne : elle sera déconnectée.', 'configurationglpiauto') }}
+      </p>
+      <a class="btn btn-sm btn-outline-primary" href="{{ sessions.urls.sessions }}">
+        <i class="ti ti-list-search me-1"></i>{{ __('Voir toutes les sessions dans GLPI', 'configurationglpiauto') }}
+      </a>
+    {% endif %}
+  </div>
+</div>

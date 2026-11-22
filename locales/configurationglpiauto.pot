@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-21 14:08+0000\n"
+"POT-Creation-Date: 2026-11-22 05:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -447,7 +447,8 @@ msgid ""
 "Règles > Affectation d'un élément à une entité."
 msgstr ""
 
-#: templates/wizard.html.twig src/Blueprint/FieldGroupLabel.php:44
+#: templates/wizard.html.twig src/Audit/BlueprintDrift.php:179
+#: src/Blueprint/FieldGroupLabel.php:44
 msgid "Calendrier"
 msgstr ""
 
@@ -553,7 +554,7 @@ msgstr ""
 msgid "Différences entre les SLA existants et la configuration enregistrée :"
 msgstr ""
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig templates/audit/_blueprint_drift.html.twig
 msgid "Élément"
 msgstr ""
 
@@ -644,7 +645,8 @@ msgstr ""
 msgid "Escalade automatique N2 → N3 (à l'échéance du SLA)"
 msgstr ""
 
-#: templates/wizard.html.twig src/Audit/Checks/NoTicketCategoriesCheck.php:40
+#: templates/wizard.html.twig src/Audit/BlueprintDrift.php:215
+#: src/Audit/Checks/NoTicketCategoriesCheck.php:40
 msgid "Catégories de tickets"
 msgstr ""
 
@@ -800,7 +802,7 @@ msgid ""
 "fin + pays"
 msgstr ""
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig src/Audit/BlueprintDrift.php:240
 #: src/Audit/Checks/MissingRecommendedStatesCheck.php:43
 #: src/Audit/Checks/NoStatesConfiguredCheck.php:41
 msgid "Statuts des éléments"
@@ -2815,15 +2817,15 @@ msgstr ""
 msgid "Aucun problème détecté par cet audit."
 msgstr ""
 
-#: templates/audit.html.twig
+#: templates/audit.html.twig templates/audit/_session_security.html.twig
 msgid "Critique"
 msgstr ""
 
-#: templates/audit.html.twig
+#: templates/audit.html.twig templates/audit/_session_security.html.twig
 msgid "À surveiller"
 msgstr ""
 
-#: templates/audit.html.twig
+#: templates/audit.html.twig templates/audit/_session_security.html.twig
 msgid "Information"
 msgstr ""
 
@@ -2854,11 +2856,11 @@ msgstr ""
 msgid "Enregistrer"
 msgstr ""
 
-#: templates/audit.html.twig
+#: templates/audit.html.twig src/Audit/AuditControlCatalog.php:82
 msgid "Fin de support des systèmes et du matériel"
 msgstr ""
 
-#: templates/audit.html.twig
+#: templates/audit.html.twig templates/audit/_session_security.html.twig
 msgid "Activé"
 msgstr ""
 
@@ -2866,7 +2868,7 @@ msgstr ""
 msgid "Hors ligne"
 msgstr ""
 
-#: templates/audit.html.twig
+#: templates/audit.html.twig templates/audit/_session_security.html.twig
 msgid "Désactivé"
 msgstr ""
 
@@ -2967,7 +2969,7 @@ msgid ""
 "seulement les constats."
 msgstr ""
 
-#: templates/audit.html.twig front/audit.php:157
+#: templates/audit.html.twig front/audit.php:160
 msgid ""
 "Les notifications par e-mail de GLPI sont désactivées : activez-les dans "
 "Configuration > Notifications."
@@ -3300,7 +3302,7 @@ msgid ""
 "maintenant », ou revoyez d'abord les réglages dans l'assistant."
 msgstr ""
 
-#: templates/deploy.html.twig front/deploy.php:32
+#: templates/deploy.html.twig front/deploy.php:38
 msgid "Déployer la configuration"
 msgstr ""
 
@@ -3327,12 +3329,26 @@ msgstr[1] ""
 msgid "Aucune fonctionnalité n'est activée dans cette configuration."
 msgstr ""
 
+#: templates/deploy.html.twig templates/audit/_blueprint_drift.html.twig
+msgid "Écarts avec le dernier Blueprint appliqué"
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid ""
+"Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément "
+"ajouté à la main est conservé."
+msgstr ""
+
 #: templates/deploy.html.twig
 msgid "Vos droits GLPI"
 msgstr ""
 
 #: templates/deploy.html.twig
 msgid "manquant : partie ignorée"
+msgstr ""
+
+#: templates/deploy.html.twig
+msgid "Réaligner aussi les SLA et OLA déjà créés sur cette configuration"
 msgstr ""
 
 #: templates/deploy.html.twig
@@ -3793,6 +3809,362 @@ msgstr ""
 msgid "déjà à jour"
 msgstr ""
 
+#: templates/audit/_hardening_score.html.twig
+msgid "Page d'audit"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Rapport périodique"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Note de durcissement"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Aucun contrôle applicable"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+#, php-format
+msgid "Calculée sur %d contrôles applicables."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid ""
+"Non applicables (désactivés dans les réglages ou sans objet sur cette "
+"version de GLPI) :"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Comment la note est-elle calculée ?"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+#, php-format
+msgid ""
+"Chaque contrôle applicable a un poids : %1$d pour la sécurité (comptes par "
+"défaut, mots de passe, double authentification, comptes à privilèges, fin de "
+"support), %2$d pour l'exploitation (notifications, réseau, matériel, "
+"garanties, collecteurs), %3$d pour la qualité des données."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid ""
+"Un contrôle sans constat rapporte tout son poids, un contrôle à surveiller "
+"la moitié, un contrôle critique rien ; une simple information ne retire "
+"aucun point."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid ""
+"Note = points obtenus / points possibles. Les contrôles désactivés dans les "
+"réglages ne comptent pas."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Bon : de 80 à 100"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "À améliorer : de 50 à 79"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Insuffisant : moins de 50"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "La note ne modifie rien : elle résume les constats affichés plus bas."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Historique et comparaison des audits"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid ""
+"Une photo par jour est gardée : à chaque ouverture de cette page et à chaque "
+"rapport périodique. Choisissez deux audits pour voir ce qui a changé."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid ""
+"Un seul audit enregistré pour l'instant : la comparaison sera possible dès "
+"demain ou au prochain rapport périodique."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Audit de référence"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Audit comparé"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Comparer"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Choisissez deux audits différents."
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+#, php-format
+msgid "Du %1$s au %2$s"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "points"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Contrôles dégradés"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Contrôles améliorés"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Nouveaux contrôles"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Contrôles retirés ou désactivés"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Aucun changement"
+msgstr ""
+
+#: templates/audit/_hardening_score.html.twig
+msgid "Origine"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Conforme"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+#: src/Audit/Checks/SessionSecurityCheck.php:46
+msgid "Sessions et ré-authentification"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Sans objet sous GLPI 11"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid ""
+"Une session, c'est une connexion à GLPI restée ouverte sur un navigateur. "
+"Cette section vérifie qu'aucune ne reste ouverte trop longtemps, surtout "
+"pour les administrateurs, et que GLPI redemande le mot de passe avant les "
+"actions sensibles. Elle ne ferme aucune session et ne modifie aucun réglage."
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid ""
+"Le suivi des sessions actives et la ré-authentification n'existent qu'à "
+"partir de GLPI 12. Sur cette version, le contrôle est sans objet : il ne "
+"compte pas dans la note de durcissement. Il s'activera tout seul après la "
+"mise à jour vers GLPI 12."
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+#, php-format
+msgid "%d jour(s)"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+#, php-format
+msgid "%d heure(s)"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Ré-authentification avant les actions sensibles"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Désactivée"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Activée"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid ""
+"GLPI redemande le mot de passe avant de changer des droits ou des réglages "
+"de sécurité : une session oubliée ne suffit pas pour les modifier."
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid ""
+"Fichier config/local_define.php du serveur (constante GLPI_DISABLE_REAUTH)"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Nettoyage automatique des sessions expirées"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid ""
+"L'action automatique « session » ferme chaque jour les sessions inactives."
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Configuration > Actions automatiques > session"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Durée de « Se souvenir de moi »"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+#, php-format
+msgid ""
+"Pendant cette durée, GLPI reconnecte le navigateur sans mot de passe. %d "
+"jours au plus sont conseillés."
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Configuration > Générale > Identification automatique"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Conservation de l'historique des connexions"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Non conservé"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid ""
+"Permet de retrouver qui s'est connecté, quand et d'où, par exemple après un "
+"incident."
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Configuration > Données et Confidentialité > Sessions de connexion"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Réglage de GLPI"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+#: templates/history_restore.html.twig src/RequestFormLibraryBuilder.php:260
+msgid "Valeur actuelle"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "État"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Pourquoi c'est important"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Où le régler"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+#, php-format
+msgid "Sessions actives : %d"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+#, php-format
+msgid "Comptes à privilèges connectés depuis plus de %1$d heures : %2$d"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+#, php-format
+msgid "Autres comptes avec une session de plus de %1$d jours : %2$d"
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid ""
+"Les comptes concernés sont listés dans les constats plus haut, avec un lien "
+"vers l'onglet « Sessions » de leur fiche. Avant de fermer une session, "
+"vérifiez avec la personne : elle sera déconnectée."
+msgstr ""
+
+#: templates/audit/_session_security.html.twig
+msgid "Voir toutes les sessions dans GLPI"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid ""
+"Compare les SLA, le calendrier, les catégories de tickets et les statuts "
+"créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette "
+"vérification ne modifie rien."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid ""
+"Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à "
+"comparer."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Ouvrir l'assistant"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid ""
+"Aucun écart : la configuration de GLPI correspond au dernier Blueprint "
+"appliqué."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Ajouté"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Modifié"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Supprimé"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Écart"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+#: src/RequestFormLibraryBuilder.php:241
+msgid "Objet"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Dans GLPI"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Dans le Blueprint"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid ""
+"Modification voulue : reportez la nouvelle valeur dans l'assistant, elle "
+"deviendra la référence au prochain déploiement. Modification accidentelle : "
+"réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Réappliquer le Blueprint (avec aperçu)"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Adopter les nouvelles valeurs dans l'assistant"
+msgstr ""
+
 #: templates/profile_form_actions.html.twig
 msgid "Enregistrer la configuration actuelle comme Blueprint"
 msgstr ""
@@ -3854,10 +4226,6 @@ msgstr ""
 msgid "Déployer cette configuration"
 msgstr ""
 
-#: templates/history_restore.html.twig src/RequestFormLibraryBuilder.php:260
-msgid "Valeur actuelle"
-msgstr ""
-
 #: templates/history_restore.html.twig
 msgid "Valeur dans la sauvegarde"
 msgstr ""
@@ -3912,81 +4280,81 @@ msgstr ""
 msgid "Échec de la connexion : %s"
 msgstr ""
 
-#: front/audit.php:43
+#: front/audit.php:46
 msgid "Correction appliquée."
 msgstr ""
 
-#: front/audit.php:62
+#: front/audit.php:65
 msgid "Contrôles du parc enregistrés."
 msgstr ""
 
-#: front/audit.php:82
+#: front/audit.php:85
 msgid "Réglages de fin de support enregistrés."
 msgstr ""
 
-#: front/audit.php:88
+#: front/audit.php:91
 msgid ""
 "Correspondances proposées ajoutées : vérifiez-les avant de télécharger les "
 "dates."
 msgstr ""
 
-#: front/audit.php:90
+#: front/audit.php:93
 msgid "Activez d'abord le contrôle de fin de support."
 msgstr ""
 
-#: front/audit.php:94
+#: front/audit.php:97
 msgid ""
 "Mode hors ligne : aucun téléchargement. Importez un fichier endoflife.date à "
 "la place."
 msgstr ""
 
-#: front/audit.php:96
+#: front/audit.php:99
 msgid "Aucune correspondance : rien à télécharger."
 msgstr ""
 
-#: front/audit.php:100
+#: front/audit.php:103
 #, php-format
 msgid "Dates téléchargées pour %d produit(s)."
 msgstr ""
 
-#: front/audit.php:103
+#: front/audit.php:106
 #, php-format
 msgid ""
 "Téléchargement impossible pour : %s (produit inconnu d'endoflife.date ou "
 "site injoignable). Les dates déjà en cache sont gardées."
 msgstr ""
 
-#: front/audit.php:117
+#: front/audit.php:120
 #, php-format
 msgid "%1$d cycle(s) importé(s) pour %2$s."
 msgstr ""
 
-#: front/audit.php:119
+#: front/audit.php:122
 msgid ""
 "Fichier refusé : choisissez le fichier JSON d'un produit endoflife.date (2 "
 "Mo au plus) et indiquez son identifiant, par exemple « windows »."
 msgstr ""
 
-#: front/audit.php:162
+#: front/audit.php:165
 msgid "Rapport d'audit mis en file d'envoi."
 msgstr ""
 
-#: front/audit.php:165
+#: front/audit.php:168
 msgid ""
 "Aucune notification active n'a pu envoyer le rapport : vérifiez la "
 "notification et ses destinataires."
 msgstr ""
 
-#: front/audit.php:171
+#: front/audit.php:174
 msgid "Réglages du rapport d'audit enregistrés."
 msgstr ""
 
-#: front/audit.php:177 src/Blueprint/FieldGroupLabel.php:60
+#: front/audit.php:180 src/Blueprint/FieldGroupLabel.php:60
 #: src/ConfigurationProfile.php:93
 msgid "Audit de configuration"
 msgstr ""
 
-#: front/audit.php:211
+#: front/audit.php:221
 #, php-format
 msgid ""
 "%d nouveau constat critique détecté depuis la dernière vérification "
@@ -4908,6 +5276,98 @@ msgstr ""
 msgid "Chevauche le réseau de la ligne %s."
 msgstr ""
 
+#: src/Audit/AuditControlCatalog.php:73
+msgid "Notifications activées"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:74
+msgid "Adresse des entités"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:75
+msgid "Adresse e-mail de l'administrateur"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:76
+msgid "Statuts des éléments définis"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:77
+msgid "Statuts recommandés présents"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:78
+msgid "Intitulés en double"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:79
+msgid "Logiciels en double"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:80
+msgid "Matériel qui ne remonte plus"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:81
+msgid "Garanties expirées ou proches"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:83
+msgid "Fiches de matériel incomplètes"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:84
+msgid "Cohérence du réseau"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:85
+msgid "Logiciels sans catégorie"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:86
+msgid "Calendrier actif"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:87
+msgid "SLA définis"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:88
+msgid "Catégories de tickets définies"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:89
+msgid "Comptes par défaut neutralisés"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:90
+msgid "Politique de mots de passe"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:91
+msgid "Double authentification des comptes à privilèges"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:92
+msgid "Revue des comptes à privilèges"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:93
+msgid "Sessions et ré-authentification (GLPI 12)"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:94
+msgid "Dictionnaires d'inventaire"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:95
+msgid "Collecteurs de messagerie"
+msgstr ""
+
+#: src/Audit/AuditControlCatalog.php:96
+msgid "Conformité au dernier Blueprint appliqué"
+msgstr ""
+
 #: src/Audit/AuditReportCron.php:49
 msgid "Envoie par e-mail le rapport périodique de l'audit de configuration"
 msgstr ""
@@ -4916,6 +5376,39 @@ msgstr ""
 msgid ""
 "Ré-exécute l'audit de configuration et détecte les nouveaux constats "
 "critiques"
+msgstr ""
+
+#: src/Audit/BlueprintDrift.php:168
+msgid "Niveaux de service (SLA, OLA)"
+msgstr ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php:40
+msgid "Blueprint"
+msgstr ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php:57
+msgid "La configuration s'écarte du dernier Blueprint appliqué"
+msgstr ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php:60
+#, php-format
+msgid ""
+"%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
+msgid_plural ""
+"%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la "
+"main)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php:68
+msgid ""
+"Relisez les écarts plus bas sur cette page : réappliquez le Blueprint si la "
+"modification n'était pas voulue, sinon reportez la nouvelle valeur dans "
+"l'assistant."
+msgstr ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php:72
+msgid "Voir les écarts"
 msgstr ""
 
 #: src/Audit/Checks/DefaultAdminEmailCheck.php:43
@@ -5544,6 +6037,110 @@ msgid ""
 "« Réglages généraux GLPI », bloc « Double authentification », ou dans "
 "l'onglet « Sécurité » de chaque profil (case « Forcer 2FA »). Chaque "
 "personne configure son application à sa prochaine connexion."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:62
+msgid "La ré-authentification avant les actions sensibles est désactivée"
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:63
+msgid ""
+"GLPI ne redemande plus le mot de passe avant une action sensible (droits, "
+"sécurité) : une session laissée ouverte suffit pour les modifier. La "
+"constante GLPI_DISABLE_REAUTH est déclarée dans un fichier de configuration "
+"du serveur."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:64
+msgid ""
+"Demandez à la personne qui gère le serveur de retirer GLPI_DISABLE_REAUTH du "
+"fichier config/local_define.php."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:71
+msgid "Le nettoyage automatique des sessions est arrêté"
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:72
+msgid ""
+"L'action automatique « session » de GLPI ferme les sessions expirées. "
+"Désactivée, d'anciennes sessions restent valables et la liste des sessions "
+"actives ne reflète plus la réalité."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:73
+msgid ""
+"Réactivez l'action automatique « session » dans Configuration > Actions "
+"automatiques."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:80
+msgid "L'historique des connexions n'est pas conservé"
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:81
+msgid ""
+"Avec une durée de conservation de 0 jour, GLPI efface la trace d'une "
+"connexion dès sa fin : impossible ensuite de savoir qui s'est connecté, "
+"quand et d'où."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:82
+msgid ""
+"Indiquez une durée de conservation (90 jours par exemple) dans Configuration "
+"> Données et Confidentialité, onglet « Sessions de connexion »."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:90
+#, php-format
+msgid "« Se souvenir de moi » garde la connexion plus de %d jours"
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:94
+#, php-format
+msgid ""
+"Durée actuelle : %d jours. Toute personne qui utilise l'ordinateur pendant "
+"ce temps entre dans GLPI sans mot de passe."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:97
+msgid ""
+"Réduisez le « Temps de rétention se souvenir de moi » dans Configuration > "
+"Générale, section « Identification automatique »."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:107
+#, php-format
+msgid "%1$d compte à privilèges connecté depuis plus de %2$d heures"
+msgid_plural "%1$d comptes à privilèges connectés depuis plus de %2$d heures"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:116
+msgid ""
+"Une session d'administrateur restée ouverte est la plus intéressante à "
+"voler. Vérifiez avec chaque personne qu'elle est bien la sienne, puis fermez "
+"les sessions inutiles : fiche de l'utilisateur, onglet « Sessions », bouton "
+"« Révoquer »."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:127
+#, php-format
+msgid "%1$d compte a une session ouverte depuis plus de %2$d jours"
+msgid_plural "%1$d comptes ont une session ouverte depuis plus de %2$d jours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:136
+msgid ""
+"Souvent un « Se souvenir de moi » sur un poste partagé ou perdu. Fermez les "
+"sessions qui ne sont plus utiles : fiche de l'utilisateur, onglet "
+"« Sessions »."
+msgstr ""
+
+#: src/Audit/Checks/SessionSecurityCheck.php:152
+#, php-format
+msgid "%1$s (ouverte le %2$s)"
 msgstr ""
 
 #: src/Audit/Checks/UncategorizedSoftwareCheck.php:84
@@ -6571,10 +7168,6 @@ msgstr ""
 msgid "Partenaire"
 msgstr ""
 
-#: src/RequestFormLibraryBuilder.php:241
-msgid "Objet"
-msgstr ""
-
 #: src/RequestFormLibraryBuilder.php:244
 msgid "Échéance demandée par le partenaire"
 msgstr ""
@@ -7076,41 +7669,41 @@ msgstr ""
 msgid "Calendrier du niveau de service « %s »"
 msgstr ""
 
-#: src/SlaBuilder.php:132 src/SlaBuilder.php:414
+#: src/SlaBuilder.php:157 src/SlaBuilder.php:425
 #, php-format
 msgid "Prise en charge - %s"
 msgstr ""
 
-#: src/SlaBuilder.php:133 src/SlaBuilder.php:415
+#: src/SlaBuilder.php:158 src/SlaBuilder.php:426
 #, php-format
 msgid "Résolution - %s"
 msgstr ""
 
-#: src/SlaBuilder.php:137 src/SlaBuilder.php:421
+#: src/SlaBuilder.php:161 src/SlaBuilder.php:432
 #, php-format
 msgid "OLA prise en charge - %s"
 msgstr ""
 
-#: src/SlaBuilder.php:138 src/SlaBuilder.php:422
+#: src/SlaBuilder.php:162 src/SlaBuilder.php:433
 #, php-format
 msgid "OLA résolution - %s"
 msgstr ""
 
-#: src/SlaBuilder.php:178
+#: src/SlaBuilder.php:189
 msgid "Aucun (24h/24, 7j/7)"
 msgstr ""
 
-#: src/SlaBuilder.php:238
+#: src/SlaBuilder.php:249
 #, php-format
 msgid "SLA - %s"
 msgstr ""
 
-#: src/SlaBuilder.php:475
+#: src/SlaBuilder.php:486
 #, php-format
 msgid "Escalade - %s"
 msgstr ""
 
-#: src/SlaBuilder.php:486
+#: src/SlaBuilder.php:497
 #, php-format
 msgid "Escalade N3 - %s"
 msgstr ""
@@ -7243,334 +7836,4 @@ msgstr ""
 
 #: src/WifiAccessFormBuilder.php:214
 msgid "Appareil ou nom du visiteur"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Notifications activées"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Adresse des entités"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Adresse e-mail de l'administrateur"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Statuts des éléments définis"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Statuts recommandés présents"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Intitulés en double"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Logiciels en double"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Matériel qui ne remonte plus"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Garanties expirées ou proches"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Fiches de matériel incomplètes"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Cohérence du réseau"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Logiciels sans catégorie"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Calendrier actif"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "SLA définis"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Catégories de tickets définies"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Comptes par défaut neutralisés"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Politique de mots de passe"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Double authentification des comptes à privilèges"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Revue des comptes à privilèges"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Dictionnaires d'inventaire"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Collecteurs de messagerie"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Aucun changement"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Aucun contrôle applicable"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Audit comparé"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Audit de référence"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Bon : de 80 à 100"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-#, php-format
-msgid "Calculée sur %d contrôles applicables."
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-#, php-format
-msgid ""
-"Chaque contrôle applicable a un poids : %1$d pour la sécurité (comptes par "
-"défaut, mots de passe, double authentification, comptes à privilèges, fin de "
-"support), %2$d pour l'exploitation (notifications, réseau, matériel, "
-"garanties, collecteurs), %3$d pour la qualité des données."
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Choisissez deux audits différents."
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Comment la note est-elle calculée ?"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Comparer"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Contrôles améliorés"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Contrôles dégradés"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Contrôles retirés ou désactivés"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-#, php-format
-msgid "Du %1$s au %2$s"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Historique et comparaison des audits"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Insuffisant : moins de 50"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "La note ne modifie rien : elle résume les constats affichés plus bas."
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Non applicables (désactivés dans les réglages) :"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid ""
-"Note = points obtenus / points possibles. Les contrôles désactivés dans les "
-"réglages ne comptent pas."
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Note de durcissement"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Nouveaux contrôles"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Origine"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Page d'audit"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "Rapport périodique"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid ""
-"Un contrôle sans constat rapporte tout son poids, un contrôle à surveiller "
-"la moitié, un contrôle critique rien ; une simple information ne retire "
-"aucun point."
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid ""
-"Un seul audit enregistré pour l'instant : la comparaison sera possible dès "
-"demain ou au prochain rapport périodique."
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid ""
-"Une photo par jour est gardée : à chaque ouverture de cette page et à chaque "
-"rapport périodique. Choisissez deux audits pour voir ce qui a changé."
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "points"
-msgstr ""
-
-#: templates/audit/_hardening_score.html.twig
-msgid "À améliorer : de 50 à 79"
-msgstr ""
-
-#: src/Audit/AuditControlCatalog.php
-msgid "Conformité au dernier Blueprint appliqué"
-msgstr ""
-
-#: src/Audit/BlueprintDrift.php
-msgid "Niveaux de service (SLA, OLA)"
-msgstr ""
-
-#: src/Audit/Checks/BlueprintDriftCheck.php
-msgid "Blueprint"
-msgstr ""
-
-#: src/Audit/Checks/BlueprintDriftCheck.php
-msgid "La configuration s'écarte du dernier Blueprint appliqué"
-msgstr ""
-
-#: src/Audit/Checks/BlueprintDriftCheck.php
-#, php-format
-msgid ""
-"%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la "
-"main)."
-msgid_plural ""
-"%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la "
-"main)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/Audit/Checks/BlueprintDriftCheck.php
-msgid ""
-"Relisez les écarts plus bas sur cette page : réappliquez le Blueprint si la "
-"modification n'était pas voulue, sinon reportez la nouvelle valeur dans "
-"l'assistant."
-msgstr ""
-
-#: src/Audit/Checks/BlueprintDriftCheck.php
-msgid "Voir les écarts"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid "Adopter les nouvelles valeurs dans l'assistant"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid "Ajouté"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid ""
-"Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à "
-"comparer."
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid ""
-"Aucun écart : la configuration de GLPI correspond au dernier Blueprint "
-"appliqué."
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid ""
-"Compare les SLA, le calendrier, les catégories de tickets et les statuts "
-"créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette "
-"vérification ne modifie rien."
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid "Dans GLPI"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid "Dans le Blueprint"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid ""
-"Modification voulue : reportez la nouvelle valeur dans l'assistant, elle "
-"deviendra la référence au prochain déploiement. Modification accidentelle : "
-"réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid "Modifié"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid "Ouvrir l'assistant"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid "Réappliquer le Blueprint (avec aperçu)"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid "Supprimé"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid "Écart"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig templates/deploy.html.twig
-msgid "Écarts avec le dernier Blueprint appliqué"
-msgstr ""
-
-#: templates/deploy.html.twig
-msgid ""
-"Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément "
-"ajouté à la main est conservé."
-msgstr ""
-
-#: templates/deploy.html.twig
-msgid "Réaligner aussi les SLA et OLA déjà créés sur cette configuration"
 msgstr ""

@@ -77,7 +77,7 @@ final class AuditReportCron
         $report = AuditReport::build($checkKeys, $findings);
 
         // Issue #466 : le rapport périodique alimente aussi l'historique des audits.
-        $statuses = HardeningScore::statuses($checkKeys, $findings, AuditControlCatalog::notApplicable($config->fields));
+        $statuses = HardeningScore::statuses($checkKeys, $findings, AuditControlCatalog::notApplicable($config->fields, SessionSecurity::isAvailable()));
         AuditHistory::record(HardeningScore::score($statuses, AuditControlCatalog::weights($checkKeys)), $statuses, 'report');
 
         $state = json_decode((string) ($config->fields['audit_report_state'] ?? ''), true);

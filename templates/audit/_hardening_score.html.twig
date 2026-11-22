@@ -40,7 +40,7 @@
       <span class="text-secondary">
         {{ __('Calculée sur %d contrôles applicables.', 'configurationglpiauto')|format(hardening.applicable) }}
         {% if hardening.not_applicable is not empty %}
-          <br>{{ __('Non applicables (désactivés dans les réglages) :', 'configurationglpiauto') }}
+          <br>{{ __('Non applicables (désactivés dans les réglages ou sans objet sur cette version de GLPI) :', 'configurationglpiauto') }}
           {{ hardening.not_applicable|join(', ') }}
         {% endif %}
       </span>

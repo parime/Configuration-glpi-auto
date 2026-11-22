@@ -37,6 +37,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\NoTicketCategoriesCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\NotificationsDisabledCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\PrivilegedAccountsReviewCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\PrivilegedAccountsWithout2faCheck;
+use GlpiPlugin\Configurationglpiauto\Audit\Checks\SessionSecurityCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\UncategorizedSoftwareCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\WarrantyCheck;
 use GlpiPlugin\Configurationglpiauto\Audit\Checks\WeakPasswordPolicyCheck;
@@ -78,6 +79,8 @@ final class AuditService
             WeakPasswordPolicyCheck::class,
             PrivilegedAccountsWithout2faCheck::class,
             PrivilegedAccountsReviewCheck::class,
+            // Issue #470 : sessions actives et ré-authentification (GLPI 12, sans objet sous GLPI 11).
+            SessionSecurityCheck::class,
             DictionaryRulesCheck::class,
             // Issue #429 : collecteur en erreur, sans règle, boucle de messages.
             MailCollectorCheck::class,

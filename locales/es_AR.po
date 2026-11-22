@@ -7448,9 +7448,6 @@ msgstr "Ningún control aplicable"
 msgid "Calculée sur %d contrôles applicables."
 msgstr "Calculada sobre %d controles aplicables."
 
-msgid "Non applicables (désactivés dans les réglages) :"
-msgstr "No aplicables (desactivados en los ajustes):"
-
 msgid "Comment la note est-elle calculée ?"
 msgstr "¿Cómo se calcula la puntuación?"
 
@@ -7696,3 +7693,157 @@ msgid "%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à
 msgid_plural "%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la main)."
 msgstr[0] "%d diferencia detectada (SLA, calendario, categorías o estados modificados a mano)."
 msgstr[1] "%d diferencias detectadas (SLA, calendario, categorías o estados modificados a mano)."
+
+msgid "Non applicables (désactivés dans les réglages ou sans objet sur cette version de GLPI) :"
+msgstr "No aplicables (desactivados en los ajustes o sin objeto en esta versión de GLPI):"
+
+msgid "Conforme"
+msgstr "Conforme"
+
+msgid "Sessions et ré-authentification"
+msgstr "Sesiones y reautenticación"
+
+msgid "Sans objet sous GLPI 11"
+msgstr "No aplicable en GLPI 11"
+
+msgid "Une session, c'est une connexion à GLPI restée ouverte sur un navigateur. Cette section vérifie qu'aucune ne reste ouverte trop longtemps, surtout pour les administrateurs, et que GLPI redemande le mot de passe avant les actions sensibles. Elle ne ferme aucune session et ne modifie aucun réglage."
+msgstr "Una sesión es una conexión a GLPI que permanece abierta en un navegador. Esta sección comprueba que ninguna quede abierta demasiado tiempo, sobre todo para los administradores, y que GLPI vuelva a pedir la contraseña antes de las acciones sensibles. No cierra ninguna sesión ni modifica ningún ajuste."
+
+msgid "Le suivi des sessions actives et la ré-authentification n'existent qu'à partir de GLPI 12. Sur cette version, le contrôle est sans objet : il ne compte pas dans la note de durcissement. Il s'activera tout seul après la mise à jour vers GLPI 12."
+msgstr "El seguimiento de las sesiones activas y la reautenticación solo existen a partir de GLPI 12. En esta versión el control no es aplicable: no cuenta en la nota de endurecimiento. Se activará solo tras la actualización a GLPI 12."
+
+msgid "%d jour(s)"
+msgstr "%d día(s)"
+
+msgid "%d heure(s)"
+msgstr "%d hora(s)"
+
+msgid "Ré-authentification avant les actions sensibles"
+msgstr "Reautenticación antes de las acciones sensibles"
+
+msgid "Désactivée"
+msgstr "Desactivada"
+
+msgid "Activée"
+msgstr "Activada"
+
+msgid "GLPI redemande le mot de passe avant de changer des droits ou des réglages de sécurité : une session oubliée ne suffit pas pour les modifier."
+msgstr "GLPI vuelve a pedir la contraseña antes de cambiar derechos o ajustes de seguridad: una sesión olvidada no basta para modificarlos."
+
+msgid "Fichier config/local_define.php du serveur (constante GLPI_DISABLE_REAUTH)"
+msgstr "Archivo config/local_define.php del servidor (constante GLPI_DISABLE_REAUTH)"
+
+msgid "Nettoyage automatique des sessions expirées"
+msgstr "Limpieza automática de las sesiones caducadas"
+
+msgid "L'action automatique « session » ferme chaque jour les sessions inactives."
+msgstr "La acción automática «session» cierra cada día las sesiones inactivas."
+
+msgid "Configuration > Actions automatiques > session"
+msgstr "Configuración > Acciones automáticas > session"
+
+msgid "Durée de « Se souvenir de moi »"
+msgstr "Duración de «Recuérdame»"
+
+msgid "Pendant cette durée, GLPI reconnecte le navigateur sans mot de passe. %d jours au plus sont conseillés."
+msgstr "Durante este tiempo, GLPI vuelve a conectar el navegador sin contraseña. Se recomiendan %d días como máximo."
+
+msgid "Configuration > Générale > Identification automatique"
+msgstr "Configuración > General > Acceso Automático"
+
+msgid "Conservation de l'historique des connexions"
+msgstr "Conservación del historial de conexiones"
+
+msgid "Non conservé"
+msgstr "No se conserva"
+
+msgid "Permet de retrouver qui s'est connecté, quand et d'où, par exemple après un incident."
+msgstr "Permite saber quién se conectó, cuándo y desde dónde, por ejemplo tras un incidente."
+
+msgid "Configuration > Données et Confidentialité > Sessions de connexion"
+msgstr "Configuración > Data and Privacy > Login sessions"
+
+msgid "Réglage de GLPI"
+msgstr "Ajuste de GLPI"
+
+msgid "État"
+msgstr "Estado"
+
+msgid "Pourquoi c'est important"
+msgstr "Por qué es importante"
+
+msgid "Où le régler"
+msgstr "Dónde ajustarlo"
+
+msgid "Sessions actives : %d"
+msgstr "Sesiones activas: %d"
+
+msgid "Comptes à privilèges connectés depuis plus de %1$d heures : %2$d"
+msgstr "Cuentas con privilegios conectadas desde hace más de %1$d horas: %2$d"
+
+msgid "Autres comptes avec une session de plus de %1$d jours : %2$d"
+msgstr "Otras cuentas con una sesión de más de %1$d días: %2$d"
+
+msgid "Les comptes concernés sont listés dans les constats plus haut, avec un lien vers l'onglet « Sessions » de leur fiche. Avant de fermer une session, vérifiez avec la personne : elle sera déconnectée."
+msgstr "Las cuentas afectadas aparecen en las constataciones de arriba, con un enlace a la pestaña «Sessions» de su ficha. Antes de cerrar una sesión, compruébelo con la persona: se desconectará."
+
+msgid "Voir toutes les sessions dans GLPI"
+msgstr "Ver todas las sesiones en GLPI"
+
+msgid "Sessions et ré-authentification (GLPI 12)"
+msgstr "Sesiones y reautenticación (GLPI 12)"
+
+msgid "La ré-authentification avant les actions sensibles est désactivée"
+msgstr "La reautenticación antes de las acciones sensibles está desactivada"
+
+msgid "GLPI ne redemande plus le mot de passe avant une action sensible (droits, sécurité) : une session laissée ouverte suffit pour les modifier. La constante GLPI_DISABLE_REAUTH est déclarée dans un fichier de configuration du serveur."
+msgstr "GLPI ya no vuelve a pedir la contraseña antes de una acción sensible (derechos, seguridad): basta una sesión abierta para modificarlos. La constante GLPI_DISABLE_REAUTH está declarada en un archivo de configuración del servidor."
+
+msgid "Demandez à la personne qui gère le serveur de retirer GLPI_DISABLE_REAUTH du fichier config/local_define.php."
+msgstr "Pida a la persona que gestiona el servidor que retire GLPI_DISABLE_REAUTH del archivo config/local_define.php."
+
+msgid "Le nettoyage automatique des sessions est arrêté"
+msgstr "La limpieza automática de las sesiones está detenida"
+
+msgid "L'action automatique « session » de GLPI ferme les sessions expirées. Désactivée, d'anciennes sessions restent valables et la liste des sessions actives ne reflète plus la réalité."
+msgstr "La acción automática «session» de GLPI cierra las sesiones caducadas. Desactivada, las sesiones antiguas siguen siendo válidas y la lista de sesiones activas ya no refleja la realidad."
+
+msgid "Réactivez l'action automatique « session » dans Configuration > Actions automatiques."
+msgstr "Vuelva a activar la acción automática «session» en Configuración > Acciones automáticas."
+
+msgid "L'historique des connexions n'est pas conservé"
+msgstr "El historial de conexiones no se conserva"
+
+msgid "Avec une durée de conservation de 0 jour, GLPI efface la trace d'une connexion dès sa fin : impossible ensuite de savoir qui s'est connecté, quand et d'où."
+msgstr "Con un periodo de conservación de 0 días, GLPI borra el rastro de una conexión en cuanto termina: luego es imposible saber quién se conectó, cuándo y desde dónde."
+
+msgid "Indiquez une durée de conservation (90 jours par exemple) dans Configuration > Données et Confidentialité, onglet « Sessions de connexion »."
+msgstr "Indique un periodo de conservación (90 días, por ejemplo) en Configuración > Data and Privacy, pestaña «Login sessions»."
+
+msgid "« Se souvenir de moi » garde la connexion plus de %d jours"
+msgstr "«Recuérdame» mantiene la conexión más de %d días"
+
+msgid "Durée actuelle : %d jours. Toute personne qui utilise l'ordinateur pendant ce temps entre dans GLPI sans mot de passe."
+msgstr "Duración actual: %d días. Cualquier persona que use el ordenador durante ese tiempo entra en GLPI sin contraseña."
+
+msgid "Réduisez le « Temps de rétention se souvenir de moi » dans Configuration > Générale, section « Identification automatique »."
+msgstr "Reduzca el «Tiempo para permitir Recuérdame» en Configuración > General, sección «Acceso Automático»."
+
+msgid "%1$d compte à privilèges connecté depuis plus de %2$d heures"
+msgid_plural "%1$d comptes à privilèges connectés depuis plus de %2$d heures"
+msgstr[0] "%1$d cuenta con privilegios conectada desde hace más de %2$d horas"
+msgstr[1] "%1$d cuentas con privilegios conectadas desde hace más de %2$d horas"
+
+msgid "Une session d'administrateur restée ouverte est la plus intéressante à voler. Vérifiez avec chaque personne qu'elle est bien la sienne, puis fermez les sessions inutiles : fiche de l'utilisateur, onglet « Sessions », bouton « Révoquer »."
+msgstr "Una sesión de administrador que queda abierta es la más interesante de robar. Compruebe con cada persona que es realmente la suya y cierre las sesiones innecesarias: ficha del usuario, pestaña «Sessions», botón «Revoke»."
+
+msgid "%1$d compte a une session ouverte depuis plus de %2$d jours"
+msgid_plural "%1$d comptes ont une session ouverte depuis plus de %2$d jours"
+msgstr[0] "%1$d cuenta tiene una sesión abierta desde hace más de %2$d días"
+msgstr[1] "%1$d cuentas tienen una sesión abierta desde hace más de %2$d días"
+
+msgid "Souvent un « Se souvenir de moi » sur un poste partagé ou perdu. Fermez les sessions qui ne sont plus utiles : fiche de l'utilisateur, onglet « Sessions »."
+msgstr "A menudo un «Recuérdame» en un equipo compartido o perdido. Cierre las sesiones que ya no son útiles: ficha del usuario, pestaña «Sessions»."
+
+msgid "%1$s (ouverte le %2$s)"
+msgstr "%1$s (abierta el %2$s)"
