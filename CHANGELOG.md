@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Badges verts et bleus sans fond sur la page d'audit** (parime/glpi-plugin-template#10). GLPI et
+  Tabler ne définissent les classes `bg-X-subtle` et `text-X-emphasis` que pour les couleurs de
+  thème (primary, success, warning, danger...) : dans la section « Fin de support des systèmes et
+  du matériel », le badge « Activé » (vert) et le nombre de cycles par produit (bleu) s'affichaient
+  sans fond. Le plugin charge désormais la feuille commune
+  `public/css/configurationglpiauto.css` (hook `ADD_CSS`), qui définit ces classes pour les douze
+  couleurs nommées de Tabler, en thème clair et sombre. Un test unitaire échoue si le code utilise
+  une classe de ce type que ni Tabler ni cette feuille ne définissent.
+
 ## [1.32.0] - 2026-11-22
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
