@@ -4,9 +4,11 @@
 
 Chaque parcours tient en quelques étapes : ce que fait la personne, où elle clique et ce qu'elle
 obtient. Les chemins sont ceux de l'interface en français. Le plugin a une seule entrée de menu,
-**Configuration > Profils de configuration**, qui ouvre l'assistant ; ses autres pages (Audit de
-configuration, Plan d'adressage, Importer depuis Jira, Importer des tickets (CSV)) sont des
-sous-pages de cette entrée. Pour le détail des étapes, avec captures, voir le
+**Configuration > Configuration GLPI Auto**, qui ouvre l'assistant ; ses autres écrans sont des
+onglets en haut de page : **Profils et Blueprints**, **Audit de configuration**, **Historique**,
+**Plan d'adressage** et **Importer des tickets** (Jira ou CSV). Les réglages du plugin (délais des
+contrôles, rapport périodique, fin de support) sont dans sa page de configuration :
+**Configuration > Plugins**, ligne « Configuration GLPI Auto », icône **Configurer**. Pour le détail des étapes, avec captures, voir le
 [tutoriel](TUTORIAL.md) ; pour la logique ITIL de chaque étape, le [guide ITIL](ITIL_GUIDE.md).
 
 Les exemples utilisent des données fictives : une société « Exemple SA » avec deux sites, Lyon et
@@ -33,7 +35,7 @@ d'avoir relu le résultat. Première configuration en dix étapes :
    Pour un autre profil : **Administration > Profils**, ouvrir le profil, onglet **Configuration GLPI
    Auto** : droits **Profils de configuration** (les modèles de l'assistant) et **Configuration**
    (appliquer l'assistant, audit, imports).
-3. **Ouvrir l'assistant** : **Configuration > Profils de configuration**. En tête de page, les
+3. **Ouvrir l'assistant** : **Configuration > Configuration GLPI Auto**. En tête de page, les
    encadrés « Vérification de l'environnement » et « Droits de l'opérateur actuel » signalent ce
    qui limiterait une fonctionnalité ; on peut continuer quand même.
 4. **Étape 1, Profil** : choisir le profil le plus proche (Installation simple, Plusieurs sites ou
@@ -47,7 +49,7 @@ d'avoir relu le résultat. Première configuration en dix étapes :
 8. **Récapitulatif** (dernière étape, 20 ou 21 selon les plugins actifs) : relire, puis **Terminer**. C'est le seul moment où l'assistant écrit
    dans GLPI. Ce qui existe déjà est réutilisé, rien n'est supprimé, et une sauvegarde de la
    configuration est enregistrée à chaque application.
-9. **Contrôler** : ouvrir **Configuration > Profils de configuration > Audit de configuration** et
+9. **Contrôler** : ouvrir **Configuration > Configuration GLPI Auto**, onglet **Audit de configuration**, et
    traiter les constats les plus graves (voir [Auditeur](#auditeur-de-configuration)).
 10. **Relancer plus tard** : l'assistant se relance à tout moment (nouveau site, SLA ajusté) ; seuls
     les éléments manquants sont créés.
@@ -70,16 +72,17 @@ logiciel normalisé.
    GLPI Agent).
 5. **Étape 15, Général & Outils** : fabricants et dictionnaires (fabricants, logiciels, systèmes
    d'exploitation), pour qu'un même logiciel n'apparaisse pas sous dix noms différents.
-6. **Plan d'adressage** (**Configuration > Profils de configuration > Plan d'adressage**) : coller
+6. **Plan d'adressage** (**Configuration > Configuration GLPI Auto**, onglet **Plan d'adressage**) : coller
    depuis un tableur les réseaux IP et VLAN de chaque site (par exemple `192.0.2.0/24`, VLAN 10,
    site Lyon), vérifier l'aperçu, puis créer les lignes valides. Relancer l'import met à jour au
    lieu de dupliquer.
    Si le plugin Inventaire Docker est actif, une étape **Inventaire Docker** de l'assistant déclare
    ses connexions (Portainer, WUD, Harbor...) ; chacune se teste avant l'enregistrement et rien
    n'est importé tant que vous ne lancez pas le premier import depuis le plugin.
-7. **Suivre le parc** : **Audit de configuration**, section **Contrôles du parc** : régler les seuils
-   « Matériel qui ne remonte plus à l'inventaire depuis (jours) » et « Garanties qui expirent dans
-   (jours) » (0 désactive le contrôle). Dans les constats « Parc », **Créer les tickets** ouvre des
+7. **Suivre le parc** : dans les réglages du plugin (**Configuration > Plugins**, icône
+   **Configurer**, onglet **Audit**), section **Contrôles du parc** : régler les seuils « Matériel
+   qui ne remonte plus à l'inventaire depuis (jours) » et « Garanties qui expirent dans (jours) »
+   (0 désactive le contrôle). Puis, dans l'onglet **Audit de configuration**, constats « Parc » : **Créer les tickets** ouvre des
    tickets liés au matériel concerné, **Fusionner** regroupe les fiches de logiciel en double,
    **Classer** range les logiciels sans catégorie. Le matériel lui-même n'est jamais modifié.
 
@@ -108,7 +111,8 @@ Objectif : des demandes bien classées dès leur arrivée, par le portail comme 
 7. Après l'assistant, revenir à l'étape 19 : chaque collecteur enregistré a un bouton **Tester la
    connexion** (GLPI compte les messages sans les relever).
 8. **Reprendre l'historique** d'un autre outil : **Importer depuis Jira** (export CSV ou API) ou
-   **Importer des tickets (CSV)**, dans **Configuration > Profils de configuration**. Chaque import
+   **Importer des tickets (CSV)**, onglet **Importer des tickets** de **Configuration > Configuration
+   GLPI Auto**. Chaque import
    montre un aperçu à blanc avant d'écrire, et un réimport ne crée pas de doublon.
 
 ## Auditeur de configuration
@@ -118,16 +122,17 @@ Objectif : savoir si l'instance suit les bonnes pratiques, sans risque de la mod
 1. **Droits en lecture seule** : sur le profil de l'auditeur, droit **Configuration** du plugin en
    lecture (onglet **Configuration GLPI Auto** du profil) et lecture de la configuration de GLPI.
    Sans droit de modification, la page s'affiche sans aucun bouton de correction.
-2. Ouvrir **Configuration > Profils de configuration > Audit de configuration**. L'analyse porte
+2. Ouvrir **Configuration > Configuration GLPI Auto**, onglet **Audit de configuration**. L'analyse porte
    sur l'état réel de l'instance, que l'assistant ait servi ou non : comptes par défaut, politique
    de mots de passe, notifications, calendriers, SLA, statuts, catégories, entités sans adresse,
    collecteurs de courriels, réseau, parc.
 3. Lire les constats par gravité (**Critique**, **À surveiller**, **Information**), chacun avec sa
    recommandation. Un bouton **Corriger** n'apparaît que lorsque le bon réglage ne fait aucun doute
    et que l'utilisateur a le droit de modifier la configuration.
-4. **Rapport périodique par e-mail** : choisir la fréquence (**Hebdomadaire** ou **Mensuel**), puis
-   **Modifier le modèle et les destinataires** (notification GLPI) ou **Enregistrer et envoyer
-   maintenant**. Le rapport donne le nombre de contrôles réussis, en alerte et en échec, et
+4. **Rapport périodique par e-mail** : dans les réglages du plugin (onglet **Audit**), choisir la
+   fréquence (**Hebdomadaire** ou **Mensuel**), puis **Modifier le modèle et les destinataires**
+   (notification GLPI). L'envoi immédiat se fait depuis la page d'audit, bouton **Envoyer le
+   rapport maintenant**. Le rapport donne le nombre de contrôles réussis, en alerte et en échec, et
    l'évolution depuis le précédent ; il ne contient aucun mot de passe ni secret.
 5. Pour un audit ISO 27001 plus large (risques, SoA, audits internes), voir le plugin
    [GRC Manager](https://github.com/parime/glpi-iso27001-management).
