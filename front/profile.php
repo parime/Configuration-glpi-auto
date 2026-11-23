@@ -16,36 +16,22 @@
  */
 
 use Glpi\Application\View\TemplateRenderer;
-use GlpiPlugin\Configurationglpiauto\AddressPlan\AddressPlanImporter;
-use GlpiPlugin\Configurationglpiauto\Config;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 use GlpiPlugin\Configurationglpiauto\FrontUrl;
+use GlpiPlugin\Configurationglpiauto\UsageTabs;
 
 Session::checkRight(ConfigurationProfile::$rightname, READ);
 
-Html::header(ConfigurationProfile::getTypeName(2), FrontUrl::get('profile.php'), 'config', ConfigurationProfile::class);
+Html::header(ConfigurationProfile::getTypeName(2), FrontUrl::get('profile.php'), 'config', ConfigurationProfile::class, 'profiles');
+UsageTabs::display('profiles');
 
 // Search::show() alone generates no create link (same pitfall documented on remise-glpi). Chaque
-// bouton n'apparaît qu'avec les droits que sa page exige.
+// bouton n'apparaît qu'avec les droits que sa page exige. Issue #495 : les autres écrans sont des
+// onglets (UsageTabs), et non plus des boutons de cette barre.
 TemplateRenderer::getInstance()->display('@configurationglpiauto/profile_actions.html.twig', [
-    'wizard_url'       => FrontUrl::get('wizard.php'),
-    // Issue #112 : audit de toute l'instance, exige aussi le droit natif 'config' en lecture.
-    'audit_url'        => Session::haveRight(Config::$rightname, READ) && Session::haveRight('config', READ)
-        ? FrontUrl::get('audit.php') : null,
     // Issue #113 : import d'un Blueprint.
-    'blueprint_url'    => ConfigurationProfile::canCreate() ? FrontUrl::get('blueprint_import.php') : null,
-    // Issue #345 : import de tickets Jira (CSV).
-    'jira_url'         => Session::haveRight(Config::$rightname, UPDATE) && Session::haveRight(Ticket::$rightname, CREATE)
-        ? FrontUrl::get('jiraimport.php') : null,
-    // Issue #430 : import générique de tickets depuis un fichier CSV (mêmes droits).
-    'csv_url'          => Session::haveRight(Config::$rightname, UPDATE) && Session::haveRight(Ticket::$rightname, CREATE)
-        ? FrontUrl::get('csvimport.php') : null,
-    // Issue #343 : plan d'adressage (réseaux IP et VLAN par site).
-    'address_plan_url' => Session::haveRight(Config::$rightname, UPDATE) && AddressPlanImporter::canImport()
-        ? FrontUrl::get('addressplan.php') : null,
-    // Issue #114 : historique et retour arrière.
-    'history_url'      => FrontUrl::get('history.php'),
-    'add_url'          => ConfigurationProfile::canCreate() ? ConfigurationProfile::getFormURL() : null,
+    'blueprint_url' => ConfigurationProfile::canCreate() ? FrontUrl::get('blueprint_import.php') : null,
+    'add_url'       => ConfigurationProfile::canCreate() ? ConfigurationProfile::getFormURL() : null,
 ]);
 
 Search::show(ConfigurationProfile::class);

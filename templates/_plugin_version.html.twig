@@ -1,0 +1,51 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Encadré « Version du plugin » (charte, section 9 bis), en tête de l'onglet Général de la page de
+   configuration (issue #495, auparavant en tête de l'assistant). plugin_version : {installed,
+   latest, update_available}, latest valant null quand la vérification est désactivée (action automatique
+   « checkupdate » de GLPI) ou que GitHub ne répond pas (Config::getLatestGithubVersion()). #}
+{% set pv = plugin_version %}
+<div class="card card-sm mb-3" id="configurationglpiauto-plugin-version">
+   <div class="card-body d-flex align-items-start gap-3">
+      <i class="ti ti-brand-github fs-1 text-muted" aria-hidden="true"></i>
+      <div class="flex-fill">
+         <div class="fw-bold mb-1">{{ __('Version du plugin', 'configurationglpiauto') }}</div>
+         <div class="d-flex flex-wrap align-items-center gap-2">
+            <span class="text-muted small">{{ __('Version installée', 'configurationglpiauto') }}</span>
+            <span class="badge bg-blue-subtle text-blue-emphasis"><i class="ti ti-package me-1"></i>v{{ pv.installed }}</span>
+            {% if pv.latest %}
+               <span class="text-muted small">{{ __('Dernière version sur GitHub', 'configurationglpiauto') }}</span>
+               <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="ti ti-tag me-1"></i>v{{ pv.latest }}</span>
+               {% if pv.update_available %}
+                  {% include '@configurationglpiauto/_badge.html.twig' with {kind: 'warning', label: __('Mise à jour disponible', 'configurationglpiauto')} %}
+                  <a href="https://github.com/parime/Configuration-glpi-auto/releases/latest" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary">
+                     <i class="ti ti-notes me-1"></i>{{ __('Notes de version', 'configurationglpiauto') }}
+                  </a>
+               {% else %}
+                  {% include '@configurationglpiauto/_badge.html.twig' with {kind: 'ok', label: __('À jour', 'configurationglpiauto')} %}
+               {% endif %}
+            {% else %}
+               {% include '@configurationglpiauto/_badge.html.twig' with {kind: 'neutral', label: __('Dernière version inconnue', 'configurationglpiauto')} %}
+            {% endif %}
+         </div>
+         {% if not pv.latest %}
+            <div class="text-muted small mt-2">
+               <i class="ti ti-info-circle me-1"></i>{{ __('La dernière version n\'est lue sur GitHub que si l\'action automatique « checkupdate » de GLPI est activée (Configuration > Actions automatiques) et que le serveur GLPI peut joindre github.com.', 'configurationglpiauto') }}
+            </div>
+         {% endif %}
+      </div>
+   </div>
+</div>

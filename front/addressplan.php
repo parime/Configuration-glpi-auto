@@ -69,6 +69,7 @@ if ((isset($_POST['preview']) || isset($_POST['import'])) && trim($text) !== '')
 }
 
 Html::header(__('Plan d\'adressage', 'configurationglpiauto'), $url, 'config', ConfigurationProfile::class, 'addressplan');
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('addressplan');
 
 TemplateRenderer::getInstance()->display('@configurationglpiauto/address_plan.html.twig', [
     'action'         => $url,

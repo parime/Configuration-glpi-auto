@@ -30,3 +30,18 @@ function plugin_configurationglpiauto_uninstall(): bool
 
     return (new Installer())->uninstall($migration);
 }
+
+/**
+ * Issue #495 : intitulés propres au plugin, listés dans Configuration > Intitulés (types de
+ * carburant des véhicules).
+ *
+ * @return array<class-string, string>
+ */
+function plugin_configurationglpiauto_getDropdown(): array
+{
+    if (!Plugin::isPluginActive('configurationglpiauto')) {
+        return [];
+    }
+
+    return [\GlpiPlugin\Configurationglpiauto\FuelType::class => \GlpiPlugin\Configurationglpiauto\FuelType::getTypeName(2)];
+}

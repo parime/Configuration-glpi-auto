@@ -23,10 +23,5 @@ jobs:
       plugin-key: configurationglpiauto
       charter-mode: error
       seed-command: php plugins/configurationglpiauto/tests/security/setup.php && php plugins/configurationglpiauto/tests/security/setup.php fleet
-      # Contrôle d'ergonomie (réglages, menus, en-têtes) et parcours de toutes les pages en
-      # avertissement, le temps de l'issue de navigation #495 ; la PR qui la ferme retire ces deux
-      # lignes.
-      navigation-mode: warning
-      pages-mode: warning
       # Assertions de test sur des libellés traduits, en avertissement le temps de l'issue #501.
       translated-assertions-mode: warning

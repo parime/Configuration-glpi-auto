@@ -1,0 +1,42 @@
+{#
+ # -------------------------------------------------------------------------
+ # Configuration GLPI Auto plugin for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/Configuration-glpi-auto
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+
+{# Issue #495 : onglets des écrans d'usage, sous la seule entrée de menu du plugin
+   (Configuration > Configuration GLPI Auto). usage_tabs : liste de {key, label, url, icon, active},
+   déjà filtrée selon les droits (UsageTabs::visible()). Chaque onglet est un lien vers sa page :
+   Tab passe d'un onglet à l'autre, Entrée l'ouvre. #}
+{% if usage_tabs|length > 1 %}
+<nav aria-label="{{ __('Écrans de Configuration GLPI Auto', 'configurationglpiauto') }}">
+   <ul class="nav nav-tabs mb-3" role="tablist">
+      {% for tab in usage_tabs %}
+         <li class="nav-item" role="presentation">
+            <a class="nav-link{{ tab.active ? ' active' : '' }}" role="tab" aria-selected="{{ tab.active ? 'true' : 'false' }}" href="{{ tab.url }}">
+               <i class="{{ tab.icon }} me-1" aria-hidden="true"></i>{{ tab.label }}
+            </a>
+         </li>
+      {% endfor %}
+   </ul>
+</nav>
+{% endif %}
+{% if import_page %}
+   <div class="btn-group mb-3" role="group" aria-label="{{ __('Source des tickets', 'configurationglpiauto') }}">
+      <a href="{{ jira_url }}" class="btn btn-sm {{ import_page == 'jiraimport.php' ? 'btn-secondary' : 'btn-outline-secondary' }}"{% if import_page == 'jiraimport.php' %} aria-current="page"{% endif %}>
+         <i class="ti ti-transfer-in me-1" aria-hidden="true"></i>{{ __('Depuis Jira', 'configurationglpiauto') }}
+      </a>
+      <a href="{{ csv_url }}" class="btn btn-sm {{ import_page == 'csvimport.php' ? 'btn-secondary' : 'btn-outline-secondary' }}"{% if import_page == 'csvimport.php' %} aria-current="page"{% endif %}>
+         <i class="ti ti-file-spreadsheet me-1" aria-hidden="true"></i>{{ __('Depuis un fichier CSV', 'configurationglpiauto') }}
+      </a>
+   </div>
+{% endif %}

@@ -18,13 +18,13 @@
    <form method="post" action="{{ action }}" class="d-inline">
       <input type="hidden" name="id" value="{{ profile_id }}">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-      <button type="submit" name="save_snapshot" value="1" class="btn btn-outline-primary"><i class="ti ti-device-floppy"></i> {{ __('Enregistrer la configuration actuelle comme Blueprint', 'configurationglpiauto') }}</button>
+      <button type="submit" name="save_snapshot" value="1" class="btn btn-outline-dark"><i class="ti ti-device-floppy"></i> {{ __('Enregistrer la configuration actuelle comme Blueprint', 'configurationglpiauto') }}</button>
    </form>
    {% if has_snapshot %}
       <form method="post" action="{{ action }}" class="d-inline">
          <input type="hidden" name="id" value="{{ profile_id }}">
          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-         <button type="submit" name="apply_snapshot" value="1" class="btn btn-outline-primary"><i class="ti ti-wand"></i> {{ __('Appliquer ce Blueprint (via l\'assistant)', 'configurationglpiauto') }}</button>
+         <button type="submit" name="apply_snapshot" value="1" class="btn btn-outline-dark"><i class="ti ti-wand"></i> {{ __('Appliquer ce Blueprint (via l\'assistant)', 'configurationglpiauto') }}</button>
       </form>
       <a class="btn btn-outline-primary" href="{{ export_url }}"><i class="ti ti-download"></i> {{ __('Exporter ce Blueprint (JSON)', 'configurationglpiauto') }}</a>
    {% endif %}

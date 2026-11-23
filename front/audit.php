@@ -25,6 +25,7 @@ use GlpiPlugin\Configurationglpiauto\Audit\EndOfLife\EndOfLifeCache;
 use GlpiPlugin\Configurationglpiauto\Audit\EndOfLife\EndOfLifeClient;
 use GlpiPlugin\Configurationglpiauto\Audit\EndOfLife\EndOfLifeMapping;
 use GlpiPlugin\Configurationglpiauto\Config;
+use GlpiPlugin\Configurationglpiauto\ConfigSettings;
 use GlpiPlugin\Configurationglpiauto\ConfigurationProfile;
 
 // L'audit lit et corrige l'état général de toute l'instance (parc de toutes les entités, comptes par
@@ -51,133 +52,77 @@ if (isset($_POST['fix'])) {
     Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
 }
 
-// Issue #306 : délais des contrôles du parc (jours, 0 = contrôle désactivé).
-if (isset($_POST['save_park'])) {
-    Session::checkRight(Config::$rightname, UPDATE);
-    Session::checkRight('config', UPDATE);
+// Issue #495 : les réglages (contrôles du parc, fin de support, rapport périodique) sont dans la page
+// de configuration du plugin. Les formulaires de l'ancienne page restent acceptés pendant une
+// version : enregistrés de la même façon (mêmes droits), puis renvoyés vers l'onglet du réglage.
+if (ConfigSettings::isSettingsPost($_POST)) {
+    $tab = ConfigSettings::handle($_POST, $_FILES);
+    Session::addMessageAfterRedirect(__('Ces réglages sont maintenant dans Configuration > Plugins > Configuration GLPI Auto.', 'configurationglpiauto'), false, INFO);
 
-    $config = Config::getConfig();
-    $config->update([
-        'id'                  => $config->getID(),
-        'audit_ghost_days'    => max(0, min(3650, (int) ($_POST['audit_ghost_days'] ?? 30))),
-        'audit_warranty_days' => max(0, min(3650, (int) ($_POST['audit_warranty_days'] ?? 30))),
-    ]);
-    Session::addMessageAfterRedirect(__('Contrôles du parc enregistrés.', 'configurationglpiauto'));
-
-    Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
+    Html::redirect(ConfigSettings::url($tab));
 }
 
-// Issue #467 : fin de support (endoflife.date). Rien n'est téléchargé sans activation, et jamais en
-// mode hors ligne : les dates viennent alors d'un fichier importé à la main.
-if (isset($_POST['save_eol']) || isset($_POST['suggest_eol']) || isset($_POST['refresh_eol']) || isset($_POST['import_eol'])) {
+// Issue #467 : fin de support (endoflife.date). Téléchargement des dates à la demande (action
+// d'usage) ; jamais sans activation ni en mode hors ligne, réglés dans la page de configuration.
+if (isset($_POST['refresh_eol'])) {
     Session::checkRight(Config::$rightname, UPDATE);
     Session::checkRight('config', UPDATE);
 
     $config = Config::getConfig();
-    if (isset($_POST['save_eol'])) {
-        $config->update([
-            'id'                => $config->getID(),
-            'audit_eol_enabled' => !empty($_POST['audit_eol_enabled']) ? 1 : 0,
-            'audit_eol_offline' => !empty($_POST['audit_eol_offline']) ? 1 : 0,
-            'audit_eol_days'    => (int) ($_POST['audit_eol_days'] ?? 180),
-            'audit_eol_mapping' => (string) ($_POST['audit_eol_mapping'] ?? ''),
-        ]);
-        Session::addMessageAfterRedirect(__('Réglages de fin de support enregistrés.', 'configurationglpiauto'));
-    } elseif (isset($_POST['suggest_eol'])) {
-        $config->update([
-            'id'                => $config->getID(),
-            'audit_eol_mapping' => EndOfLifeMapping::withSuggestions(EndOfLifeCheck::mappingText(), EndOfLifeCheck::osNames()),
-        ]);
-        Session::addMessageAfterRedirect(__('Correspondances proposées ajoutées : vérifiez-les avant de télécharger les dates.', 'configurationglpiauto'));
-    } elseif (!EndOfLifeCheck::enabled()) {
+    $products = EndOfLifeMapping::products(EndOfLifeCheck::mappingText());
+    if (!EndOfLifeCheck::enabled()) {
         Session::addMessageAfterRedirect(__('Activez d\'abord le contrôle de fin de support.', 'configurationglpiauto'), false, ERROR);
-    } elseif (isset($_POST['refresh_eol'])) {
-        $products = EndOfLifeMapping::products(EndOfLifeCheck::mappingText());
-        if (!empty($config->fields['audit_eol_offline'])) {
-            Session::addMessageAfterRedirect(__('Mode hors ligne : aucun téléchargement. Importez un fichier endoflife.date à la place.', 'configurationglpiauto'), false, ERROR);
-        } elseif ($products === []) {
-            Session::addMessageAfterRedirect(__('Aucune correspondance : rien à télécharger.', 'configurationglpiauto'), false, ERROR);
-        } else {
-            $failed = EndOfLifeCache::refresh($products);
-            if ($failed === []) {
-                Session::addMessageAfterRedirect(sprintf(__('Dates téléchargées pour %d produit(s).', 'configurationglpiauto'), count($products)));
-            } else {
-                Session::addMessageAfterRedirect(
-                    sprintf(__('Téléchargement impossible pour : %s (produit inconnu d\'endoflife.date ou site injoignable). Les dates déjà en cache sont gardées.', 'configurationglpiauto'), implode(', ', $failed)),
-                    false,
-                    WARNING
-                );
-            }
-        }
+    } elseif (!empty($config->fields['audit_eol_offline'])) {
+        Session::addMessageAfterRedirect(__('Mode hors ligne : aucun téléchargement. Importez un fichier endoflife.date à la place.', 'configurationglpiauto'), false, ERROR);
+    } elseif ($products === []) {
+        Session::addMessageAfterRedirect(__('Aucune correspondance : rien à télécharger.', 'configurationglpiauto'), false, ERROR);
     } else {
-        $product = strtolower(trim((string) ($_POST['eol_product'] ?? '')));
-        $file = $_FILES['eol_file'] ?? null;
-        $json = is_array($file) && (int) ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK && (int) ($file['size'] ?? 0) <= 2 * 1024 * 1024
-            ? (string) file_get_contents((string) $file['tmp_name'])
-            : '';
-        try {
-            $count = EndOfLifeCache::import($product, $json);
-            Session::addMessageAfterRedirect(sprintf(__('%1$d cycle(s) importé(s) pour %2$s.', 'configurationglpiauto'), $count, $product));
-        } catch (\RuntimeException) {
-            Session::addMessageAfterRedirect(__('Fichier refusé : choisissez le fichier JSON d\'un produit endoflife.date (2 Mo au plus) et indiquez son identifiant, par exemple « windows ».', 'configurationglpiauto'), false, ERROR);
+        $failed = EndOfLifeCache::refresh($products);
+        if ($failed === []) {
+            Session::addMessageAfterRedirect(sprintf(__('Dates téléchargées pour %d produit(s).', 'configurationglpiauto'), count($products)));
+        } else {
+            Session::addMessageAfterRedirect(
+                sprintf(__('Téléchargement impossible pour : %s (produit inconnu d\'endoflife.date ou site injoignable). Les dates déjà en cache sont gardées.', 'configurationglpiauto'), implode(', ', $failed)),
+                false,
+                WARNING
+            );
         }
     }
 
     Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
 }
 
-// Issue #285 : réglages du rapport d'audit périodique par e-mail. La fréquence est celle de la
-// tâche planifiée GLPI elle-même (désactivée / hebdomadaire / mensuelle), pour qu'elle reste
-// cohérente avec Configuration > Actions automatiques.
+// Issue #285 : rapport d'audit périodique par e-mail. Fréquence et destinataires se règlent dans la
+// page de configuration ; l'envoi immédiat reste ici (action d'usage).
 $reportTask = new CronTask();
 $reportTaskFound = $reportTask->getFromDBbyName(AuditReportCron::class, AuditReportCron::TASK_NAME);
 
-if (isset($_POST['save_report']) || isset($_POST['send_report_now'])) {
+if (isset($_POST['send_report_now'])) {
     Session::checkRight(Config::$rightname, UPDATE);
     Session::checkRight('config', UPDATE);
 
-    $config = Config::getConfig();
-    $config->update([
-        'id'                          => $config->getID(),
-        'audit_report_only_on_change' => !empty($_POST['audit_report_only_on_change']) ? 1 : 0,
-        'audit_report_emails'         => (string) ($_POST['audit_report_emails'] ?? ''),
-    ]);
-
-    $frequencies = ['week' => WEEK_TIMESTAMP, 'month' => MONTH_TIMESTAMP];
-    $frequency = (string) ($_POST['audit_report_frequency'] ?? 'off');
-    if ($reportTaskFound) {
-        $reportTask->update([
-            'id'        => $reportTask->getID(),
-            'state'     => isset($frequencies[$frequency]) ? CronTask::STATE_WAITING : CronTask::STATE_DISABLE,
-            'frequency' => $frequencies[$frequency] ?? $reportTask->fields['frequency'],
-        ]);
-    }
-
-    if (isset($_POST['send_report_now'])) {
-        global $CFG_GLPI;
-        if (empty($CFG_GLPI['use_notifications']) || empty($CFG_GLPI['notifications_mailing'])) {
-            Session::addMessageAfterRedirect(
-                __('Les notifications par e-mail de GLPI sont désactivées : activez-les dans Configuration > Notifications.', 'configurationglpiauto'),
-                false,
-                ERROR
-            );
-        } elseif (AuditReportCron::run(true)) {
-            Session::addMessageAfterRedirect(__('Rapport d\'audit mis en file d\'envoi.', 'configurationglpiauto'));
-        } else {
-            Session::addMessageAfterRedirect(
-                __('Aucune notification active n\'a pu envoyer le rapport : vérifiez la notification et ses destinataires.', 'configurationglpiauto'),
-                false,
-                ERROR
-            );
-        }
+    global $CFG_GLPI;
+    if (empty($CFG_GLPI['use_notifications']) || empty($CFG_GLPI['notifications_mailing'])) {
+        Session::addMessageAfterRedirect(
+            __('Les notifications par e-mail de GLPI sont désactivées : activez-les dans Configuration > Notifications.', 'configurationglpiauto'),
+            false,
+            ERROR
+        );
+    } elseif (AuditReportCron::run(true)) {
+        Session::addMessageAfterRedirect(__('Rapport d\'audit mis en file d\'envoi.', 'configurationglpiauto'));
     } else {
-        Session::addMessageAfterRedirect(__('Réglages du rapport d\'audit enregistrés.', 'configurationglpiauto'));
+        Session::addMessageAfterRedirect(
+            __('Aucune notification active n\'a pu envoyer le rapport : vérifiez la notification et ses destinataires.', 'configurationglpiauto'),
+            false,
+            ERROR
+        );
     }
 
     Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
 }
 
 Html::header(__('Audit de configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'), 'config', ConfigurationProfile::class, 'audit');
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('audit');
 
 // Issue #466 : note de durcissement (lecture seule) et photo du jour dans l'historique des audits.
 $evaluation = AuditControlCatalog::evaluate();
@@ -232,16 +177,7 @@ if ($newCriticalCount > 0) {
 
 $driftApplied = BlueprintDrift::wasApplied();
 
-global $DB, $CFG_GLPI;
-$reportNotificationId = 0;
-foreach ($DB->request([
-    'SELECT' => ['id'],
-    'FROM'   => Notification::getTable(),
-    'WHERE'  => ['itemtype' => Config::class, 'event' => AuditReportCron::EVENT],
-    'LIMIT'  => 1,
-]) as $row) {
-    $reportNotificationId = (int) $row['id'];
-}
+global $CFG_GLPI;
 $reportState = json_decode((string) ($config->fields['audit_report_state'] ?? ''), true);
 $reportFrequency = 'off';
 if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_DISABLE) {
@@ -250,12 +186,9 @@ if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_D
 
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/audit.html.twig', [
     'report' => [
-        'frequency'          => $reportFrequency,
-        'only_on_change'     => !empty($config->fields['audit_report_only_on_change']),
-        'emails'             => implode("\n", $config->getAuditReportEmails()),
-        'last_sent'          => is_array($reportState) && isset($reportState['date']) ? Html::convDateTime($reportState['date']) : null,
-        'notification_url'   => $reportNotificationId > 0 ? Notification::getFormURLWithID($reportNotificationId) : null,
-        'notifications_on'   => !empty($CFG_GLPI['use_notifications']) && !empty($CFG_GLPI['notifications_mailing']),
+        'frequency'        => $reportFrequency,
+        'last_sent'        => is_array($reportState) && isset($reportState['date']) ? Html::convDateTime($reportState['date']) : null,
+        'notifications_on' => !empty($CFG_GLPI['use_notifications']) && !empty($CFG_GLPI['notifications_mailing']),
     ],
     'findings'              => $findings,
     'hardening'             => [
@@ -283,16 +216,15 @@ if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_D
     ],
     // Issue #470 : sessions actives et ré-authentification (GLPI 12, sans objet sous GLPI 11).
     'sessions'              => \GlpiPlugin\Configurationglpiauto\Audit\SessionSecurity::view(),
-    'park'                  => [
-        'ghost_days'    => (int) ($config->fields['audit_ghost_days'] ?? 30),
-        'warranty_days' => (int) ($config->fields['audit_warranty_days'] ?? 30),
-    ],
     'eol'                   => [
         'enabled' => !empty($config->fields['audit_eol_enabled']),
         'offline' => !empty($config->fields['audit_eol_offline']),
-        'days'    => (int) ($config->fields['audit_eol_days'] ?? 180),
-        'mapping' => (string) ($config->fields['audit_eol_mapping'] ?? ''),
         'cache'   => $eolCache,
+    ],
+    // Issue #495 : réglages de l'audit, dans la page de configuration du plugin.
+    'settings_url'          => [
+        'controls' => ConfigSettings::url(ConfigSettings::TAB_AUDIT),
+        'eol'      => ConfigSettings::url(ConfigSettings::TAB_EOL),
     ],
     'can_fix'               => Session::haveRight(Config::$rightname, UPDATE) && Session::haveRight('config', UPDATE),
     'csrf_token'            => Session::getNewCSRFToken(),

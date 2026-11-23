@@ -186,15 +186,17 @@ depuis plus de 24 heures et les autres comptes dont une session a plus de 7 jour
 vers l'onglet « Sessions » de leur fiche. Aucune session n'est fermée automatiquement. Sous
 GLPI 11, la section indique « Sans objet sous GLPI 11 » et le contrôle ne compte pas dans la note.
 
-**Fin de support des systèmes et du matériel** (facultatif) : dans Audit de configuration, carte
-« Fin de support des systèmes et du matériel », cochez « Activer le contrôle de fin de support »,
-puis cliquez sur « Proposer les correspondances » : chaque système d'exploitation reconnu du parc
-reçoit une ligne « Nom dans GLPI = produit » (par exemple `Debian GNU/Linux = debian`). Vérifiez
-ces lignes, ajoutez vos modèles de matériel (`iPhone 12 = iphone 12`), enregistrez, puis cliquez
-sur « Télécharger les dates » : seul le site endoflife.date est contacté, et seulement à ce
+**Fin de support des systèmes et du matériel** (facultatif) : dans les réglages du plugin
+(Configuration > Plugins, icône « Configurer », onglet « Fin de support »), cochez « Activer le
+contrôle de fin de support », puis cliquez sur « Proposer les correspondances » : chaque système
+d'exploitation reconnu du parc reçoit une ligne « Nom dans GLPI = produit » (par exemple
+`Debian GNU/Linux = debian`). Vérifiez ces lignes, ajoutez vos modèles de matériel
+(`iPhone 12 = iphone 12`) et enregistrez. Puis, dans Audit de configuration, carte « Fin de
+support des systèmes et du matériel », cliquez sur « Télécharger les dates » : seul le site endoflife.date est contacté, et seulement à ce
 moment-là. Les dates restent en base ; l'audit signale ensuite le matériel en service hors
 support ou qui le sera dans le délai choisi (180 jours par défaut). Sans accès à Internet, cochez
-le mode hors ligne et importez le fichier JSON d'un produit récupéré sur un autre poste.
+le mode hors ligne et importez, dans le même onglet des réglages, le fichier JSON d'un produit
+récupéré sur un autre poste.
 « Créer les tickets » ouvre un ticket lié au matériel concerné ; rien n'est modifié sur le
 matériel.
 
@@ -498,15 +500,16 @@ older than 7 days, with a link to the "Sessions" tab of their record. No session
 automatically. On GLPI 11 the section shows "Not applicable on GLPI 11" and the check does not
 count in the score.
 
-**End of support for systems and hardware** (optional): in Configuration audit, card "End of
-support for systems and hardware", tick "Enable the end-of-support check", then click "Suggest
-mappings": each recognised operating system of the fleet gets a line "Name in GLPI = product"
-(for example `Debian GNU/Linux = debian`). Check these lines, add your hardware models
-(`iPhone 12 = iphone 12`), save, then click "Download dates": only the endoflife.date site is
+**End of support for systems and hardware** (optional): in the plugin settings (Setup >
+Plugins, "Configure" icon, "End of support" tab), tick "Enable the end-of-support check", then
+click "Suggest mappings": each recognised operating system of the fleet gets a line "Name in
+GLPI = product" (for example `Debian GNU/Linux = debian`). Check these lines, add your hardware
+models (`iPhone 12 = iphone 12`) and save. Then, in Configuration audit, card "End of support for
+systems and hardware", click "Download dates": only the endoflife.date site is
 contacted, and only at that moment. The dates are kept in the database; the audit then reports
 in-service hardware that is out of support or will be within the chosen delay (180 days by
-default). Without Internet access, tick offline mode and import a product's JSON file fetched on
-another computer. "Create tickets" opens a ticket linked to the hardware concerned; nothing is
+default). Without Internet access, tick offline mode and import, in the same settings tab, a
+product's JSON file fetched on another computer. "Create tickets" opens a ticket linked to the hardware concerned; nothing is
 changed on the hardware.
 
 ![Étape 14 : Réglages généraux GLPI](screenshots/14-reglages-generaux.png)

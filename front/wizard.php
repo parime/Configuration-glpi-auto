@@ -1186,6 +1186,7 @@ if (isset($_POST['finish'])) {
 }
 
 Html::header(__('Assistant de configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('wizard.php'), 'config', ConfigurationProfile::class);
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('wizard');
 
 $config = Config::getConfig();
 $profiles = (new ConfigurationProfile())->find(['is_active' => 1], ['sort_order ASC']);
@@ -1311,8 +1312,6 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     // Issue #452 : étape « Inventaire Docker », seulement si le plugin est actif. Les connexions
     // sont testées et créées par ajax/dockerinventory_connection.php, jamais par « Terminer ».
     'docker_inventory' => DockerInventorySetup::viewData(),
-    'installed_version'     => PLUGIN_CONFIGURATIONGLPIAUTO_VERSION,
-    'latest_github_version' => Config::getLatestGithubVersion(),
     'csrf_token'       => Session::getNewCSRFToken(),
 ]);
 

@@ -94,6 +94,13 @@ expect "front/fueltype.php"                     $OPEN "$(code "$P/fueltype.php")
 expect "front/fueltype.form.php"                $OPEN "$(code "$P/fueltype.form.php?id=$(id fueltype)")"
 expect "front/audit.php (consultation)"         $AUDIT "$(code "$P/audit.php")"
 expect "front/audit.php (correction)"           $AUDIT_FIX "$(code -d "fix=notifications_disabled&_glpi_csrf_token=$(csrf)" "$P/audit.php")"
+# Issue #495 : page de configuration du plugin (reglages de l audit deplaces), memes droits que
+# l audit : droit du plugin et droit natif config, UPDATE des deux pour enregistrer.
+expect "front/config.php (onglet General)"     $AUDIT "$(code "$P/config.php")"
+expect "front/config.php (onglet Audit)"       $AUDIT "$(code "$P/config.php?tab=controls")"
+expect "front/config.php (onglet Fin de support)" $AUDIT "$(code "$P/config.php?tab=eol")"
+expect "front/config.php (enregistrement)"     $AUDIT_FIX "$(code -d "save_park=1&audit_ghost_days=30&audit_warranty_days=30&_glpi_csrf_token=$(csrf)" "$P/config.php")"
+expect "front/audit.php (ancien formulaire)"   $AUDIT_FIX "$(code -d "save_park=1&audit_ghost_days=30&audit_warranty_days=30&_glpi_csrf_token=$(csrf)" "$P/audit.php")"
 # Issue #429 : test de connexion d'un collecteur, exige aussi le droit natif config (collecteurs) ;
 # le super-admin obtient 404 pour un collecteur inexistant.
 expect "ajax/mailcollector_test.php"            $MAILTEST "$(code -X POST -H "X-Glpi-Csrf-Token: $(csrf)" -H 'X-Requested-With: XMLHttpRequest' -d 'id=0' "$A/mailcollector_test.php")"

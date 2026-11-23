@@ -38,6 +38,11 @@ $itemtype = $requestedItemtype === ConfigurationProfile::class ? ConfigurationPr
 
 $item = $itemtype === ConfigurationProfile::class ? new ConfigurationProfile() : new ConfigHistory();
 $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
+// Issue #495 : sans sauvegarde ni Blueprint choisi, retour à la liste correspondante (onglet
+// Historique ou Profils et Blueprints), pas à l'accueil de GLPI par Html::back().
+if ($id <= 0) {
+    Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get($itemtype === ConfigurationProfile::class ? 'profile.php' : 'history.php'));
+}
 $item->check($id, READ);
 
 $decoded = json_decode((string) $item->fields['snapshot'], true);
@@ -68,7 +73,8 @@ if (isset($_POST['restore_all']) || isset($_POST['restore_selected']) || isset($
     Html::redirect(ConfigurationProfile::getSearchURL());
 }
 
-Html::header(__('Restaurer une configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('history_restore.php'), 'config', $itemtype);
+Html::header(__('Restaurer une configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('history_restore.php'), 'config', \GlpiPlugin\Configurationglpiauto\ConfigurationProfile::class, 'history');
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('history');
 
 $fullyDefaulted = BlueprintSerializer::import($decoded, Config::getDefaults());
 $diff = BlueprintSerializer::diff(Config::getConfig()->fields, $fullyDefaulted);

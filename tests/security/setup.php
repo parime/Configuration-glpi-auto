@@ -62,7 +62,8 @@ if (($argv[1] ?? '') === 'xss') {
     $DB->update(\GlpiPlugin\Configurationglpiauto\Config::getTable(), [
         'calendar_name'              => $canary,
         'ldap_rights_group_template' => $canary,
-        // #467 : correspondance de fin de support, réaffichée dans la page d'audit.
+        // #467 : correspondance de fin de support, réaffichée dans la page de configuration
+        // (onglet Fin de support, #495).
         'audit_eol_enabled'          => 1,
         'audit_eol_mapping'          => $canary . ' = windows',
         'entity_tree'                => json_encode([['name' => $canary, 'children' => [['name' => $canary, 'children' => []]]]]),

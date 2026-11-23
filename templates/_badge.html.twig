@@ -17,11 +17,11 @@
    ok (vert), warning (orange), danger (rouge), info (bleu), neutral (gris).
    Usage : {% include '@configurationglpiauto/_badge.html.twig' with {kind: 'ok', label: __('À jour', 'configurationglpiauto')} %} #}
 {% set styles = {
-   'ok':      ['bg-green-lt', 'ti-circle-check'],
-   'warning': ['bg-orange-lt', 'ti-alert-triangle'],
-   'danger':  ['bg-red-lt', 'ti-alert-octagon'],
-   'info':    ['bg-blue-lt', 'ti-loader'],
-   'neutral': ['bg-secondary-lt', 'ti-circle-dashed'],
+   'ok':      ['bg-green-subtle text-green-emphasis', 'ti-circle-check'],
+   'warning': ['bg-orange-subtle text-orange-emphasis', 'ti-alert-triangle'],
+   'danger':  ['bg-red-subtle text-red-emphasis', 'ti-alert-octagon'],
+   'info':    ['bg-blue-subtle text-blue-emphasis', 'ti-loader'],
+   'neutral': ['bg-secondary-subtle text-secondary-emphasis', 'ti-circle-dashed'],
 } %}
 {% set style = styles[kind] ?? styles['neutral'] %}
 <span class="badge {{ style[0] }}"><i class="ti {{ style[1] }} me-1"></i>{{ label }}</span>

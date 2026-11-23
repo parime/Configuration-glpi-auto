@@ -19,10 +19,10 @@
    les secrets sont chiffrés par Inventaire Docker et jamais réaffichés. #}
 {% set di = docker_inventory %}
 {% set type_meta = {
-   'portainer': {label: 'Portainer', icon: 'ti-brand-docker', color: 'bg-blue-lt'},
-   'wud': {label: "What's Up Docker (WUD)", icon: 'ti-tags', color: 'bg-teal-lt'},
-   'harbor': {label: 'Harbor', icon: 'ti-building-warehouse', color: 'bg-indigo-lt'},
-   'kubernetes': {label: 'Kubernetes', icon: 'ti-brand-kubernetes', color: 'bg-azure-lt'},
+   'portainer': {label: 'Portainer', icon: 'ti-brand-docker', color: 'bg-blue-subtle text-blue-emphasis'},
+   'wud': {label: "What's Up Docker (WUD)", icon: 'ti-tags', color: 'bg-teal-subtle text-teal-emphasis'},
+   'harbor': {label: 'Harbor', icon: 'ti-building-warehouse', color: 'bg-indigo-subtle text-indigo-emphasis'},
+   'kubernetes': {label: 'Kubernetes', icon: 'ti-brand-kubernetes', color: 'bg-azure-subtle text-azure-emphasis'},
 } %}
 
 <h3 class="mb-1">{{ __('Étape', 'configurationglpiauto') }} {{ step_number }} : {{ __('Inventaire Docker', 'configurationglpiauto') }}</h3>
@@ -47,7 +47,7 @@
     <ul class="list-group mb-3">
       {% for connection in di.existing %}
         <li class="list-group-item d-flex flex-wrap align-items-center gap-2">
-          <span class="badge bg-secondary-lt">{{ connection.type }}</span>
+          <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ connection.type }}</span>
           <a href="{{ connection.url }}" target="_blank" rel="noopener">{{ connection.name }}</a>
         </li>
       {% endfor %}
@@ -136,7 +136,7 @@
             <div class="col-12">
               <div class="form-check form-switch mb-0">
                 <input type="checkbox" class="form-check-input" id="cga-docker-{{ type }}-allow_http" data-field="allow_http" value="1">
-                <label class="form-check-label" for="cga-docker-{{ type }}-allow_http">{{ __('Autoriser une adresse en HTTP', 'configurationglpiauto') }} <span class="badge bg-orange-lt">{{ __('déconseillé', 'configurationglpiauto') }}</span></label>
+                <label class="form-check-label" for="cga-docker-{{ type }}-allow_http">{{ __('Autoriser une adresse en HTTP', 'configurationglpiauto') }} <span class="badge bg-orange-subtle text-orange-emphasis">{{ __('déconseillé', 'configurationglpiauto') }}</span></label>
               </div>
               <p class="text-muted small mb-0">{{ __('Le jeton ou le mot de passe circule alors en clair sur le réseau.', 'configurationglpiauto') }}</p>
             </div>
@@ -173,10 +173,10 @@
   (function () {
     var endpoint = "{{ (config('root_doc') ~ '/plugins/configurationglpiauto/ajax/dockerinventory_connection.php')|e('js') }}";
     var badges = {
-      ok: ['bg-green-lt', 'ti-circle-check', "{{ __('Réussi', 'configurationglpiauto')|e('js') }}"],
-      warning: ['bg-orange-lt', 'ti-alert-triangle', "{{ __('Avertissement', 'configurationglpiauto')|e('js') }}"],
-      error: ['bg-red-lt', 'ti-alert-octagon', "{{ __('Échec', 'configurationglpiauto')|e('js') }}"],
-      info: ['bg-blue-lt', 'ti-loader', "{{ __('En cours', 'configurationglpiauto')|e('js') }}"]
+      ok: ['bg-green-subtle text-green-emphasis', 'ti-circle-check', "{{ __('Réussi', 'configurationglpiauto')|e('js') }}"],
+      warning: ['bg-orange-subtle text-orange-emphasis', 'ti-alert-triangle', "{{ __('Avertissement', 'configurationglpiauto')|e('js') }}"],
+      error: ['bg-red-subtle text-red-emphasis', 'ti-alert-octagon', "{{ __('Échec', 'configurationglpiauto')|e('js') }}"],
+      info: ['bg-blue-subtle text-blue-emphasis', 'ti-loader', "{{ __('En cours', 'configurationglpiauto')|e('js') }}"]
     };
 
     function show(target, level, message) {

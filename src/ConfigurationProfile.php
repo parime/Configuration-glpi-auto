@@ -77,9 +77,18 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
     }
 
     /**
-     * Pages du plugin rattachées à cette entrée de menu (audit, plan d'adressage, import Jira) :
-     * chacune a son propre fil d'Ariane et aucun bouton « Ajouter » (qui créait un profil depuis
-     * la page d'audit).
+     * Issue #495 : l'entrée de menu porte le nom du plugin (Configuration > Configuration GLPI
+     * Auto), pas celui de la liste des profils, qui n'en est qu'un des onglets (UsageTabs).
+     */
+    public static function getMenuName()
+    {
+        return __('Configuration GLPI Auto', 'configurationglpiauto');
+    }
+
+    /**
+     * Pages du plugin rattachées à cette entrée de menu (profils, audit, historique, plan
+     * d'adressage, imports) : chacune a son propre fil d'Ariane et aucun bouton « Ajouter » (qui
+     * créait un profil depuis la page d'audit). Les onglets de UsageTabs les relient entre elles.
      *
      * @return array<string, mixed>|false
      */
@@ -90,6 +99,9 @@ class ConfigurationProfile extends Compat\Base\ConfigurationProfileBase
             return $menu;
         }
         $pages = [
+            // Issue #495 : liste des profils et historique, auparavant hors menu.
+            'profiles'    => [__('Profils et Blueprints', 'configurationglpiauto'), 'profile.php', 'ti ti-template'],
+            'history'     => [__('Historique', 'configurationglpiauto'), 'history.php', 'ti ti-history'],
             'audit'       => [__('Audit de configuration', 'configurationglpiauto'), 'audit.php', 'ti ti-shield-check'],
             'addressplan' => [__('Plan d\'adressage', 'configurationglpiauto'), 'addressplan.php', 'ti ti-network'],
             'jiraimport'  => [__('Importer depuis Jira', 'configurationglpiauto'), 'jiraimport.php', 'ti ti-file-import'],

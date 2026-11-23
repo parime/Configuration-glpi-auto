@@ -168,6 +168,7 @@ if (isset($_POST['continue_import'])) {
 }
 
 Html::header(__('Importer depuis Jira', 'configurationglpiauto'), $url, 'config', ConfigurationProfile::class, 'jiraimport');
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('import', 'jiraimport.php');
 
 $statusLabels = [
     JiraMapping::STATUS_NEW          => __('Nouveau', 'configurationglpiauto'),

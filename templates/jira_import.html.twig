@@ -29,7 +29,7 @@
    {% elseif step == 'upload' %}
       {# Étape 1 : fichier et entité. #}
       <p>{{ __('Dans Jira, exportez les tickets en CSV (« Toutes les colonnes »). L\'import se fait en deux temps : un aperçu à blanc, sans rien écrire, où vous vérifiez les correspondances de statuts et de types, puis l\'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n\'est envoyée.', 'configurationglpiauto') }}</p>
-      <p class="text-muted small"><i class="ti ti-file-spreadsheet me-1"></i>{{ __('Vos tickets viennent d\'un autre outil ou d\'un tableur ?', 'configurationglpiauto') }} <a href="{{ csv_url }}">{{ __('Utilisez l\'import CSV', 'configurationglpiauto') }}</a></p>
+      <p class="text-muted small"><i class="ti ti-file-spreadsheet me-1"></i>{{ __('Vos tickets viennent d\'un autre outil ou d\'un tableur ?', 'configurationglpiauto') }} <a href="{{ csv_url }}" class="text-decoration-underline">{{ __('Utilisez l\'import CSV', 'configurationglpiauto') }}</a></p>
       <form method="post" enctype="multipart/form-data" action="{{ url }}" class="row g-3 align-items-end">
          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
          <div class="col-md-5"><label class="form-label" for="jira_csv">{{ __('Export CSV de Jira', 'configurationglpiauto') }}</label><input type="file" id="jira_csv" name="jira_csv" accept=".csv,text/csv" class="form-control" required></div>
@@ -69,7 +69,7 @@
                <table class="table table-sm align-middle">
                   {% for jira_status, default in preview.statuses %}
                      <tr>
-                        <td>{{ jira_status }} <span class="badge bg-secondary-lt">{{ preview.summary.statuses[jira_status] }}</span></td>
+                        <td>{{ jira_status }} <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ preview.summary.statuses[jira_status] }}</span></td>
                         <td><select name="status_map[{{ jira_status }}]" class="form-select form-select-sm" aria-label="{{ jira_status }}">
                            {% for value, label in status_labels %}<option value="{{ value }}" {{ value ~ '' == default ~ '' ? 'selected' }}>{{ label }}</option>{% endfor %}
                         </select></td>
@@ -82,7 +82,7 @@
                <table class="table table-sm align-middle">
                   {% for jira_type, default in preview.types %}
                      <tr>
-                        <td>{{ jira_type }} <span class="badge bg-secondary-lt">{{ preview.summary.types[jira_type] }}</span></td>
+                        <td>{{ jira_type }} <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ preview.summary.types[jira_type] }}</span></td>
                         <td><select name="type_map[{{ jira_type }}]" class="form-select form-select-sm" aria-label="{{ jira_type }}">
                            {% for value, label in type_labels %}<option value="{{ value }}" {{ value == default ? 'selected' }}>{{ label }}</option>{% endfor %}
                         </select></td>
@@ -99,7 +99,7 @@
                <thead><tr><th>{{ __('Projet', 'configurationglpiauto') }}</th><th>{{ __('Entité', 'configurationglpiauto') }}</th><th>{{ __('Catégorie', 'configurationglpiauto') }}</th></tr></thead>
                {% for project in projects %}
                   <tr>
-                     <td>{{ project.name }} <span class="badge bg-secondary-lt">{{ project.count }}</span></td>
+                     <td>{{ project.name }} <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ project.count }}</span></td>
                      {# Listes produites par le cœur GLPI (Entity::dropdown(), ITILCategory::dropdown()). #}
                      {% set project_entity_dropdown = project.entity %}
                      {% set project_category_dropdown = project.category %}

@@ -373,7 +373,7 @@ class Config extends Compat\Base\ConfigBase
     }
 
     /**
-     * The built-in starting-point tier table: exposed so ConfigurationProfile::getSuggestedDefaults()
+     * The built-in starting-point tier table: exposed so getSuggestedDefaults() of ConfigurationProfile
      * can reuse it instead of duplicating the same 6 numbers a second time.
      *
      * @return array<int, array{tto_hours: int, ttr_hours: int}>

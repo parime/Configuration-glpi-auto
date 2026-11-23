@@ -2150,21 +2150,9 @@ msgstr "Przywróć wybrane"
 msgid "Restaurer intégralement"
 msgstr "Przywróć w całości"
 
-#: front/profile.php:28
-msgid "Lancer l'assistant de configuration"
-msgstr "Uruchom kreator konfiguracji"
-
-#: front/profile.php:33
-msgid "Lancer l'audit"
-msgstr "Uruchom audyt"
-
 #: front/profile.php:38
 msgid "Importer un Blueprint (JSON)"
 msgstr "Importuj Blueprint (JSON)"
-
-#: front/profile.php:43
-msgid "Historique & Rollback"
-msgstr "Historia i wycofanie"
 
 #: front/wizard.php:331
 msgid "Dossier des palettes personnalisées inscriptible"
@@ -3837,9 +3825,6 @@ msgstr ""
 msgid "Enregistrer"
 msgstr "Zapisz"
 
-msgid "Enregistrer et envoyer maintenant"
-msgstr "Zapisz i wyślij teraz"
-
 msgid "Modifier le modèle et les destinataires"
 msgstr "Edytuj szablon i adresatów"
 
@@ -4715,9 +4700,6 @@ msgstr "Importuj zgłoszenia: %d"
 
 msgid "Annuler"
 msgstr "Anuluj"
-
-msgid "Importer depuis Jira (CSV)"
-msgstr "Import z Jira (CSV)"
 
 msgid "Plan d'adressage"
 msgstr "Plan adresacji"
@@ -6642,13 +6624,6 @@ msgstr ""
 "wartościami dopasowanymi do rodzaju organizacji."
 
 msgid ""
-"Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou "
-"ouvrez un profil de la liste pour le consulter ou l'exporter."
-msgstr ""
-"Uruchom kreator, audyt lub import za pomocą przycisków poniżej albo otwórz "
-"profil z listy, aby go przejrzeć lub wyeksportować."
-
-msgid ""
 "Retrouver les sauvegardes de la configuration : une automatique à chaque "
 "application de l'assistant, et les points de sauvegarde créés à la main, "
 "pour comparer ou revenir en arrière."
@@ -7100,20 +7075,6 @@ msgstr "Offline"
 
 msgid "À quoi sert ce contrôle ?"
 msgstr "Do czego służy ta kontrola?"
-
-msgid ""
-"Il signale les systèmes d'exploitation et les modèles de matériel en service "
-"dont le support du fabricant est terminé ou se termine bientôt, d'après les "
-"dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il "
-"n'est pas activé, seul endoflife.date est contacté, et seulement quand vous "
-"cliquez sur « Télécharger les dates ». Le contrôle lit ensuite ces dates "
-"gardées en base : il ne modifie jamais le matériel."
-msgstr ""
-"Wskazuje używane systemy operacyjne i modele sprzętu, których wsparcie "
-"producenta się zakończyło lub wkrótce się kończy, według publicznych dat "
-"serwisu endoflife.date. Nic nie jest pobierane przed włączeniem, "
-"kontaktowany jest tylko endoflife.date i tylko po kliknięciu „Pobierz daty”. "
-"Kontrola odczytuje potem te daty zapisane w bazie: nigdy nie zmienia sprzętu."
 
 msgid "Activer le contrôle de fin de support"
 msgstr "Włącz kontrolę końca wsparcia"
@@ -7709,3 +7670,108 @@ msgstr "Często „pamiętaj mnie” na współdzielonym lub zgubionym komputerz
 
 msgid "%1$s (ouverte le %2$s)"
 msgstr "%1$s (otwarta %2$s)"
+
+msgid "Ces réglages sont maintenant dans Configuration > Plugins > Configuration GLPI Auto."
+msgstr "Te ustawienia znajdują się teraz w Konfiguracja > Wtyczki > Configuration GLPI Auto."
+
+msgid "Configuration GLPI Auto"
+msgstr "Configuration GLPI Auto"
+
+msgid "Général"
+msgstr "Ogólne"
+
+msgid "Audit"
+msgstr "Audyt"
+
+msgid "Fin de support"
+msgstr "Koniec wsparcia"
+
+msgid "Profils et Blueprints"
+msgstr "Profile i Blueprinty"
+
+msgid "Historique"
+msgstr "Historia"
+
+msgid "Assistant"
+msgstr "Kreator"
+
+msgid "Importer des tickets"
+msgstr "Importuj zgłoszenia"
+
+msgid "Dernière version inconnue"
+msgstr "Najnowsza wersja nieznana"
+
+msgid "La dernière version n'est lue sur GitHub que si l'action automatique « checkupdate » de GLPI est activée (Configuration > Actions automatiques) et que le serveur GLPI peut joindre github.com."
+msgstr "Najnowsza wersja jest odczytywana z GitHub tylko wtedy, gdy akcja automatyczna „checkupdate” GLPI jest włączona (Konfiguracja > Akcje automatyczne), a serwer GLPI ma dostęp do github.com."
+
+msgid "Mise à jour disponible"
+msgstr "Dostępna aktualizacja"
+
+msgid "Notes de version"
+msgstr "Informacje o wydaniu"
+
+msgid "À jour"
+msgstr "Aktualna"
+
+msgid "Depuis Jira"
+msgstr "Z Jiry"
+
+msgid "Depuis un fichier CSV"
+msgstr "Z pliku CSV"
+
+msgid "Source des tickets"
+msgstr "Źródło zgłoszeń"
+
+msgid "Écrans de Configuration GLPI Auto"
+msgstr "Ekrany Configuration GLPI Auto"
+
+msgid "Contrôle désactivé : activez-le et indiquez les correspondances dans l'onglet « Fin de support » des réglages."
+msgstr "Kontrola wyłączona: włącz ją i wpisz powiązania w zakładce „Koniec wsparcia” ustawień."
+
+msgid "Délais des contrôles du parc, fin de support et rapport périodique : ces réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
+msgstr "Progi kontroli zasobów, koniec wsparcia i raport okresowy: te ustawienia znajdują się w Konfiguracja > Wtyczki > Configuration GLPI Auto."
+
+msgid "Envoyer le rapport maintenant"
+msgstr "Wyślij raport teraz"
+
+msgid "Ouvrir les réglages"
+msgstr "Otwórz ustawienia"
+
+msgid "Actions automatiques"
+msgstr "Akcje automatyczne"
+
+msgid "Administration > Profils, onglet « Configuration GLPI Auto » de chaque profil."
+msgstr "Administracja > Profile, zakładka „Configuration GLPI Auto” każdego profilu."
+
+msgid "Analyse continue de l'audit, rapport périodique et vérification des nouvelles versions (checkupdate)."
+msgstr "Ciągła analiza audytu, raport okresowy i sprawdzanie nowych wersji (checkupdate)."
+
+msgid "Droits du plugin"
+msgstr "Uprawnienia wtyczki"
+
+msgid "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+msgstr "Wskazuje używane systemy operacyjne i modele sprzętu, których wsparcie producenta się skończyło lub wkrótce się skończy, na podstawie publicznych dat serwisu endoflife.date. Nic nie jest pobierane, dopóki kontrola nie jest włączona; kontaktowany jest tylko endoflife.date i tylko po kliknięciu „Pobierz daty” na stronie audytu. Kontrola odczytuje następnie te daty zapisane w bazie: nigdy nie zmienia sprzętu."
+
+msgid "Lecture seule : modifier ces réglages demande le droit de modification de la configuration de GLPI et de ce plugin."
+msgstr "Tylko do odczytu: zmiana tych ustawień wymaga prawa modyfikacji konfiguracji GLPI i tej wtyczki."
+
+msgid "Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, rapport périodique, fin de support des systèmes et du matériel."
+msgstr "Ustawienia wtyczki i tylko one: progi kontroli audytu, raport okresowy, koniec wsparcia systemów i sprzętu."
+
+msgid "Modèle et destinataires du rapport d'audit périodique."
+msgstr "Szablon i odbiorcy okresowego raportu z audytu."
+
+msgid "Réglages de Configuration GLPI Auto"
+msgstr "Ustawienia Configuration GLPI Auto"
+
+msgid "Réglages gérés par GLPI"
+msgstr "Ustawienia zarządzane przez GLPI"
+
+msgid "Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, l'historique et les imports s'ouvrent depuis le menu Configuration > Configuration GLPI Auto."
+msgstr "Ustaw każdą zakładkę i ją zapisz. Kreator, audyt, profile, historię i importy otwiera się z menu Konfiguracja > Configuration GLPI Auto."
+
+msgid "Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, historique, imports) sont dans les onglets ci-dessus."
+msgstr "Otwórz profil z listy, aby go wyświetlić lub wyeksportować, albo zaimportuj Blueprint otrzymany z innej instancji. Pozostałe ekrany (kreator, audyt, historia, importy) są w zakładkach powyżej."
+
+msgid "Progression de l'assistant"
+msgstr "Postęp kreatora"

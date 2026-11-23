@@ -213,6 +213,7 @@ if (isset($_POST['continue_import'])) {
 }
 
 Html::header(__('Importer des tickets (CSV)', 'configurationglpiauto'), $url, 'config', ConfigurationProfile::class, 'csvimport');
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('import', 'csvimport.php');
 
 $fieldLabels = [
     'key'            => __('Identifiant d\'origine', 'configurationglpiauto'),
