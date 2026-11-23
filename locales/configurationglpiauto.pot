@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 05:34+0000\n"
+"POT-Creation-Date: 2026-11-23 22:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,6 +24,22 @@ msgstr ""
 
 #: templates/_page_help.html.twig
 msgid "Ce qui est attendu :"
+msgstr ""
+
+#: templates/_usage_tabs.html.twig
+msgid "Écrans de Configuration GLPI Auto"
+msgstr ""
+
+#: templates/_usage_tabs.html.twig
+msgid "Source des tickets"
+msgstr ""
+
+#: templates/_usage_tabs.html.twig
+msgid "Depuis Jira"
+msgstr ""
+
+#: templates/_usage_tabs.html.twig
+msgid "Depuis un fichier CSV"
 msgstr ""
 
 #: templates/history_checkpoint.html.twig
@@ -84,8 +100,8 @@ msgid ""
 "dernière étape."
 msgstr ""
 
-#: templates/jira_import.html.twig front/jiraimport.php:170
-#: src/ConfigurationProfile.php:95
+#: templates/jira_import.html.twig front/jiraimport.php:187
+#: src/ConfigurationProfile.php:107
 msgid "Importer depuis Jira"
 msgstr ""
 
@@ -134,8 +150,8 @@ msgstr ""
 msgid "Adresse de Jira"
 msgstr ""
 
-#: templates/jira_import.html.twig front/csvimport.php:222
-#: src/ConfigurationProfile.php:150
+#: templates/jira_import.html.twig front/csvimport.php:223
+#: src/ConfigurationProfile.php:162
 msgid "Type"
 msgstr ""
 
@@ -148,7 +164,23 @@ msgid "Jeton d'API"
 msgstr ""
 
 #: templates/jira_import.html.twig
-msgid "Requête JQL"
+msgid "Clé du projet Jira"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Mis à jour depuis (facultatif)"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid "Filtre JQL supplémentaire (facultatif)"
+msgstr ""
+
+#: templates/jira_import.html.twig
+msgid ""
+"Jira exige une recherche restreinte : seuls les tickets du ou des projets "
+"indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la "
+"date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces "
+"conditions."
 msgstr ""
 
 #: templates/jira_import.html.twig
@@ -194,7 +226,7 @@ msgid "Entité"
 msgstr ""
 
 #: templates/jira_import.html.twig templates/wizard.html.twig
-#: front/csvimport.php:224
+#: front/csvimport.php:225
 msgid "Catégorie"
 msgstr ""
 
@@ -215,16 +247,14 @@ msgid ""
 msgstr ""
 
 #: templates/profile_actions.html.twig
+msgid ""
+"Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un "
+"Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, "
+"historique, imports) sont dans les onglets ci-dessus."
+msgstr ""
+
+#: templates/profile_actions.html.twig
 msgid "Importer un Blueprint (JSON)"
-msgstr ""
-
-#: templates/profile_actions.html.twig templates/csv_import.html.twig
-#: front/csvimport.php:215 src/ConfigurationProfile.php:97
-msgid "Importer des tickets (CSV)"
-msgstr ""
-
-#: templates/profile_actions.html.twig templates/wizard.html.twig
-msgid "Plan d'adressage (réseaux et VLAN)"
 msgstr ""
 
 #: templates/wizard.html.twig
@@ -239,18 +269,6 @@ msgid ""
 "Choisissez un profil, parcourez les étapes (la plupart sont optionnelles), "
 "vérifiez le récapitulatif, puis cliquez une seule fois sur « Terminer ». Ce "
 "qui existe déjà est réutilisé, rien n'est supprimé."
-msgstr ""
-
-#: templates/wizard.html.twig
-msgid "Version du plugin"
-msgstr ""
-
-#: templates/wizard.html.twig
-msgid "Version installée"
-msgstr ""
-
-#: templates/wizard.html.twig
-msgid "Dernière version sur GitHub"
 msgstr ""
 
 #: templates/wizard.html.twig
@@ -274,6 +292,10 @@ msgid ""
 "correspondantes seront silencieusement ignorées à l'étape finale. Cela "
 "n'empêche pas de continuer, mais corrigez-les si la fonctionnalité concernée "
 "vous intéresse."
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Progression de l'assistant"
 msgstr ""
 
 #: templates/wizard.html.twig templates/wizard_docker_inventory.html.twig
@@ -341,6 +363,10 @@ msgstr ""
 msgid ""
 "Une fois les lieux créés, déclarez leurs réseaux IP et VLAN, ou importez-les "
 "depuis un tableau :"
+msgstr ""
+
+#: templates/wizard.html.twig
+msgid "Plan d'adressage (réseaux et VLAN)"
 msgstr ""
 
 #: templates/wizard.html.twig
@@ -500,7 +526,7 @@ msgstr ""
 msgid "Créer des SLA standards"
 msgstr ""
 
-#: templates/wizard.html.twig front/csvimport.php:223
+#: templates/wizard.html.twig front/csvimport.php:224
 msgid "Priorité"
 msgstr ""
 
@@ -1139,7 +1165,7 @@ msgstr ""
 msgid "Montrer les nouveaux tickets sur la page d'accueil"
 msgstr ""
 
-#: templates/wizard.html.twig
+#: templates/wizard.html.twig templates/config.html.twig
 #: src/Audit/Checks/NotificationsDisabledCheck.php:41
 #: src/Blueprint/FieldGroupLabel.php:46
 msgid "Notifications"
@@ -2567,6 +2593,41 @@ msgstr ""
 msgid "Le test n'a pas pu être lancé."
 msgstr ""
 
+#: templates/_plugin_version.html.twig
+msgid "Version du plugin"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "Version installée"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "Dernière version sur GitHub"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "Mise à jour disponible"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "Notes de version"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "À jour"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "Dernière version inconnue"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid ""
+"La dernière version n'est lue sur GitHub que si l'action automatique "
+"« checkupdate » de GLPI est activée (Configuration > Actions automatiques) "
+"et que le serveur GLPI peut joindre github.com."
+msgstr ""
+
 #: templates/import/_result.html.twig
 #, php-format
 msgid ""
@@ -2635,7 +2696,7 @@ msgstr ""
 msgid "aucun formulaire : à créer ?"
 msgstr ""
 
-#: templates/import/_preview_common.html.twig front/csvimport.php:233
+#: templates/import/_preview_common.html.twig front/csvimport.php:234
 #: src/Blueprint/FieldGroupLabel.php:55
 msgid "Étiquettes"
 msgstr ""
@@ -2812,78 +2873,38 @@ msgid "Corriger"
 msgstr ""
 
 #: templates/audit.html.twig
-msgid "Contrôles du parc"
-msgstr ""
-
-#: templates/audit.html.twig
 msgid ""
-"Ces contrôles ne modifient jamais le matériel : « Créer les tickets » ouvre "
-"des tickets liés au matériel concerné, que l'équipe traite. Mettre 0 "
-"désactive un contrôle."
+"Délais des contrôles du parc, fin de support et rapport périodique : ces "
+"réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
 msgstr ""
 
 #: templates/audit.html.twig
-msgid "Matériel qui ne remonte plus à l'inventaire depuis (jours)"
+msgid "Ouvrir les réglages"
 msgstr ""
 
-#: templates/audit.html.twig
-msgid "Garanties qui expirent dans (jours)"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "Enregistrer"
-msgstr ""
-
-#: templates/audit.html.twig src/Audit/AuditControlCatalog.php:82
+#: templates/audit.html.twig templates/config.html.twig
+#: src/Audit/AuditControlCatalog.php:82
 msgid "Fin de support des systèmes et du matériel"
 msgstr ""
 
-#: templates/audit.html.twig templates/audit/_session_security.html.twig
+#: templates/audit.html.twig templates/config.html.twig
+#: templates/audit/_session_security.html.twig
 msgid "Activé"
 msgstr ""
 
-#: templates/audit.html.twig
+#: templates/audit.html.twig templates/config.html.twig
 msgid "Hors ligne"
 msgstr ""
 
-#: templates/audit.html.twig templates/audit/_session_security.html.twig
+#: templates/audit.html.twig templates/config.html.twig
+#: templates/audit/_session_security.html.twig
 msgid "Désactivé"
 msgstr ""
 
 #: templates/audit.html.twig
-msgid "À quoi sert ce contrôle ?"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "Activer le contrôle de fin de support"
-msgstr ""
-
-#: templates/audit.html.twig
 msgid ""
-"Mode hors ligne : ne jamais contacter endoflife.date, importer les fichiers "
-"à la main"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "Signaler une fin de support dans les (jours)"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid ""
-"Correspondances : une ligne par nom de système ou de modèle, tel qu'il "
-"apparaît dans GLPI"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid ""
-"Forme : « Nom dans GLPI = produit », ou « Nom dans GLPI = produit cycle » "
-"pour imposer le cycle. Le produit est l'identifiant de la page "
-"endoflife.date (par exemple windows pour endoflife.date/windows). Les noms "
-"sans correspondance ne sont pas contrôlés."
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "Proposer les correspondances"
+"Contrôle désactivé : activez-le et indiquez les correspondances dans "
+"l'onglet « Fin de support » des réglages."
 msgstr ""
 
 #: templates/audit.html.twig
@@ -2898,7 +2919,7 @@ msgstr ""
 msgid "Aucune date pour l'instant."
 msgstr ""
 
-#: templates/audit.html.twig
+#: templates/audit.html.twig templates/config.html.twig
 msgid "Produit"
 msgstr ""
 
@@ -2910,68 +2931,26 @@ msgstr ""
 msgid "Mis à jour le"
 msgstr ""
 
-#: templates/audit.html.twig
-msgid ""
-"Sans accès à Internet : sur un autre poste, enregistrez https://"
-"endoflife.date/api/v1/products/windows/ dans un fichier (windows étant le "
-"produit voulu), puis importez-le ici."
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "Fichier JSON endoflife.date"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "Importer"
-msgstr ""
-
-#: templates/audit.html.twig
+#: templates/audit.html.twig templates/config.html.twig
 msgid "Rapport périodique par e-mail"
 msgstr ""
 
-#: templates/audit.html.twig
-msgid ""
-"Reçoit automatiquement la synthèse de cet audit : nombre de contrôles OK, en "
-"alerte et en échec, points à traiter avec leur recommandation et évolution "
-"depuis le rapport précédent. Aucun mot de passe ni secret n'est envoyé, "
-"seulement les constats."
+#: templates/audit.html.twig templates/config.html.twig
+msgid "Hebdomadaire"
 msgstr ""
 
-#: templates/audit.html.twig front/audit.php:160
+#: templates/audit.html.twig templates/config.html.twig
+msgid "Mensuel"
+msgstr ""
+
+#: templates/audit.html.twig templates/config.html.twig front/audit.php:107
 msgid ""
 "Les notifications par e-mail de GLPI sont désactivées : activez-les dans "
 "Configuration > Notifications."
 msgstr ""
 
-#: templates/audit.html.twig src/RequestFormLibraryBuilder.php:277
-msgid "Fréquence"
-msgstr ""
-
 #: templates/audit.html.twig
-msgid "Hebdomadaire"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "Mensuel"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "N'envoyer que s'il y a un changement ou une anomalie"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "Adresses supplémentaires (facultatif)"
-msgstr ""
-
-#: templates/audit.html.twig
-msgid ""
-"Une adresse par ligne, pour des destinataires sans compte GLPI. Par défaut, "
-"le rapport part à l'administrateur GLPI ; profils et groupes se choisissent "
-"dans les destinataires de la notification."
-msgstr ""
-
-#: templates/audit.html.twig
-msgid "Modifier le modèle et les destinataires"
+msgid "Envoyer le rapport maintenant"
 msgstr ""
 
 #: templates/audit.html.twig
@@ -3340,6 +3319,11 @@ msgid ""
 "cette dernière étape."
 msgstr ""
 
+#: templates/csv_import.html.twig front/csvimport.php:215
+#: src/ConfigurationProfile.php:109
+msgid "Importer des tickets (CSV)"
+msgstr ""
+
 #: templates/csv_import.html.twig
 msgid "1. Fichier"
 msgstr ""
@@ -3650,7 +3634,7 @@ msgid "Revenir aux colonnes"
 msgstr ""
 
 #: templates/address_plan.html.twig front/addressplan.php:71
-#: src/ConfigurationProfile.php:94
+#: src/ConfigurationProfile.php:106 src/UsageTabs.php:48
 msgid "Plan d'adressage"
 msgstr ""
 
@@ -3771,6 +3755,172 @@ msgstr ""
 
 #: templates/address_plan.html.twig
 msgid "déjà à jour"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, "
+"rapport périodique, fin de support des systèmes et du matériel."
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, "
+"l'historique et les imports s'ouvrent depuis le menu Configuration > "
+"Configuration GLPI Auto."
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Réglages de Configuration GLPI Auto"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Lecture seule : modifier ces réglages demande le droit de modification de la "
+"configuration de GLPI et de ce plugin."
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Réglages gérés par GLPI"
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Droits du plugin"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Administration > Profils, onglet « Configuration GLPI Auto » de chaque "
+"profil."
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Modèle et destinataires du rapport d'audit périodique."
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Actions automatiques"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Analyse continue de l'audit, rapport périodique et vérification des "
+"nouvelles versions (checkupdate)."
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Contrôles du parc"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Ces contrôles ne modifient jamais le matériel : « Créer les tickets » ouvre "
+"des tickets liés au matériel concerné, que l'équipe traite. Mettre 0 "
+"désactive un contrôle."
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Matériel qui ne remonte plus à l'inventaire depuis (jours)"
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Garanties qui expirent dans (jours)"
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Enregistrer"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Reçoit automatiquement la synthèse de cet audit : nombre de contrôles OK, en "
+"alerte et en échec, points à traiter avec leur recommandation et évolution "
+"depuis le rapport précédent. Aucun mot de passe ni secret n'est envoyé, "
+"seulement les constats."
+msgstr ""
+
+#: templates/config.html.twig src/RequestFormLibraryBuilder.php:277
+msgid "Fréquence"
+msgstr ""
+
+#: templates/config.html.twig
+msgid "N'envoyer que s'il y a un changement ou une anomalie"
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Adresses supplémentaires (facultatif)"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Une adresse par ligne, pour des destinataires sans compte GLPI. Par défaut, "
+"le rapport part à l'administrateur GLPI ; profils et groupes se choisissent "
+"dans les destinataires de la notification."
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Modifier le modèle et les destinataires"
+msgstr ""
+
+#: templates/config.html.twig
+msgid "À quoi sert ce contrôle ?"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Il signale les systèmes d'exploitation et les modèles de matériel en service "
+"dont le support du fabricant est terminé ou se termine bientôt, d'après les "
+"dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il "
+"n'est pas activé, seul endoflife.date est contacté, et seulement quand vous "
+"cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit "
+"ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Activer le contrôle de fin de support"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Mode hors ligne : ne jamais contacter endoflife.date, importer les fichiers "
+"à la main"
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Signaler une fin de support dans les (jours)"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Correspondances : une ligne par nom de système ou de modèle, tel qu'il "
+"apparaît dans GLPI"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Forme : « Nom dans GLPI = produit », ou « Nom dans GLPI = produit cycle » "
+"pour imposer le cycle. Le produit est l'identifiant de la page "
+"endoflife.date (par exemple windows pour endoflife.date/windows). Les noms "
+"sans correspondance ne sont pas contrôlés."
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Proposer les correspondances"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Sans accès à Internet : sur un autre poste, enregistrez https://"
+"endoflife.date/api/v1/products/windows/ dans un fichier (windows étant le "
+"produit voulu), puis importez-le ici."
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Fichier JSON endoflife.date"
+msgstr ""
+
+#: templates/config.html.twig
+msgid "Importer"
 msgstr ""
 
 #: templates/audit/_hardening_score.html.twig
@@ -4244,81 +4394,58 @@ msgstr ""
 msgid "Échec de la connexion : %s"
 msgstr ""
 
-#: front/audit.php:46
+#: front/audit.php:47
 msgid "Correction appliquée."
 msgstr ""
 
-#: front/audit.php:65
-msgid "Contrôles du parc enregistrés."
-msgstr ""
-
-#: front/audit.php:85
-msgid "Réglages de fin de support enregistrés."
-msgstr ""
-
-#: front/audit.php:91
+#: front/audit.php:60
 msgid ""
-"Correspondances proposées ajoutées : vérifiez-les avant de télécharger les "
-"dates."
+"Ces réglages sont maintenant dans Configuration > Plugins > Configuration "
+"GLPI Auto."
 msgstr ""
 
-#: front/audit.php:93
+#: front/audit.php:74 src/ConfigSettings.php:166
 msgid "Activez d'abord le contrôle de fin de support."
 msgstr ""
 
-#: front/audit.php:97
+#: front/audit.php:76
 msgid ""
 "Mode hors ligne : aucun téléchargement. Importez un fichier endoflife.date à "
 "la place."
 msgstr ""
 
-#: front/audit.php:99
+#: front/audit.php:78
 msgid "Aucune correspondance : rien à télécharger."
 msgstr ""
 
-#: front/audit.php:103
+#: front/audit.php:82
 #, php-format
 msgid "Dates téléchargées pour %d produit(s)."
 msgstr ""
 
-#: front/audit.php:106
+#: front/audit.php:85
 #, php-format
 msgid ""
 "Téléchargement impossible pour : %s (produit inconnu d'endoflife.date ou "
 "site injoignable). Les dates déjà en cache sont gardées."
 msgstr ""
 
-#: front/audit.php:120
-#, php-format
-msgid "%1$d cycle(s) importé(s) pour %2$s."
-msgstr ""
-
-#: front/audit.php:122
-msgid ""
-"Fichier refusé : choisissez le fichier JSON d'un produit endoflife.date (2 "
-"Mo au plus) et indiquez son identifiant, par exemple « windows »."
-msgstr ""
-
-#: front/audit.php:165
+#: front/audit.php:112
 msgid "Rapport d'audit mis en file d'envoi."
 msgstr ""
 
-#: front/audit.php:168
+#: front/audit.php:115
 msgid ""
 "Aucune notification active n'a pu envoyer le rapport : vérifiez la "
 "notification et ses destinataires."
 msgstr ""
 
-#: front/audit.php:174
-msgid "Réglages du rapport d'audit enregistrés."
-msgstr ""
-
-#: front/audit.php:180 src/Blueprint/FieldGroupLabel.php:60
-#: src/ConfigurationProfile.php:93
+#: front/audit.php:124 src/Blueprint/FieldGroupLabel.php:60
+#: src/ConfigurationProfile.php:105 src/UsageTabs.php:46
 msgid "Audit de configuration"
 msgstr ""
 
-#: front/audit.php:221
+#: front/audit.php:166
 #, php-format
 msgid ""
 "%d nouveau constat critique détecté depuis la dernière vérification "
@@ -4355,6 +4482,10 @@ msgstr ""
 msgid "Importer un Blueprint"
 msgstr ""
 
+#: front/config.php:35 src/ConfigurationProfile.php:85
+msgid "Configuration GLPI Auto"
+msgstr ""
+
 #: front/csvimport.php:81
 msgid "Modèle supprimé."
 msgstr ""
@@ -4386,7 +4517,7 @@ msgstr ""
 msgid "Fichier vide ou illisible."
 msgstr ""
 
-#: front/csvimport.php:147 front/csvimport.php:182 front/jiraimport.php:140
+#: front/csvimport.php:147 front/csvimport.php:182 front/jiraimport.php:157
 msgid "Fichier d'import expiré : recommencez."
 msgstr ""
 
@@ -4400,121 +4531,121 @@ msgstr ""
 msgid "Modèle « %s » enregistré."
 msgstr ""
 
-#: front/csvimport.php:218
+#: front/csvimport.php:219
 msgid "Identifiant d'origine"
 msgstr ""
 
-#: front/csvimport.php:219 src/ServiceCatalogBuilder.php:307
+#: front/csvimport.php:220 src/ServiceCatalogBuilder.php:307
 msgid "Titre"
 msgstr ""
 
-#: front/csvimport.php:220 src/ServiceCatalogBuilder.php:316
+#: front/csvimport.php:221 src/ServiceCatalogBuilder.php:316
 msgid "Description"
 msgstr ""
 
-#: front/csvimport.php:221
+#: front/csvimport.php:222
 msgid "Statut"
 msgstr ""
 
-#: front/csvimport.php:225
+#: front/csvimport.php:226
 msgid "Demandeur (nom)"
 msgstr ""
 
-#: front/csvimport.php:226
+#: front/csvimport.php:227
 msgid "Demandeur (adresse e-mail)"
 msgstr ""
 
-#: front/csvimport.php:227
+#: front/csvimport.php:228
 msgid "Technicien (nom)"
 msgstr ""
 
-#: front/csvimport.php:228
+#: front/csvimport.php:229
 msgid "Technicien (adresse e-mail)"
 msgstr ""
 
-#: front/csvimport.php:229
+#: front/csvimport.php:230
 msgid "Groupe de techniciens"
 msgstr ""
 
-#: front/csvimport.php:230
+#: front/csvimport.php:231
 msgid "Date d'ouverture"
 msgstr ""
 
-#: front/csvimport.php:231
+#: front/csvimport.php:232
 msgid "Date de résolution"
 msgstr ""
 
-#: front/csvimport.php:232
+#: front/csvimport.php:233
 msgid "Commentaires"
 msgstr ""
 
-#: front/csvimport.php:236 front/jiraimport.php:173
+#: front/csvimport.php:237 front/jiraimport.php:191
 msgid "Nouveau"
 msgstr ""
 
-#: front/csvimport.php:237 front/jiraimport.php:174
+#: front/csvimport.php:238 front/jiraimport.php:192
 msgid "En cours (attribué)"
 msgstr ""
 
-#: front/csvimport.php:238 front/jiraimport.php:175
+#: front/csvimport.php:239 front/jiraimport.php:193
 msgid "En attente"
 msgstr ""
 
-#: front/csvimport.php:239 front/jiraimport.php:176
+#: front/csvimport.php:240 front/jiraimport.php:194
 msgid "Résolu"
 msgstr ""
 
-#: front/csvimport.php:240 front/jiraimport.php:177
+#: front/csvimport.php:241 front/jiraimport.php:195
 msgid "Clos"
 msgstr ""
 
-#: front/csvimport.php:241 front/jiraimport.php:178
+#: front/csvimport.php:242 front/jiraimport.php:196
 msgid "Clos: « Demande non retenue »"
 msgstr ""
 
-#: front/csvimport.php:244 front/jiraimport.php:181
+#: front/csvimport.php:245 front/jiraimport.php:199
 msgid "Incident"
 msgstr ""
 
-#: front/csvimport.php:245 front/jiraimport.php:182
+#: front/csvimport.php:246 front/jiraimport.php:200
 #: src/RequestFormLibraryBuilder.php:207 src/RequestFormLibraryBuilder.php:356
 msgid "Demande"
 msgstr ""
 
-#: front/csvimport.php:252
+#: front/csvimport.php:253
 msgid "Colonnes de l'identifiant d'origine et du titre non choisies."
 msgstr ""
 
-#: front/csvimport.php:253 front/jiraimport.php:186
+#: front/csvimport.php:254 front/jiraimport.php:204
 msgid "Fichier vide."
 msgstr ""
 
-#: front/csvimport.php:254
+#: front/csvimport.php:255
 msgid "Ligne sans identifiant ou sans titre : ignorée."
 msgstr ""
 
-#: front/csvimport.php:255
+#: front/csvimport.php:256
 msgid "Identifiant déjà présent plus haut dans le fichier : ligne ignorée."
 msgstr ""
 
-#: front/csvimport.php:309
+#: front/csvimport.php:310
 #, php-format
 msgid "Colonne %d"
 msgstr ""
 
-#: front/csvimport.php:330
+#: front/csvimport.php:331
 msgid "point-virgule"
 msgstr ""
 
-#: front/csvimport.php:331
+#: front/csvimport.php:332
 msgid "tabulation"
 msgstr ""
 
-#: front/csvimport.php:332
+#: front/csvimport.php:333
 msgid "barre verticale"
 msgstr ""
 
-#: front/csvimport.php:333
+#: front/csvimport.php:334
 msgid "virgule"
 msgstr ""
 
@@ -4530,55 +4661,66 @@ msgstr ""
 msgid "Seuls les points de sauvegarde manuels peuvent être supprimés."
 msgstr ""
 
-#: front/history_restore.php:45
+#: front/history_restore.php:50
 msgid "Ce Blueprint n'est pas exploitable."
 msgstr ""
 
-#: front/history_restore.php:67
+#: front/history_restore.php:72
 msgid "Restauration appliquée. Vérifiez chaque étape avant de valider."
 msgstr ""
 
-#: front/history_restore.php:71
+#: front/history_restore.php:76
 msgid "Restaurer une configuration"
 msgstr ""
 
-#: front/jiraimport.php:65
+#: front/jiraimport.php:66
 msgid ""
 "Choisissez un export CSV de Jira (20 Mo au plus) et une entité à laquelle "
 "vous avez accès."
 msgstr ""
 
-#: front/jiraimport.php:93
+#: front/jiraimport.php:94
 msgid ""
-"Renseignez l'adresse de Jira (HTTPS), le jeton, la requête JQL (et l'adresse "
-"e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+"Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et "
+"l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
 msgstr ""
 
-#: front/jiraimport.php:110
+#: front/jiraimport.php:109
+msgid ""
+"Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 "
+"au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses "
+"équilibrées."
+msgstr ""
+
+#: front/jiraimport.php:126
 msgid ""
 "Jira refuse l'accès : vérifiez l'adresse e-mail et le jeton, et les droits "
 "du compte sur le projet."
 msgstr ""
 
-#: front/jiraimport.php:111
+#: front/jiraimport.php:127
 msgid ""
 "Adresse introuvable : vérifiez l'adresse de Jira et son type (Cloud ou Data "
 "Center)."
 msgstr ""
 
-#: front/jiraimport.php:112
+#: front/jiraimport.php:128
 msgid "Jira refuse la requête JQL : vérifiez-la dans Jira."
 msgstr ""
 
-#: front/jiraimport.php:113
+#: front/jiraimport.php:129
+msgid "Requête sans restriction : indiquez au moins une clé de projet."
+msgstr ""
+
+#: front/jiraimport.php:130
 msgid "Réponse inattendue : ce n'est pas l'API de Jira."
 msgstr ""
 
-#: front/jiraimport.php:114
+#: front/jiraimport.php:131
 msgid "Jira injoignable depuis le serveur GLPI (réseau, proxy ou certificat)."
 msgstr ""
 
-#: front/jiraimport.php:116
+#: front/jiraimport.php:133
 #, php-format
 msgid ""
 "GLPI refuse par défaut les appels vers un réseau privé. Pour un Jira "
@@ -4587,19 +4729,19 @@ msgid ""
 "local_define.php)."
 msgstr ""
 
-#: front/jiraimport.php:126
+#: front/jiraimport.php:143
 #, php-format
 msgid ""
-"Plus de %d tickets : seuls les premiers sont importés, affinez la requête "
-"JQL pour le reste."
+"Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la "
+"date ou le filtre pour le reste."
 msgstr ""
 
-#: front/jiraimport.php:185
+#: front/jiraimport.php:203
 msgid ""
 "En-tête sans colonnes « Clé » et « Résumé » : ce n'est pas un export Jira."
 msgstr ""
 
-#: front/jiraimport.php:187
+#: front/jiraimport.php:205
 msgid "Ligne sans clé ou sans résumé : ignorée."
 msgstr ""
 
@@ -6444,49 +6586,98 @@ msgstr ""
 msgid "Sauvegarde automatique avant application"
 msgstr ""
 
+#: src/ConfigSettings.php:49
+msgid "Général"
+msgstr ""
+
+#: src/ConfigSettings.php:50
+msgid "Audit"
+msgstr ""
+
+#: src/ConfigSettings.php:51
+msgid "Fin de support"
+msgstr ""
+
+#: src/ConfigSettings.php:119
+msgid "Contrôles du parc enregistrés."
+msgstr ""
+
+#: src/ConfigSettings.php:142
+msgid "Réglages du rapport d'audit enregistrés."
+msgstr ""
+
+#: src/ConfigSettings.php:157
+msgid "Réglages de fin de support enregistrés."
+msgstr ""
+
+#: src/ConfigSettings.php:163
+msgid ""
+"Correspondances proposées ajoutées : vérifiez-les avant de télécharger les "
+"dates."
+msgstr ""
+
+#: src/ConfigSettings.php:177
+#, php-format
+msgid "%1$d cycle(s) importé(s) pour %2$s."
+msgstr ""
+
+#: src/ConfigSettings.php:179
+msgid ""
+"Fichier refusé : choisissez le fichier JSON d'un produit endoflife.date (2 "
+"Mo au plus) et indiquez son identifiant, par exemple « windows »."
+msgstr ""
+
 #: src/ConfigurationProfile.php:71
 msgid "Profil de configuration"
 msgid_plural "Profils de configuration"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/ConfigurationProfile.php:114 src/ConfigurationProfile.php:129
+#: src/ConfigurationProfile.php:103 src/UsageTabs.php:45
+msgid "Profils et Blueprints"
+msgstr ""
+
+#: src/ConfigurationProfile.php:104 src/UsageTabs.php:47
+msgid "Historique"
+msgstr ""
+
+#: src/ConfigurationProfile.php:126 src/ConfigurationProfile.php:141
 msgid "Installation simple"
 msgstr ""
 
-#: src/ConfigurationProfile.php:115
+#: src/ConfigurationProfile.php:127
 msgid "Plusieurs sites ou services (une seule entreprise)"
 msgstr ""
 
-#: src/ConfigurationProfile.php:116
+#: src/ConfigurationProfile.php:128
 msgid "Plusieurs entreprises clientes (infogérance)"
 msgstr ""
 
-#: src/ConfigurationProfile.php:117 src/ConfigurationProfile.php:135
+#: src/ConfigurationProfile.php:129 src/ConfigurationProfile.php:147
 msgid "Personnalisé"
 msgstr ""
 
-#: src/ConfigurationProfile.php:130
+#: src/ConfigurationProfile.php:142
 msgid "Un seul site, pas de sous-structure"
 msgstr ""
 
-#: src/ConfigurationProfile.php:131
+#: src/ConfigurationProfile.php:143
 msgid "Plusieurs sites ou services"
 msgstr ""
 
-#: src/ConfigurationProfile.php:132
+#: src/ConfigurationProfile.php:144
 msgid "Une seule entreprise, plusieurs équipes ou sites"
 msgstr ""
 
-#: src/ConfigurationProfile.php:133
+#: src/ConfigurationProfile.php:145
 msgid "Plusieurs entreprises clientes"
 msgstr ""
 
-#: src/ConfigurationProfile.php:134
+#: src/ConfigurationProfile.php:146
 msgid "Vous gérez GLPI pour le compte d'autres entreprises"
 msgstr ""
 
-#: src/ConfigurationProfile.php:136
+#: src/ConfigurationProfile.php:148
 msgid "Je configure tout moi-même"
 msgstr ""
 
@@ -7729,6 +7920,14 @@ msgstr ""
 msgid "Intitulé de la formation souhaitée"
 msgstr ""
 
+#: src/UsageTabs.php:44
+msgid "Assistant"
+msgstr ""
+
+#: src/UsageTabs.php:49
+msgid "Importer des tickets"
+msgstr ""
+
 #: src/UserAccountCreationFormBuilder.php:175
 msgid "Nom complet de la personne concernée"
 msgstr ""
@@ -7800,109 +7999,4 @@ msgstr ""
 
 #: src/WifiAccessFormBuilder.php:214
 msgid "Appareil ou nom du visiteur"
-msgstr ""
-
-msgid "Ces réglages sont maintenant dans Configuration > Plugins > Configuration GLPI Auto."
-msgstr ""
-
-msgid "Configuration GLPI Auto"
-msgstr ""
-
-msgid "Général"
-msgstr ""
-
-msgid "Audit"
-msgstr ""
-
-msgid "Fin de support"
-msgstr ""
-
-msgid "Profils et Blueprints"
-msgstr ""
-
-msgid "Historique"
-msgstr ""
-
-msgid "Assistant"
-msgstr ""
-
-msgid "Importer des tickets"
-msgstr ""
-
-msgid "Dernière version inconnue"
-msgstr ""
-
-msgid "La dernière version n'est lue sur GitHub que si l'action automatique « checkupdate » de GLPI est activée (Configuration > Actions automatiques) et que le serveur GLPI peut joindre github.com."
-msgstr ""
-
-msgid "Mise à jour disponible"
-msgstr ""
-
-msgid "Notes de version"
-msgstr ""
-
-msgid "À jour"
-msgstr ""
-
-msgid "Depuis Jira"
-msgstr ""
-
-msgid "Depuis un fichier CSV"
-msgstr ""
-
-msgid "Source des tickets"
-msgstr ""
-
-msgid "Écrans de Configuration GLPI Auto"
-msgstr ""
-
-msgid "Contrôle désactivé : activez-le et indiquez les correspondances dans l'onglet « Fin de support » des réglages."
-msgstr ""
-
-msgid "Délais des contrôles du parc, fin de support et rapport périodique : ces réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
-msgstr ""
-
-msgid "Envoyer le rapport maintenant"
-msgstr ""
-
-msgid "Ouvrir les réglages"
-msgstr ""
-
-msgid "Actions automatiques"
-msgstr ""
-
-msgid "Administration > Profils, onglet « Configuration GLPI Auto » de chaque profil."
-msgstr ""
-
-msgid "Analyse continue de l'audit, rapport périodique et vérification des nouvelles versions (checkupdate)."
-msgstr ""
-
-msgid "Droits du plugin"
-msgstr ""
-
-msgid "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
-msgstr ""
-
-msgid "Lecture seule : modifier ces réglages demande le droit de modification de la configuration de GLPI et de ce plugin."
-msgstr ""
-
-msgid "Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, rapport périodique, fin de support des systèmes et du matériel."
-msgstr ""
-
-msgid "Modèle et destinataires du rapport d'audit périodique."
-msgstr ""
-
-msgid "Réglages de Configuration GLPI Auto"
-msgstr ""
-
-msgid "Réglages gérés par GLPI"
-msgstr ""
-
-msgid "Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, l'historique et les imports s'ouvrent depuis le menu Configuration > Configuration GLPI Auto."
-msgstr ""
-
-msgid "Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, historique, imports) sont dans les onglets ci-dessus."
-msgstr ""
-
-msgid "Progression de l'assistant"
 msgstr ""
