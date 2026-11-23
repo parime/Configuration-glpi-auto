@@ -19,7 +19,9 @@ use GlpiPlugin\Configurationglpiauto\FuelType;
 
 Session::checkRight(FuelType::$rightname, READ);
 
-Html::header(FuelType::getTypeName(2), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('fueltype.php'), 'config', FuelType::class);
+// Issue #495 : intitulé déclaré par plugin_configurationglpiauto_getDropdown(), fil d'Ariane
+// Configuration > Intitulés > Types de carburant.
+Html::header(FuelType::getTypeName(2), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('fueltype.php'), 'config', CommonDropdown::class, FuelType::class);
 
 Search::show(FuelType::class);
 
