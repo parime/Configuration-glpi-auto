@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Tests indépendants de la langue** (#501) : les 12 assertions relevées par le contrôle commun
+  ne dépendent plus de la langue de l'instance. Les libellés traduits sont testés en anglais forcé
+  puis restauré, les données de test qui ressemblaient à un libellé sont renommées, et les vrais
+  faux positifs sont justifiés dans `.glpi-security-exceptions`. Le contrôle passe en mode bloquant.
 - **Contrastes et accessibilité** (#495) : badges en `bg-*-subtle text-*-emphasis` au lieu de
   `bg-*-lt` (contraste insuffisant relevé par le parcours des pages), étape courante de l'import
   CSV, bouton « Configuration express » et barre de progression de l'assistant (nom accessible),

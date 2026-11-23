@@ -84,12 +84,12 @@ final class AddressPlanParserTest extends TestCase
         $this->assertNull(AddressPlanParser::template('Siège', '10.20.0.0/24'), 'Un /16 est attendu.');
         $this->assertNull(AddressPlanParser::template('Siège', '10.20.5.0/16'), 'Adresse de réseau attendue.');
 
-        $text = (string) AddressPlanParser::template('Siège', '10.20.0.0/16', ['guests' => 'Invités']);
+        $text = (string) AddressPlanParser::template('Siège', '10.20.0.0/16', ['guests' => 'Wifi visiteurs PHPUnit']);
         $rows = AddressPlanParser::parse($text)['rows'];
         $this->assertCount(count(AddressPlanParser::TEMPLATE_ROLES), $rows);
         $this->assertSame([[]], array_values(array_unique(array_column($rows, 'errors'), SORT_REGULAR)));
         $guests = $rows[5];
-        $this->assertSame([60, 'Invités', '10.20.60.0/24', '10.20.60.1'], [
+        $this->assertSame([60, 'Wifi visiteurs PHPUnit', '10.20.60.0/24', '10.20.60.1'], [
             $guests['vlan'], $guests['name'], $guests['network'], $guests['gateway'],
         ]);
     }

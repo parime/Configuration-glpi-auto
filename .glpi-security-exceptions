@@ -17,3 +17,13 @@ gitleaks tests/Unit/MailCollectorBuilderTest.php:generic-api-key:108 : mot de pa
 # d'audit (NotificationTargetConfig) : le cœur refuse d'en créer un hors de la notification (id=-1),
 # les destinataires s'ajoutent depuis l'onglet « Destinataires » de la notification elle-même.
 crawl http-403 front/notificationtargetconfig.form.php : formulaire générique du cœur GLPI, création d'un destinataire refusée hors de sa notification
+
+# Issue #501 : assertions sur des libellés traduits relevées par le contrôle commun.
+# Libellés traduits testés en anglais forcé (setUp/tearDown), comparés au texte de en_GB.po.
+translated-assertion tests/Integration/Blueprint/FieldGroupLabelTest.php::testKnownPrefixReturnsItsTranslatedLabel : libellé traduit testé avec en_GB forcé puis restauré
+translated-assertion tests/Integration/DeploymentTest.php::testEnabledFeaturesAreGroupedWithTranslatedLabels : libellés de groupes testés avec en_GB forcé puis restauré
+translated-assertion tests/Integration/FuelTypeTest.php::testGetTypeNameUsesTheRealTranslationDomainForSingularAndPlural : getTypeName testé avec en_GB forcé puis restauré
+# Faux positifs : noms enregistrés en base (clé stable, traduite seulement à l'affichage) ou noms renommés par la migration des tirets cadratins, pas des libellés affichés.
+translated-assertion tests/Integration/Install/InstallerTest.php::testInstallKeepsTheVendorNeutralAndPlainLanguageProfileNamesStable : nom de profil stocké en base tel quel par l'installeur, traduit seulement à l'affichage
+translated-assertion tests/Integration/Install/EmDashRenameTest.php::testPluginNamesAreRenamedAndCustomNamesKept : nom de catégorie en base renommé par la migration, pas un libellé traduit
+translated-assertion tests/Unit/EmDashRenameTest.php::testVariablePartsAreKept : transformation de chaîne pure (sans GLPI), donnée d'entrée et non libellé traduit

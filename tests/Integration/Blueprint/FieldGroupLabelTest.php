@@ -28,13 +28,30 @@ use PHPUnit\Framework\TestCase;
  */
 final class FieldGroupLabelTest extends TestCase
 {
+    private string $previousLanguage = '';
+
+    /** Libellés comparés en anglais quelle que soit la langue de l'instance (issue #501). */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->previousLanguage = (string) ($_SESSION['glpilanguage'] ?? '');
+        $_SESSION['glpilanguage'] = 'en_GB';
+        \Session::loadLanguage('en_GB');
+    }
+
+    protected function tearDown(): void
+    {
+        $_SESSION['glpilanguage'] = $this->previousLanguage;
+        \Session::loadLanguage($this->previousLanguage);
+        parent::tearDown();
+    }
+
     public function testKnownPrefixReturnsItsTranslatedLabel(): void
     {
-        // CI runs GLPI in English by default, the shared dev instance in French: never hardcode
-        // a literal translated string here, build the expectation via the same __() call instead
-        // (locale-agnostic either way).
-        $this->assertSame(__('SLA', 'configurationglpiauto'), FieldGroupLabel::for('sla_tiers'));
-        $this->assertSame(__('Entités', 'configurationglpiauto'), FieldGroupLabel::for('entity_mode'));
+        // Anglais forcé par setUp() : le libellé traduit est comparé au texte de en_GB.po, ce qui
+        // vérifie aussi que le domaine de traduction est le bon.
+        $this->assertSame('SLA', FieldGroupLabel::for('sla_tiers'));
+        $this->assertSame('Entities', FieldGroupLabel::for('entity_mode'));
     }
 
     public function testUnknownPrefixFallsBackToTheCapitalizedPrefixItself(): void
