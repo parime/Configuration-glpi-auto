@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Contrastes et accessibilité** (#495) : badges en `bg-*-subtle text-*-emphasis` au lieu de
+  `bg-*-lt` (contraste insuffisant relevé par le parcours des pages), étape courante de l'import
+  CSV, bouton « Configuration express » et barre de progression de l'assistant (nom accessible),
+  liens soulignés dans les phrases des pages d'import.
 - **Types de licence logicielle sur une installation neuve** (#499) : les colonnes
   `software_license_types_enabled` et `software_license_type_icons_enabled` n'étaient créées que par
   la migration d'une mise à jour, pas à l'installation ; l'option de l'assistant ne pouvait pas être
@@ -19,6 +23,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Navigation : réglages dans la page du plugin, usage sous une seule entrée de menu** (#495).
+  - L'icône « Configurer » de **Configuration > Plugins** ouvre maintenant une vraie page de
+    réglages, en onglets : **Général** (version installée et dernière version publiée, liens vers
+    les droits, les notifications et les actions automatiques), **Audit** (délais des contrôles du
+    parc, rapport périodique : fréquence, destinataires, envoi seulement en cas de changement) et
+    **Fin de support** (activation de endoflife.date, mode hors ligne, correspondances, import d'un
+    fichier hors ligne). Ces réglages quittent la page d'audit, qui garde l'usage : constats,
+    corrections, « Télécharger les dates » et « Envoyer le rapport maintenant ». Les anciens
+    formulaires de la page d'audit restent acceptés pendant cette version et renvoient vers
+    l'onglet du réglage. Mêmes droits qu'avant.
+  - L'entrée de menu **Configuration > Profils de configuration** devient **Configuration >
+    Configuration GLPI Auto**, avec une barre d'onglets commune à ses écrans : Assistant, Profils et
+    Blueprints, Audit de configuration, Historique, Plan d'adressage, Importer des tickets (Jira ou
+    CSV). La liste des profils et l'historique, jusqu'ici joignables seulement par un lien, sont
+    dans le menu et ont un fil d'Ariane complet. Un onglet n'apparaît qu'avec les droits de sa page.
+  - Les **types de carburant** apparaissent dans **Configuration > Intitulés**.
+  - L'encadré « Version du plugin » passe de l'assistant à l'onglet Général des réglages.
+  - Le menu est gardé en session par GLPI : reconnectez-vous après la mise à jour pour voir le
+    nouveau nom de l'entrée.
+- CI : contrôle d'ergonomie (réglages, menus, fil d'Ariane) et parcours de toutes les pages
+  désormais bloquants (#495).
 - CI : contrôles de sécurité communs glpi-plugin-security v1.10.1 (secrets, dépendances, CodeQL,
   test de mise à jour depuis la version publiée, tests d'intégration en français, parcours de toutes
   les pages) ; jobs Trivy et Dependency Review de la CI du plugin retirés, couverts par le workflow

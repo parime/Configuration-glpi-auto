@@ -2123,21 +2123,9 @@ msgstr "Restore selection"
 msgid "Restaurer intégralement"
 msgstr "Restore in full"
 
-#: front/profile.php:28
-msgid "Lancer l'assistant de configuration"
-msgstr "Launch the configuration wizard"
-
-#: front/profile.php:33
-msgid "Lancer l'audit"
-msgstr "Run the audit"
-
 #: front/profile.php:38
 msgid "Importer un Blueprint (JSON)"
 msgstr "Import a Blueprint (JSON)"
-
-#: front/profile.php:43
-msgid "Historique & Rollback"
-msgstr "History & Rollback"
 
 #: front/wizard.php:331
 msgid "Dossier des palettes personnalisées inscriptible"
@@ -3784,9 +3772,6 @@ msgstr ""
 msgid "Enregistrer"
 msgstr "Save"
 
-msgid "Enregistrer et envoyer maintenant"
-msgstr "Save and send now"
-
 msgid "Modifier le modèle et les destinataires"
 msgstr "Edit the template and recipients"
 
@@ -4641,9 +4626,6 @@ msgstr "Import %d ticket(s)"
 
 msgid "Annuler"
 msgstr "Cancel"
-
-msgid "Importer depuis Jira (CSV)"
-msgstr "Import from Jira (CSV)"
 
 msgid "Plan d'adressage"
 msgstr "Address plan"
@@ -6540,13 +6522,6 @@ msgstr ""
 "with values suited to a type of organisation."
 
 msgid ""
-"Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou "
-"ouvrez un profil de la liste pour le consulter ou l'exporter."
-msgstr ""
-"Start the wizard, the audit or an import with the buttons below, or open a "
-"profile in the list to view or export it."
-
-msgid ""
 "Retrouver les sauvegardes de la configuration : une automatique à chaque "
 "application de l'assistant, et les points de sauvegarde créés à la main, "
 "pour comparer ou revenir en arrière."
@@ -6987,21 +6962,6 @@ msgstr "Offline"
 
 msgid "À quoi sert ce contrôle ?"
 msgstr "What is this check for?"
-
-msgid ""
-"Il signale les systèmes d'exploitation et les modèles de matériel en service "
-"dont le support du fabricant est terminé ou se termine bientôt, d'après les "
-"dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il "
-"n'est pas activé, seul endoflife.date est contacté, et seulement quand vous "
-"cliquez sur « Télécharger les dates ». Le contrôle lit ensuite ces dates "
-"gardées en base : il ne modifie jamais le matériel."
-msgstr ""
-"It reports in-service operating systems and hardware models whose vendor "
-"support has ended or ends soon, based on the public dates of the "
-"endoflife.date site. Nothing is downloaded until it is enabled, only "
-"endoflife.date is contacted, and only when you click \"Download dates\". The "
-"check then reads these dates kept in the database: it never changes the "
-"hardware."
 
 msgid "Activer le contrôle de fin de support"
 msgstr "Enable the end-of-support check"
@@ -7666,3 +7626,108 @@ msgstr "Often a \"Remember me\" on a shared or lost computer. Close the sessions
 
 msgid "%1$s (ouverte le %2$s)"
 msgstr "%1$s (opened on %2$s)"
+
+msgid "Ces réglages sont maintenant dans Configuration > Plugins > Configuration GLPI Auto."
+msgstr "These settings are now in Setup > Plugins > Configuration GLPI Auto."
+
+msgid "Configuration GLPI Auto"
+msgstr "Configuration GLPI Auto"
+
+msgid "Général"
+msgstr "General"
+
+msgid "Audit"
+msgstr "Audit"
+
+msgid "Fin de support"
+msgstr "End of support"
+
+msgid "Profils et Blueprints"
+msgstr "Profiles and Blueprints"
+
+msgid "Historique"
+msgstr "History"
+
+msgid "Assistant"
+msgstr "Wizard"
+
+msgid "Importer des tickets"
+msgstr "Import tickets"
+
+msgid "Dernière version inconnue"
+msgstr "Latest version unknown"
+
+msgid "La dernière version n'est lue sur GitHub que si l'action automatique « checkupdate » de GLPI est activée (Configuration > Actions automatiques) et que le serveur GLPI peut joindre github.com."
+msgstr "The latest version is only read from GitHub when GLPI's \"checkupdate\" automatic action is enabled (Setup > Automatic actions) and the GLPI server can reach github.com."
+
+msgid "Mise à jour disponible"
+msgstr "Update available"
+
+msgid "Notes de version"
+msgstr "Release notes"
+
+msgid "À jour"
+msgstr "Up to date"
+
+msgid "Depuis Jira"
+msgstr "From Jira"
+
+msgid "Depuis un fichier CSV"
+msgstr "From a CSV file"
+
+msgid "Source des tickets"
+msgstr "Ticket source"
+
+msgid "Écrans de Configuration GLPI Auto"
+msgstr "Configuration GLPI Auto screens"
+
+msgid "Contrôle désactivé : activez-le et indiquez les correspondances dans l'onglet « Fin de support » des réglages."
+msgstr "Check disabled: enable it and enter the mappings in the \"End of support\" tab of the settings."
+
+msgid "Délais des contrôles du parc, fin de support et rapport périodique : ces réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
+msgstr "Fleet check thresholds, end of support and periodic report: these settings are in Setup > Plugins > Configuration GLPI Auto."
+
+msgid "Envoyer le rapport maintenant"
+msgstr "Send the report now"
+
+msgid "Ouvrir les réglages"
+msgstr "Open the settings"
+
+msgid "Actions automatiques"
+msgstr "Automatic actions"
+
+msgid "Administration > Profils, onglet « Configuration GLPI Auto » de chaque profil."
+msgstr "Administration > Profiles, \"Configuration GLPI Auto\" tab of each profile."
+
+msgid "Analyse continue de l'audit, rapport périodique et vérification des nouvelles versions (checkupdate)."
+msgstr "Continuous audit analysis, periodic report and new version check (checkupdate)."
+
+msgid "Droits du plugin"
+msgstr "Plugin rights"
+
+msgid "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+msgstr "It reports in-service operating systems and hardware models whose manufacturer support has ended or ends soon, based on the public dates of the endoflife.date site. Nothing is downloaded until it is enabled, only endoflife.date is contacted, and only when you click \"Download dates\" on the audit page. The check then reads these dates kept in the database: it never changes the hardware."
+
+msgid "Lecture seule : modifier ces réglages demande le droit de modification de la configuration de GLPI et de ce plugin."
+msgstr "Read only: changing these settings requires the right to update the configuration of GLPI and of this plugin."
+
+msgid "Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, rapport périodique, fin de support des systèmes et du matériel."
+msgstr "The plugin settings, and only them: audit check thresholds, periodic report, end of support for systems and hardware."
+
+msgid "Modèle et destinataires du rapport d'audit périodique."
+msgstr "Template and recipients of the periodic audit report."
+
+msgid "Réglages de Configuration GLPI Auto"
+msgstr "Configuration GLPI Auto settings"
+
+msgid "Réglages gérés par GLPI"
+msgstr "Settings managed by GLPI"
+
+msgid "Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, l'historique et les imports s'ouvrent depuis le menu Configuration > Configuration GLPI Auto."
+msgstr "Set each tab, then save it. The wizard, the audit, the profiles, the history and the imports open from the Setup > Configuration GLPI Auto menu."
+
+msgid "Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, historique, imports) sont dans les onglets ci-dessus."
+msgstr "Open a profile in the list to view or export it, or import a Blueprint received from another instance. The other screens (wizard, audit, history, imports) are in the tabs above."
+
+msgid "Progression de l'assistant"
+msgstr "Wizard progress"

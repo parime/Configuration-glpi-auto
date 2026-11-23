@@ -2172,21 +2172,9 @@ msgstr "Restaurer la sélection"
 msgid "Restaurer intégralement"
 msgstr "Restaurer intégralement"
 
-#: front/profile.php:28
-msgid "Lancer l'assistant de configuration"
-msgstr "Lancer l'assistant de configuration"
-
-#: front/profile.php:33
-msgid "Lancer l'audit"
-msgstr "Lancer l'audit"
-
 #: front/profile.php:38
 msgid "Importer un Blueprint (JSON)"
 msgstr "Importer un Blueprint (JSON)"
-
-#: front/profile.php:43
-msgid "Historique & Rollback"
-msgstr "Historique & Rollback"
 
 #: front/wizard.php:331
 msgid "Dossier des palettes personnalisées inscriptible"
@@ -3868,9 +3856,6 @@ msgstr ""
 msgid "Enregistrer"
 msgstr "Enregistrer"
 
-msgid "Enregistrer et envoyer maintenant"
-msgstr "Enregistrer et envoyer maintenant"
-
 msgid "Modifier le modèle et les destinataires"
 msgstr "Modifier le modèle et les destinataires"
 
@@ -4748,9 +4733,6 @@ msgstr "Importer %d ticket(s)"
 
 msgid "Annuler"
 msgstr "Annuler"
-
-msgid "Importer depuis Jira (CSV)"
-msgstr "Importer depuis Jira (CSV)"
 
 msgid "Plan d'adressage"
 msgstr "Plan d'adressage"
@@ -6692,13 +6674,6 @@ msgstr ""
 "l'assistant avec des valeurs adaptées à un type d'organisation."
 
 msgid ""
-"Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou "
-"ouvrez un profil de la liste pour le consulter ou l'exporter."
-msgstr ""
-"Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou "
-"ouvrez un profil de la liste pour le consulter ou l'exporter."
-
-msgid ""
 "Retrouver les sauvegardes de la configuration : une automatique à chaque "
 "application de l'assistant, et les points de sauvegarde créés à la main, "
 "pour comparer ou revenir en arrière."
@@ -7150,21 +7125,6 @@ msgstr "Hors ligne"
 
 msgid "À quoi sert ce contrôle ?"
 msgstr "À quoi sert ce contrôle ?"
-
-msgid ""
-"Il signale les systèmes d'exploitation et les modèles de matériel en service "
-"dont le support du fabricant est terminé ou se termine bientôt, d'après les "
-"dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il "
-"n'est pas activé, seul endoflife.date est contacté, et seulement quand vous "
-"cliquez sur « Télécharger les dates ». Le contrôle lit ensuite ces dates "
-"gardées en base : il ne modifie jamais le matériel."
-msgstr ""
-"Il signale les systèmes d'exploitation et les modèles de matériel en service "
-"dont le support du fabricant est terminé ou se termine bientôt, d'après les "
-"dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il "
-"n'est pas activé, seul endoflife.date est contacté, et seulement quand vous "
-"cliquez sur « Télécharger les dates ». Le contrôle lit ensuite ces dates "
-"gardées en base : il ne modifie jamais le matériel."
 
 msgid "Activer le contrôle de fin de support"
 msgstr "Activer le contrôle de fin de support"
@@ -7841,3 +7801,108 @@ msgstr "Souvent un « Se souvenir de moi » sur un poste partagé ou perdu. Ferm
 
 msgid "%1$s (ouverte le %2$s)"
 msgstr "%1$s (ouverte le %2$s)"
+
+msgid "Ces réglages sont maintenant dans Configuration > Plugins > Configuration GLPI Auto."
+msgstr "Ces réglages sont maintenant dans Configuration > Plugins > Configuration GLPI Auto."
+
+msgid "Configuration GLPI Auto"
+msgstr "Configuration GLPI Auto"
+
+msgid "Général"
+msgstr "Général"
+
+msgid "Audit"
+msgstr "Audit"
+
+msgid "Fin de support"
+msgstr "Fin de support"
+
+msgid "Profils et Blueprints"
+msgstr "Profils et Blueprints"
+
+msgid "Historique"
+msgstr "Historique"
+
+msgid "Assistant"
+msgstr "Assistant"
+
+msgid "Importer des tickets"
+msgstr "Importer des tickets"
+
+msgid "Dernière version inconnue"
+msgstr "Dernière version inconnue"
+
+msgid "La dernière version n'est lue sur GitHub que si l'action automatique « checkupdate » de GLPI est activée (Configuration > Actions automatiques) et que le serveur GLPI peut joindre github.com."
+msgstr "La dernière version n'est lue sur GitHub que si l'action automatique « checkupdate » de GLPI est activée (Configuration > Actions automatiques) et que le serveur GLPI peut joindre github.com."
+
+msgid "Mise à jour disponible"
+msgstr "Mise à jour disponible"
+
+msgid "Notes de version"
+msgstr "Notes de version"
+
+msgid "À jour"
+msgstr "À jour"
+
+msgid "Depuis Jira"
+msgstr "Depuis Jira"
+
+msgid "Depuis un fichier CSV"
+msgstr "Depuis un fichier CSV"
+
+msgid "Source des tickets"
+msgstr "Source des tickets"
+
+msgid "Écrans de Configuration GLPI Auto"
+msgstr "Écrans de Configuration GLPI Auto"
+
+msgid "Contrôle désactivé : activez-le et indiquez les correspondances dans l'onglet « Fin de support » des réglages."
+msgstr "Contrôle désactivé : activez-le et indiquez les correspondances dans l'onglet « Fin de support » des réglages."
+
+msgid "Délais des contrôles du parc, fin de support et rapport périodique : ces réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
+msgstr "Délais des contrôles du parc, fin de support et rapport périodique : ces réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
+
+msgid "Envoyer le rapport maintenant"
+msgstr "Envoyer le rapport maintenant"
+
+msgid "Ouvrir les réglages"
+msgstr "Ouvrir les réglages"
+
+msgid "Actions automatiques"
+msgstr "Actions automatiques"
+
+msgid "Administration > Profils, onglet « Configuration GLPI Auto » de chaque profil."
+msgstr "Administration > Profils, onglet « Configuration GLPI Auto » de chaque profil."
+
+msgid "Analyse continue de l'audit, rapport périodique et vérification des nouvelles versions (checkupdate)."
+msgstr "Analyse continue de l'audit, rapport périodique et vérification des nouvelles versions (checkupdate)."
+
+msgid "Droits du plugin"
+msgstr "Droits du plugin"
+
+msgid "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+msgstr "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+
+msgid "Lecture seule : modifier ces réglages demande le droit de modification de la configuration de GLPI et de ce plugin."
+msgstr "Lecture seule : modifier ces réglages demande le droit de modification de la configuration de GLPI et de ce plugin."
+
+msgid "Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, rapport périodique, fin de support des systèmes et du matériel."
+msgstr "Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, rapport périodique, fin de support des systèmes et du matériel."
+
+msgid "Modèle et destinataires du rapport d'audit périodique."
+msgstr "Modèle et destinataires du rapport d'audit périodique."
+
+msgid "Réglages de Configuration GLPI Auto"
+msgstr "Réglages de Configuration GLPI Auto"
+
+msgid "Réglages gérés par GLPI"
+msgstr "Réglages gérés par GLPI"
+
+msgid "Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, l'historique et les imports s'ouvrent depuis le menu Configuration > Configuration GLPI Auto."
+msgstr "Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, l'historique et les imports s'ouvrent depuis le menu Configuration > Configuration GLPI Auto."
+
+msgid "Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, historique, imports) sont dans les onglets ci-dessus."
+msgstr "Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, historique, imports) sont dans les onglets ci-dessus."
+
+msgid "Progression de l'assistant"
+msgstr "Progression de l'assistant"

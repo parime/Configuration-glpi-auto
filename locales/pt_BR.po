@@ -2169,21 +2169,9 @@ msgstr "Restaurar a seleção"
 msgid "Restaurer intégralement"
 msgstr "Restaurar por completo"
 
-#: front/profile.php:28
-msgid "Lancer l'assistant de configuration"
-msgstr "Iniciar o assistente de configuração"
-
-#: front/profile.php:33
-msgid "Lancer l'audit"
-msgstr "Executar a auditoria"
-
 #: front/profile.php:38
 msgid "Importer un Blueprint (JSON)"
 msgstr "Importar um Blueprint (JSON)"
-
-#: front/profile.php:43
-msgid "Historique & Rollback"
-msgstr "Histórico e Rollback"
 
 #: front/wizard.php:331
 msgid "Dossier des palettes personnalisées inscriptible"
@@ -3871,9 +3859,6 @@ msgstr ""
 msgid "Enregistrer"
 msgstr "Salvar"
 
-msgid "Enregistrer et envoyer maintenant"
-msgstr "Salvar e enviar agora"
-
 msgid "Modifier le modèle et les destinataires"
 msgstr "Editar o modelo e os destinatários"
 
@@ -4747,9 +4732,6 @@ msgstr "Importar %d chamado(s)"
 
 msgid "Annuler"
 msgstr "Cancelar"
-
-msgid "Importer depuis Jira (CSV)"
-msgstr "Importar do Jira (CSV)"
 
 msgid "Plan d'adressage"
 msgstr "Plano de endereçamento"
@@ -6690,13 +6672,6 @@ msgstr ""
 "assistente com valores adequados a um tipo de organização."
 
 msgid ""
-"Lancez l'assistant, l'audit ou un import avec les boutons ci-dessous, ou "
-"ouvrez un profil de la liste pour le consulter ou l'exporter."
-msgstr ""
-"Inicie o assistente, a auditoria ou uma importação com os botões abaixo, ou "
-"abra um perfil da lista para consultá-lo ou exportá-lo."
-
-msgid ""
 "Retrouver les sauvegardes de la configuration : une automatique à chaque "
 "application de l'assistant, et les points de sauvegarde créés à la main, "
 "pour comparer ou revenir en arrière."
@@ -7139,21 +7114,6 @@ msgstr "Offline"
 
 msgid "À quoi sert ce contrôle ?"
 msgstr "Para que serve este controle?"
-
-msgid ""
-"Il signale les systèmes d'exploitation et les modèles de matériel en service "
-"dont le support du fabricant est terminé ou se termine bientôt, d'après les "
-"dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il "
-"n'est pas activé, seul endoflife.date est contacté, et seulement quand vous "
-"cliquez sur « Télécharger les dates ». Le contrôle lit ensuite ces dates "
-"gardées en base : il ne modifie jamais le matériel."
-msgstr ""
-"Sinaliza os sistemas operacionais e modelos de hardware em serviço cujo "
-"suporte do fabricante terminou ou termina em breve, segundo as datas "
-"públicas do site endoflife.date. Nada é baixado enquanto não estiver "
-"ativado, apenas endoflife.date é contatado, e somente quando você clica em "
-"«Baixar as datas». O controle lê depois essas datas guardadas na base: nunca "
-"modifica o hardware."
 
 msgid "Activer le contrôle de fin de support"
 msgstr "Ativar o controle de fim de suporte"
@@ -7773,3 +7733,108 @@ msgstr "Muitas vezes um \"Lembrar de mim\" em um computador compartilhado ou per
 
 msgid "%1$s (ouverte le %2$s)"
 msgstr "%1$s (aberta em %2$s)"
+
+msgid "Ces réglages sont maintenant dans Configuration > Plugins > Configuration GLPI Auto."
+msgstr "Essas configurações agora estão em Configurar > Plugins > Configuration GLPI Auto."
+
+msgid "Configuration GLPI Auto"
+msgstr "Configuration GLPI Auto"
+
+msgid "Général"
+msgstr "Geral"
+
+msgid "Audit"
+msgstr "Auditoria"
+
+msgid "Fin de support"
+msgstr "Fim do suporte"
+
+msgid "Profils et Blueprints"
+msgstr "Perfis e Blueprints"
+
+msgid "Historique"
+msgstr "Histórico"
+
+msgid "Assistant"
+msgstr "Assistente"
+
+msgid "Importer des tickets"
+msgstr "Importar chamados"
+
+msgid "Dernière version inconnue"
+msgstr "Versão mais recente desconhecida"
+
+msgid "La dernière version n'est lue sur GitHub que si l'action automatique « checkupdate » de GLPI est activée (Configuration > Actions automatiques) et que le serveur GLPI peut joindre github.com."
+msgstr "A versão mais recente só é lida no GitHub se a ação automática \"checkupdate\" do GLPI estiver ativada (Configurar > Ações automáticas) e o servidor GLPI puder acessar github.com."
+
+msgid "Mise à jour disponible"
+msgstr "Atualização disponível"
+
+msgid "Notes de version"
+msgstr "Notas de versão"
+
+msgid "À jour"
+msgstr "Atualizado"
+
+msgid "Depuis Jira"
+msgstr "Do Jira"
+
+msgid "Depuis un fichier CSV"
+msgstr "De um arquivo CSV"
+
+msgid "Source des tickets"
+msgstr "Origem dos chamados"
+
+msgid "Écrans de Configuration GLPI Auto"
+msgstr "Telas do Configuration GLPI Auto"
+
+msgid "Contrôle désactivé : activez-le et indiquez les correspondances dans l'onglet « Fin de support » des réglages."
+msgstr "Verificação desativada: ative-a e informe as correspondências na aba \"Fim do suporte\" das configurações."
+
+msgid "Délais des contrôles du parc, fin de support et rapport périodique : ces réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
+msgstr "Prazos das verificações do parque, fim do suporte e relatório periódico: essas configurações estão em Configurar > Plugins > Configuration GLPI Auto."
+
+msgid "Envoyer le rapport maintenant"
+msgstr "Enviar o relatório agora"
+
+msgid "Ouvrir les réglages"
+msgstr "Abrir as configurações"
+
+msgid "Actions automatiques"
+msgstr "Ações automáticas"
+
+msgid "Administration > Profils, onglet « Configuration GLPI Auto » de chaque profil."
+msgstr "Administração > Perfis, aba \"Configuration GLPI Auto\" de cada perfil."
+
+msgid "Analyse continue de l'audit, rapport périodique et vérification des nouvelles versions (checkupdate)."
+msgstr "Análise contínua da auditoria, relatório periódico e verificação de novas versões (checkupdate)."
+
+msgid "Droits du plugin"
+msgstr "Direitos do plugin"
+
+msgid "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+msgstr "Ele aponta os sistemas operacionais e os modelos de hardware em serviço cujo suporte do fabricante terminou ou termina em breve, segundo as datas públicas do site endoflife.date. Nada é baixado enquanto não estiver ativado, apenas o endoflife.date é contatado, e somente quando você clica em \"Baixar as datas\" na página de auditoria. A verificação lê depois essas datas guardadas no banco: ela nunca altera o hardware."
+
+msgid "Lecture seule : modifier ces réglages demande le droit de modification de la configuration de GLPI et de ce plugin."
+msgstr "Somente leitura: alterar essas configurações exige o direito de modificar a configuração do GLPI e deste plugin."
+
+msgid "Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, rapport périodique, fin de support des systèmes et du matériel."
+msgstr "As configurações do plugin, e somente elas: prazos das verificações da auditoria, relatório periódico, fim do suporte de sistemas e hardware."
+
+msgid "Modèle et destinataires du rapport d'audit périodique."
+msgstr "Modelo e destinatários do relatório de auditoria periódico."
+
+msgid "Réglages de Configuration GLPI Auto"
+msgstr "Configurações do Configuration GLPI Auto"
+
+msgid "Réglages gérés par GLPI"
+msgstr "Configurações gerenciadas pelo GLPI"
+
+msgid "Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, l'historique et les imports s'ouvrent depuis le menu Configuration > Configuration GLPI Auto."
+msgstr "Ajuste cada aba e salve-a. O assistente, a auditoria, os perfis, o histórico e as importações são abertos pelo menu Configurar > Configuration GLPI Auto."
+
+msgid "Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, historique, imports) sont dans les onglets ci-dessus."
+msgstr "Abra um perfil da lista para consultá-lo ou exportá-lo, ou importe um Blueprint recebido de outra instância. As demais telas (assistente, auditoria, histórico, importações) estão nas abas acima."
+
+msgid "Progression de l'assistant"
+msgstr "Progresso do assistente"
