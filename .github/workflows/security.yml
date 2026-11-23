@@ -23,5 +23,4 @@ jobs:
       plugin-key: configurationglpiauto
       charter-mode: error
       seed-command: php plugins/configurationglpiauto/tests/security/setup.php && php plugins/configurationglpiauto/tests/security/setup.php fleet
-      # Assertions de test sur des libellés traduits, en avertissement le temps de l'issue #501.
-      translated-assertions-mode: warning
+      translated-assertions-mode: error

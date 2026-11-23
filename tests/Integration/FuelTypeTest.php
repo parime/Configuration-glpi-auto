@@ -30,15 +30,32 @@ use PHPUnit\Framework\TestCase;
  */
 final class FuelTypeTest extends TestCase
 {
+    private string $previousLanguage = '';
+
+    /** Libellés comparés en anglais quelle que soit la langue de l'instance (issue #501). */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->previousLanguage = (string) ($_SESSION['glpilanguage'] ?? '');
+        $_SESSION['glpilanguage'] = 'en_GB';
+        \Session::loadLanguage('en_GB');
+    }
+
+    protected function tearDown(): void
+    {
+        $_SESSION['glpilanguage'] = $this->previousLanguage;
+        \Session::loadLanguage($this->previousLanguage);
+        parent::tearDown();
+    }
+
     /**
-     * Compared against the same `_n()` call rather than a hardcoded literal: CI's default session
-     * language isn't necessarily French (confirmed: CI returned "Fuel type" for the same call), so
-     * asserting a specific translated string would depend on which locale happens to be active.
+     * English is forced by setUp(): the translated name is compared with en_GB.po, which also proves
+     * the real translation domain is used (a wrong domain would return the French msgid).
      */
     public function testGetTypeNameUsesTheRealTranslationDomainForSingularAndPlural(): void
     {
-        $this->assertSame(_n('Type de carburant', 'Types de carburant', 1, 'configurationglpiauto'), FuelType::getTypeName(1));
-        $this->assertSame(_n('Type de carburant', 'Types de carburant', 2, 'configurationglpiauto'), FuelType::getTypeName(2));
+        $this->assertSame('Fuel type', FuelType::getTypeName(1));
+        $this->assertSame('Fuel types', FuelType::getTypeName(2));
         $this->assertNotSame(FuelType::getTypeName(1), FuelType::getTypeName(2), 'Singular and plural must actually differ.');
     }
 

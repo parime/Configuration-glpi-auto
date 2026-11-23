@@ -44,11 +44,11 @@ final class AuditReportTest extends TestCase
     public function testProblemsAreSortedCriticalFirstAndNeverCarryTheDescription(): void
     {
         $report = AuditReport::build(['a', 'b'], [
-            self::finding('a', AuditFinding::SEVERITY_WARNING, 'Avertissement'),
-            self::finding('b', AuditFinding::SEVERITY_CRITICAL, 'Critique'),
+            self::finding('a', AuditFinding::SEVERITY_WARNING, 'Constat mineur PHPUnit'),
+            self::finding('b', AuditFinding::SEVERITY_CRITICAL, 'Constat bloquant PHPUnit'),
         ]);
 
-        $this->assertSame('Critique', $report['problems'][0]['title']);
+        $this->assertSame('Constat bloquant PHPUnit', $report['problems'][0]['title']);
         $this->assertSame(['severity', 'domain', 'title', 'recommendation'], array_keys($report['problems'][0]));
         $this->assertStringNotContainsString('Description détaillée', json_encode($report, JSON_UNESCAPED_UNICODE));
     }

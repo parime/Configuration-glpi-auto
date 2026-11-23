@@ -28,6 +28,24 @@ use PHPUnit\Framework\TestCase;
  */
 final class DeploymentTest extends TestCase
 {
+    private string $previousLanguage = '';
+
+    /** Libellés comparés en anglais quelle que soit la langue de l'instance (issue #501). */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->previousLanguage = (string) ($_SESSION['glpilanguage'] ?? '');
+        $_SESSION['glpilanguage'] = 'en_GB';
+        \Session::loadLanguage('en_GB');
+    }
+
+    protected function tearDown(): void
+    {
+        $_SESSION['glpilanguage'] = $this->previousLanguage;
+        \Session::loadLanguage($this->previousLanguage);
+        parent::tearDown();
+    }
+
     public function testEnabledFeaturesAreGroupedWithTranslatedLabels(): void
     {
         $groups = DeploymentPlan::enabledGroups([
@@ -38,8 +56,9 @@ final class DeploymentTest extends TestCase
             'sla_tiers'          => '[]',
         ]);
 
-        $this->assertSame([__('Calendrier', 'configurationglpiauto'), __('SLA', 'configurationglpiauto')], array_keys($groups));
-        $this->assertSame(['sla_enabled', 'sla_update_enabled'], $groups[__('SLA', 'configurationglpiauto')]);
+        // Anglais forcé par setUp() : groupes libellés d'après en_GB.po.
+        $this->assertSame(['Calendar', 'SLA'], array_keys($groups));
+        $this->assertSame(['sla_enabled', 'sla_update_enabled'], $groups['SLA']);
     }
 
     public function testProfileFormUrlPointsToAnExistingPage(): void
