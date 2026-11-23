@@ -73,7 +73,11 @@ final class ConfigSettings
         return (bool) Session::haveRight(Config::$rightname, UPDATE) && (bool) Session::haveRight('config', UPDATE);
     }
 
-    /** Vrai si le formulaire posté contient un réglage traité par handle(). */
+    /**
+     * Vrai si le formulaire posté contient un réglage traité par handle().
+     *
+     * @param array<string, mixed> $post
+     */
     public static function isSettingsPost(array $post): bool
     {
         return isset($post['save_park']) || isset($post['save_report'])
