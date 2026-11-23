@@ -95,6 +95,18 @@ final class ConfigSettings
         Session::checkRight(Config::$rightname, UPDATE);
         Session::checkRight('config', UPDATE);
 
+        return self::save($post, $files);
+    }
+
+    /**
+     * Enregistrement d'un bloc de réglages, droits déjà vérifiés par handle() (appelée directement
+     * par les tests, sans session web).
+     *
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $files
+     */
+    public static function save(array $post, array $files): string
+    {
         $config = Config::getConfig();
 
         // Issue #306 : délais des contrôles du parc (jours, 0 = contrôle désactivé).

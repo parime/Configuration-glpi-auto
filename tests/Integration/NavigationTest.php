@@ -131,7 +131,7 @@ final class NavigationTest extends TestCase
         ];
 
         try {
-            $tab = ConfigSettings::handle(['save_park' => 1, 'audit_ghost_days' => 45, 'audit_warranty_days' => 99999], []);
+            $tab = ConfigSettings::save(['save_park' => 1, 'audit_ghost_days' => 45, 'audit_warranty_days' => 99999], []);
 
             $this->assertSame(ConfigSettings::TAB_AUDIT, $tab);
             $config = Config::getConfig();
@@ -157,7 +157,7 @@ final class NavigationTest extends TestCase
         ];
 
         try {
-            $tab = ConfigSettings::handle(['save_report' => 1, 'audit_report_frequency' => 'month', 'audit_report_only_on_change' => 1], []);
+            $tab = ConfigSettings::save(['save_report' => 1, 'audit_report_frequency' => 'month', 'audit_report_only_on_change' => 1], []);
 
             $this->assertSame(ConfigSettings::TAB_AUDIT, $tab);
             $task->getFromDB($task->getID());
@@ -182,7 +182,7 @@ final class NavigationTest extends TestCase
         ];
 
         try {
-            $tab = ConfigSettings::handle([
+            $tab = ConfigSettings::save([
                 'save_eol'          => 1,
                 'audit_eol_enabled' => 1,
                 'audit_eol_offline' => 1,
