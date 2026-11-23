@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Tests : plus de modèles « Phpunitdup… » laissés dans la base** (#496) : le test des doublons
+  d'intitulés purge dans `tearDown()` (exécuté même quand une assertion échoue) les fabricants,
+  modèles et matériels qu'il crée, les règles de dictionnaire et le fabricant « HP » qu'il a
+  ajoutés, et rétablit l'option d'unicité telle qu'elle était. Les restes d'anciennes exécutions
+  sont purgés avant et après la classe ; le test vérifie qu'il ne reste rien.
 - **Import Jira Cloud : requête bornée** (#503) : Jira Cloud refuse une recherche sans
   restriction sur `/rest/api/3/search/jql`. L'import par l'API demande maintenant la clé du ou des
   projets (obligatoire), une date de mise à jour (facultative) et un filtre JQL facultatif ; la
