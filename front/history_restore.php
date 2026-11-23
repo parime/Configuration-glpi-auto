@@ -68,7 +68,8 @@ if (isset($_POST['restore_all']) || isset($_POST['restore_selected']) || isset($
     Html::redirect(ConfigurationProfile::getSearchURL());
 }
 
-Html::header(__('Restaurer une configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('history_restore.php'), 'config', $itemtype);
+Html::header(__('Restaurer une configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('history_restore.php'), 'config', \GlpiPlugin\Configurationglpiauto\ConfigurationProfile::class, 'history');
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('history');
 
 $fullyDefaulted = BlueprintSerializer::import($decoded, Config::getDefaults());
 $diff = BlueprintSerializer::diff(Config::getConfig()->fields, $fullyDefaulted);

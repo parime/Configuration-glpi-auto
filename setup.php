@@ -62,12 +62,10 @@ function plugin_init_configurationglpiauto(): void
         'config' => [ConfigurationProfile::class],
     ];
 
-    // Icone "Configurer" sur la ligne du plugin dans Configuration > Plugins. Pointe vers
-    // l'assistant complet (meme page que le menu principal, cf. ConfigurationProfile::
-    // getSearchURL()) : l'ancien formulaire a une seule page (front/config.php, entity_mode +
-    // entity_tree seulement, sans calendrier/SLA/personnalisation) a ete retire pour ne pas
-    // laisser deux points d'entree incoherents (Sprint 11).
-    $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['configurationglpiauto'] = 'front/wizard.php';
+    // Icone "Configurer" sur la ligne du plugin dans Configuration > Plugins : la page des reglages
+    // du plugin, en onglets (issue #495). L'usage (assistant, audit, profils, historique...) a sa
+    // propre entree de menu ci-dessus, Configuration > Configuration GLPI Auto.
+    $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['configurationglpiauto'] = 'front/config.php';
 
     // parime/glpi-plugin-template#10 (charte section 8) : classes bg-X-subtle / text-X-emphasis des
     // couleurs nommées de Tabler (green, blue...), absentes de GLPI et de Tabler : sans cette feuille,

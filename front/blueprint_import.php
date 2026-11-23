@@ -79,7 +79,8 @@ if (isset($_POST['import'])) {
     Html::redirect(ConfigurationProfile::getFormURL() . '?id=' . $profile->getID());
 }
 
-Html::header(__('Importer un Blueprint', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('blueprint_import.php'), 'config', ConfigurationProfile::class);
+Html::header(__('Importer un Blueprint', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('blueprint_import.php'), 'config', ConfigurationProfile::class, 'profiles');
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('profiles');
 
 TemplateRenderer::getInstance()->display('@configurationglpiauto/blueprint_import.html.twig', [
     'action' => \GlpiPlugin\Configurationglpiauto\FrontUrl::get('blueprint_import.php'),

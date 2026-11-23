@@ -40,6 +40,7 @@ Html::header(
     'config',
     ConfigurationProfile::class
 );
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('wizard');
 
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@configurationglpiauto/deploy.html.twig', [
     'fields'             => DeploymentPlan::formFields($fields),

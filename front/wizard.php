@@ -1186,6 +1186,7 @@ if (isset($_POST['finish'])) {
 }
 
 Html::header(__('Assistant de configuration', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('wizard.php'), 'config', ConfigurationProfile::class);
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('wizard');
 
 $config = Config::getConfig();
 $profiles = (new ConfigurationProfile())->find(['is_active' => 1], ['sort_order ASC']);

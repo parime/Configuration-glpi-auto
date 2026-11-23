@@ -47,7 +47,8 @@ if (isset($_POST['create_checkpoint'])) {
     Html::back();
 }
 
-Html::header(ConfigHistory::getTypeName(2), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('history.php'), 'config', ConfigHistory::class);
+Html::header(ConfigHistory::getTypeName(2), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('history.php'), 'config', \GlpiPlugin\Configurationglpiauto\ConfigurationProfile::class, 'history');
+\GlpiPlugin\Configurationglpiauto\UsageTabs::display('history');
 
 TemplateRenderer::getInstance()->display('@configurationglpiauto/history_checkpoint.html.twig', [
     'action' => \GlpiPlugin\Configurationglpiauto\FrontUrl::get('history.php'),

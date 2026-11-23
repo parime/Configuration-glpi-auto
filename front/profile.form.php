@@ -85,7 +85,8 @@ if (isset($_POST['add'])) {
     } elseif (isset($_GET['all'])) {
         $content = $item->fields['snapshot'];
     } else {
-        Html::header(__('Exporter ce Blueprint', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php'), 'config', ConfigurationProfile::class);
+        Html::header(__('Exporter ce Blueprint', 'configurationglpiauto'), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php'), 'config', ConfigurationProfile::class, 'profiles');
+        \GlpiPlugin\Configurationglpiauto\UsageTabs::display('profiles');
         $groups = [];
         foreach (array_keys($decoded['config'] ?? []) as $field) {
             $groups[FieldGroupLabel::for($field)][] = $field;
@@ -114,7 +115,8 @@ if (isset($_POST['add'])) {
     exit;
 } else {
     Session::checkRight(ConfigurationProfile::$rightname, READ);
-    Html::header(ConfigurationProfile::getTypeName(1), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php'), 'config', ConfigurationProfile::class);
+    Html::header(ConfigurationProfile::getTypeName(1), \GlpiPlugin\Configurationglpiauto\FrontUrl::get('profile.form.php'), 'config', ConfigurationProfile::class, 'profiles');
+    \GlpiPlugin\Configurationglpiauto\UsageTabs::display('profiles');
     $id = (int) ($_GET['id'] ?? 0);
     if ($id > 0) {
         $item->getFromDB($id);

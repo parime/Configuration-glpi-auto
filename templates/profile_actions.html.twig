@@ -17,27 +17,17 @@
 {% include '@configurationglpiauto/_page_help.html.twig' with {
    page: 'profiles',
    purpose: __('Retrouver les profils de configuration (Blueprints) : chacun pré-remplit l\'assistant avec des valeurs adaptées à un type d\'organisation.', 'configurationglpiauto'),
-   expected: __('Lancez l\'assistant, l\'audit ou un import avec les boutons ci-dessous, ou ouvrez un profil de la liste pour le consulter ou l\'exporter.', 'configurationglpiauto'),
+   expected: __('Ouvrez un profil de la liste pour le consulter ou l\'exporter, ou importez un Blueprint reçu d\'une autre instance. Les autres écrans (assistant, audit, historique, imports) sont dans les onglets ci-dessus.', 'configurationglpiauto'),
 } %}
+{# Issue #495 : l'assistant, l'audit, l'historique, le plan d'adressage et les imports de tickets
+   sont des onglets (UsageTabs) : restent ici les actions propres à la liste des profils. #}
+{% if blueprint_url or add_url %}
 <div class="mb-3 d-flex flex-wrap gap-2">
-   <a class="btn btn-outline-primary" href="{{ wizard_url }}"><i class="ti ti-wand"></i> {{ __('Lancer l\'assistant de configuration', 'configurationglpiauto') }}</a>
-   {% if audit_url %}
-      <a class="btn btn-outline-primary" href="{{ audit_url }}"><i class="ti ti-stethoscope"></i> {{ __('Lancer l\'audit', 'configurationglpiauto') }}</a>
-   {% endif %}
    {% if blueprint_url %}
       <a class="btn btn-outline-primary" href="{{ blueprint_url }}"><i class="ti ti-upload"></i> {{ __('Importer un Blueprint (JSON)', 'configurationglpiauto') }}</a>
    {% endif %}
-   {% if jira_url %}
-      <a class="btn btn-outline-primary" href="{{ jira_url }}"><i class="ti ti-transfer-in"></i> {{ __('Importer depuis Jira (CSV)', 'configurationglpiauto') }}</a>
-   {% endif %}
-   {% if csv_url %}
-      <a class="btn btn-outline-primary" href="{{ csv_url }}"><i class="ti ti-file-spreadsheet"></i> {{ __('Importer des tickets (CSV)', 'configurationglpiauto') }}</a>
-   {% endif %}
-   {% if address_plan_url %}
-      <a class="btn btn-outline-primary" href="{{ address_plan_url }}"><i class="ti ti-network"></i> {{ __('Plan d\'adressage (réseaux et VLAN)', 'configurationglpiauto') }}</a>
-   {% endif %}
-   <a class="btn btn-outline-primary" href="{{ history_url }}"><i class="ti ti-history"></i> {{ __('Historique & Rollback', 'configurationglpiauto') }}</a>
    {% if add_url %}
       <a class="btn btn-primary" href="{{ add_url }}"><i class="ti ti-plus"></i> {{ __('Ajouter') }}</a>
    {% endif %}
 </div>
+{% endif %}
