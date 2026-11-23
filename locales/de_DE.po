@@ -5213,13 +5213,6 @@ msgid "Sauvegarde automatique avant application"
 msgstr "Automatische Sicherung vor dem Anwenden"
 
 msgid ""
-"Renseignez l'adresse de Jira (HTTPS), le jeton, la requête JQL (et l'adresse "
-"e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
-msgstr ""
-"Geben Sie die Jira-Adresse (HTTPS), das Token, die JQL-Abfrage (und für Jira "
-"Cloud die E-Mail-Adresse) sowie eine Einheit an, auf die Sie Zugriff haben."
-
-msgid ""
 "Jira refuse l'accès : vérifiez l'adresse e-mail et le jeton, et les droits "
 "du compte sur le projet."
 msgstr ""
@@ -5244,14 +5237,6 @@ msgstr ""
 "Jira ist vom GLPI-Server aus nicht erreichbar (Netzwerk, Proxy oder "
 "Zertifikat)."
 
-#, php-format
-msgid ""
-"Plus de %d tickets : seuls les premiers sont importés, affinez la requête "
-"JQL pour le reste."
-msgstr ""
-"Mehr als %d Tickets: Nur die ersten werden importiert, grenzen Sie die JQL-"
-"Abfrage für den Rest ein."
-
 msgid "Ou directement depuis l'API de Jira"
 msgstr "Oder direkt über die Jira-API"
 
@@ -5272,9 +5257,6 @@ msgstr "E-Mail-Adresse (Jira Cloud)"
 
 msgid "Jeton d'API"
 msgstr "API-Token"
-
-msgid "Requête JQL"
-msgstr "JQL-Abfrage"
 
 msgid "Autoriser HTTP (jeton transmis en clair : réseau interne seulement)"
 msgstr ""
@@ -7968,3 +7950,28 @@ msgstr "Öffnen Sie ein Profil der Liste, um es anzuzeigen oder zu exportieren, 
 
 msgid "Progression de l'assistant"
 msgstr "Fortschritt des Assistenten"
+
+msgid "Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+msgstr "Geben Sie die Jira-Adresse (HTTPS), das Token, den Projektschlüssel (und für Jira Cloud die E-Mail-Adresse) sowie eine Einheit an, auf die Sie Zugriff haben."
+
+#, php-format
+msgid "Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la date ou le filtre pour le reste."
+msgstr "Mehr als %d Tickets: Nur die ersten werden importiert, grenzen Sie Projekt, Datum oder Filter für den Rest ein."
+
+msgid "Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses équilibrées."
+msgstr "Ungültiger Projektschlüssel, ungültiges Datum oder ungültiger Filter: Schlüssel wie SUP oder SUP, OPS (höchstens 20), ein Datum im Format JJJJ-MM-TT, ein Filter mit ausgeglichenen Klammern."
+
+msgid "Requête sans restriction : indiquez au moins une clé de projet."
+msgstr "Abfrage ohne Einschränkung: Geben Sie mindestens einen Projektschlüssel an."
+
+msgid "Clé du projet Jira"
+msgstr "Jira-Projektschlüssel"
+
+msgid "Mis à jour depuis (facultatif)"
+msgstr "Aktualisiert seit (optional)"
+
+msgid "Filtre JQL supplémentaire (facultatif)"
+msgstr "Zusätzlicher JQL-Filter (optional)"
+
+msgid "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
+msgstr "Jira verlangt eine eingeschränkte Suche: Gelesen werden nur die Tickets des oder der angegebenen Projekte (Schlüssel durch Kommas getrennt), die seit dem gewählten Datum aktualisiert wurden, vom ältesten zum neuesten. Der Filter kommt zu diesen Bedingungen hinzu."

@@ -24,6 +24,15 @@ namespace GlpiPlugin\Configurationglpiauto\Jira;
  *
  * Le transport est injecté (testable sans réseau) ; par défaut Compat\Http::get(), qui passe par
  * le client HTTP de GLPI (proxy) et ne suit pas les redirections.
+ *
+ * Issue #503 : la requête est toujours bornée (JiraQuery) ; Jira Cloud se lit par
+ * GET /rest/api/3/search/jql et se pagine par `nextPageToken`, absent de la dernière page
+ * (`isLast` à vrai). Documentation officielle :
+ * - https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-jql-get
+ * - https://dac-static.atlassian.com/cloud/jira/platform/swagger-v3.v3.json (schéma SearchAndReconcileResults)
+ *   (l'ancienne recherche /rest/api/3/search y est marquée « Currently being removed »)
+ * Data Center garde /rest/api/2/search et la pagination par position (startAt, total) :
+ * https://docs.atlassian.com/software/jira/docs/api/REST/9.17.0/ (ressource api/2/search)
  */
 final class JiraApiClient
 {
@@ -31,6 +40,8 @@ final class JiraApiClient
     public const MAX_ISSUES = 5000;
     public const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024;
     public const MAX_TOTAL_BYTES = 200 * 1024 * 1024;
+    /** Nom de client générique, sans information sur l'instance ni sur la personne. */
+    public const USER_AGENT = 'glpi-jira-import';
 
     /** @var callable(string, array<string, scalar>, array<string, string>): string */
     private $transport;
@@ -67,15 +78,20 @@ final class JiraApiClient
      */
     public function fetch(string $baseUrl, string $flavour, string $user, string $token, string $jql): array
     {
+        if (!JiraQuery::isBounded($jql)) {
+            return ['issues' => [], 'errors' => [['line' => 0, 'message' => 'api_unbounded_query']], 'truncated' => false];
+        }
         $headers = [
             'Accept'        => 'application/json',
             'Authorization' => self::authHeader($flavour, $user, $token),
+            'User-Agent'    => self::USER_AGENT,
         ];
         $url = $baseUrl . JiraApiMapper::searchPath($flavour);
         $issues = [];
         $errors = [];
         $startAt = 0;
         $nextToken = '';
+        $seenTokens = [];
         $more = false;
         do {
             $query = [
@@ -110,10 +126,15 @@ final class JiraApiClient
             }
             $count = count($page['issues']);
             $startAt += $count;
-            $nextToken = (string) ($page['nextPageToken'] ?? '');
-            $more = $flavour === JiraApiMapper::FLAVOUR_CLOUD
-                ? $nextToken !== '' && !($page['isLast'] ?? false)
-                : $count > 0 && $startAt < (int) ($page['total'] ?? 0);
+            $nextToken = is_string($page['nextPageToken'] ?? null) ? $page['nextPageToken'] : '';
+            if ($flavour === JiraApiMapper::FLAVOUR_CLOUD) {
+                // Dernière page : pas de jeton et isLast à vrai. Un jeton déjà vu arrêterait
+                // sinon la lecture dans une boucle sans fin.
+                $more = $nextToken !== '' && ($page['isLast'] ?? false) !== true && !isset($seenTokens[$nextToken]);
+                $seenTokens[$nextToken] = true;
+            } else {
+                $more = $count > 0 && $startAt < (int) ($page['total'] ?? 0);
+            }
         } while ($more && count($issues) < self::MAX_ISSUES);
 
         return [
@@ -140,7 +161,7 @@ final class JiraApiClient
         string $token,
         string $dir
     ): array {
-        $headers = ['Authorization' => self::authHeader($flavour, $user, $token)];
+        $headers = ['Authorization' => self::authHeader($flavour, $user, $token), 'User-Agent' => self::USER_AGENT];
         $downloaded = 0;
         $total = 0;
         $skipped = [];

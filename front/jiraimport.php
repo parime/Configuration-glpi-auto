@@ -24,6 +24,7 @@ use GlpiPlugin\Configurationglpiauto\Jira\JiraApiMapper;
 use GlpiPlugin\Configurationglpiauto\Jira\JiraConnection;
 use GlpiPlugin\Configurationglpiauto\Jira\JiraImporter;
 use GlpiPlugin\Configurationglpiauto\Jira\JiraMapping;
+use GlpiPlugin\Configurationglpiauto\Jira\JiraQuery;
 
 // Issue #345 : import de tickets Jira (export CSV). Droit de modification de la configuration du
 // plugin ET droit natif de créer des tickets.
@@ -85,12 +86,27 @@ if (isset($_POST['fetch_api'])) {
     $baseUrl = JiraApiMapper::normalizeBaseUrl((string) ($_POST['jira_url'] ?? ''), !empty($_POST['allow_http']));
     $user = trim((string) ($_POST['jira_user'] ?? ''));
     $token = (string) ($_POST['jira_token'] ?? '');
-    $jql = trim((string) ($_POST['jira_jql'] ?? ''));
-    $missing = $baseUrl === null || $token === '' || $jql === ''
+    $projects = trim((string) ($_POST['jira_projects'] ?? ''));
+    $missing = $baseUrl === null || $token === '' || $projects === ''
         || ($flavour === JiraApiMapper::FLAVOUR_CLOUD && $user === '');
     if ($missing || !Session::haveAccessToEntity($entitiesId)) {
         Session::addMessageAfterRedirect(
-            htmlescape(__('Renseignez l\'adresse de Jira (HTTPS), le jeton, la requête JQL (et l\'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès.', 'configurationglpiauto')),
+            htmlescape(__('Renseignez l\'adresse de Jira (HTTPS), le jeton, la clé du projet (et l\'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès.', 'configurationglpiauto')),
+            false,
+            ERROR
+        );
+        Html::redirect($url);
+    }
+    // Issue #503 : requête toujours bornée (projet, date de mise à jour, tri), Jira Cloud refusant
+    // une requête sans restriction.
+    $jql = JiraQuery::build(
+        $projects,
+        (string) ($_POST['jira_updated_since'] ?? ''),
+        (string) ($_POST['jira_filter'] ?? '')
+    );
+    if ($jql === null) {
+        Session::addMessageAfterRedirect(
+            htmlescape(__('Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses équilibrées.', 'configurationglpiauto')),
             false,
             ERROR
         );
@@ -110,6 +126,7 @@ if (isset($_POST['fetch_api'])) {
             'api_unauthorized' => __('Jira refuse l\'accès : vérifiez l\'adresse e-mail et le jeton, et les droits du compte sur le projet.', 'configurationglpiauto'),
             'api_not_found'    => __('Adresse introuvable : vérifiez l\'adresse de Jira et son type (Cloud ou Data Center).', 'configurationglpiauto'),
             'api_bad_query'    => __('Jira refuse la requête JQL : vérifiez-la dans Jira.', 'configurationglpiauto'),
+            'api_unbounded_query' => __('Requête sans restriction : indiquez au moins une clé de projet.', 'configurationglpiauto'),
             'api_unexpected'   => __('Réponse inattendue : ce n\'est pas l\'API de Jira.', 'configurationglpiauto'),
             'api_unreachable'  => __('Jira injoignable depuis le serveur GLPI (réseau, proxy ou certificat).', 'configurationglpiauto'),
             'api_private_network' => sprintf(
@@ -123,7 +140,7 @@ if (isset($_POST['fetch_api'])) {
     }
     if ($fetched['truncated']) {
         Session::addMessageAfterRedirect(htmlescape(sprintf(
-            __('Plus de %d tickets : seuls les premiers sont importés, affinez la requête JQL pour le reste.', 'configurationglpiauto'),
+            __('Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la date ou le filtre pour le reste.', 'configurationglpiauto'),
             JiraApiClient::MAX_ISSUES
         )), false, WARNING);
     }
