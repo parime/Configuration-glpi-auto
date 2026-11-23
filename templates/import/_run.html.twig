@@ -28,10 +28,10 @@
    <div class="progress-bar bg-primary" style="width: {{ job.percent }}%"></div>
 </div>
 <p>
-   <span class="badge bg-green-lt me-1"><i class="ti ti-plus me-1"></i>{{ __('%d créé(s)', 'configurationglpiauto')|format(job.result.created) }}</span>
-   <span class="badge bg-blue-lt me-1"><i class="ti ti-refresh me-1"></i>{{ __('%d mis à jour', 'configurationglpiauto')|format(job.result.updated) }}</span>
-   {% if job.result.security %}<span class="badge bg-red-lt me-1"><i class="ti ti-shield-exclamation me-1"></i>{{ __('%d incident(s) de sécurité', 'configurationglpiauto')|format(job.result.security) }}</span>{% endif %}
-   {% if job.result.errors is not empty %}<span class="badge bg-orange-lt me-1"><i class="ti ti-alert-triangle me-1"></i>{{ __('%d erreur(s)', 'configurationglpiauto')|format(job.result.errors|length) }}</span>{% endif %}
+   <span class="badge bg-green-subtle text-green-emphasis me-1"><i class="ti ti-plus me-1"></i>{{ __('%d créé(s)', 'configurationglpiauto')|format(job.result.created) }}</span>
+   <span class="badge bg-blue-subtle text-blue-emphasis me-1"><i class="ti ti-refresh me-1"></i>{{ __('%d mis à jour', 'configurationglpiauto')|format(job.result.updated) }}</span>
+   {% if job.result.security %}<span class="badge bg-red-subtle text-red-emphasis me-1"><i class="ti ti-shield-exclamation me-1"></i>{{ __('%d incident(s) de sécurité', 'configurationglpiauto')|format(job.result.security) }}</span>{% endif %}
+   {% if job.result.errors is not empty %}<span class="badge bg-orange-subtle text-orange-emphasis me-1"><i class="ti ti-alert-triangle me-1"></i>{{ __('%d erreur(s)', 'configurationglpiauto')|format(job.result.errors|length) }}</span>{% endif %}
 </p>
 <form method="post" action="{{ url }}" id="cga-import-continue" data-auto="{{ job.resumed ? '0' : '1' }}" class="d-flex gap-2">
    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">

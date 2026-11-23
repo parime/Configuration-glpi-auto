@@ -74,9 +74,9 @@
       <div class="card mt-3">
          <div class="card-header d-flex flex-wrap align-items-center gap-2">
             <h3 class="card-title mb-0"><i class="ti ti-list-check me-1"></i>{{ __('Aperçu', 'configurationglpiauto') }}</h3>
-            <span class="badge bg-green-lt">{{ __('%d ligne(s) valide(s)', 'configurationglpiauto')|format(valid_count) }}</span>
-            {% if valid_count < rows|length %}<span class="badge bg-red-lt">{{ __('%d ligne(s) en erreur, ignorée(s)', 'configurationglpiauto')|format(rows|length - valid_count) }}</span>{% endif %}
-            {% if truncated %}<span class="badge bg-orange-lt">{{ __('Seules les %d premières lignes sont lues.', 'configurationglpiauto')|format(max_rows) }}</span>{% endif %}
+            <span class="badge bg-green-subtle text-green-emphasis">{{ __('%d ligne(s) valide(s)', 'configurationglpiauto')|format(valid_count) }}</span>
+            {% if valid_count < rows|length %}<span class="badge bg-red-subtle text-red-emphasis">{{ __('%d ligne(s) en erreur, ignorée(s)', 'configurationglpiauto')|format(rows|length - valid_count) }}</span>{% endif %}
+            {% if truncated %}<span class="badge bg-orange-subtle text-orange-emphasis">{{ __('Seules les %d premières lignes sont lues.', 'configurationglpiauto')|format(max_rows) }}</span>{% endif %}
             {% if valid_count > 0 %}
                <form method="post" action="{{ action }}" class="ms-auto">
                   <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
@@ -100,7 +100,7 @@
                </thead>
                <tbody>
                {% set labels = {'create': __('à créer', 'configurationglpiauto'), 'update': __('nom mis à jour', 'configurationglpiauto'), 'same': __('déjà à jour', 'configurationglpiauto')} %}
-               {% set classes = {'create': 'bg-green-lt', 'update': 'bg-blue-lt', 'same': 'bg-secondary-lt'} %}
+               {% set classes = {'create': 'bg-green-subtle text-green-emphasis', 'update': 'bg-blue-subtle text-blue-emphasis', 'same': 'bg-secondary-subtle text-secondary-emphasis'} %}
                {% for row in rows %}
                   <tr class="{{ row.messages is empty ? '' : 'table-danger' }}">
                      <td>{{ row.line }}</td>

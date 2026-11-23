@@ -26,7 +26,7 @@
       {% set steps = {'upload': __('1. Fichier', 'configurationglpiauto'), 'columns': __('2. Colonnes', 'configurationglpiauto'), 'preview': __('3. Aperçu et import', 'configurationglpiauto')} %}
       <ol class="list-inline mb-3">
          {% for key, label in steps %}
-            <li class="list-inline-item"><span class="badge {{ key == step ? 'bg-primary text-white' : 'bg-secondary-lt' }}">{{ label }}</span></li>
+            <li class="list-inline-item"{% if key == step %} aria-current="step"{% endif %}><span class="badge {{ key == step ? 'bg-blue-subtle text-blue-emphasis fw-bold' : 'bg-secondary-subtle text-secondary-emphasis' }}">{{ label }}</span></li>
          {% endfor %}
       </ol>
    {% endif %}
@@ -37,7 +37,7 @@
       {{ include('@configurationglpiauto/import/_result.html.twig') }}
    {% elseif step == 'upload' %}
       <p>{{ __('Apportez l\'historique d\'un autre outil d\'assistance ou d\'un suivi tenu dans un tableur : une ligne par ticket. Vous choisissez ensuite quelle colonne correspond à quel champ du ticket, puis un aperçu à blanc, sans rien écrire, montre le résultat avant l\'import. Les personnes sont reconnues par adresse e-mail ou par nom ; une personne inconnue est signalée, jamais créée. Réimporter le même fichier met à jour les tickets au lieu de les recréer. Aucune notification n\'est envoyée.', 'configurationglpiauto') }}</p>
-      <p class="text-muted small"><i class="ti ti-brand-jira me-1"></i>{{ __('Vos tickets viennent de Jira ?', 'configurationglpiauto') }} <a href="{{ jira_url }}">{{ __('Utilisez l\'import Jira', 'configurationglpiauto') }}</a></p>
+      <p class="text-muted small"><i class="ti ti-brand-jira me-1"></i>{{ __('Vos tickets viennent de Jira ?', 'configurationglpiauto') }} <a href="{{ jira_url }}" class="text-decoration-underline">{{ __('Utilisez l\'import Jira', 'configurationglpiauto') }}</a></p>
       <form method="post" enctype="multipart/form-data" action="{{ url }}" class="row g-3 align-items-end">
          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
          <div class="col-md-6"><label class="form-label" for="tickets_csv">{{ __('Fichier CSV des tickets', 'configurationglpiauto') }}</label><input type="file" id="tickets_csv" name="tickets_csv" accept=".csv,.txt,text/csv" class="form-control" required>
@@ -86,7 +86,7 @@
                <tr>
                   <td><i class="ti ti-template me-1 text-muted"></i>{{ profile.name }}</td>
                   <td>{{ profile.source_name }}</td>
-                  <td><span class="badge bg-blue-lt">{{ profile.columns }}</span></td>
+                  <td><span class="badge bg-blue-subtle text-blue-emphasis">{{ profile.columns }}</span></td>
                   <td class="text-end">
                      <form method="post" action="{{ url }}" class="d-inline">
                         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
@@ -112,14 +112,14 @@
    {% elseif step == 'columns' %}
       <p>{{ __('Pour chaque champ du ticket, choisissez la colonne du fichier qui le contient. Les choix proposés viennent du nom des colonnes ; vérifiez-les avec les exemples. Seuls l\'identifiant d\'origine et le titre sont obligatoires.', 'configurationglpiauto') }}</p>
       <p class="text-muted small"><i class="ti ti-file-check me-1"></i>{{ __('%1$d colonne(s) lue(s), séparateur : %2$s.', 'configurationglpiauto')|format(columns|length, delimiter) }}
-         {% if profile_loaded %}<span class="badge bg-green-lt ms-1"><i class="ti ti-template me-1"></i>{{ __('Modèle appliqué : %s', 'configurationglpiauto')|format(profile_loaded) }}</span>{% endif %}</p>
+         {% if profile_loaded %}<span class="badge bg-green-subtle text-green-emphasis ms-1"><i class="ti ti-template me-1"></i>{{ __('Modèle appliqué : %s', 'configurationglpiauto')|format(profile_loaded) }}</span>{% endif %}</p>
       <form method="post" action="{{ url }}">
          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
          <table class="table table-sm align-middle">
             <thead><tr><th>{{ __('Champ du ticket GLPI', 'configurationglpiauto') }}</th><th>{{ __('Colonne du fichier', 'configurationglpiauto') }}</th></tr></thead>
             {% for field in fields %}
                <tr>
-                  <td><label for="column_{{ field.name }}">{{ field.label }}</label>{% if field.required %} <span class="badge bg-red-lt">{{ __('obligatoire', 'configurationglpiauto') }}</span>{% endif %}</td>
+                  <td><label for="column_{{ field.name }}">{{ field.label }}</label>{% if field.required %} <span class="badge bg-red-subtle text-red-emphasis">{{ __('obligatoire', 'configurationglpiauto') }}</span>{% endif %}</td>
                   <td><select id="column_{{ field.name }}" name="column[{{ field.name }}]" class="form-select form-select-sm {{ field.selected >= 0 ? 'border-success' : '' }}" {{ field.required ? 'required' : '' }}>
                      <option value="">{{ field.required ? __('Choisissez une colonne', 'configurationglpiauto') : __('(ne pas importer)', 'configurationglpiauto') }}</option>
                      {% for column in columns %}<option value="{{ column.position }}" {{ column.position == field.selected ? 'selected' }}>{{ column.label }}{% if column.sample %} ({{ column.sample }}){% endif %}</option>{% endfor %}
@@ -181,7 +181,7 @@
                <table class="table table-sm align-middle">
                   {% for row in statuses %}
                      <tr>
-                        <td>{{ row.empty ? __('(vide)', 'configurationglpiauto') : row.value }} <span class="badge bg-secondary-lt">{{ row.count }}</span></td>
+                        <td>{{ row.empty ? __('(vide)', 'configurationglpiauto') : row.value }} <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ row.count }}</span></td>
                         <td><select name="status_map[{{ row.key }}]" class="form-select form-select-sm" aria-label="{{ row.value }}">
                            {% for value, label in status_labels %}<option value="{{ value }}" {{ value ~ '' == row.default ~ '' ? 'selected' }}>{{ label }}</option>{% endfor %}
                         </select></td>
@@ -194,7 +194,7 @@
                <table class="table table-sm align-middle">
                   {% for row in types %}
                      <tr>
-                        <td>{{ row.empty ? __('(vide)', 'configurationglpiauto') : row.value }} <span class="badge bg-secondary-lt">{{ row.count }}</span></td>
+                        <td>{{ row.empty ? __('(vide)', 'configurationglpiauto') : row.value }} <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ row.count }}</span></td>
                         <td><select name="type_map[{{ row.key }}]" class="form-select form-select-sm" aria-label="{{ row.value }}">
                            {% for value, label in type_labels %}<option value="{{ value }}" {{ value == row.default ? 'selected' }}>{{ label }}</option>{% endfor %}
                         </select></td>
@@ -208,7 +208,7 @@
                   <table class="table table-sm align-middle">
                      {% for row in priorities %}
                         <tr>
-                           <td>{{ row.value }} <span class="badge bg-secondary-lt">{{ row.count }}</span></td>
+                           <td>{{ row.value }} <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ row.count }}</span></td>
                            <td><select name="priority_map[{{ row.key }}]" class="form-select form-select-sm" aria-label="{{ row.value }}">
                               {% for value, label in priority_labels %}<option value="{{ value }}" {{ value == row.default ? 'selected' }}>{{ label }}</option>{% endfor %}
                            </select></td>
@@ -226,7 +226,7 @@
                         {# Liste produite par le cœur GLPI (ITILCategory::dropdown()). #}
                         {% set category_dropdown = row.dropdown %}
                         <tr>
-                           <td>{{ row.value }} <span class="badge bg-secondary-lt">{{ row.count }}</span></td>
+                           <td>{{ row.value }} <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ row.count }}</span></td>
                            <td>{{ category_dropdown|raw }}</td>
                         </tr>
                      {% endfor %}

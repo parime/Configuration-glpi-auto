@@ -37,24 +37,7 @@
 <div class="card">
   <div class="card-body">
 
-    {% if installed_version is defined %}
-      <div class="card card-sm mb-3">
-        <div class="card-body d-flex align-items-center gap-3">
-          <i class="ti ti-brand-github fs-1 text-muted"></i>
-          <div>
-            <div class="fw-bold">{{ __('Version du plugin', 'configurationglpiauto') }}</div>
-            <div class="text-muted small">
-              {{ __('Version installée', 'configurationglpiauto') }}
-              <span class="badge bg-blue-lt">v{{ installed_version }}</span>
-              {% if latest_github_version %}
-                {{ __('Dernière version sur GitHub', 'configurationglpiauto') }}
-                <span class="badge {{ latest_github_version != installed_version ? 'bg-orange-lt' : 'bg-green-lt' }}">v{{ latest_github_version }}</span>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-    {% endif %}
+    {# Issue #495 : la version du plugin est dans l'onglet Général de sa page de configuration. #}
 
     {% if prereq_checks is defined and prereq_checks|filter(c => not c.ok)|length > 0 %}
       <div class="alert alert-warning mb-3">
@@ -87,7 +70,7 @@
     {% endif %}
 
     <div class="progress mb-2" style="height: 6px;">
-      <div class="progress-bar" id="cga-wizard-progress" role="progressbar" style="width: 25%;"></div>
+      <div class="progress-bar" id="cga-wizard-progress" role="progressbar" aria-label="{{ __('Progression de l\'assistant', 'configurationglpiauto') }}" style="width: 25%;"></div>
     </div>
     <p class="text-muted small mb-4" id="cga-wizard-stepindicator"></p>
 
@@ -124,7 +107,7 @@
           <button
             type="submit"
             name="finish"
-            class="btn btn-outline-primary flex-shrink-0"
+            class="btn btn-outline-dark flex-shrink-0"
             id="cga-wizard-express-finish"
             onclick="return confirm('{{ __('Ceci va créer/modifier de vraies entités dans GLPI selon les réglages recommandés du profil sélectionné, sans passer en revue chaque étape. Continuer ?', 'configurationglpiauto')|e('js') }}');"
           >
@@ -630,10 +613,10 @@
                       <li>
                         {{ service.name }}
                         {% if service.smart_title %}
-                          <span class="badge bg-azure-lt" title="{{ __('Titre de ticket calculé automatiquement à partir des réponses', 'configurationglpiauto') }}">{{ __('titre calculé', 'configurationglpiauto') }}</span>
+                          <span class="badge bg-azure-subtle text-azure-emphasis" title="{{ __('Titre de ticket calculé automatiquement à partir des réponses', 'configurationglpiauto') }}">{{ __('titre calculé', 'configurationglpiauto') }}</span>
                         {% endif %}
                         {% if service.smart_conditional %}
-                          <span class="badge bg-purple-lt" title="{{ __('Certaines questions ne s\'affichent que selon la réponse donnée à une question précédente', 'configurationglpiauto') }}">{{ __('question conditionnelle', 'configurationglpiauto') }}</span>
+                          <span class="badge bg-purple-subtle text-purple-emphasis" title="{{ __('Certaines questions ne s\'affichent que selon la réponse donnée à une question précédente', 'configurationglpiauto') }}">{{ __('question conditionnelle', 'configurationglpiauto') }}</span>
                         {% endif %}
                       </li>
                     {% endfor %}
@@ -719,7 +702,7 @@
                   {% if state.comment %}<div class="text-muted small">{{ state.comment }}</div>{% endif %}
                 </div>
                 {% if state.name in state_recommended_names %}
-                  <span class="badge bg-azure-lt">{{ __('recommandé', 'configurationglpiauto') }}</span>
+                  <span class="badge bg-azure-subtle text-azure-emphasis">{{ __('recommandé', 'configurationglpiauto') }}</span>
                 {% endif %}
               </li>
             {% endfor %}
@@ -752,11 +735,11 @@
                   <strong>{{ assetsign_trigger_labels[field] }}</strong> ← {{ step.state }}
                 </label>
                 {% if step.action == 'set' %}
-                  <span class="badge bg-green-lt"><i class="ti ti-plus me-1"></i>{{ __('sera réglé', 'configurationglpiauto') }}</span>
+                  <span class="badge bg-green-subtle text-green-emphasis"><i class="ti ti-plus me-1"></i>{{ __('sera réglé', 'configurationglpiauto') }}</span>
                 {% elseif step.action == 'kept' %}
-                  <span class="badge bg-secondary-lt"><i class="ti ti-lock me-1"></i>{{ __('déjà réglé, conservé', 'configurationglpiauto') }}</span>
+                  <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="ti ti-lock me-1"></i>{{ __('déjà réglé, conservé', 'configurationglpiauto') }}</span>
                 {% else %}
-                  <span class="badge bg-yellow-lt"><i class="ti ti-alert-triangle me-1"></i>{{ __('statut à créer (cochez-le ci-dessus)', 'configurationglpiauto') }}</span>
+                  <span class="badge bg-yellow-subtle text-yellow-emphasis"><i class="ti ti-alert-triangle me-1"></i>{{ __('statut à créer (cochez-le ci-dessus)', 'configurationglpiauto') }}</span>
                 {% endif %}
               </li>
             {% endfor %}
@@ -1881,7 +1864,7 @@
           <div class="form-check form-switch mb-1">
             <input type="hidden" name="mail_reject_auto_replies" value="0">
             <input type="checkbox" name="mail_reject_auto_replies" value="1" class="form-check-input" id="cga-mail-reject-auto-replies" {{ config.mail_reject_auto_replies|default(1) ? 'checked' : '' }}>
-            <label class="form-check-label" for="cga-mail-reject-auto-replies">{{ __('Refuser les réponses automatiques, les messages d\'absence et les erreurs de distribution', 'configurationglpiauto') }} <span class="badge bg-azure-lt">{{ __('recommandé', 'configurationglpiauto') }}</span></label>
+            <label class="form-check-label" for="cga-mail-reject-auto-replies">{{ __('Refuser les réponses automatiques, les messages d\'absence et les erreurs de distribution', 'configurationglpiauto') }} <span class="badge bg-azure-subtle text-azure-emphasis">{{ __('recommandé', 'configurationglpiauto') }}</span></label>
           </div>
           <p class="text-muted small mb-2">{{ __('Évite les boucles : un message d\'absence répondant à une notification GLPI recréerait sinon un ticket, puis une notification, puis un message d\'absence... Active les règles natives de GLPI (notifications de GLPI, en-tête Auto-Submitted) et ajoute deux règles : sujets de messages d\'absence, messages de mailer-daemon ou postmaster. Ces messages sont refusés sans réponse.', 'configurationglpiauto') }}</p>
           <div class="form-check form-switch mb-1">
@@ -1917,15 +1900,15 @@
                 <i class="ti ti-mail"></i>
                 <a href="{{ collector.url }}" target="_blank" rel="noopener" class="fw-bold">{{ collector.name }}</a>
                 {% if collector.is_active %}
-                  <span class="badge bg-green-lt"><i class="ti ti-player-play me-1"></i>{{ __('relève active', 'configurationglpiauto') }}</span>
+                  <span class="badge bg-green-subtle text-green-emphasis"><i class="ti ti-player-play me-1"></i>{{ __('relève active', 'configurationglpiauto') }}</span>
                 {% else %}
-                  <span class="badge bg-secondary-lt"><i class="ti ti-player-pause me-1"></i>{{ __('relève désactivée', 'configurationglpiauto') }}</span>
+                  <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="ti ti-player-pause me-1"></i>{{ __('relève désactivée', 'configurationglpiauto') }}</span>
                 {% endif %}
                 {% if not collector.has_password %}
-                  <span class="badge bg-orange-lt"><i class="ti ti-key-off me-1"></i>{{ __('mot de passe manquant', 'configurationglpiauto') }}</span>
+                  <span class="badge bg-orange-subtle text-orange-emphasis"><i class="ti ti-key-off me-1"></i>{{ __('mot de passe manquant', 'configurationglpiauto') }}</span>
                 {% endif %}
                 {% if collector.errors > 0 %}
-                  <span class="badge bg-red-lt"><i class="ti ti-alert-triangle me-1"></i>{{ __('en erreur', 'configurationglpiauto') }}</span>
+                  <span class="badge bg-red-subtle text-red-emphasis"><i class="ti ti-alert-triangle me-1"></i>{{ __('en erreur', 'configurationglpiauto') }}</span>
                 {% endif %}
                 <button type="button" class="btn btn-sm btn-outline-secondary ms-auto cga-mail-test" data-id="{{ collector.id }}"><i class="ti ti-plug me-1"></i>{{ __('Tester la connexion', 'configurationglpiauto') }}</button>
                 <span class="small w-100 cga-mail-test-result" data-id="{{ collector.id }}" role="status"></span>
