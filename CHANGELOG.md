@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Tests : plus de modèles « Phpunitdup… » laissés dans la base** (#496) : le test des doublons
+  d'intitulés purge dans `tearDown()` (exécuté même quand une assertion échoue) les fabricants,
+  modèles et matériels qu'il crée, les règles de dictionnaire et le fabricant « HP » qu'il a
+  ajoutés, et rétablit l'option d'unicité telle qu'elle était. Les restes d'anciennes exécutions
+  sont purgés avant et après la classe ; le test vérifie qu'il ne reste rien.
+
 ## [1.34.0] - 2026-11-23
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
