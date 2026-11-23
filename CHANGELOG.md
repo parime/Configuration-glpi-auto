@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.34.0] - 2026-11-23
+
 ### Fixed
 
 - **Contrastes et accessibilité** (#495) : badges en `bg-*-subtle text-*-emphasis` au lieu de
