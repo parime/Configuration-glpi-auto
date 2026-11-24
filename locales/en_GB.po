@@ -7738,3 +7738,57 @@ msgstr "Additional JQL filter (optional)"
 
 msgid "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
 msgstr "Jira requires a restricted search: only tickets from the given project(s) (keys separated by commas) are read, updated since the chosen date, from oldest to newest. The filter is added to these conditions."
+
+msgid "Gestion des changements prête (%d élément(s) créé(s) : groupe CAB, catégories, modèles et règle d'approbation). Ajoutez les membres du CAB dans Administration > Groupes."
+msgstr "Change management ready (%d item(s) created: CAB group, categories, templates and approval rule). Add the CAB members in Administration > Groups."
+
+msgid "Gérer les règles métier pour les changements"
+msgstr "Manage business rules for changes"
+
+msgid "nécessaire à la gestion des changements (étape 12 : groupe CAB, changements standard et approbation des changements normaux)"
+msgstr "needed for change management (step 12: CAB group, standard changes and approval of normal changes)"
+
+msgid "Administration > Groupes"
+msgstr "Administration > Groups"
+
+msgid "Approbation du CAB"
+msgstr "CAB approval"
+
+msgid "Au quotidien, tout se passe dans Assistance > Changements : choisissez la catégorie du changement, le modèle se remplit, et une demande d'approbation part au groupe CAB pour un changement normal ou urgent. La règle reste modifiable dans Administration > Règles > Règles métier pour les changements."
+msgstr "Day to day, everything happens in Assistance > Changes: choose the change category, the template fills in, and an approval request goes to the CAB group for a normal or emergency change. The rule can still be edited in Administration > Rules > Business rules for changes."
+
+msgid "Catégorie et modèle : analyse d'impact, plan de déploiement et plan de retour arrière obligatoires."
+msgstr "Category and template: impact analysis, deployment plan and backout plan required."
+
+msgid "Catégorie et modèle allégé : description et plan de retour arrière obligatoires."
+msgstr "Category and lighter template: description and backout plan required."
+
+msgid "Changement normal"
+msgstr "Normal change"
+
+msgid "Changement standard (pré-approuvé)"
+msgstr "Standard change (pre-approved)"
+
+msgid "Changement urgent"
+msgstr "Emergency change"
+
+msgid "Créé vide : ajoutez-y les personnes qui décident des changements ; un seul membre suffit pour répondre au nom du groupe."
+msgstr "Created empty: add the people who decide on changes; a single member is enough to answer on behalf of the group."
+
+msgid "Gestion des changements : groupe CAB, approbation des changements normaux et changements standard pré-approuvés"
+msgstr "Change management: CAB group, approval of normal changes and pre-approved standard changes"
+
+msgid "Groupe CAB"
+msgstr "CAB group"
+
+msgid "Sans approbation"
+msgstr "No approval"
+
+msgid "Trois sortes de changements, comme le recommande ITIL : les changements normaux et urgents doivent être approuvés par le comité des changements (CAB) avant d'être réalisés ; les changements standard (courants, à faible risque, procédure connue) sont approuvés une fois pour toutes et se réalisent directement."
+msgstr "Three kinds of changes, as ITIL recommends: normal and emergency changes must be approved by the change advisory board (CAB) before they are carried out; standard changes (routine, low risk, known procedure) are approved once and for all and are carried out directly."
+
+msgid "Un petit catalogue de sous-catégories, chacune avec un modèle qui pré-remplit le titre, la description et les plans :"
+msgstr "A small catalogue of subcategories, each with a template that pre-fills the title, description and plans:"
+
+msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
+msgstr "Your profile cannot edit business rules for changes: this option will be ignored."
