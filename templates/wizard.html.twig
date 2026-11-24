@@ -970,6 +970,35 @@
           </ul>
         </div>
         <p class="text-muted small">{{ __('Un seul modèle chacun (contrairement aux tickets) : par défaut, Self-Service n\'a aucun droit sur les changements/problèmes, la distinction base/support ne s\'applique pas.', 'configurationglpiauto') }}</p>
+
+        {# Issue #472 : gestion des changements selon ITIL avec les objets natifs de GLPI (groupe,
+           catégories, modèles de changement, règle métier sur les changements). Décochée par défaut :
+           la règle soumet de vrais changements à approbation. #}
+        <hr class="my-3">
+        <div class="form-check form-switch mb-1">
+          <input type="hidden" name="change_management_enabled" value="0">
+          <input type="checkbox" name="change_management_enabled" value="1" class="form-check-input" id="cga-change-management-enabled" {{ config.change_management_enabled|default(0) ? 'checked' : '' }}>
+          <label class="form-check-label" for="cga-change-management-enabled"><i class="ti ti-arrows-exchange me-1"></i>{{ __('Gestion des changements : groupe CAB, approbation des changements normaux et changements standard pré-approuvés', 'configurationglpiauto') }}</label>
+        </div>
+        <p class="text-muted small mb-2">{{ __('Trois sortes de changements, comme le recommande ITIL : les changements normaux et urgents doivent être approuvés par le comité des changements (CAB) avant d\'être réalisés ; les changements standard (courants, à faible risque, procédure connue) sont approuvés une fois pour toutes et se réalisent directement.', 'configurationglpiauto') }}</p>
+        {% if not can_manage_change_rules %}
+          <div class="alert alert-warning py-2 small" role="alert"><i class="ti ti-lock me-1"></i>{{ __('Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée.', 'configurationglpiauto') }}</div>
+        {% endif %}
+        <div id="cga-change-management-fields" style="display: none;" class="mb-2">
+          <ul class="list-group mb-2" style="max-width: 640px;">
+            <li class="list-group-item"><i class="ti ti-users-group me-1"></i><strong>{{ __('Groupe CAB', 'configurationglpiauto') }}</strong> <span class="badge bg-blue-subtle text-blue-emphasis ms-1">{{ __('Administration > Groupes', 'configurationglpiauto') }}</span><br><span class="text-muted small">{{ __('Créé vide : ajoutez-y les personnes qui décident des changements ; un seul membre suffit pour répondre au nom du groupe.', 'configurationglpiauto') }}</span></li>
+            <li class="list-group-item"><i class="ti ti-checkup-list me-1"></i><strong>{{ __('Changement normal', 'configurationglpiauto') }}</strong> <span class="badge bg-orange-subtle text-orange-emphasis ms-1">{{ __('Approbation du CAB', 'configurationglpiauto') }}</span><br><span class="text-muted small">{{ __('Catégorie et modèle : analyse d\'impact, plan de déploiement et plan de retour arrière obligatoires.', 'configurationglpiauto') }}</span></li>
+            <li class="list-group-item"><i class="ti ti-urgent me-1"></i><strong>{{ __('Changement urgent', 'configurationglpiauto') }}</strong> <span class="badge bg-orange-subtle text-orange-emphasis ms-1">{{ __('Approbation du CAB', 'configurationglpiauto') }}</span><br><span class="text-muted small">{{ __('Catégorie et modèle allégé : description et plan de retour arrière obligatoires.', 'configurationglpiauto') }}</span></li>
+            <li class="list-group-item"><i class="ti ti-circle-check me-1"></i><strong>{{ __('Changement standard (pré-approuvé)', 'configurationglpiauto') }}</strong> <span class="badge bg-green-subtle text-green-emphasis ms-1">{{ __('Sans approbation', 'configurationglpiauto') }}</span><br><span class="text-muted small">{{ __('Un petit catalogue de sous-catégories, chacune avec un modèle qui pré-remplit le titre, la description et les plans :', 'configurationglpiauto') }}</span>
+              <ul class="small mb-0">
+                {% for name in change_standard_catalog_preview %}
+                  <li>{{ name }}</li>
+                {% endfor %}
+              </ul>
+            </li>
+          </ul>
+          <p class="text-muted small mb-0"><i class="ti ti-info-circle me-1"></i>{{ __('Au quotidien, tout se passe dans Assistance > Changements : choisissez la catégorie du changement, le modèle se remplit, et une demande d\'approbation part au groupe CAB pour un changement normal ou urgent. La règle reste modifiable dans Administration > Règles > Règles métier pour les changements.', 'configurationglpiauto') }}</p>
+        </div>
       </div>
 
       {# ---------------------------------------------------------------- Étape 13 : Droits LDAP par entité #}
@@ -3146,6 +3175,7 @@
   var validationTemplatesEnabledInput = wireSimpleToggle('cga-validation-templates-enabled', 'cga-validation-templates-fields');
   wireIconsToggle('cga-validation-template-icons-enabled', '.cga-validation-template-icon');
   var changeProblemTemplatesEnabledInput = wireSimpleToggle('cga-change-problem-templates-enabled', 'cga-change-problem-templates-fields');
+  wireSimpleToggle('cga-change-management-enabled', 'cga-change-management-fields');
   wireIconsToggle('cga-change-problem-template-icons-enabled', '.cga-change-problem-template-icon');
   var locationsEnabledInput = wireSimpleToggle('cga-locations-enabled', 'cga-locations-fields');
   var locationGeocodingEnabledInput = wireSimpleToggle('cga-location-geocoding-enabled', 'cga-location-geocoding-fields');

@@ -64,6 +64,11 @@ final class DeploymentRights
                 'hint' => __('nécessaire à l\'affectation automatique des SLA/OLA et au circuit de validation', 'configurationglpiauto'),
             ],
             [
+                'label' => __('Gérer les règles métier pour les changements', 'configurationglpiauto'),
+                'ok' => Session::haveRight('rule_change', UPDATE),
+                'hint' => __('nécessaire à la gestion des changements (étape 12 : groupe CAB, changements standard et approbation des changements normaux)', 'configurationglpiauto'),
+            ],
+            [
                 'label' => __('Créer des niveaux de service (SLM)', 'configurationglpiauto'),
                 'ok' => Session::haveRight('slm', CREATE),
                 'hint' => __('nécessaire aux SLA, OLA et à leurs niveaux d\'escalade (étape SLA)', 'configurationglpiauto'),

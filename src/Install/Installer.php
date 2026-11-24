@@ -253,6 +253,7 @@ final class Installer
                 `assetsign_company_name` varchar(255) NOT NULL DEFAULT '',
                 `assetsign_charter_url` varchar(255) NOT NULL DEFAULT '',
                 `validation_supervisor_routing_enabled` tinyint NOT NULL DEFAULT 0,
+                `change_management_enabled` tinyint NOT NULL DEFAULT 0,
                 `fire_safety_assets_enabled` tinyint NOT NULL DEFAULT 0,
                 `fire_safety_asset_icons_enabled` tinyint NOT NULL DEFAULT 0,
                 `physical_security_assets_enabled` tinyint NOT NULL DEFAULT 0,
@@ -444,6 +445,8 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'assetsign_triggers_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'assetsign_trigger_fields', 'text', ['value' => json_encode(array_keys(AssetsignTriggerBuilder::TRIGGERS))]);
             $migration->addField(self::CONFIGS_TABLE, 'validation_supervisor_routing_enabled', 'bool', ['value' => 0]);
+            // Issue #472 : groupe CAB, approbation des changements normaux, changements standard.
+            $migration->addField(self::CONFIGS_TABLE, 'change_management_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'calendar_day_hours', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_break_enabled', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'calendar_lunch_begin', 'string', ['value' => '12:00']);

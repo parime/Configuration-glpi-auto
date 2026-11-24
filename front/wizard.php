@@ -27,6 +27,7 @@ use GlpiPlugin\Configurationglpiauto\BuildingAssetBuilder;
 use GlpiPlugin\Configurationglpiauto\CalendarBuilder;
 use GlpiPlugin\Configurationglpiauto\CategoryBuilder;
 use GlpiPlugin\Configurationglpiauto\CertificateTypeBuilder;
+use GlpiPlugin\Configurationglpiauto\ChangeManagementBuilder;
 use GlpiPlugin\Configurationglpiauto\ChangeProblemTemplateBuilder;
 use GlpiPlugin\Configurationglpiauto\CleanlinessRequestFormBuilder;
 use GlpiPlugin\Configurationglpiauto\ComputerTypeDictionaryBuilder;
@@ -429,6 +430,8 @@ if (isset($_POST['finish'])) {
     // dictionaries'...), and an active rule applies instance-wide to every future ticket or
     // inventory: never something this plugin's own right alone should be able to create.
     $canManageTicketRules = Session::haveRight('rule_ticket', UPDATE);
+    // Issue #472 : règle native d'approbation des changements (RuleChange::$rightname).
+    $canManageChangeRules = Session::haveRight('rule_change', UPDATE);
     $canManageImportRules = Session::haveRight('rule_import', UPDATE);
     $canManageDropdownDictionaries = Session::haveRight('rule_dictionnary_dropdown', UPDATE);
     $canManageSoftwareDictionary = Session::haveRight('rule_dictionnary_software', UPDATE);
@@ -892,6 +895,10 @@ if (isset($_POST['finish'])) {
     $ticketTemplatesApplied = (new TicketTemplateBuilder())->apply($config);
     $helpdeskFormApplied = (new HelpdeskFormBuilder())->apply($config);
     $changeProblemTemplatesApplied = (new ChangeProblemTemplateBuilder())->apply($config);
+    // Issue #472 : groupe CAB, catégories et modèles de changement, règle d'approbation native.
+    $changeManagementResult = $canManageChangeRules
+        ? (new ChangeManagementBuilder())->build($config)
+        : ['group' => 0, 'categories' => 0, 'templates' => 0, 'rule' => 0];
 
     $messages = [];
     $messages[] = empty($created)
@@ -1059,6 +1066,12 @@ if (isset($_POST['finish'])) {
     }
     if ($changeProblemTemplatesApplied) {
         $messages[] = __('Modèles de changement et de problème créés et assignés aux profils.', 'configurationglpiauto');
+    }
+    if (array_sum($changeManagementResult) > 0) {
+        $messages[] = sprintf(
+            __('Gestion des changements prête (%d élément(s) créé(s) : groupe CAB, catégories, modèles et règle d\'approbation). Ajoutez les membres du CAB dans Administration > Groupes.', 'configurationglpiauto'),
+            array_sum($changeManagementResult)
+        );
     }
     if ($locationsCreated > 0) {
         $messages[] = sprintf(__('%d lieux créés.', 'configurationglpiauto'), $locationsCreated);
@@ -1245,6 +1258,9 @@ foreach (Config::PRIORITY_LEVELS as $priority) {
     'solution_library_preview' => SolutionLibraryBuilder::getLibraryPreview(),
     'followup_library_preview' => FollowupLibraryBuilder::getLibraryPreview(),
     'validation_templates_preview' => ValidationTemplateBuilder::getLibraryPreview(),
+    // Issue #472 : catalogue des changements standard et droit natif sur les règles de changement.
+    'change_standard_catalog_preview' => ChangeManagementBuilder::getStandardCatalogPreview(),
+    'can_manage_change_rules' => (bool) Session::haveRight('rule_change', UPDATE),
     'manufacturers_preview' => ManufacturerBuilder::getManufacturersPreview(),
     'software_dictionary_preview' => SoftwareDictionaryBuilder::getPreview(),
     'virtual_printers_preview' => PrinterDictionaryBuilder::getPreview(),
