@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.35.0] - 2026-11-24
 
+- Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
+
 ### Added
 
 - **Gestion des changements selon ITIL** (#472) : nouvelle option de l'étape 12 de l'assistant
