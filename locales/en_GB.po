@@ -5060,13 +5060,6 @@ msgid "Sauvegarde automatique avant application"
 msgstr "Automatic backup before applying"
 
 msgid ""
-"Renseignez l'adresse de Jira (HTTPS), le jeton, la requête JQL (et l'adresse "
-"e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
-msgstr ""
-"Enter the Jira address (HTTPS), the token, the JQL query (and the e-mail "
-"address for Jira Cloud), and an entity you have access to."
-
-msgid ""
 "Jira refuse l'accès : vérifiez l'adresse e-mail et le jeton, et les droits "
 "du compte sur le projet."
 msgstr ""
@@ -5090,14 +5083,6 @@ msgid "Jira injoignable depuis le serveur GLPI (réseau, proxy ou certificat)."
 msgstr ""
 "Jira cannot be reached from the GLPI server (network, proxy or certificate)."
 
-#, php-format
-msgid ""
-"Plus de %d tickets : seuls les premiers sont importés, affinez la requête "
-"JQL pour le reste."
-msgstr ""
-"More than %d tickets: only the first ones are imported, narrow the JQL query "
-"for the rest."
-
 msgid "Ou directement depuis l'API de Jira"
 msgstr "Or directly from the Jira API"
 
@@ -5118,9 +5103,6 @@ msgstr "E-mail address (Jira Cloud)"
 
 msgid "Jeton d'API"
 msgstr "API token"
-
-msgid "Requête JQL"
-msgstr "JQL query"
 
 msgid "Autoriser HTTP (jeton transmis en clair : réseau interne seulement)"
 msgstr "Allow HTTP (token sent in clear text: internal network only)"
@@ -7731,3 +7713,28 @@ msgstr "Open a profile in the list to view or export it, or import a Blueprint r
 
 msgid "Progression de l'assistant"
 msgstr "Wizard progress"
+
+msgid "Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+msgstr "Enter the Jira address (HTTPS), the token, the project key (and the e-mail address for Jira Cloud), and an entity you have access to."
+
+#, php-format
+msgid "Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la date ou le filtre pour le reste."
+msgstr "More than %d tickets: only the first ones are imported; narrow the project, date or filter for the rest."
+
+msgid "Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses équilibrées."
+msgstr "Invalid project key, date or filter: keys such as SUP or SUP, OPS (20 at most), a date in YYYY-MM-DD format, a filter with balanced parentheses."
+
+msgid "Requête sans restriction : indiquez au moins une clé de projet."
+msgstr "Unrestricted query: enter at least one project key."
+
+msgid "Clé du projet Jira"
+msgstr "Jira project key"
+
+msgid "Mis à jour depuis (facultatif)"
+msgstr "Updated since (optional)"
+
+msgid "Filtre JQL supplémentaire (facultatif)"
+msgstr "Additional JQL filter (optional)"
+
+msgid "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
+msgstr "Jira requires a restricted search: only tickets from the given project(s) (keys separated by commas) are read, updated since the chosen date, from oldest to newest. The filter is added to these conditions."

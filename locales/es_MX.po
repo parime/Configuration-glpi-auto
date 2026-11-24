@@ -5183,13 +5183,6 @@ msgid "Sauvegarde automatique avant application"
 msgstr "Copia automática antes de aplicar"
 
 msgid ""
-"Renseignez l'adresse de Jira (HTTPS), le jeton, la requête JQL (et l'adresse "
-"e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
-msgstr ""
-"Indique la dirección de Jira (HTTPS), el token, la consulta JQL (y la "
-"dirección de correo para Jira Cloud) y una entidad a la que tenga acceso."
-
-msgid ""
 "Jira refuse l'accès : vérifiez l'adresse e-mail et le jeton, et les droits "
 "du compte sur le projet."
 msgstr ""
@@ -5213,14 +5206,6 @@ msgid "Jira injoignable depuis le serveur GLPI (réseau, proxy ou certificat)."
 msgstr ""
 "Jira no es accesible desde el servidor GLPI (red, proxy o certificado)."
 
-#, php-format
-msgid ""
-"Plus de %d tickets : seuls les premiers sont importés, affinez la requête "
-"JQL pour le reste."
-msgstr ""
-"Más de %d tickets: solo se importan los primeros, acote la consulta JQL para "
-"el resto."
-
 msgid "Ou directement depuis l'API de Jira"
 msgstr "O directamente desde la API de Jira"
 
@@ -5241,9 +5226,6 @@ msgstr "Dirección de correo (Jira Cloud)"
 
 msgid "Jeton d'API"
 msgstr "Token de API"
-
-msgid "Requête JQL"
-msgstr "Consulta JQL"
 
 msgid "Autoriser HTTP (jeton transmis en clair : réseau interne seulement)"
 msgstr "Permitir HTTP (token enviado en claro: solo red interna)"
@@ -7912,3 +7894,28 @@ msgstr "Abra un perfil de la lista para consultarlo o exportarlo, o importe un B
 
 msgid "Progression de l'assistant"
 msgstr "Progreso del asistente"
+
+msgid "Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+msgstr "Indique la dirección de Jira (HTTPS), el token, la clave del proyecto (y la dirección de correo electrónico para Jira Cloud) y una entidad a la que tenga acceso."
+
+#, php-format
+msgid "Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la date ou le filtre pour le reste."
+msgstr "Más de %d tickets: solo se importan los primeros; acote el proyecto, la fecha o el filtro para el resto."
+
+msgid "Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses équilibrées."
+msgstr "Clave de proyecto, fecha o filtro no válidos: claves como SUP o SUP, OPS (20 como máximo), una fecha en formato AAAA-MM-DD, un filtro con paréntesis equilibrados."
+
+msgid "Requête sans restriction : indiquez au moins une clé de projet."
+msgstr "Consulta sin restricción: indique al menos una clave de proyecto."
+
+msgid "Clé du projet Jira"
+msgstr "Clave del proyecto de Jira"
+
+msgid "Mis à jour depuis (facultatif)"
+msgstr "Actualizado desde (opcional)"
+
+msgid "Filtre JQL supplémentaire (facultatif)"
+msgstr "Filtro JQL adicional (opcional)"
+
+msgid "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
+msgstr "Jira exige una búsqueda restringida: solo se leen los tickets del proyecto o proyectos indicados (claves separadas por comas), actualizados desde la fecha elegida, del más antiguo al más reciente. El filtro se añade a estas condiciones."

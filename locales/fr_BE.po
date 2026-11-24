@@ -5175,13 +5175,6 @@ msgid "Sauvegarde automatique avant application"
 msgstr "Sauvegarde automatique avant application"
 
 msgid ""
-"Renseignez l'adresse de Jira (HTTPS), le jeton, la requête JQL (et l'adresse "
-"e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
-msgstr ""
-"Renseignez l'adresse de Jira (HTTPS), le jeton, la requête JQL (et l'adresse "
-"e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
-
-msgid ""
 "Jira refuse l'accès : vérifiez l'adresse e-mail et le jeton, et les droits "
 "du compte sur le projet."
 msgstr ""
@@ -5204,14 +5197,6 @@ msgstr "Réponse inattendue : ce n'est pas l'API de Jira."
 msgid "Jira injoignable depuis le serveur GLPI (réseau, proxy ou certificat)."
 msgstr "Jira injoignable depuis le serveur GLPI (réseau, proxy ou certificat)."
 
-#, php-format
-msgid ""
-"Plus de %d tickets : seuls les premiers sont importés, affinez la requête "
-"JQL pour le reste."
-msgstr ""
-"Plus de %d tickets : seuls les premiers sont importés, affinez la requête "
-"JQL pour le reste."
-
 msgid "Ou directement depuis l'API de Jira"
 msgstr "Ou directement depuis l'API de Jira"
 
@@ -5232,9 +5217,6 @@ msgstr "Adresse e-mail (Jira Cloud)"
 
 msgid "Jeton d'API"
 msgstr "Jeton d'API"
-
-msgid "Requête JQL"
-msgstr "Requête JQL"
 
 msgid "Autoriser HTTP (jeton transmis en clair : réseau interne seulement)"
 msgstr "Autoriser HTTP (jeton transmis en clair : réseau interne seulement)"
@@ -7906,3 +7888,28 @@ msgstr "Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importe
 
 msgid "Progression de l'assistant"
 msgstr "Progression de l'assistant"
+
+msgid "Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+msgstr "Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+
+#, php-format
+msgid "Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la date ou le filtre pour le reste."
+msgstr "Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la date ou le filtre pour le reste."
+
+msgid "Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses équilibrées."
+msgstr "Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses équilibrées."
+
+msgid "Requête sans restriction : indiquez au moins une clé de projet."
+msgstr "Requête sans restriction : indiquez au moins une clé de projet."
+
+msgid "Clé du projet Jira"
+msgstr "Clé du projet Jira"
+
+msgid "Mis à jour depuis (facultatif)"
+msgstr "Mis à jour depuis (facultatif)"
+
+msgid "Filtre JQL supplémentaire (facultatif)"
+msgstr "Filtre JQL supplémentaire (facultatif)"
+
+msgid "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
+msgstr "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
