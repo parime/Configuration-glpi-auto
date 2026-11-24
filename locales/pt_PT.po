@@ -7845,3 +7845,57 @@ msgstr "Filtro JQL adicional (opcional)"
 
 msgid "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
 msgstr "O Jira exige uma pesquisa restrita: só são lidos os tickets do projeto ou projetos indicados (chaves separadas por vírgulas), atualizados desde a data escolhida, do mais antigo ao mais recente. O filtro soma-se a estas condições."
+
+msgid "Gestion des changements prête (%d élément(s) créé(s) : groupe CAB, catégories, modèles et règle d'approbation). Ajoutez les membres du CAB dans Administration > Groupes."
+msgstr "Gestão de mudanças pronta (%d item(ns) criado(s): grupo CAB, categorias, modelos e regra de aprovação). Adicione os membros do CAB em Administração > Grupos."
+
+msgid "Gérer les règles métier pour les changements"
+msgstr "Gerenciar as regras de negócio para mudanças"
+
+msgid "nécessaire à la gestion des changements (étape 12 : groupe CAB, changements standard et approbation des changements normaux)"
+msgstr "necessário para a gestão de mudanças (etapa 12: grupo CAB, mudanças padrão e aprovação das mudanças normais)"
+
+msgid "Administration > Groupes"
+msgstr "Administração > Grupos"
+
+msgid "Approbation du CAB"
+msgstr "Aprovação do CAB"
+
+msgid "Au quotidien, tout se passe dans Assistance > Changements : choisissez la catégorie du changement, le modèle se remplit, et une demande d'approbation part au groupe CAB pour un changement normal ou urgent. La règle reste modifiable dans Administration > Règles > Règles métier pour les changements."
+msgstr "No dia a dia, tudo acontece em Assistência > Mudanças: escolha a categoria da mudança, o modelo é preenchido e um pedido de aprovação é enviado ao grupo CAB para uma mudança normal ou urgente. A regra continua editável em Administração > Regras > Regras de negócio para mudanças."
+
+msgid "Catégorie et modèle : analyse d'impact, plan de déploiement et plan de retour arrière obligatoires."
+msgstr "Categoria e modelo: análise de impacto, plano de implantação e plano de reversão obrigatórios."
+
+msgid "Catégorie et modèle allégé : description et plan de retour arrière obligatoires."
+msgstr "Categoria e modelo simplificado: descrição e plano de reversão obrigatórios."
+
+msgid "Changement normal"
+msgstr "Mudança normal"
+
+msgid "Changement standard (pré-approuvé)"
+msgstr "Mudança padrão (pré-aprovada)"
+
+msgid "Changement urgent"
+msgstr "Mudança urgente"
+
+msgid "Créé vide : ajoutez-y les personnes qui décident des changements ; un seul membre suffit pour répondre au nom du groupe."
+msgstr "Criado vazio: adicione as pessoas que decidem sobre as mudanças; basta um membro para responder em nome do grupo."
+
+msgid "Gestion des changements : groupe CAB, approbation des changements normaux et changements standard pré-approuvés"
+msgstr "Gestão de mudanças: grupo CAB, aprovação das mudanças normais e mudanças padrão pré-aprovadas"
+
+msgid "Groupe CAB"
+msgstr "Grupo CAB"
+
+msgid "Sans approbation"
+msgstr "Sem aprovação"
+
+msgid "Trois sortes de changements, comme le recommande ITIL : les changements normaux et urgents doivent être approuvés par le comité des changements (CAB) avant d'être réalisés ; les changements standard (courants, à faible risque, procédure connue) sont approuvés une fois pour toutes et se réalisent directement."
+msgstr "Três tipos de mudanças, como recomenda o ITIL: as mudanças normais e urgentes devem ser aprovadas pelo comitê de mudanças (CAB) antes de serem realizadas; as mudanças padrão (rotineiras, de baixo risco, procedimento conhecido) são aprovadas de uma vez por todas e realizadas diretamente."
+
+msgid "Un petit catalogue de sous-catégories, chacune avec un modèle qui pré-remplit le titre, la description et les plans :"
+msgstr "Um pequeno catálogo de subcategorias, cada uma com um modelo que preenche o título, a descrição e os planos:"
+
+msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
+msgstr "Seu perfil não pode modificar as regras de negócio para mudanças: esta opção será ignorada."

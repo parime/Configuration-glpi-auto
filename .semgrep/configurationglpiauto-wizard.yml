@@ -19,6 +19,7 @@ rules:
           - pattern: (new EntityAddressBuilder())->$F(...)
           - pattern: (new EntityInventoryRuleBuilder())->$F(...)
           - pattern: (new ValidationRoutingBuilder())->$F(...)
+          - pattern: (new ChangeManagementBuilder())->$F(...)
           - pattern: (new FieldUnicityBuilder())->$F(...)
           - pattern: (new ManufacturerDictionaryBuilder())->$F(...)
           - pattern: (new SoftwareDictionaryBuilder())->$F(...)
@@ -60,6 +61,9 @@ rules:
         - /src/ServerAssetBuilder.php
         - /src/VehicleAssetBuilder.php
         - /src/ValidationRoutingBuilder.php
+        # Issue #472 : regle native d'approbation des changements ; front/wizard.php ne l'appelle
+        # qu'avec le droit natif rule_change UPDATE ($canManageChangeRules).
+        - /src/ChangeManagementBuilder.php
         - /src/SoftwareCategoryBuilder.php
         - /src/SmtpBuilder.php
         - /src/SlaBuilder.php

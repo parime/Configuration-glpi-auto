@@ -7912,3 +7912,57 @@ msgstr "Filtro JQL aggiuntivo (facoltativo)"
 
 msgid "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
 msgstr "Jira richiede una ricerca ristretta: vengono letti solo i ticket del progetto o dei progetti indicati (chiavi separate da virgole), aggiornati dalla data scelta, dal più vecchio al più recente. Il filtro si aggiunge a queste condizioni."
+
+msgid "Gestion des changements prête (%d élément(s) créé(s) : groupe CAB, catégories, modèles et règle d'approbation). Ajoutez les membres du CAB dans Administration > Groupes."
+msgstr "Gestione delle modifiche pronta (%d elemento/i creato/i: gruppo CAB, categorie, modelli e regola di approvazione). Aggiungete i membri del CAB in Amministrazione > Gruppi."
+
+msgid "Gérer les règles métier pour les changements"
+msgstr "Gestire le regole di business per le modifiche"
+
+msgid "nécessaire à la gestion des changements (étape 12 : groupe CAB, changements standard et approbation des changements normaux)"
+msgstr "necessario per la gestione delle modifiche (passo 12: gruppo CAB, modifiche standard e approvazione delle modifiche normali)"
+
+msgid "Administration > Groupes"
+msgstr "Amministrazione > Gruppi"
+
+msgid "Approbation du CAB"
+msgstr "Approvazione del CAB"
+
+msgid "Au quotidien, tout se passe dans Assistance > Changements : choisissez la catégorie du changement, le modèle se remplit, et une demande d'approbation part au groupe CAB pour un changement normal ou urgent. La règle reste modifiable dans Administration > Règles > Règles métier pour les changements."
+msgstr "Nel quotidiano tutto avviene in Assistenza > Modifiche: scegliete la categoria della modifica, il modello si compila e una richiesta di approvazione parte verso il gruppo CAB per una modifica normale o urgente. La regola resta modificabile in Amministrazione > Regole > Regole di business per le modifiche."
+
+msgid "Catégorie et modèle : analyse d'impact, plan de déploiement et plan de retour arrière obligatoires."
+msgstr "Categoria e modello: analisi d'impatto, piano di rilascio e piano di ripristino obbligatori."
+
+msgid "Catégorie et modèle allégé : description et plan de retour arrière obligatoires."
+msgstr "Categoria e modello semplificato: descrizione e piano di ripristino obbligatori."
+
+msgid "Changement normal"
+msgstr "Modifica normale"
+
+msgid "Changement standard (pré-approuvé)"
+msgstr "Modifica standard (pre-approvata)"
+
+msgid "Changement urgent"
+msgstr "Modifica urgente"
+
+msgid "Créé vide : ajoutez-y les personnes qui décident des changements ; un seul membre suffit pour répondre au nom du groupe."
+msgstr "Creato vuoto: aggiungete le persone che decidono sulle modifiche; basta un solo membro per rispondere a nome del gruppo."
+
+msgid "Gestion des changements : groupe CAB, approbation des changements normaux et changements standard pré-approuvés"
+msgstr "Gestione delle modifiche: gruppo CAB, approvazione delle modifiche normali e modifiche standard pre-approvate"
+
+msgid "Groupe CAB"
+msgstr "Gruppo CAB"
+
+msgid "Sans approbation"
+msgstr "Senza approvazione"
+
+msgid "Trois sortes de changements, comme le recommande ITIL : les changements normaux et urgents doivent être approuvés par le comité des changements (CAB) avant d'être réalisés ; les changements standard (courants, à faible risque, procédure connue) sont approuvés une fois pour toutes et se réalisent directement."
+msgstr "Tre tipi di modifiche, come raccomanda ITIL: le modifiche normali e urgenti devono essere approvate dal comitato delle modifiche (CAB) prima di essere realizzate; le modifiche standard (correnti, a basso rischio, procedura nota) sono approvate una volta per tutte e si realizzano direttamente."
+
+msgid "Un petit catalogue de sous-catégories, chacune avec un modèle qui pré-remplit le titre, la description et les plans :"
+msgstr "Un piccolo catalogo di sottocategorie, ciascuna con un modello che precompila il titolo, la descrizione e i piani:"
+
+msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
+msgstr "Il vostro profilo non può modificare le regole di business per le modifiche: questa opzione sarà ignorata."

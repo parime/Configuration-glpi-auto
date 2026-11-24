@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Gestion des changements selon ITIL** (#472) : nouvelle option de l'étape 12 de l'assistant
+  (« Suivis, validations & modèles »), décochée par défaut. Elle crée, avec les objets natifs de
+  GLPI, le groupe **CAB** (vide : l'administrateur y ajoute les personnes qui décident), trois
+  familles de catégories réservées aux changements, chacune reliée à son modèle de changement :
+  « Changement normal » (analyse d'impact, plan de déploiement et plan de retour arrière
+  obligatoires), « Changement urgent » (description et plan de retour arrière obligatoires) et
+  « Changement standard (pré-approuvé) » avec un petit catalogue de cinq changements courants dont
+  le modèle pré-remplit le titre, la description et les plans. Une règle métier native sur les
+  changements envoie à la création une demande d'approbation au groupe CAB (un membre répond pour
+  le groupe) pour tout changement normal ou urgent ; les changements standard n'en reçoivent
+  aucune. Rien d'existant n'est modifié (un modèle déjà choisi sur une catégorie est conservé) ;
+  l'option exige le droit natif « Règles métier pour les changements » en modification. Au
+  quotidien, tout se passe dans Assistance > Changements.
+
 ### Fixed
 
 - **Tests : plus de modèles « Phpunitdup… » laissés dans la base** (#496) : le test des doublons
