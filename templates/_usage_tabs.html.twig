@@ -19,7 +19,7 @@
    Tab passe d'un onglet à l'autre, Entrée l'ouvre. #}
 {% if usage_tabs|length > 1 %}
 <nav aria-label="{{ __('Écrans de Configuration GLPI Auto', 'configurationglpiauto') }}">
-   <ul class="nav nav-tabs mb-3" role="tablist">
+   <ul class="nav nav-tabs mb-3 cga-usage-tabs" role="tablist">
       {% for tab in usage_tabs %}
          <li class="nav-item" role="presentation">
             <a class="nav-link{{ tab.active ? ' active' : '' }}" role="tab" aria-selected="{{ tab.active ? 'true' : 'false' }}" href="{{ tab.url }}">

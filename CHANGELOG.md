@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Onglets des écrans du plugin lisibles** : les libellés des onglets prennent la couleur du texte
+  de la page, quelle que soit la palette de GLPI (contraste d'au moins 4,5:1, relevé par le parcours
+  des pages des contrôles de sécurité communs v1.11.3, auxquels passe le dépôt).
+
 ## [1.35.0] - 2026-11-24
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).
