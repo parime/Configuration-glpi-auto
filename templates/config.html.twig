@@ -25,7 +25,7 @@
 } %}
 
 <nav aria-label="{{ __('Réglages de Configuration GLPI Auto', 'configurationglpiauto') }}">
-   <ul class="nav nav-tabs mb-3" role="tablist">
+   <ul class="nav nav-tabs mb-3 cga-usage-tabs" role="tablist">
       {% for item in tabs %}
          <li class="nav-item" role="presentation">
             <a class="nav-link{{ item.active ? ' active' : '' }}" role="tab" aria-selected="{{ item.active ? 'true' : 'false' }}" href="{{ item.url }}">

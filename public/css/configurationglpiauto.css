@@ -257,3 +257,12 @@
 .border-cyan-subtle {
     border-color: var(--tblr-cyan-border-subtle, var(--configurationglpiauto-cyan-border-subtle)) !important;
 }
+
+/*
+ * Libellés des onglets des écrans du plugin lisibles quelle que soit la palette de GLPI (contraste
+ * d'au moins 4,5:1, parcours des pages des contrôles communs v1.11) : couleur du texte de la page
+ * (la palette par défaut « auror » écrit les onglets inactifs dans une couleur trop pâle).
+ */
+.cga-usage-tabs .nav-link {
+    color: var(--tblr-body-color);
+}
