@@ -200,7 +200,7 @@ final class RequestFormLibraryBuilderTest extends TestCase
             'file' => [$this->uploadedFile($item)],
             'urgency' => (string) ($question['default'] ?? 3),
             'email' => 'expediteur@example.com',
-            default => 'Réponse de test PHPUnit',
+            default => 'Réponse de test PHPUnit 42',
         };
     }
 
@@ -565,6 +565,54 @@ final class RequestFormLibraryBuilderTest extends TestCase
         // Un serveur : son nom est exigé, le poste n'est plus demandé.
         $raw = $this->mandatoryAnswers($definition, $questions, ['scope' => ['2']]);
         $this->assertArrayHasKey($questions['target']->getEndUserInputName(), $raw);
+    }
+
+    /**
+     * Validations natives « Valide si... » : une justification trop courte, un nom sans prénom ou
+     * une référence sans chiffre sont refusés avec le message de GLPI ; une réponse correcte passe.
+     */
+    public function testAnswersAreCheckedBeforeTheTicketIsCreated(): void
+    {
+        $this->build();
+        $cases = [
+            ['shared_folder', 'reason', 'Urgent'],
+            ['arrival', 'person', 'Dupont'],
+            ['data_correction', 'record', 'Commande client'],
+        ];
+        foreach ($cases as [$key, $questionKey, $invalid]) {
+            $definition = RequestFormLibraryBuilder::getDefinitions()[$key];
+            $form = $this->form($key);
+            $questions = $this->questions($form, $definition);
+            $this->assertSame('valid_if', $questions[$questionKey]->fields['validation_strategy'], "$key.$questionKey");
+
+            $this->submit($form, $this->mandatoryAnswers($definition, $questions, [$questionKey => $invalid]), false);
+            $this->submit($form, $this->mandatoryAnswers($definition, $questions));
+        }
+    }
+
+    /**
+     * Formulaires d'incident : l'urgence choisie passe au ticket et, au moins haute, « qui est
+     * touché ? » devient obligatoire.
+     */
+    public function testIncidentFormsAskForTheImpactOfAnUrgentRequest(): void
+    {
+        $this->build();
+        foreach (['locked_account', 'label_printing', 'interface_error'] as $key) {
+            $definition = RequestFormLibraryBuilder::getDefinitions()[$key];
+            $form = $this->form($key);
+            $questions = $this->questions($form, $definition);
+
+            $raw = $this->mandatoryAnswers($definition, $questions);
+            $this->assertArrayNotHasKey($questions['reach']->getEndUserInputName(), $raw, "$key : urgence moyenne.");
+            $this->assertSame(3, (int) $this->submit($form, $raw)->fields['urgency'], $key);
+
+            $raw = $this->mandatoryAnswers($definition, $questions, ['urgency' => '4']);
+            $this->assertArrayHasKey($questions['reach']->getEndUserInputName(), $raw, "$key : urgence haute.");
+            $ticket = $this->submit($form, $raw);
+            $this->assertSame(4, (int) $ticket->fields['urgency'], $key);
+            unset($raw[$questions['reach']->getEndUserInputName()]);
+            $this->submit($form, $raw, false);
+        }
     }
 
     /**

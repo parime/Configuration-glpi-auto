@@ -22,6 +22,7 @@ use Glpi\Form\Condition\ConditionData;
 use Glpi\Form\Condition\CreationStrategy;
 use Glpi\Form\Condition\LogicOperator;
 use Glpi\Form\Condition\Type as ConditionType;
+use Glpi\Form\Condition\ValidationStrategy;
 use Glpi\Form\Condition\ValueOperator;
 use Glpi\Form\Condition\VisibilityStrategy;
 use Glpi\Form\Destination\CommonITILField\AssociatedItemsField;
@@ -76,6 +77,7 @@ use Glpi\Form\Tag\AnswerTagProvider;
 use Glpi\Form\Tag\FormTagProvider;
 use ITILCategory;
 use Location;
+use Ramsey\Uuid\Uuid;
 use Ticket;
 use User;
 
@@ -126,6 +128,18 @@ class RequestFormLibraryBuilder
     /** Urgence proposée par défaut (moyenne, comme un ticket saisi à la main). */
     private const DEFAULT_URGENCY = 3;
 
+    /**
+     * Validation des justifications : assez de texte pour que le support ou l'approbateur puisse
+     * décider sans recontacter le demandeur (message d'erreur natif de GLPI).
+     */
+    private const JUSTIFICATION_RULE = ['min_length', 15];
+
+    /** Prénom et nom : au moins deux mots. */
+    private const FIRST_AND_LAST_NAME = '/^\S+(\s+\S+)+$/u';
+
+    /** Numéro ou référence : au moins un chiffre. */
+    private const HAS_DIGIT = '/\d/u';
+
     /** @var array<string, string> clé de définition => statut `ManagedForm::*` du dernier build() */
     private array $statuses = [];
 
@@ -159,7 +173,8 @@ class RequestFormLibraryBuilder
                         'options' => ['1' => 'Lecture seule', '2' => 'Lecture et écriture', '3' => "Retrait d'accès"]],
                     ['key' => 'owner', 'type' => 'user', 'mandatory' => true, 'label' => __('Responsable du dossier (approbateur)', 'configurationglpiauto')],
                     ['key' => 'end', 'type' => 'date', 'mandatory' => false, 'label' => __("Date de fin d'accès (si temporaire)", 'configurationglpiauto')],
-                    ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto')],
+                    ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto'),
+                        'validate' => self::JUSTIFICATION_RULE],
                 ],
             ],
             'locked_account' => [
@@ -168,12 +183,14 @@ class RequestFormLibraryBuilder
                 'path' => ['Comptes & Identités', 'Mot de passe & Réinitialisation'],
                 'request_type' => 'incident',
                 'title' => ['account'],
+                'urgency' => 'urgency',
                 'questions' => [
                     ['key' => 'account', 'type' => 'radio', 'mandatory' => true, 'label' => __('Compte concerné', 'configurationglpiauto'),
                         'options' => ['1' => 'Session Windows', '2' => 'Messagerie', '3' => 'Application métier', '4' => 'Autre']],
                     ['key' => 'other', 'type' => 'short', 'mandatory' => true, 'label' => __('Quelle application ?', 'configurationglpiauto'),
                         'visible_if' => ['account', '4']],
                     ['key' => 'message', 'type' => 'long', 'mandatory' => false, 'label' => __("Message d'erreur affiché", 'configurationglpiauto')],
+                    ...self::urgencyQuestions(),
                 ],
             ],
             'data_restore' => [
@@ -191,7 +208,7 @@ class RequestFormLibraryBuilder
                     ['key' => 'version', 'type' => 'date', 'mandatory' => true, 'label' => __('Date de la version souhaitée', 'configurationglpiauto')],
                     ['key' => 'urgency', 'type' => 'urgency', 'mandatory' => true, 'label' => __('Urgence', 'configurationglpiauto'),
                         'default' => self::DEFAULT_URGENCY],
-                    ['key' => 'blocking', 'type' => 'long', 'mandatory' => true, 'label' => __('Quel travail est bloqué en attendant ?', 'configurationglpiauto'),
+                    ['key' => 'blocking', 'type' => 'long', 'mandatory' => true, 'validate' => self::JUSTIFICATION_RULE, 'label' => __('Quel travail est bloqué en attendant ?', 'configurationglpiauto'),
                         'help' => __('Aide le support à traiter les demandes urgentes en premier.', 'configurationglpiauto'),
                         'visible_if_at_least' => ['urgency', 4]],
                     ['key' => 'details', 'type' => 'long', 'mandatory' => false, 'label' => __('Précisions (noms de fichiers, cause de la perte)', 'configurationglpiauto')],
@@ -206,12 +223,14 @@ class RequestFormLibraryBuilder
                 'questions' => [
                     ['key' => 'action', 'type' => 'radio', 'mandatory' => true, 'label' => __('Demande', 'configurationglpiauto'),
                         'options' => ['1' => 'Autoriser un périphérique', '2' => 'Bloquer un périphérique', '3' => 'Renommer ou identifier un périphérique']],
-                    ['key' => 'device', 'type' => 'short', 'mandatory' => true, 'label' => __('Périphérique (type, marque, numéro de série)', 'configurationglpiauto')],
+                    ['key' => 'device', 'type' => 'short', 'mandatory' => true, 'label' => __('Périphérique (type, marque, numéro de série)', 'configurationglpiauto'),
+                        'validate' => ['min_length', 5]],
                     ['key' => 'duration', 'type' => 'radio', 'mandatory' => true, 'label' => __('Durée', 'configurationglpiauto'),
                         'options' => ['1' => 'Ponctuelle (moins d\'une semaine)', '2' => 'Temporaire (date de fin)', '3' => 'Permanente'],
                         'visible_if' => ['action', '1']],
                     ['key' => 'end', 'type' => 'date', 'mandatory' => true, 'label' => __('Date de fin', 'configurationglpiauto'), 'visible_if' => ['duration', '2']],
-                    ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto')],
+                    ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto'),
+                        'validate' => self::JUSTIFICATION_RULE],
                 ],
             ],
             'label_printing' => [
@@ -220,6 +239,7 @@ class RequestFormLibraryBuilder
                 'path' => ['Impression', 'Étiquettes & Codes-barres'],
                 'request_type' => 'incident',
                 'title' => ['printer'],
+                'urgency' => 'urgency',
                 'questions' => [
                     ['key' => 'printer', 'type' => 'short', 'mandatory' => true, 'label' => __('Imprimante concernée (nom ou emplacement)', 'configurationglpiauto')],
                     ['key' => 'application', 'type' => 'short', 'mandatory' => true, 'label' => __("Application qui lance l'impression", 'configurationglpiauto')],
@@ -228,6 +248,7 @@ class RequestFormLibraryBuilder
                         'options' => ['1' => "Rien ne s'imprime", '2' => 'Impression décalée ou tronquée', '3' => 'Code-barres illisible',
                             '4' => 'Mauvaises données imprimées', '5' => 'Autre']],
                     ['key' => 'sample', 'type' => 'file', 'mandatory' => false, 'label' => __("Photo ou exemple de l'étiquette", 'configurationglpiauto')],
+                    ...self::urgencyQuestions(),
                 ],
             ],
             'partner_request' => [
@@ -256,10 +277,13 @@ class RequestFormLibraryBuilder
                 'title' => ['record'],
                 'approval' => 'approver',
                 'questions' => [
-                    ['key' => 'record', 'type' => 'short', 'mandatory' => true, 'label' => __('Enregistrement concerné (numéro, référence)', 'configurationglpiauto')],
+                    ['key' => 'record', 'type' => 'short', 'mandatory' => true, 'label' => __('Enregistrement concerné (numéro, référence)', 'configurationglpiauto'),
+                        'validate' => ['regex', self::HAS_DIGIT],
+                        'help' => __('Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre).', 'configurationglpiauto')],
                     ['key' => 'current', 'type' => 'long', 'mandatory' => true, 'label' => __('Valeur actuelle', 'configurationglpiauto')],
                     ['key' => 'expected', 'type' => 'long', 'mandatory' => true, 'label' => __('Valeur attendue', 'configurationglpiauto')],
-                    ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto')],
+                    ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto'),
+                        'validate' => self::JUSTIFICATION_RULE],
                     ['key' => 'approver', 'type' => 'user', 'mandatory' => true, 'label' => __('Responsable qui valide la correction', 'configurationglpiauto'),
                         'help' => __("La correction ne sera faite qu'après son approbation dans le ticket.", 'configurationglpiauto')],
                     ['key' => 'attachment', 'type' => 'file', 'mandatory' => false, 'label' => __("Capture d'écran ou fichier", 'configurationglpiauto')],
@@ -290,8 +314,8 @@ class RequestFormLibraryBuilder
                 'title' => ['application'],
                 'questions' => [
                     ['key' => 'application', 'type' => 'short', 'mandatory' => true, 'label' => __('Application concernée', 'configurationglpiauto')],
-                    ['key' => 'need', 'type' => 'long', 'mandatory' => true, 'label' => __('Besoin métier', 'configurationglpiauto')],
-                    ['key' => 'gain', 'type' => 'long', 'mandatory' => true, 'label' => __('Gain attendu (temps, erreurs évitées, chiffre)', 'configurationglpiauto')],
+                    ['key' => 'need', 'type' => 'long', 'mandatory' => true, 'validate' => self::JUSTIFICATION_RULE, 'label' => __('Besoin métier', 'configurationglpiauto')],
+                    ['key' => 'gain', 'type' => 'long', 'mandatory' => true, 'validate' => self::JUSTIFICATION_RULE, 'label' => __('Gain attendu (temps, erreurs évitées, chiffre)', 'configurationglpiauto')],
                     ['key' => 'users', 'type' => 'radio', 'mandatory' => true, 'label' => __('Utilisateurs concernés', 'configurationglpiauto'),
                         'options' => ['1' => 'Moi seulement', '2' => 'Mon équipe', '3' => 'Plusieurs services', '4' => 'Toute l\'entreprise']],
                     ['key' => 'deadline', 'type' => 'date', 'mandatory' => false, 'label' => __('Date souhaitée', 'configurationglpiauto')],
@@ -303,6 +327,7 @@ class RequestFormLibraryBuilder
                 'path' => ['Application métier', 'Interfaces & Traitements'],
                 'request_type' => 'incident',
                 'title' => ['interface'],
+                'urgency' => 'urgency',
                 'questions' => [
                     ['key' => 'interface', 'type' => 'short', 'mandatory' => true, 'label' => __('Interface ou traitement (import, échange partenaire, lot de nuit…)', 'configurationglpiauto')],
                     ['key' => 'when', 'type' => 'date', 'mandatory' => true, 'label' => __("Date de l'erreur", 'configurationglpiauto')],
@@ -311,6 +336,7 @@ class RequestFormLibraryBuilder
                     ['key' => 'impact', 'type' => 'radio', 'mandatory' => true, 'label' => __('Impact', 'configurationglpiauto'),
                         'options' => ['1' => 'Activité bloquée', '2' => 'Activité ralentie', '3' => 'Pas d\'impact immédiat']],
                     ['key' => 'attachment', 'type' => 'file', 'mandatory' => false, 'label' => __('Fichier ou journal', 'configurationglpiauto')],
+                    ...self::urgencyQuestions(),
                 ],
             ],
             'new_site' => [
@@ -343,7 +369,8 @@ class RequestFormLibraryBuilder
                     ['key' => 'urgency', 'type' => 'radio', 'mandatory' => true, 'label' => __('Urgence', 'configurationglpiauto'),
                         'options' => ['1' => 'Dans la journée', '2' => 'Cette semaine', '3' => 'Sans urgence']],
                     ['key' => 'approver', 'type' => 'user', 'mandatory' => true, 'label' => __('Responsable qui valide le mouvement', 'configurationglpiauto')],
-                    ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto')],
+                    ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto'),
+                        'validate' => self::JUSTIFICATION_RULE],
                 ],
             ],
             'label_template' => [
@@ -376,7 +403,8 @@ class RequestFormLibraryBuilder
                     [
                         'name' => __('Le nouveau collaborateur', 'configurationglpiauto'),
                         'questions' => [
-                            ['key' => 'person', 'type' => 'short', 'mandatory' => true, 'label' => __('Prénom et nom', 'configurationglpiauto')],
+                            ['key' => 'person', 'type' => 'short', 'mandatory' => true, 'label' => __('Prénom et nom', 'configurationglpiauto'),
+                                'validate' => ['regex', self::FIRST_AND_LAST_NAME]],
                             ['key' => 'job', 'type' => 'short', 'mandatory' => true, 'label' => __('Poste occupé', 'configurationglpiauto')],
                             ['key' => 'start', 'type' => 'date', 'mandatory' => true, 'label' => __("Date d'arrivée", 'configurationglpiauto'),
                                 'help' => __('Prévenez au moins une semaine avant : le matériel doit être commandé et préparé.', 'configurationglpiauto')],
@@ -490,7 +518,7 @@ class RequestFormLibraryBuilder
                         'help' => __("Nom de l'application tel qu'il apparaît à l'écran.", 'configurationglpiauto')],
                     ['key' => 'profile', 'type' => 'radio', 'mandatory' => true, 'label' => __("Niveau d'accès", 'configurationglpiauto'),
                         'options' => ['1' => 'Consultation', '2' => 'Saisie', '3' => 'Validation', '4' => "Administration de l'application"]],
-                    ['key' => 'admin_reason', 'type' => 'long', 'mandatory' => true, 'label' => __("Pourquoi un accès d'administration est-il nécessaire ?", 'configurationglpiauto'),
+                    ['key' => 'admin_reason', 'type' => 'long', 'mandatory' => true, 'validate' => self::JUSTIFICATION_RULE, 'label' => __("Pourquoi un accès d'administration est-il nécessaire ?", 'configurationglpiauto'),
                         'visible_if' => ['profile', '4']],
                     ['key' => 'same_as', 'type' => 'user', 'mandatory' => false, 'label' => __("Mêmes droits qu'un collègue (facultatif)", 'configurationglpiauto')],
                     ['key' => 'duration', 'type' => 'radio', 'mandatory' => true, 'label' => __('Durée', 'configurationglpiauto'),
@@ -499,7 +527,8 @@ class RequestFormLibraryBuilder
                         'visible_if' => ['duration', '2']],
                     ['key' => 'manager', 'type' => 'user', 'mandatory' => true, 'label' => __("Responsable qui valide l'accès", 'configurationglpiauto'),
                         'help' => __("L'accès n'est ouvert qu'après son approbation dans le ticket.", 'configurationglpiauto')],
-                    ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto')],
+                    ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto'),
+                        'validate' => self::JUSTIFICATION_RULE],
                 ],
             ],
             // Issue #320 : signalement guidé ; la catégorie dépend de ce qui est signalé.
@@ -597,10 +626,30 @@ class RequestFormLibraryBuilder
                     ['key' => 'end', 'type' => 'date', 'mandatory' => true, 'label' => __('Fin des droits', 'configurationglpiauto'),
                         'visible_if' => ['duration', '2']],
                     ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto'),
+                        'validate' => self::JUSTIFICATION_RULE,
                         'help' => __("Expliquez pourquoi l'intervention d'un technicien ne suffit pas : les droits d'administration sont accordés au plus juste et pour la durée la plus courte.", 'configurationglpiauto')],
                     ['key' => 'manager', 'type' => 'user', 'mandatory' => true, 'label' => __('Responsable qui valide la demande', 'configurationglpiauto')],
                 ],
             ],
+        ];
+    }
+
+    /**
+     * Questions communes aux formulaires d'incident : l'urgence (reprise sur le ticket) et, quand
+     * elle est au moins haute, qui est touché, pour que le support traite d'abord ce qui bloque le
+     * plus de monde.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private static function urgencyQuestions(): array
+    {
+        return [
+            ['key' => 'urgency', 'type' => 'urgency', 'mandatory' => true, 'label' => __('Urgence', 'configurationglpiauto'),
+                'default' => self::DEFAULT_URGENCY],
+            ['key' => 'reach', 'type' => 'radio', 'mandatory' => true, 'label' => __('Qui est touché ?', 'configurationglpiauto'),
+                'help' => __('Aide le support à traiter les demandes urgentes en premier.', 'configurationglpiauto'),
+                'options' => ['1' => 'Moi seulement', '2' => 'Mon équipe', '3' => "Plusieurs services ou toute l'entreprise"],
+                'visible_if_at_least' => ['urgency', 4]],
         ];
     }
 
@@ -884,6 +933,12 @@ class RequestFormLibraryBuilder
             $input['visibility_strategy'] = VisibilityStrategy::VISIBLE_IF->value;
             $input['conditions'] = json_encode($conditions);
         }
+        if (isset($definition['validate'])) {
+            // La condition de validation vise la question elle-même : son identifiant est fixé ici.
+            $input['uuid'] = Uuid::uuid4()->toString();
+            $input['validation_strategy'] = ValidationStrategy::VALID_IF->value;
+            $input['validation_conditions'] = json_encode([self::validationCondition($input['uuid'], $definition['validate'])]);
+        }
 
         $question = new Question();
         if (!$question->add($input)) {
@@ -892,6 +947,31 @@ class RequestFormLibraryBuilder
         $question->getFromDB($question->getID());
 
         return $question;
+    }
+
+    /**
+     * Règle de validation d'une réponse (mécanisme natif « Valide si... » de GLPI, message d'erreur
+     * natif) : `['min_length', n]` ou `['regex', motif]`. GLPI ne contrôle pas une réponse vide
+     * d'une question facultative.
+     *
+     * @param array{0: string, 1: int|string} $rule
+     * @return array<string, mixed>
+     */
+    public static function validationCondition(string $questionUuid, array $rule): array
+    {
+        [$kind, $value] = $rule;
+
+        return (new ConditionData(
+            item_uuid: $questionUuid,
+            item_type: ConditionType::QUESTION->value,
+            value_operator: match ($kind) {
+                'min_length' => ValueOperator::LENGTH_GREATER_THAN_OR_EQUALS->value,
+                'regex' => ValueOperator::MATCH_REGEX->value,
+                default => throw new \LogicException("Règle de validation inconnue : $kind"),
+            },
+            value: (string) $value,
+            logic_operator: null,
+        ))->jsonSerialize();
     }
 
     /**
