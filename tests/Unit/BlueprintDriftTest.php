@@ -59,4 +59,13 @@ final class BlueprintDriftTest extends TestCase
             ['day' => 6, 'change' => BlueprintDrift::ADDED, 'current' => '09:00-12:00', 'expected' => ''],
         ], BlueprintDrift::diffSegments($expected, $actual));
     }
+
+    public function testDelayInHoursOnlyWhenWhole(): void
+    {
+        $this->assertSame(8, BlueprintDrift::delayInHours(8, 'hour'));
+        $this->assertSame(48, BlueprintDrift::delayInHours(2, 'day'));
+        $this->assertSame(2, BlueprintDrift::delayInHours(120, 'minute'));
+        $this->assertNull(BlueprintDrift::delayInHours(90, 'minute'));
+        $this->assertNull(BlueprintDrift::delayInHours(3, 'week'));
+    }
 }

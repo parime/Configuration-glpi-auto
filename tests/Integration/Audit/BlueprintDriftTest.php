@@ -24,6 +24,9 @@ use GlpiPlugin\Configurationglpiauto\Audit\Checks\BlueprintDriftCheck;
 use GlpiPlugin\Configurationglpiauto\CalendarBuilder;
 use GlpiPlugin\Configurationglpiauto\Config;
 use PHPUnit\Framework\TestCase;
+use Rule;
+use RuleAction;
+use RuleTicket;
 
 /**
  * Issue #468 : calendrier modifié à la main après application du Blueprint. Les SLA, catégories et
@@ -34,11 +37,17 @@ final class BlueprintDriftTest extends TestCase
 {
     private const CALENDAR_NAME = 'PHPUnit: drift calendar';
 
+    private const RULE_NAME = 'SLA standard : PHPUnit drift rule';
+
     protected function tearDown(): void
     {
         $calendar = new Calendar();
         if ($calendar->getFromDBByCrit(['name' => self::CALENDAR_NAME])) {
             $calendar->delete(['id' => $calendar->getID()], true);
+        }
+        $rule = new RuleTicket();
+        if ($rule->getFromDBByCrit(['name' => self::RULE_NAME])) {
+            $rule->delete(['id' => $rule->getID()], true);
         }
     }
 
@@ -87,6 +96,60 @@ final class BlueprintDriftTest extends TestCase
 
         $this->assertSame([BlueprintDrift::MODIFIED, BlueprintDrift::REMOVED, BlueprintDrift::ADDED], $changes);
         $this->assertSame($before, countElementsInTable(CalendarSegment::getTable(), ['calendars_id' => $calendarId]));
+    }
+
+    public function testUnwatchedFamilyIsNotCompared(): void
+    {
+        $config = $this->buildConfig();
+        $config->fields['audit_drift_objects'] = json_encode(['sla', 'rules']);
+
+        $this->assertSame(['sla', 'rules'], $config->getDriftObjects());
+        $this->assertSame([], BlueprintDrift::detect($config));
+
+        $config->fields['audit_drift_objects'] = '';
+        $this->assertSame(BlueprintDrift::OBJECTS, $config->getDriftObjects());
+    }
+
+    public function testDisabledSlaRuleIsReported(): void
+    {
+        $rule = new RuleTicket();
+        $ruleId = (int) $rule->add([
+            'name'         => self::RULE_NAME,
+            'sub_type'     => RuleTicket::class,
+            'match'        => Rule::AND_MATCHING,
+            'condition'    => RuleTicket::ONADD,
+            'is_active'    => 0,
+            'is_recursive' => 1,
+        ]);
+        (new RuleAction())->add(['rules_id' => $ruleId, 'action_type' => 'assign', 'field' => 'slas_id_ttr', 'value' => 999999999]);
+        $config = $this->buildConfig();
+        $config->fields['sla_enabled'] = 1;
+        $config->fields['audit_drift_objects'] = json_encode(['rules']);
+
+        $mine = array_values(array_filter(BlueprintDrift::detect($config), static fn (array $item): bool => $item['item'] === self::RULE_NAME));
+
+        $this->assertCount(2, $mine);
+        $this->assertSame(['rules', 'rules'], array_column($mine, 'key'));
+        $this->assertSame([false, false], array_column($mine, 'reapply'));
+        $this->assertNotEmpty($mine[0]['link']);
+        $this->assertTrue($rule->getFromDB($ruleId));
+        $this->assertSame(0, (int) $rule->fields['is_active']);
+    }
+
+    public function testAdoptUpdatesOnlyTheMatchingTier(): void
+    {
+        $config = Config::getConfig();
+        $saved = (string) $config->fields['sla_tiers'];
+        try {
+            $this->assertFalse(BlueprintDrift::adopt($config, 'sla:ttr:9:12'));
+            $this->assertFalse(BlueprintDrift::adopt($config, 'sla_tiers:ttr:5:12'));
+            $this->assertTrue(BlueprintDrift::adopt($config, 'sla:ttr:5:77'));
+
+            $tiers = Config::getConfig()->getSlaTiers();
+            $this->assertSame(77, $tiers[5]['ttr_hours']);
+        } finally {
+            $config->update(['id' => $config->getID(), 'sla_tiers' => $saved]);
+        }
     }
 
     public function testCheckIsNeverAutoFixed(): void

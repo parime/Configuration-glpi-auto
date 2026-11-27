@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Écarts avec le Blueprint appliqué, suite et fin** (#468) :
+  - **règles d'affectation des SLA** (« SLA standard : entité #… ») désactivées ou visant un SLA ou
+    un OLA supprimé, signalées avec un lien vers leur fiche (le déploiement ne retouche jamais une
+    règle existante) ;
+  - **actions par écart** : « Réappliquer » (écran de déploiement avec aperçu et confirmation),
+    « Adopter » pour un délai de SLA ou d'OLA modifié à la main (la valeur de GLPI devient le palier
+    de la configuration, sur clic explicite, droit de modification requis) et « Ouvrir dans GLPI » ;
+  - **éléments surveillés** dans Configuration > Plugins > Configuration GLPI Auto, onglet Audit
+    (SLA, calendrier, catégories, statuts, règles ; tous par défaut). La comparaison a lieu à chaque
+    audit et suit donc la fréquence du rapport périodique. Nouvelle colonne `audit_drift_objects`.
+
 ## [1.35.1] - 2026-11-27
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

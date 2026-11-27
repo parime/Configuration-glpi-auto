@@ -20,8 +20,13 @@
   </div>
   <div class="card-body">
     <p class="text-muted">
-      {{ __('Compare les SLA, le calendrier, les catégories de tickets et les statuts créés par le plugin à ce qu\'ils sont aujourd\'hui dans GLPI. Cette vérification ne modifie rien.', 'configurationglpiauto') }}
+      {{ __('Compare les SLA, le calendrier, les catégories de tickets, les statuts et les règles d\'affectation des SLA créés par le plugin à ce qu\'ils sont aujourd\'hui dans GLPI. Cette vérification ne modifie rien.', 'configurationglpiauto') }}
     </p>
+    {% if drift.settings_url %}
+      <p>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ drift.settings_url }}"><i class="ti ti-settings me-1"></i>{{ __('Choisir les éléments surveillés', 'configurationglpiauto') }}</a>
+      </p>
+    {% endif %}
     {% if not drift.applied %}
       <div class="alert alert-info mb-0">
         <i class="ti ti-info-circle me-1"></i>
@@ -48,6 +53,7 @@
               <th>{{ __('Élément', 'configurationglpiauto') }}</th>
               <th>{{ __('Dans GLPI', 'configurationglpiauto') }}</th>
               <th>{{ __('Dans le Blueprint', 'configurationglpiauto') }}</th>
+              <th>{{ __('Actions', 'configurationglpiauto') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -59,6 +65,24 @@
                 <td>{{ item.item }}</td>
                 <td>{{ item.current is empty ? '-' : item.current }}</td>
                 <td>{{ item.expected is empty ? '-' : item.expected }}</td>
+                <td class="text-nowrap">
+                  {% if item.reapply and drift.deploy_url %}
+                    <a class="btn btn-sm btn-outline-primary" href="{{ drift.deploy_url }}" title="{{ __('Remettre la valeur du Blueprint, après aperçu et confirmation', 'configurationglpiauto') }}">
+                      <i class="ti ti-player-play me-1"></i>{{ __('Réappliquer', 'configurationglpiauto') }}
+                    </a>
+                  {% endif %}
+                  {% if item.adopt and drift.can_adopt %}
+                    <form method="post" action="{{ drift.audit_url }}" class="d-inline">
+                      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                      <button type="submit" name="adopt_drift" value="{{ item.adopt }}" class="btn btn-sm btn-outline-success" title="{{ __('Garder la valeur de GLPI comme nouvelle référence du Blueprint', 'configurationglpiauto') }}">
+                        <i class="ti ti-check me-1"></i>{{ __('Adopter', 'configurationglpiauto') }}
+                      </button>
+                    </form>
+                  {% endif %}
+                  {% if item.link %}
+                    <a class="btn btn-sm btn-link" href="{{ item.link }}"><i class="ti ti-external-link me-1"></i>{{ __('Ouvrir dans GLPI', 'configurationglpiauto') }}</a>
+                  {% endif %}
+                </td>
               </tr>
             {% endfor %}
           </tbody>
@@ -66,7 +90,7 @@
       </div>
       <p class="small mb-2">
         <i class="ti ti-bulb me-1"></i>
-        {{ __('Modification voulue : reportez la nouvelle valeur dans l\'assistant, elle deviendra la référence au prochain déploiement. Modification accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n\'est jamais supprimé.', 'configurationglpiauto') }}
+        {{ __('Modification voulue : « Adopter » garde la valeur de GLPI comme référence (délais des SLA et OLA), sinon reportez-la dans l\'assistant. Modification accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n\'est jamais supprimé ; une règle désactivée se réactive depuis sa fiche.', 'configurationglpiauto') }}
       </p>
       <div class="d-flex flex-wrap gap-2">
         {% if drift.deploy_url %}

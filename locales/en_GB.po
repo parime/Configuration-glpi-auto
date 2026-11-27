@@ -7792,3 +7792,87 @@ msgstr "A small catalogue of subcategories, each with a template that pre-fills 
 
 msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
 msgstr "Your profile cannot edit business rules for changes: this option will be ignored."
+
+msgid "Nouvelle valeur adoptée : elle devient la référence du Blueprint."
+msgstr "New value adopted: it becomes the Blueprint reference."
+
+msgid ""
+"Cet écart ne peut pas être adopté ici : reportez la valeur dans l'assistant."
+msgstr "This difference cannot be adopted here: enter the value in the wizard."
+
+msgid "Règles d'affectation des SLA"
+msgstr "SLA assignment rules"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Niveau de service introuvable (#%d)"
+msgstr "Service level not found (#%d)"
+
+msgid "Éléments surveillés enregistrés."
+msgstr "Monitored items saved."
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Adopter"
+msgstr "Adopt"
+
+msgid "Choisir les éléments surveillés"
+msgstr "Choose the monitored items"
+
+msgid ""
+"Compare les SLA, le calendrier, les catégories de tickets, les statuts et les"
+" règles d'affectation des SLA créés par le plugin à ce qu'ils sont "
+"aujourd'hui dans GLPI. Cette vérification ne modifie rien."
+msgstr ""
+"Compares the SLAs, calendar, ticket categories, statuses and SLA assignment "
+"rules created by the plugin with what they are in GLPI today. This check "
+"changes nothing."
+
+msgid "Garder la valeur de GLPI comme nouvelle référence du Blueprint"
+msgstr "Keep the GLPI value as the new Blueprint reference"
+
+msgid ""
+"Modification voulue : « Adopter » garde la valeur de GLPI comme référence "
+"(délais des SLA et OLA), sinon reportez-la dans l'assistant. Modification "
+"accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est "
+"jamais supprimé ; une règle désactivée se réactive depuis sa fiche."
+msgstr ""
+"Intended change: \"Adopt\" keeps the GLPI value as the reference (SLA and OLA"
+" delays), otherwise enter it in the wizard. Accidental change: reapply the "
+"Blueprint. An item added by hand is never deleted; a disabled rule is re-"
+"enabled from its form."
+
+msgid "Ouvrir dans GLPI"
+msgstr "Open in GLPI"
+
+msgid "Remettre la valeur du Blueprint, après aperçu et confirmation"
+msgstr "Restore the Blueprint value, after preview and confirmation"
+
+msgid "Réappliquer"
+msgstr "Reapply"
+
+msgid ""
+"Choisissez ce que l'audit compare au dernier Blueprint appliqué. La "
+"comparaison a lieu à chaque audit : à l'ouverture de la page d'audit, lors de"
+" la veille des constats critiques et avec le rapport périodique ci-dessous, "
+"dont elle suit la fréquence. Elle ne modifie rien."
+msgstr ""
+"Choose what the audit compares with the last applied Blueprint. The "
+"comparison runs with every audit: when the audit page is opened, during the "
+"critical findings watch and with the periodic report below, whose frequency "
+"it follows. It changes nothing."
+
+msgid ""
+"%d écart détecté (SLA, calendrier, catégories, statuts ou règles modifiés à "
+"la main)."
+msgid_plural ""
+"%d écarts détectés (SLA, calendrier, catégories, statuts ou règles modifiés à"
+" la main)."
+msgstr[0] ""
+"%d difference found (SLAs, calendar, categories, statuses or rules changed by"
+" hand)."
+msgstr[1] ""
+"%d differences found (SLAs, calendar, categories, statuses or rules changed "
+"by hand)."

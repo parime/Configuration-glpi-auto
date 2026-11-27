@@ -57,8 +57,8 @@ final class BlueprintDriftCheck implements AuditCheckInterface
             title: __('La configuration s\'écarte du dernier Blueprint appliqué', 'configurationglpiauto'),
             description: sprintf(
                 _n(
-                    '%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main).',
-                    '%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la main).',
+                    '%d écart détecté (SLA, calendrier, catégories, statuts ou règles modifiés à la main).',
+                    '%d écarts détectés (SLA, calendrier, catégories, statuts ou règles modifiés à la main).',
                     count($drift),
                     'configurationglpiauto'
                 ),
