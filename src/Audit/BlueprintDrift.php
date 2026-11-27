@@ -374,7 +374,7 @@ final class BlueprintDrift
             if (empty($row['is_active'])) {
                 $items[] = self::item('rules', $object, $name, self::MODIFIED, __('Désactivée', 'configurationglpiauto'), __('Active', 'configurationglpiauto'), $link, false);
             }
-            $actions = (new RuleAction())->find(['rules_id' => (int) $row['id'], 'field' => ['slas_id_tto', 'slas_id_ttr', 'olas_id_tto', 'olas_id_ttr']]);
+            $actions = getAllDataFromTable(RuleAction::getTable(), ['rules_id' => (int) $row['id'], 'field' => ['slas_id_tto', 'slas_id_ttr', 'olas_id_tto', 'olas_id_ttr']]);
             foreach ($actions as $action) {
                 $class = str_starts_with((string) $action['field'], 'olas') ? OLA::class : SLA::class;
                 if (!(new $class())->getFromDB((int) $action['value'])) {
