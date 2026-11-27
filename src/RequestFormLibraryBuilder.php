@@ -279,7 +279,7 @@ class RequestFormLibraryBuilder
                 'questions' => [
                     ['key' => 'record', 'type' => 'short', 'mandatory' => true, 'label' => __('Enregistrement concerné (numéro, référence)', 'configurationglpiauto'),
                         'validate' => ['regex', self::HAS_DIGIT],
-                        'help' => __('Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre).', 'configurationglpiauto')],
+                        'help' => __("Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre).", 'configurationglpiauto')],
                     ['key' => 'current', 'type' => 'long', 'mandatory' => true, 'label' => __('Valeur actuelle', 'configurationglpiauto')],
                     ['key' => 'expected', 'type' => 'long', 'mandatory' => true, 'label' => __('Valeur attendue', 'configurationglpiauto')],
                     ['key' => 'reason', 'type' => 'long', 'mandatory' => true, 'label' => __('Justification', 'configurationglpiauto'),
