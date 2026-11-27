@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.35.1] - 2026-11-27
+
 ### Fixed
 
 - **Onglets des écrans du plugin lisibles** : les libellés des onglets prennent la couleur du texte
