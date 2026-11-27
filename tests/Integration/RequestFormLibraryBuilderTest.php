@@ -387,12 +387,13 @@ final class RequestFormLibraryBuilderTest extends TestCase
         $definition = RequestFormLibraryBuilder::getDefinitions()['locked_account'];
         $form = $this->form('locked_account');
         $questions = $this->questions($form, $definition);
-        $account = $questions['account']->getEndUserInputName();
         $other = $questions['other']->getEndUserInputName();
 
-        $this->submit($form, [$account => ['1']]);
-        $this->submit($form, [$account => ['4']], false);
-        $ticket = $this->submit($form, [$account => ['4'], $other => 'Logiciel de paie']);
+        $this->submit($form, $this->mandatoryAnswers($definition, $questions, ['account' => ['1']]));
+        $raw = $this->mandatoryAnswers($definition, $questions, ['account' => ['4']]);
+        unset($raw[$other]);
+        $this->submit($form, $raw, false);
+        $ticket = $this->submit($form, [$other => 'Logiciel de paie'] + $raw);
         $this->assertStringContainsString('Autre', $ticket->fields['name']);
     }
 
