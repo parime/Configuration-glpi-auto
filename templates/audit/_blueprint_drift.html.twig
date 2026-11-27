@@ -21,8 +21,12 @@
   <div class="card-body">
     <p class="text-muted">
       {{ __('Compare les SLA, le calendrier, les catégories de tickets, les statuts et les règles d\'affectation des SLA créés par le plugin à ce qu\'ils sont aujourd\'hui dans GLPI. Cette vérification ne modifie rien.', 'configurationglpiauto') }}
-      {% if drift.settings_url %}<a href="{{ drift.settings_url }}">{{ __('Choisir les éléments surveillés', 'configurationglpiauto') }}</a>{% endif %}
     </p>
+    {% if drift.settings_url %}
+      <p>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ drift.settings_url }}"><i class="ti ti-settings me-1"></i>{{ __('Choisir les éléments surveillés', 'configurationglpiauto') }}</a>
+      </p>
+    {% endif %}
     {% if not drift.applied %}
       <div class="alert alert-info mb-0">
         <i class="ti ti-info-circle me-1"></i>
