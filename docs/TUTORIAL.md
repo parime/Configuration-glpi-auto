@@ -331,6 +331,11 @@ branches de catégories, statuts) à ce qui existe aujourd'hui, avec un badge Aj
 Supprimé, la valeur dans GLPI et celle du Blueprint. Rien n'est modifié : si le changement était
 voulu, reportez la valeur dans l'assistant ; sinon, « Réappliquer le Blueprint » ouvre l'écran de
 déploiement, qui rappelle les écarts et propose de réaligner les SLA existants avant de confirmer.
+Chaque ligne a ses propres actions : « Réappliquer », « Adopter » pour un délai de SLA ou d'OLA
+(la valeur de GLPI devient la référence du Blueprint) et « Ouvrir dans GLPI ». Les règles
+d'affectation des SLA désactivées ou qui visent un SLA supprimé sont aussi signalées ; elles se
+corrigent depuis leur fiche. Les éléments surveillés se choisissent dans Configuration > Plugins >
+Configuration GLPI Auto, onglet Audit ; la comparaison suit la fréquence du rapport périodique.
 
 Pour le détail technique de chaque fonctionnalité (ce qui est généré, pourquoi, et les décisions
 prises en cours de route), voir [CHANGELOG.md](../CHANGELOG.md) et [ROADMAP.md](../ROADMAP.md).
@@ -594,7 +599,11 @@ what the wizard created (SLAs and OLAs of the "SLA standard", shared calendar, c
 statuses) with what exists today, with an Added, Modified or Removed badge, the value in GLPI and
 the one in the Blueprint. Nothing is changed: if the change was intended, copy the value into the
 wizard; otherwise "Reapply the Blueprint" opens the deployment screen, which lists the differences
-and offers to realign the existing SLAs before you confirm.
+and offers to realign the existing SLAs before you confirm. Each row has its own actions:
+"Reapply", "Adopt" for an SLA or OLA delay (the GLPI value becomes the Blueprint reference) and
+"Open in GLPI". SLA assignment rules that are disabled or point to a deleted SLA are reported too;
+they are fixed from their form. The monitored items are chosen in Setup > Plugins > Configuration
+GLPI Auto, Audit tab; the comparison follows the frequency of the periodic report.
 
 For the technical detail of each feature (what gets generated, why, and the decisions made along
 the way), see [CHANGELOG.md](../CHANGELOG.md) and [ROADMAP.md](../ROADMAP.md).

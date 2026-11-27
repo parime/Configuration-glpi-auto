@@ -7836,3 +7836,90 @@ msgstr "Mały katalog podkategorii, każda z szablonem, który wstępnie wypełn
 
 msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
 msgstr "Twój profil nie może zmieniać reguł biznesowych dla zmian: ta opcja zostanie pominięta."
+
+msgid "Nouvelle valeur adoptée : elle devient la référence du Blueprint."
+msgstr "Przyjęto nową wartość: staje się ona odniesieniem Blueprintu."
+
+msgid ""
+"Cet écart ne peut pas être adopté ici : reportez la valeur dans l'assistant."
+msgstr "Tej różnicy nie można tu przyjąć: wprowadź wartość w kreatorze."
+
+msgid "Règles d'affectation des SLA"
+msgstr "Reguły przypisywania SLA"
+
+msgid "Active"
+msgstr "Aktywna"
+
+msgid "Niveau de service introuvable (#%d)"
+msgstr "Nie znaleziono poziomu usług (#%d)"
+
+msgid "Éléments surveillés enregistrés."
+msgstr "Zapisano monitorowane elementy."
+
+msgid "Actions"
+msgstr "Działania"
+
+msgid "Adopter"
+msgstr "Przyjmij"
+
+msgid "Choisir les éléments surveillés"
+msgstr "Wybierz monitorowane elementy"
+
+msgid ""
+"Compare les SLA, le calendrier, les catégories de tickets, les statuts et les"
+" règles d'affectation des SLA créés par le plugin à ce qu'ils sont "
+"aujourd'hui dans GLPI. Cette vérification ne modifie rien."
+msgstr ""
+"Porównuje SLA, kalendarz, kategorie zgłoszeń, statusy i reguły przypisywania "
+"SLA utworzone przez wtyczkę z ich obecnym stanem w GLPI. Ta kontrola niczego "
+"nie zmienia."
+
+msgid "Garder la valeur de GLPI comme nouvelle référence du Blueprint"
+msgstr "Zachowaj wartość z GLPI jako nowe odniesienie Blueprintu"
+
+msgid ""
+"Modification voulue : « Adopter » garde la valeur de GLPI comme référence "
+"(délais des SLA et OLA), sinon reportez-la dans l'assistant. Modification "
+"accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est "
+"jamais supprimé ; une règle désactivée se réactive depuis sa fiche."
+msgstr ""
+"Zmiana zamierzona: „Przyjmij” zachowuje wartość z GLPI jako odniesienie "
+"(terminy SLA i OLA), w przeciwnym razie wprowadź ją w kreatorze. Zmiana "
+"przypadkowa: zastosuj ponownie Blueprint. Element dodany ręcznie nigdy nie "
+"jest usuwany; wyłączoną regułę włącza się ponownie z jej karty."
+
+msgid "Ouvrir dans GLPI"
+msgstr "Otwórz w GLPI"
+
+msgid "Remettre la valeur du Blueprint, après aperçu et confirmation"
+msgstr "Przywróć wartość z Blueprintu po podglądzie i potwierdzeniu"
+
+msgid "Réappliquer"
+msgstr "Zastosuj ponownie"
+
+msgid ""
+"Choisissez ce que l'audit compare au dernier Blueprint appliqué. La "
+"comparaison a lieu à chaque audit : à l'ouverture de la page d'audit, lors de"
+" la veille des constats critiques et avec le rapport périodique ci-dessous, "
+"dont elle suit la fréquence. Elle ne modifie rien."
+msgstr ""
+"Wybierz, co audyt porównuje z ostatnio zastosowanym Blueprintem. Porównanie "
+"odbywa się przy każdym audycie: przy otwarciu strony audytu, podczas nadzoru "
+"krytycznych ustaleń oraz z raportem okresowym poniżej, którego częstotliwość "
+"przyjmuje. Niczego nie zmienia."
+
+msgid ""
+"%d écart détecté (SLA, calendrier, catégories, statuts ou règles modifiés à "
+"la main)."
+msgid_plural ""
+"%d écarts détectés (SLA, calendrier, catégories, statuts ou règles modifiés à"
+" la main)."
+msgstr[0] ""
+"Wykryto %d różnicę (SLA, kalendarz, kategorie, statusy lub reguły zmienione "
+"ręcznie)."
+msgstr[1] ""
+"Wykryto %d różnice (SLA, kalendarz, kategorie, statusy lub reguły zmienione "
+"ręcznie)."
+msgstr[2] ""
+"Wykryto %d różnic (SLA, kalendarz, kategorie, statusy lub reguły zmienione "
+"ręcznie)."

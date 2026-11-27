@@ -7973,3 +7973,89 @@ msgstr "Un pequeño catálogo de subcategorías, cada una con una plantilla que 
 
 msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
 msgstr "Su perfil no puede modificar las reglas de negocio para los cambios: esta opción se ignorará."
+
+msgid "Nouvelle valeur adoptée : elle devient la référence du Blueprint."
+msgstr "Nuevo valor adoptado: pasa a ser la referencia del Blueprint."
+
+msgid ""
+"Cet écart ne peut pas être adopté ici : reportez la valeur dans l'assistant."
+msgstr ""
+"Esta diferencia no se puede adoptar aquí: introduzca el valor en el "
+"asistente."
+
+msgid "Règles d'affectation des SLA"
+msgstr "Reglas de asignación de los SLA"
+
+msgid "Active"
+msgstr "Activa"
+
+msgid "Niveau de service introuvable (#%d)"
+msgstr "Nivel de servicio no encontrado (#%d)"
+
+msgid "Éléments surveillés enregistrés."
+msgstr "Elementos supervisados guardados."
+
+msgid "Actions"
+msgstr "Acciones"
+
+msgid "Adopter"
+msgstr "Adoptar"
+
+msgid "Choisir les éléments surveillés"
+msgstr "Elegir los elementos supervisados"
+
+msgid ""
+"Compare les SLA, le calendrier, les catégories de tickets, les statuts et les"
+" règles d'affectation des SLA créés par le plugin à ce qu'ils sont "
+"aujourd'hui dans GLPI. Cette vérification ne modifie rien."
+msgstr ""
+"Compara los SLA, el calendario, las categorías de tickets, los estados y las "
+"reglas de asignación de los SLA creados por el plugin con lo que son hoy en "
+"GLPI. Esta comprobación no modifica nada."
+
+msgid "Garder la valeur de GLPI comme nouvelle référence du Blueprint"
+msgstr "Conservar el valor de GLPI como nueva referencia del Blueprint"
+
+msgid ""
+"Modification voulue : « Adopter » garde la valeur de GLPI comme référence "
+"(délais des SLA et OLA), sinon reportez-la dans l'assistant. Modification "
+"accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est "
+"jamais supprimé ; une règle désactivée se réactive depuis sa fiche."
+msgstr ""
+"Cambio deseado: «Adoptar» conserva el valor de GLPI como referencia (plazos "
+"de los SLA y OLA); si no, introdúzcalo en el asistente. Cambio accidental: "
+"vuelva a aplicar el Blueprint. Un elemento añadido a mano nunca se elimina; "
+"una regla desactivada se reactiva desde su ficha."
+
+msgid "Ouvrir dans GLPI"
+msgstr "Abrir en GLPI"
+
+msgid "Remettre la valeur du Blueprint, après aperçu et confirmation"
+msgstr "Restablecer el valor del Blueprint, tras vista previa y confirmación"
+
+msgid "Réappliquer"
+msgstr "Volver a aplicar"
+
+msgid ""
+"Choisissez ce que l'audit compare au dernier Blueprint appliqué. La "
+"comparaison a lieu à chaque audit : à l'ouverture de la page d'audit, lors de"
+" la veille des constats critiques et avec le rapport périodique ci-dessous, "
+"dont elle suit la fréquence. Elle ne modifie rien."
+msgstr ""
+"Elija lo que la auditoría compara con el último Blueprint aplicado. La "
+"comparación se realiza en cada auditoría: al abrir la página de auditoría, "
+"durante la vigilancia de hallazgos críticos y con el informe periódico de "
+"abajo, cuya frecuencia sigue. No modifica nada."
+
+msgid ""
+"%d écart détecté (SLA, calendrier, catégories, statuts ou règles modifiés à "
+"la main)."
+msgid_plural ""
+"%d écarts détectés (SLA, calendrier, catégories, statuts ou règles modifiés à"
+" la main)."
+msgstr[0] ""
+"%d diferencia detectada (SLA, calendario, categorías, estados o reglas "
+"modificados a mano)."
+msgstr[1] ""
+"%d diferencias detectadas (SLA, calendario, categorías, estados o reglas "
+"modificados a mano)."
