@@ -142,9 +142,10 @@ class SlaBuilder
 
     /**
      * SLA et OLA que la configuration fait créer dans le SLM partagé : classe, type (TTO/TTR), nom
-     * et délai en heures. Partagé par l'aperçu de l'assistant (#322) et la détection de dérive (#468).
+     * délai en heures et niveau de priorité. Partagé par l'aperçu de l'assistant (#322) et la
+     * détection de dérive (#468), qui s'en sert aussi pour adopter un délai modifié à la main.
      *
-     * @return list<array{0: class-string<SLA|OLA>, 1: int, 2: string, 3: int}>
+     * @return list<array{0: class-string<SLA|OLA>, 1: int, 2: string, 3: int, 4: int}>
      */
     public static function expectedAgreements(Config $config): array
     {
@@ -154,12 +155,12 @@ class SlaBuilder
         foreach (Config::PRIORITY_LEVELS as $priority) {
             $label = CommonITILObject::getPriorityName($priority);
             $tier = $tiers[$priority] ?? ['tto_hours' => 4, 'ttr_hours' => 48];
-            $expected[] = [SLA::class, SLM::TTO, sprintf(__('Prise en charge - %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours']];
-            $expected[] = [SLA::class, SLM::TTR, sprintf(__('Résolution - %s', 'configurationglpiauto'), $label), (int) $tier['ttr_hours']];
+            $expected[] = [SLA::class, SLM::TTO, sprintf(__('Prise en charge - %s', 'configurationglpiauto'), $label), (int) $tier['tto_hours'], $priority];
+            $expected[] = [SLA::class, SLM::TTR, sprintf(__('Résolution - %s', 'configurationglpiauto'), $label), (int) $tier['ttr_hours'], $priority];
             if (!empty($config->fields['ola_enabled'])) {
                 $olaTier = $olaTiers[$priority] ?? ['tto_hours' => 1, 'ttr_hours' => 2];
-                $expected[] = [OLA::class, SLM::TTO, sprintf(__('OLA prise en charge - %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours']];
-                $expected[] = [OLA::class, SLM::TTR, sprintf(__('OLA résolution - %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours']];
+                $expected[] = [OLA::class, SLM::TTO, sprintf(__('OLA prise en charge - %s', 'configurationglpiauto'), $label), (int) $olaTier['tto_hours'], $priority];
+                $expected[] = [OLA::class, SLM::TTR, sprintf(__('OLA résolution - %s', 'configurationglpiauto'), $label), (int) $olaTier['ttr_hours'], $priority];
             }
         }
 

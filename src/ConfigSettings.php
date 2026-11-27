@@ -81,7 +81,8 @@ final class ConfigSettings
     public static function isSettingsPost(array $post): bool
     {
         return isset($post['save_park']) || isset($post['save_report'])
-            || isset($post['save_eol']) || isset($post['suggest_eol']) || isset($post['import_eol']);
+            || isset($post['save_eol']) || isset($post['suggest_eol']) || isset($post['import_eol'])
+            || isset($post['save_drift']);
     }
 
     /**
@@ -117,6 +118,18 @@ final class ConfigSettings
                 'audit_warranty_days' => max(0, min(3650, (int) ($post['audit_warranty_days'] ?? 30))),
             ]);
             Session::addMessageAfterRedirect(__('Contrôles du parc enregistrés.', 'configurationglpiauto'));
+
+            return self::TAB_AUDIT;
+        }
+
+        // Issue #468 : familles comparées au dernier Blueprint appliqué.
+        if (isset($post['save_drift'])) {
+            $objects = $post['audit_drift_objects'] ?? [];
+            $config->update([
+                'id'                  => $config->getID(),
+                'audit_drift_objects' => is_array($objects) ? $objects : [],
+            ]);
+            Session::addMessageAfterRedirect(__('Éléments surveillés enregistrés.', 'configurationglpiauto'));
 
             return self::TAB_AUDIT;
         }
@@ -227,6 +240,10 @@ final class ConfigSettings
             'park'     => [
                 'ghost_days'    => (int) ($config->fields['audit_ghost_days'] ?? 30),
                 'warranty_days' => (int) ($config->fields['audit_warranty_days'] ?? 30),
+            ],
+            'drift'    => [
+                'labels'  => \GlpiPlugin\Configurationglpiauto\Audit\BlueprintDrift::objectLabels(),
+                'watched' => $config->getDriftObjects(),
             ],
             'report'   => [
                 'frequency'        => $frequency,
