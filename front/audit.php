@@ -52,6 +52,18 @@ if (isset($_POST['fix'])) {
     Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'));
 }
 
+// Issue #468 : « Adopter » un délai de SLA ou d'OLA modifié à la main (jeton produit par la détection).
+if (isset($_POST['adopt_drift'])) {
+    Session::checkRight(Config::$rightname, UPDATE);
+    if (BlueprintDrift::adopt(Config::getConfig(), (string) $_POST['adopt_drift'])) {
+        Session::addMessageAfterRedirect(__('Nouvelle valeur adoptée : elle devient la référence du Blueprint.', 'configurationglpiauto'));
+    } else {
+        Session::addMessageAfterRedirect(__('Cet écart ne peut pas être adopté ici : reportez la valeur dans l\'assistant.', 'configurationglpiauto'), false, ERROR);
+    }
+
+    Html::redirect(\GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php') . '#blueprint-drift');
+}
+
 // Issue #495 : les réglages (contrôles du parc, fin de support, rapport périodique) sont dans la page
 // de configuration du plugin. Les formulaires de l'ancienne page restent acceptés pendant une
 // version : enregistrés de la même façon (mêmes droits), puis renvoyés vers l'onglet du réglage.
@@ -212,7 +224,12 @@ if ($reportTaskFound && (int) $reportTask->fields['state'] !== CronTask::STATE_D
         'applied'    => $driftApplied,
         'items'      => $driftApplied ? BlueprintDrift::detect($config) : [],
         'deploy_url' => Session::haveRight(Config::$rightname, UPDATE) ? \GlpiPlugin\Configurationglpiauto\FrontUrl::get('deploy.php') . '?drift=1' : null,
-        'wizard_url' => \GlpiPlugin\Configurationglpiauto\FrontUrl::get('wizard.php'),
+        'wizard_url'   => \GlpiPlugin\Configurationglpiauto\FrontUrl::get('wizard.php'),
+        'audit_url'    => \GlpiPlugin\Configurationglpiauto\FrontUrl::get('audit.php'),
+        'can_adopt'    => (bool) Session::haveRight(Config::$rightname, UPDATE),
+        'settings_url' => (bool) Session::haveRight(Config::$rightname, UPDATE)
+            ? ConfigSettings::url(ConfigSettings::TAB_AUDIT) . '#cga-drift-settings'
+            : null,
     ],
     // Issue #470 : sessions actives et ré-authentification (GLPI 12, sans objet sous GLPI 11).
     'sessions'              => \GlpiPlugin\Configurationglpiauto\Audit\SessionSecurity::view(),
