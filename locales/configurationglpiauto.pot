@@ -8099,3 +8099,6 @@ msgid ""
 "Votre profil ne peut pas modifier les règles métier pour les changements : "
 "cette option sera ignorée."
 msgstr ""
+
+msgid "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."
+msgstr ""

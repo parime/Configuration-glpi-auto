@@ -7899,3 +7899,6 @@ msgstr "Um pequeno catálogo de subcategorias, cada uma com um modelo que preenc
 
 msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
 msgstr "Seu perfil não pode modificar as regras de negócio para mudanças: esta opção será ignorada."
+
+msgid "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."
+msgstr "O número ou a referência como aparecem no aplicativo (pelo menos um algarismo)."

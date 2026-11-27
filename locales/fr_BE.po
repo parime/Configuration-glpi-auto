@@ -7967,3 +7967,6 @@ msgstr "Un petit catalogue de sous-catégories, chacune avec un modèle qui pré
 
 msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
 msgstr "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
+
+msgid "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."
+msgstr "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."

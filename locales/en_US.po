@@ -7792,3 +7792,6 @@ msgstr "A small catalogue of subcategories, each with a template that pre-fills 
 
 msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
 msgstr "Your profile cannot edit business rules for changes: this option will be ignored."
+
+msgid "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."
+msgstr "The number or reference as shown in the application (at least one digit)."

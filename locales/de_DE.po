@@ -8029,3 +8029,6 @@ msgstr "Ein kleiner Katalog von Unterkategorien, jede mit einer Vorlage, die Tit
 
 msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
 msgstr "Ihr Profil kann die Geschäftsregeln für Änderungen nicht bearbeiten: Diese Option wird ignoriert."
+
+msgid "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."
+msgstr "Die Nummer oder Referenz, wie sie in der Anwendung angezeigt wird (mindestens eine Ziffer)."

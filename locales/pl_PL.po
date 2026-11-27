@@ -7836,3 +7836,6 @@ msgstr "Mały katalog podkategorii, każda z szablonem, który wstępnie wypełn
 
 msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
 msgstr "Twój profil nie może zmieniać reguł biznesowych dla zmian: ta opcja zostanie pominięta."
+
+msgid "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."
+msgstr "Numer lub identyfikator w postaci widocznej w aplikacji (co najmniej jedna cyfra)."
