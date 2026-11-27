@@ -22,6 +22,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     (SLA, calendrier, catégories, statuts, règles ; tous par défaut). La comparaison a lieu à chaque
     audit et suit donc la fréquence du rapport périodique. Nouvelle colonne `audit_drift_objects`.
 
+### Changed
+
+- **Catalogue de services : réponses contrôlées avant la création du ticket** (#320) : les
+  formulaires de la bibliothèque utilisent les validations natives de GLPI (« Valide si... ») :
+  justifications et descriptions du besoin d'au moins 15 caractères, prénom et nom du nouvel
+  arrivant en deux mots au moins, référence de l'enregistrement à corriger avec au moins un
+  chiffre, périphérique décrit en 5 caractères au moins. Le demandeur voit le message de GLPI et
+  corrige avant l'envoi : le support n'a plus à le recontacter.
+- **Formulaires d'incident : urgence et impact** (#320) : « Compte bloqué ou session verrouillée »,
+  « Problème d'impression d'étiquettes ou de codes-barres » et « Erreur d'interface ou de
+  traitement automatique » demandent l'urgence (reprise sur le ticket) et, quand elle est au moins
+  haute, qui est touché. Relancer l'assistant met à jour ces formulaires s'ils n'ont pas été
+  retouchés dans GLPI.
+
 ## [1.35.1] - 2026-11-27
 
 - Publiée dans le catalogue de la marketplace GLPI (`configurationglpiauto.xml`).

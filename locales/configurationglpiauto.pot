@@ -8163,3 +8163,8 @@ msgid ""
 "de la veille des constats critiques et avec le rapport périodique ci-"
 "dessous, dont elle suit la fréquence. Elle ne modifie rien."
 msgstr ""
+
+
+msgid "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."
+msgstr ""
+

@@ -6822,8 +6822,8 @@ msgid "Hôte dans les images"
 msgstr "Host en las imágenes"
 
 msgid ""
-"Seulement s'il diffère de l'adresse (début des images, par exemple "
-"registry.exemple.test:5000)."
+"Seulement s'il diffère de l'adresse (début des images, par exemple registry."
+"exemple.test:5000)."
 msgstr ""
 "Solo si difiere de la dirección (inicio de las imágenes, por ejemplo "
 "registry.exemple.test:5000)."
@@ -7135,9 +7135,9 @@ msgstr ""
 
 msgid ""
 "Forme : « Nom dans GLPI = produit », ou « Nom dans GLPI = produit cycle » "
-"pour imposer le cycle. Le produit est l'identifiant de la page "
-"endoflife.date (par exemple windows pour endoflife.date/windows). Les noms "
-"sans correspondance ne sont pas contrôlés."
+"pour imposer le cycle. Le produit est l'identifiant de la page endoflife."
+"date (par exemple windows pour endoflife.date/windows). Les noms sans "
+"correspondance ne sont pas contrôlés."
 msgstr ""
 "Formato: «Nombre en GLPI = producto», o «Nombre en GLPI = producto ciclo» "
 "para imponer el ciclo. El producto es el identificador de la página de "
@@ -7166,9 +7166,9 @@ msgid "Mis à jour le"
 msgstr "Actualizado el"
 
 msgid ""
-"Sans accès à Internet : sur un autre poste, enregistrez https://"
-"endoflife.date/api/v1/products/windows/ dans un fichier (windows étant le "
-"produit voulu), puis importez-le ici."
+"Sans accès à Internet : sur un autre poste, enregistrez https://endoflife."
+"date/api/v1/products/windows/ dans un fichier (windows étant le produit "
+"voulu), puis importez-le ici."
 msgstr ""
 "Sin acceso a Internet: en otro equipo, guarde https://endoflife.date/api/v1/"
 "products/windows/ en un archivo (windows es el producto deseado) y luego "
@@ -7487,6 +7487,772 @@ msgstr "Ningún cambio"
 msgid "Origine"
 msgstr "Origen"
 
+msgid "Niveaux de service (SLA, OLA)"
+msgstr "Niveles de servicio (SLA, OLA)"
+
+msgid "Blueprint"
+msgstr "Blueprint"
+
+msgid "La configuration s'écarte du dernier Blueprint appliqué"
+msgstr "La configuración se aparta del último Blueprint aplicado"
+
+msgid ""
+"Relisez les écarts plus bas sur cette page : réappliquez le Blueprint si la "
+"modification n'était pas voulue, sinon reportez la nouvelle valeur dans "
+"l'assistant."
+msgstr ""
+"Revise las diferencias más abajo en esta página: vuelva a aplicar el "
+"Blueprint si el cambio no era intencionado; si no, traslade el nuevo valor "
+"al asistente."
+
+msgid "Voir les écarts"
+msgstr "Ver las diferencias"
+
+msgid "Écarts avec le dernier Blueprint appliqué"
+msgstr "Diferencias con el último Blueprint aplicado"
+
+msgid ""
+"Compare les SLA, le calendrier, les catégories de tickets et les statuts "
+"créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette "
+"vérification ne modifie rien."
+msgstr ""
+"Compara los SLA, el calendario, las categorías de tickets y los estados "
+"creados por el plugin con lo que son hoy en GLPI. Esta comprobación no "
+"modifica nada."
+
+msgid ""
+"Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à "
+"comparer."
+msgstr ""
+"Todavía no se ha aplicado ningún Blueprint con el asistente: no hay nada que "
+"comparar."
+
+msgid "Ouvrir l'assistant"
+msgstr "Abrir el asistente"
+
+msgid ""
+"Aucun écart : la configuration de GLPI correspond au dernier Blueprint "
+"appliqué."
+msgstr ""
+"Sin diferencias: la configuración de GLPI coincide con el último Blueprint "
+"aplicado."
+
+msgid "Ajouté"
+msgstr "Añadido"
+
+msgid "Modifié"
+msgstr "Modificado"
+
+msgid "Supprimé"
+msgstr "Eliminado"
+
+msgid "Écart"
+msgstr "Diferencia"
+
+msgid "Dans GLPI"
+msgstr "En GLPI"
+
+msgid "Dans le Blueprint"
+msgstr "En el Blueprint"
+
+msgid ""
+"Modification voulue : reportez la nouvelle valeur dans l'assistant, elle "
+"deviendra la référence au prochain déploiement. Modification accidentelle : "
+"réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
+msgstr ""
+"Cambio intencionado: traslade el nuevo valor al asistente; será la "
+"referencia en el próximo despliegue. Cambio accidental: vuelva a aplicar el "
+"Blueprint. Un elemento añadido a mano nunca se elimina."
+
+msgid "Réappliquer le Blueprint (avec aperçu)"
+msgstr "Volver a aplicar el Blueprint (con vista previa)"
+
+msgid "Adopter les nouvelles valeurs dans l'assistant"
+msgstr "Adoptar los nuevos valores en el asistente"
+
+msgid ""
+"Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément "
+"ajouté à la main est conservé."
+msgstr ""
+"Los elementos eliminados o modificados se vuelven a crear o se realinean; un "
+"elemento añadido a mano se conserva."
+
+msgid "Réaligner aussi les SLA et OLA déjà créés sur cette configuration"
+msgstr "Realinear también los SLA y OLA ya creados con esta configuración"
+
+msgid "Conformité au dernier Blueprint appliqué"
+msgstr "Conformidad con el último Blueprint aplicado"
+
+#, php-format
+msgid ""
+"%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
+msgid_plural ""
+"%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la "
+"main)."
+msgstr[0] ""
+"%d diferencia detectada (SLA, calendario, categorías o estados modificados a "
+"mano)."
+msgstr[1] ""
+"%d diferencias detectadas (SLA, calendario, categorías o estados modificados "
+"a mano)."
+
+msgid ""
+"Non applicables (désactivés dans les réglages ou sans objet sur cette "
+"version de GLPI) :"
+msgstr ""
+"No aplicables (desactivados en los ajustes o sin objeto en esta versión de "
+"GLPI):"
+
+msgid "Conforme"
+msgstr "Conforme"
+
+msgid "Sessions et ré-authentification"
+msgstr "Sesiones y reautenticación"
+
+msgid "Sans objet sous GLPI 11"
+msgstr "No aplicable en GLPI 11"
+
+msgid ""
+"Une session, c'est une connexion à GLPI restée ouverte sur un navigateur. "
+"Cette section vérifie qu'aucune ne reste ouverte trop longtemps, surtout "
+"pour les administrateurs, et que GLPI redemande le mot de passe avant les "
+"actions sensibles. Elle ne ferme aucune session et ne modifie aucun réglage."
+msgstr ""
+"Una sesión es una conexión a GLPI que permanece abierta en un navegador. "
+"Esta sección comprueba que ninguna quede abierta demasiado tiempo, sobre "
+"todo para los administradores, y que GLPI vuelva a pedir la contraseña antes "
+"de las acciones sensibles. No cierra ninguna sesión ni modifica ningún "
+"ajuste."
+
+msgid ""
+"Le suivi des sessions actives et la ré-authentification n'existent qu'à "
+"partir de GLPI 12. Sur cette version, le contrôle est sans objet : il ne "
+"compte pas dans la note de durcissement. Il s'activera tout seul après la "
+"mise à jour vers GLPI 12."
+msgstr ""
+"El seguimiento de las sesiones activas y la reautenticación solo existen a "
+"partir de GLPI 12. En esta versión el control no es aplicable: no cuenta en "
+"la nota de endurecimiento. Se activará solo tras la actualización a GLPI 12."
+
+msgid "%d jour(s)"
+msgstr "%d día(s)"
+
+msgid "%d heure(s)"
+msgstr "%d hora(s)"
+
+msgid "Ré-authentification avant les actions sensibles"
+msgstr "Reautenticación antes de las acciones sensibles"
+
+msgid "Désactivée"
+msgstr "Desactivada"
+
+msgid "Activée"
+msgstr "Activada"
+
+msgid ""
+"GLPI redemande le mot de passe avant de changer des droits ou des réglages "
+"de sécurité : une session oubliée ne suffit pas pour les modifier."
+msgstr ""
+"GLPI vuelve a pedir la contraseña antes de cambiar derechos o ajustes de "
+"seguridad: una sesión olvidada no basta para modificarlos."
+
+msgid ""
+"Fichier config/local_define.php du serveur (constante GLPI_DISABLE_REAUTH)"
+msgstr ""
+"Archivo config/local_define.php del servidor (constante GLPI_DISABLE_REAUTH)"
+
+msgid "Nettoyage automatique des sessions expirées"
+msgstr "Limpieza automática de las sesiones caducadas"
+
+msgid ""
+"L'action automatique « session » ferme chaque jour les sessions inactives."
+msgstr "La acción automática «session» cierra cada día las sesiones inactivas."
+
+msgid "Configuration > Actions automatiques > session"
+msgstr "Configuración > Acciones automáticas > session"
+
+msgid "Durée de « Se souvenir de moi »"
+msgstr "Duración de «Recuérdame»"
+
+msgid ""
+"Pendant cette durée, GLPI reconnecte le navigateur sans mot de passe. %d "
+"jours au plus sont conseillés."
+msgstr ""
+"Durante este tiempo, GLPI vuelve a conectar el navegador sin contraseña. Se "
+"recomiendan %d días como máximo."
+
+msgid "Configuration > Générale > Identification automatique"
+msgstr "Configuración > General > Acceso Automático"
+
+msgid "Conservation de l'historique des connexions"
+msgstr "Conservación del historial de conexiones"
+
+msgid "Non conservé"
+msgstr "No se conserva"
+
+msgid ""
+"Permet de retrouver qui s'est connecté, quand et d'où, par exemple après un "
+"incident."
+msgstr ""
+"Permite saber quién se conectó, cuándo y desde dónde, por ejemplo tras un "
+"incidente."
+
+msgid "Configuration > Données et Confidentialité > Sessions de connexion"
+msgstr "Configuración > Data and Privacy > Login sessions"
+
+msgid "Réglage de GLPI"
+msgstr "Ajuste de GLPI"
+
+msgid "État"
+msgstr "Estado"
+
+msgid "Pourquoi c'est important"
+msgstr "Por qué es importante"
+
+msgid "Où le régler"
+msgstr "Dónde ajustarlo"
+
+msgid "Sessions actives : %d"
+msgstr "Sesiones activas: %d"
+
+msgid "Comptes à privilèges connectés depuis plus de %1$d heures : %2$d"
+msgstr "Cuentas con privilegios conectadas desde hace más de %1$d horas: %2$d"
+
+msgid "Autres comptes avec une session de plus de %1$d jours : %2$d"
+msgstr "Otras cuentas con una sesión de más de %1$d días: %2$d"
+
+msgid ""
+"Les comptes concernés sont listés dans les constats plus haut, avec un lien "
+"vers l'onglet « Sessions » de leur fiche. Avant de fermer une session, "
+"vérifiez avec la personne : elle sera déconnectée."
+msgstr ""
+"Las cuentas afectadas aparecen en las constataciones de arriba, con un "
+"enlace a la pestaña «Sessions» de su ficha. Antes de cerrar una sesión, "
+"compruébelo con la persona: se desconectará."
+
+msgid "Voir toutes les sessions dans GLPI"
+msgstr "Ver todas las sesiones en GLPI"
+
+msgid "Sessions et ré-authentification (GLPI 12)"
+msgstr "Sesiones y reautenticación (GLPI 12)"
+
+msgid "La ré-authentification avant les actions sensibles est désactivée"
+msgstr "La reautenticación antes de las acciones sensibles está desactivada"
+
+msgid ""
+"GLPI ne redemande plus le mot de passe avant une action sensible (droits, "
+"sécurité) : une session laissée ouverte suffit pour les modifier. La "
+"constante GLPI_DISABLE_REAUTH est déclarée dans un fichier de configuration "
+"du serveur."
+msgstr ""
+"GLPI ya no vuelve a pedir la contraseña antes de una acción sensible "
+"(derechos, seguridad): basta una sesión abierta para modificarlos. La "
+"constante GLPI_DISABLE_REAUTH está declarada en un archivo de configuración "
+"del servidor."
+
+msgid ""
+"Demandez à la personne qui gère le serveur de retirer GLPI_DISABLE_REAUTH du "
+"fichier config/local_define.php."
+msgstr ""
+"Pida a la persona que gestiona el servidor que retire GLPI_DISABLE_REAUTH "
+"del archivo config/local_define.php."
+
+msgid "Le nettoyage automatique des sessions est arrêté"
+msgstr "La limpieza automática de las sesiones está detenida"
+
+msgid ""
+"L'action automatique « session » de GLPI ferme les sessions expirées. "
+"Désactivée, d'anciennes sessions restent valables et la liste des sessions "
+"actives ne reflète plus la réalité."
+msgstr ""
+"La acción automática «session» de GLPI cierra las sesiones caducadas. "
+"Desactivada, las sesiones antiguas siguen siendo válidas y la lista de "
+"sesiones activas ya no refleja la realidad."
+
+msgid ""
+"Réactivez l'action automatique « session » dans Configuration > Actions "
+"automatiques."
+msgstr ""
+"Vuelva a activar la acción automática «session» en Configuración > Acciones "
+"automáticas."
+
+msgid "L'historique des connexions n'est pas conservé"
+msgstr "El historial de conexiones no se conserva"
+
+msgid ""
+"Avec une durée de conservation de 0 jour, GLPI efface la trace d'une "
+"connexion dès sa fin : impossible ensuite de savoir qui s'est connecté, "
+"quand et d'où."
+msgstr ""
+"Con un periodo de conservación de 0 días, GLPI borra el rastro de una "
+"conexión en cuanto termina: luego es imposible saber quién se conectó, "
+"cuándo y desde dónde."
+
+msgid ""
+"Indiquez une durée de conservation (90 jours par exemple) dans Configuration "
+"> Données et Confidentialité, onglet « Sessions de connexion »."
+msgstr ""
+"Indique un periodo de conservación (90 días, por ejemplo) en Configuración > "
+"Data and Privacy, pestaña «Login sessions»."
+
+msgid "« Se souvenir de moi » garde la connexion plus de %d jours"
+msgstr "«Recuérdame» mantiene la conexión más de %d días"
+
+msgid ""
+"Durée actuelle : %d jours. Toute personne qui utilise l'ordinateur pendant "
+"ce temps entre dans GLPI sans mot de passe."
+msgstr ""
+"Duración actual: %d días. Cualquier persona que use el ordenador durante ese "
+"tiempo entra en GLPI sin contraseña."
+
+msgid ""
+"Réduisez le « Temps de rétention se souvenir de moi » dans Configuration > "
+"Générale, section « Identification automatique »."
+msgstr ""
+"Reduzca el «Tiempo para permitir Recuérdame» en Configuración > General, "
+"sección «Acceso Automático»."
+
+msgid "%1$d compte à privilèges connecté depuis plus de %2$d heures"
+msgid_plural "%1$d comptes à privilèges connectés depuis plus de %2$d heures"
+msgstr[0] "%1$d cuenta con privilegios conectada desde hace más de %2$d horas"
+msgstr[1] ""
+"%1$d cuentas con privilegios conectadas desde hace más de %2$d horas"
+
+msgid ""
+"Une session d'administrateur restée ouverte est la plus intéressante à "
+"voler. Vérifiez avec chaque personne qu'elle est bien la sienne, puis fermez "
+"les sessions inutiles : fiche de l'utilisateur, onglet « Sessions », bouton "
+"« Révoquer »."
+msgstr ""
+"Una sesión de administrador que queda abierta es la más interesante de "
+"robar. Compruebe con cada persona que es realmente la suya y cierre las "
+"sesiones innecesarias: ficha del usuario, pestaña «Sessions», botón «Revoke»."
+
+msgid "%1$d compte a une session ouverte depuis plus de %2$d jours"
+msgid_plural "%1$d comptes ont une session ouverte depuis plus de %2$d jours"
+msgstr[0] "%1$d cuenta tiene una sesión abierta desde hace más de %2$d días"
+msgstr[1] "%1$d cuentas tienen una sesión abierta desde hace más de %2$d días"
+
+msgid ""
+"Souvent un « Se souvenir de moi » sur un poste partagé ou perdu. Fermez les "
+"sessions qui ne sont plus utiles : fiche de l'utilisateur, onglet "
+"« Sessions »."
+msgstr ""
+"A menudo un «Recuérdame» en un equipo compartido o perdido. Cierre las "
+"sesiones que ya no son útiles: ficha del usuario, pestaña «Sessions»."
+
+msgid "%1$s (ouverte le %2$s)"
+msgstr "%1$s (abierta el %2$s)"
+
+msgid ""
+"Ces réglages sont maintenant dans Configuration > Plugins > Configuration "
+"GLPI Auto."
+msgstr ""
+"Estos ajustes están ahora en Configuración > Complementos > Configuration "
+"GLPI Auto."
+
+msgid "Configuration GLPI Auto"
+msgstr "Configuration GLPI Auto"
+
+msgid "Général"
+msgstr "General"
+
+msgid "Audit"
+msgstr "Auditoría"
+
+msgid "Fin de support"
+msgstr "Fin de soporte"
+
+msgid "Profils et Blueprints"
+msgstr "Perfiles y Blueprints"
+
+msgid "Historique"
+msgstr "Historial"
+
+msgid "Assistant"
+msgstr "Asistente"
+
+msgid "Importer des tickets"
+msgstr "Importar tickets"
+
+msgid "Dernière version inconnue"
+msgstr "Última versión desconocida"
+
+msgid ""
+"La dernière version n'est lue sur GitHub que si l'action automatique "
+"« checkupdate » de GLPI est activée (Configuration > Actions automatiques) "
+"et que le serveur GLPI peut joindre github.com."
+msgstr ""
+"La última versión solo se consulta en GitHub si la acción automática "
+"«checkupdate» de GLPI está activada (Configuración > Acciones automáticas) y "
+"el servidor GLPI puede acceder a github.com."
+
+msgid "Mise à jour disponible"
+msgstr "Actualización disponible"
+
+msgid "Notes de version"
+msgstr "Notas de la versión"
+
+msgid "À jour"
+msgstr "Actualizado"
+
+msgid "Depuis Jira"
+msgstr "Desde Jira"
+
+msgid "Depuis un fichier CSV"
+msgstr "Desde un archivo CSV"
+
+msgid "Source des tickets"
+msgstr "Origen de los tickets"
+
+msgid "Écrans de Configuration GLPI Auto"
+msgstr "Pantallas de Configuration GLPI Auto"
+
+msgid ""
+"Contrôle désactivé : activez-le et indiquez les correspondances dans "
+"l'onglet « Fin de support » des réglages."
+msgstr ""
+"Control desactivado: actívelo e indique las correspondencias en la pestaña "
+"«Fin de soporte» de los ajustes."
+
+msgid ""
+"Délais des contrôles du parc, fin de support et rapport périodique : ces "
+"réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
+msgstr ""
+"Plazos de los controles del inventario, fin de soporte e informe periódico: "
+"estos ajustes están en Configuración > Complementos > Configuration GLPI "
+"Auto."
+
+msgid "Envoyer le rapport maintenant"
+msgstr "Enviar el informe ahora"
+
+msgid "Ouvrir les réglages"
+msgstr "Abrir los ajustes"
+
+msgid "Actions automatiques"
+msgstr "Acciones automáticas"
+
+msgid ""
+"Administration > Profils, onglet « Configuration GLPI Auto » de chaque "
+"profil."
+msgstr ""
+"Administración > Perfiles, pestaña «Configuration GLPI Auto» de cada perfil."
+
+msgid ""
+"Analyse continue de l'audit, rapport périodique et vérification des "
+"nouvelles versions (checkupdate)."
+msgstr ""
+"Análisis continuo de la auditoría, informe periódico y comprobación de "
+"nuevas versiones (checkupdate)."
+
+msgid "Droits du plugin"
+msgstr "Derechos del complemento"
+
+msgid ""
+"Il signale les systèmes d'exploitation et les modèles de matériel en service "
+"dont le support du fabricant est terminé ou se termine bientôt, d'après les "
+"dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il "
+"n'est pas activé, seul endoflife.date est contacté, et seulement quand vous "
+"cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit "
+"ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+msgstr ""
+"Señala los sistemas operativos y los modelos de hardware en servicio cuyo "
+"soporte del fabricante ha terminado o termina pronto, según las fechas "
+"públicas del sitio endoflife.date. No se descarga nada mientras no esté "
+"activado, solo se contacta con endoflife.date, y solo cuando hace clic en "
+"«Descargar las fechas» en la página de auditoría. Después, el control lee "
+"estas fechas guardadas en la base de datos: nunca modifica el hardware."
+
+msgid ""
+"Lecture seule : modifier ces réglages demande le droit de modification de la "
+"configuration de GLPI et de ce plugin."
+msgstr ""
+"Solo lectura: modificar estos ajustes requiere el derecho de modificar la "
+"configuración de GLPI y de este complemento."
+
+msgid ""
+"Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, "
+"rapport périodique, fin de support des systèmes et du matériel."
+msgstr ""
+"Los ajustes del complemento, y solo ellos: plazos de los controles de la "
+"auditoría, informe periódico, fin de soporte de los sistemas y del hardware."
+
+msgid "Modèle et destinataires du rapport d'audit périodique."
+msgstr "Plantilla y destinatarios del informe de auditoría periódico."
+
+msgid "Réglages de Configuration GLPI Auto"
+msgstr "Ajustes de Configuration GLPI Auto"
+
+msgid "Réglages gérés par GLPI"
+msgstr "Ajustes gestionados por GLPI"
+
+msgid ""
+"Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, "
+"l'historique et les imports s'ouvrent depuis le menu Configuration > "
+"Configuration GLPI Auto."
+msgstr ""
+"Ajuste cada pestaña y guárdela. El asistente, la auditoría, los perfiles, el "
+"historial y las importaciones se abren desde el menú Configuración > "
+"Configuration GLPI Auto."
+
+msgid ""
+"Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un "
+"Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, "
+"historique, imports) sont dans les onglets ci-dessus."
+msgstr ""
+"Abra un perfil de la lista para consultarlo o exportarlo, o importe un "
+"Blueprint recibido de otra instancia. Las demás pantallas (asistente, "
+"auditoría, historial, importaciones) están en las pestañas de arriba."
+
+msgid "Progression de l'assistant"
+msgstr "Progreso del asistente"
+
+msgid ""
+"Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et "
+"l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+msgstr ""
+"Indique la dirección de Jira (HTTPS), el token, la clave del proyecto (y la "
+"dirección de correo electrónico para Jira Cloud) y una entidad a la que "
+"tenga acceso."
+
+#, php-format
+msgid ""
+"Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la "
+"date ou le filtre pour le reste."
+msgstr ""
+"Más de %d tickets: solo se importan los primeros; acote el proyecto, la "
+"fecha o el filtro para el resto."
+
+msgid ""
+"Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 "
+"au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses "
+"équilibrées."
+msgstr ""
+"Clave de proyecto, fecha o filtro no válidos: claves como SUP o SUP, OPS (20 "
+"como máximo), una fecha en formato AAAA-MM-DD, un filtro con paréntesis "
+"equilibrados."
+
+msgid "Requête sans restriction : indiquez au moins une clé de projet."
+msgstr "Consulta sin restricción: indique al menos una clave de proyecto."
+
+msgid "Clé du projet Jira"
+msgstr "Clave del proyecto de Jira"
+
+msgid "Mis à jour depuis (facultatif)"
+msgstr "Actualizado desde (opcional)"
+
+msgid "Filtre JQL supplémentaire (facultatif)"
+msgstr "Filtro JQL adicional (opcional)"
+
+msgid ""
+"Jira exige une recherche restreinte : seuls les tickets du ou des projets "
+"indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la "
+"date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces "
+"conditions."
+msgstr ""
+"Jira exige una búsqueda restringida: solo se leen los tickets del proyecto o "
+"proyectos indicados (claves separadas por comas), actualizados desde la "
+"fecha elegida, del más antiguo al más reciente. El filtro se añade a estas "
+"condiciones."
+
+msgid ""
+"Gestion des changements prête (%d élément(s) créé(s) : groupe CAB, "
+"catégories, modèles et règle d'approbation). Ajoutez les membres du CAB dans "
+"Administration > Groupes."
+msgstr ""
+"Gestión de cambios lista (%d elemento(s) creado(s): grupo CAB, categorías, "
+"plantillas y regla de aprobación). Añada los miembros del CAB en "
+"Administración > Grupos."
+
+msgid "Gérer les règles métier pour les changements"
+msgstr "Gestionar las reglas de negocio para los cambios"
+
+msgid ""
+"nécessaire à la gestion des changements (étape 12 : groupe CAB, changements "
+"standard et approbation des changements normaux)"
+msgstr ""
+"necesario para la gestión de cambios (paso 12: grupo CAB, cambios estándar y "
+"aprobación de los cambios normales)"
+
+msgid "Administration > Groupes"
+msgstr "Administración > Grupos"
+
+msgid "Approbation du CAB"
+msgstr "Aprobación del CAB"
+
+msgid ""
+"Au quotidien, tout se passe dans Assistance > Changements : choisissez la "
+"catégorie du changement, le modèle se remplit, et une demande d'approbation "
+"part au groupe CAB pour un changement normal ou urgent. La règle reste "
+"modifiable dans Administration > Règles > Règles métier pour les changements."
+msgstr ""
+"En el día a día, todo ocurre en Asistencia > Cambios: elija la categoría del "
+"cambio, la plantilla se rellena y se envía una solicitud de aprobación al "
+"grupo CAB para un cambio normal o urgente. La regla sigue siendo modificable "
+"en Administración > Reglas > Reglas de negocio para los cambios."
+
+msgid ""
+"Catégorie et modèle : analyse d'impact, plan de déploiement et plan de "
+"retour arrière obligatoires."
+msgstr ""
+"Categoría y plantilla: análisis de impacto, plan de despliegue y plan de "
+"marcha atrás obligatorios."
+
+msgid ""
+"Catégorie et modèle allégé : description et plan de retour arrière "
+"obligatoires."
+msgstr ""
+"Categoría y plantilla simplificada: descripción y plan de marcha atrás "
+"obligatorios."
+
+msgid "Changement normal"
+msgstr "Cambio normal"
+
+msgid "Changement standard (pré-approuvé)"
+msgstr "Cambio estándar (preaprobado)"
+
+msgid "Changement urgent"
+msgstr "Cambio urgente"
+
+msgid ""
+"Créé vide : ajoutez-y les personnes qui décident des changements ; un seul "
+"membre suffit pour répondre au nom du groupe."
+msgstr ""
+"Se crea vacío: añada las personas que deciden sobre los cambios; basta con "
+"un miembro para responder en nombre del grupo."
+
+msgid ""
+"Gestion des changements : groupe CAB, approbation des changements normaux et "
+"changements standard pré-approuvés"
+msgstr ""
+"Gestión de cambios: grupo CAB, aprobación de los cambios normales y cambios "
+"estándar preaprobados"
+
+msgid "Groupe CAB"
+msgstr "Grupo CAB"
+
+msgid "Sans approbation"
+msgstr "Sin aprobación"
+
+msgid ""
+"Trois sortes de changements, comme le recommande ITIL : les changements "
+"normaux et urgents doivent être approuvés par le comité des changements "
+"(CAB) avant d'être réalisés ; les changements standard (courants, à faible "
+"risque, procédure connue) sont approuvés une fois pour toutes et se "
+"réalisent directement."
+msgstr ""
+"Tres tipos de cambios, como recomienda ITIL: los cambios normales y urgentes "
+"deben ser aprobados por el comité de cambios (CAB) antes de realizarse; los "
+"cambios estándar (habituales, de bajo riesgo, con procedimiento conocido) se "
+"aprueban de una vez por todas y se realizan directamente."
+
+msgid ""
+"Un petit catalogue de sous-catégories, chacune avec un modèle qui pré-"
+"remplit le titre, la description et les plans :"
+msgstr ""
+"Un pequeño catálogo de subcategorías, cada una con una plantilla que rellena "
+"de antemano el título, la descripción y los planes:"
+
+msgid ""
+"Votre profil ne peut pas modifier les règles métier pour les changements : "
+"cette option sera ignorée."
+msgstr ""
+"Su perfil no puede modificar las reglas de negocio para los cambios: esta "
+"opción se ignorará."
+
+msgid ""
+"Le numéro ou la référence tels qu'ils apparaissent dans l'application (au "
+"moins un chiffre)."
+msgstr ""
+"El número o la referencia tal como aparecen en la aplicación (al menos una "
+"cifra)."
+
+msgid "Nouvelle valeur adoptée : elle devient la référence du Blueprint."
+msgstr "Nuevo valor adoptado: pasa a ser la referencia del Blueprint."
+
+msgid ""
+"Cet écart ne peut pas être adopté ici : reportez la valeur dans l'assistant."
+msgstr ""
+"Esta diferencia no se puede adoptar aquí: introduzca el valor en el "
+"asistente."
+
+msgid "Règles d'affectation des SLA"
+msgstr "Reglas de asignación de los SLA"
+
+msgid "Active"
+msgstr "Activa"
+
+msgid "Niveau de service introuvable (#%d)"
+msgstr "Nivel de servicio no encontrado (#%d)"
+
+msgid "Éléments surveillés enregistrés."
+msgstr "Elementos supervisados guardados."
+
+msgid "Actions"
+msgstr "Acciones"
+
+msgid "Adopter"
+msgstr "Adoptar"
+
+msgid "Choisir les éléments surveillés"
+msgstr "Elegir los elementos supervisados"
+
+msgid ""
+"Compare les SLA, le calendrier, les catégories de tickets, les statuts et "
+"les règles d'affectation des SLA créés par le plugin à ce qu'ils sont "
+"aujourd'hui dans GLPI. Cette vérification ne modifie rien."
+msgstr ""
+"Compara los SLA, el calendario, las categorías de tickets, los estados y las "
+"reglas de asignación de los SLA creados por el plugin con lo que son hoy en "
+"GLPI. Esta comprobación no modifica nada."
+
+msgid "Garder la valeur de GLPI comme nouvelle référence du Blueprint"
+msgstr "Conservar el valor de GLPI como nueva referencia del Blueprint"
+
+msgid ""
+"Modification voulue : « Adopter » garde la valeur de GLPI comme référence "
+"(délais des SLA et OLA), sinon reportez-la dans l'assistant. Modification "
+"accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est "
+"jamais supprimé ; une règle désactivée se réactive depuis sa fiche."
+msgstr ""
+"Cambio deseado: «Adoptar» conserva el valor de GLPI como referencia (plazos "
+"de los SLA y OLA); si no, introdúzcalo en el asistente. Cambio accidental: "
+"vuelva a aplicar el Blueprint. Un elemento añadido a mano nunca se elimina; "
+"una regla desactivada se reactiva desde su ficha."
+
+msgid "Ouvrir dans GLPI"
+msgstr "Abrir en GLPI"
+
+msgid "Remettre la valeur du Blueprint, après aperçu et confirmation"
+msgstr "Restablecer el valor del Blueprint, tras vista previa y confirmación"
+
+msgid "Réappliquer"
+msgstr "Volver a aplicar"
+
+msgid ""
+"Choisissez ce que l'audit compare au dernier Blueprint appliqué. La "
+"comparaison a lieu à chaque audit : à l'ouverture de la page d'audit, lors "
+"de la veille des constats critiques et avec le rapport périodique ci-"
+"dessous, dont elle suit la fréquence. Elle ne modifie rien."
+msgstr ""
+"Elija lo que la auditoría compara con el último Blueprint aplicado. La "
+"comparación se realiza en cada auditoría: al abrir la página de auditoría, "
+"durante la vigilancia de hallazgos críticos y con el informe periódico de "
+"abajo, cuya frecuencia sigue. No modifica nada."
+
+msgid ""
+"%d écart détecté (SLA, calendrier, catégories, statuts ou règles modifiés à "
+"la main)."
+msgid_plural ""
+"%d écarts détectés (SLA, calendrier, catégories, statuts ou règles modifiés "
+"à la main)."
+msgstr[0] ""
+"%d diferencia detectada (SLA, calendario, categorías, estados o reglas "
+"modificados a mano)."
+msgstr[1] ""
+"%d diferencias detectadas (SLA, calendario, categorías, estados o reglas "
+"modificados a mano)."
+
 #~ msgid "Blueprint appliqué. Vérifiez chaque étape avant de valider."
 #~ msgstr "Blueprint aplicado. Revise cada paso antes de confirmar."
 
@@ -7563,499 +8329,3 @@ msgstr "Origen"
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Número de inventario o nombre del puesto actual"
-
-msgid "Niveaux de service (SLA, OLA)"
-msgstr "Niveles de servicio (SLA, OLA)"
-
-msgid "Blueprint"
-msgstr "Blueprint"
-
-msgid "La configuration s'écarte du dernier Blueprint appliqué"
-msgstr "La configuración se aparta del último Blueprint aplicado"
-
-msgid "Relisez les écarts plus bas sur cette page : réappliquez le Blueprint si la modification n'était pas voulue, sinon reportez la nouvelle valeur dans l'assistant."
-msgstr "Revise las diferencias más abajo en esta página: vuelva a aplicar el Blueprint si el cambio no era intencionado; si no, traslade el nuevo valor al asistente."
-
-msgid "Voir les écarts"
-msgstr "Ver las diferencias"
-
-msgid "Écarts avec le dernier Blueprint appliqué"
-msgstr "Diferencias con el último Blueprint aplicado"
-
-msgid "Compare les SLA, le calendrier, les catégories de tickets et les statuts créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette vérification ne modifie rien."
-msgstr "Compara los SLA, el calendario, las categorías de tickets y los estados creados por el plugin con lo que son hoy en GLPI. Esta comprobación no modifica nada."
-
-msgid "Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à comparer."
-msgstr "Todavía no se ha aplicado ningún Blueprint con el asistente: no hay nada que comparar."
-
-msgid "Ouvrir l'assistant"
-msgstr "Abrir el asistente"
-
-msgid "Aucun écart : la configuration de GLPI correspond au dernier Blueprint appliqué."
-msgstr "Sin diferencias: la configuración de GLPI coincide con el último Blueprint aplicado."
-
-msgid "Ajouté"
-msgstr "Añadido"
-
-msgid "Modifié"
-msgstr "Modificado"
-
-msgid "Supprimé"
-msgstr "Eliminado"
-
-msgid "Écart"
-msgstr "Diferencia"
-
-msgid "Dans GLPI"
-msgstr "En GLPI"
-
-msgid "Dans le Blueprint"
-msgstr "En el Blueprint"
-
-msgid "Modification voulue : reportez la nouvelle valeur dans l'assistant, elle deviendra la référence au prochain déploiement. Modification accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
-msgstr "Cambio intencionado: traslade el nuevo valor al asistente; será la referencia en el próximo despliegue. Cambio accidental: vuelva a aplicar el Blueprint. Un elemento añadido a mano nunca se elimina."
-
-msgid "Réappliquer le Blueprint (avec aperçu)"
-msgstr "Volver a aplicar el Blueprint (con vista previa)"
-
-msgid "Adopter les nouvelles valeurs dans l'assistant"
-msgstr "Adoptar los nuevos valores en el asistente"
-
-msgid "Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément ajouté à la main est conservé."
-msgstr "Los elementos eliminados o modificados se vuelven a crear o se realinean; un elemento añadido a mano se conserva."
-
-msgid "Réaligner aussi les SLA et OLA déjà créés sur cette configuration"
-msgstr "Realinear también los SLA y OLA ya creados con esta configuración"
-
-msgid "Conformité au dernier Blueprint appliqué"
-msgstr "Conformidad con el último Blueprint aplicado"
-
-#, php-format
-msgid "%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
-msgid_plural "%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la main)."
-msgstr[0] "%d diferencia detectada (SLA, calendario, categorías o estados modificados a mano)."
-msgstr[1] "%d diferencias detectadas (SLA, calendario, categorías o estados modificados a mano)."
-
-msgid "Non applicables (désactivés dans les réglages ou sans objet sur cette version de GLPI) :"
-msgstr "No aplicables (desactivados en los ajustes o sin objeto en esta versión de GLPI):"
-
-msgid "Conforme"
-msgstr "Conforme"
-
-msgid "Sessions et ré-authentification"
-msgstr "Sesiones y reautenticación"
-
-msgid "Sans objet sous GLPI 11"
-msgstr "No aplicable en GLPI 11"
-
-msgid "Une session, c'est une connexion à GLPI restée ouverte sur un navigateur. Cette section vérifie qu'aucune ne reste ouverte trop longtemps, surtout pour les administrateurs, et que GLPI redemande le mot de passe avant les actions sensibles. Elle ne ferme aucune session et ne modifie aucun réglage."
-msgstr "Una sesión es una conexión a GLPI que permanece abierta en un navegador. Esta sección comprueba que ninguna quede abierta demasiado tiempo, sobre todo para los administradores, y que GLPI vuelva a pedir la contraseña antes de las acciones sensibles. No cierra ninguna sesión ni modifica ningún ajuste."
-
-msgid "Le suivi des sessions actives et la ré-authentification n'existent qu'à partir de GLPI 12. Sur cette version, le contrôle est sans objet : il ne compte pas dans la note de durcissement. Il s'activera tout seul après la mise à jour vers GLPI 12."
-msgstr "El seguimiento de las sesiones activas y la reautenticación solo existen a partir de GLPI 12. En esta versión el control no es aplicable: no cuenta en la nota de endurecimiento. Se activará solo tras la actualización a GLPI 12."
-
-msgid "%d jour(s)"
-msgstr "%d día(s)"
-
-msgid "%d heure(s)"
-msgstr "%d hora(s)"
-
-msgid "Ré-authentification avant les actions sensibles"
-msgstr "Reautenticación antes de las acciones sensibles"
-
-msgid "Désactivée"
-msgstr "Desactivada"
-
-msgid "Activée"
-msgstr "Activada"
-
-msgid "GLPI redemande le mot de passe avant de changer des droits ou des réglages de sécurité : une session oubliée ne suffit pas pour les modifier."
-msgstr "GLPI vuelve a pedir la contraseña antes de cambiar derechos o ajustes de seguridad: una sesión olvidada no basta para modificarlos."
-
-msgid "Fichier config/local_define.php du serveur (constante GLPI_DISABLE_REAUTH)"
-msgstr "Archivo config/local_define.php del servidor (constante GLPI_DISABLE_REAUTH)"
-
-msgid "Nettoyage automatique des sessions expirées"
-msgstr "Limpieza automática de las sesiones caducadas"
-
-msgid "L'action automatique « session » ferme chaque jour les sessions inactives."
-msgstr "La acción automática «session» cierra cada día las sesiones inactivas."
-
-msgid "Configuration > Actions automatiques > session"
-msgstr "Configuración > Acciones automáticas > session"
-
-msgid "Durée de « Se souvenir de moi »"
-msgstr "Duración de «Recuérdame»"
-
-msgid "Pendant cette durée, GLPI reconnecte le navigateur sans mot de passe. %d jours au plus sont conseillés."
-msgstr "Durante este tiempo, GLPI vuelve a conectar el navegador sin contraseña. Se recomiendan %d días como máximo."
-
-msgid "Configuration > Générale > Identification automatique"
-msgstr "Configuración > General > Acceso Automático"
-
-msgid "Conservation de l'historique des connexions"
-msgstr "Conservación del historial de conexiones"
-
-msgid "Non conservé"
-msgstr "No se conserva"
-
-msgid "Permet de retrouver qui s'est connecté, quand et d'où, par exemple après un incident."
-msgstr "Permite saber quién se conectó, cuándo y desde dónde, por ejemplo tras un incidente."
-
-msgid "Configuration > Données et Confidentialité > Sessions de connexion"
-msgstr "Configuración > Data and Privacy > Login sessions"
-
-msgid "Réglage de GLPI"
-msgstr "Ajuste de GLPI"
-
-msgid "État"
-msgstr "Estado"
-
-msgid "Pourquoi c'est important"
-msgstr "Por qué es importante"
-
-msgid "Où le régler"
-msgstr "Dónde ajustarlo"
-
-msgid "Sessions actives : %d"
-msgstr "Sesiones activas: %d"
-
-msgid "Comptes à privilèges connectés depuis plus de %1$d heures : %2$d"
-msgstr "Cuentas con privilegios conectadas desde hace más de %1$d horas: %2$d"
-
-msgid "Autres comptes avec une session de plus de %1$d jours : %2$d"
-msgstr "Otras cuentas con una sesión de más de %1$d días: %2$d"
-
-msgid "Les comptes concernés sont listés dans les constats plus haut, avec un lien vers l'onglet « Sessions » de leur fiche. Avant de fermer une session, vérifiez avec la personne : elle sera déconnectée."
-msgstr "Las cuentas afectadas aparecen en las constataciones de arriba, con un enlace a la pestaña «Sessions» de su ficha. Antes de cerrar una sesión, compruébelo con la persona: se desconectará."
-
-msgid "Voir toutes les sessions dans GLPI"
-msgstr "Ver todas las sesiones en GLPI"
-
-msgid "Sessions et ré-authentification (GLPI 12)"
-msgstr "Sesiones y reautenticación (GLPI 12)"
-
-msgid "La ré-authentification avant les actions sensibles est désactivée"
-msgstr "La reautenticación antes de las acciones sensibles está desactivada"
-
-msgid "GLPI ne redemande plus le mot de passe avant une action sensible (droits, sécurité) : une session laissée ouverte suffit pour les modifier. La constante GLPI_DISABLE_REAUTH est déclarée dans un fichier de configuration du serveur."
-msgstr "GLPI ya no vuelve a pedir la contraseña antes de una acción sensible (derechos, seguridad): basta una sesión abierta para modificarlos. La constante GLPI_DISABLE_REAUTH está declarada en un archivo de configuración del servidor."
-
-msgid "Demandez à la personne qui gère le serveur de retirer GLPI_DISABLE_REAUTH du fichier config/local_define.php."
-msgstr "Pida a la persona que gestiona el servidor que retire GLPI_DISABLE_REAUTH del archivo config/local_define.php."
-
-msgid "Le nettoyage automatique des sessions est arrêté"
-msgstr "La limpieza automática de las sesiones está detenida"
-
-msgid "L'action automatique « session » de GLPI ferme les sessions expirées. Désactivée, d'anciennes sessions restent valables et la liste des sessions actives ne reflète plus la réalité."
-msgstr "La acción automática «session» de GLPI cierra las sesiones caducadas. Desactivada, las sesiones antiguas siguen siendo válidas y la lista de sesiones activas ya no refleja la realidad."
-
-msgid "Réactivez l'action automatique « session » dans Configuration > Actions automatiques."
-msgstr "Vuelva a activar la acción automática «session» en Configuración > Acciones automáticas."
-
-msgid "L'historique des connexions n'est pas conservé"
-msgstr "El historial de conexiones no se conserva"
-
-msgid "Avec une durée de conservation de 0 jour, GLPI efface la trace d'une connexion dès sa fin : impossible ensuite de savoir qui s'est connecté, quand et d'où."
-msgstr "Con un periodo de conservación de 0 días, GLPI borra el rastro de una conexión en cuanto termina: luego es imposible saber quién se conectó, cuándo y desde dónde."
-
-msgid "Indiquez une durée de conservation (90 jours par exemple) dans Configuration > Données et Confidentialité, onglet « Sessions de connexion »."
-msgstr "Indique un periodo de conservación (90 días, por ejemplo) en Configuración > Data and Privacy, pestaña «Login sessions»."
-
-msgid "« Se souvenir de moi » garde la connexion plus de %d jours"
-msgstr "«Recuérdame» mantiene la conexión más de %d días"
-
-msgid "Durée actuelle : %d jours. Toute personne qui utilise l'ordinateur pendant ce temps entre dans GLPI sans mot de passe."
-msgstr "Duración actual: %d días. Cualquier persona que use el ordenador durante ese tiempo entra en GLPI sin contraseña."
-
-msgid "Réduisez le « Temps de rétention se souvenir de moi » dans Configuration > Générale, section « Identification automatique »."
-msgstr "Reduzca el «Tiempo para permitir Recuérdame» en Configuración > General, sección «Acceso Automático»."
-
-msgid "%1$d compte à privilèges connecté depuis plus de %2$d heures"
-msgid_plural "%1$d comptes à privilèges connectés depuis plus de %2$d heures"
-msgstr[0] "%1$d cuenta con privilegios conectada desde hace más de %2$d horas"
-msgstr[1] "%1$d cuentas con privilegios conectadas desde hace más de %2$d horas"
-
-msgid "Une session d'administrateur restée ouverte est la plus intéressante à voler. Vérifiez avec chaque personne qu'elle est bien la sienne, puis fermez les sessions inutiles : fiche de l'utilisateur, onglet « Sessions », bouton « Révoquer »."
-msgstr "Una sesión de administrador que queda abierta es la más interesante de robar. Compruebe con cada persona que es realmente la suya y cierre las sesiones innecesarias: ficha del usuario, pestaña «Sessions», botón «Revoke»."
-
-msgid "%1$d compte a une session ouverte depuis plus de %2$d jours"
-msgid_plural "%1$d comptes ont une session ouverte depuis plus de %2$d jours"
-msgstr[0] "%1$d cuenta tiene una sesión abierta desde hace más de %2$d días"
-msgstr[1] "%1$d cuentas tienen una sesión abierta desde hace más de %2$d días"
-
-msgid "Souvent un « Se souvenir de moi » sur un poste partagé ou perdu. Fermez les sessions qui ne sont plus utiles : fiche de l'utilisateur, onglet « Sessions »."
-msgstr "A menudo un «Recuérdame» en un equipo compartido o perdido. Cierre las sesiones que ya no son útiles: ficha del usuario, pestaña «Sessions»."
-
-msgid "%1$s (ouverte le %2$s)"
-msgstr "%1$s (abierta el %2$s)"
-
-msgid "Ces réglages sont maintenant dans Configuration > Plugins > Configuration GLPI Auto."
-msgstr "Estos ajustes están ahora en Configuración > Complementos > Configuration GLPI Auto."
-
-msgid "Configuration GLPI Auto"
-msgstr "Configuration GLPI Auto"
-
-msgid "Général"
-msgstr "General"
-
-msgid "Audit"
-msgstr "Auditoría"
-
-msgid "Fin de support"
-msgstr "Fin de soporte"
-
-msgid "Profils et Blueprints"
-msgstr "Perfiles y Blueprints"
-
-msgid "Historique"
-msgstr "Historial"
-
-msgid "Assistant"
-msgstr "Asistente"
-
-msgid "Importer des tickets"
-msgstr "Importar tickets"
-
-msgid "Dernière version inconnue"
-msgstr "Última versión desconocida"
-
-msgid "La dernière version n'est lue sur GitHub que si l'action automatique « checkupdate » de GLPI est activée (Configuration > Actions automatiques) et que le serveur GLPI peut joindre github.com."
-msgstr "La última versión solo se consulta en GitHub si la acción automática «checkupdate» de GLPI está activada (Configuración > Acciones automáticas) y el servidor GLPI puede acceder a github.com."
-
-msgid "Mise à jour disponible"
-msgstr "Actualización disponible"
-
-msgid "Notes de version"
-msgstr "Notas de la versión"
-
-msgid "À jour"
-msgstr "Actualizado"
-
-msgid "Depuis Jira"
-msgstr "Desde Jira"
-
-msgid "Depuis un fichier CSV"
-msgstr "Desde un archivo CSV"
-
-msgid "Source des tickets"
-msgstr "Origen de los tickets"
-
-msgid "Écrans de Configuration GLPI Auto"
-msgstr "Pantallas de Configuration GLPI Auto"
-
-msgid "Contrôle désactivé : activez-le et indiquez les correspondances dans l'onglet « Fin de support » des réglages."
-msgstr "Control desactivado: actívelo e indique las correspondencias en la pestaña «Fin de soporte» de los ajustes."
-
-msgid "Délais des contrôles du parc, fin de support et rapport périodique : ces réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
-msgstr "Plazos de los controles del inventario, fin de soporte e informe periódico: estos ajustes están en Configuración > Complementos > Configuration GLPI Auto."
-
-msgid "Envoyer le rapport maintenant"
-msgstr "Enviar el informe ahora"
-
-msgid "Ouvrir les réglages"
-msgstr "Abrir los ajustes"
-
-msgid "Actions automatiques"
-msgstr "Acciones automáticas"
-
-msgid "Administration > Profils, onglet « Configuration GLPI Auto » de chaque profil."
-msgstr "Administración > Perfiles, pestaña «Configuration GLPI Auto» de cada perfil."
-
-msgid "Analyse continue de l'audit, rapport périodique et vérification des nouvelles versions (checkupdate)."
-msgstr "Análisis continuo de la auditoría, informe periódico y comprobación de nuevas versiones (checkupdate)."
-
-msgid "Droits du plugin"
-msgstr "Derechos del complemento"
-
-msgid "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
-msgstr "Señala los sistemas operativos y los modelos de hardware en servicio cuyo soporte del fabricante ha terminado o termina pronto, según las fechas públicas del sitio endoflife.date. No se descarga nada mientras no esté activado, solo se contacta con endoflife.date, y solo cuando hace clic en «Descargar las fechas» en la página de auditoría. Después, el control lee estas fechas guardadas en la base de datos: nunca modifica el hardware."
-
-msgid "Lecture seule : modifier ces réglages demande le droit de modification de la configuration de GLPI et de ce plugin."
-msgstr "Solo lectura: modificar estos ajustes requiere el derecho de modificar la configuración de GLPI y de este complemento."
-
-msgid "Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, rapport périodique, fin de support des systèmes et du matériel."
-msgstr "Los ajustes del complemento, y solo ellos: plazos de los controles de la auditoría, informe periódico, fin de soporte de los sistemas y del hardware."
-
-msgid "Modèle et destinataires du rapport d'audit périodique."
-msgstr "Plantilla y destinatarios del informe de auditoría periódico."
-
-msgid "Réglages de Configuration GLPI Auto"
-msgstr "Ajustes de Configuration GLPI Auto"
-
-msgid "Réglages gérés par GLPI"
-msgstr "Ajustes gestionados por GLPI"
-
-msgid "Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, l'historique et les imports s'ouvrent depuis le menu Configuration > Configuration GLPI Auto."
-msgstr "Ajuste cada pestaña y guárdela. El asistente, la auditoría, los perfiles, el historial y las importaciones se abren desde el menú Configuración > Configuration GLPI Auto."
-
-msgid "Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, historique, imports) sont dans les onglets ci-dessus."
-msgstr "Abra un perfil de la lista para consultarlo o exportarlo, o importe un Blueprint recibido de otra instancia. Las demás pantallas (asistente, auditoría, historial, importaciones) están en las pestañas de arriba."
-
-msgid "Progression de l'assistant"
-msgstr "Progreso del asistente"
-
-msgid "Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
-msgstr "Indique la dirección de Jira (HTTPS), el token, la clave del proyecto (y la dirección de correo electrónico para Jira Cloud) y una entidad a la que tenga acceso."
-
-#, php-format
-msgid "Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la date ou le filtre pour le reste."
-msgstr "Más de %d tickets: solo se importan los primeros; acote el proyecto, la fecha o el filtro para el resto."
-
-msgid "Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses équilibrées."
-msgstr "Clave de proyecto, fecha o filtro no válidos: claves como SUP o SUP, OPS (20 como máximo), una fecha en formato AAAA-MM-DD, un filtro con paréntesis equilibrados."
-
-msgid "Requête sans restriction : indiquez au moins une clé de projet."
-msgstr "Consulta sin restricción: indique al menos una clave de proyecto."
-
-msgid "Clé du projet Jira"
-msgstr "Clave del proyecto de Jira"
-
-msgid "Mis à jour depuis (facultatif)"
-msgstr "Actualizado desde (opcional)"
-
-msgid "Filtre JQL supplémentaire (facultatif)"
-msgstr "Filtro JQL adicional (opcional)"
-
-msgid "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
-msgstr "Jira exige una búsqueda restringida: solo se leen los tickets del proyecto o proyectos indicados (claves separadas por comas), actualizados desde la fecha elegida, del más antiguo al más reciente. El filtro se añade a estas condiciones."
-
-msgid "Gestion des changements prête (%d élément(s) créé(s) : groupe CAB, catégories, modèles et règle d'approbation). Ajoutez les membres du CAB dans Administration > Groupes."
-msgstr "Gestión de cambios lista (%d elemento(s) creado(s): grupo CAB, categorías, plantillas y regla de aprobación). Añada los miembros del CAB en Administración > Grupos."
-
-msgid "Gérer les règles métier pour les changements"
-msgstr "Gestionar las reglas de negocio para los cambios"
-
-msgid "nécessaire à la gestion des changements (étape 12 : groupe CAB, changements standard et approbation des changements normaux)"
-msgstr "necesario para la gestión de cambios (paso 12: grupo CAB, cambios estándar y aprobación de los cambios normales)"
-
-msgid "Administration > Groupes"
-msgstr "Administración > Grupos"
-
-msgid "Approbation du CAB"
-msgstr "Aprobación del CAB"
-
-msgid "Au quotidien, tout se passe dans Assistance > Changements : choisissez la catégorie du changement, le modèle se remplit, et une demande d'approbation part au groupe CAB pour un changement normal ou urgent. La règle reste modifiable dans Administration > Règles > Règles métier pour les changements."
-msgstr "En el día a día, todo ocurre en Asistencia > Cambios: elija la categoría del cambio, la plantilla se rellena y se envía una solicitud de aprobación al grupo CAB para un cambio normal o urgente. La regla sigue siendo modificable en Administración > Reglas > Reglas de negocio para los cambios."
-
-msgid "Catégorie et modèle : analyse d'impact, plan de déploiement et plan de retour arrière obligatoires."
-msgstr "Categoría y plantilla: análisis de impacto, plan de despliegue y plan de marcha atrás obligatorios."
-
-msgid "Catégorie et modèle allégé : description et plan de retour arrière obligatoires."
-msgstr "Categoría y plantilla simplificada: descripción y plan de marcha atrás obligatorios."
-
-msgid "Changement normal"
-msgstr "Cambio normal"
-
-msgid "Changement standard (pré-approuvé)"
-msgstr "Cambio estándar (preaprobado)"
-
-msgid "Changement urgent"
-msgstr "Cambio urgente"
-
-msgid "Créé vide : ajoutez-y les personnes qui décident des changements ; un seul membre suffit pour répondre au nom du groupe."
-msgstr "Se crea vacío: añada las personas que deciden sobre los cambios; basta con un miembro para responder en nombre del grupo."
-
-msgid "Gestion des changements : groupe CAB, approbation des changements normaux et changements standard pré-approuvés"
-msgstr "Gestión de cambios: grupo CAB, aprobación de los cambios normales y cambios estándar preaprobados"
-
-msgid "Groupe CAB"
-msgstr "Grupo CAB"
-
-msgid "Sans approbation"
-msgstr "Sin aprobación"
-
-msgid "Trois sortes de changements, comme le recommande ITIL : les changements normaux et urgents doivent être approuvés par le comité des changements (CAB) avant d'être réalisés ; les changements standard (courants, à faible risque, procédure connue) sont approuvés une fois pour toutes et se réalisent directement."
-msgstr "Tres tipos de cambios, como recomienda ITIL: los cambios normales y urgentes deben ser aprobados por el comité de cambios (CAB) antes de realizarse; los cambios estándar (habituales, de bajo riesgo, con procedimiento conocido) se aprueban de una vez por todas y se realizan directamente."
-
-msgid "Un petit catalogue de sous-catégories, chacune avec un modèle qui pré-remplit le titre, la description et les plans :"
-msgstr "Un pequeño catálogo de subcategorías, cada una con una plantilla que rellena de antemano el título, la descripción y los planes:"
-
-msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
-msgstr "Su perfil no puede modificar las reglas de negocio para los cambios: esta opción se ignorará."
-
-msgid "Nouvelle valeur adoptée : elle devient la référence du Blueprint."
-msgstr "Nuevo valor adoptado: pasa a ser la referencia del Blueprint."
-
-msgid ""
-"Cet écart ne peut pas être adopté ici : reportez la valeur dans l'assistant."
-msgstr ""
-"Esta diferencia no se puede adoptar aquí: introduzca el valor en el "
-"asistente."
-
-msgid "Règles d'affectation des SLA"
-msgstr "Reglas de asignación de los SLA"
-
-msgid "Active"
-msgstr "Activa"
-
-msgid "Niveau de service introuvable (#%d)"
-msgstr "Nivel de servicio no encontrado (#%d)"
-
-msgid "Éléments surveillés enregistrés."
-msgstr "Elementos supervisados guardados."
-
-msgid "Actions"
-msgstr "Acciones"
-
-msgid "Adopter"
-msgstr "Adoptar"
-
-msgid "Choisir les éléments surveillés"
-msgstr "Elegir los elementos supervisados"
-
-msgid ""
-"Compare les SLA, le calendrier, les catégories de tickets, les statuts et les"
-" règles d'affectation des SLA créés par le plugin à ce qu'ils sont "
-"aujourd'hui dans GLPI. Cette vérification ne modifie rien."
-msgstr ""
-"Compara los SLA, el calendario, las categorías de tickets, los estados y las "
-"reglas de asignación de los SLA creados por el plugin con lo que son hoy en "
-"GLPI. Esta comprobación no modifica nada."
-
-msgid "Garder la valeur de GLPI comme nouvelle référence du Blueprint"
-msgstr "Conservar el valor de GLPI como nueva referencia del Blueprint"
-
-msgid ""
-"Modification voulue : « Adopter » garde la valeur de GLPI comme référence "
-"(délais des SLA et OLA), sinon reportez-la dans l'assistant. Modification "
-"accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est "
-"jamais supprimé ; une règle désactivée se réactive depuis sa fiche."
-msgstr ""
-"Cambio deseado: «Adoptar» conserva el valor de GLPI como referencia (plazos "
-"de los SLA y OLA); si no, introdúzcalo en el asistente. Cambio accidental: "
-"vuelva a aplicar el Blueprint. Un elemento añadido a mano nunca se elimina; "
-"una regla desactivada se reactiva desde su ficha."
-
-msgid "Ouvrir dans GLPI"
-msgstr "Abrir en GLPI"
-
-msgid "Remettre la valeur du Blueprint, après aperçu et confirmation"
-msgstr "Restablecer el valor del Blueprint, tras vista previa y confirmación"
-
-msgid "Réappliquer"
-msgstr "Volver a aplicar"
-
-msgid ""
-"Choisissez ce que l'audit compare au dernier Blueprint appliqué. La "
-"comparaison a lieu à chaque audit : à l'ouverture de la page d'audit, lors de"
-" la veille des constats critiques et avec le rapport périodique ci-dessous, "
-"dont elle suit la fréquence. Elle ne modifie rien."
-msgstr ""
-"Elija lo que la auditoría compara con el último Blueprint aplicado. La "
-"comparación se realiza en cada auditoría: al abrir la página de auditoría, "
-"durante la vigilancia de hallazgos críticos y con el informe periódico de "
-"abajo, cuya frecuencia sigue. No modifica nada."
-
-msgid ""
-"%d écart détecté (SLA, calendrier, catégories, statuts ou règles modifiés à "
-"la main)."
-msgid_plural ""
-"%d écarts détectés (SLA, calendrier, catégories, statuts ou règles modifiés à"
-" la main)."
-msgstr[0] ""
-"%d diferencia detectada (SLA, calendario, categorías, estados o reglas "
-"modificados a mano)."
-msgstr[1] ""
-"%d diferencias detectadas (SLA, calendario, categorías, estados o reglas "
-"modificados a mano)."
