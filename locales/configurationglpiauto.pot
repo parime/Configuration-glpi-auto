@@ -4214,13 +4214,6 @@ msgstr ""
 
 #: templates/audit/_blueprint_drift.html.twig
 msgid ""
-"Compare les SLA, le calendrier, les catégories de tickets et les statuts "
-"créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette "
-"vérification ne modifie rien."
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid ""
 "Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à "
 "comparer."
 msgstr ""
@@ -4262,13 +4255,6 @@ msgstr ""
 
 #: templates/audit/_blueprint_drift.html.twig
 msgid "Dans le Blueprint"
-msgstr ""
-
-#: templates/audit/_blueprint_drift.html.twig
-msgid ""
-"Modification voulue : reportez la nouvelle valeur dans l'assistant, elle "
-"deviendra la référence au prochain déploiement. Modification accidentelle : "
-"réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
 msgstr ""
 
 #: templates/audit/_blueprint_drift.html.twig
@@ -5495,16 +5481,6 @@ msgstr ""
 #: src/Audit/Checks/BlueprintDriftCheck.php:57
 msgid "La configuration s'écarte du dernier Blueprint appliqué"
 msgstr ""
-
-#: src/Audit/Checks/BlueprintDriftCheck.php:60
-#, php-format
-msgid ""
-"%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
-msgid_plural ""
-"%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la "
-"main)."
-msgstr[0] ""
-msgstr[1] ""
 
 #: src/Audit/Checks/BlueprintDriftCheck.php:68
 msgid ""
@@ -8100,5 +8076,95 @@ msgid ""
 "cette option sera ignorée."
 msgstr ""
 
+#: front/audit.php:59
+msgid "Nouvelle valeur adoptée : elle devient la référence du Blueprint."
+msgstr ""
+
+#: front/audit.php:61
+msgid ""
+"Cet écart ne peut pas être adopté ici : reportez la valeur dans l'assistant."
+msgstr ""
+
+#: src/Audit/BlueprintDrift.php:71
+msgid "Règles d'affectation des SLA"
+msgstr ""
+
+#: src/Audit/BlueprintDrift.php:375
+msgid "Active"
+msgstr ""
+
+#: src/Audit/BlueprintDrift.php:386
+#, php-format
+msgid "Niveau de service introuvable (#%d)"
+msgstr ""
+
+#: src/Audit/Checks/BlueprintDriftCheck.php:60
+#, php-format
+msgid ""
+"%d écart détecté (SLA, calendrier, catégories, statuts ou règles modifiés à "
+"la main)."
+msgid_plural ""
+"%d écarts détectés (SLA, calendrier, catégories, statuts ou règles modifiés "
+"à la main)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/ConfigSettings.php:132
+msgid "Éléments surveillés enregistrés."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Actions"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Adopter"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Choisir les éléments surveillés"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid ""
+"Compare les SLA, le calendrier, les catégories de tickets, les statuts et "
+"les règles d'affectation des SLA créés par le plugin à ce qu'ils sont "
+"aujourd'hui dans GLPI. Cette vérification ne modifie rien."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Garder la valeur de GLPI comme nouvelle référence du Blueprint"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid ""
+"Modification voulue : « Adopter » garde la valeur de GLPI comme référence "
+"(délais des SLA et OLA), sinon reportez-la dans l'assistant. Modification "
+"accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est "
+"jamais supprimé ; une règle désactivée se réactive depuis sa fiche."
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Ouvrir dans GLPI"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Remettre la valeur du Blueprint, après aperçu et confirmation"
+msgstr ""
+
+#: templates/audit/_blueprint_drift.html.twig
+msgid "Réappliquer"
+msgstr ""
+
+#: templates/config.html.twig
+msgid ""
+"Choisissez ce que l'audit compare au dernier Blueprint appliqué. La "
+"comparaison a lieu à chaque audit : à l'ouverture de la page d'audit, lors "
+"de la veille des constats critiques et avec le rapport périodique ci-"
+"dessous, dont elle suit la fréquence. Elle ne modifie rien."
+msgstr ""
+
+
 msgid "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."
 msgstr ""
+

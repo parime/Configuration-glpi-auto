@@ -6820,11 +6820,11 @@ msgid "Hôte dans les images"
 msgstr "Hôte dans les images"
 
 msgid ""
-"Seulement s'il diffère de l'adresse (début des images, par exemple "
-"registry.exemple.test:5000)."
+"Seulement s'il diffère de l'adresse (début des images, par exemple registry."
+"exemple.test:5000)."
 msgstr ""
-"Seulement s'il diffère de l'adresse (début des images, par exemple "
-"registry.exemple.test:5000)."
+"Seulement s'il diffère de l'adresse (début des images, par exemple registry."
+"exemple.test:5000)."
 
 msgid "Compte robot"
 msgstr "Compte robot"
@@ -7130,14 +7130,14 @@ msgstr ""
 
 msgid ""
 "Forme : « Nom dans GLPI = produit », ou « Nom dans GLPI = produit cycle » "
-"pour imposer le cycle. Le produit est l'identifiant de la page "
-"endoflife.date (par exemple windows pour endoflife.date/windows). Les noms "
-"sans correspondance ne sont pas contrôlés."
+"pour imposer le cycle. Le produit est l'identifiant de la page endoflife."
+"date (par exemple windows pour endoflife.date/windows). Les noms sans "
+"correspondance ne sont pas contrôlés."
 msgstr ""
 "Forme : « Nom dans GLPI = produit », ou « Nom dans GLPI = produit cycle » "
-"pour imposer le cycle. Le produit est l'identifiant de la page "
-"endoflife.date (par exemple windows pour endoflife.date/windows). Les noms "
-"sans correspondance ne sont pas contrôlés."
+"pour imposer le cycle. Le produit est l'identifiant de la page endoflife."
+"date (par exemple windows pour endoflife.date/windows). Les noms sans "
+"correspondance ne sont pas contrôlés."
 
 msgid "Proposer les correspondances"
 msgstr "Proposer les correspondances"
@@ -7161,13 +7161,13 @@ msgid "Mis à jour le"
 msgstr "Mis à jour le"
 
 msgid ""
-"Sans accès à Internet : sur un autre poste, enregistrez https://"
-"endoflife.date/api/v1/products/windows/ dans un fichier (windows étant le "
-"produit voulu), puis importez-le ici."
+"Sans accès à Internet : sur un autre poste, enregistrez https://endoflife."
+"date/api/v1/products/windows/ dans un fichier (windows étant le produit "
+"voulu), puis importez-le ici."
 msgstr ""
-"Sans accès à Internet : sur un autre poste, enregistrez https://"
-"endoflife.date/api/v1/products/windows/ dans un fichier (windows étant le "
-"produit voulu), puis importez-le ici."
+"Sans accès à Internet : sur un autre poste, enregistrez https://endoflife."
+"date/api/v1/products/windows/ dans un fichier (windows étant le produit "
+"voulu), puis importez-le ici."
 
 msgid "Fichier JSON endoflife.date"
 msgstr "Fichier JSON endoflife.date"
@@ -7482,6 +7482,772 @@ msgstr "Aucun changement"
 msgid "Origine"
 msgstr "Origine"
 
+msgid "Niveaux de service (SLA, OLA)"
+msgstr "Niveaux de service (SLA, OLA)"
+
+msgid "Blueprint"
+msgstr "Blueprint"
+
+msgid "La configuration s'écarte du dernier Blueprint appliqué"
+msgstr "La configuration s'écarte du dernier Blueprint appliqué"
+
+msgid ""
+"Relisez les écarts plus bas sur cette page : réappliquez le Blueprint si la "
+"modification n'était pas voulue, sinon reportez la nouvelle valeur dans "
+"l'assistant."
+msgstr ""
+"Relisez les écarts plus bas sur cette page : réappliquez le Blueprint si la "
+"modification n'était pas voulue, sinon reportez la nouvelle valeur dans "
+"l'assistant."
+
+msgid "Voir les écarts"
+msgstr "Voir les écarts"
+
+msgid "Écarts avec le dernier Blueprint appliqué"
+msgstr "Écarts avec le dernier Blueprint appliqué"
+
+msgid ""
+"Compare les SLA, le calendrier, les catégories de tickets et les statuts "
+"créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette "
+"vérification ne modifie rien."
+msgstr ""
+"Compare les SLA, le calendrier, les catégories de tickets et les statuts "
+"créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette "
+"vérification ne modifie rien."
+
+msgid ""
+"Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à "
+"comparer."
+msgstr ""
+"Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à "
+"comparer."
+
+msgid "Ouvrir l'assistant"
+msgstr "Ouvrir l'assistant"
+
+msgid ""
+"Aucun écart : la configuration de GLPI correspond au dernier Blueprint "
+"appliqué."
+msgstr ""
+"Aucun écart : la configuration de GLPI correspond au dernier Blueprint "
+"appliqué."
+
+msgid "Ajouté"
+msgstr "Ajouté"
+
+msgid "Modifié"
+msgstr "Modifié"
+
+msgid "Supprimé"
+msgstr "Supprimé"
+
+msgid "Écart"
+msgstr "Écart"
+
+msgid "Dans GLPI"
+msgstr "Dans GLPI"
+
+msgid "Dans le Blueprint"
+msgstr "Dans le Blueprint"
+
+msgid ""
+"Modification voulue : reportez la nouvelle valeur dans l'assistant, elle "
+"deviendra la référence au prochain déploiement. Modification accidentelle : "
+"réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
+msgstr ""
+"Modification voulue : reportez la nouvelle valeur dans l'assistant, elle "
+"deviendra la référence au prochain déploiement. Modification accidentelle : "
+"réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
+
+msgid "Réappliquer le Blueprint (avec aperçu)"
+msgstr "Réappliquer le Blueprint (avec aperçu)"
+
+msgid "Adopter les nouvelles valeurs dans l'assistant"
+msgstr "Adopter les nouvelles valeurs dans l'assistant"
+
+msgid ""
+"Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément "
+"ajouté à la main est conservé."
+msgstr ""
+"Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément "
+"ajouté à la main est conservé."
+
+msgid "Réaligner aussi les SLA et OLA déjà créés sur cette configuration"
+msgstr "Réaligner aussi les SLA et OLA déjà créés sur cette configuration"
+
+msgid "Conformité au dernier Blueprint appliqué"
+msgstr "Conformité au dernier Blueprint appliqué"
+
+#, php-format
+msgid ""
+"%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
+msgid_plural ""
+"%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la "
+"main)."
+msgstr[0] ""
+"%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
+msgstr[1] ""
+"%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la "
+"main)."
+
+msgid ""
+"Non applicables (désactivés dans les réglages ou sans objet sur cette "
+"version de GLPI) :"
+msgstr ""
+"Non applicables (désactivés dans les réglages ou sans objet sur cette "
+"version de GLPI) :"
+
+msgid "Conforme"
+msgstr "Conforme"
+
+msgid "Sessions et ré-authentification"
+msgstr "Sessions et ré-authentification"
+
+msgid "Sans objet sous GLPI 11"
+msgstr "Sans objet sous GLPI 11"
+
+msgid ""
+"Une session, c'est une connexion à GLPI restée ouverte sur un navigateur. "
+"Cette section vérifie qu'aucune ne reste ouverte trop longtemps, surtout "
+"pour les administrateurs, et que GLPI redemande le mot de passe avant les "
+"actions sensibles. Elle ne ferme aucune session et ne modifie aucun réglage."
+msgstr ""
+"Une session, c'est une connexion à GLPI restée ouverte sur un navigateur. "
+"Cette section vérifie qu'aucune ne reste ouverte trop longtemps, surtout "
+"pour les administrateurs, et que GLPI redemande le mot de passe avant les "
+"actions sensibles. Elle ne ferme aucune session et ne modifie aucun réglage."
+
+msgid ""
+"Le suivi des sessions actives et la ré-authentification n'existent qu'à "
+"partir de GLPI 12. Sur cette version, le contrôle est sans objet : il ne "
+"compte pas dans la note de durcissement. Il s'activera tout seul après la "
+"mise à jour vers GLPI 12."
+msgstr ""
+"Le suivi des sessions actives et la ré-authentification n'existent qu'à "
+"partir de GLPI 12. Sur cette version, le contrôle est sans objet : il ne "
+"compte pas dans la note de durcissement. Il s'activera tout seul après la "
+"mise à jour vers GLPI 12."
+
+msgid "%d jour(s)"
+msgstr "%d jour(s)"
+
+msgid "%d heure(s)"
+msgstr "%d heure(s)"
+
+msgid "Ré-authentification avant les actions sensibles"
+msgstr "Ré-authentification avant les actions sensibles"
+
+msgid "Désactivée"
+msgstr "Désactivée"
+
+msgid "Activée"
+msgstr "Activée"
+
+msgid ""
+"GLPI redemande le mot de passe avant de changer des droits ou des réglages "
+"de sécurité : une session oubliée ne suffit pas pour les modifier."
+msgstr ""
+"GLPI redemande le mot de passe avant de changer des droits ou des réglages "
+"de sécurité : une session oubliée ne suffit pas pour les modifier."
+
+msgid ""
+"Fichier config/local_define.php du serveur (constante GLPI_DISABLE_REAUTH)"
+msgstr ""
+"Fichier config/local_define.php du serveur (constante GLPI_DISABLE_REAUTH)"
+
+msgid "Nettoyage automatique des sessions expirées"
+msgstr "Nettoyage automatique des sessions expirées"
+
+msgid ""
+"L'action automatique « session » ferme chaque jour les sessions inactives."
+msgstr ""
+"L'action automatique « session » ferme chaque jour les sessions inactives."
+
+msgid "Configuration > Actions automatiques > session"
+msgstr "Configuration > Actions automatiques > session"
+
+msgid "Durée de « Se souvenir de moi »"
+msgstr "Durée de « Se souvenir de moi »"
+
+msgid ""
+"Pendant cette durée, GLPI reconnecte le navigateur sans mot de passe. %d "
+"jours au plus sont conseillés."
+msgstr ""
+"Pendant cette durée, GLPI reconnecte le navigateur sans mot de passe. %d "
+"jours au plus sont conseillés."
+
+msgid "Configuration > Générale > Identification automatique"
+msgstr "Configuration > Générale > Identification automatique"
+
+msgid "Conservation de l'historique des connexions"
+msgstr "Conservation de l'historique des connexions"
+
+msgid "Non conservé"
+msgstr "Non conservé"
+
+msgid ""
+"Permet de retrouver qui s'est connecté, quand et d'où, par exemple après un "
+"incident."
+msgstr ""
+"Permet de retrouver qui s'est connecté, quand et d'où, par exemple après un "
+"incident."
+
+msgid "Configuration > Données et Confidentialité > Sessions de connexion"
+msgstr "Configuration > Données et Confidentialité > Sessions de connexion"
+
+msgid "Réglage de GLPI"
+msgstr "Réglage de GLPI"
+
+msgid "État"
+msgstr "État"
+
+msgid "Pourquoi c'est important"
+msgstr "Pourquoi c'est important"
+
+msgid "Où le régler"
+msgstr "Où le régler"
+
+msgid "Sessions actives : %d"
+msgstr "Sessions actives : %d"
+
+msgid "Comptes à privilèges connectés depuis plus de %1$d heures : %2$d"
+msgstr "Comptes à privilèges connectés depuis plus de %1$d heures : %2$d"
+
+msgid "Autres comptes avec une session de plus de %1$d jours : %2$d"
+msgstr "Autres comptes avec une session de plus de %1$d jours : %2$d"
+
+msgid ""
+"Les comptes concernés sont listés dans les constats plus haut, avec un lien "
+"vers l'onglet « Sessions » de leur fiche. Avant de fermer une session, "
+"vérifiez avec la personne : elle sera déconnectée."
+msgstr ""
+"Les comptes concernés sont listés dans les constats plus haut, avec un lien "
+"vers l'onglet « Sessions » de leur fiche. Avant de fermer une session, "
+"vérifiez avec la personne : elle sera déconnectée."
+
+msgid "Voir toutes les sessions dans GLPI"
+msgstr "Voir toutes les sessions dans GLPI"
+
+msgid "Sessions et ré-authentification (GLPI 12)"
+msgstr "Sessions et ré-authentification (GLPI 12)"
+
+msgid "La ré-authentification avant les actions sensibles est désactivée"
+msgstr "La ré-authentification avant les actions sensibles est désactivée"
+
+msgid ""
+"GLPI ne redemande plus le mot de passe avant une action sensible (droits, "
+"sécurité) : une session laissée ouverte suffit pour les modifier. La "
+"constante GLPI_DISABLE_REAUTH est déclarée dans un fichier de configuration "
+"du serveur."
+msgstr ""
+"GLPI ne redemande plus le mot de passe avant une action sensible (droits, "
+"sécurité) : une session laissée ouverte suffit pour les modifier. La "
+"constante GLPI_DISABLE_REAUTH est déclarée dans un fichier de configuration "
+"du serveur."
+
+msgid ""
+"Demandez à la personne qui gère le serveur de retirer GLPI_DISABLE_REAUTH du "
+"fichier config/local_define.php."
+msgstr ""
+"Demandez à la personne qui gère le serveur de retirer GLPI_DISABLE_REAUTH du "
+"fichier config/local_define.php."
+
+msgid "Le nettoyage automatique des sessions est arrêté"
+msgstr "Le nettoyage automatique des sessions est arrêté"
+
+msgid ""
+"L'action automatique « session » de GLPI ferme les sessions expirées. "
+"Désactivée, d'anciennes sessions restent valables et la liste des sessions "
+"actives ne reflète plus la réalité."
+msgstr ""
+"L'action automatique « session » de GLPI ferme les sessions expirées. "
+"Désactivée, d'anciennes sessions restent valables et la liste des sessions "
+"actives ne reflète plus la réalité."
+
+msgid ""
+"Réactivez l'action automatique « session » dans Configuration > Actions "
+"automatiques."
+msgstr ""
+"Réactivez l'action automatique « session » dans Configuration > Actions "
+"automatiques."
+
+msgid "L'historique des connexions n'est pas conservé"
+msgstr "L'historique des connexions n'est pas conservé"
+
+msgid ""
+"Avec une durée de conservation de 0 jour, GLPI efface la trace d'une "
+"connexion dès sa fin : impossible ensuite de savoir qui s'est connecté, "
+"quand et d'où."
+msgstr ""
+"Avec une durée de conservation de 0 jour, GLPI efface la trace d'une "
+"connexion dès sa fin : impossible ensuite de savoir qui s'est connecté, "
+"quand et d'où."
+
+msgid ""
+"Indiquez une durée de conservation (90 jours par exemple) dans Configuration "
+"> Données et Confidentialité, onglet « Sessions de connexion »."
+msgstr ""
+"Indiquez une durée de conservation (90 jours par exemple) dans Configuration "
+"> Données et Confidentialité, onglet « Sessions de connexion »."
+
+msgid "« Se souvenir de moi » garde la connexion plus de %d jours"
+msgstr "« Se souvenir de moi » garde la connexion plus de %d jours"
+
+msgid ""
+"Durée actuelle : %d jours. Toute personne qui utilise l'ordinateur pendant "
+"ce temps entre dans GLPI sans mot de passe."
+msgstr ""
+"Durée actuelle : %d jours. Toute personne qui utilise l'ordinateur pendant "
+"ce temps entre dans GLPI sans mot de passe."
+
+msgid ""
+"Réduisez le « Temps de rétention se souvenir de moi » dans Configuration > "
+"Générale, section « Identification automatique »."
+msgstr ""
+"Réduisez le « Temps de rétention se souvenir de moi » dans Configuration > "
+"Générale, section « Identification automatique »."
+
+msgid "%1$d compte à privilèges connecté depuis plus de %2$d heures"
+msgid_plural "%1$d comptes à privilèges connectés depuis plus de %2$d heures"
+msgstr[0] "%1$d compte à privilèges connecté depuis plus de %2$d heures"
+msgstr[1] "%1$d comptes à privilèges connectés depuis plus de %2$d heures"
+
+msgid ""
+"Une session d'administrateur restée ouverte est la plus intéressante à "
+"voler. Vérifiez avec chaque personne qu'elle est bien la sienne, puis fermez "
+"les sessions inutiles : fiche de l'utilisateur, onglet « Sessions », bouton "
+"« Révoquer »."
+msgstr ""
+"Une session d'administrateur restée ouverte est la plus intéressante à "
+"voler. Vérifiez avec chaque personne qu'elle est bien la sienne, puis fermez "
+"les sessions inutiles : fiche de l'utilisateur, onglet « Sessions », bouton "
+"« Révoquer »."
+
+msgid "%1$d compte a une session ouverte depuis plus de %2$d jours"
+msgid_plural "%1$d comptes ont une session ouverte depuis plus de %2$d jours"
+msgstr[0] "%1$d compte a une session ouverte depuis plus de %2$d jours"
+msgstr[1] "%1$d comptes ont une session ouverte depuis plus de %2$d jours"
+
+msgid ""
+"Souvent un « Se souvenir de moi » sur un poste partagé ou perdu. Fermez les "
+"sessions qui ne sont plus utiles : fiche de l'utilisateur, onglet "
+"« Sessions »."
+msgstr ""
+"Souvent un « Se souvenir de moi » sur un poste partagé ou perdu. Fermez les "
+"sessions qui ne sont plus utiles : fiche de l'utilisateur, onglet "
+"« Sessions »."
+
+msgid "%1$s (ouverte le %2$s)"
+msgstr "%1$s (ouverte le %2$s)"
+
+msgid ""
+"Ces réglages sont maintenant dans Configuration > Plugins > Configuration "
+"GLPI Auto."
+msgstr ""
+"Ces réglages sont maintenant dans Configuration > Plugins > Configuration "
+"GLPI Auto."
+
+msgid "Configuration GLPI Auto"
+msgstr "Configuration GLPI Auto"
+
+msgid "Général"
+msgstr "Général"
+
+msgid "Audit"
+msgstr "Audit"
+
+msgid "Fin de support"
+msgstr "Fin de support"
+
+msgid "Profils et Blueprints"
+msgstr "Profils et Blueprints"
+
+msgid "Historique"
+msgstr "Historique"
+
+msgid "Assistant"
+msgstr "Assistant"
+
+msgid "Importer des tickets"
+msgstr "Importer des tickets"
+
+msgid "Dernière version inconnue"
+msgstr "Dernière version inconnue"
+
+msgid ""
+"La dernière version n'est lue sur GitHub que si l'action automatique "
+"« checkupdate » de GLPI est activée (Configuration > Actions automatiques) "
+"et que le serveur GLPI peut joindre github.com."
+msgstr ""
+"La dernière version n'est lue sur GitHub que si l'action automatique "
+"« checkupdate » de GLPI est activée (Configuration > Actions automatiques) "
+"et que le serveur GLPI peut joindre github.com."
+
+msgid "Mise à jour disponible"
+msgstr "Mise à jour disponible"
+
+msgid "Notes de version"
+msgstr "Notes de version"
+
+msgid "À jour"
+msgstr "À jour"
+
+msgid "Depuis Jira"
+msgstr "Depuis Jira"
+
+msgid "Depuis un fichier CSV"
+msgstr "Depuis un fichier CSV"
+
+msgid "Source des tickets"
+msgstr "Source des tickets"
+
+msgid "Écrans de Configuration GLPI Auto"
+msgstr "Écrans de Configuration GLPI Auto"
+
+msgid ""
+"Contrôle désactivé : activez-le et indiquez les correspondances dans "
+"l'onglet « Fin de support » des réglages."
+msgstr ""
+"Contrôle désactivé : activez-le et indiquez les correspondances dans "
+"l'onglet « Fin de support » des réglages."
+
+msgid ""
+"Délais des contrôles du parc, fin de support et rapport périodique : ces "
+"réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
+msgstr ""
+"Délais des contrôles du parc, fin de support et rapport périodique : ces "
+"réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
+
+msgid "Envoyer le rapport maintenant"
+msgstr "Envoyer le rapport maintenant"
+
+msgid "Ouvrir les réglages"
+msgstr "Ouvrir les réglages"
+
+msgid "Actions automatiques"
+msgstr "Actions automatiques"
+
+msgid ""
+"Administration > Profils, onglet « Configuration GLPI Auto » de chaque "
+"profil."
+msgstr ""
+"Administration > Profils, onglet « Configuration GLPI Auto » de chaque "
+"profil."
+
+msgid ""
+"Analyse continue de l'audit, rapport périodique et vérification des "
+"nouvelles versions (checkupdate)."
+msgstr ""
+"Analyse continue de l'audit, rapport périodique et vérification des "
+"nouvelles versions (checkupdate)."
+
+msgid "Droits du plugin"
+msgstr "Droits du plugin"
+
+msgid ""
+"Il signale les systèmes d'exploitation et les modèles de matériel en service "
+"dont le support du fabricant est terminé ou se termine bientôt, d'après les "
+"dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il "
+"n'est pas activé, seul endoflife.date est contacté, et seulement quand vous "
+"cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit "
+"ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+msgstr ""
+"Il signale les systèmes d'exploitation et les modèles de matériel en service "
+"dont le support du fabricant est terminé ou se termine bientôt, d'après les "
+"dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il "
+"n'est pas activé, seul endoflife.date est contacté, et seulement quand vous "
+"cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit "
+"ensuite ces dates gardées en base : il ne modifie jamais le matériel."
+
+msgid ""
+"Lecture seule : modifier ces réglages demande le droit de modification de la "
+"configuration de GLPI et de ce plugin."
+msgstr ""
+"Lecture seule : modifier ces réglages demande le droit de modification de la "
+"configuration de GLPI et de ce plugin."
+
+msgid ""
+"Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, "
+"rapport périodique, fin de support des systèmes et du matériel."
+msgstr ""
+"Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, "
+"rapport périodique, fin de support des systèmes et du matériel."
+
+msgid "Modèle et destinataires du rapport d'audit périodique."
+msgstr "Modèle et destinataires du rapport d'audit périodique."
+
+msgid "Réglages de Configuration GLPI Auto"
+msgstr "Réglages de Configuration GLPI Auto"
+
+msgid "Réglages gérés par GLPI"
+msgstr "Réglages gérés par GLPI"
+
+msgid ""
+"Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, "
+"l'historique et les imports s'ouvrent depuis le menu Configuration > "
+"Configuration GLPI Auto."
+msgstr ""
+"Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, "
+"l'historique et les imports s'ouvrent depuis le menu Configuration > "
+"Configuration GLPI Auto."
+
+msgid ""
+"Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un "
+"Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, "
+"historique, imports) sont dans les onglets ci-dessus."
+msgstr ""
+"Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un "
+"Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, "
+"historique, imports) sont dans les onglets ci-dessus."
+
+msgid "Progression de l'assistant"
+msgstr "Progression de l'assistant"
+
+msgid ""
+"Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et "
+"l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+msgstr ""
+"Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et "
+"l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
+
+#, php-format
+msgid ""
+"Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la "
+"date ou le filtre pour le reste."
+msgstr ""
+"Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la "
+"date ou le filtre pour le reste."
+
+msgid ""
+"Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 "
+"au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses "
+"équilibrées."
+msgstr ""
+"Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 "
+"au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses "
+"équilibrées."
+
+msgid "Requête sans restriction : indiquez au moins une clé de projet."
+msgstr "Requête sans restriction : indiquez au moins une clé de projet."
+
+msgid "Clé du projet Jira"
+msgstr "Clé du projet Jira"
+
+msgid "Mis à jour depuis (facultatif)"
+msgstr "Mis à jour depuis (facultatif)"
+
+msgid "Filtre JQL supplémentaire (facultatif)"
+msgstr "Filtre JQL supplémentaire (facultatif)"
+
+msgid ""
+"Jira exige une recherche restreinte : seuls les tickets du ou des projets "
+"indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la "
+"date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces "
+"conditions."
+msgstr ""
+"Jira exige une recherche restreinte : seuls les tickets du ou des projets "
+"indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la "
+"date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces "
+"conditions."
+
+msgid ""
+"Gestion des changements prête (%d élément(s) créé(s) : groupe CAB, "
+"catégories, modèles et règle d'approbation). Ajoutez les membres du CAB dans "
+"Administration > Groupes."
+msgstr ""
+"Gestion des changements prête (%d élément(s) créé(s) : groupe CAB, "
+"catégories, modèles et règle d'approbation). Ajoutez les membres du CAB dans "
+"Administration > Groupes."
+
+msgid "Gérer les règles métier pour les changements"
+msgstr "Gérer les règles métier pour les changements"
+
+msgid ""
+"nécessaire à la gestion des changements (étape 12 : groupe CAB, changements "
+"standard et approbation des changements normaux)"
+msgstr ""
+"nécessaire à la gestion des changements (étape 12 : groupe CAB, changements "
+"standard et approbation des changements normaux)"
+
+msgid "Administration > Groupes"
+msgstr "Administration > Groupes"
+
+msgid "Approbation du CAB"
+msgstr "Approbation du CAB"
+
+msgid ""
+"Au quotidien, tout se passe dans Assistance > Changements : choisissez la "
+"catégorie du changement, le modèle se remplit, et une demande d'approbation "
+"part au groupe CAB pour un changement normal ou urgent. La règle reste "
+"modifiable dans Administration > Règles > Règles métier pour les changements."
+msgstr ""
+"Au quotidien, tout se passe dans Assistance > Changements : choisissez la "
+"catégorie du changement, le modèle se remplit, et une demande d'approbation "
+"part au groupe CAB pour un changement normal ou urgent. La règle reste "
+"modifiable dans Administration > Règles > Règles métier pour les changements."
+
+msgid ""
+"Catégorie et modèle : analyse d'impact, plan de déploiement et plan de "
+"retour arrière obligatoires."
+msgstr ""
+"Catégorie et modèle : analyse d'impact, plan de déploiement et plan de "
+"retour arrière obligatoires."
+
+msgid ""
+"Catégorie et modèle allégé : description et plan de retour arrière "
+"obligatoires."
+msgstr ""
+"Catégorie et modèle allégé : description et plan de retour arrière "
+"obligatoires."
+
+msgid "Changement normal"
+msgstr "Changement normal"
+
+msgid "Changement standard (pré-approuvé)"
+msgstr "Changement standard (pré-approuvé)"
+
+msgid "Changement urgent"
+msgstr "Changement urgent"
+
+msgid ""
+"Créé vide : ajoutez-y les personnes qui décident des changements ; un seul "
+"membre suffit pour répondre au nom du groupe."
+msgstr ""
+"Créé vide : ajoutez-y les personnes qui décident des changements ; un seul "
+"membre suffit pour répondre au nom du groupe."
+
+msgid ""
+"Gestion des changements : groupe CAB, approbation des changements normaux et "
+"changements standard pré-approuvés"
+msgstr ""
+"Gestion des changements : groupe CAB, approbation des changements normaux et "
+"changements standard pré-approuvés"
+
+msgid "Groupe CAB"
+msgstr "Groupe CAB"
+
+msgid "Sans approbation"
+msgstr "Sans approbation"
+
+msgid ""
+"Trois sortes de changements, comme le recommande ITIL : les changements "
+"normaux et urgents doivent être approuvés par le comité des changements "
+"(CAB) avant d'être réalisés ; les changements standard (courants, à faible "
+"risque, procédure connue) sont approuvés une fois pour toutes et se "
+"réalisent directement."
+msgstr ""
+"Trois sortes de changements, comme le recommande ITIL : les changements "
+"normaux et urgents doivent être approuvés par le comité des changements "
+"(CAB) avant d'être réalisés ; les changements standard (courants, à faible "
+"risque, procédure connue) sont approuvés une fois pour toutes et se "
+"réalisent directement."
+
+msgid ""
+"Un petit catalogue de sous-catégories, chacune avec un modèle qui pré-"
+"remplit le titre, la description et les plans :"
+msgstr ""
+"Un petit catalogue de sous-catégories, chacune avec un modèle qui pré-"
+"remplit le titre, la description et les plans :"
+
+msgid ""
+"Votre profil ne peut pas modifier les règles métier pour les changements : "
+"cette option sera ignorée."
+msgstr ""
+"Votre profil ne peut pas modifier les règles métier pour les changements : "
+"cette option sera ignorée."
+
+msgid ""
+"Le numéro ou la référence tels qu'ils apparaissent dans l'application (au "
+"moins un chiffre)."
+msgstr ""
+"Le numéro ou la référence tels qu'ils apparaissent dans l'application (au "
+"moins un chiffre)."
+
+msgid "Nouvelle valeur adoptée : elle devient la référence du Blueprint."
+msgstr "Nouvelle valeur adoptée : elle devient la référence du Blueprint."
+
+msgid ""
+"Cet écart ne peut pas être adopté ici : reportez la valeur dans l'assistant."
+msgstr ""
+"Cet écart ne peut pas être adopté ici : reportez la valeur dans l'assistant."
+
+msgid "Règles d'affectation des SLA"
+msgstr "Règles d'affectation des SLA"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Niveau de service introuvable (#%d)"
+msgstr "Niveau de service introuvable (#%d)"
+
+msgid "Éléments surveillés enregistrés."
+msgstr "Éléments surveillés enregistrés."
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Adopter"
+msgstr "Adopter"
+
+msgid "Choisir les éléments surveillés"
+msgstr "Choisir les éléments surveillés"
+
+msgid ""
+"Compare les SLA, le calendrier, les catégories de tickets, les statuts et "
+"les règles d'affectation des SLA créés par le plugin à ce qu'ils sont "
+"aujourd'hui dans GLPI. Cette vérification ne modifie rien."
+msgstr ""
+"Compare les SLA, le calendrier, les catégories de tickets, les statuts et "
+"les règles d'affectation des SLA créés par le plugin à ce qu'ils sont "
+"aujourd'hui dans GLPI. Cette vérification ne modifie rien."
+
+msgid "Garder la valeur de GLPI comme nouvelle référence du Blueprint"
+msgstr "Garder la valeur de GLPI comme nouvelle référence du Blueprint"
+
+msgid ""
+"Modification voulue : « Adopter » garde la valeur de GLPI comme référence "
+"(délais des SLA et OLA), sinon reportez-la dans l'assistant. Modification "
+"accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est "
+"jamais supprimé ; une règle désactivée se réactive depuis sa fiche."
+msgstr ""
+"Modification voulue : « Adopter » garde la valeur de GLPI comme référence "
+"(délais des SLA et OLA), sinon reportez-la dans l'assistant. Modification "
+"accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est "
+"jamais supprimé ; une règle désactivée se réactive depuis sa fiche."
+
+msgid "Ouvrir dans GLPI"
+msgstr "Ouvrir dans GLPI"
+
+msgid "Remettre la valeur du Blueprint, après aperçu et confirmation"
+msgstr "Remettre la valeur du Blueprint, après aperçu et confirmation"
+
+msgid "Réappliquer"
+msgstr "Réappliquer"
+
+msgid ""
+"Choisissez ce que l'audit compare au dernier Blueprint appliqué. La "
+"comparaison a lieu à chaque audit : à l'ouverture de la page d'audit, lors "
+"de la veille des constats critiques et avec le rapport périodique ci-"
+"dessous, dont elle suit la fréquence. Elle ne modifie rien."
+msgstr ""
+"Choisissez ce que l'audit compare au dernier Blueprint appliqué. La "
+"comparaison a lieu à chaque audit : à l'ouverture de la page d'audit, lors "
+"de la veille des constats critiques et avec le rapport périodique ci-"
+"dessous, dont elle suit la fréquence. Elle ne modifie rien."
+
+msgid ""
+"%d écart détecté (SLA, calendrier, catégories, statuts ou règles modifiés à "
+"la main)."
+msgid_plural ""
+"%d écarts détectés (SLA, calendrier, catégories, statuts ou règles modifiés "
+"à la main)."
+msgstr[0] ""
+"%d écart détecté (SLA, calendrier, catégories, statuts ou règles modifiés à "
+"la main)."
+msgstr[1] ""
+"%d écarts détectés (SLA, calendrier, catégories, statuts ou règles modifiés "
+"à la main)."
+
 #~ msgid "Blueprint appliqué. Vérifiez chaque étape avant de valider."
 #~ msgstr "Blueprint appliqué. Vérifiez chaque étape avant de valider."
 
@@ -7557,416 +8323,3 @@ msgstr "Origine"
 
 #~ msgid "Numéro d'inventaire ou nom du poste actuel"
 #~ msgstr "Numéro d'inventaire ou nom du poste actuel"
-
-msgid "Niveaux de service (SLA, OLA)"
-msgstr "Niveaux de service (SLA, OLA)"
-
-msgid "Blueprint"
-msgstr "Blueprint"
-
-msgid "La configuration s'écarte du dernier Blueprint appliqué"
-msgstr "La configuration s'écarte du dernier Blueprint appliqué"
-
-msgid "Relisez les écarts plus bas sur cette page : réappliquez le Blueprint si la modification n'était pas voulue, sinon reportez la nouvelle valeur dans l'assistant."
-msgstr "Relisez les écarts plus bas sur cette page : réappliquez le Blueprint si la modification n'était pas voulue, sinon reportez la nouvelle valeur dans l'assistant."
-
-msgid "Voir les écarts"
-msgstr "Voir les écarts"
-
-msgid "Écarts avec le dernier Blueprint appliqué"
-msgstr "Écarts avec le dernier Blueprint appliqué"
-
-msgid "Compare les SLA, le calendrier, les catégories de tickets et les statuts créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette vérification ne modifie rien."
-msgstr "Compare les SLA, le calendrier, les catégories de tickets et les statuts créés par le plugin à ce qu'ils sont aujourd'hui dans GLPI. Cette vérification ne modifie rien."
-
-msgid "Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à comparer."
-msgstr "Aucun Blueprint n'a encore été appliqué avec l'assistant : il n'y a rien à comparer."
-
-msgid "Ouvrir l'assistant"
-msgstr "Ouvrir l'assistant"
-
-msgid "Aucun écart : la configuration de GLPI correspond au dernier Blueprint appliqué."
-msgstr "Aucun écart : la configuration de GLPI correspond au dernier Blueprint appliqué."
-
-msgid "Ajouté"
-msgstr "Ajouté"
-
-msgid "Modifié"
-msgstr "Modifié"
-
-msgid "Supprimé"
-msgstr "Supprimé"
-
-msgid "Écart"
-msgstr "Écart"
-
-msgid "Dans GLPI"
-msgstr "Dans GLPI"
-
-msgid "Dans le Blueprint"
-msgstr "Dans le Blueprint"
-
-msgid "Modification voulue : reportez la nouvelle valeur dans l'assistant, elle deviendra la référence au prochain déploiement. Modification accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
-msgstr "Modification voulue : reportez la nouvelle valeur dans l'assistant, elle deviendra la référence au prochain déploiement. Modification accidentelle : réappliquez le Blueprint. Un élément ajouté à la main n'est jamais supprimé."
-
-msgid "Réappliquer le Blueprint (avec aperçu)"
-msgstr "Réappliquer le Blueprint (avec aperçu)"
-
-msgid "Adopter les nouvelles valeurs dans l'assistant"
-msgstr "Adopter les nouvelles valeurs dans l'assistant"
-
-msgid "Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément ajouté à la main est conservé."
-msgstr "Les éléments supprimés ou modifiés sont recréés ou réalignés ; un élément ajouté à la main est conservé."
-
-msgid "Réaligner aussi les SLA et OLA déjà créés sur cette configuration"
-msgstr "Réaligner aussi les SLA et OLA déjà créés sur cette configuration"
-
-msgid "Conformité au dernier Blueprint appliqué"
-msgstr "Conformité au dernier Blueprint appliqué"
-
-#, php-format
-msgid "%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
-msgid_plural "%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la main)."
-msgstr[0] "%d écart détecté (SLA, calendrier, catégories ou statuts modifiés à la main)."
-msgstr[1] "%d écarts détectés (SLA, calendrier, catégories ou statuts modifiés à la main)."
-
-msgid "Non applicables (désactivés dans les réglages ou sans objet sur cette version de GLPI) :"
-msgstr "Non applicables (désactivés dans les réglages ou sans objet sur cette version de GLPI) :"
-
-msgid "Conforme"
-msgstr "Conforme"
-
-msgid "Sessions et ré-authentification"
-msgstr "Sessions et ré-authentification"
-
-msgid "Sans objet sous GLPI 11"
-msgstr "Sans objet sous GLPI 11"
-
-msgid "Une session, c'est une connexion à GLPI restée ouverte sur un navigateur. Cette section vérifie qu'aucune ne reste ouverte trop longtemps, surtout pour les administrateurs, et que GLPI redemande le mot de passe avant les actions sensibles. Elle ne ferme aucune session et ne modifie aucun réglage."
-msgstr "Une session, c'est une connexion à GLPI restée ouverte sur un navigateur. Cette section vérifie qu'aucune ne reste ouverte trop longtemps, surtout pour les administrateurs, et que GLPI redemande le mot de passe avant les actions sensibles. Elle ne ferme aucune session et ne modifie aucun réglage."
-
-msgid "Le suivi des sessions actives et la ré-authentification n'existent qu'à partir de GLPI 12. Sur cette version, le contrôle est sans objet : il ne compte pas dans la note de durcissement. Il s'activera tout seul après la mise à jour vers GLPI 12."
-msgstr "Le suivi des sessions actives et la ré-authentification n'existent qu'à partir de GLPI 12. Sur cette version, le contrôle est sans objet : il ne compte pas dans la note de durcissement. Il s'activera tout seul après la mise à jour vers GLPI 12."
-
-msgid "%d jour(s)"
-msgstr "%d jour(s)"
-
-msgid "%d heure(s)"
-msgstr "%d heure(s)"
-
-msgid "Ré-authentification avant les actions sensibles"
-msgstr "Ré-authentification avant les actions sensibles"
-
-msgid "Désactivée"
-msgstr "Désactivée"
-
-msgid "Activée"
-msgstr "Activée"
-
-msgid "GLPI redemande le mot de passe avant de changer des droits ou des réglages de sécurité : une session oubliée ne suffit pas pour les modifier."
-msgstr "GLPI redemande le mot de passe avant de changer des droits ou des réglages de sécurité : une session oubliée ne suffit pas pour les modifier."
-
-msgid "Fichier config/local_define.php du serveur (constante GLPI_DISABLE_REAUTH)"
-msgstr "Fichier config/local_define.php du serveur (constante GLPI_DISABLE_REAUTH)"
-
-msgid "Nettoyage automatique des sessions expirées"
-msgstr "Nettoyage automatique des sessions expirées"
-
-msgid "L'action automatique « session » ferme chaque jour les sessions inactives."
-msgstr "L'action automatique « session » ferme chaque jour les sessions inactives."
-
-msgid "Configuration > Actions automatiques > session"
-msgstr "Configuration > Actions automatiques > session"
-
-msgid "Durée de « Se souvenir de moi »"
-msgstr "Durée de « Se souvenir de moi »"
-
-msgid "Pendant cette durée, GLPI reconnecte le navigateur sans mot de passe. %d jours au plus sont conseillés."
-msgstr "Pendant cette durée, GLPI reconnecte le navigateur sans mot de passe. %d jours au plus sont conseillés."
-
-msgid "Configuration > Générale > Identification automatique"
-msgstr "Configuration > Générale > Identification automatique"
-
-msgid "Conservation de l'historique des connexions"
-msgstr "Conservation de l'historique des connexions"
-
-msgid "Non conservé"
-msgstr "Non conservé"
-
-msgid "Permet de retrouver qui s'est connecté, quand et d'où, par exemple après un incident."
-msgstr "Permet de retrouver qui s'est connecté, quand et d'où, par exemple après un incident."
-
-msgid "Configuration > Données et Confidentialité > Sessions de connexion"
-msgstr "Configuration > Données et Confidentialité > Sessions de connexion"
-
-msgid "Réglage de GLPI"
-msgstr "Réglage de GLPI"
-
-msgid "État"
-msgstr "État"
-
-msgid "Pourquoi c'est important"
-msgstr "Pourquoi c'est important"
-
-msgid "Où le régler"
-msgstr "Où le régler"
-
-msgid "Sessions actives : %d"
-msgstr "Sessions actives : %d"
-
-msgid "Comptes à privilèges connectés depuis plus de %1$d heures : %2$d"
-msgstr "Comptes à privilèges connectés depuis plus de %1$d heures : %2$d"
-
-msgid "Autres comptes avec une session de plus de %1$d jours : %2$d"
-msgstr "Autres comptes avec une session de plus de %1$d jours : %2$d"
-
-msgid "Les comptes concernés sont listés dans les constats plus haut, avec un lien vers l'onglet « Sessions » de leur fiche. Avant de fermer une session, vérifiez avec la personne : elle sera déconnectée."
-msgstr "Les comptes concernés sont listés dans les constats plus haut, avec un lien vers l'onglet « Sessions » de leur fiche. Avant de fermer une session, vérifiez avec la personne : elle sera déconnectée."
-
-msgid "Voir toutes les sessions dans GLPI"
-msgstr "Voir toutes les sessions dans GLPI"
-
-msgid "Sessions et ré-authentification (GLPI 12)"
-msgstr "Sessions et ré-authentification (GLPI 12)"
-
-msgid "La ré-authentification avant les actions sensibles est désactivée"
-msgstr "La ré-authentification avant les actions sensibles est désactivée"
-
-msgid "GLPI ne redemande plus le mot de passe avant une action sensible (droits, sécurité) : une session laissée ouverte suffit pour les modifier. La constante GLPI_DISABLE_REAUTH est déclarée dans un fichier de configuration du serveur."
-msgstr "GLPI ne redemande plus le mot de passe avant une action sensible (droits, sécurité) : une session laissée ouverte suffit pour les modifier. La constante GLPI_DISABLE_REAUTH est déclarée dans un fichier de configuration du serveur."
-
-msgid "Demandez à la personne qui gère le serveur de retirer GLPI_DISABLE_REAUTH du fichier config/local_define.php."
-msgstr "Demandez à la personne qui gère le serveur de retirer GLPI_DISABLE_REAUTH du fichier config/local_define.php."
-
-msgid "Le nettoyage automatique des sessions est arrêté"
-msgstr "Le nettoyage automatique des sessions est arrêté"
-
-msgid "L'action automatique « session » de GLPI ferme les sessions expirées. Désactivée, d'anciennes sessions restent valables et la liste des sessions actives ne reflète plus la réalité."
-msgstr "L'action automatique « session » de GLPI ferme les sessions expirées. Désactivée, d'anciennes sessions restent valables et la liste des sessions actives ne reflète plus la réalité."
-
-msgid "Réactivez l'action automatique « session » dans Configuration > Actions automatiques."
-msgstr "Réactivez l'action automatique « session » dans Configuration > Actions automatiques."
-
-msgid "L'historique des connexions n'est pas conservé"
-msgstr "L'historique des connexions n'est pas conservé"
-
-msgid "Avec une durée de conservation de 0 jour, GLPI efface la trace d'une connexion dès sa fin : impossible ensuite de savoir qui s'est connecté, quand et d'où."
-msgstr "Avec une durée de conservation de 0 jour, GLPI efface la trace d'une connexion dès sa fin : impossible ensuite de savoir qui s'est connecté, quand et d'où."
-
-msgid "Indiquez une durée de conservation (90 jours par exemple) dans Configuration > Données et Confidentialité, onglet « Sessions de connexion »."
-msgstr "Indiquez une durée de conservation (90 jours par exemple) dans Configuration > Données et Confidentialité, onglet « Sessions de connexion »."
-
-msgid "« Se souvenir de moi » garde la connexion plus de %d jours"
-msgstr "« Se souvenir de moi » garde la connexion plus de %d jours"
-
-msgid "Durée actuelle : %d jours. Toute personne qui utilise l'ordinateur pendant ce temps entre dans GLPI sans mot de passe."
-msgstr "Durée actuelle : %d jours. Toute personne qui utilise l'ordinateur pendant ce temps entre dans GLPI sans mot de passe."
-
-msgid "Réduisez le « Temps de rétention se souvenir de moi » dans Configuration > Générale, section « Identification automatique »."
-msgstr "Réduisez le « Temps de rétention se souvenir de moi » dans Configuration > Générale, section « Identification automatique »."
-
-msgid "%1$d compte à privilèges connecté depuis plus de %2$d heures"
-msgid_plural "%1$d comptes à privilèges connectés depuis plus de %2$d heures"
-msgstr[0] "%1$d compte à privilèges connecté depuis plus de %2$d heures"
-msgstr[1] "%1$d comptes à privilèges connectés depuis plus de %2$d heures"
-
-msgid "Une session d'administrateur restée ouverte est la plus intéressante à voler. Vérifiez avec chaque personne qu'elle est bien la sienne, puis fermez les sessions inutiles : fiche de l'utilisateur, onglet « Sessions », bouton « Révoquer »."
-msgstr "Une session d'administrateur restée ouverte est la plus intéressante à voler. Vérifiez avec chaque personne qu'elle est bien la sienne, puis fermez les sessions inutiles : fiche de l'utilisateur, onglet « Sessions », bouton « Révoquer »."
-
-msgid "%1$d compte a une session ouverte depuis plus de %2$d jours"
-msgid_plural "%1$d comptes ont une session ouverte depuis plus de %2$d jours"
-msgstr[0] "%1$d compte a une session ouverte depuis plus de %2$d jours"
-msgstr[1] "%1$d comptes ont une session ouverte depuis plus de %2$d jours"
-
-msgid "Souvent un « Se souvenir de moi » sur un poste partagé ou perdu. Fermez les sessions qui ne sont plus utiles : fiche de l'utilisateur, onglet « Sessions »."
-msgstr "Souvent un « Se souvenir de moi » sur un poste partagé ou perdu. Fermez les sessions qui ne sont plus utiles : fiche de l'utilisateur, onglet « Sessions »."
-
-msgid "%1$s (ouverte le %2$s)"
-msgstr "%1$s (ouverte le %2$s)"
-
-msgid "Ces réglages sont maintenant dans Configuration > Plugins > Configuration GLPI Auto."
-msgstr "Ces réglages sont maintenant dans Configuration > Plugins > Configuration GLPI Auto."
-
-msgid "Configuration GLPI Auto"
-msgstr "Configuration GLPI Auto"
-
-msgid "Général"
-msgstr "Général"
-
-msgid "Audit"
-msgstr "Audit"
-
-msgid "Fin de support"
-msgstr "Fin de support"
-
-msgid "Profils et Blueprints"
-msgstr "Profils et Blueprints"
-
-msgid "Historique"
-msgstr "Historique"
-
-msgid "Assistant"
-msgstr "Assistant"
-
-msgid "Importer des tickets"
-msgstr "Importer des tickets"
-
-msgid "Dernière version inconnue"
-msgstr "Dernière version inconnue"
-
-msgid "La dernière version n'est lue sur GitHub que si l'action automatique « checkupdate » de GLPI est activée (Configuration > Actions automatiques) et que le serveur GLPI peut joindre github.com."
-msgstr "La dernière version n'est lue sur GitHub que si l'action automatique « checkupdate » de GLPI est activée (Configuration > Actions automatiques) et que le serveur GLPI peut joindre github.com."
-
-msgid "Mise à jour disponible"
-msgstr "Mise à jour disponible"
-
-msgid "Notes de version"
-msgstr "Notes de version"
-
-msgid "À jour"
-msgstr "À jour"
-
-msgid "Depuis Jira"
-msgstr "Depuis Jira"
-
-msgid "Depuis un fichier CSV"
-msgstr "Depuis un fichier CSV"
-
-msgid "Source des tickets"
-msgstr "Source des tickets"
-
-msgid "Écrans de Configuration GLPI Auto"
-msgstr "Écrans de Configuration GLPI Auto"
-
-msgid "Contrôle désactivé : activez-le et indiquez les correspondances dans l'onglet « Fin de support » des réglages."
-msgstr "Contrôle désactivé : activez-le et indiquez les correspondances dans l'onglet « Fin de support » des réglages."
-
-msgid "Délais des contrôles du parc, fin de support et rapport périodique : ces réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
-msgstr "Délais des contrôles du parc, fin de support et rapport périodique : ces réglages sont dans Configuration > Plugins > Configuration GLPI Auto."
-
-msgid "Envoyer le rapport maintenant"
-msgstr "Envoyer le rapport maintenant"
-
-msgid "Ouvrir les réglages"
-msgstr "Ouvrir les réglages"
-
-msgid "Actions automatiques"
-msgstr "Actions automatiques"
-
-msgid "Administration > Profils, onglet « Configuration GLPI Auto » de chaque profil."
-msgstr "Administration > Profils, onglet « Configuration GLPI Auto » de chaque profil."
-
-msgid "Analyse continue de l'audit, rapport périodique et vérification des nouvelles versions (checkupdate)."
-msgstr "Analyse continue de l'audit, rapport périodique et vérification des nouvelles versions (checkupdate)."
-
-msgid "Droits du plugin"
-msgstr "Droits du plugin"
-
-msgid "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
-msgstr "Il signale les systèmes d'exploitation et les modèles de matériel en service dont le support du fabricant est terminé ou se termine bientôt, d'après les dates publiques du site endoflife.date. Rien n'est téléchargé tant qu'il n'est pas activé, seul endoflife.date est contacté, et seulement quand vous cliquez sur « Télécharger les dates » dans la page d'audit. Le contrôle lit ensuite ces dates gardées en base : il ne modifie jamais le matériel."
-
-msgid "Lecture seule : modifier ces réglages demande le droit de modification de la configuration de GLPI et de ce plugin."
-msgstr "Lecture seule : modifier ces réglages demande le droit de modification de la configuration de GLPI et de ce plugin."
-
-msgid "Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, rapport périodique, fin de support des systèmes et du matériel."
-msgstr "Les réglages du plugin, et seulement eux : délais des contrôles de l'audit, rapport périodique, fin de support des systèmes et du matériel."
-
-msgid "Modèle et destinataires du rapport d'audit périodique."
-msgstr "Modèle et destinataires du rapport d'audit périodique."
-
-msgid "Réglages de Configuration GLPI Auto"
-msgstr "Réglages de Configuration GLPI Auto"
-
-msgid "Réglages gérés par GLPI"
-msgstr "Réglages gérés par GLPI"
-
-msgid "Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, l'historique et les imports s'ouvrent depuis le menu Configuration > Configuration GLPI Auto."
-msgstr "Réglez chaque onglet puis enregistrez-le. L'assistant, l'audit, les profils, l'historique et les imports s'ouvrent depuis le menu Configuration > Configuration GLPI Auto."
-
-msgid "Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, historique, imports) sont dans les onglets ci-dessus."
-msgstr "Ouvrez un profil de la liste pour le consulter ou l'exporter, ou importez un Blueprint reçu d'une autre instance. Les autres écrans (assistant, audit, historique, imports) sont dans les onglets ci-dessus."
-
-msgid "Progression de l'assistant"
-msgstr "Progression de l'assistant"
-
-msgid "Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
-msgstr "Renseignez l'adresse de Jira (HTTPS), le jeton, la clé du projet (et l'adresse e-mail pour Jira Cloud), et une entité à laquelle vous avez accès."
-
-#, php-format
-msgid "Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la date ou le filtre pour le reste."
-msgstr "Plus de %d tickets : seuls les premiers sont importés, affinez le projet, la date ou le filtre pour le reste."
-
-msgid "Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses équilibrées."
-msgstr "Clé de projet, date ou filtre invalide : des clés comme SUP ou SUP, OPS (20 au plus), une date au format AAAA-MM-JJ, un filtre aux parenthèses équilibrées."
-
-msgid "Requête sans restriction : indiquez au moins une clé de projet."
-msgstr "Requête sans restriction : indiquez au moins une clé de projet."
-
-msgid "Clé du projet Jira"
-msgstr "Clé du projet Jira"
-
-msgid "Mis à jour depuis (facultatif)"
-msgstr "Mis à jour depuis (facultatif)"
-
-msgid "Filtre JQL supplémentaire (facultatif)"
-msgstr "Filtre JQL supplémentaire (facultatif)"
-
-msgid "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
-msgstr "Jira exige une recherche restreinte : seuls les tickets du ou des projets indiqués (clés séparées par des virgules) sont lus, mis à jour depuis la date choisie, du plus ancien au plus récent. Le filtre s'ajoute à ces conditions."
-
-msgid "Gestion des changements prête (%d élément(s) créé(s) : groupe CAB, catégories, modèles et règle d'approbation). Ajoutez les membres du CAB dans Administration > Groupes."
-msgstr "Gestion des changements prête (%d élément(s) créé(s) : groupe CAB, catégories, modèles et règle d'approbation). Ajoutez les membres du CAB dans Administration > Groupes."
-
-msgid "Gérer les règles métier pour les changements"
-msgstr "Gérer les règles métier pour les changements"
-
-msgid "nécessaire à la gestion des changements (étape 12 : groupe CAB, changements standard et approbation des changements normaux)"
-msgstr "nécessaire à la gestion des changements (étape 12 : groupe CAB, changements standard et approbation des changements normaux)"
-
-msgid "Administration > Groupes"
-msgstr "Administration > Groupes"
-
-msgid "Approbation du CAB"
-msgstr "Approbation du CAB"
-
-msgid "Au quotidien, tout se passe dans Assistance > Changements : choisissez la catégorie du changement, le modèle se remplit, et une demande d'approbation part au groupe CAB pour un changement normal ou urgent. La règle reste modifiable dans Administration > Règles > Règles métier pour les changements."
-msgstr "Au quotidien, tout se passe dans Assistance > Changements : choisissez la catégorie du changement, le modèle se remplit, et une demande d'approbation part au groupe CAB pour un changement normal ou urgent. La règle reste modifiable dans Administration > Règles > Règles métier pour les changements."
-
-msgid "Catégorie et modèle : analyse d'impact, plan de déploiement et plan de retour arrière obligatoires."
-msgstr "Catégorie et modèle : analyse d'impact, plan de déploiement et plan de retour arrière obligatoires."
-
-msgid "Catégorie et modèle allégé : description et plan de retour arrière obligatoires."
-msgstr "Catégorie et modèle allégé : description et plan de retour arrière obligatoires."
-
-msgid "Changement normal"
-msgstr "Changement normal"
-
-msgid "Changement standard (pré-approuvé)"
-msgstr "Changement standard (pré-approuvé)"
-
-msgid "Changement urgent"
-msgstr "Changement urgent"
-
-msgid "Créé vide : ajoutez-y les personnes qui décident des changements ; un seul membre suffit pour répondre au nom du groupe."
-msgstr "Créé vide : ajoutez-y les personnes qui décident des changements ; un seul membre suffit pour répondre au nom du groupe."
-
-msgid "Gestion des changements : groupe CAB, approbation des changements normaux et changements standard pré-approuvés"
-msgstr "Gestion des changements : groupe CAB, approbation des changements normaux et changements standard pré-approuvés"
-
-msgid "Groupe CAB"
-msgstr "Groupe CAB"
-
-msgid "Sans approbation"
-msgstr "Sans approbation"
-
-msgid "Trois sortes de changements, comme le recommande ITIL : les changements normaux et urgents doivent être approuvés par le comité des changements (CAB) avant d'être réalisés ; les changements standard (courants, à faible risque, procédure connue) sont approuvés une fois pour toutes et se réalisent directement."
-msgstr "Trois sortes de changements, comme le recommande ITIL : les changements normaux et urgents doivent être approuvés par le comité des changements (CAB) avant d'être réalisés ; les changements standard (courants, à faible risque, procédure connue) sont approuvés une fois pour toutes et se réalisent directement."
-
-msgid "Un petit catalogue de sous-catégories, chacune avec un modèle qui pré-remplit le titre, la description et les plans :"
-msgstr "Un petit catalogue de sous-catégories, chacune avec un modèle qui pré-remplit le titre, la description et les plans :"
-
-msgid "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
-msgstr "Votre profil ne peut pas modifier les règles métier pour les changements : cette option sera ignorée."
-
-msgid "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."
-msgstr "Le numéro ou la référence tels qu'ils apparaissent dans l'application (au moins un chiffre)."

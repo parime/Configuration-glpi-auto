@@ -213,6 +213,7 @@ final class Installer
                 `audit_eol_offline` tinyint NOT NULL DEFAULT 0,
                 `audit_eol_days` int NOT NULL DEFAULT 180,
                 `audit_eol_mapping` text,
+                `audit_drift_objects` text,
                 `kb_categories_enabled` tinyint NOT NULL DEFAULT 0,
                 `kb_faq_enabled` tinyint NOT NULL DEFAULT 0,
                 `document_management_enabled` tinyint NOT NULL DEFAULT 0,
@@ -406,6 +407,8 @@ final class Installer
             $migration->addField(self::CONFIGS_TABLE, 'audit_eol_offline', 'bool', ['value' => 0]);
             $migration->addField(self::CONFIGS_TABLE, 'audit_eol_days', 'integer', ['value' => 180]);
             $migration->addField(self::CONFIGS_TABLE, 'audit_eol_mapping', 'text');
+            // #468 : familles comparées au dernier Blueprint appliqué (vide = toutes).
+            $migration->addField(self::CONFIGS_TABLE, 'audit_drift_objects', 'text');
             $migration->addField(self::CONFIGS_TABLE, 'kb_categories_enabled', 'bool', ['value' => 0]);
             // #143/#144: explicit default 1 (unlike the plain addField()-with-no-value precedent
             // above): this seeds two ready-to-read FAQ articles, not an empty structure an admin

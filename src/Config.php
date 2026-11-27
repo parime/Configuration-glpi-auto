@@ -435,6 +435,25 @@ class Config extends Compat\Base\ConfigBase
     }
 
     /**
+     * Familles comparées au dernier Blueprint appliqué (issue #468). Colonne vide (installation ou
+     * mise à jour) : toutes ; liste JSON sinon, éventuellement vide si l'administrateur a tout décoché.
+     *
+     * @return list<string>
+     */
+    public function getDriftObjects(): array
+    {
+        $raw = $this->fields['audit_drift_objects'] ?? null;
+        if ($raw === null || $raw === '') {
+            return \GlpiPlugin\Configurationglpiauto\Audit\BlueprintDrift::OBJECTS;
+        }
+        $objects = json_decode((string) $raw, true);
+
+        return is_array($objects)
+            ? array_values(array_intersect(\GlpiPlugin\Configurationglpiauto\Audit\BlueprintDrift::OBJECTS, $objects))
+            : \GlpiPlugin\Configurationglpiauto\Audit\BlueprintDrift::OBJECTS;
+    }
+
+    /**
      * Adresses supplémentaires du rapport d'audit (issue #285).
      *
      * @return list<string>
@@ -731,6 +750,14 @@ class Config extends Compat\Base\ConfigBase
             if (isset($input[$field])) {
                 $input[$field] = !empty($input[$field]) ? 1 : 0;
             }
+        }
+
+        // Issue #468 : liste blanche des familles surveillées, enregistrée en JSON.
+        if (isset($input['audit_drift_objects'])) {
+            $input['audit_drift_objects'] = json_encode(array_values(array_intersect(
+                \GlpiPlugin\Configurationglpiauto\Audit\BlueprintDrift::OBJECTS,
+                is_array($input['audit_drift_objects']) ? array_map('strval', $input['audit_drift_objects']) : []
+            )));
         }
 
         if (isset($input['ticket_template_enabled'])) {
